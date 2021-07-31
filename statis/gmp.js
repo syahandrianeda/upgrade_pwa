@@ -1744,7 +1744,7 @@ async function createtableabsenhariini() {
         var pisahin = document.createElement("br");
         selaksi.appendChild(pisahin);
         var tombolbantusiswa = document.createElement("button");
-        tombolbantusiswa.setAttribute("onclick", "bantuabsen('" + encodeURIComponent(jsondatasiswa[i].pd_nama) + "_" + idok + "')");
+        tombolbantusiswa.setAttribute("onclick", "bantuabsen('" + jsondatasiswa[i].id + "_" + idok + "')");
         tombolbantusiswa.innerHTML = "<i class='fa fa-child'></i> Bantu";
         selaksi.appendChild(tombolbantusiswa);
     }
@@ -2009,7 +2009,8 @@ function bantuabsen(encodenama) {
     document.bantukirim.reset();
     var teks = encodenama;
     var split = teks.split("_");
-    var kodenama = split[0];
+    var kodenama = jsondatasiswa.filter(s => s.id == split[0])[0];//parseInt(split[0]);
+    console.log(kodenama)
     var tgl = split[1];
 
     document.getElementById("divbantuabsen").style.display = "block";
@@ -2020,9 +2021,11 @@ function bantuabsen(encodenama) {
     loginclosebantu.innerHTML = "Batal";
     kodefilepotosiswaabsen.innerHTML = "";
 
-    document.getElementById("bantusiapa").innerHTML = decodeURIComponent(kodenama);
-    document.bantukirim.name.value = decodeURIComponent(kodenama);
-    document.bantukirim.kelas.value = ruangankelas;//document.getElementById("kelassayapilih").innerHTML;
+    document.getElementById("bantusiapa").innerHTML = kodenama.pd_nama
+    document.bantukirim.name.value = kodenama.pd_nama
+    document.bantukirim.kelas.value = ruangankelas;//document.getElementById("kelassayapilih").innerHTML;v
+    document.bantukirim.tokensiswa.value = parseInt(split[0]);
+
     document.getElementById("potosiswa").src = "/img/eabsensi.webp";
     var ltgl = tgl.length;
     var dtg, dbln, dthn
@@ -2230,6 +2233,8 @@ function pilihopsibulanrekap() {
         itgl++;
     }
     let datanama = Object.keys(jsondatasiswa).map(k => jsondatasiswa[k].pd_nama);
+    let datatoken = Object.keys(jsondatasiswa).map(k => jsondatasiswa[k].id);
+
 
     let encodenama;
 
@@ -2239,7 +2244,7 @@ function pilihopsibulanrekap() {
         let cell = tr.insertCell(-1);
         cell.setAttribute("style", "position:sticky;position:-webkit-sticky;left:0px; box-shadow: inset 0 0 1px #000000");
         cell.innerHTML = "<span style='font-size:12px;' id='datakelas" + j + "'>" + datanama[j] + "</span>";
-        encodenama = encodeURIComponent(datanama[j]);
+        encodenama = datatoken[j];
         let ke = 1;
 
         for (let k = 0; k < jumlahharibulanini; k++) {

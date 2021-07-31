@@ -15,7 +15,7 @@
             exclude_judul: true,
             // exclude_ttd: true,
             name: "Table2Excel",
-            sheetName: "by_Syahandrian_Eda",
+            sheetName: "created by_Ade Andriansyah_",
             filename: "table2excel",
             fileext: ".xlsx",
             exclude_img: true,
@@ -23,8 +23,7 @@
             exclude_inputs: true,
             preserveColors: false,
             jumlahheader: 1,
-            barisatas: 4,
-            tabelmana: 21
+            barisatas: 4
         };
 
     // The actual plugin constructor
@@ -77,14 +76,8 @@
             //let baristabel = document.getElementById("myTableCopy").rows.length;
             //let baristabel = 21 + e.settings.jumlahheader + 4;// e.settings.barisatas;
             //let baristabel = jsondatasiswa.length + e.settings.jumlahheader + 4;
-            // let baristabel = dataapiguru.length + e.settings.jumlahheader + e.settings.barisatas;//4;
-            let baristabel;// = e.settings.tabelmana + e.settings.jumlahheader + e.settings.barisatas;//4;
+            let baristabel = dataapiguru.length + e.settings.jumlahheader + e.settings.barisatas;//4;
             //console.log(baristabel)
-            if (e.settings.tabelmana == dataapiguru.length) {
-                baristabel = dataapiguru.length + e.settings.jumlahheader + e.settings.barisatas;//4;
-            } else {
-                baristabel = e.settings.tabelmana + e.settings.jumlahheader + e.settings.barisatas;//4;
-            }
             let lr = e.settings.barisatas;
 
 

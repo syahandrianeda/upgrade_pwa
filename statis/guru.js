@@ -37,7 +37,7 @@ let kronologijson = [];
 
 const anjangsanaguru = () => {
     alert("Maaf, fitur belum tersedia")
-}
+};
 
 
 
@@ -46,21 +46,21 @@ const pgeditnosoal = () => {
     let val = inputnosoalpg.value;
     let txar = document.getElementById("ketpen4");
     document.getElementById("contohsoalke-1").innerHTML = val;
-    txar.textContent = `_PG_${val} isikan pertanyaan ....
-_OPSI-PG_${val}A isikan opsi jawaban A
-_OPSI-PG_${val}B isikan opsi jawaban B
-_OPSI-PG_${val}C isikan opsi jawaban C
-_OPSI-PG_${val}D isikan opsi jawaban D
+    txar.textContent = `_PG_${val} #
+_OPSI-PG_${val}A #
+_OPSI-PG_${val}B #
+_OPSI-PG_${val}C #
+_OPSI-PG_${val}D #
 `
 };
 const pgeditnosoalC = () => {
     let val = inputnosoalpgC.value;
     let txar = document.getElementById("ketpen27");
     document.getElementById("contohsoalke-1C").innerHTML = val;
-    txar.textContent = `_PG_${val} isikan pertanyaan ....
-_OPSI-PG-C_${val}A isikan opsi jawaban A
-_OPSI-PG-C_${val}B isikan opsi jawaban B
-_OPSI-PG-C_${val}C isikan opsi jawaban C
+    txar.textContent = `_PG_${val} # ....
+_OPSI-PG-C_${val}A #
+_OPSI-PG-C_${val}B #
+_OPSI-PG-C_${val}C #
 
 `
 };
@@ -69,19 +69,19 @@ const pgeditnosoaltabel = () => {
     let txar = document.getElementById("ketpen5");
     document.getElementById("contohsoaltabelke1").innerHTML = val;
     txar.textContent = `
-_PG_${val} Pertanyaan soal Pilhan Ganda
+_PG_${val} #
 _START-TABEL-OPSI_
 Opsi <|HEADER|>	Header	<|HEADER|>	Contoh
-_OPSI-SEL_${val}A	<|>	Mutualisme	<|>	Hubungan bunga dengan lebah
-_OPSI-SEL_${val}B 	<|>	Parasitisme	<|>	Hubungan bakteri E-Coli pada usus manusia
-_OPSI-SEL_${val}C 	<|>	Komensialisme	<|>	Benalu pada batang pohon mangga
-_OPSI-SEL_${val}D 	<|>	Xerofitisme	<|>	Hubungan burung jalak dengan kerbau`
+_OPSI-SEL_${val}A	<|>	#	<|>	#
+_OPSI-SEL_${val}B 	<|>	#	<|>	#
+_OPSI-SEL_${val}C 	<|>	#	<|>	#
+_OPSI-SEL_${val}D 	<|>	#	<|>	#`
 };
 const editnosoalessay = () => {
     let val = inputnosoalessay.value;
     let txar = document.getElementById("ketpen6");
     document.getElementById("contohsoalessay").innerHTML = val;
-    txar.textContent = `_ESSAY-NO_${val} pertanyaan Essay`
+    txar.textContent = `_ESSAY-NO_${val} #`
 };
 const tombolketikjawaban = (id) => {
     alert("Siswa mengetik jawaban essay nomor " + id)
@@ -405,323 +405,6 @@ const downloadfiledraft = (json, namafile) => {
 const berandaguru = () => {
     tampilinsublamangurukelas("beranda")
 };
-const pilihrepository = () => {
-    //alert("Maaf, fitur belum tersedia dipindah");
-    let x = document.getElementById("sumber_repository").selectedIndex;
-    let y = document.getElementById("sumber_repository").options;
-    let valupilih = y[x].value;
-    let idskrip = jlo.id;
-    //sdnratujaya 2 
-    //"https://script.google.com/macros/s/AKfycbyecPmGp7oCrNKNUoUwgN9agd11HD60DXqEs9PULXqZCqF142q2efq-/exec?idss=1NEJkoXUwilKkq3z9GTuvLvqXGruVi44Eoso_6SDDO1g"
-
-    // sdnratujaya 1
-    // "https://script.google.com/macros/s/AKfycbxnQL4WMBUYJx7IrY8CnKycG1OuzOjaL4IY3f8LM7cuYCcW-Kd_sVcRXA/exec?idss=1f4Rg_uax5Tk6X9Xawo972uDYnll0aHoYGM3NVLrW0rU"
-
-    // elamaso trial
-    // "https://script.google.com/macros/s/AKfycbzbP_PClJ3EE9ZMpTf8Qi15-WjwLJVO8-PByQz8cA7Gdo5CrhuM0x6d/exec?idss=1luZRWd4yuRt3dlnf-DKjPJ5WfP8oby1Mxv-UILU02Wg"
-    //console.log(idskrip);
-
-    // sdn ponter 1
-    // "https://script.google.com/macros/s/AKfycbw4xlfeVjGO_OlRbhE3HZ8BrSFZm62Km4lHboJnGYF1j8E90L3sNMiIQzANVwd7UvoY/exec?idss=19Tw8u4AAp0L3M1-OUSnw215FXeEoR7vqwHOPsMLyFXI"
-
-    // sdn ratujaya 4
-    // "https://script.google.com/macros/s/AKfycbzL3Zhz5dwlcrRpmRXFEjuPGcv7--46qfxVjnQrzpk_dGutYIpXwto30Kz4hP7JYmhN/exec?idss=1-cbpgFt84gd04neni8T_wy2284Cplyl3nS868SUkGhM"
-
-    //sdn utanjaya
-    // "https://script.google.com/macros/s/AKfycbyBvS4ayF8y4FCIibIf__FSMGK2o01zX2zze4H3eDbk3pBjPsr7c5nmEkWJPUsycjkfOA/exec?idss=1RBZyosma-IcsQ4CE8gzMSL4iYZLXhx0g6otCoaer7q8"
-    let htmlopt = "";
-    if (idskrip == 4) {
-        htmlopt += `
-        <option id='sekolah1' value="0">SDN Ratujaya 2</option>
-        <option id='sekolah2' value="1">ELAMASO TRIAL</option>
-        <option id='sekolah3' value="2">SDN Ratujaya 4</option>
-        <option id='sekolah4' value="3">SDN Pondok Terong 1</option>
-        <option id='sekolah5' value="4">SDN Utan Jaya </option>
-        
-        `;
-        urlmaterisekolahlain = [
-            "https://script.google.com/macros/s/AKfycbyecPmGp7oCrNKNUoUwgN9agd11HD60DXqEs9PULXqZCqF142q2efq-/exec?idss=1NEJkoXUwilKkq3z9GTuvLvqXGruVi44Eoso_6SDDO1g",
-            "https://script.google.com/macros/s/AKfycbzbP_PClJ3EE9ZMpTf8Qi15-WjwLJVO8-PByQz8cA7Gdo5CrhuM0x6d/exec?idss=1luZRWd4yuRt3dlnf-DKjPJ5WfP8oby1Mxv-UILU02Wg",
-            "https://script.google.com/macros/s/AKfycbzL3Zhz5dwlcrRpmRXFEjuPGcv7--46qfxVjnQrzpk_dGutYIpXwto30Kz4hP7JYmhN/exec?idss=1-cbpgFt84gd04neni8T_wy2284Cplyl3nS868SUkGhM",
-            "https://script.google.com/macros/s/AKfycbw4xlfeVjGO_OlRbhE3HZ8BrSFZm62Km4lHboJnGYF1j8E90L3sNMiIQzANVwd7UvoY/exec?idss=19Tw8u4AAp0L3M1-OUSnw215FXeEoR7vqwHOPsMLyFXI",
-            "https://script.google.com/macros/s/AKfycbyBvS4ayF8y4FCIibIf__FSMGK2o01zX2zze4H3eDbk3pBjPsr7c5nmEkWJPUsycjkfOA/exec?idss=1RBZyosma-IcsQ4CE8gzMSL4iYZLXhx0g6otCoaer7q8"
-
-        ]
-    } else if (idskrip == 8) {
-        htmlopt += `<option id='sekolah1' value="0" >SDN Ratujaya 1</option>
-        <option id='sekolah2' value="1">ELAMASO TRIAL</option>
-        <option id='sekolah3' value="2">SDN Ratujaya 4</option>
-        <option id='sekolah4' value="3">SDN Pondok Terong 1</option>
-        <option id='sekolah5' value="4">SDN Utan Jaya</option>
-        `
-        urlmaterisekolahlain = [
-            "https://script.google.com/macros/s/AKfycbxnQL4WMBUYJx7IrY8CnKycG1OuzOjaL4IY3f8LM7cuYCcW-Kd_sVcRXA/exec?idss=1f4Rg_uax5Tk6X9Xawo972uDYnll0aHoYGM3NVLrW0rU",
-            "https://script.google.com/macros/s/AKfycbzbP_PClJ3EE9ZMpTf8Qi15-WjwLJVO8-PByQz8cA7Gdo5CrhuM0x6d/exec?idss=1luZRWd4yuRt3dlnf-DKjPJ5WfP8oby1Mxv-UILU02Wg",
-            "https://script.google.com/macros/s/AKfycbzL3Zhz5dwlcrRpmRXFEjuPGcv7--46qfxVjnQrzpk_dGutYIpXwto30Kz4hP7JYmhN/exec?idss=1-cbpgFt84gd04neni8T_wy2284Cplyl3nS868SUkGhM",
-            "https://script.google.com/macros/s/AKfycbw4xlfeVjGO_OlRbhE3HZ8BrSFZm62Km4lHboJnGYF1j8E90L3sNMiIQzANVwd7UvoY/exec?idss=19Tw8u4AAp0L3M1-OUSnw215FXeEoR7vqwHOPsMLyFXI",
-            "https://script.google.com/macros/s/AKfycbyBvS4ayF8y4FCIibIf__FSMGK2o01zX2zze4H3eDbk3pBjPsr7c5nmEkWJPUsycjkfOA/exec?idss=1RBZyosma-IcsQ4CE8gzMSL4iYZLXhx0g6otCoaer7q8"
-        ]
-    } else if (idskrip == 9) {
-        htmlopt += `<option id='sekolah1' value="0" >SDN Ratujaya 1</option>
-        <option id='sekolah2' value="1">SDN Ratujaya 2</option>
-        <option id='sekolah3' value="2">ELAMASO TRIAL</option>
-        <option id='sekolah4' value="3">SDN Pondok Terong 1</option>
-        <option id='sekolah5' value="4">SDN Utan Jaya</option>
-        `;
-        urlmaterisekolahlain = [
-            "https://script.google.com/macros/s/AKfycbxnQL4WMBUYJx7IrY8CnKycG1OuzOjaL4IY3f8LM7cuYCcW-Kd_sVcRXA/exec?idss=1f4Rg_uax5Tk6X9Xawo972uDYnll0aHoYGM3NVLrW0rU",
-            "https://script.google.com/macros/s/AKfycbyecPmGp7oCrNKNUoUwgN9agd11HD60DXqEs9PULXqZCqF142q2efq-/exec?idss=1NEJkoXUwilKkq3z9GTuvLvqXGruVi44Eoso_6SDDO1g",
-            "https://script.google.com/macros/s/AKfycbzbP_PClJ3EE9ZMpTf8Qi15-WjwLJVO8-PByQz8cA7Gdo5CrhuM0x6d/exec?idss=1luZRWd4yuRt3dlnf-DKjPJ5WfP8oby1Mxv-UILU02Wg",
-            "https://script.google.com/macros/s/AKfycbw4xlfeVjGO_OlRbhE3HZ8BrSFZm62Km4lHboJnGYF1j8E90L3sNMiIQzANVwd7UvoY/exec?idss=19Tw8u4AAp0L3M1-OUSnw215FXeEoR7vqwHOPsMLyFXI",
-            "https://script.google.com/macros/s/AKfycbyBvS4ayF8y4FCIibIf__FSMGK2o01zX2zze4H3eDbk3pBjPsr7c5nmEkWJPUsycjkfOA/exec?idss=1RBZyosma-IcsQ4CE8gzMSL4iYZLXhx0g6otCoaer7q8"
-        ]
-    } else if (idskrip == 10) {
-        htmlopt += `<option id='sekolah1' value="0" >SDN Ratujaya 1</option>
-        <option id='sekolah2' value="1">SDN Ratujaya 2</option>
-        <option id='sekolah3' value="2">ELAMASO TRIAL</option>
-        <option id='sekolah4' value="3">SDN Ratujaya 4</option>
-        <option id='sekolah5' value="4">SDN Utan Jaya</option>
-        `;
-        urlmaterisekolahlain = [
-            "https://script.google.com/macros/s/AKfycbxnQL4WMBUYJx7IrY8CnKycG1OuzOjaL4IY3f8LM7cuYCcW-Kd_sVcRXA/exec?idss=1f4Rg_uax5Tk6X9Xawo972uDYnll0aHoYGM3NVLrW0rU",
-            "https://script.google.com/macros/s/AKfycbyecPmGp7oCrNKNUoUwgN9agd11HD60DXqEs9PULXqZCqF142q2efq-/exec?idss=1NEJkoXUwilKkq3z9GTuvLvqXGruVi44Eoso_6SDDO1g",
-            "https://script.google.com/macros/s/AKfycbzbP_PClJ3EE9ZMpTf8Qi15-WjwLJVO8-PByQz8cA7Gdo5CrhuM0x6d/exec?idss=1luZRWd4yuRt3dlnf-DKjPJ5WfP8oby1Mxv-UILU02Wg",
-            "https://script.google.com/macros/s/AKfycbzL3Zhz5dwlcrRpmRXFEjuPGcv7--46qfxVjnQrzpk_dGutYIpXwto30Kz4hP7JYmhN/exec?idss=1-cbpgFt84gd04neni8T_wy2284Cplyl3nS868SUkGhM",
-            "https://script.google.com/macros/s/AKfycbyBvS4ayF8y4FCIibIf__FSMGK2o01zX2zze4H3eDbk3pBjPsr7c5nmEkWJPUsycjkfOA/exec?idss=1RBZyosma-IcsQ4CE8gzMSL4iYZLXhx0g6otCoaer7q8"
-        ]
-
-    } else {
-        htmlopt += `<option id='sekolah1' value="0" >SDN Ratujaya 1</option>
-                       <option id='sekolah2' value="1">SDN Ratujaya 2</option>
-                       <option id='sekolah3' value="2">SDN Ratujaya 4</option>
-                       <option id='sekolah4' value="3">SDN Pondok Terong 1</option>
-                       `
-        urlmaterisekolahlain = [
-            "https://script.google.com/macros/s/AKfycbxnQL4WMBUYJx7IrY8CnKycG1OuzOjaL4IY3f8LM7cuYCcW-Kd_sVcRXA/exec?idss=1f4Rg_uax5Tk6X9Xawo972uDYnll0aHoYGM3NVLrW0rU",
-            "https://script.google.com/macros/s/AKfycbyecPmGp7oCrNKNUoUwgN9agd11HD60DXqEs9PULXqZCqF142q2efq-/exec?idss=1NEJkoXUwilKkq3z9GTuvLvqXGruVi44Eoso_6SDDO1g",
-            "https://script.google.com/macros/s/AKfycbzL3Zhz5dwlcrRpmRXFEjuPGcv7--46qfxVjnQrzpk_dGutYIpXwto30Kz4hP7JYmhN/exec?idss=1-cbpgFt84gd04neni8T_wy2284Cplyl3nS868SUkGhM",
-            "https://script.google.com/macros/s/AKfycbw4xlfeVjGO_OlRbhE3HZ8BrSFZm62Km4lHboJnGYF1j8E90L3sNMiIQzANVwd7UvoY/exec?idss=19Tw8u4AAp0L3M1-OUSnw215FXeEoR7vqwHOPsMLyFXI"
-        ]
-    }
-
-
-    if (valupilih == 0) {
-        alert('Silakan pilih opsi repository');
-        tabel_repository_sendiri.innerHTML = "";
-    } else if (valupilih == 2) {
-        tabel_repository_sendiri.innerHTML = `<h4>Cara membuat Konten Materi</h4><div class='containerbaru w3-center'><iframe class='responsive-iframebaru' src='https://www.youtube.com/embed/Kr--xBecwOI' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe></div>`;
-
-    } else if (valupilih == 1) {
-        tabel_repository_sendiri.innerHTML = `<hr/><select onchange='fn7selectreposistory()' id='pilihanrepositorysekolahlain' class='w3-select w3-yellow w3-hover-khaki' >
-        <option id='sekolah0' value="" selected>Pilih Sekolah</option>
-        ${htmlopt}
-        </select>
-        <div id="tempatrepositorysekolahlain"></div>
-        `
-    } else if (valupilih == 3) {
-        //<a href="https://drive.google.com/uc?id=11ms2DpGpr71ja5ScL7eVbPnF4dUXANY0&amp;export=download" target="_blank"> DOWNLOAD FILE DI SINI </a>
-        tabel_repository_sendiri.innerHTML = `
-        <hr>Tabel berikut ini adalah file unggah untuk mengisi data KKM dan KD. Silakan unduh kemudian upload pada menu KURIKULUM tab UPLOAD KURIKULUM di tombol UNGGAH FILE FORMAT
-        <table class='versi-table'>
-            <tr>
-                <th>Jenjang</th>
-                <th>Aksi</th>
-            </tr>
-            <tr>
-                <td> Kelas 1 </td>
-                <td><button class='w3-button w3-blue'><a href='https://drive.google.com/uc?id=1OiOKNuU_KOLS5Osg8j9sPnaq7SsE7DI8&export=download' target='_blank'> UNDUH Kelas 1</a></button></td>
-            </tr>
-            <tr>
-                <td> Kelas 2 </td>
-                <td><button class='w3-button w3-blue'><a href='https://drive.google.com/uc?id=1LuSF4YRgNP1AXMxCfWUdzqw2dyk0L655&export=download' target='_blank'> UNDUH Kelas 2</a></button></td>
-            </tr>
-            <tr>
-                <td> Kelas 3 </td>
-                <td><button class='w3-button w3-blue'><a href='https://drive.google.com/uc?id=1QTa6pklrukQzuhurJU5AQGWDqautNQzO&export=download' target='_blank'> UNDUH Kelas 3</a></button></td>
-            </tr>
-             <tr>
-                <td> Kelas 4 </td>
-                <td><button class='w3-button w3-blue'><a href='https://drive.google.com/uc?id=18-vYgLHb6CgSzmGsB2oloTbd3mH6-TvT&export=download' target='_blank'> UNDUH Kelas 4</a></button></td>
-            </tr>
-            <tr>
-                <td> Kelas 5 </td>
-                <td><button class='w3-button w3-blue'><a href='https://drive.google.com/uc?id=1mW1ag1e1V_DmhtO15xcSD7jH3o2N92SX&export=download' target='_blank'> UNDUH Kelas 5</a></button></td>
-            </tr>
-            <tr>
-                <td> Kelas 6 </td>
-                <td><button class='w3-button w3-blue'><a href='https://drive.google.com/uc?id=1xjM7DsTJCgN6DAqfblk0mi0sjcgvkPji&export=download' target='_blank'> UNDUH Kelas 6</a></button></td>
-            </tr>
-        </table>
-        Keterangan:<br>
-        <ul>
-            <li>Silakan pilih salah satu file KKM dan KD di atas, lalu Unduh.  Kemudian file diunggah.
-            </li><li>Sangat tidak disarankan Anda mengedit langsung dari filenya. Sebab akan mempengaruhi proses rekap nilai Raport
-            </li><li>Anda boleh mengeditnya (jika berbeda dengan repository dari Tim Elamaso di Menu UPLOAD KURIKULUM. Di sana tabel KKM dan KD bisa diedit secara manual
-            </li><li>Data Indikator pada file-file di tabel di atas adalah data indikator yang telah disusun oleh Tim ELamaso sesuai dengan PERMENDIKBUD No. 37 Tahun 2018
-            </li>
-        </ul>
-        `;
-    }
-
-};
-const pilihrepositorymapel = () => {
-    //alert("Maaf, fitur belum tersedia dipindah");
-    let x = document.getElementById("sumber_repository").selectedIndex;
-    let y = document.getElementById("sumber_repository").options;
-    let valupilih = y[x].value;
-    let idskrip = jlo.id;
-    //sdnratujaya 2 
-    //"https://script.google.com/macros/s/AKfycbyecPmGp7oCrNKNUoUwgN9agd11HD60DXqEs9PULXqZCqF142q2efq-/exec?idss=1NEJkoXUwilKkq3z9GTuvLvqXGruVi44Eoso_6SDDO1g"
-
-    // sdnratujaya 1
-    // "https://script.google.com/macros/s/AKfycbxnQL4WMBUYJx7IrY8CnKycG1OuzOjaL4IY3f8LM7cuYCcW-Kd_sVcRXA/exec?idss=1f4Rg_uax5Tk6X9Xawo972uDYnll0aHoYGM3NVLrW0rU"
-
-    // elamaso trial
-    // "https://script.google.com/macros/s/AKfycbzbP_PClJ3EE9ZMpTf8Qi15-WjwLJVO8-PByQz8cA7Gdo5CrhuM0x6d/exec?idss=1luZRWd4yuRt3dlnf-DKjPJ5WfP8oby1Mxv-UILU02Wg"
-    //console.log(idskrip);
-
-    // sdn ponter 1
-    // "https://script.google.com/macros/s/AKfycbw4xlfeVjGO_OlRbhE3HZ8BrSFZm62Km4lHboJnGYF1j8E90L3sNMiIQzANVwd7UvoY/exec?idss=19Tw8u4AAp0L3M1-OUSnw215FXeEoR7vqwHOPsMLyFXI"
-
-    // sdn ratujaya 4
-    // "https://script.google.com/macros/s/AKfycbzL3Zhz5dwlcrRpmRXFEjuPGcv7--46qfxVjnQrzpk_dGutYIpXwto30Kz4hP7JYmhN/exec?idss=1-cbpgFt84gd04neni8T_wy2284Cplyl3nS868SUkGhM"
-
-    //sdn utanjaya
-    // "https://script.google.com/macros/s/AKfycbyBvS4ayF8y4FCIibIf__FSMGK2o01zX2zze4H3eDbk3pBjPsr7c5nmEkWJPUsycjkfOA/exec?idss=1RBZyosma-IcsQ4CE8gzMSL4iYZLXhx0g6otCoaer7q8"
-    let htmlopt = "";
-    if (idskrip == 4) {
-        htmlopt += `
-        <option id='sekolah1' value="0">SDN Ratujaya 2</option>
-        <option id='sekolah2' value="1">ELAMASO TRIAL</option>
-        <option id='sekolah3' value="2">SDN Ratujaya 4</option>
-        <option id='sekolah4' value="3">SDN Pondok Terong 1</option>
-        <option id='sekolah5' value="4">SDN Utan Jaya </option>
-        
-        `;
-        urlmaterisekolahlain = [
-            "https://script.google.com/macros/s/AKfycbyecPmGp7oCrNKNUoUwgN9agd11HD60DXqEs9PULXqZCqF142q2efq-/exec?idss=1NEJkoXUwilKkq3z9GTuvLvqXGruVi44Eoso_6SDDO1g",
-            "https://script.google.com/macros/s/AKfycbzbP_PClJ3EE9ZMpTf8Qi15-WjwLJVO8-PByQz8cA7Gdo5CrhuM0x6d/exec?idss=1luZRWd4yuRt3dlnf-DKjPJ5WfP8oby1Mxv-UILU02Wg",
-            "https://script.google.com/macros/s/AKfycbzL3Zhz5dwlcrRpmRXFEjuPGcv7--46qfxVjnQrzpk_dGutYIpXwto30Kz4hP7JYmhN/exec?idss=1-cbpgFt84gd04neni8T_wy2284Cplyl3nS868SUkGhM",
-            "https://script.google.com/macros/s/AKfycbw4xlfeVjGO_OlRbhE3HZ8BrSFZm62Km4lHboJnGYF1j8E90L3sNMiIQzANVwd7UvoY/exec?idss=19Tw8u4AAp0L3M1-OUSnw215FXeEoR7vqwHOPsMLyFXI",
-            "https://script.google.com/macros/s/AKfycbyBvS4ayF8y4FCIibIf__FSMGK2o01zX2zze4H3eDbk3pBjPsr7c5nmEkWJPUsycjkfOA/exec?idss=1RBZyosma-IcsQ4CE8gzMSL4iYZLXhx0g6otCoaer7q8"
-
-        ]
-    } else if (idskrip == 8) {
-        htmlopt += `<option id='sekolah1' value="0" >SDN Ratujaya 1</option>
-        <option id='sekolah2' value="1">ELAMASO TRIAL</option>
-        <option id='sekolah3' value="2">SDN Ratujaya 4</option>
-        <option id='sekolah4' value="3">SDN Pondok Terong 1</option>
-        <option id='sekolah5' value="4">SDN Utan Jaya</option>
-        `
-        urlmaterisekolahlain = [
-            "https://script.google.com/macros/s/AKfycbxnQL4WMBUYJx7IrY8CnKycG1OuzOjaL4IY3f8LM7cuYCcW-Kd_sVcRXA/exec?idss=1f4Rg_uax5Tk6X9Xawo972uDYnll0aHoYGM3NVLrW0rU",
-            "https://script.google.com/macros/s/AKfycbzbP_PClJ3EE9ZMpTf8Qi15-WjwLJVO8-PByQz8cA7Gdo5CrhuM0x6d/exec?idss=1luZRWd4yuRt3dlnf-DKjPJ5WfP8oby1Mxv-UILU02Wg",
-            "https://script.google.com/macros/s/AKfycbzL3Zhz5dwlcrRpmRXFEjuPGcv7--46qfxVjnQrzpk_dGutYIpXwto30Kz4hP7JYmhN/exec?idss=1-cbpgFt84gd04neni8T_wy2284Cplyl3nS868SUkGhM",
-            "https://script.google.com/macros/s/AKfycbw4xlfeVjGO_OlRbhE3HZ8BrSFZm62Km4lHboJnGYF1j8E90L3sNMiIQzANVwd7UvoY/exec?idss=19Tw8u4AAp0L3M1-OUSnw215FXeEoR7vqwHOPsMLyFXI",
-            "https://script.google.com/macros/s/AKfycbyBvS4ayF8y4FCIibIf__FSMGK2o01zX2zze4H3eDbk3pBjPsr7c5nmEkWJPUsycjkfOA/exec?idss=1RBZyosma-IcsQ4CE8gzMSL4iYZLXhx0g6otCoaer7q8"
-        ]
-    } else if (idskrip == 9) {
-        htmlopt += `<option id='sekolah1' value="0" >SDN Ratujaya 1</option>
-        <option id='sekolah2' value="1">SDN Ratujaya 2</option>
-        <option id='sekolah3' value="2">ELAMASO TRIAL</option>
-        <option id='sekolah4' value="3">SDN Pondok Terong 1</option>
-        <option id='sekolah5' value="4">SDN Utan Jaya</option>
-        `;
-        urlmaterisekolahlain = [
-            "https://script.google.com/macros/s/AKfycbxnQL4WMBUYJx7IrY8CnKycG1OuzOjaL4IY3f8LM7cuYCcW-Kd_sVcRXA/exec?idss=1f4Rg_uax5Tk6X9Xawo972uDYnll0aHoYGM3NVLrW0rU",
-            "https://script.google.com/macros/s/AKfycbyecPmGp7oCrNKNUoUwgN9agd11HD60DXqEs9PULXqZCqF142q2efq-/exec?idss=1NEJkoXUwilKkq3z9GTuvLvqXGruVi44Eoso_6SDDO1g",
-            "https://script.google.com/macros/s/AKfycbzbP_PClJ3EE9ZMpTf8Qi15-WjwLJVO8-PByQz8cA7Gdo5CrhuM0x6d/exec?idss=1luZRWd4yuRt3dlnf-DKjPJ5WfP8oby1Mxv-UILU02Wg",
-            "https://script.google.com/macros/s/AKfycbw4xlfeVjGO_OlRbhE3HZ8BrSFZm62Km4lHboJnGYF1j8E90L3sNMiIQzANVwd7UvoY/exec?idss=19Tw8u4AAp0L3M1-OUSnw215FXeEoR7vqwHOPsMLyFXI",
-            "https://script.google.com/macros/s/AKfycbyBvS4ayF8y4FCIibIf__FSMGK2o01zX2zze4H3eDbk3pBjPsr7c5nmEkWJPUsycjkfOA/exec?idss=1RBZyosma-IcsQ4CE8gzMSL4iYZLXhx0g6otCoaer7q8"
-        ]
-    } else if (idskrip == 10) {
-        htmlopt += `<option id='sekolah1' value="0" >SDN Ratujaya 1</option>
-        <option id='sekolah2' value="1">SDN Ratujaya 2</option>
-        <option id='sekolah3' value="2">ELAMASO TRIAL</option>
-        <option id='sekolah4' value="3">SDN Ratujaya 4</option>
-        <option id='sekolah5' value="4">SDN Utan Jaya</option>
-        `;
-        urlmaterisekolahlain = [
-            "https://script.google.com/macros/s/AKfycbxnQL4WMBUYJx7IrY8CnKycG1OuzOjaL4IY3f8LM7cuYCcW-Kd_sVcRXA/exec?idss=1f4Rg_uax5Tk6X9Xawo972uDYnll0aHoYGM3NVLrW0rU",
-            "https://script.google.com/macros/s/AKfycbyecPmGp7oCrNKNUoUwgN9agd11HD60DXqEs9PULXqZCqF142q2efq-/exec?idss=1NEJkoXUwilKkq3z9GTuvLvqXGruVi44Eoso_6SDDO1g",
-            "https://script.google.com/macros/s/AKfycbzbP_PClJ3EE9ZMpTf8Qi15-WjwLJVO8-PByQz8cA7Gdo5CrhuM0x6d/exec?idss=1luZRWd4yuRt3dlnf-DKjPJ5WfP8oby1Mxv-UILU02Wg",
-            "https://script.google.com/macros/s/AKfycbzL3Zhz5dwlcrRpmRXFEjuPGcv7--46qfxVjnQrzpk_dGutYIpXwto30Kz4hP7JYmhN/exec?idss=1-cbpgFt84gd04neni8T_wy2284Cplyl3nS868SUkGhM",
-            "https://script.google.com/macros/s/AKfycbyBvS4ayF8y4FCIibIf__FSMGK2o01zX2zze4H3eDbk3pBjPsr7c5nmEkWJPUsycjkfOA/exec?idss=1RBZyosma-IcsQ4CE8gzMSL4iYZLXhx0g6otCoaer7q8"
-        ]
-
-    } else {
-        htmlopt += `<option id='sekolah1' value="0" >SDN Ratujaya 1</option>
-                       <option id='sekolah2' value="1">SDN Ratujaya 2</option>
-                       <option id='sekolah3' value="2">SDN Ratujaya 4</option>
-                       <option id='sekolah4' value="3">SDN Pondok Terong 1</option>
-                       `
-        urlmaterisekolahlain = [
-            "https://script.google.com/macros/s/AKfycbxnQL4WMBUYJx7IrY8CnKycG1OuzOjaL4IY3f8LM7cuYCcW-Kd_sVcRXA/exec?idss=1f4Rg_uax5Tk6X9Xawo972uDYnll0aHoYGM3NVLrW0rU",
-            "https://script.google.com/macros/s/AKfycbyecPmGp7oCrNKNUoUwgN9agd11HD60DXqEs9PULXqZCqF142q2efq-/exec?idss=1NEJkoXUwilKkq3z9GTuvLvqXGruVi44Eoso_6SDDO1g",
-            "https://script.google.com/macros/s/AKfycbzL3Zhz5dwlcrRpmRXFEjuPGcv7--46qfxVjnQrzpk_dGutYIpXwto30Kz4hP7JYmhN/exec?idss=1-cbpgFt84gd04neni8T_wy2284Cplyl3nS868SUkGhM",
-            "https://script.google.com/macros/s/AKfycbw4xlfeVjGO_OlRbhE3HZ8BrSFZm62Km4lHboJnGYF1j8E90L3sNMiIQzANVwd7UvoY/exec?idss=19Tw8u4AAp0L3M1-OUSnw215FXeEoR7vqwHOPsMLyFXI"
-        ]
-    }
-
-    if (valupilih == 0) {
-        alert('Silakan pilih opsi repository');
-        tabel_repository_sendiri.innerHTML = "";
-    } else if (valupilih == 2) {
-        tabel_repository_sendiri.innerHTML = `<h4>Cara membuat Konten Materi</h4><div class='containerbaru w3-center'><iframe class='responsive-iframebaru' src='https://www.youtube.com/embed/Kr--xBecwOI' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe></div>`;
-
-    } else if (valupilih == 1) {
-        tabel_repository_sendiri.innerHTML = `<hr/><select onchange='fn7selectreposistorymapel()' id='pilihanrepositorysekolahlain' class='w3-select w3-blue w3-hover-khaki' >
-        <option id='sekolah0' value="" selected>Pilih Sekolah</option>
-        ${htmlopt}
-        </select>
-        <div id="tempatrepositorysekolahlain"></div>
-        `;
-    } else if (valupilih == 3) {
-        //<a href="https://drive.google.com/uc?id=11ms2DpGpr71ja5ScL7eVbPnF4dUXANY0&amp;export=download" target="_blank"> DOWNLOAD FILE DI SINI </a>
-        tabel_repository_sendiri.innerHTML = `
-        <hr>Tabel berikut ini adalah file unggah untuk mengisi data KKM dan KD. Silakan unduh kemudian upload pada menu KURIKULUM tab UPLOAD KURIKULUM di tombol UNGGAH FILE FORMAT
-        <table class='versi-table'>
-            <tr>
-                <th>Jenjang</th>
-                <th>Aksi</th>
-            </tr>
-            <tr>
-                <td> Kelas 1 </td>
-                <td><button class='w3-button w3-blue'><a href='https://drive.google.com/uc?id=1OiOKNuU_KOLS5Osg8j9sPnaq7SsE7DI8&export=download' target='_blank'> UNDUH Kelas 1</a></button></td>
-            </tr>
-            <tr>
-                <td> Kelas 2 </td>
-                <td><button class='w3-button w3-blue'><a href='https://drive.google.com/uc?id=1LuSF4YRgNP1AXMxCfWUdzqw2dyk0L655&export=download' target='_blank'> UNDUH Kelas 2</a></button></td>
-            </tr>
-            <tr>
-                <td> Kelas 3 </td>
-                <td><button class='w3-button w3-blue'><a href='https://drive.google.com/uc?id=1QTa6pklrukQzuhurJU5AQGWDqautNQzO&export=download' target='_blank'> UNDUH Kelas 3</a></button></td>
-            </tr>
-             <tr>
-                <td> Kelas 4 </td>
-                <td><button class='w3-button w3-blue'><a href='https://drive.google.com/uc?id=18-vYgLHb6CgSzmGsB2oloTbd3mH6-TvT&export=download' target='_blank'> UNDUH Kelas 4</a></button></td>
-            </tr>
-            <tr>
-                <td> Kelas 5 </td>
-                <td><button class='w3-button w3-blue'><a href='https://drive.google.com/uc?id=1mW1ag1e1V_DmhtO15xcSD7jH3o2N92SX&export=download' target='_blank'> UNDUH Kelas 5</a></button></td>
-            </tr>
-            <tr>
-                <td> Kelas 6 </td>
-                <td><button class='w3-button w3-blue'><a href='https://drive.google.com/uc?id=1xjM7DsTJCgN6DAqfblk0mi0sjcgvkPji&export=download' target='_blank'> UNDUH Kelas 6</a></button></td>
-            </tr>
-        </table>
-        Keterangan:<br>
-        <ul>
-            <li>Silakan pilih salah satu file KKM dan KD di atas, lalu Unduh.  Kemudian file diunggah.
-            </li><li>Sangat tidak disarankan Anda mengedit langsung dari filenya. Sebab akan mempengaruhi proses rekap nilai Raport
-            </li><li>Anda boleh mengeditnya (jika berbeda dengan repository dari Tim Elamaso di Menu UPLOAD KURIKULUM. Di sana tabel KKM dan KD bisa diedit secara manual
-            </li><li>Data Indikator pada file-file di tabel di atas adalah data indikator yang telah disusun oleh Tim ELamaso sesuai dengan PERMENDIKBUD No. 37 Tahun 2018
-            </li>
-        </ul>
-        `;
-    }
-
-};
 const fn7selectreposistory = () => {
     let x = document.getElementById("pilihanrepositorysekolahlain").selectedIndex;
     let y = document.getElementById("pilihanrepositorysekolahlain").options;
@@ -1016,8 +699,14 @@ const fn7jadikankontenbarudarisekolahlain = (id, indeksekolah) => {
 };
 
 btnfn7cekpreview.addEventListener("click", function () {
-    pratinjaubuatmateri();
+    //pratinjaubuatmateri();
+    let div = document.getElementById("prev_dragable")
+    div.style.display = "block";
+    let y = div.offsetTop - 45;
+    window.scrollTo({ top: y, behavior: 'smooth' });
+
 });
+dragElement(document.getElementById("prev_dragable"));
 let btnfn7petunjukuploadmateri = document.querySelector(".fn7petunjukuploadmateri");
 btnfn7petunjukuploadmateri.addEventListener("click", function () {
     petunjukuploadmateri();
@@ -1255,7 +944,8 @@ btnfn7video.addEventListener("click", function () {
     daftarvideo();
 });
 function barufindkuncipgkd(teks) {
-    let findPG = teks.match(/^_PG_\d{1,2}\s|^_OPSI-PG_\d{1,2}[A-D]\s|^_OPSI-PG-C_\d+[A-D]\s|^_OPSI-SEL_\d{1,2}[A-D]\s|^_ESSAY-NO_\d{1,2}\s/gm);
+    // let findPG = teks.match(/^_PG_\d{1,2}\s|^_OPSI-PG_\d{1,2}[A-D]\s|^_OPSI-PG-C_\d+[A-D]\s|^_OPSI-SEL_\d{1,2}[A-D]\s|^_ESSAY-NO_\d{1,2}\s/gm);
+    let findPG = teks.match(/^_PG_\d+\s|^_OPSI-PG_\d+[A-D]\s|^_OPSI-PG-C_\d+[A-D]\s|^_OPSI-SEL_\d+[A-D]\s|^_ESSAY-NO_\d+\s/gm);
     let textarea = document.getElementById("idmateri");
     // <div id="divbantu_kuncijawaban"></div>
     // <div id="divbantu_sebarankd"></div>
@@ -1268,11 +958,12 @@ function barufindkuncipgkd(teks) {
     divradiopg.innerHTML = "";
 
     if (findPG !== null) {
-        let cekcariopsi = teks.match(/^_OPSI-PG_\d{1,2}[A-D]\s|^_OPSI-PG-C_\d+[A-D]\s|^_OPSI-SEL_\d{1,2}[A-D]\s/gm);
+        let cekcariopsi = teks.match(/^_OPSI-PG_\d+[A-D]\s|^_OPSI-PG-C_\d+[A-D]\s|^_OPSI-SEL_\d+[A-D]\s/gm);
 
 
         let tanpaspasi = findPG.map(s => s.replace(/\s|\t/g, ""));
         let opsinya = (cekcariopsi == null) ? [] : cekcariopsi.map(s => s.replace(/\s|\t/g, ""));
+
 
 
         valueeditormateri = {};
@@ -1283,7 +974,8 @@ function barufindkuncipgkd(teks) {
 
         let koleksiEl_PG = tanpaspasi.filter(s => s.indexOf("_PG_") > -1); //.map(m=> m.replace("_PG_"));
         let koleksino_PG = tanpaspasi.filter(s => s.indexOf("_PG_") > -1).map(m => parseInt(m.replace("_PG_", "")));
-        let koleksiopsi_PG = opsinya.map(s => s.replace("_OPSI-PG_", "") || s.replace("_OPSI-PG-C_", "") || s.replace("_OPSI-SEL_", "")); //.map(m => m.match(/\d[A-D]/g)[0]);
+        // let koleksiopsi_PG = opsinya.map(s => s.replace("_OPSI-PG_", "") || s.replace("_OPSI-PG-C_", "") || s.replace("_OPSI-SEL_", "")); //.map(m => m.match(/\d[A-D]/g)[0]);
+        let koleksiopsi_PG = opsinya.map(s => s.match(/\d+[A-D]/)[0])
 
         valueeditormateri["koleksi_el_pg"] = koleksiEl_PG; // "_SEMUA KODE_"
         valueeditormateri["koleksi_no_pg"] = koleksino_PG; // 
@@ -1296,7 +988,8 @@ function barufindkuncipgkd(teks) {
         let PG = [];
         for (i = 0; i < koleksino_PG.length; i++) {
             let cocokkan = koleksino_PG[i];
-            let pattern = cocokkan
+            let pattern = cocokkan;
+
             let nopg = koleksiopsi_PG.filter(s => (s == cocokkan + "A" || s == cocokkan + "B" || s == cocokkan + "C" || s == cocokkan + "D"));
             let obj = {};
             obj["nosoal"] = koleksino_PG[i];
@@ -1330,17 +1023,29 @@ function barufindkuncipgkd(teks) {
         let nolelemen = cekduplikat.length;
         let nolnomorsoal = koleksi_nosoal_duplikat.length;
         let nolopsipg = pg_duplikat.length;
+
         if (nolelemen > 0 || nolnomorsoal > 0 || nolopsipg > 0) {
-            html = "Terdapat elemen yang duplikat:"
+            html = "Maaf, Ada kode/tag yang salah:"
             if (nolelemen > 0) {
-                html += "<br/><br/>Terdapat Kode ELemen yang dupplikat yaitu " + nolelemen.join(", ");
+                html += "<br/><br/>Terdapat Kode ELemen yang dupplikat yaitu ";
+                for (i = 0; i < cekduplikat.length; i++) {
+                    html += "<b>" + cekduplikat[i] + "</b>, ";
+                }
+                html += "<br/><br/>";
             }
             if (nolnomorsoal > 0) {
-                html += "<br/><br/>Terdapat Kode Nomor Soal yang sama. yaitu " + nolnomorsoal.join(", ");
+                html += "<br/><br/>Terdapat Kode Nomor Soal yang sama. yaitu ";
+                for (i = 0; i < koleksi_nosoal_duplikat.length; i++) {
+                    html += "<b>" + koleksi_nosoal_duplikat[i] + "</b>, ";
+                }
+                html += "<br/>";
                 html += "<br/>Jika nomor soal yang sama tersebut adalah PG dan Essay, utamakan penomoran soal essay melanjutkan dari nomor soal PG sebelumnya";
             }
             if (nolopsipg > 0) {
-                html += "<br/><br/>Terdapat opsi PG yang sama. yaitu " + nolopsipg.join(", ");
+                html += "<br/><br/>Terdapat opsi PG yang sama. yaitu ";
+                for (i = 0; i < pg_duplikat.length; i++) {
+                    html += "<b>" + pg_duplikat[i] + "</b>, ";
+                }
 
             }
 
@@ -1513,13 +1218,14 @@ function barufindkuncipgkd(teks) {
         <table class="w3-table-all tabelpilihkuncipg">
            
         </table>`;
-        let html2 = `SEBARAN KD TIDAK TERDETEKSI (Sebaran KD Wajib diisi)*
+        let html2 = `SEBARAN KD TIDAK TERDETEKSI (Sebaran KD Wajib diisi) Silakan gunakan fitur ini: <label for="modal_generate_sebarankd" class="w3-button warnaeka w3-border-bottom w3-border-black w3-round-large">Generate Sebaran KD</label>*
         `
         div.innerHTML = html;
         divekd.innerHTML = html2;
     }
     // let cariopsi =(cekcariopsi !== null)?[]:cekcariopsi; 
-    //console.log(cekcariopsi);
+    //console.log(cekkcariopsi)k;
+
 }
 eidmateri.addEventListener("keyup", function (e) {
     let teks = e.target.value;
@@ -1530,6 +1236,7 @@ eidmateri.addEventListener("keyup", function (e) {
         barufindkuncipgkd(teks);
 
     }
+    pratinjaubuatmateri();
 
 });
 function generaterasebarankd() {
@@ -1760,6 +1467,7 @@ function fn_mbs_simpansebarankd() {
     } else {
         teksarea.value = teksarea.value.replace(cari, arr);
     }
+    alert("Sebaran KD Berhasil Tersimpan.")
 
 };
 
@@ -8556,13 +8264,7 @@ const uplvideomateri = async () => {
             resultuploadvideomateri.innerHTML = `<br><button class="w3-button w3-tiny w3-block w3-round-xlarge w3-dark-grey" onclick="kopipaste('kodegambarjson')">Copy Kode</button>`;
             //tempattextarea.innerHTML = "";
             tempattextarea.appendChild(txtarea)
-            //cell = row.insertCell(-1);
-            //cell.innerHTML = j.records[i].keterangan;
 
-
-            // document.getElementById("tabelkoleksigambarmateri").appendChild(tabelmateri)
-            //document.getElementById("tabelkoleksigambarmateri").appendChild()
-            //daftarGambar()
             let tb = document.getElementById("tabeltabelkoleksiuploadvideo");//.appendChild(txtarea)
             let tr = tb.insertRow(-1);
             let sel = tr.insertCell(-1);
@@ -8947,7 +8649,7 @@ const kopipaste = (id) => {
     resultuploadpotomateri.innerHTML = "";
 }
 const pratinjaubuatmateri = () => {
-    prevhp.style.display = "block";
+    //prevhp.style.display = "block";
     let idtextarea = document.formuploadmateri.idmateri;
 
     var copyText = document.formuploadmateri.idmateri; //document.querySelector(id);//document.getElementById(id);
@@ -9000,6 +8702,7 @@ const pratinjaubuatmateri = () => {
         document.formuploadmateri.idSekolah.value = idNamaSekolah;
         document.formuploadmateri.dibuatoleh.value = namauser;
         //brkline(json).teks
+
 
     }
 }
@@ -9063,47 +8766,58 @@ const daftarGambar = async () => {
     await fetch(linkmateri + "&action=koleksigambar")
         .then(m => m.json())
         .then(j => {
-            // console.log(j)
-            // console.log(j.records)
-            // let datasheet = j.records;
-            let tabelmateri = document.createElement("table");
-            tabelmateri.setAttribute("class", "versi-table w3-card-4 w3-center");
-            tabelmateri.setAttribute("id", "tabeltabelkoleksiuploadgambar");
-            let row = tabelmateri.insertRow(0);
-            let cell = row.insertCell(-1);
-            cell.innerHTML = "No";
-            cell = row.insertCell(-1);
-            cell.innerHTML = "Preview";
-            cell = row.insertCell(-1);
-            cell.innerHTML = "Tombol Copy";
-
-            cell = row.insertCell(-1);
-            cell.innerHTML = "Keterangan";
-
-
-
-            for (let i = 0; i < j.records.length; i++) {
-                row = tabelmateri.insertRow(-1);
-                cell = row.insertCell(-1);
-                cell.innerHTML = i + 1;
-                cell = row.insertCell(-1);
-                cell.innerHTML = j.records[i].htmlgambar;
-                cell = row.insertCell(-1);
-
-
+            let html = `<div class="w3-row">`;
+            for (let i = j.records.length - 1; i >= 0; i--) {
+                html += `<div class="w3-col l2 w3-border  w3-center">
+                ${j.records[i].htmlgambar.replace("img src", "img class='up_gam_mat' onclick='klikpotosiswa(this)' src")}
+                <br/><sub>${j.records[i].keterangan}</sub><br/>
+                <button class="w3-button w3-tiny w3-round-xlarge w3-green" onclick="kopipaste('kodegambar${i}')">Copy Kode</button>
+                </div>`;
                 let txtarea = document.createElement("textarea");
                 txtarea.setAttribute("id", "kodegambar" + i)
                 txtarea.value = j.records[i].htmlgambar;
                 txtarea.setAttribute("style", "width:30%");
                 // cell.appendChild(txtarea);
-                cell.innerHTML = `<button class="w3-button w3-tiny w3-round-xlarge w3-green" onclick="kopipaste('kodegambar${i}')">Copy Kode</button>`;
+                //cell.innerHTML = `<button class="w3-button w3-tiny w3-round-xlarge w3-green" onclick="kopipaste('kodegambar${i}')">Copy Kode</button>`;
 
                 tempattextarea.appendChild(txtarea)
-                cell = row.insertCell(-1);
-                cell.innerHTML = j.records[i].keterangan;
             }
+
+            html += `</div>`;
+            // let tabelmateri = document.createElement("table");
+            // tabelmateri.setAttribute("class", "versi-table w3-card-4 w3-center");
+            // tabelmateri.setAttribute("id", "tabeltabelkoleksiuploadgambar");
+            // let row = tabelmateri.insertRow(0);
+            // let cell = row.insertCell(-1);
+            // cell.innerHTML = "No";
+            // cell = row.insertCell(-1);
+            // cell.innerHTML = "Preview";
+            // cell = row.insertCell(-1);
+            // cell.innerHTML = "Tombol Copy";
+            // cell = row.insertCell(-1);
+            // cell.innerHTML = "Keterangan";
+            // for (let i = j.records.length - 1; i >= 0; i--) {
+            //     row = tabelmateri.insertRow(-1);
+            //     cell = row.insertCell(-1);
+            //     cell.innerHTML = i + 1;
+            //     cell = row.insertCell(-1);
+            //     cell.innerHTML = j.records[i].htmlgambar;
+            //     cell = row.insertCell(-1);
+
+
+            //     let txtarea = document.createElement("textarea");
+            //     txtarea.setAttribute("id", "kodegambar" + i)
+            //     txtarea.value = j.records[i].htmlgambar;
+            //     txtarea.setAttribute("style", "width:30%");
+            //     // cell.appendChild(txtarea);
+            //     cell.innerHTML = `<button class="w3-button w3-tiny w3-round-xlarge w3-green" onclick="kopipaste('kodegambar${i}')">Copy Kode</button>`;
+
+            //     tempattextarea.appendChild(txtarea)
+            //     cell = row.insertCell(-1);
+            //     cell.innerHTML = j.records[i].keterangan;
+            // }
             document.getElementById("tabelkoleksigambarmateri").innerHTML = "";
-            document.getElementById("tabelkoleksigambarmateri").appendChild(tabelmateri)
+            document.getElementById("tabelkoleksigambarmateri").innerHTML = html;
 
         })
     //console.log(linkmateri)
@@ -9225,17 +8939,17 @@ const uplgmbrmateri = async () => {
 
             // document.getElementById("tabelkoleksigambarmateri").appendChild(tabelmateri)
             //document.getElementById("tabelkoleksigambarmateri").appendChild()
-            //daftarGambar()
-            let tb = document.getElementById("tabeltabelkoleksiuploadgambar"); //.appendChild(txtarea)
-            let tr = tb.insertRow(-1);
-            let sel = tr.insertCell(-1);
-            sel.innerHTML = "NEW";
-            sel = tr.insertCell(-1);
-            sel.innerHTML = k.result;
-            sel = tr.insertCell(-1);
-            sel.innerHTML = `<button class="w3-button w3-tiny w3-round-xlarge w3-green" onclick="kopipaste('kodegambarjson')">Copy Kode</button>`;
-            sel = tr.insertCell(-1);
-            sel.innerHTML = `Terbaru`;
+            daftarGambar()
+            // let tb = document.getElementById("tabeltabelkoleksiuploadgambar"); //.appendChild(txtarea)
+            // let tr = tb.insertRow(-1);
+            // let sel = tr.insertCell(-1);
+            // sel.innerHTML = "NEW";
+            // sel = tr.insertCell(-1);
+            // sel.innerHTML = k.result;
+            // sel = tr.insertCell(-1);
+            // sel.innerHTML = `<button class="w3-button w3-tiny w3-round-xlarge w3-green" onclick="kopipaste('kodegambarjson')">Copy Kode</button>`;
+            // sel = tr.insertCell(-1);
+            // sel.innerHTML = `Terbaru`;
 
 
 
@@ -12279,3 +11993,69 @@ function uploadpotoessay(idpar) {
 
 };
 
+const infoupdate = () => {
+    loadingljk.style.display = "block";
+    fetch("/statis/update.json").then(m => m.json())
+        .then(k => {
+            // console.log(k.data);
+
+            let html = "<h3 class='w3-center'>Perbaikan beberapa versi </h3><ul class='w3-ul'>";
+            for (let i = 0; i < k.length; k++) {
+                html = `<li>Nama Versi ${k[i].namaversi} (Update ${k[i].tanggal})
+                <br/><ul style="type-list-style:decimal">`;
+                let ket = k[i].ket;
+                for (j = 0; j < ket.length; j++) {
+                    html += `<li>${ket[j]}</li>`
+                }
+
+                html += `</ul></li>`
+            };
+            html += "</ul>"
+            infoloadingljk.innerHTML = html;
+        })
+        .catch(er => {
+            console.log(er);
+
+        })
+}
+
+function dragElement(elmnt) {
+    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    if (document.getElementById(elmnt.id + "header")) {
+        /* if present, the header is where you move the DIV from:*/
+        document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+    } else {
+        /* otherwise, move the DIV from anywhere inside the DIV:*/
+        elmnt.onmousedown = dragMouseDown;
+    }
+
+    function dragMouseDown(e) {
+        e = e || window.event;
+        e.preventDefault();
+        // get the mouse cursor position at startup:
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        document.onmouseup = closeDragElement;
+        // call a function whenever the cursor moves:
+        document.onmousemove = elementDrag;
+    }
+
+    function elementDrag(e) {
+        e = e || window.event;
+        e.preventDefault();
+        // calculate the new cursor position:
+        pos1 = pos3 - e.clientX;
+        pos2 = pos4 - e.clientY;
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        // set the element's new position:
+        elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+        elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+    }
+
+    function closeDragElement() {
+        /* stop moving when mouse button is released:*/
+        document.onmouseup = null;
+        document.onmousemove = null;
+    }
+}

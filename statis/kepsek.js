@@ -2690,3 +2690,1770 @@ const printdataakreditasi = (butir) => {
     window.frames["iframeprint"].print();
 
 }
+
+////////////////// source KEPSEK UMUM.JS
+
+function tanggalfull(tgl) {
+    var d = new Date(tgl);
+    var tgl = d.getDate();
+    var bln = d.getMonth();
+    var thn = d.getFullYear();
+    var bulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+    return tgl + " " + bulan[bln] + " " + thn
+}
+function formatbalikin(tekss) {
+    let teks = tekss.toString();
+    let str = teks.split(" ");
+    var bulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+    let date = new Date(str[2], bulan.indexOf(str[1]), str[0]);
+    return date;
+}
+
+function umur(tgllahir) {
+    var curday = new Date().getDate();;//document.cir.len11.value;
+    var curmon = new Date().getMonth();//.cir.len12.value;
+    var curyear = new Date().getFullYear();//.cir.len13.value;
+
+    var calday = new Date(tgllahir).getDate();//document.cir.len21.value;
+    var calmon = new Date(tgllahir).getMonth();//document.cir.len22.value;
+    var calyear = new Date(tgllahir).getFullYear();//document.cir.len23.value;
+
+    var curd = new Date(curyear, curmon, curday);
+    var cald = new Date(calyear, calmon, calday);
+
+    var dife = datediff(curd, cald);
+    let objret = {};
+    objret.tahun = dife[0];
+    objret.bulan = dife[1];
+    objret.hari = dife[2];
+    return objret
+
+}
+
+function datediff(date1, date2) {
+    var y1 = date1.getFullYear(), m1 = date1.getMonth(), d1 = date1.getDate(),
+        y2 = date2.getFullYear(), m2 = date2.getMonth(), d2 = date2.getDate();
+
+    if (d1 < d2) {
+        m1--;
+        d1 += DaysInMonth2(y2, m2);
+    }
+    if (m1 < m2) {
+        y1--;
+        m1 += 12;
+    }
+    return [y1 - y2, m1 - m2, d1 - d2];
+}
+
+function DaysInMonth2(Y, M) {
+    with (new Date(Y, M, 1, 12)) {
+        setDate(0);
+        return getDate();
+    }
+}
+
+const StringTanggal = (tgl) => { //parameter tgl bentuk tgl
+    let m = tgl.getMonth() + 1;
+    let d = tgl.getDate();
+    let y = tgl.getFullYear();
+
+
+    let string = y + "-" + addZero(m) + "-" + addZero(d);
+
+
+    //console.log(string)
+    return string
+}
+
+const StringTanggal2 = (tgl) => { //parameter tgl bentuk tgl
+    let m = tgl.getMonth() + 1;
+    let d = tgl.getDate();
+    let y = tgl.getFullYear();
+
+
+    let string = y + "-" + m + "-" + d;
+
+
+    //console.log(string)
+    return string
+}
+
+function addZero(i) {
+    if (i < 10) {
+        i = "0" + i;
+    };
+    return i;
+}
+
+function deleteZero(i) {
+    if (i.slice(0, 1) == "0") {
+        i = i.slice(1, 2);
+    };
+    return i;
+}
+
+const CountDown = (d) => {
+    let tgl = new Date(d).getTime();
+    let now = new Date().getTime();
+    let data = {};
+    var tahun, month, days;
+    if (tgl > now) {
+        data.time = "akan datang"
+        var distance = tgl - now;
+        tahun = Math.floor(distance / (1000 * 60 * 60 * 24 * 30 * 12));
+        month = Math.floor(distance % (1000 * 60 * 60 * 24 * 30 * 12) / (1000 * 60 * 60 * 24 * 30));
+        days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    } else {
+        data.time = "masa lalu"
+        var distance = now - tgl;
+        tahun = umur(d).tahun;
+        month = umur(d).bulan;
+        days = umur(d).days;
+        // tahun = Math.floor(distance / (1000 * 60 * 60 * 24 * 30 * 12));
+        // month = Math.floor(distance % (1000 * 60 * 60 * 24 * 30 * 12) / (1000 * 60 * 60 * 24 * 30));
+        // days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    }
+
+    // Time calculations for days, hours, minutes and seconds
+    data.tahun = tahun;
+    data.bulan = month;
+    data.hari = days;
+    return data
+
+}
+
+const NamaBulandariIndex = (index) => {
+    let arraynamabulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+    return arraynamabulan[index]
+
+
+}
+
+const NamaHaridariIndex = (index) => {
+    let arraynamabulan = ["Mg", "Sn", "Sl", "Rb", "Km", "Jm", "Sb"];
+    return arraynamabulan[index]
+
+
+}
+
+function daysInMonth(month, year) {
+    return new Date(year, month, 0).getDate();
+}
+
+function tanggalfulllengkap(tgl) {
+    var d = new Date(tgl);
+    var tgl = d.getDate();
+    var bln = d.getMonth();
+    var thn = d.getFullYear();
+    var jam = d.getHours();
+    var menit = d.getMinutes();
+    var detik = d.getSeconds()
+    var bulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+    return tgl + " " + bulan[bln] + " " + thn + " Pukul " + addZero(jam) + ":" + addZero(menit) + ":" + addZero(detik);
+}
+
+
+const tglStringZero = () => { // return= 
+    let a = new Date();
+    let b = a.getDate();
+    let c = a.getMonth() + 1;
+    let d = a.getFullYear()
+    let idokmateri = b + "" + addZero(c) + "" + d;
+    return idokmateri
+}
+
+const balikinidok = (teks) => { /// hasil: 2021-3-1
+    // kondisi1 = "10032021"
+    // kondisi2 = "1032021"
+    //let ddd = teks.splice(-6)
+    let d, m, y
+    if (teks.length == 8) {
+        d = teks.slice(0, 2);
+        m = teks.slice(2, 4);
+        y = teks.slice(4, 8);
+    } else {
+        d = teks.slice(0, 1);
+        m = teks.slice(1, 3);
+        y = teks.slice(3, 7);
+    }
+    let str = y + "-" + deleteZero(m) + "-" + deleteZero(d)
+    return str
+}
+const zerozeroidok = () => { // return= 
+    let a = new Date();
+    let b = a.getDate();
+    let c = a.getMonth() + 1;
+    let d = a.getFullYear()
+    let idokmateri = addZero(b) + "" + addZero(c) + "" + d;
+    return idokmateri
+}
+
+////////////////SOURCE KEPSEK UNFAEDAH.JS
+
+
+
+const kurikulum = () => {
+    alert("Ups, maaf. Fitur belum diaktifkan")
+}
+const raportkelas = () => {
+    alert("Ups, maaf. Fitur belum diaktifkan")
+}
+const nilaimapel = () => {
+    alert("Ups, maaf. Fitur belum diaktifkan")
+}
+
+const previewriwayat = (kelas, par) => {
+    pranalamateri.style.display = "block";
+    document.querySelector(".classReviewMateri").innerHTML = "";
+
+    let tes = document.querySelector(".classReviewMateri");
+    let keyy = "kbmtodaykelas_" + kelas;
+
+    let datamateri = JSON.parse(localStorage.getItem(keyy))
+
+    //bikin judul h4
+    var judul = document.createElement("h4")
+    judul.setAttribute("class", "w3-center");
+    judul.innerHTML = "Identitas e-Lamaso";
+    tes.innerHTML = ""
+    tes.appendChild(judul);
+
+    //-- Bikin Tabel identitas:
+    var tabelidentitas = document.createElement("table");
+    tabelidentitas.setAttribute("class", "versi-table tabel_idreview");
+    tabelidentitas.setAttribute("style", "margin:auto");
+    var tr = tabelidentitas.insertRow(-1);
+
+    var tr = tabelidentitas.insertRow(-1);
+    var td = tr.insertCell(-1);
+    td.innerHTML = "Sekolah"
+    var td = tr.insertCell(-1);
+    td.innerHTML = datamateri[par].idSekolah
+    var tr = tabelidentitas.insertRow(-1);
+    var td = tr.insertCell(-1);
+    td.innerHTML = "Nama Siswa"
+    var td = tr.insertCell(-1);
+    td.innerHTML = "NAMA SISWA ANDA"
+    var tr = tabelidentitas.insertRow(-1);
+    var td = tr.insertCell(-1);
+    td.innerHTML = "Kelas"
+    var td = tr.insertCell(-1);
+    td.innerHTML = idNamaKelas;
+    var tr = tabelidentitas.insertRow(-1);
+    var td = tr.insertCell(-1);
+    td.innerHTML = "Mapel/Tema"
+    var td = tr.insertCell(-1);
+    td.innerHTML = datamateri[par].idmapel;
+    var tr = tabelidentitas.insertRow(-1);
+    var td = tr.insertCell(-1);
+    td.innerHTML = "Frekuensi Akses"
+    var td = tr.insertCell(-1);
+    var keteranganakses;
+    if (datamateri[par].idaksessiswa == "sekali") {
+        keteranganakses = "Menerima Tagihan Tugas/Nilai dari Siswa";
+    } else {
+        keteranganakses = "Tidak Menerima Tagihan/Nilai (untuk latihan, rangkuman, dll)";
+    }
+    td.innerHTML = keteranganakses;
+    var tr = tabelidentitas.insertRow(-1);
+    var td = tr.insertCell(-1);
+    td.innerHTML = "Tanggal Publikasi"
+    var td = tr.insertCell(-1);
+    td.innerHTML = tanggalfulllengkap(datamateri[par].idtgl);
+
+    var tr = tabelidentitas.insertRow(-1);
+    var td = tr.insertCell(-1);
+    td.innerHTML = "Kompetensi KD<br><sub class='w3-text-red'>Tidak akan muncul di siswa</sub>"
+    var td = tr.insertCell(-1);
+    td.setAttribute("id", "forKD")
+    td.innerHTML = `<i class="fa fa-spin fa-spinner"></i>`;
+    var tr = tabelidentitas.insertRow(-1);
+    var td = tr.insertCell(-1);
+    td.innerHTML = "Kunci Jawaban<br><sub class='w3-text-red'>Tidak akan muncul di siswa</sub>"
+    var td = tr.insertCell(-1);
+    td.setAttribute("id", "forkuncijawaban")
+    td.innerHTML = `<i class="fa fa-spin fa-spinner"></i>`;
+
+
+    var tr = tabelidentitas.insertRow(-1);
+    var cel1 = tr.insertCell(-1);
+    cel1.setAttribute("id", "timer");
+    cel1.setAttribute("colspan", "2");
+    cel1.setAttribute("style", "text-align:center");
+    cel1.innerHTML = "Timer: ";
+    var cdtimer = document.createElement("input")
+    cdtimer.setAttribute("id", "cd_seconds");
+    cdtimer.setAttribute("disabled", "true");
+    cdtimer.setAttribute("value", datamateri[par].iddurasi);
+    cdtimer.setAttribute("style", "width:50px")
+    cel1.appendChild(cdtimer);
+    cel1.innerHTML += " Menit."
+    var tr = tabelidentitas.insertRow(-1);
+    var cel1 = tr.insertCell(-1);
+    cel1.setAttribute("id", "tempatdurasi");
+    cel1.setAttribute("colspan", "2");
+    cel1.setAttribute("style", "text-align:center");
+    var cdstatus = document.createElement("b");
+    cdstatus.setAttribute("id", "cd_status");
+    var tekscdstatus = document.createTextNode("Durasi Penyelesaian:");
+    cdstatus.appendChild(tekscdstatus);
+    var cdjam = document.createElement("span");
+    cdjam.setAttribute("id", "cd_h");
+    var tekscdjam = document.createTextNode("00:");
+    cdjam.appendChild(tekscdjam);
+    var cdmenit = document.createElement("span");
+    cdmenit.setAttribute("id", "cd_m");
+    var tekscdmenit = document.createTextNode("00:");
+    cdmenit.appendChild(tekscdmenit);
+    var cddetik = document.createElement("span");
+    cddetik.setAttribute("id", "cd_s");
+    var tekscddetik = document.createTextNode("00");
+    cddetik.appendChild(tekscddetik);
+    var cdpause = document.createElement("input")
+    cdpause.setAttribute("type", "button");
+    cdpause.setAttribute("id", "cd_pause");
+    cdpause.setAttribute("value", "Jeda");
+    var cdpstop = document.createElement("input")
+    cdpstop.setAttribute("type", "button");
+    cdpstop.setAttribute("id", "cd_stop");
+    cdpstop.setAttribute("value", "Selesai");
+    var gntibaris = document.createElement("br");
+    var controltimer = document.createElement("b")
+    var tekscontroltimer = document.createTextNode("Control Timer:");
+    controltimer.appendChild(tekscontroltimer);
+    var controlstart = document.createElement("input");
+    controlstart.setAttribute("type", "button");
+    controlstart.setAttribute("id", "cd_start");
+    controlstart.setAttribute("value", "Mulai Mengerjakan");
+    var controlreset = document.createElement("input");
+    controlreset.setAttribute("type", "button");
+    controlreset.setAttribute("id", "cd_reset");
+    controlreset.setAttribute("value", "Reset Timer");
+    var titikdua = document.createElement("b");
+    var tekstitikdua = document.createTextNode(":");
+    titikdua.appendChild(tekstitikdua);
+    cel1.appendChild(controltimer);
+    cel1.innerHTML += "<br/>";
+    cel1.appendChild(controlstart);
+    //cel1.appendChild(controlreset);
+    //cel1.appendChild(cdpause);
+    cel1.appendChild(cdpstop);
+    cel1.appendChild(gntibaris);
+    cel1.appendChild(cdstatus);
+    cel1.innerHTML += ":<br/>";
+    cel1.appendChild(cdjam);
+    cel1.innerHTML += "";
+    cel1.appendChild(cdmenit);
+    cel1.appendChild(titikdua)
+    cel1.appendChild(cddetik);
+    cel1.innerHTML += "<br/><sub>Waktu hanya berjalan di laman siswa</sub>";
+
+    tes.appendChild(tabelidentitas)
+    var brek = document.createElement("div")
+
+    brek.setAttribute("style", "break-after:page");
+    tes.appendChild(brek)
+
+    var idm = encodeURIComponent(datamateri[par].idmateri);
+    //
+    $('.classReviewMateri').nextAll('button').remove();
+    $.getJSON(linkmateri + "&idmateri=" + idm + "&action=previewriwayat", function (json) {
+        //  loadingmodal.style.display="none";
+        //$("#output").html(brkline(json))
+        // document.getElementById("judulpetunjuk").innerHTML = "Preview e-Lamaso";
+        //        document.getElementById("isipetunjuk").innerHTML = brkline(json);
+        //   document.querySelector(".kontenmateri").innerHTML += brkline(json);
+        tes.innerHTML += brkline(json).teks;
+        let inhtml = "<table class='versi-table w3-tiny'><tr><td>Mapel</td><td>KD</td><td>No Soal</td></tr>";
+        let xx = brkline(json).kd.split("<br>");
+        for (a = 0; a < xx.length; a++) {
+            inhtml += `<tr><td> ${xx[a].split("_")[0]}</td><td> ${xx[a].split("_")[1].split(":")[0]}</td><td>${xx[a].split("_")[1].split(":")[1]}</td></tr>`
+        }
+        inhtml += `</table>`;
+
+        forKD.innerHTML = inhtml;
+
+        let tekskunci = brkline(json).kunci;
+        //console.log(tekskunci);
+        if (tekskunci == "" || tekskunci == "undefined" || tekskunci == null) {
+            forkuncijawaban.innerHTML = "Tidak Ada PG"
+        } else {
+            forkuncijawaban.innerHTML = window.atob(tekskunci).split(",").join("<br>");
+
+        }
+
+
+        var elEssay = document.getElementsByClassName("soalessay")
+        if (elEssay.length !== 0) {
+            for (i = 0; i < elEssay.length; i++) {
+                var idEl = elEssay[i].getAttribute("id");
+                var inidEl = idEl.replace("essay", "");
+                var tempattombol = document.getElementById("tomboljawaban" + inidEl);
+                var tombolsatu = document.createElement("button");
+                tombolsatu.setAttribute("onclick", "alert('Siswa Mengetik Jawaban')");
+                var tekstombolsatu = document.createTextNode("Ketik Jawaban No " + inidEl);
+                tombolsatu.appendChild(tekstombolsatu);
+                tempattombol.appendChild(tombolsatu);
+                tempattombol.innerHTML += "<br/><sub>atau</sub></br/> "
+                var tomboldua = document.createElement("button");
+                tomboldua.setAttribute("onclick", "alert('Siswa Mengupload Jawaban')");
+                var tekstomboldua = document.createTextNode("Upload Jawaban No " + inidEl);
+                tomboldua.appendChild(tekstomboldua);
+                tempattombol.appendChild(tomboldua);
+                tempattombol.innerHTML += "<br/><sub>Pilih Salah satu cara Kalian menjawab soal ini</sub>"
+
+            }
+        }
+
+
+    })
+    // ;
+
+
+}
+const previewriwayat2 = (par) => {
+    pranalamateri.style.display = "block";
+    document.querySelector(".classReviewMateri").innerHTML = "";
+
+    let tes = document.querySelector(".classReviewMateri");
+
+
+    let datamateri = dataseluruhmateri;
+
+    //bikin judul h4
+    var judul = document.createElement("h4")
+    judul.setAttribute("class", "w3-center");
+    judul.innerHTML = "Identitas e-Lamaso";
+    tes.innerHTML = ""
+    tes.appendChild(judul);
+
+    //-- Bikin Tabel identitas:
+    var tabelidentitas = document.createElement("table");
+    tabelidentitas.setAttribute("class", "versi-table tabel_idreview");
+    tabelidentitas.setAttribute("style", "margin:auto");
+    var tr = tabelidentitas.insertRow(-1);
+
+    var tr = tabelidentitas.insertRow(-1);
+    var td = tr.insertCell(-1);
+    td.innerHTML = "Sekolah"
+    var td = tr.insertCell(-1);
+    td.innerHTML = datamateri[par].idSekolah;
+
+    var tr = tabelidentitas.insertRow(-1);
+    var td = tr.insertCell(-1);
+    td.innerHTML = "Pembuat Materi";
+    var td = tr.insertCell(-1);
+    td.innerHTML = datamateri[par].pembuatpertama;
+
+    var tr = tabelidentitas.insertRow(-1);
+    var td = tr.insertCell(-1);
+    td.innerHTML = "Pengedit";
+    var td = tr.insertCell(-1);
+    td.innerHTML = datamateri[par].dibuatoleh;
+
+    var tr = tabelidentitas.insertRow(-1);
+    var td = tr.insertCell(-1);
+    td.innerHTML = "Kelas"
+    var td = tr.insertCell(-1);
+    td.innerHTML = datamateri[par].idtoken;
+    var tr = tabelidentitas.insertRow(-1);
+    var td = tr.insertCell(-1);
+    td.innerHTML = "Mapel/Tema"
+    var td = tr.insertCell(-1);
+    td.innerHTML = datamateri[par].idmapel;
+    var tr = tabelidentitas.insertRow(-1);
+    var td = tr.insertCell(-1);
+    td.innerHTML = "Frekuensi Akses"
+    var td = tr.insertCell(-1);
+    var keteranganakses;
+    if (datamateri[par].idaksessiswa == "sekali") {
+        keteranganakses = "Menerima Tagihan Tugas/Nilai dari Siswa";
+    } else {
+        keteranganakses = "Tidak Menerima Tagihan/Nilai (untuk latihan, rangkuman, dll)";
+    }
+    td.innerHTML = keteranganakses;
+    var tr = tabelidentitas.insertRow(-1);
+    var td = tr.insertCell(-1);
+    td.innerHTML = "Tanggal Publikasi"
+    var td = tr.insertCell(-1);
+    td.innerHTML = tanggalfulllengkap(datamateri[par].idtgl)
+
+    var tr = tabelidentitas.insertRow(-1);
+    var td = tr.insertCell(-1);
+    td.innerHTML = "Tanggal Selesai"
+    var td = tr.insertCell(-1);
+    td.innerHTML = tanggalfulllengkap(datamateri[par].idtglend);
+
+    var tr = tabelidentitas.insertRow(-1);
+    var td = tr.insertCell(-1);
+    td.innerHTML = "Kompetensi KD<br><sub class='w3-text-red'>Tidak akan muncul di siswa</sub>"
+    var td = tr.insertCell(-1);
+    td.setAttribute("id", "forKD")
+    td.innerHTML = `<i class="fa fa-spin fa-spinner"></i>`;
+    var tr = tabelidentitas.insertRow(-1);
+    var td = tr.insertCell(-1);
+    td.innerHTML = "Kunci Jawaban<br><sub class='w3-text-red'>Tidak akan muncul di siswa</sub>"
+    var td = tr.insertCell(-1);
+    td.setAttribute("id", "forkuncijawaban")
+    td.innerHTML = `<i class="fa fa-spin fa-spinner"></i>`;
+
+    tes.appendChild(tabelidentitas)
+    var brek = document.createElement("div")
+
+    brek.setAttribute("style", "break-after:page");
+    tes.appendChild(brek)
+
+    var idm = encodeURIComponent(datamateri[par].idmateri);
+    //
+    $('.classReviewMateri').nextAll('button').remove();
+    $.getJSON(linkmateri + "&idmateri=" + idm + "&action=previewriwayat", function (json) {
+        //  loadingmodal.style.display="none";
+        //$("#output").html(brkline(json))
+        // document.getElementById("judulpetunjuk").innerHTML = "Preview e-Lamaso";
+        //        document.getElementById("isipetunjuk").innerHTML = brkline(json);
+        //   document.querySelector(".kontenmateri").innerHTML += brkline(json);
+        tes.innerHTML += brkline(json).teks;
+        let inhtml = "<table class='versi-table w3-tiny'><tr><td>Mapel</td><td>KD</td><td>No Soal</td></tr>";
+        let xx = brkline(json).kd.split("<br>");
+        for (a = 0; a < xx.length; a++) {
+            inhtml += `<tr><td> ${xx[a].split("_")[0]}</td><td> ${xx[a].split("_")[1].split(":")[0]}</td><td>${xx[a].split("_")[1].split(":")[1]}</td></tr>`
+        }
+        inhtml += `</table>`;
+
+        forKD.innerHTML = inhtml;
+
+        let tekskunci = brkline(json).kunci;
+        //console.log(tekskunci);
+        if (tekskunci == "" || tekskunci == "undefined" || tekskunci == null) {
+            forkuncijawaban.innerHTML = "Tidak Ada PG"
+        } else {
+            forkuncijawaban.innerHTML = window.atob(tekskunci).split(",").join("<br>");
+
+        }
+
+
+        var elEssay = document.getElementsByClassName("soalessay")
+        if (elEssay.length !== 0) {
+            for (i = 0; i < elEssay.length; i++) {
+                var idEl = elEssay[i].getAttribute("id");
+                var inidEl = idEl.replace("essay", "");
+                var tempattombol = document.getElementById("tomboljawaban" + inidEl);
+                var tombolsatu = document.createElement("button");
+                tombolsatu.setAttribute("onclick", "alert('Siswa Mengetik Jawaban')");
+                var tekstombolsatu = document.createTextNode("Ketik Jawaban No " + inidEl);
+                tombolsatu.appendChild(tekstombolsatu);
+                tempattombol.appendChild(tombolsatu);
+                tempattombol.innerHTML += "<br/><sub>atau</sub></br/> "
+                var tomboldua = document.createElement("button");
+                tomboldua.setAttribute("onclick", "alert('Siswa Mengupload Jawaban')");
+                var tekstomboldua = document.createTextNode("Upload Jawaban No " + inidEl);
+                tomboldua.appendChild(tekstomboldua);
+                tempattombol.appendChild(tomboldua);
+                tempattombol.innerHTML += "<br/><sub>Pilih Salah satu cara Kalian menjawab soal ini</sub>"
+
+            }
+        }
+
+
+    })
+    // ;
+
+
+}
+
+
+
+function brkline(teks) { //coba
+    var tek = teks.split("\r\n"); //cari sKetiap ganti baris;
+    var inn = "";
+    var indexpotojawaban = 0;
+    var kodeganti = ["_JUDUL_", "_PECAHAN BIASA_"];
+
+    //   var keypg = document.getElementById("keypg");
+    //   if (keypg == null) {
+    //       var scrippg = document.createElement("script");
+    //       scrippg.setAttribute("id", "keypg");
+    //       scrippg.innerHTML = "var keybase=''";
+    //       tttkeybase.innerHTML = "";
+
+    //       document.body.appendChild(scrippg);
+
+    //   } else {
+    //       keypg.innerHTML = "var keybase=''";
+    //       tttkeybase.innerHTML = "";
+    //   }
+    //////////////////////////////////////////////////////////////
+    if (localStorage.hasOwnProperty("keybase")) {
+        localStorage.removeItem("keybase")
+    }
+    if (localStorage.hasOwnProperty("kuncikd")) {
+        localStorage.removeItem("kuncikd")
+    }
+
+    for (x = 0; x < tek.length; x++) {
+        var asal = tek[x]; // dalam satu baris ini, misal baris pertama:
+        var cJudul = jumlahdobel(asal, "_JUDUL_");
+        var cGambar = jumlahdobel(asal, "_GAMBAR_");
+        var cPecBiasa = jumlahdobel(asal, "_PECAHAN-BIASA_");
+        var cPecCamp = jumlahdobel(asal, "_PECAHAN-CAMPURAN_");
+
+
+        //inn += "ke-"+ x +" = " + asal + "<hr style='border-bottom:1px solid red'/>";
+        //inn += "ke-"+ x + " = JUDUL = " + cJudul +", GAMBAR = " + cGambar +", Pecahan Biasa = " + cPecBiasa +", Pecahan Campuran = " + cPecCamp + "<hr style='border-bottom:1px solid blue'/>";
+        var katajadi = "";
+
+        if (asal.indexOf("_JUDUL_") > -1) {
+            var hJudul;
+            var arjud = asal.split("_JUDUL_");
+            var katakonversi;
+            for (jd in arjud) {
+                if (jd > 0) {
+                    katakonversi = katajadireplace(arjud[jd]);
+                    //hJudul = "<h4 style='background-color:darkslategrey;color:white;padding:1px'>" + arjud[jd]+ "</h4>";
+                    //hJudul = "<h4 style='background-color:darkslategrey;color:white;padding:1px'>" + katakonversi + "</h4>";
+                    hJudul = "<h4 class='w3-card-4 w3-blue-grey w3-center w3-round-xxlarge'>" + katakonversi + "</h4>";
+                    //katajadi += hJudul ;
+                    katajadi += hJudul + "<br/>";
+                }
+            }
+        } else if (asal.indexOf("_ESSAY-NO_") > -1) {
+            var esayno = asal.split("_ESSAY-NO_")[0];
+            var tekspisah = asal.replace("_ESSAY-NO_", "").split(" ");
+            katajadi += "<div class='w3-badge w3-aqua w3-left'>" + tekspisah[0] + "</div><ol style='list-style-type:none' start='" + tekspisah[0] + "'  class='w3-padding w3-card-4'><li id='essay" + tekspisah[0] + "' class='soalessay' style='border-bottom:1px solid blue'><div id='pertanyaanessay_" + tekspisah[0] + "'>";
+            for (es in tekspisah) {
+                if (es > 0) {
+                    katajadi += katajadireplace(tekspisah[es]);
+                }
+            }
+
+
+            katajadi += "</div><div id='tomboljawaban" + tekspisah[0] + "'><hr/></div>"
+            katajadi += "<br/></li></ol>"
+        } else if (asal.indexOf("_START-TABEL_") > -1) {
+            katajadi += asal.replace("_START-TABEL_", "<div style='overflow-x:auto'><table class='versi-table'>");
+            //katajadi += asal.replace("_START-TABEL_","<table class='versi-table'>");
+        } else if (asal.indexOf("_START-TABEL-OPSI_") > -1) {
+            katajadi += asal.replace("_START-TABEL-OPSI_", "<hr style='border-top:1px solid olive'/><div style='overflow-x:auto'><table class='versi-table'>");
+            //katajadi += asal.replace("_START-TABEL_","<table class='versi-table'>");
+        } else if (asal.indexOf("<|HEADER|>") > -1) {
+            katajadi += "<tr>";
+            var tekarray = asal.split("<|HEADER|>");
+            var katakonversi;
+            for (th in tekarray) {
+                katakonversi = katajadireplace(tekarray[th]);
+                //katajadi +="<th>" + tekarray[th] +"</th>";
+                katajadi += "<th>" + katakonversi + "</th>";
+            }
+            katajadi += "</tr>"
+        } else if (asal.indexOf("<|>") > -1) {
+            katajadi += "<tr>";
+            var tekarray = asal.split("<|>");
+            var katakonversi;
+            for (td in tekarray) {
+                katakonversi = katajadireplace(tekarray[td]);
+                katajadi += "<td>" + katakonversi + "</td>"
+            }
+            katajadi += "</tr>"
+            //inn +=  "<table class='versi-table'>";
+        } else if (asal.indexOf("_SELESAI-TABEL_") > -1) {
+            katajadi += "</table></div><br/>";
+            //katajadi +=  "</table><br/>";
+
+        } else if (asal.indexOf("_SELESAI-TABEL-OPSI_") > -1) {
+            //katajadi +=  "</table></div><br/>";
+            katajadi += "</table><br/></li></ol>";
+
+        } else if (asal.indexOf("_PG_") > -1) {
+            var Q_PG = "";
+            var teks = asal.replace("_PG_", ""); // return = 1 teks pertanyaaan bla bla bla
+            var arrTeks = teks.split(" ");
+            nosoal = arrTeks[0];
+            Q_PG += "<div class='w3-badge w3-left'>" + nosoal + "</div><ol style='list-style-type:decimal' start='" + nosoal + "' class='w3-padding w3-card-4'><li id='soalke-" + nosoal + "' class='calcnosoal' style='list-style-type:none'>";
+            var katakonversi;
+            for (ss in arrTeks) {
+                if (ss > 0) {
+                    katakonversi = katajadireplace(arrTeks[ss]);
+                    Q_PG += katakonversi;
+                }
+            }
+            //katajadi = Q_PG + "<hr style='border-top:1px solid olive'/>";
+            katajadi = Q_PG;//+ "<hr style='border-top:1px solid olive'/>";
+
+        } else if (asal.indexOf("_OPSI-PG_") > -1) {
+            var opsipg = "";
+            var arpgg = asal.replace("_OPSI-PG_", ""); // hasilnya: 1A teks pertanyaan bla bla bla
+            var arpg = arpgg.split(" "); //hasilnya: 0=1A 1=teks 2=pertanyaan ... dst.
+            var idopsi = arpg[0]; // hasilnya: 1A
+            //var abjad = idopsi.slice(1, 2); // hasilnya A
+            //var nosoal = idopsi.slice(0, 1); // hasilnya 1
+            var nosoal = idopsi.match(/(\d+)/)[0];//parseInt(idopsi);
+            var abjad = idopsi.replace(nosoal, "");
+
+            if (abjad === "A") {
+                opsipg += "<hr style='border-top:1px solid olive'/>";
+                opsipg += "<ol style='list-style-type:upper-alpha;margin:5px 5px 0px 20px;padding:0' ><li><input class='calc' type='radio' style='display:none' name='soal" + nosoal + "' id='" + idopsi + "'/><label class='opsi' for='" + idopsi + "'>"; // Khusus opsi A, ada elemen OL lalu dilanjut teksnya
+            } else {
+                opsipg += "<li><input class='calc' type='radio' style='display:none' name='soal" + nosoal + "' id='" + idopsi + "'/><label class='opsi' for='" + idopsi + "'>"; // selain opsi A, dilanjut.  Tapi tanpa element OL
+            }
+            var katakonversi;
+            for (tt in arpg) { //hasilnya: 0=1A 1=teks 2=pertanyaan ... dst.
+                if (tt > 0) { // hindari array 0=1A
+                    katakonversi = katajadireplace(arpg[tt]);
+                    //hJudul = "<h4 style='background-color:darkslategrey;color:white;padding:1px'>" + arjud[jd]+ "</h4>";
+                    opsipg += katakonversi
+                }
+            }
+            if (abjad === "D") {
+                opsipg += "</label></li></ol></li></ol>";
+            } else {
+                opsipg += "</label></li>";
+            }
+
+
+            katajadi += opsipg;
+
+
+
+        } else if (asal.indexOf("_OPSI-PG-C_") > -1) {
+            var opsipg = "";
+            var arpgg = asal.replace("_OPSI-PG-C_", ""); // hasilnya: 1A teks pertanyaan bla bla bla
+            var arpg = arpgg.split(" "); //hasilnya: 0=1A 1=teks 2=pertanyaan ... dst.
+            var idopsi = arpg[0]; // hasilnya: 1A
+            //var abjad = idopsi.slice(1, 2); // hasilnya A
+            //var nosoal = idopsi.slice(0, 1); // hasilnya 1
+            var nosoal = idopsi.match(/(\d+)/)[0];//parseInt(idopsi);
+            var abjad = idopsi.replace(nosoal, "");
+
+            if (abjad === "A") {
+                opsipg += "<hr style='border-top:1px solid olive'/>";
+                opsipg += "<ol style='list-style-type:upper-alpha;margin:5px 5px 0px 20px;padding:0' ><li><input class='calc' type='radio' style='display:none' name='soal" + nosoal + "' id='" + idopsi + "'/><label class='opsi' for='" + idopsi + "'>"; // Khusus opsi A, ada elemen OL lalu dilanjut teksnya
+            } else {
+                opsipg += "<li><input class='calc' type='radio' style='display:none' name='soal" + nosoal + "' id='" + idopsi + "'/><label class='opsi' for='" + idopsi + "'>"; // selain opsi A, dilanjut.  Tapi tanpa element OL
+            }
+            var katakonversi;
+            for (tt in arpg) { //hasilnya: 0=1A 1=teks 2=pertanyaan ... dst.
+                if (tt > 0) { // hindari array 0=1A
+                    katakonversi = katajadireplace(arpg[tt]);
+                    //hJudul = "<h4 style='background-color:darkslategrey;color:white;padding:1px'>" + arjud[jd]+ "</h4>";
+                    opsipg += katakonversi
+                }
+            }
+            if (abjad === "C") {
+                opsipg += "</label></li></ol></li></ol>";
+            } else {
+                opsipg += "</label></li>";
+            }
+
+
+            katajadi += opsipg;
+
+        } else if (asal.indexOf("_POTO-JAWABAN-TUGAS_") > -1) {
+            var tekssplit = asal.replace("_POTO-JAWABAN-TUGAS_", "").split(" ")[0]; // return: 1/2/3
+            var mediaessay = "";
+            var bnyk = tekssplit.split("/");
+            for (de in bnyk) {
+                mediaessay += bnyk[de] + ", ";
+            }
+            katajadi += "<div style='background-color:#ffcdc9;padding:10px'>Upload Media(Poto, audio, video, pdf, word/txt, dll) jawaban Tugas No";
+            katajadi += " " + mediaessay + " dengan menguploadnya di sini: <br/><br/>";
+            katajadi += "<label style='border:1px solid black;background-color:#eee;padding:5px;border-radius:5px' for='iduploadpototugas" + indexpotojawaban + "' id='label" + indexpotojawaban + "'><i class='fa fa-camera'></i> Upload Jawaban</label><br/><br/>";
+            katajadi += "<div class='potoessay' id='" + tekssplit + "' style='overflow-x:auto'><div id='mediapreview" + indexpotojawaban + "'>";
+            katajadi += "<img src='https://1.bp.blogspot.com/-q57d59JTX8g/Xa-kAy6T0XI/AAAAAAAAOSo/seM01RU3Q_Q7BvLm73wC09BBsQMs05pYACLcBGAsYHQ/s320/LOGO%2BLAMASO.png'  style='width:145px;margin:auto;border:1px solid blue'/>";
+            katajadi += "</div></div>";
+
+            katajadi += "<input type='file' id='iduploadpototugas" + indexpotojawaban + "' onchange='uploadpototugas(" + indexpotojawaban + ")' style='display:none'/><div  id='filejawaban" + indexpotojawaban + "' class='jawabanfile' style='display:none' ></div>"
+
+
+            katajadi += "</div>";
+
+            indexpotojawaban += 1;
+
+
+        } else if (asal.indexOf("_KUNCI-PG_") > -1) {
+            //REPLACE DULU = misal: _KUNCI-PG_1A, 2B, 3C<kalo adaspasi>
+            var tekskunci = asal.replace("_KUNCI-PG_", "").replace(/\s+/g, "").split(","); // hasilnya: 1A,2B,3C
+            var arrkunci = [];
+            for (o = 0; o < tekskunci.length; o++) {
+                arrkunci.push(tekskunci[o])
+            }
+            basekunci = window.btoa(arrkunci);
+            var kunci = basekunci;
+            //basekunci = arrkunci;//window.btoa(arrkunci);
+            //localStorage.setItem("keybase", basekunci)
+            //localStorage.setItem("artikeybase", window.atob(basekunci))
+
+            //   var keypg = document.getElementById("keypg");
+            //     keypg.setAttribute("style", "display:none")
+
+            //   //var teksscript = document.createTextNode("var keybase='"+basekunci+"'");
+            //   //	keypg.appendChild(teksscript);
+            //   keypg.innerHTML = "var keybase='" + basekunci + "'";
+            //   tttkeybase.innerHTML = basekunci;
+
+        } else if (asal.indexOf("_KUNCI-KD_") > -1) {
+            //REPLACE DULU = misal: _KUNCI-PG_1A, 2B, 3C<kalo adaspasi>
+            var tekskunci = asal.replace("_KUNCI-KD_", "").replace(/\s+/g, "").split("<||>");//.split(":");
+            let ar = []
+            let ob = {};
+            for (i = 0; i < tekskunci.length; i++) {
+
+                // ob[tekskunci[i].split(":")[0]] = tekskunci[i].split(":")[1].split(",");
+                ob[tekskunci[i].split(":")[0]] = tekskunci[i].split(":")[1].replace("[", "").replace("]", "").split(",");
+                ar.push(ob)
+            }
+            var kdkd = tekskunci.join("<br>");//.join("<br>");
+            //   localStorage.setItem("kuncikd", JSON.stringify(ob)) ;// ---> sudah objek array
+
+
+
+        } else {
+            var katakonversi = katajadireplace(asal);
+            katajadi += katakonversi + "<br/>";
+
+        }
+        inn += katajadi; //+ "&lt;br/&gt;" ;
+    }
+    let data = {};
+    data.teks = inn;
+    data.kunci = kunci;
+    data.kd = kdkd;
+
+    // return inn
+    return data
+}
+
+function katajadireplace(asal) {
+    var splitTeks = asal.split(" ");
+    var ccJudul = 1;
+    var brsTabel = 0;
+    var katajadi = "";
+    for (i = 0; i < splitTeks.length; i++) {
+        //jika judul:
+        if (splitTeks[i].indexOf("_GAMBAR_") > -1) {
+            katajadi += "<img src='" + splitTeks[i].replace("_GAMBAR_", "") + "' style='width:50%;border:1px solid red;border-radius:5px' alt='tidak muncul, link Anda salah atau ada spasi setelah kode'/>";
+        } else if (splitTeks[i].indexOf("_GAMBAR-DRIVE_") > -1) {
+            var hilangkankode = splitTeks[i].replace("_GAMBAR-DRIVE_", "");
+            var hilangkanprefik = hilangkankode.replace("https://drive.google.com/file/d/", "https://drive.google.com/uc?export=view&id=");
+            var hilangkansufik = hilangkanprefik.replace("/view", "");
+            var hilangkansufike = hilangkansufik.replace("?usp=drivesdk", "");
+
+            katajadi += "<img src='" + hilangkansufike + "' style='width:50%;border:1px solid red;border-radius:5px' alt='tidak muncul, link Anda salah atau ada spasi setelah kode, contoh link:https://drive.google.com/file/d/1J0NUwTrxFBZ0JZBCzVTlsDFeXbn3mIci/view'/> ";
+        } else if (splitTeks[i].indexOf("_PECAHAN-BIASA_") > -1) {
+            var a = splitTeks[i].replace("_PECAHAN-BIASA_", "").split("/")[0];
+            var b = splitTeks[i].replace("_PECAHAN-BIASA_", "").split("/")[1];
+            katajadi += "<img src='https://chart.apis.google.com/chart?cht=tx&chl=%5Cfrac%7B" + a + "%7D%7B" + b + "%7D%20&chf=bg%2Cs%2CFFFFFF100&chco=000000' />"
+
+
+        } else if (splitTeks[i].indexOf("_PECAHAN-CAMPURAN_") > -1) {
+            var a = splitTeks[i].replace("_PECAHAN-CAMPURAN_", "").split("/")[0];
+            var b = splitTeks[i].replace("_PECAHAN-CAMPURAN_", "").split("/")[1];
+            var c = splitTeks[i].replace("_PECAHAN-CAMPURAN_", "").split("/")[2];
+            katajadi += "<img src='https://chart.apis.google.com/chart?cht=tx&chl=" + a + "%5Cfrac%7B" + b + "%7D%7B" + c + "%7D%20&chf=bg%2Cs%2CFFFFFF80&chco=000000' />"
+
+
+        } else if (splitTeks[i].indexOf("_AKAR-KUADRAT_") > -1) {
+            var a = splitTeks[i].replace("_AKAR-KUADRAT_", "");
+
+            katajadi += "<img src='https://chart.apis.google.com/chart?cht=tx&chl=%5Csqrt%7B%20" + a + "%20%7D%20&chf=bg%2Cs%2CFFFFFF80&chco=000000' />"
+
+
+        } else if (splitTeks[i].indexOf("_AKAR-TIGA_") > -1) {
+            var a = splitTeks[i].replace("_AKAR-TIGA_", "");
+            katajadi += " <img src='https://chart.apis.google.com/chart?cht=tx&chl=%5Csqrt%5B3%5D%7B%20" + a + "%20%7D%20&chf=bg%2Cs%2CFFFFFF80&chco=000000' /> "
+
+
+        } else if (splitTeks[i].indexOf("_PANGKAT_") > -1) {
+            var a = splitTeks[i].replace("_PANGKAT_", "").split("/")[0];
+            var b = splitTeks[i].replace("_PANGKAT_", "").split("/")[1];
+            katajadi += " <img src='https://chart.apis.google.com/chart?cht=tx&chl=%5C" + a + "^" + b + "%20&chf=bg%2Cs%2CFFFFFF80&chco=000000' /> "
+            //katajadi += a + "<sup>" + b + "</sup>";
+
+        } else if (splitTeks[i].indexOf("_PANGKAT-HURUF_") > -1) {
+            var a = splitTeks[i].replace("_PANGKAT-HURUF_", "").split("/")[0];
+            var b = splitTeks[i].replace("_PANGKAT-HURUF_", "").split("/")[1];
+            //katajadi += " <img src='https://chart.apis.google.com/chart?cht=tx&chl=%5C" + a + "^" + b + "%20&chf=bg%2Cs%2CFFFFFF80&chco=000000' /> "
+            katajadi += "<span class='w3-cursive'>" + a + "</span><sup>" + b + "</sup>";
+
+        } else if (splitTeks[i].indexOf("_EQUATION-LAINNYA_") > -1) {
+            var a = splitTeks[i].replace("_EQUATION-LAINNYA_", "");
+            var b = decodeURIComponent(a);
+            //var c = decodeURIComponent(b);
+            katajadi += " <img src='https://chart.apis.google.com/chart?cht=tx&chl=" + b + "%20&chf=bg%2Cs%2CFFFFFF80&chco=000000' /> "
+
+
+        } else if (splitTeks[i].indexOf("_YOUTUBE_") > -1) {
+            var linkyoutube, konv, konv2, konv3;
+            konv = splitTeks[i].replace("_YOUTUBE_", "<br/><div class='containerbaru'><iframe class='responsive-iframebaru ' src='")
+            konv2 = konv.replace("https://youtu.be/", "https://www.youtube.com/embed/"); // kalo link awalnya https://youtu.be/ 
+            konv3 = konv2.replace("watch?v=", "embed/"); // jika diambil dari https://www.youtube.com/
+            linkyoutube = konv3 + "' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe></div><br/>";
+
+            katajadi += linkyoutube;
+
+        } else if (splitTeks[i].indexOf("_OPSI-SEL_") > -1) {
+            var splitteks = splitTeks[i].replace("_OPSI-SEL_", "").split(" ");
+            var id = splitteks[0].replace(/\s+/g, ""); //4A
+
+            var abjad = (id.length == 2) ? id.slice(1, 2) : id.slice(2, 3); //B
+            var nosoal = id.match(/(\d+)/)[0];// id.slice(0, 1); //nosoal 4
+            var innteks = "<input class='calc' type='radio' style='display:none' name='soal" + nosoal + "' id='" + id + "'/><label class='opsi' for='" + id + "'>" + abjad + "</label>"
+
+            katajadi += innteks;
+        } else if (splitTeks[i].indexOf("_PHI_") > -1) {
+            katajadi += `<img src="https://chart.apis.google.com/chart?cht=tx&amp;chl=%5Cpi%20&amp;chf=bg%2Cs%2CFFFFFF100&amp;chco=000000">`
+        } else if (splitTeks[i].indexOf('display:none') > -1) {
+            katajadi += splitTeks[i].replace("display:none", "display:block");
+
+        } else if (splitTeks[i].indexOf('tombolkirimnilaielamaso()') > -1) {
+            katajadi += splitTeks[i].replace("tombolkirimnilaielamaso()", "alert('Maaf, tombol dinonaktirkan')");
+
+        }
+
+        else {
+            katajadi += splitTeks[i] + " ";
+
+        }
+    }
+
+    return katajadi
+
+}
+
+function fn_map(s) {
+
+    var paragrafsiap = "";
+    if (s.indexOf("_JUDUL_") > -1) {
+        paragrafsiap += "<h2 style='background-color:black;color:white;padding:1px'>" + s.replace("_JUDUL_", "") + "</h2>"
+    } else {
+        paragrafsiap += s
+    }
+    return paragrafsiap
+}
+
+function jumlahdobel(arrTeks, txt) {
+    var count = 0;
+    var crtArr = arrTeks.split(" ");
+    for (i in crtArr) {
+        if (crtArr[i].indexOf(txt) > -1) {
+            count += 1
+        }
+    }
+
+    return count
+}
+
+function gantiapaaja(teks, cariapa, gantiawal, gantiakhir) {
+    var split = teks.split(cariapa);
+    var teksganti = "";
+    //for (x in split){
+    for (x = 1; x < split.length; x++) {
+        if (split[x].length > 0) {
+            teksganti += gantiawal + split[x] + gantiakhir;
+        }; //.split(" ")[0] +"</h3>";
+
+    }
+    return teksganti
+}
+
+function tambahtombolisijawaban() {
+    var elEssay = document.getElementsByClassName("soalessay")
+    if (elEssay.length !== 0) {
+        for (i = 0; i < elEssay.length; i++) {
+            var idEl = elEssay[i].getAttribute("id");
+            var inidEl = idEl.replace("essay", "");
+            var tempattombol = document.getElementById("tomboljawaban" + inidEl);
+            var tombolsatu = document.createElement("button");
+            tombolsatu.setAttribute("onclick", "tombolketikjawaban('" + inidEl + "')");
+            var tekstombolsatu = document.createTextNode("Ketik Jawaban No " + inidEl);
+            tombolsatu.appendChild(tekstombolsatu);
+            tempattombol.appendChild(tombolsatu);
+            tempattombol.innerHTML += "<br/><sub>atau</sub></br/> "
+            var tomboldua = document.createElement("button");
+            tomboldua.setAttribute("onclick", "tomboluploadjawaban('" + inidEl + "')");
+            var tekstomboldua = document.createTextNode("Upload Jawaban No " + inidEl);
+            tomboldua.appendChild(tekstomboldua);
+            tempattombol.appendChild(tomboldua);
+            tempattombol.innerHTML += "<br/><sub>Pilih Salah satu cara Kalian menjawab soal ini</sub>"
+
+        }
+    }
+
+}
+
+////////////// SOURCE = VIDEOLAMASO.JS
+
+let localStream = "";// vidvid2.style.display = "none";
+let spanstatus = document.querySelector("#spanstatusrekaman");
+let spanstatus2 = document.querySelector("#spanstatusrekaman2");
+let videostatus = document.querySelector("#statusrekaman");
+let elvid1 = document.querySelector("#divvid1");
+let elvid2 = document.querySelector("#divvid2");
+let start = document.getElementById('btnStart');
+let stopB = document.getElementById('btnStop');
+let btnBack = document.getElementById('btnBack');
+let vidSave = document.getElementById('vid2');
+let vidlayar = document.getElementById('vid1');
+
+
+const mulaivideo = () => {
+    // let divV = document.getElementById('vid2');
+    // divV.style.display = "none";
+    // divP.style.display = "block";
+    // let divP = document.getElementById('vid1');
+    // let vidvid2 = document.getElementById('divvid2');
+
+    //resultuploadvideomateri.innerHTML = "";
+    let constraintObj = {
+        audio: true,
+        video: {
+            facingMode: "environment"
+            // , //"user",
+            // width: { min: 640, ideal: 1280, max: 1920 },
+            // height: { min: 480, ideal: 720, max: 1080 }
+            // class: 'responsive-iframebaru',
+            // poster: '/img/192.png'
+        }
+    };
+    // width: 1280, height: 720  -- preference only
+    // facingMode: {exact: "user"}
+    // facingMode: "environment"
+
+    //handle older browsers that might implement getUserMedia in some way
+    if (navigator.mediaDevices === undefined) {
+        navigator.mediaDevices = {};
+        navigator.mediaDevices.getUserMedia = function (constraintObj) {
+            let getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+            if (!getUserMedia) {
+                return Promise.reject(new Error('getUserMedia is not implemented in this browser'));
+            }
+            return new Promise(function (resolve, reject) {
+                getUserMedia.call(navigator, constraintObj, resolve, reject);
+            });
+        }
+
+    } else {
+        navigator.mediaDevices.enumerateDevices()
+            .then(devices => {
+                devices.forEach(device => {
+                    // console.log(device.kind.toUpperCase(), device.label);
+                    // console.log(device.getTracks());
+                    //alert(device.deviceId)
+                })
+            })
+            .catch(err => {
+                // console.log(err.name, err.message);
+                alert(err.name + "\n" + err.message);
+            })
+
+    }
+
+
+    navigator.mediaDevices.getUserMedia(constraintObj)
+        .then(function (mediaStreamObj) {
+            //connect the media stream to the first video element
+            let video = document.querySelector('video');
+            if ("srcObject" in video) {
+                video.srcObject = mediaStreamObj;
+            } else {
+                //old version
+                video.src = window.URL.createObjectURL(mediaStreamObj);
+            }
+
+            video.onloadedmetadata = function (ev) {
+                //show in the video element what is being captured by the webcam
+                video.play();
+            };
+
+            localStream = mediaStreamObj;
+            //add listeners for saving video/audio
+
+            let mediaRecorder = new MediaRecorder(mediaStreamObj);
+            let chunks = [];
+
+            start.addEventListener('click', (ev) => {
+                // divP.style.display = "block";
+                // divV.style.display = "none";
+                spanstatus.innerHTML = "Sedang merekam <i class='fa fa-spin fa-refresh'></i>";
+                videostatus.removeAttribute("class");//.replace("w3-blue w3-opacity w3-display-topmiddle w3-hide", "w3-blue w3-opacity w3-display-topmiddle w3-show");
+                videostatus.setAttribute("class", "w3-blue w3-opacity w3-display-topmiddle w3-show");//.replace("w3-blue w3-opacity w3-display-topmiddle w3-hide", "w3-blue w3-opacity w3-display-topmiddle w3-show");
+                elvid1.removeAttribute("class");
+                elvid1.setAttribute("class", "containerbaru w3-center w3-show");
+                elvid2.removeAttribute("class");
+                elvid2.setAttribute("class", "containerbaru w3-center w3-hide");
+
+                //video.play();
+                // console.log(mediaRecorder.state);
+                if (mediaRecorder.state == "recording") {
+                    alert("Anda sedang proses merekam.");
+                    return
+                }
+                video.play();
+                mediaRecorder.start();
+                //localStream.getTracks().forEach(k => k = mediaStreamObj);
+                //elvid2.getAttribute("class").replace("containerbaru w3-center w3-show", "containerbaru w3-center w3-hide")
+            })
+            stopB.addEventListener('click', (ev) => {
+                if (mediaRecorder.state === "inactive") {
+                    alert("Maaf, Tombol berfungsi ketika sedang proses rekaman");
+                    return
+                }
+                videostatus.removeAttribute("class");
+                videostatus.setAttribute("class", "w3-blue w3-opacity w3-display-topmiddle w3-show");//.replace("w3-blue w3-opacity w3-display-topmiddle w3-show", "w3-blue w3-opacity w3-display-topmiddle w3-hide");
+                elvid1.removeAttribute("class");
+                elvid1.setAttribute("class", "containerbaru w3-center w3-hide");
+                elvid2.removeAttribute("class");
+                elvid2.setAttribute("class", "containerbaru w3-center w3-show");
+
+
+                video.pause();
+                mediaRecorder.stop();
+                //localStream.getTracks().forEach(k => k.stop());
+                // console.log(mediaRecorder.state);
+                //console.log(mediaRecorder);
+            });
+            mediaRecorder.ondataavailable = function (ev) {
+
+                chunks.push(ev.data);
+            }
+            mediaRecorder.onstop = (ev) => {
+                // divP.style.display = "none";
+                // divV.style.display = "block";
+                let blob = new Blob(chunks, { 'type': 'video/mp4;' });
+                let videoURL = window.URL.createObjectURL(blob);
+                vidSave.src = videoURL;
+                //console.log(formatBytes(blob.size, 2));
+                spanstatus.innerHTML = "Ukuran Video " + formatBytes(blob.size, 2);
+                //---------------------------------------------------
+                var reader = new FileReader();
+                reader.readAsDataURL(blob);
+
+                reader.onload = function (e) {
+                    let urlbs64 = e.target.result;
+                    //console.log(urlbs64);
+                    var inputbase64 = document.createElement("input");
+                    inputbase64.setAttribute("name", "videodata");
+                    inputbase64.setAttribute("id", "videodata");
+                    inputbase64.value = urlbs64.replace(/^.*,/, '');
+
+                    inputbase64.setAttribute("style", "display:none");
+
+                    var inputfilename = document.createElement("input");
+                    inputfilename.setAttribute("name", "videofilename");
+                    inputfilename.setAttribute("id", "videofilename");
+                    inputfilename.setAttribute("style", "display:none");
+                    inputfilename.value = "Kelas_" + idJenjang + "_" + StringTanggal(new Date()) + "_id_" + new Date().getTime();;// + namebantukirim.value.toUpperCase().replace(/\s+/, "_");
+
+                    var inputmimetype = document.createElement("input");
+                    inputmimetype.setAttribute("name", "videomimeType")
+                    inputmimetype.setAttribute("id", "videomimeType")
+                    inputmimetype.setAttribute("style", "display:none")
+
+                    inputmimetype.value = "video/mp4";//srcEncoded.match(/^.*(?=;)/)[0];;//"data:image/jpeg";;// 
+
+
+                    resultuploadvideomateri.innerHTML = "";
+                    resultuploadvideomateri.appendChild(inputbase64);
+                    resultuploadvideomateri.appendChild(inputfilename);
+                    resultuploadvideomateri.appendChild(inputmimetype);
+                }
+                //---------------------------------------------------
+                chunks = [];
+
+            }
+            btnBack.addEventListener('click', (ev) => {
+                if (mediaRecorder.state == "recording") {
+                    alert("Anda sedang merekam. Silakan berhenti dulu dari perekaman");
+                    return
+                }
+                video.play();
+                vidSave.src = "";
+                videostatus.removeAttribute("class");
+                videostatus.setAttribute("class", "w3-blue w3-opacity w3-display-topmiddle w3-hide");//.replace("w3-blue w3-opacity w3-display-topmiddle w3-show", "w3-blue w3-opacity w3-display-topmiddle w3-hide");
+                elvid1.removeAttribute("class");
+                elvid1.setAttribute("class", "containerbaru w3-center w3-show");
+                elvid2.removeAttribute("class");
+                elvid2.setAttribute("class", "containerbaru w3-center w3-hide");
+                spanstatus.innerHTML = "Kamera sudah siap, silakan rekam.";
+                resultuploadvideomateri.innerHTML = "";
+
+
+
+            })
+
+
+        })
+        .catch(function (err) {
+            //console.log(err.name, err.message);
+            alert(err.name + "\n" + err.message);
+        });
+
+    /*********************************
+    getUserMedia returns a Promise
+    resolve - returns a MediaStream Object
+    reject returns one of the following errors
+    AbortError - generic unknown cause
+    NotAllowedError (SecurityError) - user rejected permissions
+    NotFoundError - missing media track
+    NotReadableError - user permissions given but hardware/OS error
+    OverconstrainedError - constraint video settings preventing
+    TypeError - audio: false, video: false
+    *********************************/
+    // let tmbldiv = document.getElementById("elemenvideogaleri");
+    // tmbldiv.removeAttribute("style");
+    // tmbldiv.setAttribute("style", "display:none");
+
+    // elemenwebcam.setAttribute("style", "display:block");
+    // kontrolgaleri.style.display = "inline-block";
+    // resultuploadvideomateri.innerHTML = "";
+    showtomboltombolwebcam();
+}
+
+const tutupkamera = () => {
+    // vid.pause();
+    // vidlayar.removeAttribute("src");
+    //vidlayar.src=""
+    // vidSave.removeAttribute("src");
+    //vid.src = "";
+    if (localStream == "") {
+        alert("Mohon tunggu, proses loading sedang berlangsung....");
+        return
+    }
+    localStream.getTracks().forEach(k => k.stop());
+
+    resultuploadvideomateri.innerHTML = "";
+    tempattextarea.innerHTML = "";
+}
+function formatBytes(a, b = 2) {
+    if (0 === a)
+        return "0 Bytes";
+    const c = 0 > b ? 0 : b,
+        d = Math.floor(Math.log(a) / Math.log(1024));
+    return parseFloat((a / Math.pow(1024, d)).toFixed(c)) + " " + ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"][d]
+}
+
+const uploadvideomateri = () => {
+    resultuploadvideomateri.innerHTML = "";
+
+
+    //get the image selected
+    var item = document.querySelector('#tmbluploadvideomateri').files[0];
+
+
+    //create a FileReader
+    var reader = new FileReader();
+
+    //image turned to base64-encoded Data URI.
+    reader.readAsDataURL(item);
+    reader.name = item.name;//get the image's name
+    reader.size = item.size; //get the image's size
+    reader.onload = function (event) {
+        let mmtpe = event.target.result.match(/^.*(?=;)/)[0];
+
+
+        var srcEncoded = event.target.result;
+
+
+        resultuploadvideomateri.innerHTML = "";
+        let di = document.createElement("div");
+        di.setAttribute("class", "containerbaru w3-center")
+        if (mmtpe.indexOf("application/vnd") > -1) {
+
+            ifr = document.createElement("div");
+            ifr.setAttribute("class", "responsive-iframebaru w3-xxxlarge w3-center");
+
+            ifr.innerHTML = "PRATINJAU TIDAK TERSEDIA <br/> <br/> File Tidak Dikenal <br/> Jika tetap mengunggahnya, maka akan menjadi link download.";
+            di.appendChild(ifr);
+            resultuploadvideomateri.appendChild(di);
+        } else {
+            let ifr = document.createElement("iframe");
+            ifr.setAttribute("class", "responsive-iframebaru")
+            ifr.setAttribute("src", srcEncoded);
+            di.appendChild(ifr);
+            resultuploadvideomateri.appendChild(di)
+
+        }
+        resultuploadvideomateri.innerHTML += "<hr/>";
+
+        var inputbase64 = document.createElement("input");
+        inputbase64.setAttribute("name", "videodata");
+        inputbase64.setAttribute("id", "videodata");
+        inputbase64.value = srcEncoded.replace(/^.*,/, '');
+        inputbase64.setAttribute("style", "display:none");
+
+        var inputfilename = document.createElement("input");
+        inputfilename.setAttribute("name", "videofilename");
+        inputfilename.setAttribute("id", "videofilename");
+        inputfilename.setAttribute("style", "display:none");
+        inputfilename.value = "Kelas_" + idJenjang + "_" + StringTanggal(new Date()) + "_id_" + new Date().getTime();;// + namebantukirim.value.toUpperCase().replace(/\s+/, "_");
+
+        var inputmimetype = document.createElement("input");
+        inputmimetype.setAttribute("name", "videomimeType")
+        inputmimetype.setAttribute("id", "videomimeType")
+        inputmimetype.setAttribute("style", "display:none")
+
+        inputmimetype.value = srcEncoded.match(/^.*(?=;)/)[0];;//"data:image/jpeg"; 
+
+
+        resultuploadvideomateri.appendChild(inputbase64);
+        resultuploadvideomateri.appendChild(inputfilename);
+        resultuploadvideomateri.appendChild(inputmimetype);
+        let teks1 = document.createTextNode("Data siap upload. Klik tombol ini ")
+        resultuploadvideomateri.appendChild(teks1);
+        let tmbl = document.createElement("button",);
+        tmbl.setAttribute("class", "w3-black w3-button w3-hover-blue  w3-tiny w3-round-xxlarge");
+        tmbl.setAttribute("onclick", "uplvideomateri2()");
+        tmbl.innerHTML = "Upload ke Server"
+
+        resultuploadvideomateri.append(tmbl);
+        tmbl = document.createElement("button",);
+        tmbl.setAttribute("class", "w3-red w3-button w3-hover-blue  w3-tiny w3-round-xxlarge");
+        tmbl.setAttribute("onclick", "uplvideomateriyt()");
+        tmbl.innerHTML = "Upload ke Youtube"
+
+        resultuploadvideomateri.append(tmbl)
+
+    }
+    //daftarvideo();
+    //tutupkamera();
+}
+
+function bukaelemengaleri() {
+    let tmbldiv = document.getElementById("elemenvideogaleri");
+    tmbldiv.removeAttribute("style");
+    tmbldiv.setAttribute("style", "display:inline-block");
+    tutupkamera();
+    elemenwebcam.setAttribute("style", "display:none");
+    // kontrolgaleri.style.display = "none";
+    resultuploadvideomateri.innerHTML = "";
+}
+function bukaelemenwebcam() {
+    let tmbldiv = document.getElementById("elemenvideogaleri");
+    tmbldiv.removeAttribute("style");
+    tmbldiv.setAttribute("style", "display:none");
+    mulaivideo();
+    elemenwebcam.setAttribute("style", "display:block");
+    // kontrolgaleri.style.display = "inline-block";
+    resultuploadvideomateri.innerHTML = "";
+    showtomboltombolwebcam();
+
+}
+function bukascreenrecorder() {
+    showtomboltombolscreenrecorder();
+    let tmbldiv = document.getElementById("elemenvideogaleri");
+    tmbldiv.removeAttribute("style");
+    tmbldiv.setAttribute("style", "display:none");
+    tutupkamera();
+    elemenwebcam.setAttribute("style", "display:block");
+    // kontrolgaleri.style.display = "inline-block";
+    resultuploadvideomateri.innerHTML = "";
+
+
+}
+
+
+function showtomboltombolwebcam() {
+    let el = document.getElementById("tomboltombolwebcam");
+    let el2 = document.getElementById("tomboltombolscreenrecorder");
+    el.style.display = "block";
+    el2.style.display = "none";
+    // vidlayar.setAttribute("poster", "/img/192.png");
+    // vidlayar.play();
+    // vidSave.stop();
+    elvid1.removeAttribute("class");
+    elvid1.setAttribute("class", "containerbaru w3-center w3-show");
+    elvid2.removeAttribute("class");
+    elvid2.setAttribute("class", "containerbaru w3-center w3-hide");
+    spanstatus.innerHTML = "Kamera siap untuk merekam.";// <i class='fa fa-spin fa-refresh'></i>";
+    videostatus.removeAttribute("class");//.replace("w3-blue w3-opacity w3-display-topmiddle w3-hide", "w3-blue w3-opacity w3-display-topmiddle w3-show");
+    videostatus.setAttribute("class", "w3-blue w3-opacity w3-display-topmiddle w3-hide");//.replace("w3-blue w3-opacity w3-display-topmiddle w3-hide", "w3-blue w3-opacity w3-display-topmiddle w3-show");
+
+}
+function showtomboltombolscreenrecorder() {
+    let el = document.getElementById("tomboltombolwebcam");
+    let el2 = document.getElementById("tomboltombolscreenrecorder");
+    el.style.display = "none";
+    el2.style.display = "block";
+
+    elvid1.removeAttribute("class");
+    elvid1.setAttribute("class", "containerbaru w3-center w3-show");
+    elvid2.removeAttribute("class");
+    elvid2.setAttribute("class", "containerbaru w3-center w3-hide");
+    spanstatus2.innerHTML = "Silakan pilih layar (Screen) untuk direkam.";// <i class='fa fa-spin fa-refresh'></i>";
+    videostatus.removeAttribute("class");//.replace("w3-blue w3-opacity w3-display-topmiddle w3-hide", "w3-blue w3-opacity w3-display-topmiddle w3-show");
+    videostatus.setAttribute("class", "w3-blue w3-opacity w3-display-topmiddle w3-hide")
+}
+const daftarvideo = async () => {
+    //alert ("bakal dibuat modal");
+    //koleksigambar.style.display = 'block';
+    koleksivideo.style.display = 'block';
+    tempattextarea.innerHTML = "";
+    // document.getElementById("tabelkoleksigambarmateri").innerHTML ="";
+    document.getElementById("tabelkoleksivideomateri").innerHTML = "<i class='fa fa-spin fa-refresh w3-xxxlarge'></i>";
+    await fetch(linkmateri + "&action=koleksivideo")
+        .then(m => m.json())
+        .then(j => {
+            // console.log(j)
+            // console.log(j.records)
+            // let datasheet = j.records;
+            let tabelmateri = document.createElement("table");
+            tabelmateri.setAttribute("class", "versi-table w3-card-4 w3-center");
+            tabelmateri.setAttribute("id", "tabeltabelkoleksiuploadvideo");
+            let row = tabelmateri.insertRow(0);
+            let cell = row.insertCell(-1);
+            cell.innerHTML = "No";
+            cell = row.insertCell(-1);
+            cell.setAttribute("style", "width:50%");
+            cell.innerHTML = "Preview";
+            cell = row.insertCell(-1);
+            cell.innerHTML = "Tombol Copy";
+
+            cell = row.insertCell(-1);
+            cell.innerHTML = "Keterangan";
+
+
+
+            for (let i = 0; i < j.records.length; i++) {
+                row = tabelmateri.insertRow(-1);
+                cell = row.insertCell(-1);
+                cell.innerHTML = i + 1;
+                cell = row.insertCell(-1);
+                cell.innerHTML = j.records[i].htmlgambar;
+                console.log(j.records[i].htmlgambar);
+                cell = row.insertCell(-1);
+
+
+                let txtarea = document.createElement("textarea");
+                txtarea.setAttribute("id", "kodevideo" + i)
+                txtarea.value = j.records[i].htmlgambar;
+                txtarea.setAttribute("style", "width:30%");
+                // cell.appendChild(txtarea);
+                cell.innerHTML = `<button class="w3-button w3-tiny w3-round-xlarge w3-green" onclick="kopipaste('kodevideo${i}')">Copy Kode</button>`;
+
+                tempattextarea.appendChild(txtarea)
+                cell = row.insertCell(-1);
+                cell.innerHTML = j.records[i].keterangan;
+            }
+            document.getElementById("tabelkoleksivideomateri").innerHTML = "";
+            document.getElementById("tabelkoleksivideomateri").appendChild(tabelmateri);
+
+        })
+    //console.log(linkmateri)
+    mulaivideo()
+}
+
+let bukalayar = document.getElementById('bukalayar');
+let mulairekamlayar = document.getElementById('start');
+let stoprekamlayar = document.getElementById('stop');
+let statusspan = document.getElementById('spanstatusrekaman2');
+var displayMediaOptions = {
+    audio: true,
+    video: {
+        mediaSource: "screen"
+    }
+}
+let audioTrack, videoTrack, stream, mediaRecorderr, recordedChunks = [];
+let tanda = 0;
+bukalayar.addEventListener('click', (ev) => {
+
+
+    layar = navigator.mediaDevices.getDisplayMedia(displayMediaOptions)
+    layar.then(m => {
+        [videoTrack] = m.getVideoTracks();
+        navigator.mediaDevices.getUserMedia({ audio: true })
+            .then((audiostream) => {
+                [audioTrack] = audiostream.getAudioTracks();
+                stream = new MediaStream([videoTrack, audioTrack]);
+                // let video = document.querySelector('video');
+                // if ("srcObject" in video) {
+                //     video.srcObject = stream;
+                // } else {
+                //     //old version
+                //     video.src = window.URL.createObjectURL(stream);
+                // }
+                //--------------------------------------------
+
+                //--------------------------------------------
+                vidlayar.srcObject = stream;
+                localStream = stream;
+                //vidSave.srcObject = stream;
+                vidlayar.play();
+                videoTrack.volume = 0;
+                statusspan.innerHTML = "Anda siap merekam aktivitas layar. Klik tombol MULAI REKAM untuk merekam."
+                mediaRecorderr = new MediaRecorder(stream);
+                mediaRecorderr.ondataavailable = handleDataAvailable;
+                mediaRecorderr.onstop = handleStop;
+                tanda = 1;
+            })
+
+
+
+    })
+    resultuploadvideomateri.innerHTML = "";
+    tutupkamera();
+    elvid1.removeAttribute("class");
+    elvid1.setAttribute("class", "containerbaru w3-center w3-show");
+    elvid2.removeAttribute("class");
+    elvid2.setAttribute("class", "containerbaru w3-center w3-hide");
+})
+mulairekamlayar.addEventListener('click', (ev) => {
+    // console.log(recordedChunks.length)
+    //console.log(tanda)
+    if (tanda == 0) {
+        alert("Anda belum memilih layar untuk direkam. Silakan klik PILIH LAYAR dan arahkan pada layar yang ingin Anda rekam aktivitasnya.");
+        return
+    };
+    spanstatus2.innerHTML = "Sedang merekam <i class='fa fa-spin fa-refresh'></i>";
+    videostatus.removeAttribute("class");//.replace("w3-blue w3-opacity w3-display-topmiddle w3-hide", "w3-blue w3-opacity w3-display-topmiddle w3-show");
+    videostatus.setAttribute("class", "w3-blue w3-opacity w3-display-topmiddle w3-show");//.replace("w3-blue w3-opacity w3-display-topmiddle w3-hide", "w3-blue w3-opacity w3-display-topmiddle w3-show");
+    elvid1.removeAttribute("class");
+    elvid1.setAttribute("class", "containerbaru w3-center w3-show");
+    elvid2.removeAttribute("class");
+    elvid2.setAttribute("class", "containerbaru w3-center w3-hide");
+    //console.log(mediaRecorderr);
+    vidlayar.play();
+
+    mediaRecorderr.start();
+
+
+    resultuploadvideomateri.innerHTML = "";
+    // Register Event Handlers
+
+});
+
+
+stoprekamlayar.addEventListener('click', (ev) => {
+    if (tanda == 0 || mediaRecorderr.state == "inactive") {
+        alert("Anda belum melakukan aktivitas rekam layar.")
+        return
+    }
+    mediaRecorderr.stop();
+    spanstatus2.innerHTML = "Rekaman Layar selesai dengan ";
+    videostatus.removeAttribute("class");
+    videostatus.setAttribute("class", "w3-blue w3-opacity w3-display-topmiddle w3-hide");//.replace("w3-blue w3-opacity w3-display-topmiddle w3-show", "w3-blue w3-opacity w3-display-topmiddle w3-hide");
+    elvid1.removeAttribute("class");
+    elvid1.setAttribute("class", "containerbaru w3-center w3-hide");
+    elvid2.removeAttribute("class");
+    elvid2.setAttribute("class", "containerbaru w3-center w3-show");
+
+});
+
+function handleDataAvailable(e) {
+
+    recordedChunks.push(e.data);
+}
+
+// Saves the video file on stop
+async function handleStop(e) {
+    resultuploadvideomateri.innerHTML = "";
+    let blob = new Blob(recordedChunks, { 'type': 'video/mp4;' });
+    recordedChunks = [];
+    let videoURL = window.URL.createObjectURL(blob);
+    vidSave.src = videoURL;
+
+    spanstatus.innerHTML = "Ukuran Video " + formatBytes(blob.size, 2);
+    spanstatus2.innerHTML += "Ukuran Video " + formatBytes(blob.size, 2);
+    //---------------------------------------------------
+    var reader = new FileReader();
+    reader.readAsDataURL(blob);
+
+    reader.onload = function (e) {
+        let urlbs64 = e.target.result;
+        // console.log(urlbs64);
+        var inputbase64 = document.createElement("input");
+        inputbase64.setAttribute("name", "videodata");
+        inputbase64.setAttribute("id", "videodata");
+        inputbase64.value = urlbs64.replace(/^.*,/, '');
+
+        inputbase64.setAttribute("style", "display:none");
+
+        var inputfilename = document.createElement("input");
+        inputfilename.setAttribute("name", "videofilename");
+        inputfilename.setAttribute("id", "videofilename");
+        inputfilename.setAttribute("style", "display:none");
+        inputfilename.value = "Kelas_" + idJenjang + "_" + StringTanggal(new Date()) + "_id_" + new Date().getTime();;// + namebantukirim.value.toUpperCase().replace(/\s+/, "_");
+
+        var inputmimetype = document.createElement("input");
+        inputmimetype.setAttribute("name", "videomimeType")
+        inputmimetype.setAttribute("id", "videomimeType")
+        inputmimetype.setAttribute("style", "display:none")
+
+        inputmimetype.value = "video/mp4";//srcEncoded.match(/^.*(?=;)/)[0];;//"data:image/jpeg";;// 
+
+        resultuploadvideomateri.innerHTML = ""
+        resultuploadvideomateri.appendChild(inputbase64);
+        resultuploadvideomateri.appendChild(inputfilename);
+        resultuploadvideomateri.appendChild(inputmimetype);
+    }
+    //---------------------------------------------------
+    recordedChunks = [];
+    //vidlayar.src = "";
+    tanda = 0;
+    tutupkamera();
+
+
+}
+
+
+//
+
+const uplvideomateri = async () => {
+    let ketval = document.formuploadmateri.idmapel.value
+    let val = (ketval == "") ? "e-lamaso" : ketval;
+    let gmbrdata, gmbrfilename, gmbrmimeType;
+    gmbrdata = document.getElementById("videodata");
+    gmbrfilename = document.getElementById("videofilename");
+    gmbrmimeType = document.getElementById("videomimeType");
+    if (gmbrdata == null && gmbrfilename == null && gmbrmimeType == null) {
+        alert("Anda belum siap mengupload video/file lainnya ke server");
+        return
+    }
+    let frmdata = new FormData();
+    frmdata.append("gmbrdata", gmbrdata.value);
+    frmdata.append("gmbrfilename", gmbrfilename.value);
+    frmdata.append("gmbrmimeType", gmbrmimeType.value);
+    frmdata.append("keterangan", val);
+
+    resultuploadvideomateri.innerHTML = `<i class="fa fa-spin fa-spinner"></i>`
+
+    await fetch(linkmateri + "&action=uploadvideomateri", {
+        method: 'post',
+        body: frmdata
+    })
+        .then(m => m.json())
+        .then(k => {
+            //console.log(k);
+
+            //resultuploadvideomateri.innerHTML = k.result;
+            let txtarea = document.createElement("textarea");
+            txtarea.setAttribute("id", "kodegambarjson")
+            txtarea.textContent = k.result
+
+            resultuploadvideomateri.innerHTML = `<br><button class="w3-button w3-tiny w3-block w3-round-xlarge w3-dark-grey" onclick="kopipaste('kodegambarjson')">Copy Kode</button>`;
+            //tempattextarea.innerHTML = "";
+            tempattextarea.appendChild(txtarea)
+            //cell = row.insertCell(-1);
+            //cell.innerHTML = j.records[i].keterangan;
+
+
+            // document.getElementById("tabelkoleksigambarmateri").appendChild(tabelmateri)
+            //document.getElementById("tabelkoleksigambarmateri").appendChild()
+            //daftarGambar()
+            let tb = document.getElementById("tabeltabelkoleksiuploadvideo");//.appendChild(txtarea)
+            let tr = tb.insertRow(-1);
+            let sel = tr.insertCell(-1);
+            sel.innerHTML = "NEW";
+            sel = tr.insertCell(-1);
+            sel.innerHTML = k.result;
+            sel = tr.insertCell(-1);
+            sel.innerHTML = `<button class="w3-button w3-tiny w3-round-xlarge w3-green" onclick="kopipaste('kodegambarjson')">Copy Kode</button>`;
+            sel = tr.insertCell(-1);
+            sel.innerHTML = `Terbaru`;
+
+
+
+
+
+            // resultuploadvideomateri.innerHTML = "";
+
+            ///--------------------------------------------          
+        })
+        .catch(er => alert(er))
+
+
+}
+const uplvideomateri2 = async () => {
+    let ketval = "item akreditasi";//document.formuploadmateri.idmapel.value
+    let val = (ketval == "") ? "e-lamaso" : ketval;
+    let gmbrdata, gmbrfilename, gmbrmimeType;
+    gmbrdata = document.getElementById("videodata");
+    gmbrfilename = document.getElementById("videofilename");
+    gmbrmimeType = document.getElementById("videomimeType");
+    if (gmbrdata == null && gmbrfilename == null && gmbrmimeType == null) {
+        alert("Anda belum siap mengupload video/file lainnya ke server");
+        return
+    }
+    let frmdata = new FormData();
+    frmdata.append("gmbrdata", gmbrdata.value);
+    frmdata.append("gmbrfilename", gmbrfilename.value);
+    frmdata.append("gmbrmimeType", gmbrmimeType.value);
+    frmdata.append("keterangan", val);
+
+    resultuploadvideomateri.innerHTML = `<i class="fa fa-spin fa-spinner"></i>`
+
+    await fetch(linkmateri + "&action=uploadvideomateri", {
+        method: 'post',
+        body: frmdata
+    })
+        .then(m => m.json())
+        .then(k => {
+            //console.log(k);
+
+            resultuploadvideomateri.innerHTML = k.result;
+            let txtarea = document.createElement("textarea");
+            txtarea.setAttribute("id", "kodegambarjson")
+            txtarea.textContent = k.result
+
+            resultuploadvideomateri.innerHTML += `<hr><button class="w3-button w3-tiny w3-block w3-round-xlarge w3-dark-grey" onclick="kopipaste('kodegambarjson')">Copy Kode</button>`;
+            //tempattextarea.innerHTML = "";
+            tempattextarea.appendChild(txtarea)
+            //cell = row.insertCell(-1);
+            //cell.innerHTML = j.records[i].keterangan;
+
+
+            // document.getElementById("tabelkoleksigambarmateri").appendChild(tabelmateri)
+            //document.getElementById("tabelkoleksigambarmateri").appendChild()
+            //daftarGambar()
+            let tb = document.getElementById("tabeltabelkoleksiuploadvideo");//.appendChild(txtarea)
+            let tr = tb.insertRow(-1);
+            let sel = tr.insertCell(-1);
+            sel.innerHTML = "NEW";
+            sel = tr.insertCell(-1);
+            sel.innerHTML = k.result;
+            sel = tr.insertCell(-1);
+            sel.innerHTML = `<button class="w3-button w3-tiny w3-round-xlarge w3-green" onclick="kopipaste('kodegambarjson')">Copy Kode</button>`;
+            sel = tr.insertCell(-1);
+            sel.innerHTML = `Terbaru`;
+
+
+
+
+
+            // resultuploadvideomateri.innerHTML = "";
+
+            ///--------------------------------------------          
+        })
+        .catch(er => alert(er))
+
+
+}
+
+const uplvideomateriyt = () => {
+    let ketval = document.formuploadmateri.idmapel.value
+    let val = (ketval == "") ? "e-lamaso" : ketval;
+    let gmbrdata, gmbrfilename, gmbrmimeType;
+    gmbrdata = document.getElementById("videodata");
+    gmbrfilename = document.getElementById("videofilename");
+    gmbrmimeType = document.getElementById("videomimeType");
+    if (gmbrdata == null && gmbrfilename == null && gmbrmimeType == null) {
+        alert("Anda belum siap mengupload video/file lainnya ke server");
+        return
+    }
+    alert("Mengunggah video ke Youtube akan dipublikasikan di Chanel elamaso. Video Anda akan menjadi milik kami.")
+    setTimeout(function () {
+        alert("Maaf, fitur dalam tahap pengembangan.... :(")
+    }, 1000);
+    //resultuploadvideomateri.innerHTML = "";
+}
+
+
+const kopipaste = (id) => {
+    var copyText = document.getElementById(id);
+    copyText.select();
+    copyText.setSelectionRange(0, 99999)
+    document.execCommand("copy");
+    // alert("Copied the text: " + copyText.value);
+    // alert("Berhasil Ngopi ... ^_^");
+    //resultuploadpotomateri.innerHTML = "";
+}
+
+

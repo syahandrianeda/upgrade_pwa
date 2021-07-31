@@ -1,37 +1,74 @@
-const staticCacheName = "site-static-tp4";//+ new Date().getTime();
-const dynamicChace = "cache_dynamic_tp2";//+ new Date().getTime();
+const staticCacheName = "cache_statis64";// + new Date().getTime();
+const dynamicChace = "cache_dinamis2";// + new Date().getTime();
 
 const assets = [
     "/",
-    "/img/Gambar20%Orangtua%20copy.png",
-    "/img/PTK.png",
+    "/css/w3.css",
+    "/css/firststyle.css",
+    "/css/css_siswa.css",
+    "/css/css_timeline.css",
+    "/css/csssiswa.css",
+    "/css/index.html",
+    "/css/stylegurukelas.css",
+    "/css/w3-theme-blue-grey.css",
+
+    "/img/Gambar%20Orangtua%20copy.png",
     "/img/anaksd.png",
+    "/img/PTK.png",
+    "/img/eabsensi.webp",
     "/img/icons/pic144.png",
+    "/img/lamaso.webp",
+    "/img/192.png",
+    "/img/L_vT86_100px.png",
+    "/img/barloading.gif",
+    "/img/bgwa2.png",
+    "/img/bgwa3.png",
+    "/img/pngegg%20(1).png",
+    "/img/pngegg%20(12).png",
+    "/img/pngegg%20(13).png",
+    "/img/pngegg%20(17).png",
+    "/img/pngegg%20(2).png",
+    "/img/pngegg%20(3).png",
+    "/img/akarkuadrat.PNG",
+    "/img/akarkubik.PNG",
+    "/img/lg_absensi.png",
+    "/img/lg_datakelas.png",
+    "/img/lg_frame.webp",
+    "/img/lg_kehadiran.webp",
+    "/img/lg_kurikulum.png",
+    "/img/lg_nilaii.webp",
+    "/img/lg_pembelajaran.png",
+    "/img/lg_rapor.webp",
+    "/img/pangkat.PNG",
+    "/img/pecahanbiasa.PNG",
+    "/img/pecahancampuran.PNG",
+
+
+    "/statis/app.js",
     "/statis/main.js",
-    "/statis/guru.js",
     "/statis/gk.js",
+    "/statis/guru.js",
+    "/statis/gmp.js",
+    "/statis/kepsek.js",
+    "/statis/ortu.js",
+    "/statis/renderpdf.js",
     "/statis/siswa.js",
-
-    "/script/ortujs.js",
-    "/script/renderpdf.js",
-    "/script/siswa.js",
-    "/script/materi.js",
-    "/script/uploadmedia.js",
+    "/idsekolah.js",
+    "/timekbm.js",
+    "/statis/update.json",
 
 
-    "/kepsek/exceltabel.js",
-    "/kepsek/skrip.js",
-    "/kepsek/umum.js",
-    "/kepsek/unfaedah.js",
-    "/kepsek/videoelamaso.js",
-    "/kepsek/zframe.js",
-    "/user/elamaso_offline.html",
 
-    "/staff/staff.js",
-    "/staff/exceltabel.js",
-    "/staff/umum.js",
-    "/staff/unfaedah.js",
-    "/staff/videolamaso.js"
+    "/index.html",
+    "/user/gmp.html",
+    "/user/guru.html",
+    "/user/kepsek.html",
+    "/user/offline.html",
+    "/user/siswa.html",
+    "/user/orangtua.html",
+    "/user/staff.html",
+
+
 
 
 
@@ -50,6 +87,7 @@ const limitCacheSize = (name, size) => {
 
 self.addEventListener('install', evt => {
     evt.waitUntil(
+
         caches.open(staticCacheName).then(cache => {
             console.log('caching shell assets');
             cache.addAll(assets);
@@ -77,14 +115,14 @@ self.addEventListener('activate', evt => {
 self.addEventListener('fetch', evt => {
 
     // console.log(evt.request.url);
-    if (evt.request.url.indexOf('https://script.google.com') === -1) {
+    if (evt.request.url.indexOf('https://script.google.com') === -1 && assets.indexOf(evt.request.url) == -1) {
         evt.respondWith(
             caches.match(evt.request).then(cacheRes => {
                 return cacheRes || fetch(evt.request).then(fetchRes => {
                     return caches.open(dynamicChace).then(cache => {
                         cache.put(evt.request.url, fetchRes.clone());
                         // check cached items size
-                        limitCacheSize(dynamicChace, 5);
+                        limitCacheSize(dynamicChace, 30);
                         return fetchRes;
                     })
                 });

@@ -1,0 +1,16 @@
+[
+    {
+        "namaversi": "TP2021_V.1",
+        "tanggal": "30-Juli-2021",
+        "ket": [
+            "Update versi PWA (Progressive Webb Application) di semua fitur",
+            "Penambahan fitur Info (informasi update dari setiap perubahan)",
+            "Perbaikan Absen bantu bagi guru kelas dan guru mapel",
+            "Perbaikan Fitur Tambah Siswa",
+            "Perubahan fitur preview gambar yang akan diunggah",
+            "Perbaikan url konten materi sekolah lain",
+            "Perbaikan Fitur pendeteksian opsi PILIHAN GANDA TIPE C (opsi A, B, dan C) pada editor kunci jawaban"
+        ],
+        "video": []
+    }
+]

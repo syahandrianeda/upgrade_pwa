@@ -4987,7 +4987,8 @@ function bantuabsen(encodenama) {
     document.bantukirim.reset();
     var teks = encodenama;
     var split = teks.split("_");
-    var kodenama = parseInt(split[0]);
+    var kodenama = jsondatasiswa.filter(s => s.id == split[0])[0];//parseInt(split[0]);
+    console.log(kodenama)
     var tgl = split[1];
 
     document.getElementById("divbantuabsen").style.display = "block";
@@ -4998,10 +4999,10 @@ function bantuabsen(encodenama) {
     loginclosebantu.innerHTML = "Batal";
     kodefilepotosiswaabsen.innerHTML = "";
 
-    document.getElementById("bantusiapa").innerHTML = jsondatasiswa[kodenama].pd_nama; //decodeURIComponent(kodenama);
-    document.bantukirim.name.value = jsondatasiswa[kodenama].pd_nama; //decodeURIComponent(kodenama);
+    document.getElementById("bantusiapa").innerHTML = kodenama.pd_nama;//jsondatasiswa[kodenama].pd_nama; //decodeURIComponent(kodenama);
+    document.bantukirim.name.value = kodenama.pd_nama;//jsondatasiswa[kodenama].pd_nama; //decodeURIComponent(kodenama);
     document.bantukirim.kelas.value = ruangankelas;
-    document.bantukirim.tokensiswa.value = jsondatasiswa[kodenama].id;
+    document.bantukirim.tokensiswa.value = parseInt(split[0]);//jsondatasiswa[kodenama].id;
     document.getElementById("potosiswa").src = "/img/eabsensi.webp";
     var ltgl = tgl.length;
     var dtg, dbln, dthn

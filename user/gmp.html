@@ -189,9 +189,9 @@
             <a href="javascript:void(0);" class="w3-bar-item w3-button w3-padding" onclick="raportkelas()"><i
                     class="fa fa-star-half-o"></i>
                 Raport</a>
-            <a href="javascript:void(0);" class="w3-bar-item w3-button w3-padding" onclick="anjangsanaguru()"><i
-                    class="fa fa-group"></i>
-                Anjangsana</a>
+            <a href="javascript:void(0);" class="w3-bar-item w3-button w3-padding" onclick="infoupdate()"><i
+                    class="fa fa-info"></i>
+                Info</a>
 
 
             <a href="#" class="w3-bar-item w3-button w3-padding" onclick="logout()"><i class="fa fa-times"></i> 
@@ -766,6 +766,10 @@
                                 class="w3-col l9 tekesebarankd w3-left w3-card-4 w3-container w3-round-large  w3-margin-top w3-light-grey">
 
                                 SEBARAN KD TIDAK TERDETEKSI (JIKA TERDETEKSI AKAN MUNCUL TABEL SEPERTI INI)
+                                <br />Atau jika perlu, silakan buat sebaran KD di tombol berikut:
+                                <label for="modal_generate_sebarankd"
+                                    class="w3-button warnaeka w3-border-bottom w3-border-black w3-round-large">Generate
+                                    Sebaran KD</label>
 
 
                                 <table class="w3-table-all tabelsebarankd">
@@ -1464,6 +1468,8 @@
                 <div id="sembunyikan" style="display:none">
                     time_stamp:
                     <input name="Time_Stamp" id="Time_Stampbantukirim" /><br />
+                    <input name="tokensiswa" id="tokensiswabantukirim" /><br />
+
                     id:
                     <input name="id" id="idbantukirim" /><br />
                     name:
