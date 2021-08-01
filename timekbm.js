@@ -111,11 +111,13 @@ if (linkyangsedangaktif.indexOf("guru.html") > -1) {
 }
 
 var tapel_bulan_ini = new Date().getMonth();
-var tapel_bar
+var tapel_bar, semester_bar;
 if (tapel_bulan_ini >= 6) {
     tapel_bar = new Date().getFullYear() + "/" + (new Date().getFullYear() + 1);
+    semester_bar = 1
 } else {
     tapel_bar = (new Date().getFullYear() - 1) + "/" + new Date().getFullYear();
+    semester_bar = 2;
 }
 document.getElementById("tapel").innerHTML = tapel_bar
 

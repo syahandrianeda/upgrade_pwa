@@ -1,5 +1,5 @@
-const staticCacheName = "cache_statis64";// + new Date().getTime();
-const dynamicChace = "cache_dinamis2";// + new Date().getTime();
+const staticCacheName = "statis_cache_v104";// + new Date().getTime();
+const dynamicChace = "cache_dinamis15";// + new Date().getTime();
 
 const assets = [
     "/",
@@ -51,7 +51,6 @@ const assets = [
     "/statis/gmp.js",
     "/statis/kepsek.js",
     "/statis/ortu.js",
-    "/statis/renderpdf.js",
     "/statis/siswa.js",
     "/idsekolah.js",
     "/timekbm.js",
@@ -122,7 +121,7 @@ self.addEventListener('fetch', evt => {
                     return caches.open(dynamicChace).then(cache => {
                         cache.put(evt.request.url, fetchRes.clone());
                         // check cached items size
-                        limitCacheSize(dynamicChace, 30);
+                        limitCacheSize(dynamicChace, 10);
                         return fetchRes;
                     })
                 });

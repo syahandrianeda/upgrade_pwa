@@ -982,6 +982,10 @@ async function pembelajaran() {
             } else {
                 timelinekbm.innerHTML = "<h4>Anda belum pernah membuat Materi</h4>";
             }
+            tombolpublikasikan.setAttribute("onclick", "publikasikanmateribaru()")
+            tombolpublikasikan.removeAttribute("class"); //.wa w3-deep-purple w3-hover-aqua);
+            tombolpublikasikan.setAttribute("class", "wa w3-deep-purple w3-hover-aqua");
+            tombolpublikasikan.innerHTML = "PUBLIKASIKAN";
             clearInterval(stoploadingtopbar);
             let divlod = document.querySelector(".loadingtopbar");
             divlod.style.width = "100%";
@@ -8955,6 +8959,7 @@ function updatenilaikoreksihariini(id) {
     // document.getElementById("nilaiakhiressay").value = nilai;
     document.getElementById("nilaiakhiressay").value = nilaiakhir;
     /// ---------------------------------------------------
+    document.getElementById("nilaiEssayku").innerHTML = nilaiakhir;
 
     //document.getElementById("nilaiakhiressay").value = nilaiakhir;
     //document.getElementById("htmlljkkoreksi").textContent = divljkkoreksi.innerHTML;

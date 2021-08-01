@@ -851,8 +851,13 @@ async function pembelajaran() {
 
     }
     await kurikulumdiamdiam();
+
     tampilinsublamangurukelas("pembelajaran");
     timelinekbm.style.display = "block";
+    tombolpublikasikan.setAttribute("onclick", "publikasikanmateribaru()")
+    tombolpublikasikan.removeAttribute("class"); //.wa w3-deep-purple w3-hover-aqua);
+    tombolpublikasikan.setAttribute("class", "wa w3-deep-purple w3-hover-aqua");
+    tombolpublikasikan.innerHTML = "PUBLIKASIKAN";
 
     fetch(linkmateri + "&action=kronolog&idtoken=" + idJenjang)
         .then(m => m.json())

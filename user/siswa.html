@@ -32,6 +32,7 @@
     <link rel="stylesheet" href="/css/w3-theme-blue-grey.css">
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script> -->
@@ -177,12 +178,7 @@
                 </strong>
             </div>
         </div>
-        <!-- >>>>>> SELESAI A. SIDEBAR -->
-
-
-        <!-- B. MENU BAR -->
-
-        <hr>
+        <hr />
         <div class="w3-container">
             <h5>Menu e-Lamaso</h5>
         </div>
@@ -236,14 +232,12 @@
 
 
     </nav>
-    <!-- Overlay effect when opening sidebar on small screens -->
     <div class="w3-overlay   w3-animate-opacity w3-center" onclick="w3_close()"
         style="cursor:pointer;background-color:rgb(235, 235, 233)" title="close side menu" id="myOverlay">
         <img src="/img/bgwa3.png" style="margin:15% 5% 5% 25%">
     </div>
 
 
-    <!-- Laman ' -->
     <div class="w3-main" style="margin-top:43px;" id="lamansiswa">
         <header id="idheaderguru" class="w3-container">
             <h5>
@@ -261,8 +255,8 @@
             style="background-color:rgb(250, 234, 8)">
             <div class="w3-card w3-white w3-margin-top w3-container w3-round-large">
 
-                Informasi untuk Ananda <span id="namaku"></span>:
-                <span class="ketabsensiswa"></span>
+                Informasi untuk Ananda <br /><span id="namaku"></span>:<br />
+                <span class="ketabsensiswa"></span><br />
                 <div class="w3-section belumabsen">
                     <button class="w3-button w3-yellow w3-hover-teal w3-card-4 w3-round-large"
                         onclick="bantuabsen()">Mulai
@@ -274,6 +268,7 @@
                         onclick="panggilmateri()">Mulai Belajar</button>
 
                 </div>
+                <hr class="w3-bottombar" />
                 <div class="klikmateri w3-container" style="overflow-x: auto; margin:0 auto">
                 </div>
             </div>
@@ -305,7 +300,7 @@
         <div class="w3-row-padding">
             <div class="w3-third " style="margin:50px 0;cursor: pointer;" onclick="profilsayasiswa()">
                 <div class="w3-container n_zoom w3-center ">
-                    <div><img src="/img/pngegg (17).png?s80" style="height: 90px;"></div>
+                    <div><img src="/img/pngegg (17).png" style="height: 90px;" alt="profilsiswa"></div>
                     <!-- <div><img src="/img/lg_absensi.png"></div> -->
 
                     <h3>Tentang Aku </h3>
@@ -313,7 +308,7 @@
             </div>
             <div class="w3-third " style="cursor: pointer; margin:50px 0" onclick="menudataabsen()">
                 <div class="w3-container n_zoom w3-center ">
-                    <div><img src="/img/pngegg (3).png" style="height: 90px;"></div>
+                    <div><img src="/img/pngegg (3).png" style="height: 90px;" alt="menuabsen"></div>
 
 
                     <h3>Kehadiranku</h3>
@@ -321,14 +316,14 @@
             </div>
             <div class="w3-third  elabsen" style="cursor: pointer; margin:50px 0" onclick="menudatapembelajaran()">
                 <div class="w3-container n_zoom w3-center ">
-                    <div><img src="/img/pngegg (2).png" style="height: 90px;"></div>
+                    <div><img src="/img/pngegg (2).png" style="height: 90px;" alt="datapembelajaran"></div>
 
                     <h3>Pembelajaranku</h3>
                 </div>
             </div>
             <div class="w3-third " style="cursor: pointer; margin:50px 0" onclick="menudatapembelajaran()">
                 <div class="w3-container n_zoom w3-center ">
-                    <div><img src="/img/pngegg (1).png" style="height: 90px;"></div>
+                    <div><img src="/img/pngegg (1).png" style="height: 90px;" alt="databelajar"></div>
 
                     <h3>Nilai-nilaiku</h3>
                 </div>
@@ -336,14 +331,14 @@
 
             <div class="w3-third " style="margin:50px 0;cursor: pointer;" onclick="lihatraportsemester()">
                 <div class="w3-container n_zoom w3-center ">
-                    <div><img src="/img/pngegg (13).png" style="height: 90px;"></div>
+                    <div><img src="/img/pngegg (13).png" style="height: 90px;" alt="raportsemester"></div>
 
                     <h3>Raportku</h3>
                 </div>
             </div>
             <div class="w3-third barkelulusanku" style="cursor: pointer; margin:50px 0" onclick="pengumumankelulusan()">
                 <div class="w3-container n_zoom w3-center ">
-                    <div><img src="/img/pngegg (12).png" style="height: 90px;"></div>
+                    <div><img src="/img/pngegg (12).png" style="height: 90px;" alt="kelulusan"></div>
 
                     <h3>Kelulusanku</h3>
                 </div>
@@ -363,22 +358,6 @@
                 <div class="w3-dark-grey w3-panel">
 
                     <div class="w3-container w3-center">
-
-
-
-                        <!-- <h3>Kehadiran <br><span id="namaku">Saya</span></h3>
-                            <img class="avatarsiswa" src="/img/L_vT86_100px.png" alt="Avatar" style="width:80%">
-                            <div class="ketabsensiswa"><i class="fa fa-spin fa-spinner"></i> kehadiran saya ...</div>
-
-                        <div class="w3-section belumabsen">
-                            <button class="w3-button w3-green w3-round-xlarge" onclick="bantuabsen()">Absen</button>
-                          
-                        </div>
-                        <div class="w3-section sudahabsen">
-                            <button class="w3-button w3-green w3-round-xlarge" onclick="panggilmateri()">Lihat
-                                Materi</button>
-
-                        </div> -->
 
                     </div>
 
@@ -424,7 +403,7 @@
                     class="fa fa-download"></i> Download</label>
         </div>
     </div>
-    <div class="w3-main w3-light-grey w3-center" style="margin-left:300px;margin-top:43px;" id="lamanlibur">
+    <div class="w3-main w3-light-grey w3-center" style="margin-top:43px;" id="lamanlibur">
         <h4>Selamat Datang </h4>
         Hari ini adalah <span id="tekslibur1">...</span>, Ananda tidak belajar bersama e-Lamaso. Tapi Ananda dapat
         belajar mandiri dan tetap jaga kesehatan.
@@ -433,12 +412,10 @@
         <hr>
         <div class="w3-card" style="width:90%">
             <img src="/img/jaga_diri_dari_covid.webp" style="width:90%" />
-            <!-- <img src="https://drive.google.com/uc?export=view&id=17xtsD_IIF50FAYAbDDs3mgwBVERmNM6F" style="width:90%" /> -->
-            <!-- <img src="https://bnpb.go.id//uploads/new/galleries/x5yOfkdYL0Dg.jpeg" width="50%"/> -->
 
         </div>
     </div>
-    <div class="w3-main w3-justify" style="margin-left:300px;margin-top:43px;" id="lamanmateri">
+    <div class="w3-main w3-justify" style="margin-top:43px;" id="lamanmateri">
         <span id="indekmaterionline" class="w3-hide">ini berapa?</span>
         <div class="w3-container w3-card w3-white w3-margin-top kontenmateri">
             <h3>Ini halaman Materi</h3>
@@ -460,81 +437,128 @@
             vero? Similique, voluptates!
 
         </div>
+        <button class="wa tombol_hasilakhirelamaso w3-show" onclick="hasilakhirelamaso('kosong')">Selesai</button>
         <div id="hasilbelajarsekali">
             <div id="tescekelement"></div>
         </div>
-        <!-- <button onclick="cektugasdansoal()">cek jumlah opsi</button> -->
-
-        <!-- <button onclick="tambahtombolisijawaban()">Tambah Tombol</button>
-                <button onclick="ceknilai()">cek koleksi ceklis opsi PG</button>
-                <button onclick="hasilakhirelamaso()">hasilakhirelamaso()</button>
-                
-                <div id="cektagihan"></div> -->
-
-        <div id="hasilakhir" style="display: none;">
+        <div id="hasilakhir" style="display: block;">
             <div id="fromHTMLtestdiv">
-
                 <div id="borderidhasilakhirnama">
-                    <div style="margin:0 auto">
-                        <div style="text-align:center">
-                            <img src="/img/L_vT86_100px.png" class="w3-circle"
-                                style="width:145px;border:2px dotted red" />
+                    <div class="w3-row-padding ">
+                        <div class="w3-col l8 s12 ">
+                            <img src="/img/L_vT86_100px.png" class=" w3-left" style="width:45px;" />
+                            <h3 class="w3-xlarge w3-lobster"> Hasil Belajar E-Lamaso</h3>
+                            <div class='w3-center warnaeka w3-card-4 w3-round-large w3-border-bottom w3-border-black'>
+                                <h3 id="hasilakhirnamasekolah">Nama Sekolah</h3>
+                                <h5 id="hasilakhirsemestertapel"></h5>
+                            </div>
+                            <table class="w3-table-all small">
+                                <caption>Identitas Siswa</caption>
+                                <tr>
+                                    <td>ID Lamaso (Token)</td>
+                                    <td>:</td>
+                                    <td id="hasilakhirtokensiswa"> Token Siswa</td>
+                                </tr>
+                                <tr>
+                                    <td>Nama</td>
+                                    <td>:</td>
+                                    <td><b id="hasilakhirnamasiswa">Nama Siswa</b></td>
+                                </tr>
+                                <tr>
+                                    <td>Kelas</td>
+                                    <td>:</td>
+                                    <td id="hasilakhirkelas"> Kelas </td>
+                                </tr>
+
+                            </table>
+
                         </div>
-                        <h3>Nilai Belajar</h3>
+                        <div class="w3-col l4 s12  w3-right">
+                            <div class="w3-small w3-center">Identitas Materi:</div>
 
-                        <table class="versi-table" id="tabelku">
-                            <tr>
-                                <td>Sekolah </td>
-                                <td id="hasilakhirnamasekolah">: Nama Sekolah </td>
-                            </tr>
-                            <tr>
-                                <td>Nama </td>
-                                <td id="hasilakhirnamasiswa">: Nama Siswa</td>
-                            </tr>
-                            <tr>
-                                <td>Kelas </td>
-                                <td id="hasilakhirkelas">: Kelas </td>
-                            </tr>
-                            <tr>
-                                <td>Mapel/Tema </td>
-                                <td id="hasilakhirmapeltema">: Mapel/Tema</td>
-                            </tr>
-                            <tr>
-                                <td>Waktu Selesai </td>
-                                <td id="hasilakhirwaktu">: Waktu/</td>
-                            </tr>
-                        </table>
+                            <h5 class="w3-center w3-card-4 warnaeka" id="hasilakhirmapeltema">Mapel/Tema</h5>
+
+                            <table class="w3-table-all w3-small">
+
+
+                                <tr>
+                                    <td>Jenis Tagihan</td>
+                                    <td>:</td>
+                                    <td id="hasilakhirjenistagihan">PH/ PTS/ PAS/ PAK</td>
+                                </tr>
+                                <tr>
+                                    <td>Jumlah Pilihan Ganda</td>
+                                    <td>:</td>
+                                    <td id="hasilakhirjumlahpg">0</td>
+                                </tr>
+                                <tr>
+                                    <td>Jumlah Soal Isian</td>
+                                    <td>:</td>
+                                    <td id="hasilakhirjumlahessay">0</td>
+                                </tr>
+                                <tr>
+                                    <td>Muatan Kompetensi</td>
+                                    <td>:</td>
+                                    <td id="hasilakhirmuatankompetensi">##</td>
+                                </tr>
+                                <tr>
+                                    <td>Waktu Mulai</td>
+                                    <td>:</td>
+                                    <td id="selwaktumulai">: Waktu/</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Waktu Selesai</td>
+                                    <td>:</td>
+                                    <td id="hasilakhirwaktu">: Waktu/</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="w3-clear w3-border"></div>
+                        <div class="w3-col l3 s12 w3-border w3-hide ljksiswa_pg"></div>
+                        <div class="w3-col l9 s12 w3-border w3-hide ljksiswa_essay"></div>
+                        <div class="w3-col l3 s6 w3-border w3-hide ljksiswa_nilaipg"></div>
+                        <div class="w3-col l3 s6 w3-border w3-hide ljksiswa_nilaiessay"></div>
+                        <div class="w3-clear"></div>
+                        <div class="w3-col l4 s12 w3-right">
+                            <div class="w3-card-4 w3-container w3-left w3-center "
+                                style="width:45%;margin:5px;height:120px">
+                                Paraf Orangtua
+                            </div>
+                            <div class="w3-card-4 w3-container w3-left w3-center "
+                                style="width:45%;margin:5px;height:120px">
+                                Paraf Guru
+                            </div>
+                        </div>
                     </div>
-                    <div id="resumenilai" style="display:block">
-
-                    </div>
-                    <div id="resumenilaiskhir">
-
-                    </div>
-
                 </div>
-                <p id="bypassme" style="color:red;text-align:center">Simpan hasil nilai ini dalam bentuk pdf untuk
-                    bukti belajarmu
-                </p><br />
+
             </div>
-            <div style="margin:0 auto">
-                <button id="cmd" class="button">Simpan Pdf</button>
-                <!-- <button id="filenilai" onclick="htmlnilaisiswa()" class="button">Mau dibikin html</button> -->
-            </div>
+
         </div>
+        <div id="resumenilai" style="display:block"></div>
+        <div id="resumenilaiskhir" style="display:none"
+            class="w3-card-4 warnaeka w3-large w3-container w3-center w3-padding w3-margin">
+            Terima kasih, Nilai Ananda siap dikirim ke server e-Lamaso. Klik tombol Kirim Nilai agar diproses gurumu.
+            <hr />
+            <button id="idtombolkirimnilaielamaso"
+                class="w3-btn w3-orange w3-border-bottom w3-border-black w3-round-large"
+                onclick="tombolkirimnilaielamaso()"><i class='fa fa-paper-plane'></i>
+                Kirim Nilai</button>
+            <br />
+        </div>
+
         <form id="kirimnilaielamaso" name="kirimnilaielamaso" style="display:none">
             <input name="tokensiswa" id="n_tokensiswa" />
             <input id="matericode" name="matericode" />
-            <div id="tempatinputidentitashasilbelajar">Tempat Input Pilihan Ganda</div>
+            <div id="tempatinputidentitashasilbelajar">tempatinputidentitashasilbelajar</div>
             <div id="tempatinputpilihanganda">Tempat Input Pilihan Ganda</div>
             <div id="tempatinputjawabanessay">Tempat Input Essay</div>
-            <textarea id="tekshtmlnilai" name="tekshtmlnilai">
-borderhasilnama
-</textarea>
+            <textarea id="tekshtmlnilai" name="tekshtmlnilai"></textarea>
             <button type="submit">Kirim Tes</button>
         </form>
-
     </div>
+
 
     <div class="w3-modal w3-pale-red w3-animate-zoom" id="divbantuabsen">
         <div class="w3-modal-container ">
@@ -672,17 +696,45 @@ borderhasilnama
                 </h2>
                 <br>
                 <div id="teksinfoupdate" style="text-align: justify;" class="w3-card-4 w3-padding w3-margin">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe doloribus provident dolore quo odit
-                    pariatur fugit consequuntur voluptas quos. Sed voluptate necessitatibus, reprehenderit esse quod
-                    placeat. Incidunt iure eos cum.
-
+                    Untuk mendapatkan fitur update, pastikan Ananda menggunakan aplikasi Chrome di HP
+                    Ananda.<br /><br />
+                    Beberapa cara agar elamaso Ananda terupdate:
+                    <ul>
+                        <li>Pastikan browser Chrome yang sedang digunakan dalam versi terbaru (update di Playstore atau
+                            Appstore)</li>
+                        <li>Pastikan link elamaso <b>tidak dibuka</b> dalam beberapa TAB BROWSER. Kosongkan Tab Browser
+                            kemudian buka lagi link lamasonya </li>
+                        <li>Jika diperlukan, hapus seluruh riwayat (history) di pengaturan browser. Termasuk pengaturan
+                            settingan cache dan sites-nya.</li>
+                    </ul>
+                    <br /><br />
+                    Permasalahan yang sering terjadi (Q&A)
+                    <ul>
+                        <li>Tidak bisa mengambil poto kamera ketika Absen?
+                            <br /><br />
+                            <b>Penyebab:</b> Biasanya terjadi di HP yang kamera di HP
+                            tersebut memiliki pengaturan penambahan watermark (tanda) pada poto, termasuk tanda
+                            koordinat lokasi dan merk HP tersebut.
+                            <br /><br />
+                            <b>Solusi:</b> Buka pengaturan kamera, kemudian lepas semua pengaturan yang berkaitan dengan
+                            watermark tersebut.
+                        </li><br /><br />
+                        <li>Ketika login terdapat peringatan: "Maaf, sedang terjadi pembaruan. Silakan login kembali
+                            ...."
+                            <br /><br />
+                            <b>Penyebab:</b> Biasanya user siswa pernah melakukan uji coba pada pemasangan lamaso
+                            sebelumnya. Ini dilakukan saat sosialisasi guru.
+                            <br /><br />
+                            <b>Solusi:</b> Pastikan Chrome dalam keadaan versi terupdate. Kemudian tutup semua TAB
+                            BROWSER yang ada di Chrome. Kemudian pilih pengaturan (tombol titik tiga) pada pojok kanan
+                            atas, pilih Pengaturan dan pilih HAPUS RIWAYAT (History);
+                        </li><br /><br />
+                        <li>Pertanyaan lainnya, dapat menghubungi guru kelasnya masing-masing.</li>
+                    </ul>
 
                 </div>
                 <br>
-                <!-- @Created By:<br> <a href="https://sdnratujaya1.net" target="_blank" rel="noopener">Ade Andriansyah_ SDN
-                    Ratujaya 1
-                    Kota
-                    Depok</a> -->
+
                 <br>
                 <br>
                 <br>
@@ -941,7 +993,7 @@ borderhasilnama
     </div>
     <iframe id="iframeprint" name="iframeprint" style="display:none"></iframe>
     <footer class="w3-main w3-yellow" style="text-align:center">Telah dilisensikan untuk <a href="https://lamaso.online"
-            target="_blank">PT EKA CIPTA MULTITAMA</a>
+            target="_blank" rel="noopener">PT EKA CIPTA MULTITAMA</a>
     </footer>
     <script src="/statis/app.js"></script>
     <script src="/timekbm.js"></script>
@@ -949,9 +1001,7 @@ borderhasilnama
 
 
 
-    <script id="rendered-js" src="/statis/renderpdf.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.2.61/jspdf.min.js">
-    </script>
+
 
 
 </body>

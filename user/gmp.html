@@ -518,10 +518,56 @@
                     </sup>
                 </h3>
 
+                <div id="prev_dragable" style="display:none">
+                    <div id="prev_dragableheader">
+                        PINDAHKAN INI SESUKA ANDA
+                    </div>
+                    <div id="prev_dragableisi">
+                        <div
+                            style="border:1px solid black;width:320px;height:500px;margin:0px auto;padding:0;border-radius:5px 5px 0px 0px">
+                            <div style="padding:0px 2px;height:50px;background-color:black;color:white;margin-top:0px;">
+                                &nbsp;
+                                <span class="w3-right" style="font-size:12px"> 07:30 </span> <i
+                                    class="fa fa-battery-full w3-right">&nbsp; </i> <i
+                                    class="fa fa-signal w3-right">&nbsp;
+                                </i>
+                                <i class="fa fa-wifi w3-right"> </i> &nbsp;
+                                <div style="border-top:1px solid white">
+                                    <span class="w3-left"><i class="fa fa-bars"></i> MENU</span>
+                                    <span class="w3-right"> e-LAMASO SISWA</span>
+                                </div>
+                            </div>
+                            <div id="previewhp">
+                                <div class="imgcontainer" id="previewlogohp">
+                                    <img src="/img/lamaso.webp" class="w3-circle"
+                                        style="width:60px;border:2px dotted red" /><br />
+                                    e-Lamaso Siswa
+                                </div>
+                                <div id="materiimport"
+                                    style="width:310px;height:440px;overflow-y:auto;display:blodk;padding:15px;text-align:justify;font-size:12px">
+                                    DI SINI AKAN MUNCUL teks html dari upload file notepad
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            style="width:320px;z-index:5;padding:0px 2px;height:50px;background-color:black;color:white;margin:auto;border:1px solid black;border-radius:0px 0px 5px 5px">
+                            <div id="tombolback" onclick="prevhp.style.display ='none'"
+                                style="font-size:26px;width:33%;float:left;text-align:left">&#9665;</div>
+                            <div id="tomboltengah" style="font-size:26px;width:33%;float:left;text-align:center">&#9898;
+                            </div>
+                            <div id="tombolkanan" style="font-size:26px;width:33%;float:left;text-align:right">&#9634;
+                            </div>
+                        </div>
+                        <br />
+                        <button class="w3-button w3-display-topright w3-opacity-min"
+                            onclick="prev_dragable.style.display ='none';materiimport.innerHTML=''">&times;</button>
+                    </div>
+                </div>
+
                 <!-- disiniiiii -->
                 <button onclick="idmateri.style.width='100%'">Normalkan Area Teks</button>
                 <button onclick="formuploadmateri.reset();idmateri.value=''">Hapus Semua Isian Upload Materi</button>
-                <form class="w3-card-4 w3-padding w3-round-xlarge w3-animate-zoom" id="formuploadmateri"
+                <form class="w3-card-4  w3-padding w3-round-xlarge w3-animate-zoom" id="formuploadmateri"
                     name="formuploadmateri">
                     <fieldset class="w3-teal w3-opacity-min w3-round-xlarge">
                         <label for="idmapel">Identitas Pembelajaran:</label><br>
@@ -765,8 +811,8 @@
                             <div
                                 class="w3-col l9 tekesebarankd w3-left w3-card-4 w3-container w3-round-large  w3-margin-top w3-light-grey">
 
-                                SEBARAN KD TIDAK TERDETEKSI (JIKA TERDETEKSI AKAN MUNCUL TABEL SEPERTI INI)
-                                <br />Atau jika perlu, silakan buat sebaran KD di tombol berikut:
+                                SEBARAN KD TIDAK TERDETEKSI (JIKA TERDETEKSI AKAN MUNCUL TABEL SEPERTI INI) <br />Atau
+                                jika perlu, silakan buat sebaran KD di tombol berikut:
                                 <label for="modal_generate_sebarankd"
                                     class="w3-button warnaeka w3-border-bottom w3-border-black w3-round-large">Generate
                                     Sebaran KD</label>
@@ -811,14 +857,15 @@
 
 
                 </form>
-                <div id="loadketkunci" style="overflow-x: auto;"></div>
-                <div id="loadketKD"></div>
+
+
+                <div id="loadketkunci" style="display:none"></div>
+                <div id="loadketKD" style="display:none"></div>
 
 
 
                 <div class="w3-margin-top">
-                    <h3 class="w3-center">Sebelum Anda mempublikasikan, pastikan Anda telah melihat Preview tampilan
-                        konten tersebut.</h3>
+                    <h3 class="w3-center">Sebelum Anda mempublikasikan, pastikan sebaran KD sudah terdeteksi.</h3>
                     <button class="wa w3-deep-purple w3-hover-aqua" id="tombolpublikasikan"
                         onclick="publikasikanmateribaru()">PUBLIKASIKAN</button>
                 </div>
@@ -831,9 +878,6 @@
                     class="warnaeka w3-btn w3-round-large w3-hide">Generate Sebaran KD</button>
 
                 <!-- sampe disini -->
-                <div class="w3-display-bottommiddle w3-center w3-margin-bottom" style="position: fixed;">
-
-                </div>
 
             </div>
             <div id="repository" class="tabcontent">

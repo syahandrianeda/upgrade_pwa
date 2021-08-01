@@ -5,11 +5,14 @@
         "ket": [
             "Update versi PWA (Progressive Webb Application) di semua fitur",
             "Penambahan fitur Info (informasi update dari setiap perubahan)",
+            "Perbaikan fitur akses materi siswa (materi bisa diakses berdasarkan pengaturan waktu awal sampai waktu akhir)",
             "Perbaikan Absen bantu bagi guru kelas dan guru mapel",
             "Perbaikan Fitur Tambah Siswa",
+            "Perubahan template LJK pada siswa",
             "Perubahan fitur preview gambar yang akan diunggah",
             "Perbaikan url konten materi sekolah lain",
-            "Perbaikan Fitur pendeteksian opsi PILIHAN GANDA TIPE C (opsi A, B, dan C) pada editor kunci jawaban"
+            "Perbaikan Fitur pendeteksian opsi PILIHAN GANDA TIPE C (opsi A, B, dan C) pada editor kunci jawaban",
+            "Perbaikan elemen pada tampilan elamaso siswa"
         ],
         "video": []
     }
