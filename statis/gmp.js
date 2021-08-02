@@ -2427,7 +2427,7 @@ const lihatrekapkelas = async (datee) => {
     var kodetd;
     var hadir;
 
-    document.getElementById("tabel_rekap_absen_nama_tgl").innerHTML = "Nama Siswa yang tidak ada di absen, tapi terdata di kelas ini: <ol>";
+    //document.getElementById("tabel_rekap_absen_nama_tgl").innerHTML = "Nama Siswa yang tidak ada di absen, tapi terdata di kelas ini: <ol>";
 
     let ind = new Date(datee).getMonth();
     let namabulansekarang = NamaBulandariIndex(new Date().getMonth());
@@ -2482,11 +2482,11 @@ const lihatrekapkelas = async (datee) => {
     }
     spinspin.innerHTML = "";
     for (var i = 0; i < jsonabsenkelasperbulan.length; i++) {
-        kodeid = jsonabsenkelasperbulan[i].id + "_" + kelas + "_" + encodeURIComponent(jsonabsenkelasperbulan[i].name);
-        kodetd = "td_" + encodeURIComponent(jsonabsenkelasperbulan[i].name) + "_" + jsonabsenkelasperbulan[i].id;
+        kodeid = jsonabsenkelasperbulan[i].id + "_" + kelas + "_" + jsonabsenkelasperbulan[i].tokensiswa;
+        kodetd = "td_" + jsonabsenkelasperbulan[i].tokensiswa + "_" + jsonabsenkelasperbulan[i].id;
         var isikehadiran = document.getElementById(kodeid);
         if (isikehadiran == null) {
-            document.getElementById("tabel_rekap_absen_nama_tgl").innerHTML += "<li>" + decodeURIComponent(jsonabsenkelasperbulan[i].name) + " pada tanggal " + new Date(jsonabsenkelasperbulan[i].Time_Stamp).getDate() + " Tidak ada/diubah namanya.</li>";
+            //  document.getElementById("tabel_rekap_absen_nama_tgl").innerHTML += "<li>" + decodeURIComponent(jsonabsenkelasperbulan[i].name) + " pada tanggal " + new Date(jsonabsenkelasperbulan[i].Time_Stamp).getDate() + " Tidak ada/diubah namanya.</li>";
         } else {
             var link = jsonabsenkelasperbulan[i].fileContent;
             if (link !== "") {
@@ -2502,7 +2502,7 @@ const lihatrekapkelas = async (datee) => {
             }
         }
     }
-    document.getElementById("tabel_rekap_absen_nama_tgl").innerHTML += "</ol>";
+    //document.getElementById("tabel_rekap_absen_nama_tgl").innerHTML += "</ol>";
 
     if (BolehEksekusiJikaDiSemesterIni(datee)) {
         let namatabel = document.getElementById("tabelxx");//.rows.length; ;
