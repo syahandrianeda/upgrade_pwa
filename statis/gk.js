@@ -3061,7 +3061,6 @@ const ajuanperubahandata = async (tokensiswa) => {
                             // console.log(elementform[x].name + "|" + elementform[x].type)
                         } else {
                             if (angkadistring.indexOf(key[d]) > -1) {
-                                console.log(key[d]);
                                 elementform[x].value = nilai[d];
                             } else {
                                 elementform[x].value = nilai[d]

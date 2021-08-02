@@ -944,7 +944,14 @@
             <div class="tab">
                 <button class="tablinks" onclick="openCity(event, 'ulhar')">UH</button>
                 <button class="tablinks" onclick="openCity(event, 'pts')">PTS</button>
-                <button class="tablinks" onclick="openCity(event, 'paspak')">PAK</button>
+                <button class="tablinks  btnpaspak" onclick="openCity(event, 'paspak')">PAK</button>
+                <button class="tablinks btnpaspak" onclick="openCity(event, 'pas')">PAS</button>
+                <button class="tablinks" onclick="openCity(event, 'kpraktik')" title="Keterampilan Praktek">Kt
+                    Praktek</button>
+                <button class="tablinks" onclick="openCity(event, 'kproduk')" title="Keterampilan Produk">Kt
+                    Produk</button>
+                <button class="tablinks" onclick="openCity(event, 'kproyek')" tile="Keterampilan Proyek">Kt
+                    Proyek</button>
 
             </div>
 
@@ -964,6 +971,30 @@
                 <h3 id="tekspaspak">PENILAIAN AKHIR KELAS</h3>
                 <div id="opsimapelpaspak">Opsi Mata Pelajaran belum muncul, silakan cek Data Kurikulum </div>
                 <div id="datatabelnilaipaspak" style="overflow-x: auto"></div>
+
+            </div>
+            <div id="pas" class="tabcontent">
+                <h3 id="tekspas">PENILAIAN AKHIR SEMESTER</h3>
+                <div id="opsimapelpas">Opsi Mata Pelajaran belum muncul, silakan cek Data Kurikulum </div>
+                <div id="datatabelnilaipas" style="overflow-x: auto"></div>
+
+            </div>
+            <div id="kpraktik" class="tabcontent">
+                <h3 id="tekskprakik">PENILAIAN KETERAMPILAN PRAKTEK</h3>
+                <div id="opsimapelkpraktik">Opsi Mata Pelajaran belum muncul, silakan cek Data Kurikulum </div>
+                <div id="datatabelnilaikpraktik" style="overflow-x: auto"></div>
+
+            </div>
+            <div id="kproduk" class="tabcontent">
+                <h3 id="tekskproduk">PENILAIAN KETERAMPILAN PRODUK</h3>
+                <div id="opsimapelkproduk">Opsi Mata Pelajaran belum muncul, silakan cek Data Kurikulum </div>
+                <div id="datatabelnilaikproduk" style="overflow-x: auto"></div>
+
+            </div>
+            <div id="kproyek" class="tabcontent">
+                <h3 id="teksproyek">PENILAIAN KETERAMPILAN PROYEK</h3>
+                <div id="opsimapelkproyek">Opsi Mata Pelajaran belum muncul, silakan cek Data Kurikulum </div>
+                <div id="datatabelnilaikproyek" style="overflow-x: auto"></div>
 
             </div>
 
@@ -2925,25 +2956,18 @@ _OPSI-PG-C_1C #
                             </td>
                         </tr>
                     </table>
-
-
-
                 </div>
                 <hr />
                 <button class="wa" id="tombol_addindikatorkompetensi">Simpan dan Keluar</button>
-
             </div>
-
-
         </div>
     </div>
 
     <div id="datasiswaprint" style="display:hide;overflow-x:auto"></div>
     <input type="file" id="fileImportExcel" class="w3-hide" />
     <input type="file" id="inputimportdatasiswa" class="w3-hide" />
-
     <iframe id="iframeprint" name="iframeprint" style="display:none"></iframe>
-
+    <script src="/statis/exceltabel.js"></script>
     <script src="/statis/guru.js"></script>
     <script src="/statis/gk.js"></script>
     <script src="/timekbm.js"></script>

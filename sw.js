@@ -1,4 +1,4 @@
-const staticCacheName = "statis_cache_v104";// + new Date().getTime();
+const staticCacheName = "statis_cache_v105";// + new Date().getTime();
 const dynamicChace = "cache_dinamis15";// + new Date().getTime();
 
 const assets = [

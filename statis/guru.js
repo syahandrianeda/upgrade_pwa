@@ -5988,8 +5988,7 @@ const nilaimapelulhar = () => {
     // let koleksiswa = koleksinamasiswaberdasarkanagama(y[x].value).map(k => k.pd_nama);
     let koleksiswa = koleksinamasiswaberdasarkanagama(y[x].value).map(k => k.pd_nama);
     let koleksitokensiswa = koleksinamasiswaberdasarkanagama(y[x].value).map(k => k.id);
-    console.log(koleksiswa)
-    console.log(koleksitokensiswa)
+
     datatabelnilaiulhar.innerHTML = "<hr/><i class='fa fa-refresh fa-spin w3-xxlarge'></i> Proses loading..."
     //alert("Fungsi baru")
     fetch(constlinknilai + "?action=lihatnilairekap&tab=PH&kelas=" + idNamaKelas)
@@ -6061,7 +6060,6 @@ const nilaimapelulhar = () => {
                     td.innerHTML = koleksiswa[j];//.toUpperCase();
                     // let datanilai = r.records.filter(k => k.namasiswa == koleksiswa[j]);
                     let datanilai = r.records.filter(k => k.tokensiswa == koleksitokensiswa[j]);
-                    console.log(datanilai);// && k.indexOf(PH.koleksiul[cPH[k]].datakey[d]) > -1))
                     for (k = 0; k < cPH.length; k++) {
                         for (d = 0; d < arrallcount[k]; d++) {
                             td = tr.insertCell(-1);
@@ -10611,7 +10609,10 @@ function updatenilaikoreksi(id) {
     /// ---------------------------------------------------
 
     //document.getElementById("htmlljkkoreksi").textContent = divljkkoreksi.innerHTML;
-    document.getElementById("nilaiEssayku").innerHTML = nilaiakhir;
+    let adaelemenini = document.getElementById("nilaiEssayku")
+    if (adaelemenini !== null) {
+        adaelemenini.innerHTML = nilaiakhir;
+    }
 
     let kd = JSON.parse(kronologijson[parseInt(idtabaktif.innerHTML)].kuncikd)
     let keykd = Object.keys(kd); // MTK_3.1 , PKN_3.5
