@@ -39,7 +39,7 @@ const anjangsanaguru = () => {
 
 const setCookie = (cname, cvalue) => {
     var dt = new Date();
-    let d = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate() + 1, 0, 0, 0, 0)
+    let d = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate() + 1, 0, 0, 59)
 
     var expires = "expires=" + d;
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
@@ -314,8 +314,6 @@ function uploadfilebantu2gagal() {
         loginbantu.style.display = "inline-block";
     }
 
-    //document.bantuisi.time_stampbantu.value = new Date();
-    //document.bantukirim.Time_Stamp.value = new Date();
     let a = new Date();
     let b = a.getDate();
     let c = a.getMonth() + 1;
@@ -548,8 +546,6 @@ const loadingtopbarin = (el) => {
     namasekolah.innerHTML = identitassekolah;
     namakota.innerHTML = identitaskotasekolah;
 
-    //---------------------------------------------------------
-    //loadingmodal.style.display = "block";
     var elem = document.querySelector(".loadingtopbar");
     elem.style.width = "1px";
     let divlod;
@@ -589,6 +585,14 @@ const loadingtopbarin = (el) => {
         localStorage.setItem('Kaldik', JSON.stringify(k.records));
 
         localStorage.setItem('TglLibur', JSON.stringify(k.stringTgl))
+        let cekkode = getCookie("lamankode");
+        console.log(cekkode);
+        let hrini = new Date().getDay();
+        console.log(hrini);
+        if (hrini !== 0 && cekkode == 0) {
+            setCookie("lamankode", 1);
+        }
+
     }).catch(er => console.log(er))
 
     let cek = getCookie("lamankode");
@@ -605,7 +609,7 @@ const loadingtopbarin = (el) => {
             // console.log(indekhari)
             let indek = arrayStringTglLibur.indexOf(StringTanggal(day));
 
-            if (indekhari == 1 || indekhari == 1 || indek > -1) {
+            if (indekhari == 0 || indekhari == 6 || indek > -1) {
                 //console.log("Libur atau Sabtu Minggu")
                 belajaraktif = false;
                 // tampilkan laman libur:
@@ -676,7 +680,7 @@ const loadingtopbarin = (el) => {
             // console.log(indekhari)
             let indek = arrayStringTglLibur.indexOf(StringTanggal(day));
 
-            if (indekhari == 1 || indekhari == 1 || indek > -1) {
+            if (indekhari == 0 || indekhari == 6 || indek > -1) {
                 //console.log("Libur atau Sabtu Minggu")
                 belajaraktif = false;
                 // tampilkan laman libur:
