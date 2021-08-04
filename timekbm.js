@@ -121,7 +121,7 @@ if (tapel_bulan_ini >= 6) {
 }
 document.getElementById("tapel").innerHTML = tapel_bar
 
-
+const timekbm_arraybulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
 
 const pilihrepository = () => {
     //alert("Maaf, fitur belum tersedia dipindah");

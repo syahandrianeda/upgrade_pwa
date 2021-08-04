@@ -1,0 +1,10 @@
+3 agustus 2021
+- gk.js
+- siswa.js
+- update.json'
+- timekbm.js
+
+- gmp.html
+- guru.html
+
+- sw.js

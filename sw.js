@@ -1,5 +1,5 @@
-const staticCacheName = "statis_cache_v105";// + new Date().getTime();
-const dynamicChace = "cache_dinamis15";// + new Date().getTime();
+const staticCacheName = "statis_cache_v126";// + new Date().getTime();
+const dynamicChace = "cache_dinamis26";// + new Date().getTime();
 
 const assets = [
     "/",
@@ -48,6 +48,7 @@ const assets = [
     "/statis/main.js",
     "/statis/gk.js",
     "/statis/guru.js",
+    "/statis/exceltabel.js",
     "/statis/gmp.js",
     "/statis/kepsek.js",
     "/statis/ortu.js",

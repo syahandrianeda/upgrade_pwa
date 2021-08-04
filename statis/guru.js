@@ -1100,7 +1100,7 @@ function barufindkuncipgkd(teks) {
         let cekkd = teks.match(/^_KUNCI-KD_/gm);
         let val = textarea.value;
         let n = val.length;
-
+        console.log(cekkd)
         if (cekkd !== null) {
             let awalkd = val.indexOf("_KUNCI-KD_");
             let batasawalkd = val.substring(awalkd, n)
@@ -1180,6 +1180,10 @@ function barufindkuncipgkd(teks) {
             }
 
 
+        } else {
+            let html2 = `SEBARAN KD TIDAK TERDETEKSI (Sebaran KD Wajib diisi) Silakan gunakan fitur ini: <label for="modal_generate_sebarankd" class="w3-button warnaeka w3-border-bottom w3-border-black w3-round-large">Generate Sebaran KD</label>*`;
+
+            divekd.innerHTML = html2;
         }
 
         if (cekkunci !== null) {
@@ -1224,7 +1228,7 @@ function barufindkuncipgkd(teks) {
         divekd.innerHTML = html2;
     }
     // let cariopsi =(cekcariopsi !== null)?[]:cekcariopsi; 
-    //console.log(cekkcariopsi)k;
+
 
 }
 eidmateri.addEventListener("keyup", function (e) {
@@ -1397,12 +1401,13 @@ function generaterasebarankd() {
             }
         }
     }
+
 };
 function fn_mbs_tambahbaris() {
     let tabel = document.querySelector(".mbs_tabelbantusebarankd").getElementsByTagName("tbody")[0];
     let lr = tabel.rows.length;
     let opsimapel = msb_obje["datamapel"];
-    let html = "";
+    let html = `<option value="">Pilih Mapel</option>`;
     opsimapel.forEach(s => {
         html += `<option value="${s}">${s}</option>`
     })
@@ -1421,6 +1426,10 @@ function fn_mbs_tambahbaris() {
     cr_td.innerHTML = `<input class="w3-input w3-border w3-border-teal mbs_textarea brsnosoal_${lr}" placeholder="Contoh pengisian: 1,2,3 (di akhir nomor jangan diberi koma)"/>`;
 };
 function fn_mbs_selectmapel(el) {
+    if (el.value == "") {
+        alert("Silakan pilih Mapelnya");
+        return false
+    }
     let attr = el.className; //.indexOf("brsmapel_");
     let baris = attr.match(/(\d+)/gm)[1];
     let ops = document.querySelector(".brsmapel_" + baris).options;
@@ -1468,7 +1477,7 @@ function fn_mbs_simpansebarankd() {
         teksarea.value = teksarea.value.replace(cari, arr);
     }
     alert("Sebaran KD Berhasil Tersimpan.")
-
+    pratinjaubuatmateri()
 };
 
 function fn_mbs_hapusbaris() {
@@ -8648,6 +8657,7 @@ const kopipaste = (id) => {
 }
 const pratinjaubuatmateri = () => {
     //prevhp.style.display = "block";
+
     let idtextarea = document.formuploadmateri.idmateri;
 
     var copyText = document.formuploadmateri.idmateri; //document.querySelector(id);//document.getElementById(id);
@@ -8658,7 +8668,6 @@ const pratinjaubuatmateri = () => {
     // alert("Berhasil Ngopi ... ^_^");
     // materiimport.innerHTML = brkline(unescape(decodeURIComponent(copyText.value))).teks
     let arrteks = copyText.value.split("\n");
-
     let tteks = "";
     let kuncipg = "Kunci PG: <br>";
     let kuncienk = "<br>Arti enksripsi: <br>"
@@ -8684,6 +8693,7 @@ const pratinjaubuatmateri = () => {
         if (arrteks[i].indexOf("_ESSAY-NO_") > -1) {
             countess += 1;
         }
+
 
 
 
@@ -10962,362 +10972,364 @@ const siapkirimnilai = () => {
     document.querySelector("#infoloadingljk").innerHTML = `<i class="fa fa-spin fa-refresh w3-center w3-xxxlarge"></i>`
 
 }
-const bantusiswaisiljklama = (param) => {
 
-    let params = param.split("_");
-    let par = params[1]; //indek materi kbm
-    parameterbantuisiljk = par;
-    let idsw = params[0]; //indek id siswa
+// const bantusiswaisiljklama = (param) => {
 
-    //alert (par);
-    let siswabantu = JSON.parse(localStorage.getItem("datasiswa_" + idNamaKelas))["datasiswa"][idsw];
+//     let params = param.split("_");
+//     let par = params[1]; //indek materi kbm
+//     parameterbantuisiljk = par;
+//     let idsw = params[0]; //indek id siswa
 
-    loadingljk.style.display = "block";
+//     //alert (par);
+//     let siswabantu = JSON.parse(localStorage.getItem("datasiswa_" + idNamaKelas))["datasiswa"][idsw];
 
-    //bikin judul h4
-    let datamateri = kronologijson;
-    kodebarismateriyangdikerjakan = datamateri[par].idbaris;
-    let adapg = (datamateri[par].jumlahpg == 0) ? false : true;
+//     loadingljk.style.display = "block";
 
-    let jumlahsoal = (datamateri[par].jumlahpg * 1) + (datamateri[par].jumlahessay * 1);
+//     //bikin judul h4
+//     let datamateri = kronologijson;
+//     kodebarismateriyangdikerjakan = datamateri[par].idbaris;
+//     let adapg = (datamateri[par].jumlahpg == 0) ? false : true;
 
-    //console.log(datamateri)
-    var judul = document.createElement("h4")
-    judul.setAttribute("class", "w3-center");
-    judul.innerHTML = "Identitas e-Lamaso";
+//     let jumlahsoal = (datamateri[par].jumlahpg * 1) + (datamateri[par].jumlahessay * 1);
 
-    let tes = document.getElementById("infoloadingljk");
-    // tes.innerHTML = `<i class="fa fa-spin fa-refresh w3-xxxlarge"></i> On Process ...`
-    tes.innerHTML = "";
+//     //console.log(datamateri)
+//     var judul = document.createElement("h4")
+//     judul.setAttribute("class", "w3-center");
+//     judul.innerHTML = "Identitas e-Lamaso";
 
-    //-- Bikin Tabel identitas:
-    var tabelidentitas = document.createElement("table");
-    tabelidentitas.setAttribute("class", "versi-table");
-    tabelidentitas.setAttribute("style", "margin:auto");
-    var tr = tabelidentitas.insertRow(-1);
+//     let tes = document.getElementById("infoloadingljk");
+//     // tes.innerHTML = `<i class="fa fa-spin fa-refresh w3-xxxlarge"></i> On Process ...`
+//     tes.innerHTML = "";
 
-    var tr = tabelidentitas.insertRow(-1);
-    var td = tr.insertCell(-1);
-    td.innerHTML = "Sekolah"
-    var td = tr.insertCell(-1);
-    td.innerHTML = datamateri[par].idSekolah
-    var tr = tabelidentitas.insertRow(-1);
-    var td = tr.insertCell(-1);
-    td.innerHTML = "Nama Siswa"
-    var td = tr.insertCell(-1);
-    td.innerHTML = siswabantu.pd_nama;
-    var tr = tabelidentitas.insertRow(-1);
-    var td = tr.insertCell(-1);
-    td.innerHTML = "Kelas"
-    var td = tr.insertCell(-1);
-    td.innerHTML = idNamaKelas;
-    var tr = tabelidentitas.insertRow(-1);
-    var td = tr.insertCell(-1);
-    td.innerHTML = "Mapel/Tema"
-    var td = tr.insertCell(-1);
-    td.innerHTML = datamateri[par].idmapel;
-    var tr = tabelidentitas.insertRow(-1);
-    var td = tr.insertCell(-1);
-    td.innerHTML = "Frekuensi Akses"
-    var td = tr.insertCell(-1);
-    var keteranganakses;
-    if (datamateri[par].idaksessiswa == "sekali") {
-        keteranganakses = "TEST <br>Sekali saja sejak mengirim nilai"
-    } else {
-        keteranganakses = "LATIHAN<br>Berapa kali saja untuk latihan"
-    }
-    td.innerHTML = keteranganakses;
-    var tr = tabelidentitas.insertRow(-1);
-    var td = tr.insertCell(-1);
-    td.innerHTML = "Tanggal Publikasi"
-    var td = tr.insertCell(-1);
-    td.innerHTML = tanggalfulllengkap(datamateri[par].idtgl);
+//     //-- Bikin Tabel identitas:
+//     var tabelidentitas = document.createElement("table");
+//     tabelidentitas.setAttribute("class", "versi-table");
+//     tabelidentitas.setAttribute("style", "margin:auto");
+//     var tr = tabelidentitas.insertRow(-1);
 
-    var tr = tabelidentitas.insertRow(-1);
-    var cel1 = tr.insertCell(-1);
-    cel1.setAttribute("id", "timer");
-    cel1.setAttribute("colspan", "2");
-    cel1.setAttribute("style", "text-align:center");
-    cel1.innerHTML = "Timer: ";
-    var cdtimer = document.createElement("input")
-    cdtimer.setAttribute("id", "cd_seconds");
-    cdtimer.setAttribute("disabled", "true");
-    cdtimer.setAttribute("value", datamateri[par].iddurasi);
-    cdtimer.setAttribute("style", "width:50px")
-    cel1.appendChild(cdtimer);
-    cel1.innerHTML += " Menit."
-    var tr = tabelidentitas.insertRow(-1);
-    var cel1 = tr.insertCell(-1);
-    cel1.setAttribute("id", "tempatdurasi");
-    cel1.setAttribute("colspan", "2");
-    cel1.setAttribute("style", "text-align:center");
-    var cdstatus = document.createElement("b");
-    cdstatus.setAttribute("id", "cd_status");
-    var tekscdstatus = document.createTextNode("Durasi Penyelesaian:");
-    cdstatus.appendChild(tekscdstatus);
-    var cdjam = document.createElement("span");
-    cdjam.setAttribute("id", "cd_h");
-    var tekscdjam = document.createTextNode("00:");
-    cdjam.appendChild(tekscdjam);
-    var cdmenit = document.createElement("span");
-    cdmenit.setAttribute("id", "cd_m");
-    var tekscdmenit = document.createTextNode("00:");
-    cdmenit.appendChild(tekscdmenit);
-    var cddetik = document.createElement("span");
-    cddetik.setAttribute("id", "cd_s");
-    var tekscddetik = document.createTextNode("00");
-    cddetik.appendChild(tekscddetik);
-    var cdpause = document.createElement("input")
-    cdpause.setAttribute("type", "button");
-    cdpause.setAttribute("id", "cd_pause");
-    cdpause.setAttribute("value", "Jeda");
-    var cdpstop = document.createElement("input")
-    cdpstop.setAttribute("type", "button");
-    cdpstop.setAttribute("id", "cd_stop");
-    cdpstop.setAttribute("value", "Selesai");
-    var gntibaris = document.createElement("br");
-    var controltimer = document.createElement("b")
-    var tekscontroltimer = document.createTextNode("Control Timer:");
-    controltimer.appendChild(tekscontroltimer);
-    var controlstart = document.createElement("input");
-    controlstart.setAttribute("type", "button");
-    controlstart.setAttribute("id", "cd_start");
-    controlstart.setAttribute("value", "Mulai Mengerjakan");
-    var controlreset = document.createElement("input");
-    controlreset.setAttribute("type", "button");
-    controlreset.setAttribute("id", "cd_reset");
-    controlreset.setAttribute("value", "Reset Timer");
-    var titikdua = document.createElement("b");
-    var tekstitikdua = document.createTextNode(":");
-    titikdua.appendChild(tekstitikdua);
-    cel1.appendChild(controltimer);
-    cel1.innerHTML += "<br/>";
-    cel1.appendChild(controlstart);
-    //cel1.appendChild(controlreset);
-    //cel1.appendChild(cdpause);
-    cel1.appendChild(cdpstop);
-    cel1.appendChild(gntibaris);
-    cel1.appendChild(cdstatus);
-    cel1.innerHTML += ":<br/>";
-    cel1.appendChild(cdjam);
-    cel1.innerHTML += ":";
-    cel1.appendChild(cdmenit);
-    cel1.appendChild(titikdua)
-    cel1.appendChild(cddetik);
+//     var tr = tabelidentitas.insertRow(-1);
+//     var td = tr.insertCell(-1);
+//     td.innerHTML = "Sekolah"
+//     var td = tr.insertCell(-1);
+//     td.innerHTML = datamateri[par].idSekolah
+//     var tr = tabelidentitas.insertRow(-1);
+//     var td = tr.insertCell(-1);
+//     td.innerHTML = "Nama Siswa"
+//     var td = tr.insertCell(-1);
+//     td.innerHTML = siswabantu.pd_nama;
+//     var tr = tabelidentitas.insertRow(-1);
+//     var td = tr.insertCell(-1);
+//     td.innerHTML = "Kelas"
+//     var td = tr.insertCell(-1);
+//     td.innerHTML = idNamaKelas;
+//     var tr = tabelidentitas.insertRow(-1);
+//     var td = tr.insertCell(-1);
+//     td.innerHTML = "Mapel/Tema"
+//     var td = tr.insertCell(-1);
+//     td.innerHTML = datamateri[par].idmapel;
+//     var tr = tabelidentitas.insertRow(-1);
+//     var td = tr.insertCell(-1);
+//     td.innerHTML = "Frekuensi Akses"
+//     var td = tr.insertCell(-1);
+//     var keteranganakses;
+//     if (datamateri[par].idaksessiswa == "sekali") {
+//         keteranganakses = "TEST <br>Sekali saja sejak mengirim nilai"
+//     } else {
+//         keteranganakses = "LATIHAN<br>Berapa kali saja untuk latihan"
+//     }
+//     td.innerHTML = keteranganakses;
+//     var tr = tabelidentitas.insertRow(-1);
+//     var td = tr.insertCell(-1);
+//     td.innerHTML = "Tanggal Publikasi"
+//     var td = tr.insertCell(-1);
+//     td.innerHTML = tanggalfulllengkap(datamateri[par].idtgl);
 
-    tes.appendChild(tabelidentitas);
+//     var tr = tabelidentitas.insertRow(-1);
+//     var cel1 = tr.insertCell(-1);
+//     cel1.setAttribute("id", "timer");
+//     cel1.setAttribute("colspan", "2");
+//     cel1.setAttribute("style", "text-align:center");
+//     cel1.innerHTML = "Timer: ";
+//     var cdtimer = document.createElement("input")
+//     cdtimer.setAttribute("id", "cd_seconds");
+//     cdtimer.setAttribute("disabled", "true");
+//     cdtimer.setAttribute("value", datamateri[par].iddurasi);
+//     cdtimer.setAttribute("style", "width:50px")
+//     cel1.appendChild(cdtimer);
+//     cel1.innerHTML += " Menit."
+//     var tr = tabelidentitas.insertRow(-1);
+//     var cel1 = tr.insertCell(-1);
+//     cel1.setAttribute("id", "tempatdurasi");
+//     cel1.setAttribute("colspan", "2");
+//     cel1.setAttribute("style", "text-align:center");
+//     var cdstatus = document.createElement("b");
+//     cdstatus.setAttribute("id", "cd_status");
+//     var tekscdstatus = document.createTextNode("Durasi Penyelesaian:");
+//     cdstatus.appendChild(tekscdstatus);
+//     var cdjam = document.createElement("span");
+//     cdjam.setAttribute("id", "cd_h");
+//     var tekscdjam = document.createTextNode("00:");
+//     cdjam.appendChild(tekscdjam);
+//     var cdmenit = document.createElement("span");
+//     cdmenit.setAttribute("id", "cd_m");
+//     var tekscdmenit = document.createTextNode("00:");
+//     cdmenit.appendChild(tekscdmenit);
+//     var cddetik = document.createElement("span");
+//     cddetik.setAttribute("id", "cd_s");
+//     var tekscddetik = document.createTextNode("00");
+//     cddetik.appendChild(tekscddetik);
+//     var cdpause = document.createElement("input")
+//     cdpause.setAttribute("type", "button");
+//     cdpause.setAttribute("id", "cd_pause");
+//     cdpause.setAttribute("value", "Jeda");
+//     var cdpstop = document.createElement("input")
+//     cdpstop.setAttribute("type", "button");
+//     cdpstop.setAttribute("id", "cd_stop");
+//     cdpstop.setAttribute("value", "Selesai");
+//     var gntibaris = document.createElement("br");
+//     var controltimer = document.createElement("b")
+//     var tekscontroltimer = document.createTextNode("Control Timer:");
+//     controltimer.appendChild(tekscontroltimer);
+//     var controlstart = document.createElement("input");
+//     controlstart.setAttribute("type", "button");
+//     controlstart.setAttribute("id", "cd_start");
+//     controlstart.setAttribute("value", "Mulai Mengerjakan");
+//     var controlreset = document.createElement("input");
+//     controlreset.setAttribute("type", "button");
+//     controlreset.setAttribute("id", "cd_reset");
+//     controlreset.setAttribute("value", "Reset Timer");
+//     var titikdua = document.createElement("b");
+//     var tekstitikdua = document.createTextNode(":");
+//     titikdua.appendChild(tekstitikdua);
+//     cel1.appendChild(controltimer);
+//     cel1.innerHTML += "<br/>";
+//     cel1.appendChild(controlstart);
+//     //cel1.appendChild(controlreset);
+//     //cel1.appendChild(cdpause);
+//     cel1.appendChild(cdpstop);
+//     cel1.appendChild(gntibaris);
+//     cel1.appendChild(cdstatus);
+//     cel1.innerHTML += ":<br/>";
+//     cel1.appendChild(cdjam);
+//     cel1.innerHTML += ":";
+//     cel1.appendChild(cdmenit);
+//     cel1.appendChild(titikdua)
+//     cel1.appendChild(cddetik);
 
-
-
-    let formljkbantu = document.createElement("form")
-    formljkbantu.setAttribute("id", "ljkbantu")
-    formljkbantu.setAttribute("name", "ljkbantu")
-    formljkbantu.setAttribute("class", "w3-hide")
+//     tes.appendChild(tabelidentitas);
 
 
 
+//     let formljkbantu = document.createElement("form")
+//     formljkbantu.setAttribute("id", "ljkbantu")
+//     formljkbantu.setAttribute("name", "ljkbantu")
+//     formljkbantu.setAttribute("class", "w3-hide")
 
 
 
-    $.getJSON(constpreviewljk + "?idmateri=" + datamateri[par].idmateri + "&action=previewriwayat", function (json) {
-
-        document.querySelector("#infoloadingljk").innerHTML += brkline(json).teks;
 
 
-        //console.log(kuncijawabanku)
-        var elEssay = document.getElementsByClassName("soalessay")
-        if (elEssay.length !== 0) {
-            for (i = 0; i < elEssay.length; i++) {
-                var idEl = elEssay[i].getAttribute("id");
-                var inidEl = idEl.replace("essay", "");
-                var tempattombol = document.getElementById("tomboljawaban" + inidEl);
-                var tombolsatu = document.createElement("button");
-                tombolsatu.setAttribute("onclick", "tombolketikjawaban2('" + inidEl + "_" + idsw + "')");
-                var tekstombolsatu = document.createTextNode("Ketik Jawaban No " + inidEl);
-                tombolsatu.appendChild(tekstombolsatu);
-                tempattombol.appendChild(tombolsatu);
-                tempattombol.innerHTML += "<br/><sub>atau</sub></br/> "
-                var tomboldua = document.createElement("button");
-                tomboldua.setAttribute("onclick", "tomboluploadjawaban2('" + inidEl + "_" + idsw + "')");
-                var tekstomboldua = document.createTextNode("Upload Jawaban No " + inidEl);
-                tomboldua.appendChild(tekstomboldua);
-                tempattombol.appendChild(tomboldua);
-                tempattombol.innerHTML += "<br/><sub>Pilih Salah satu cara Kalian menjawab soal ini</sub>"
 
-            }
-        }
-        //})
-        //idkelas	idmapel	namasiswa crtToken	jenistagihan	kodeunik		nilaikd	html_jawaban	emailguru
-        document.querySelector("#infoloadingljk").appendChild(formljkbantu);
-        let identitasljkbantu = document.createElement("input")
-        identitasljkbantu.setAttribute("id", "idkelas")
-        identitasljkbantu.setAttribute("name", "idkelas")
-        identitasljkbantu.setAttribute("value", idNamaKelas);
-        document.getElementById("ljkbantu").appendChild(identitasljkbantu);
+//     $.getJSON(constpreviewljk + "?idmateri=" + datamateri[par].idmateri + "&action=previewriwayat", function (json) {
 
-        identitasljkbantu = document.createElement("input")
-        identitasljkbantu.setAttribute("tokensiswa", "tokensiswa")
-        identitasljkbantu.setAttribute("name", "tokensiswa")
-        identitasljkbantu.setAttribute("value", siswabantu.id);
-        document.getElementById("ljkbantu").appendChild(identitasljkbantu);
-
-        identitasljkbantu = document.createElement("input")
-        identitasljkbantu.setAttribute("id", "idmapel")
-        identitasljkbantu.setAttribute("name", "idmapel")
-        identitasljkbantu.setAttribute("value", datamateri[par].idmapel);
-        document.getElementById("ljkbantu").appendChild(identitasljkbantu);
-
-        identitasljkbantu = document.createElement("input")
-        identitasljkbantu.setAttribute("id", "crtToken")
-        identitasljkbantu.setAttribute("name", "crtToken")
-        identitasljkbantu.setAttribute("value", datamateri[par].crtToken);
-        document.getElementById("ljkbantu").appendChild(identitasljkbantu);
-
-        identitasljkbantu = document.createElement("input")
-        identitasljkbantu.setAttribute("id", "jenistagihan")
-        identitasljkbantu.setAttribute("name", "jenistagihan")
-        identitasljkbantu.setAttribute("value", datamateri[par].jenistagihan);
-        document.getElementById("ljkbantu").appendChild(identitasljkbantu);
-
-        identitasljkbantu = document.createElement("input")
-        identitasljkbantu.setAttribute("id", "kodeunik")
-        identitasljkbantu.setAttribute("name", "kodeunik")
-        identitasljkbantu.setAttribute("value", datamateri[par].jenistagihan + "_" + datamateri[par].crtToken);
-        document.getElementById("ljkbantu").appendChild(identitasljkbantu);
-
-        identitasljkbantu = document.createElement("textarea")
-        identitasljkbantu.setAttribute("id", "buathtmlbantu")
-        identitasljkbantu.setAttribute("name", "tekshtmlnilai")
-        identitasljkbantu.setAttribute("value", "buathtmlbantu");
-        document.getElementById("ljkbantu").appendChild(identitasljkbantu);
-
-        identitasljkbantu = document.createElement("input")
-        identitasljkbantu.setAttribute("id", "nilaikd")
-        identitasljkbantu.setAttribute("name", "nilaikd")
-        identitasljkbantu.setAttribute("value", "Nilai KD Otomatis");
-        document.getElementById("ljkbantu").appendChild(identitasljkbantu);
-
-        //idtoken	idsekolah	nilaiPG	idbaris	nilaiEssay	matericode
-        identitasljkbantu = document.createElement("input")
-        identitasljkbantu.setAttribute("id", "idtoken")
-        identitasljkbantu.setAttribute("name", "idtoken")
-        identitasljkbantu.setAttribute("value", datamateri[par].idtoken);
-        document.getElementById("ljkbantu").appendChild(identitasljkbantu);
-
-        identitasljkbantu = document.createElement("input")
-        identitasljkbantu.setAttribute("id", "idsekolah")
-        identitasljkbantu.setAttribute("name", "idsekolah")
-        identitasljkbantu.setAttribute("value", idNamaSekolah);
-        document.getElementById("ljkbantu").appendChild(identitasljkbantu);
-
-        identitasljkbantu = document.createElement("input")
-        identitasljkbantu.setAttribute("id", "nilaiPG")
-        identitasljkbantu.setAttribute("name", "nilaiPG")
-        // identitasljkbantu.setAttribute("value", "Nilai PG ");
-        document.getElementById("ljkbantu").appendChild(identitasljkbantu);
+//         document.querySelector("#infoloadingljk").innerHTML += brkline(json).teks;
 
 
-        identitasljkbantu = document.createElement("input")
-        identitasljkbantu.setAttribute("id", "nilaiEssay")
-        identitasljkbantu.setAttribute("name", "nilaiEssay")
-        // identitasljkbantu.setAttribute("value", "nilaiEssay");
-        document.getElementById("ljkbantu").appendChild(identitasljkbantu);
+//         //console.log(kuncijawabanku)
+//         var elEssay = document.getElementsByClassName("soalessay")
+//         if (elEssay.length !== 0) {
+//             for (i = 0; i < elEssay.length; i++) {
+//                 var idEl = elEssay[i].getAttribute("id");
+//                 var inidEl = idEl.replace("essay", "");
+//                 var tempattombol = document.getElementById("tomboljawaban" + inidEl);
+//                 var tombolsatu = document.createElement("button");
+//                 tombolsatu.setAttribute("onclick", "tombolketikjawaban2('" + inidEl + "_" + idsw + "')");
+//                 var tekstombolsatu = document.createTextNode("Ketik Jawaban No " + inidEl);
+//                 tombolsatu.appendChild(tekstombolsatu);
+//                 tempattombol.appendChild(tombolsatu);
+//                 tempattombol.innerHTML += "<br/><sub>atau</sub></br/> "
+//                 var tomboldua = document.createElement("button");
+//                 tomboldua.setAttribute("onclick", "tomboluploadjawaban2('" + inidEl + "_" + idsw + "')");
+//                 var tekstomboldua = document.createTextNode("Upload Jawaban No " + inidEl);
+//                 tomboldua.appendChild(tekstomboldua);
+//                 tempattombol.appendChild(tomboldua);
+//                 tempattombol.innerHTML += "<br/><sub>Pilih Salah satu cara Kalian menjawab soal ini</sub>"
 
-        identitasljkbantu = document.createElement("input")
-        identitasljkbantu.setAttribute("id", "matericode")
-        identitasljkbantu.setAttribute("name", "matericode")
-        identitasljkbantu.setAttribute("value", datamateri[par].idbaris);
-        document.getElementById("ljkbantu").appendChild(identitasljkbantu);
+//             }
+//         }
+//         //})
+//         //idkelas	idmapel	namasiswa crtToken	jenistagihan	kodeunik		nilaikd	html_jawaban	emailguru
+//         document.querySelector("#infoloadingljk").appendChild(formljkbantu);
+//         let identitasljkbantu = document.createElement("input")
+//         identitasljkbantu.setAttribute("id", "idkelas")
+//         identitasljkbantu.setAttribute("name", "idkelas")
+//         identitasljkbantu.setAttribute("value", idNamaKelas);
+//         document.getElementById("ljkbantu").appendChild(identitasljkbantu);
 
+//         identitasljkbantu = document.createElement("input")
+//         identitasljkbantu.setAttribute("tokensiswa", "tokensiswa")
+//         identitasljkbantu.setAttribute("name", "tokensiswa")
+//         identitasljkbantu.setAttribute("value", siswabantu.id);
+//         document.getElementById("ljkbantu").appendChild(identitasljkbantu);
 
-        identitasljkbantu = document.createElement("input")
-        identitasljkbantu.setAttribute("id", "namasiswa")
-        identitasljkbantu.setAttribute("name", "namasiswa")
-        identitasljkbantu.setAttribute("value", siswabantu.pd_nama);
-        document.getElementById("ljkbantu").appendChild(identitasljkbantu);
+//         identitasljkbantu = document.createElement("input")
+//         identitasljkbantu.setAttribute("id", "idmapel")
+//         identitasljkbantu.setAttribute("name", "idmapel")
+//         identitasljkbantu.setAttribute("value", datamateri[par].idmapel);
+//         document.getElementById("ljkbantu").appendChild(identitasljkbantu);
 
-        identitasljkbantu = document.createElement("div")
-        identitasljkbantu.setAttribute("id", "inputpgdanskor")
-        identitasljkbantu.innerHTML = "tempat PG dan Skor:<hr>"
-        document.getElementById("ljkbantu").appendChild(identitasljkbantu);
+//         identitasljkbantu = document.createElement("input")
+//         identitasljkbantu.setAttribute("id", "crtToken")
+//         identitasljkbantu.setAttribute("name", "crtToken")
+//         identitasljkbantu.setAttribute("value", datamateri[par].crtToken);
+//         document.getElementById("ljkbantu").appendChild(identitasljkbantu);
 
-        //---nosoalpada skor, dan PG_1
-        let obnosoal = JSON.parse(datamateri[par].kuncikd)
-        let ob = ubahjsonkuncikd(obnosoal)
-        let dibikin = Object.keys(ob);
-        for (let i = 0; i < dibikin.length; i++) {
-            let lbl = document.createElement("label")
-            lbl.setAttribute("for", "SKOR_" + dibikin[i]);
-            let tek = document.createTextNode("No " + dibikin[i])
-            lbl.appendChild(tek)
-            let docinput = document.createElement("input")
-            docinput.setAttribute("id", "SKOR_" + dibikin[i]);
-            docinput.setAttribute("class", "hitungskor");
-            docinput.setAttribute("name", "SKOR_" + dibikin[i]);
-            docinput.setAttribute("value", "");
-            inputpgdanskor.appendChild(lbl);
-            let br = document.createElement("br")
-            inputpgdanskor.appendChild(br)
-            inputpgdanskor.appendChild(docinput);
-            br = document.createElement("br")
-            inputpgdanskor.appendChild(br)
-        }
+//         identitasljkbantu = document.createElement("input")
+//         identitasljkbantu.setAttribute("id", "jenistagihan")
+//         identitasljkbantu.setAttribute("name", "jenistagihan")
+//         identitasljkbantu.setAttribute("value", datamateri[par].jenistagihan);
+//         document.getElementById("ljkbantu").appendChild(identitasljkbantu);
 
-        let nopg = datamateri[par].jumlahpg;
-        for (let j = 0; j < nopg; j++) {
-            lbl = document.createElement("label")
-            lbl.setAttribute("for", "PG_" + (j + 1));
-            let tek = document.createTextNode("No PG " + (j + 1))
-            lbl.appendChild(tek)
-            docinput = document.createElement("input")
-            docinput.setAttribute("id", "PG_" + (j + 1));
-            docinput.setAttribute("class", "hitungpg");
-            docinput.setAttribute("name", "PG_" + (j + 1));
-            docinput.setAttribute("value", "");
-            inputpgdanskor.appendChild(lbl);
-            let br = document.createElement("br")
-            inputpgdanskor.appendChild(br)
-            inputpgdanskor.appendChild(docinput);
-            br = document.createElement("br")
-            inputpgdanskor.appendChild(br)
-        }
+//         identitasljkbantu = document.createElement("input")
+//         identitasljkbantu.setAttribute("id", "kodeunik")
+//         identitasljkbantu.setAttribute("name", "kodeunik")
+//         identitasljkbantu.setAttribute("value", datamateri[par].jenistagihan + "_" + datamateri[par].crtToken);
+//         document.getElementById("ljkbantu").appendChild(identitasljkbantu);
 
+//         identitasljkbantu = document.createElement("textarea")
+//         identitasljkbantu.setAttribute("id", "buathtmlbantu")
+//         identitasljkbantu.setAttribute("name", "tekshtmlnilai")
+//         identitasljkbantu.setAttribute("value", "buathtmlbantu");
+//         document.getElementById("ljkbantu").appendChild(identitasljkbantu);
 
-        identitasljkbantu = document.createElement("div")
-        identitasljkbantu.setAttribute("id", "previewljkbantu")
-        identitasljkbantu.setAttribute("class", "w3-card-4 w3-padding")
-        identitasljkbantu.setAttribute("style", "display:none")
-        identitasljkbantu.innerHTML = "previewljkbantu"
-        document.getElementById("ljkbantu").after(identitasljkbantu);
+//         identitasljkbantu = document.createElement("input")
+//         identitasljkbantu.setAttribute("id", "nilaikd")
+//         identitasljkbantu.setAttribute("name", "nilaikd")
+//         identitasljkbantu.setAttribute("value", "Nilai KD Otomatis");
+//         document.getElementById("ljkbantu").appendChild(identitasljkbantu);
 
-        // identitasljkbantu = document.createElement("button")
-        // identitasljkbantu.setAttribute("onclick", "cekljk()")
-        // identitasljkbantu.setAttribute("class", "w3-button w3-card-4 w3-blue")
-        // identitasljkbantu.innerHTML = "Preview LJK"
-        // document.getElementById("ljkbantu").after(identitasljkbantu);
+//         //idtoken	idsekolah	nilaiPG	idbaris	nilaiEssay	matericode
+//         identitasljkbantu = document.createElement("input")
+//         identitasljkbantu.setAttribute("id", "idtoken")
+//         identitasljkbantu.setAttribute("name", "idtoken")
+//         identitasljkbantu.setAttribute("value", datamateri[par].idtoken);
+//         document.getElementById("ljkbantu").appendChild(identitasljkbantu);
 
-        previewljkbantu.innerHTML = buathtmlljk(adapg);
-        selwaktumulai.innerHTML = tanggalfulllengkap(new Date());
+//         identitasljkbantu = document.createElement("input")
+//         identitasljkbantu.setAttribute("id", "idsekolah")
+//         identitasljkbantu.setAttribute("name", "idsekolah")
+//         identitasljkbantu.setAttribute("value", idNamaSekolah);
+//         document.getElementById("ljkbantu").appendChild(identitasljkbantu);
 
-        hasilakhirnamasiswa.innerHTML = siswabantu.pd_nama;
-        hasilakhirmapeltema.innerHTML = datamateri[par].idmapel.toUpperCase();
-
-        // let kuncijawabanku = "";
-        // if (adapg) {
-        //     kuncijawabanku = brkline(json).kunci;
-        //     document.querySelector("#infoloadingljk").innerHTML += `<button class="wa" onclick="hasilakhirelamasopg('${kuncijawabanku}')">Selesai</button>`
-
-        // } else {
-        //     document.querySelector("#infoloadingljk").innerHTML += `<button class="wa" onclick="hasilakhirelamaso('${par}')">Selesai</button>`
-
-        // }
-        document.querySelector("#infoloadingljk").innerHTML += `<button class="wa" onclick="hasilakhirelamaso('${param}')">Selesai</button>`
+//         identitasljkbantu = document.createElement("input")
+//         identitasljkbantu.setAttribute("id", "nilaiPG")
+//         identitasljkbantu.setAttribute("name", "nilaiPG")
+//         // identitasljkbantu.setAttribute("value", "Nilai PG ");
+//         document.getElementById("ljkbantu").appendChild(identitasljkbantu);
 
 
-    })
+//         identitasljkbantu = document.createElement("input")
+//         identitasljkbantu.setAttribute("id", "nilaiEssay")
+//         identitasljkbantu.setAttribute("name", "nilaiEssay")
+//         // identitasljkbantu.setAttribute("value", "nilaiEssay");
+//         document.getElementById("ljkbantu").appendChild(identitasljkbantu);
+
+//         identitasljkbantu = document.createElement("input")
+//         identitasljkbantu.setAttribute("id", "matericode")
+//         identitasljkbantu.setAttribute("name", "matericode")
+//         identitasljkbantu.setAttribute("value", datamateri[par].idbaris);
+//         document.getElementById("ljkbantu").appendChild(identitasljkbantu);
 
 
-}
+//         identitasljkbantu = document.createElement("input")
+//         identitasljkbantu.setAttribute("id", "namasiswa")
+//         identitasljkbantu.setAttribute("name", "namasiswa")
+//         identitasljkbantu.setAttribute("value", siswabantu.pd_nama);
+//         document.getElementById("ljkbantu").appendChild(identitasljkbantu);
+
+//         identitasljkbantu = document.createElement("div")
+//         identitasljkbantu.setAttribute("id", "inputpgdanskor")
+//         identitasljkbantu.innerHTML = "tempat PG dan Skor:<hr>"
+//         document.getElementById("ljkbantu").appendChild(identitasljkbantu);
+
+//         //---nosoalpada skor, dan PG_1
+//         let obnosoal = JSON.parse(datamateri[par].kuncikd)
+//         let ob = ubahjsonkuncikd(obnosoal)
+//         let dibikin = Object.keys(ob);
+//         for (let i = 0; i < dibikin.length; i++) {
+//             let lbl = document.createElement("label")
+//             lbl.setAttribute("for", "SKOR_" + dibikin[i]);
+//             let tek = document.createTextNode("No " + dibikin[i])
+//             lbl.appendChild(tek)
+//             let docinput = document.createElement("input")
+//             docinput.setAttribute("id", "SKOR_" + dibikin[i]);
+//             docinput.setAttribute("class", "hitungskor");
+//             docinput.setAttribute("name", "SKOR_" + dibikin[i]);
+//             docinput.setAttribute("value", "");
+//             inputpgdanskor.appendChild(lbl);
+//             let br = document.createElement("br")
+//             inputpgdanskor.appendChild(br)
+//             inputpgdanskor.appendChild(docinput);
+//             br = document.createElement("br")
+//             inputpgdanskor.appendChild(br)
+//         }
+
+//         let nopg = datamateri[par].jumlahpg;
+//         for (let j = 0; j < nopg; j++) {
+//             lbl = document.createElement("label")
+//             lbl.setAttribute("for", "PG_" + (j + 1));
+//             let tek = document.createTextNode("No PG " + (j + 1))
+//             lbl.appendChild(tek)
+//             docinput = document.createElement("input")
+//             docinput.setAttribute("id", "PG_" + (j + 1));
+//             docinput.setAttribute("class", "hitungpg");
+//             docinput.setAttribute("name", "PG_" + (j + 1));
+//             docinput.setAttribute("value", "");
+//             inputpgdanskor.appendChild(lbl);
+//             let br = document.createElement("br")
+//             inputpgdanskor.appendChild(br)
+//             inputpgdanskor.appendChild(docinput);
+//             br = document.createElement("br")
+//             inputpgdanskor.appendChild(br)
+//         }
+
+
+//         identitasljkbantu = document.createElement("div")
+//         identitasljkbantu.setAttribute("id", "previewljkbantu")
+//         identitasljkbantu.setAttribute("class", "w3-card-4 w3-padding")
+//         identitasljkbantu.setAttribute("style", "display:none")
+//         identitasljkbantu.innerHTML = "previewljkbantu"
+//         document.getElementById("ljkbantu").after(identitasljkbantu);
+
+//         // identitasljkbantu = document.createElement("button")
+//         // identitasljkbantu.setAttribute("onclick", "cekljk()")
+//         // identitasljkbantu.setAttribute("class", "w3-button w3-card-4 w3-blue")
+//         // identitasljkbantu.innerHTML = "Preview LJK"
+//         // document.getElementById("ljkbantu").after(identitasljkbantu);
+
+//         previewljkbantu.innerHTML = buathtmlljk(adapg);
+//         selwaktumulai.innerHTML = tanggalfulllengkap(new Date());
+
+//         hasilakhirnamasiswa.innerHTML = siswabantu.pd_nama;
+//         hasilakhirmapeltema.innerHTML = datamateri[par].idmapel.toUpperCase();
+
+//         // let kuncijawabanku = "";
+//         // if (adapg) {
+//         //     kuncijawabanku = brkline(json).kunci;
+//         //     document.querySelector("#infoloadingljk").innerHTML += `<button class="wa" onclick="hasilakhirelamasopg('${kuncijawabanku}')">Selesai</button>`
+
+//         // } else {
+//         //     document.querySelector("#infoloadingljk").innerHTML += `<button class="wa" onclick="hasilakhirelamaso('${par}')">Selesai</button>`
+
+//         // }
+//         document.querySelector("#infoloadingljk").innerHTML += `<button class="wa" onclick="hasilakhirelamaso('${param}')">Selesai</button>`
+
+
+//     })
+
+
+// }
+
 const bantusiswaisiljk = (param) => {
 
     let params = param.split("_");
@@ -11327,6 +11339,8 @@ const bantusiswaisiljk = (param) => {
 
     //alert (par);
     let siswabantu = JSON.parse(localStorage.getItem("datasiswa_" + idNamaKelas))["datasiswa"][idsw];
+    let tk_siswa = siswabantu.id
+
 
     loadingljk.style.display = "block";
 
@@ -11534,7 +11548,7 @@ const bantusiswaisiljk = (param) => {
         } else {
             kc = 0;
         }
-        document.querySelector("#infoloadingljk").innerHTML += `<button class="wa" onclick="hasilakhirelamaso('${par}_${datamateri[par].idbaris}_${kc}')">Selesai</button>`
+        document.querySelector("#infoloadingljk").innerHTML += `<button class="wa" onclick="hasilakhirelamaso('${tk_siswa}_${datamateri[par].idbaris}_${kc}')">Selesai</button>`
 
 
     })
@@ -11584,102 +11598,103 @@ function pgskor(opsik, kuncijawaban) { // kebalik, hahahaha
     // return benarsalah
     return benarsalah
 }
-const hasilakhirelamasolamayangpggadipakelagi = (par) => {
-    hasilakhirwaktu.innerHTML = tanggalfulllengkap(new Date());
-    let koleksiceklis = []
-    let datakuncikd = JSON.parse(kronologijson[parameterbantuisiljk].kuncikd); //JSON.parse(localStorage.getItem("kuncikd"))
-    let keyarray = Object.keys(datakuncikd);
-    let obj = {};
-    for (l = 0; l < keyarray.length; l++) {
-        let valu = datakuncikd[keyarray[l]]; // [1, 2, 3, 4, dst]
-        let valulengt = valu.length; // [banyaknya array di atas]
-        let coun = 0;
-        for (z = 0; z < valu.length; z++) { // nomor soal pada kunciKD 
-            for (m = 0; m < koleksiceklis.length; m++) { //jawaban siswa 1A, 2B
 
-                var skor = (PGBenar(arrkunci, koleksiceklis[m]) == "Benar") ? 1 : 0;
-                if (parseInt(valu[z]) == parseInt(koleksiceklis[m])) {
-                    coun += skor
-                }
+// const hasilakhirelamasolamayangpggadipakelagi = (par) => {
+//     hasilakhirwaktu.innerHTML = tanggalfulllengkap(new Date());
+//     let koleksiceklis = []
+//     let datakuncikd = JSON.parse(kronologijson[parameterbantuisiljk].kuncikd); //JSON.parse(localStorage.getItem("kuncikd"))
+//     let keyarray = Object.keys(datakuncikd);
+//     let obj = {};
+//     for (l = 0; l < keyarray.length; l++) {
+//         let valu = datakuncikd[keyarray[l]]; // [1, 2, 3, 4, dst]
+//         let valulengt = valu.length; // [banyaknya array di atas]
+//         let coun = 0;
+//         for (z = 0; z < valu.length; z++) { // nomor soal pada kunciKD 
+//             for (m = 0; m < koleksiceklis.length; m++) { //jawaban siswa 1A, 2B
 
-            }
-        }
-        let nilaikd = (coun / valulengt * 100).toFixed(2);
+//                 var skor = (PGBenar(arrkunci, koleksiceklis[m]) == "Benar") ? 1 : 0;
+//                 if (parseInt(valu[z]) == parseInt(koleksiceklis[m])) {
+//                     coun += skor
+//                 }
 
-        obj[keyarray[l]] = nilaikd
+//             }
+//         }
+//         let nilaikd = (coun / valulengt * 100).toFixed(2);
 
-
-    }
-
-    nilaikd.value = JSON.stringify(obj)
-    // tempatinputpilihanganda.innerHTML += "Nilai KD  <input type='text' name='nilaikd' value='" + JSON.stringify(obj) + "'/><br/>"
+//         obj[keyarray[l]] = nilaikd
 
 
+//     }
 
-    // var resulthasilessay = "JAWABAN ESSAY:<br/>";;
-    var resulthasilessay = (kronologijson[parameterbantuisiljk].jumlahessay == 0) ? "" : "JAWABAN ESSAY:<br/>";;
-
-    //resulthasilessay += "<!-- ADD_PAGE -->";
-    var elFilejawaban = document.getElementsByClassName("filejawaban");
-    if (elFilejawaban.length > 0) { //mengantisipasi jika tidak ada filejawaban kosong ga perlu dieksekusi
-        for (var c = 0; c < elFilejawaban.length; c++) {
-            var innernya = elFilejawaban[c].tagName;
-            var noessay = elFilejawaban[c].getAttribute("id").replace("filejawaban", "");
-            //console.log(innernya)
-            if (innernya == "TEXTAREA") {
-                resulthasilessay += "<ol style='list-style-type:decimal' start='" + noessay + "'><li><b style='color:blue'>Pertanyaan:</b>:<br/>";
-                resulthasilessay += document.getElementById("pertanyaanessay_" + noessay).innerHTML + "<hr style='border-top:1px solid black'/><b style='color:blue'>Jawaban:</b>:<br/>";
-                resulthasilessay += elFilejawaban[c].value.split("\n").join("<br/>");
-                resulthasilessay += "<div id='untuklj" + noessay + "' class='koleksilj' style='border:1px solid red;padding:5px;background-color:#eeeeff'>Nilai</div>";
-                resulthasilessay += "</li></ol>";
-            } else {
-                resulthasilessay += "<ol style='list-style-type:decimal' start='" + noessay + "'><li><b style='color:blue'>Pertanyaan:</b>:<br/>";
-                resulthasilessay += document.getElementById("pertanyaanessay_" + noessay).innerHTML + "<hr style='border-top:1px solid black'/><b style='color:blue'>Jawaban:</b>:<br/>";
-
-                resulthasilessay += elFilejawaban[c].outerHTML;
-                resulthasilessay += "<div id='untuklj" + noessay + "' class='koleksilj' style='border:1px solid red;padding:5px;background-color:#eeeeff'>Nilai</div>";
-                resulthasilessay += "</li></ol>";
-
-            }
-        }
-
-    }
-    resumenilaiskhir.innerHTML = resulthasilessay;
+//     nilaikd.value = JSON.stringify(obj)
+//     // tempatinputpilihanganda.innerHTML += "Nilai KD  <input type='text' name='nilaikd' value='" + JSON.stringify(obj) + "'/><br/>"
 
 
-    buathtmlbantu.textContent = window.btoa(unescape(encodeURIComponent(previewljkbantu.innerHTML)));
-    let iddarimana = (koreksidarimana.innerHTML).split("_")[1];
-    let idakseskoreksi = (koreksidarimana.innerHTML).split("_")[0];
-    let namaform = document.getElementById("ljkbantu")
-    let dataform = new FormData(namaform);
-    fetch(constlinknilai + "?action=gurukirimnilai", {
-        method: 'post',
-        body: dataform
-    })
-        .then(u => u.json())
-        .then(q => {
-            document.getElementById("infoloadingljk").innerHTML = q.result;
-            if (iddarimana == "hariini") {
-                getdaftarnilai(idakseskoreksi)
-            } else (
-                daftarnilaikronologi(idakseskoreksi)
 
-            )
+//     // var resulthasilessay = "JAWABAN ESSAY:<br/>";;
+//     var resulthasilessay = (kronologijson[parameterbantuisiljk].jumlahessay == 0) ? "" : "JAWABAN ESSAY:<br/>";;
 
-        })
-        .catch(er => console.log(er))
-    document.getElementById("infoloadingljk").innerHTML = `<i class="fa fa-spin fa-refresh w3-xxlarge" style="margin:0 auto"></i> proses kirim ....`;
-}
+//     //resulthasilessay += "<!-- ADD_PAGE -->";
+//     var elFilejawaban = document.getElementsByClassName("filejawaban");
+//     if (elFilejawaban.length > 0) { //mengantisipasi jika tidak ada filejawaban kosong ga perlu dieksekusi
+//         for (var c = 0; c < elFilejawaban.length; c++) {
+//             var innernya = elFilejawaban[c].tagName;
+//             var noessay = elFilejawaban[c].getAttribute("id").replace("filejawaban", "");
+//             //console.log(innernya)
+//             if (innernya == "TEXTAREA") {
+//                 resulthasilessay += "<ol style='list-style-type:decimal' start='" + noessay + "'><li><b style='color:blue'>Pertanyaan:</b>:<br/>";
+//                 resulthasilessay += document.getElementById("pertanyaanessay_" + noessay).innerHTML + "<hr style='border-top:1px solid black'/><b style='color:blue'>Jawaban:</b>:<br/>";
+//                 resulthasilessay += elFilejawaban[c].value.split("\n").join("<br/>");
+//                 resulthasilessay += "<div id='untuklj" + noessay + "' class='koleksilj' style='border:1px solid red;padding:5px;background-color:#eeeeff'>Nilai</div>";
+//                 resulthasilessay += "</li></ol>";
+//             } else {
+//                 resulthasilessay += "<ol style='list-style-type:decimal' start='" + noessay + "'><li><b style='color:blue'>Pertanyaan:</b>:<br/>";
+//                 resulthasilessay += document.getElementById("pertanyaanessay_" + noessay).innerHTML + "<hr style='border-top:1px solid black'/><b style='color:blue'>Jawaban:</b>:<br/>";
+
+//                 resulthasilessay += elFilejawaban[c].outerHTML;
+//                 resulthasilessay += "<div id='untuklj" + noessay + "' class='koleksilj' style='border:1px solid red;padding:5px;background-color:#eeeeff'>Nilai</div>";
+//                 resulthasilessay += "</li></ol>";
+
+//             }
+//         }
+
+//     }
+//     resumenilaiskhir.innerHTML = resulthasilessay;
+
+
+//     buathtmlbantu.textContent = window.btoa(unescape(encodeURIComponent(previewljkbantu.innerHTML)));
+//     let iddarimana = (koreksidarimana.innerHTML).split("_")[1];
+//     let idakseskoreksi = (koreksidarimana.innerHTML).split("_")[0];
+//     let namaform = document.getElementById("ljkbantu")
+//     let dataform = new FormData(namaform);
+//     fetch(constlinknilai + "?action=gurukirimnilai", {
+//         method: 'post',
+//         body: dataform
+//     })
+//         .then(u => u.json())
+//         .then(q => {
+//             document.getElementById("infoloadingljk").innerHTML = q.result;
+//             if (iddarimana == "hariini") {
+//                 getdaftarnilai(idakseskoreksi)
+//             } else (
+//                 daftarnilaikronologi(idakseskoreksi)
+
+//             )
+
+//         })
+//         .catch(er => console.log(er))
+//     document.getElementById("infoloadingljk").innerHTML = `<i class="fa fa-spin fa-refresh w3-xxlarge" style="margin:0 auto"></i> proses kirim ....`;
+// }
 
 function hasilakhirelamaso(id) {
     // let dlo = JSON.parse(localStorage.getItem("materi"))[id];
     // let sw = JSON.parse(localStorage.getItem("typeuser"))
-    let x = id.split("_")[0];
+    let x = id.split("_")[0]; //idsiswa
     let y = id.split("_")[1];
     let kc = id.split("_")[2]
     let dlo = kronologijson.filter(s => s.idbaris == y)[0];
-    console.log(dlo)
-    let sw = jsondatasiswa[y]
+
+    let sw = jsondatasiswa.filter(d => d.id == x)[0]
 
     let keytokenakses = dlo.idaksessiswa;
 
@@ -11786,7 +11801,7 @@ function hasilakhirelamaso(id) {
     if (jumlahpg !== 0) {
 
         let nilaiskorarray = (arrskor.length == 0) ? 0 : arrskor.reduce((a, b) => a + b);
-        console.log(nilaiskorarray);
+        
         let skorakhirpg = (nilaiskorarray / elSoal.length * 100).toFixed(2)
         let tekskorpg = ((isNaN(skorakhirpg)) ? "" : skorakhirpg);
         document.getElementById("nilaiPGku").innerHTML = tekskorpg;

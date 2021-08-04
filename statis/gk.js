@@ -4443,8 +4443,8 @@ const fecjsonabsen = () => {
         });
 
 }
-function pilihopsibulanrekap() {
-
+async function pilihopsibulanrekap() {
+    let isidivscroll = document.getElementById("isiscrolltabelbulanan");
     document.getElementById("tabel_rekap_absen_sia_tgl").innerHTML = "";
     let idselect = document.getElementById("pilihbulanrekap");
     let xx = idselect.selectedIndex;
@@ -4462,20 +4462,21 @@ function pilihopsibulanrekap() {
     document.getElementById("bulanrekap").innerHTML = "Tabel Rekap Absensi Bulan " + namabulan + " " + y;
 
     let tabel = document.createElement("table");
-    tabel.setAttribute("class", "versi-table w3-tiny");
+    tabel.setAttribute("class", "versi-table w3-tiny tahankiripertama");
     tabel.setAttribute("id", "tabelxx");
+
     let thead = tabel.createTHead();
     let tr = thead.insertRow(0);
 
     let th = document.createElement("th");
     th.setAttribute("rowspan", "2");
-    th.setAttribute("style", "position:sticky;position:-webkit-sticky;left:0px;box-shadow: inset 0 0 1px #000000");
     th.innerHTML = "NAMA SISWA";
     tr.appendChild(th);
 
     th = document.createElement("th");
     th.setAttribute("colspan", jumlahharibulanini);
     th.setAttribute("id", "namaheaderbulan");
+
     th.innerHTML = "Bulan " + namabulan + " " + y;
     tr.appendChild(th);
 
@@ -4493,6 +4494,8 @@ function pilihopsibulanrekap() {
         let weekend = (indekshari == 0 || indekshari == 6) ? true : false;
         th = document.createElement("th");
 
+        // th.setAttribute("style", "position:sticky;position:-webkit-sticky;top:50px; box-shadow: inset 0 0 1px #000000");
+
         if (libur) {
             th.setAttribute("class", "w3-red");
             let teksbawah = "Tgl. " + tanggalfull(d_tbl) + " " + arrayKetLibur[indekslibur];
@@ -4500,6 +4503,7 @@ function pilihopsibulanrekap() {
         } else if (weekend) {
             th.setAttribute("class", "w3-red");
         } else {
+
 
             itungHE++
         }
@@ -4525,7 +4529,7 @@ function pilihopsibulanrekap() {
 
         tr = tbody.insertRow(-1);
         let cell = tr.insertCell(-1);
-        cell.setAttribute("style", "position:sticky;position:-webkit-sticky;left:0px; box-shadow: inset 0 0 1px #000000");
+        // cell.setAttribute("style", "position:sticky;position:-webkit-sticky;left:0px; box-shadow: inset 0 0 1px #000000");
         cell.innerHTML = "<span style='font-size:12px;' id='datakelas" + j + "'>" + datanama[j] + "</span>";
 
 
@@ -4562,17 +4566,50 @@ function pilihopsibulanrekap() {
 
 
     document.getElementById("tabel_rekap_absen_sia_tgl").appendChild(tabel);
-    document.getElementById("tabel_rekap_absen_sia_tgl").innerHTML += `Keterangan Libur: <ul>`;
-    arrayKeteranganLibur.forEach(m => {
-        document.getElementById("tabel_rekap_absen_sia_tgl").innerHTML += `<li> ${m} </li>`
-    })
-    document.getElementById("tabel_rekap_absen_sia_tgl").innerHTML += `</ul>`;
+    let tbl = document.getElementById("tabelxx")
 
+
+    let lebar = tbl.offsetWidth + 26;
+
+    let a = localStorage.getItem("Kaldik");
+    let c = JSON.parse(a);
+
+    let b = c.filter(s => (new Date(s.start_tgl).getMonth() == m || new Date(s.end_tgl).getMonth() == m) && (new Date(s.start_tgl).getFullYear() == y || new Date(s.end_tgl).getFullYear() == m));
+    let ketlibur = "";
+    if (b.length !== 0) {
+        ketlibur = "Keterangan Tanggal:<ul>";
+        for (i = 0; i < b.length; i++) {
+            let thn_awal = new Date(b[i].start_tgl).getFullYear();
+            let thn_akhir = new Date(b[i].end_tgl).getFullYear();
+            // console.log(thn_awal + " " + thn_akhir)
+            let bln_awal = new Date(b[i].start_tgl).getMonth();
+            let bln_akhir = new Date(b[i].end_tgl).getMonth();
+            let tgl_awal = new Date(b[i].start_tgl).getDate();
+            let tgl_akhir = new Date(b[i].end_tgl).getDate();
+            if (thn_awal == thn_akhir) {
+                if (bln_awal == bln_akhir) {
+                    if (tgl_awal == tgl_akhir) {
+
+                        ketlibur += `<li> Tgl ${tgl_awal} ${timekbm_arraybulan[m]} ${new Date(b[i].start_tgl).getFullYear()}= ${b[i].keterangan}</li>`;
+                    } else {
+                        ketlibur += `<li> Tgl ${tgl_awal} - ${tgl_akhir} ${timekbm_arraybulan[m]}  ${new Date(b[i].end_tgl).getFullYear()}= ${b[i].keterangan}</li>`;
+                    }
+                } else {
+                    ketlibur += `<li> Tgl ${tgl_awal} ${timekbm_arraybulan[bln_awal]} - ${tgl_akhir} ${timekbm_arraybulan[bln_akhir]}  ${thn_awal}= ${b[i].keterangan}</li>`;
+                }
+            } else {
+                ketlibur += `<li> Tgl ${tgl_awal} ${timekbm_arraybulan[bln_awal]} ${thn_awal} - ${tgl_akhir} ${timekbm_arraybulan[bln_akhir]}  ${thn_akhir}= ${b[i].keterangan}</li>`;
+
+            }
+        }
+        ketlibur += "</ul>";
+    }
+    document.getElementById("tabel_rekap_absen_sia_tgl").innerHTML += ketlibur;
     var TglCetak = new Date(y, m, 1);
 
     let datee = StringTanggal(TglCetak)
-    lihatrekapkelas(datee);
-
+    await lihatrekapkelas(datee);
+    isidivscroll.setAttribute("style", `width:${lebar}px;height:5px;`)
     let tombolprint = document.getElementById("printke1");
     tombolprint.removeAttribute("onclick");
     tombolprint.setAttribute("onclick", "print('tabel_rekap_absen_sia_tgl,Daftar Absensi Siswa Kelas " + ruangankelas + ",Bulan " + namabulan + " " + y + "," + TglCetak + "')");
@@ -4580,6 +4617,34 @@ function pilihopsibulanrekap() {
     tombolprint = document.getElementById("simpanabsenbulananexcel");
     tombolprint.removeAttribute("onclick");
     tombolprint.setAttribute("onclick", "excelrekapbulan()");
+
+
+    let elstablengkap1 = document.getElementById("scrolltabelbulanan")
+    let elstablengkap2 = document.getElementById("tabel_rekap_absen_sia_tgl")
+
+    elstablengkap1.onscroll = function () {
+        elstablengkap2.scrollLeft = elstablengkap1.scrollLeft;
+    };
+    elstablengkap2.onscroll = function () {
+        elstablengkap1.scrollLeft = elstablengkap2.scrollLeft;
+    };
+
+
+    // let selpertama = dtopp.rows.deleteCell(0);
+    //let selpertama = tbl.getBoundingClientRect();
+    // console.log(selpertama)
+    //
+    //     let x = classpts[0].offsetLeft;
+    //    let ku = tabel.getElementsByTagName("thead")[0].rows[0].cells[1].offsetWidth;
+    //     div.scrollLeft = (x - ku);
+
+
+
+
+
+
+
+
 }
 const excelrekapbulan = () => {
     var datasiswadiv = document.getElementById("datasiswaprint");
@@ -4729,67 +4794,69 @@ const lihatrekapkelas = async (datee) => {
     var kodeid;
     var kodetd
     var hadir;
-
-    //document.getElementById("tabel_rekap_absen_nama_tgl").innerHTML = "Nama Siswa yang tidak ada di absen, tapi terdata di kelas ini: <ol>";
-
-
     let ind = new Date(datee).getMonth();
     let namabulansekarang = NamaBulandariIndex(new Date().getMonth())
     let bulanapi = NamaBulandariIndex(ind)
     var jsonabsenkelasperbulan = [];
     jsonlocalstorage = JSON.parse(localStorage.getItem("inst_id"));
+    await fetch(url_absensiswa + "?action=rekapbulan&kelas=" + ruangankelas + "&strtgl=" + datee)
+        .then(m => m.json())
+        .then(k => {
+            jsonabsenkelasperbulan = k[bulanapi];
 
+            localStorage.setItem(bulanapi, JSON.stringify(k[bulanapi]))
+        }).catch(er => { console.log(er) })
 
-    if (localStorage.hasOwnProperty(bulanapi)) {
-        if (bulanapi !== namabulansekarang) {
-            let kk = JSON.parse(localStorage.getItem(bulanapi));
-            jsonabsenkelasperbulan = kk;
+    // if (localStorage.hasOwnProperty(bulanapi)) {
+    //     if (bulanapi !== namabulansekarang) {
+    //         let kk = JSON.parse(localStorage.getItem(bulanapi));
+    //         jsonabsenkelasperbulan = kk;
 
-        } else {
-            await fetch(url_absensiswa + "?action=rekapbulan&kelas=" + ruangankelas + "&strtgl=" + datee)
-                .then(m => m.json())
-                .then(k => {
-                    jsonabsenkelasperbulan = k[bulanapi];
+    //     } else {
+    //         await fetch(url_absensiswa + "?action=rekapbulan&kelas=" + ruangankelas + "&strtgl=" + datee)
+    //             .then(m => m.json())
+    //             .then(k => {
+    //                 jsonabsenkelasperbulan = k[bulanapi];
 
-                    localStorage.setItem(bulanapi, JSON.stringify(k[bulanapi]))
-                }).catch(er => {
-                    console.log("muat ulang: " + er);
-                    fetch(url_absensiswa + "?action=rekapbulan&kelas=" + ruangankelas + "&strtgl=" + datee)
-                        .then(m => m.json())
-                        .then(k => {
-                            jsonabsenkelasperbulan = k[bulanapi];
+    //                 localStorage.setItem(bulanapi, JSON.stringify(k[bulanapi]))
+    //             }).catch(er => {
+    //                 console.log("muat ulang: " + er);
+    //                 fetch(url_absensiswa + "?action=rekapbulan&kelas=" + ruangankelas + "&strtgl=" + datee)
+    //                     .then(m => m.json())
+    //                     .then(k => {
+    //                         jsonabsenkelasperbulan = k[bulanapi];
 
-                            localStorage.setItem(bulanapi, JSON.stringify(k[bulanapi]))
-                        }).catch(err => {
-                            console.log(err + " paksa reload");
-                            location.reload()
-                        })
-                })
-        }
+    //                         localStorage.setItem(bulanapi, JSON.stringify(k[bulanapi]))
+    //                     }).catch(err => {
+    //                         console.log(err + " paksa reload");
+    //                         location.reload()
+    //                     })
+    //             })
+    //     }
 
-    } else {
-        await fetch(url_absensiswa + "?action=rekapbulan&kelas=" + ruangankelas + "&strtgl=" + datee)
-            .then(m => m.json())
-            .then(k => {
-                jsonabsenkelasperbulan = k[bulanapi];
-                //console.log("ga punya local, dan sedang buat local")
-                localStorage.setItem(bulanapi, JSON.stringify(k[bulanapi]))
-            }).catch(er => {
-                //console.log(er);
-                fetch(url_absensiswa + "?action=rekapbulan&kelas=" + encodeURIComponent(ruangankelas) + "&strtgl=" + datee)
-                    .then(m => m.json())
-                    .then(k => {
-                        jsonabsenkelasperbulan = k[bulanapi];
-                        console.log("ga punya local, dan sedang buat local dari " + er)
-                        localStorage.setItem(bulanapi, JSON.stringify(k[bulanapi]))
-                    }).catch(er => {
-                        console.log(er + " paksa reload");
-                        location.reload()
-                    })
+    // } else {
+    //     await fetch(url_absensiswa + "?action=rekapbulan&kelas=" + ruangankelas + "&strtgl=" + datee)
+    //         .then(m => m.json())
+    //         .then(k => {
+    //             jsonabsenkelasperbulan = k[bulanapi];
+    //             //console.log("ga punya local, dan sedang buat local")
+    //             localStorage.setItem(bulanapi, JSON.stringify(k[bulanapi]))
+    //         }).catch(er => {
+    //             //console.log(er);
+    //             fetch(url_absensiswa + "?action=rekapbulan&kelas=" + encodeURIComponent(ruangankelas) + "&strtgl=" + datee)
+    //                 .then(m => m.json())
+    //                 .then(k => {
+    //                     jsonabsenkelasperbulan = k[bulanapi];
+    //                     console.log("ga punya local, dan sedang buat local dari " + er)
+    //                     localStorage.setItem(bulanapi, JSON.stringify(k[bulanapi]))
+    //                 }).catch(er => {
+    //                     console.log(er + " paksa reload");
+    //                     location.reload()
+    //                 })
 
-            })
+    //         })
 
-    }
+    // }
 
 
 
@@ -4880,7 +4947,22 @@ const lihatrekapkelas = async (datee) => {
         REKAPAbsen[bulanapi] = arrayy;
 
     }
-
+    // let tbl = document.getElementById("tabelxx");
+    // let elementini = tbl.getElementsByTagName("thead")[0];
+    // let topheader = document.createElement("table")
+    // topheader.setAttribute("class", "versi-table w3-tiny kloningan_opsibulanrekap");
+    // var cln = elementini.cloneNode(true);
+    // topheader.appendChild(cln);
+    // $('#isiscrolltabelbulanan').nextAll('table').remove();
+    // document.getElementById("isiscrolltabelbulanan").after(topheader);
+    // let dto = document.querySelector(".kloningan_opsibulanrekap");
+    // let dtopp = document.querySelector(".kloningan_opsibulanrekap").getElementsByTagName("thead")[0];
+    // let nsis = tbl.offsetWidth;
+    // let nsisd = dto.offsetWidth;
+    // let n = nsis - nsisd;
+    // // dto.setAttribute("style", `position:sticky;position:-webkit-sticky;top:0px;left:${lebar}`)
+    // console.log(nsis)
+    // topheader.setAttribute("style", `margin-left:${n}px`)
 
 }
 const updateLocaleRekapkelas = async (datee) => {
@@ -4906,8 +4988,8 @@ const updateLocaleRekapkelas = async (datee) => {
 
     for (var i = 0; i < jsonabsenkelasperbulan.length; i++) {
         //mengecek element kodeid
-        kodeid = jsonabsenkelasperbulan[i].id + "_" + kelas + "_" + encodeURIComponent(jsonabsenkelasperbulan[i].name);
-        kodetd = "td_" + encodeURIComponent(jsonabsenkelasperbulan[i].name) + "_" + jsonabsenkelasperbulan[i].id;
+        kodeid = jsonabsenkelasperbulan[i].id + "_" + kelas + "_" + jsonabsenkelasperbulan[i].tokensiswa;
+        kodetd = "td_" + jsonabsenkelasperbulan[i].tokensiswa + "_" + jsonabsenkelasperbulan[i].id;
         var isikehadiran = document.getElementById(kodeid)
 
         if (isikehadiran == null) {
@@ -4991,7 +5073,7 @@ function bantuabsen(encodenama) {
     var teks = encodenama;
     var split = teks.split("_");
     var kodenama = jsondatasiswa.filter(s => s.id == split[0])[0];//parseInt(split[0]);
-    console.log(kodenama)
+
     var tgl = split[1];
 
     document.getElementById("divbantuabsen").style.display = "block";
@@ -5264,7 +5346,7 @@ const buattabelrekapsemester = () => {
     let isidivscroll = document.getElementById("isiscrolltabelabsenrekap");
 
     // divscroll.setAttribute("style", `x-index:999;border: none 0px red;overflow-x: scroll;position:sticky;position:-webkit-sticky;top:25px;">`)
-    isidivscroll.setAttribute("style", `width:1474px;height:20px;`)
+    isidivscroll.setAttribute("style", `width:1474px;height:5px;`)
 
 };
 let elstablengkap1 = document.getElementById("scrolltabelabsenrekap")

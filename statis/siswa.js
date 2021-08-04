@@ -39,7 +39,7 @@ const anjangsanaguru = () => {
 
 const setCookie = (cname, cvalue) => {
     var dt = new Date();
-    let d = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate() + 1, 0, 0, 59)
+    let d = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 10, 21, 0)
 
     var expires = "expires=" + d;
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
@@ -585,13 +585,25 @@ const loadingtopbarin = (el) => {
         localStorage.setItem('Kaldik', JSON.stringify(k.records));
 
         localStorage.setItem('TglLibur', JSON.stringify(k.stringTgl))
+        let nilaikuki = getCookie("lamankode");
+
+
+        var dt = new Date();
+        let d = new Date(dt.getFullYear() - 1, dt.getMonth(), dt.getDate(), 0, 0, 0)
         let cekkode = getCookie("lamankode");
-        console.log(cekkode);
         let hrini = new Date().getDay();
-        console.log(hrini);
+        var expires = "expires=" + d;
         if (hrini !== 0 && cekkode == 0) {
-            setCookie("lamankode", 1);
+            document.cookie = "lamankode=" + nilaikuki + ";" + expires + ";path=/";
         }
+
+        // let cekkode = getCookie("lamankode");
+        // console.log(cekkode);
+        // let hrini = new Date().getDay();
+        // console.log(hrini);
+        // if (hrini !== 0 && cekkode == 0) {
+        //     absennya(true)
+        // }
 
     }).catch(er => console.log(er))
 
@@ -2725,6 +2737,41 @@ const ajuanperubahandata = async () => {
 
 const printModalinfoljk = (title, ele) => {
     let isi = document.querySelector("#" + ele).innerHTML;
+    let el = document.getElementById("iframeprint");
+    let doc = el.contentDocument;
+    // head, body
+    let head = doc.head;
+    let body = doc.body;
+    //isikan HEAD dengan title, style, link, dll.
+    head.innerHTML = `<title>E-LAMASO ${title}</title>`;
+    head.innerHTML += `<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">`;
+    head.innerHTML += `<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">`;
+    head.innerHTML += `<link href="https://fonts.googleapis.com/css?family=Raleway">`;
+    head.innerHTML += `<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>`;
+    head.innerHTML += `<style type="text/css"> .versii-table{width:950px;max-width:100%;border-collapse:collapse}.versi-table{width:auto;max-width:100%;border-collapse:collapse}.versi-table td,.versi-table th,.versi-table tr,.versii-table td,.versii-table th,.versii-table tr{border:1px solid #000;color:#000;padding:5px 10px 5px 10px}.versi-table th,.versii-table th{background-color:#eee;color:#00f;vertical-align:middle;text-align:center}.versi-table tr:nth-of-type(even) td,.versii-table tr:nth-of-type(even) td{border:0;background-color:#fff;border:1px solid #000}.versi-table tr:nth-of-type(odd) td,.versii-table tr:nth-of-type(odd) td{border:0;background-color:#eef;border:1px solid #000} .garis td,.garis th,.garis tr{border:0.5px solid rgb(119, 116, 116)} .garis th{border:1px solid #000;text-align:center;vertical-align:middle} </style>`;
+
+    head.innerHTML += `<style type="text/css" media="print">
+    @media print {
+        html,body{height:100%;width:100%;margin:0;padding:0}
+        
+         @page {
+            size: A4 portrait;
+            max-height:100%;
+            max-width:100%;
+            
+            }
+    }
+    </style>`;
+
+    body.innerHTML = `${isi}`;
+
+
+    window.frames["iframeprint"].focus();
+    window.frames["iframeprint"].print();
+
+}
+const printModalinfoljkclaas = (title, ele) => {
+    let isi = document.querySelector("." + ele).innerHTML;
     let el = document.getElementById("iframeprint");
     let doc = el.contentDocument;
     // head, body
@@ -6119,9 +6166,14 @@ function hasilakhirelamaso(id) {
         resumenilaiskhir.innerHTML = `Terimakasih Ananda telah mengikuti kegiatan ini. Hasil Ananda di atas dapat Anda simpan dengan fitur berikut ini:
         <hr />
         <button id="idtombolkirimnilaielamaso"
-            class="w3-btn w3-orange w3-border-bottom w3-border-black w3-round-large"
-            onclick="alert('sampel')"><i class='fa fa-paper-plane'></i>
-            Kirim Nilai</button>
+            class="w3-btn w3-orange w3-border-bottom w3-border-black w3-round-large w3-tiny w3-margin"
+            onclick="printModalinfoljk('Hasil Belajar ${new Date().getTime()}', 'hasilakhir')"><i class='fa fa-print'></i>
+            Cetak Hasil Belajar</button>
+        <button id="idtombolkirimnilaielamaso"
+            class="w3-btn w3-orange w3-border-bottom w3-border-black w3-round-large w3-tiny w3-margin""
+            onclick="printModalinfoljkclaas('Materi id=${new Date().getTime()}', 'kontenmateri')"><i class='fa fa-print'></i>
+            Cetak Rangkuman</button>
+
         <br />`;
     } else {
         hasilakhir.style.display = "none";

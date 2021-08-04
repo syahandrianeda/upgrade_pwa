@@ -207,6 +207,41 @@ const fngmppilihrombel = async () => {
     }, 3000);
 }
 
+const fngmppilihrombeldiamdiam = async () => {
+    loadingtopbarin("loadingtopbar");
+    document.getElementById("gmppilihrombel").selectedIndex = 1;
+    let x = 1;//
+    let y = document.getElementById("gmppilihrombel").options;
+    ruangankelas = y[x].value
+    idNamaKelas = y[x].value;
+    idJenjang = y[x].value.slice(0, 1); //y[x].value.match(/(\d+)/)[0];
+    let ddurl = "url_nilaikelas" + idJenjang;
+    constlinknilai = jlo[ddurl];
+    constpreviewljk = jlo[ddurl];
+    await fetch(linkDataUserWithIdss + "&action=datasiswaaktif&kelas=" + ruangankelas)
+        .then(m => m.json())
+        .then(k => {
+
+            jsondatasiswa = k.datasiswa;
+            localStorage.setItem("datasiswa_" + ruangankelas, JSON.stringify(k));
+
+        }).catch(er => {
+            console.log("muat ulang lagi: " + er);
+        });;
+
+
+
+    await buattabelrekapsemester();
+    clearInterval(stoploadingtopbar);
+    divlod = document.querySelector(".loadingtopbar");
+    divlod.style.width = "100%";
+    setTimeout(() => {
+        divlod.style.width = "1px"
+        divlod.className += " w3-hide";
+
+    }, 3000);
+}
+
 const updateDatasiswa = () => {
     loadingAPI.style.display = "block";
     infoloadingAPI.innerHTML = "Sedang memproses Update Data Siswa ..."
@@ -843,21 +878,19 @@ function logout() {
 }
 
 async function pembelajaran() {
-    loadingtopbarin("loadingtopbar");
     let valuekelas = document.getElementById("gmppilihrombel").value;
     if (valuekelas == "none") {
-        alert("Anda belum memilih kelas. Silakan pilih Kelas terlebih dulu")
-        return
+        alert("Anda belum memilih kelas. Sistem akan memilih kelas pertama Anda.")
+        fngmppilihrombeldiamdiam()
+        //return
 
     }
+    loadingtopbarin("loadingtopbar");
     await kurikulumdiamdiam();
 
     tampilinsublamangurukelas("pembelajaran");
     timelinekbm.style.display = "block";
-    tombolpublikasikan.setAttribute("onclick", "publikasikanmateribaru()")
-    tombolpublikasikan.removeAttribute("class"); //.wa w3-deep-purple w3-hover-aqua);
-    tombolpublikasikan.setAttribute("class", "wa w3-deep-purple w3-hover-aqua");
-    tombolpublikasikan.innerHTML = "PUBLIKASIKAN";
+
 
     fetch(linkmateri + "&action=kronolog&idtoken=" + idJenjang)
         .then(m => m.json())
@@ -866,6 +899,10 @@ async function pembelajaran() {
             let kk = j.result.filter(k => k.kuncikd.indexOf(idgurumapelmapel + "_") > -1)
             templatekronologi(kk);
             kronologijson = kk;
+            tombolpublikasikan.setAttribute("onclick", "publikasikanmateribaru()")
+            tombolpublikasikan.removeAttribute("class"); //.wa w3-deep-purple w3-hover-aqua);
+            tombolpublikasikan.setAttribute("class", "wa w3-deep-purple w3-hover-aqua");
+            tombolpublikasikan.innerHTML = "PUBLIKASIKAN";
             clearInterval(stoploadingtopbar);
             let divlod = document.querySelector(".loadingtopbar");
             divlod.style.width = "100%";
@@ -877,7 +914,7 @@ async function pembelajaran() {
 
         }).catch(er => {
             loadingAPI.style.display = "block";
-
+            console.log(er)
             infoloadingAPI.innerHTML = "Maaf, terjadi kesalahan. Coba lagi nanti. <br>row : 991<br>kode : " + er
         })
 }

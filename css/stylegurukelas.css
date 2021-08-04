@@ -192,13 +192,14 @@ img.gambarlamaso3 {
 .versii-table {
   width: 950px;
   max-width: 100%;
-  border-collapse: collapse
+  border-collapse: collapse;
+
 }
 
 .versi-table {
   width: auto;
   max-width: 100%;
-  border-collapse: collapse
+  border-collapse: collapse;
 }
 
 .versi-table td,
@@ -233,6 +234,8 @@ img.gambarlamaso3 {
   background-color: #eef;
   border: 1px solid #000
 }
+
+
 
 .modifgaris td,
 .modifgaris th,
@@ -379,7 +382,7 @@ input:checked+.slider:before {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: rgb(250, 234, 8);
+  background: rgb(1, 124, 11);
   border-radius: 10px;
 }
 
@@ -399,7 +402,7 @@ input:checked+.slider:before {
   z-index: 3;
   background-color: #f1f1f1;
   border: 1px solid #d3d3d3;
-  padding:5px;
+  padding: 5px;
 }
 
 #prev_dragableheader {
@@ -410,9 +413,17 @@ input:checked+.slider:before {
   color: #fff;
   text-align: center;
 }
-.up_gam_mat{
+
+.up_gam_mat {
   width: 300px;
   height: 200px;
   object-fit: contain;
-  cursor:pointer;
+  cursor: pointer;
+}
+
+.tahankiripertama tr td:first-child {
+  position: sticky;
+  position: -webkit-sticky;
+  left: 0;
+  z-index: 3
 }

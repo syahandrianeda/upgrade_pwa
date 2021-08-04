@@ -15,5 +15,13 @@
             "Perbaikan elemen pada tampilan elamaso siswa"
         ],
         "video": []
+    },
+    {
+        "namaversi": "TP2021_V.1",
+        "tanggal": "3-Agustus",
+        "ket": [
+            "Memperbaiki sistem Cookies pada elamaso siswa"
+        ],
+        "video": []
     }
 ]
