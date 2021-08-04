@@ -39,7 +39,7 @@ const anjangsanaguru = () => {
 
 const setCookie = (cname, cvalue) => {
     var dt = new Date();
-    let d = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 10, 21, 0)
+    let d = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 23, 59, 59)
 
     var expires = "expires=" + d;
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
