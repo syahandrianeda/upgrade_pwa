@@ -1,5 +1,5 @@
-const staticCacheName = "pwa1_statis_v1.16";// + new Date().getTime();
-const dynamicChace = "pwa2_dinamis_v1.16";// + new Date().getTime();
+const staticCacheName = "pwa1_statis_v1.3.1";// + new Date().getTime();
+const dynamicChace = "pwa2_dinamis_v1.3.1";// + new Date().getTime();
 
 const assets = [
     "/",

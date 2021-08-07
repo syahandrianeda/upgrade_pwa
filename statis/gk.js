@@ -15723,7 +15723,7 @@ function nilaimapel() {
     }
 
     tampilinsublamangurukelas("mapel");
-    ulhar.style.display = "block";
+    ;
     //document.getElementById("kurikulum_kd").click();
     //------------------------------------------
     let islam = jsondatasiswa.filter(function (lk) {
@@ -15900,6 +15900,8 @@ function nilaimapel() {
     <option id="selkproyek7" value="BSUND">Bahasa Sunda (BSUND)</option>
     </select>
     `;
-    opsimapelkproyek.innerHTML = htmlseleksiulhar
+    opsimapelkproyek.innerHTML = htmlseleksiulhar;
+    // ulhar.style.display = "block"
+    document.querySelector(".btnuh").click()
 }
 
