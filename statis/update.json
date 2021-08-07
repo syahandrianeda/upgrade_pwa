@@ -1,7 +1,7 @@
 [
     {
         "namaversi": "TP2021_V.1",
-        "tanggal": "30-Juli-2021",
+        "tanggal": "30 Juli 2021",
         "ket": [
             "Update versi PWA (Progressive Webb Application) di semua fitur",
             "Penambahan fitur Info (informasi update dari setiap perubahan)",
@@ -17,10 +17,43 @@
         "video": []
     },
     {
-        "namaversi": "TP2021_V.1",
-        "tanggal": "3-Agustus",
+        "namaversi": "TP2021_V.1.1",
+        "tanggal": "3-Agustus 2021",
         "ket": [
-            "Memperbaiki sistem Cookies pada elamaso siswa"
+            "Memperbaiki sistem Cookies pada elamaso siswa",
+            "Memperbaiki sistem BANTU ISI pada elamaso guru",
+            "Memparbaiki sistem Bantu Absen pada elamaso guru"
+        ],
+        "video": []
+    },
+    {
+        "namaversi": "TP2021_V.1.2",
+        "tanggal": "4 Agustus 2021",
+        "ket": [
+            "Memperbaiki siswa gagal unggah poto absen elamaso siswa",
+            "Memperbaiki sistem BANTU ISI pada elamaso guru"
+        ],
+        "video": []
+    },
+    {
+        "namaversi": "TP2021_V.1.3",
+        "tanggal": "7 Agustus 2021",
+        "ket": [
+            "Mengoptimasi PWA",
+            "Penambahan Dashboard nama sekolah di laman utama dan elamaso Siswa",
+            "Pengaktifan nilai keterampilan (KI-4)",
+            "Mengoptimasi pilihan Penilaian Akhir Semester",
+            "Menghapus menu Raport untuk Guru Mata Pelajaran",
+            "Memperbaiki keterangan kalender pada rekap absen",
+            "Memperbaiki respon ketika siswa gagal unggah poto absen",
+            "Memperbaiki sistem penyimpanan poto siswa di server",
+            "Mengubah tampilan Timeline Materi",
+            "Mengubah sistem EDIT AKSES Materi",
+            "Memperbaiki sistem SIMPAN DRAFT",
+            "Perubahan teks tombol UPLOAD JAWABAN NO menjadi UPLOAD MEDIA NO pada SOAL ESSAY",
+            "Mengoptimasi perubahan pembuatan konten materi",
+            "Mengoptimasi sistem REKAM LAYAR (Ketika SCREEN LAYAR terpilih, langsung merekam)",
+            "Mengubah sistem upgrade dengan pembuatan versi kode server"
         ],
         "video": []
     }

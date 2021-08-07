@@ -1,8 +1,9 @@
-const staticCacheName = "statis_cache_v126";// + new Date().getTime();
-const dynamicChace = "cache_dinamis26";// + new Date().getTime();
+const staticCacheName = "pwa1_statis_v1.16";// + new Date().getTime();
+const dynamicChace = "pwa2_dinamis_v1.16";// + new Date().getTime();
 
 const assets = [
     "/",
+    "/index.html",
     "/css/w3.css",
     "/css/firststyle.css",
     "/css/css_siswa.css",
@@ -58,8 +59,6 @@ const assets = [
     "/statis/update.json",
 
 
-
-    "/index.html",
     "/user/gmp.html",
     "/user/guru.html",
     "/user/kepsek.html",
@@ -67,6 +66,7 @@ const assets = [
     "/user/siswa.html",
     "/user/orangtua.html",
     "/user/staff.html",
+
 
 
 
@@ -86,7 +86,7 @@ const limitCacheSize = (name, size) => {
 };
 
 self.addEventListener('install', evt => {
-    evt.waitUntil(
+    evt.waitUntil( // jangan ada skripWait di proses instal
 
         caches.open(staticCacheName).then(cache => {
             console.log('caching shell assets');
@@ -115,7 +115,7 @@ self.addEventListener('activate', evt => {
 self.addEventListener('fetch', evt => {
 
     // console.log(evt.request.url);
-    if (evt.request.url.indexOf('https://script.google.com') === -1 && assets.indexOf(evt.request.url) == -1) {
+    if (evt.request.url.indexOf('https://script.google.com') === -1 && assets.indexOf(evt.request.url) == -1 && evt.request.url.indexOf('https://drive.google.com') === -1) {
         evt.respondWith(
             caches.match(evt.request).then(cacheRes => {
                 return cacheRes || fetch(evt.request).then(fetchRes => {
@@ -136,3 +136,11 @@ self.addEventListener('fetch', evt => {
     }
     // // console.log('fetch event', evt);
 })
+
+////////////////////////
+self.addEventListener('message', (event) => {
+    if (event.data === 'SKIP_WAITING') {
+        self.skipWaiting();
+    }
+    console.log(event.data);
+});

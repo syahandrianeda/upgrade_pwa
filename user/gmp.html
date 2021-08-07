@@ -22,7 +22,7 @@
     <meta property='twitter:description' content="Sebuah Web Aplikasi Pembelajaran Jarak Jauh dari Lamaso Mediatama" />
     <meta property="twitter:image" content="/img/lamaso.webp" />
     <!-- end meta tag sosial media     -->
-    <link rel="preload" href="/css/w3.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <!-- <link rel="preload" href="/css/w3.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="preload" href="/css/w3-theme-blue-grey.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="preload" href="/css/css_timeline.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="preload" href="/css/stylegurukelas.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -40,7 +40,17 @@
         <link rel="stylesheet" href="/css/css_timeline.css">
         <link rel="stylesheet" href="/css/stylegurukelas.css">
         <link rel="stylesheet" href="/css/firststyle.css">
-    </noscript>
+
+
+    </noscript> -->
+
+    <link rel="stylesheet" href="/css/w3.css">
+    <link rel="stylesheet" href="/css/w3-theme-blue-grey.css">
+    <link rel="stylesheet" href="/css/css_timeline.css">
+    <link rel="stylesheet" href="/css/stylegurukelas.css">
+    <link rel="stylesheet" href="/css/firststyle.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
 
@@ -185,9 +195,9 @@
             <a href="javascript:void(0);" class="w3-bar-item w3-button w3-padding" onclick="nilaimapel()()"><i
                     class="fa fa-star-half-o"></i>
                 Nilai Mapel</a>
-            <a href="javascript:void(0);" class="w3-bar-item w3-button w3-padding" onclick="raportkelas()"><i
+            <!-- <a href="javascript:void(0);" class="w3-bar-item w3-button w3-padding" onclick="raportkelas()"><i
                     class="fa fa-star-half-o"></i>
-                Raport</a>
+                Raport</a> -->
             <a href="javascript:void(0);" class="w3-bar-item w3-button w3-padding" onclick="infoupdate()"><i
                     class="fa fa-info"></i>
                 Info</a>
@@ -200,6 +210,11 @@
                 <i class="fa fa-remove fa-fw"></i>  Tutup Menu
             </a>
         </div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
     </nav>
     <!-- Overlay effect when opening sidebar on small screens -->
 
@@ -278,7 +293,7 @@
                     <h3>Nilai Mapel</h3>
                 </div>
             </div>
-            <div class="w3-quarter" style="cursor: pointer; margin:50px 0" onclick="raportkelas()">
+            <div class="w3-quarter w3-hide" style="cursor: pointer; margin:50px 0" onclick="raportkelas()">
                 <div class="w3-container n_zoom w3-center ">
                     <div><img src="/img/lg_rapor.webp"></div>
 
@@ -305,7 +320,6 @@
 
         </div>
         <div id="batasaksesguru"></div>
-
         <div class="w3-container" id="datakelassaya">
 
             <!-- <h2><b id="kelassayapilih"></b></h2> -->
@@ -440,7 +454,10 @@
                 <button id="simpanabsenbulananexcel" class="w3-button w3-green w3-hover-black w3-round-xlarge"><i
                         class="fa fa-file-excel-o"></i> Simpan Ms excel</button>
                 <hr>
-
+                <div id="scrolltabelbulanan"
+                    style="border: none 0px red;overflow-x: scroll;position:sticky;position:-webkit-sticky;top:33px;">
+                    <div id="isiscrolltabelbulanan" style="width:100px;height:5px"></div>
+                </div>
                 <div id="tabel_rekap_absen_sia_tgl" style="overflow-x:auto">
 
                 </div>
@@ -455,7 +472,10 @@
             <div id="absenrekap" class="tabcontent">
                 <h3>Rekapitulasi Absensi</h3>
                 (Untuk melihat data rekap, silakan cek di Rekap Bulanan)
-
+                <div id="scrolltabelabsenrekap"
+                    style="border: none 0px red;overflow-x: scroll;position:sticky;position:-webkit-sticky;top:33px;">
+                    <div id="isiscrolltabelabsenrekap" style="width:100px;height:10px"></div>
+                </div>
                 <div id="tabelabsenrekap" style="overflow-x:auto">tabeldatakelasrekap</div>
 
             </div>
@@ -522,7 +542,7 @@
                     </div>
                     <div id="prev_dragableisi">
                         <div
-                            style="border:1px solid black;width:320px;height:500px;margin:0px auto;padding:0;border-radius:5px 5px 0px 0px">
+                            style="border:1px solid black;width:330px;height:500px;margin:0px auto;padding:0;border-radius:5px 5px 0px 0px">
                             <div style="padding:0px 2px;height:50px;background-color:black;color:white;margin-top:0px;">
                                 &nbsp;
                                 <span class="w3-right" style="font-size:12px"> 07:30 </span> <i
@@ -548,7 +568,7 @@
                             </div>
                         </div>
                         <div
-                            style="width:320px;z-index:5;padding:0px 2px;height:50px;background-color:black;color:white;margin:auto;border:1px solid black;border-radius:0px 0px 5px 5px">
+                            style="width:330px;z-index:5;padding:0px 2px;height:50px;background-color:black;color:white;margin:auto;border:1px solid black;border-radius:0px 0px 5px 5px">
                             <div id="tombolback" onclick="prevhp.style.display ='none'"
                                 style="font-size:26px;width:33%;float:left;text-align:left">&#9665;</div>
                             <div id="tomboltengah" style="font-size:26px;width:33%;float:left;text-align:center">&#9898;
@@ -618,7 +638,7 @@
                         <br>
                         <div class="w3-row-padding">
 
-                            <div class="tomboleditor w3-col l12  w3-light-gray w3-card-4 w3-padding w3-round-xlarge w3-tiny"
+                            <div class="tomboleditor w3-col l9  w3-light-gray w3-card-4 w3-padding w3-round-xlarge w3-tiny"
                                 style="position: sticky; position: -webkit-sticky;top:43px;transition: .2s;">
                                 TEKS EDITOR:<span class=" w3-button bukatekseditor" title="Buka"><i
                                         class="fa fa-angle-double-down w3-medium"></i></span>
@@ -752,17 +772,32 @@
                                             title="Tabel"></i>
                                     </div>
                                     <div
-                                        style="display:inline-block;padding:1px;border:1px solid blue;background-color: aqua;">
-                                        Lainnya:<br>
-                                        <i class="fa fa-text-width w3-hover-pale-green w3-button w3-border w3-border-red ed_satubariskan"
+                                        style="display:inline-block;padding:1px;border:1px solid blue;background-color: aqua;text-align:center">
+                                        Jadikan Satu Baris:<br>
+                                        <i class="fa fa-text-width w3-pale-green w3-button w3-border w3-border-red ed_satubariskan"
                                             title="Jadikan satubaris"></i>
-                                        <i class="fa fa-youtube  w3-hover-pale-green w3-button w3-border w3-border-red ed_youtube"
+                                    </div>
+                                    <div
+                                        style="display:inline-block;padding:1px;border:1px solid blue;background-color: rgb(101, 216, 126);text-align:center">
+                                        Kode Youtube:<br />
+                                        <i class="fa fa-youtube  w3-pale-green w3-button w3-border w3-border-red ed_youtube"
                                             title="Youtube"></i>
-                                        <i class="fa w3-hover-pale-green w3-button w3-border w3-border-red ed_pemisahkunci"
+                                    </div>
+                                    <div
+                                        style="display:inline-block;padding:1px;border:1px solid blue;background-color: rgb(141, 176, 230);text-align:center">
+                                        Pemisah KD:<br />
+                                        <i class="fa w3-pale-green w3-button w3-border w3-border-red ed_pemisahkunci"
                                             title="Pemisah Kunci KD/jawaban">&lt;||&gt;</i>
                                     </div>
                                     <div
-                                        style="display:inline-block;text-align:center;padding:1px;border:1px solid rgb(9, 255, 0);background-color: aqua;">
+                                        style="display:inline-block;padding:1px;border:1px solid blue;background-color: rgb(220, 164, 243);text-align:center">
+                                        Border Teks:<br />
+                                        <i class="fa fa-square-o w3-hover-pale-green w3-button w3-border w3-border-red ed_borderteks"
+                                            title="Blok teksnya, lalu buat border teks"></i>
+                                    </div>
+
+                                    <div
+                                        style="display:inline-block;text-align:center;padding:1px;border:1px solid rgb(61, 83, 60);background-color: aqua;">
                                         Sebaran KD dari Tabel(sumber Ms. Word):<br>
                                         <i class="fa fa-check-circle w3-red w3-hover-pale-blue w3-button w3-border w3-border-red ed_sebarankddaritabel"
                                             title="Sebaran KD dari Tabel"></i>
@@ -934,9 +969,18 @@
         <div class="w3-container" id="datanilaimapel">
             <h3>Data Nilai Mapel</h3>
             <div class="tab">
-                <button class="tablinks" onclick="openCity(event, 'ulhar')">UH</button>
-                <button class="tablinks" onclick="openCity(event, 'pts')">PTS</button>
-                <button class="tablinks" onclick="openCity(event, 'paspak')">PAK</button>
+                <button class="tablinks btnuh" onclick="openCity(event, 'ulhar')">UH</button>
+                <button class="tablinks btnpts" onclick="openCity(event, 'pts')">PTS</button>
+                <button class="tablinks btnpak" onclick="openCity(event, 'paspak')">PAK</button>
+                <button class="tablinks btnpas" onclick="openCity(event, 'pas')">PAS</button>
+                <button class="tablinks btnkpraktik" onclick="openCity(event, 'kpraktik')"
+                    title="Keterampilan Praktek">Kt
+                    Praktek</button>
+                <button class="tablinks btnkproduk" onclick="openCity(event, 'kproduk')" title="Keterampilan Produk">Kt
+                    Produk</button>
+                <button class="tablinks btnkproyek" onclick="openCity(event, 'kproyek')" tile="Keterampilan Proyek">Kt
+                    Proyek</button>
+
 
             </div>
 
@@ -956,6 +1000,30 @@
                 <h3 id="tekspaspak">PENILAIAN AKHIR KELAS</h3>
                 <div id="opsimapelpaspak">Opsi Mata Pelajaran belum muncul, silakan cek Data Kurikulum </div>
                 <div id="datatabelnilaipaspak" style="overflow-x: auto"></div>
+
+            </div>
+            <div id="pas" class="tabcontent">
+                <h3 id="tekspas">PENILAIAN AKHIR SEMESTER</h3>
+                <div id="opsimapelpas">Opsi Mata Pelajaran belum muncul, silakan cek Data Kurikulum </div>
+                <div id="datatabelnilaipas" style="overflow-x: auto"></div>
+
+            </div>
+            <div id="kpraktik" class="tabcontent">
+                <h3 id="tekskprakik">PENILAIAN KETERAMPILAN PRAKTEK</h3>
+                <div id="opsimapelkpraktik">Opsi Mata Pelajaran belum muncul, silakan cek Data Kurikulum </div>
+                <div id="datatabelnilaikpraktik" style="overflow-x: auto"></div>
+
+            </div>
+            <div id="kproduk" class="tabcontent">
+                <h3 id="tekskproduk">PENILAIAN KETERAMPILAN PRODUK</h3>
+                <div id="opsimapelkproduk">Opsi Mata Pelajaran belum muncul, silakan cek Data Kurikulum </div>
+                <div id="datatabelnilaikproduk" style="overflow-x: auto"></div>
+
+            </div>
+            <div id="kproyek" class="tabcontent">
+                <h3 id="teksproyek">PENILAIAN KETERAMPILAN PROYEK</h3>
+                <div id="opsimapelkproyek">Opsi Mata Pelajaran belum muncul, silakan cek Data Kurikulum </div>
+                <div id="datatabelnilaikproyek" style="overflow-x: auto"></div>
 
             </div>
 
@@ -1938,7 +2006,7 @@ _OPSI-PG-C_1C isikan opsi jawaban C
     <iframe id="iframeprint" name="iframeprint" style="display:none"></iframe>
 
 
-    <style>
+    <!-- <style>
         input[class='calc']+label.opsi {
             color: #000;
 
@@ -1954,10 +2022,11 @@ _OPSI-PG-C_1C isikan opsi jawaban C
             background-color: yellow;
 
         }
-    </style>
+    </style> -->
+    <script src="/statis/app.js"></script>
     <script src="/statis/exceltabel.js"></script>
-    <script src="/statis/guru.js"></script>
     <script src="/statis/gmp.js"></script>
+    <script src="/statis/guru.js"></script>
     <script src="/timekbm.js"></script>
 </body>
 

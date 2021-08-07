@@ -1,10 +1,39 @@
+4 agustus - 7 Agustus
+skrip yang diubah besar-besaran:
+- /statis/gk.js
+- /statis/guru.js
+- /statis/gmp.js
+- /statis/siswa.js
+- /statis/main.js
+- /statis/app.js
+- /sw.js
+- /statis/update.json
+
++ /img/NO+GAGAL.png
+
+- /css/css_timeline.css
+- /css/stylegurukelas
+
+- /user/guru.html
+- /user/gmp.html
+- /index.html
+
+
+- mengatasi siswa gagal absen pad siswa.js
+html ubah width pada guru.html dan gmp.html
+
+
+
+
+
 3 agustus 2021
+perbaikan Bantu Isi
+
+30 Juli
 - gk.js
 - siswa.js
-- update.json'
 - timekbm.js
-
+- update.json'
 - gmp.html
 - guru.html
-
 - sw.js

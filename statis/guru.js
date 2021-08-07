@@ -313,7 +313,7 @@ const fn7preview = (par) => {
                 tempattombol.innerHTML += "<br/><sub>atau</sub></br/> ";
                 var tomboldua = document.createElement("button");
                 tomboldua.setAttribute("onclick", "tomboluploadjawaban('" + inidEl + "')");
-                var tekstomboldua = document.createTextNode("Upload Jawaban No " + inidEl);
+                var tekstomboldua = document.createTextNode("Upload Media No " + inidEl);
                 tomboldua.appendChild(tekstomboldua);
                 tempattombol.appendChild(tomboldua);
                 tempattombol.innerHTML += "<br/><sub>Pilih Salah satu cara Kalian menjawab soal ini</sub>";
@@ -375,6 +375,47 @@ const fn7jadikankontenbaru = (id) => {
         window.localStorage.setItem("drafmateri", JSON.stringify(obj));
         tdtombol.innerHTML = `<button onclick="fn7kembalikankonten('${ids}')" class="w3-button w3-blue w3-hover-green">Kembalikan</button><br><br>
         <button onclick="fn7jadikankontenbaru('${ids}')" class="w3-button w3-khaki w3-hover-green">Simpan Draft</button>`;
+
+        let ingindownload = confirm("Draft berhasil disimpan, apakah Anda ingin mendownload materi ini juga?");
+        if (ingindownload) {
+            downloadfiledraft(json, idmapel);
+        } else {
+            alert('Draft berhasil disimpan, silakan menuju menu UPLOAD MATERI lalu klik TARUH DRAFT');
+        }
+    })
+
+
+};
+
+const fn8editakses_simpandraft = (id) => {
+    let konfirmasihapus = confirm("Anda yakin ingin menyimpan Konten Materi ini menjadi draft Anda? \n \n Simpanan Draft sebelumnya akan hilang dan digantikan dengan draft ini. \n\n Jika tetap ingin menyimpan draf, klik OK.  / Untuk membatalkan klik CANCEL");
+    if (!konfirmasihapus) {
+        return;
+    }
+    let ids = id;
+    let tdtombol = document.querySelector(".fn8editakses_tombolaksi");
+    tdtombol.innerHTML = `<i class='fa fa-refresh fa-spin w3-xxlarge'></i>`
+    let idmapel = kronologijson[id].idmapel;
+    let iddurasi = kronologijson[id].iddurasi;
+    let idaksessiswa = kronologijson[id].idaksessiswa;
+    let jenistagihan = kronologijson[id].jenistagihan;
+    let idtgl = new Date()
+    let idtglend = new Date();
+    $.getJSON(linkmateri + "&idmateri=" + kronologijson[id].idmateri + "&action=previewriwayat", function (json) {
+        let kontenmateri = json;
+        let botakin = window.btoa(unescape(encodeURIComponent(kontenmateri)));
+        //let botakin = window.btoa(unescape(kontenmateri));
+        let obj = {};
+        obj.idmapel = idmapel;
+        obj.iddurasi = iddurasi;
+        obj.jenistagihan = jenistagihan;
+        obj.idaksessiswa = idaksessiswa;
+        obj.idtgl = idtgl;
+        obj.idtglend = idtglend;
+        obj.botakin = botakin;
+
+        window.localStorage.setItem("drafmateri", JSON.stringify(obj));
+        tdtombol.innerHTML = `KLIK`;
 
         let ingindownload = confirm("Draft berhasil disimpan, apakah Anda ingin mendownload materi ini juga?");
         if (ingindownload) {
@@ -646,7 +687,7 @@ const fn7previewsekolahlain = (indektabel, indeksekolah) => {
                 tempattombol.innerHTML += "<br/><sub>atau</sub></br/> ";
                 var tomboldua = document.createElement("button");
                 tomboldua.setAttribute("onclick", "tomboluploadjawaban('" + inidEl + "')");
-                var tekstomboldua = document.createTextNode("Upload Jawaban No " + inidEl);
+                var tekstomboldua = document.createTextNode("Upload Media No " + inidEl);
                 tomboldua.appendChild(tekstomboldua);
                 tempattombol.appendChild(tomboldua);
                 tempattombol.innerHTML += "<br/><sub>Pilih Salah satu cara Kalian menjawab soal ini</sub>";
@@ -704,6 +745,10 @@ btnfn7cekpreview.addEventListener("click", function () {
     div.style.display = "block";
     let y = div.offsetTop - 45;
     window.scrollTo({ top: y, behavior: 'smooth' });
+    pratinjaubuatmateri();
+    let val = document.formuploadmateri.idmateri.value
+    barufindkuncipgkd(val)
+
 
 });
 dragElement(document.getElementById("prev_dragable"));
@@ -945,7 +990,7 @@ btnfn7video.addEventListener("click", function () {
 });
 function barufindkuncipgkd(teks) {
     // let findPG = teks.match(/^_PG_\d{1,2}\s|^_OPSI-PG_\d{1,2}[A-D]\s|^_OPSI-PG-C_\d+[A-D]\s|^_OPSI-SEL_\d{1,2}[A-D]\s|^_ESSAY-NO_\d{1,2}\s/gm);
-    let findPG = teks.match(/^_PG_\d+\s|^_OPSI-PG_\d+[A-D]\s|^_OPSI-PG-C_\d+[A-D]\s|^_OPSI-SEL_\d+[A-D]\s|^_ESSAY-NO_\d+\s/gm);
+    let findPG = teks.match(/^_PG_\d+\s|^_OPSI-PG_\d+[A-D]\s|^_OPSI-PG-C_\d+[A-D]\s|^_OPSI-SEL_\d+[A-D]\s|^_ESSAY-NO_\d+\s|^_KUNCI-KD_/gm);
     let textarea = document.getElementById("idmateri");
     // <div id="divbantu_kuncijawaban"></div>
     // <div id="divbantu_sebarankd"></div>
@@ -1100,7 +1145,7 @@ function barufindkuncipgkd(teks) {
         let cekkd = teks.match(/^_KUNCI-KD_/gm);
         let val = textarea.value;
         let n = val.length;
-        console.log(cekkd)
+
         if (cekkd !== null) {
             let awalkd = val.indexOf("_KUNCI-KD_");
             let batasawalkd = val.substring(awalkd, n)
@@ -1235,12 +1280,15 @@ eidmateri.addEventListener("keyup", function (e) {
     let teks = e.target.value;
 
 
+
     // let teks = e.target.value;
     if (teks !== "") {
         barufindkuncipgkd(teks);
 
     }
     pratinjaubuatmateri();
+    e.preventDefault();
+    e.stopPropagation();
 
 });
 function generaterasebarankd() {
@@ -1270,17 +1318,27 @@ function generaterasebarankd() {
     let datakdaktif = datakd.filter(s => s[indekkd] === true);
     //datakd.filter(s => Object.keys(s).filter(d => datakd[indekkd] == true)); //Object.entries(datakd).filter(([k, v]) => k === indekkd && v === true)
     //console.table(datakdaktif);
-    let datamapelaktif = datakdaktif.map(s => s["mapel"]).filter((x, i, a) => a.indexOf(x) == i);
+    let datamapelaktiff = [];
 
-    msb_obje["datamapel"] = datamapelaktif;
-    datamapelaktif.forEach(s => {
+    if (window.location.href.indexOf("gmp.html") > -1) {
+        msb_obje["datamapel"] = idgurumapelmapel;
+        datamapelaktiff = [idgurumapelmapel];
+
+    } else {
+        datamapelaktiff = datakdaktif.map(s => s["mapel"]).filter((x, i, a) => a.indexOf(x) == i);
+        msb_obje["datamapel"] = datamapelaktiff;
+
+    };
+    //mengkoleksi KD yang terceklis untuk setiap mapel
+    datamapelaktiff.forEach(s => {
         msb_obje[s] = datakdaktif.filter(d => d["mapel"] == s).map(m => m[colkd]);
     })
+    let datamapelaktif = datamapelaktiff;
     //console.log(datamapelaktif)
     //console.log(msb_obje) //
     let tabel = document.querySelector(".mbs_tabelbantusebarankd").getElementsByTagName("tbody")[0];
     let isihtml = "";
-    let opsihtmlmapel = "";
+    let opsihtmlmapel = `<option value="" selected>PILIH MAPEL</option>`;
     let opsihtmlkd = "";
     //deteksi sebaranKD di textarea
     let teksarea = document.getElementById("idmateri");
@@ -1295,7 +1353,7 @@ function generaterasebarankd() {
     if (ada == -1) {
         for (let i = 0; i < datamapelaktif.length; i++) {
             if (i == 0) {
-                opsihtmlmapel += `<option value="${datamapelaktif[i]}" selected>${datamapelaktif[i]}</option>`;
+                opsihtmlmapel += `<option value="${datamapelaktif[i]}">${datamapelaktif[i]}</option>`;
             } else {
                 opsihtmlmapel += `<option value="${datamapelaktif[i]}">${datamapelaktif[i]}</option>`;
             }
@@ -1337,12 +1395,13 @@ function generaterasebarankd() {
                     <input class="w3-input w3-border w3-border-teal mbs_textarea brsnosoal_${r}" placeholder="Contoh pengisian: 1,2,3 (di akhir nomor jangan diberi koma)"/>
                 </td></tr>`;
         }
-        tabel.innerHTML = htmlrow
+
+        tabel.innerHTML = htmlrow;
 
         //ambil data sebaran kd dari teks area
         for (g = 0; g < mgrup.length; g++) {
             let grup = mgrup[g].split(":");
-            opsihtmlmapel = "";
+            opsihtmlmapel = `<option value="" selected>PILIH MAPEL</option>`;
             opsihtmlkd = "";
             let nmp = grup[0].split("_")[0];
             let nkd = grup[0].split("_")[1];
@@ -1377,7 +1436,7 @@ function generaterasebarankd() {
                 //mapeltidaksesuai.push(nmp);
                 for (let i = 0; i < datamapelaktif.length; i++) {
                     if (i == 0) {
-                        opsihtmlmapel += `<option value="${datamapelaktif[i]}" selected>${datamapelaktif[i]}</option>`;
+                        opsihtmlmapel += `<option value="${datamapelaktif[i]}">${datamapelaktif[i]}</option>`;
                     } else {
                         opsihtmlmapel += `<option value="${datamapelaktif[i]}">${datamapelaktif[i]}</option>`;
                     }
@@ -1406,11 +1465,22 @@ function generaterasebarankd() {
 function fn_mbs_tambahbaris() {
     let tabel = document.querySelector(".mbs_tabelbantusebarankd").getElementsByTagName("tbody")[0];
     let lr = tabel.rows.length;
-    let opsimapel = msb_obje["datamapel"];
+    let opsimapel = [];
+    if (window.location.href.indexOf("gmp.html") > -1) {
+        opsimapel = [idgurumapelmapel];
+    } else {
+        opsimapel = msb_obje["datamapel"];
+        console.log(opsimapel)
+
+    }
+    // console.log(opsimapel) fn_mbs_selectkd(this)
+
     let html = `<option value="">Pilih Mapel</option>`;
-    opsimapel.forEach(s => {
-        html += `<option value="${s}">${s}</option>`
-    })
+    if (opsimapel.length !== 0 || opsimapel !== undefined) {
+        opsimapel.forEach(s => {
+            html += `<option value="${s}">${s}</option>`
+        })
+    }
     let cr_tr = tabel.insertRow(-1);
     let cr_td = cr_tr.insertCell(-1);
 
@@ -1477,7 +1547,8 @@ function fn_mbs_simpansebarankd() {
         teksarea.value = teksarea.value.replace(cari, arr);
     }
     alert("Sebaran KD Berhasil Tersimpan.")
-    pratinjaubuatmateri()
+    pratinjaubuatmateri();
+    barufindkuncipgkd(val);
 };
 
 function fn_mbs_hapusbaris() {
@@ -1494,7 +1565,13 @@ function fn_mbs_hapusbaris() {
 };
 function tanpasebarankd() {
     let teksarea = document.getElementById("idmateri");
-    let arr = "_KUNCI-KD_NONKD_5.1:1";
+    let arr;
+    if (window.location.href.indexOf("gmp.html") > -1) {
+        arr = `_KUNCI-KD_${idgurumapelmapel}_5.1:1`;
+    } else {
+        arr = "_KUNCI-KD_NONKD_5.1:1";
+
+    }
     let val = teksarea.value;
     let n = val.length;
     let awal = val.indexOf("_KUNCI-KD_");
@@ -1506,7 +1583,8 @@ function tanpasebarankd() {
     } else {
         teksarea.value = teksarea.value.replace(cari, arr);
     }
-
+    pratinjaubuatmateri();
+    barufindkuncipgkd(val);
 };
 const checked_buatkunci = (el) => {
     let opsilengkap = el.value; //1A
@@ -1588,1335 +1666,24 @@ async function kurikulumdiamdiam() {
 
 
 };
-async function kurikulumdiamdiamgagal() {
-    if (window.location.href.indexOf("gmp.html") > -1) {
-
-        let valuekelas = document.getElementById("gmppilihrombel"); //.value;
-
-        if (valuekelas !== "null" && valuekelas.value == "none") {
-            alert("Anda belum memilih kelas. Silakan pilih Kelas terlebih dulu")
-            return
-
-        }
-    }
-
-
-    let tabkd = document.querySelector(".classtabkd");
-    let tabkkm = document.querySelector(".classtabkkm");
-    let tabupl = document.querySelector(".classtabuploadkurikulum");
-    tabkd.innerHTML = "Kompetensi Dasar <i class='fa fa-spin fa-spinner'></i>"
-    tabkkm.innerHTML = "KKM <i class='fa fa-spin fa-spinner'></i>"
-    tabupl.innerHTML = "Upload Kurikulum <i class='fa fa-spin fa-spinner'></i>"
-
-    kurikulum_kd.style.display = "block";
-    //document.getElementById("kurikulum_kd").click();
-    //------------------------------------------
-    let islam = jsondatasiswa.filter(function (lk) {
-        if (lk.pd_agama == "ISLAM" || lk.pd_agama == "Islam" || lk.pd_agama == "islam") {
-            return true;
-        }
-    }).length;
-    let bolislam = (islam == 0) ? false : true;
-
-    let kristen = jsondatasiswa.filter(function (lk) {
-        if (lk.pd_agama == "KRISTEN" ||
-            lk.pd_agama == "Kristen" ||
-            lk.pd_agama == "kristen" ||
-            lk.pd_agama == "PROTESTAN" || lk.pd_agama == "Protestan") {
-            return true;
-        }
-    }).length;
-    let bolkristen = (kristen == 0) ? false : true;
-
-    let katolik = jsondatasiswa.filter(function (lk) {
-        if (lk.pd_agama == "KATHOLIK" || lk.pd_agama == "Katolik" || lk.pd_agama == "KATHOLIK" || lk.pd_agama == "Katholik" || lk.pd_agama == "katholik") {
-            return true;
-        }
-    }).length;
-    let bolkatolik = (katolik == 0) ? false : true;
-
-    let hindu = jsondatasiswa.filter(function (lk) {
-        if (lk.pd_agama == "HINDU" || lk.pd_agama == "Hindu" || lk.pd_agama == "hindu") {
-            return true;
-        }
-    }).length;
-    let bolhindu = (hindu == 0) ? false : true;
-
-    let budha = jsondatasiswa.filter(function (lk) {
-        if (lk.pd_agama == "BUDHA" || lk.pd_agama == "BUDA" || lk.pd_agama == "Budha" || lk.pd_agama == "Buda" || lk.pd_agama == "buda") {
-            return true;
-        }
-    }).length;
-    let bolbudha = (budha == 0) ? false : true;
-    let khonghucu = jsondatasiswa.filter(function (lk) {
-        if (lk.pd_agama == "KHONGHUCU" || lk.pd_agama == "Khong Hu Cu" || lk.pd_agama == "KHONG HUCU" || lk.pd_agama == "Khong Hucu" || lk.pd_agama == "Khong hucu") {
-            return true;
-        }
-    }).length;
-    let bolkhonghucu = (khonghucu == 0) ? false : true;
-
-
-    let divkurikulum = document.getElementById("kurikulum_kd");
-    divkurikulum.innerHTML = "<i class='fa fa-spin fa-spinner w3-xxxlarge'></i>";
-
-
-    let tekshtml = "<h3> Kompetensi Dasar</h3>Sebaran Kompetensi Dasar<hr/>";
-    tekshtml += `<button class='w3-button w3-round-large w3-blue' onclick="datacekliskd()">Simpan</button><hr/>`;
-    let tragama = "";
-    let elkkm = "";
-
-
-    if (bolislam) {
-        tragama += `<tr><td>Pendidikan Agama Islam dan Budi Pekerti</td><td>PAI</td>
-        <td>
-            <label for="kd3_PAI_3.1">
-                <input class="cekliskd" type="checkbox" id="kd3_PAI_3.1" name="kd3_PAI_3.1" />
-                3.1
-            </label><br>
-            <label for="kd3_PAI_3.2">
-                <input class="cekliskd" type="checkbox" id="kd3_PAI_3.2" name="kd3_PAI_3.2" />
-                3.2
-                </label><br>
-            <label for="kd3_PAI_3.3">
-                <input class="cekliskd" type="checkbox" id="kd3_PAI_3.3" name="kd3_PAI_3.3" />
-                3.3
-                </label><br>
-            <label for="kd3_PAI_3.4">
-                <input class="cekliskd" type="checkbox" id="kd3_PAI_3.4" name="kd3_PAI_3.4" />
-                3.4
-            </label><br>
-            <label for="kd3_PAI_3.5">
-                <input class="cekliskd" type="checkbox" id="kd3_PAI_3.5" name="kd3_PAI_3.5" />
-                3.5
-            </label><br>
-            <label for="kd3_PAI_3.6">
-                <input class="cekliskd" type="checkbox" id="kd3_PAI_3.6" name="kd3_PAI_3.6" />
-                3.6
-                </label><br>
-            <label for="kd3_PAI_3.7">
-                <input class="cekliskd" type="checkbox" id="kd3_PAI_3.7" name="kd3_PAI_3.7" />
-                3.7
-                </label><br>
-            <label for="kd3_PAI_3.8">
-                <input class="cekliskd" type="checkbox" id="kd3_PAI_3.8" name="kd3_PAI_3.8" />
-                3.8
-            </label><br>
-            <label for="kd3_PAI_3.9">
-                <input class="cekliskd" type="checkbox" id="kd3_PAI_3.9" name="kd3_PAI_3.9" />
-                3.9
-            </label><br>
-            <label for="kd3_PAI_3.10">
-                <input class="cekliskd" type="checkbox" id="kd3_PAI_3.10" name="kd3_PAI_3.10" />
-                3.10
-                </label><br>
-            <label for="kd3_PAI_3.11">
-                <input class="cekliskd" type="checkbox" id="kd3_PAI_3.11" name="kd3_PAI_3.11" />
-                3.11
-                </label><br>
-            <label for="kd3_PAI_3.12">
-                <input class="cekliskd" type="checkbox" id="kd3_PAI_3.12" name="kd3_PAI_3.12" />
-                3.12
-            </label><br>
-            <label for="kd3_PAI_3.13">
-                <input class="cekliskd" type="checkbox" id="kd3_PAI_3.13" name="kd3_PAI_3.13" />
-                3.13
-            </label><br>
-            <label for="kd3_PAI_3.14">
-                <input class="cekliskd" type="checkbox" id="kd3_PAI_3.14" name="kd3_PAI_3.14" />
-                3.14
-                </label><br>
-            <label for="kd3_PAI_3.15">
-                <input class="cekliskd" type="checkbox" id="kd3_PAI_3.15" name="kd3_PAI_3.15" />
-                3.15
-                </label><br>
-            <label for="kd3_PAI_3.16">
-                <input class="cekliskd" type="checkbox" id="kd3_PAI_3.16" name="kd3_PAI_3.16" />
-                3.16
-            </label><br>
-             <label for="kd3_PAI_3.17">
-                <input class="cekliskd" type="checkbox" id="kd3_PAI_3.17" name="kd3_PAI_3.17" />
-                3.17
-                </label><br>
-            <label for="kd3_PAI_3.18">
-                <input class="cekliskd" type="checkbox" id="kd3_PAI_3.18" name="kd3_PAI_3.18" />
-                3.18
-            </label><br>
-            <label for="kd3_PAI_3.19">
-                <input class="cekliskd" type="checkbox" id="kd3_PAI_3.19" name="kd3_PAI_3.19" />
-                3.19
-            </label><br>
-            <label for="kd3_PAI_3.20">
-                <input class="cekliskd" type="checkbox" id="kd3_PAI_3.20" name="kd3_PAI_3.20" />
-                3.20
-                </label><br>
-            <label for="kd3_PAI_3.21">
-                <input class="cekliskd" type="checkbox" id="kd3_PAI_3.21" name="kd3_PAI_3.21" />
-                3.21
-                </label>
-        </td>
-        <td>
-        
-        <label for="kd4_PAI_4.1">
-            <input class="cekliskd" type="checkbox" id="kd4_PAI_4.1" name="kd4_PAI_4.1" />
-        4.1
-        </label><br>
-        <label for="kd4_PAI_4.2">
-            <input class="cekliskd" type="checkbox" id="kd4_PAI_4.2" name="kd4_PAI_4.2" />
-        4.2
-        </label><br>
-        <label for="kd4_PAI_4.3">
-            <input class="cekliskd" type="checkbox" id="kd4_PAI_4.3" name="kd4_PAI_4.3" />
-        4.3
-        </label><br>
-        <label for="kd4_PAI_4.4">
-            <input class="cekliskd" type="checkbox" id="kd4_PAI_4.4" name="kd4_PAI_4.4" />
-        4.4
-        </label><br>
-        <label for="kd4_PAI_4.5">
-            <input class="cekliskd" type="checkbox" id="kd4_PAI_4.5" name="kd4_PAI_4.5" />
-        4.5
-        </label><br>
-        <label for="kd4_PAI_4.6">
-            <input class="cekliskd" type="checkbox" id="kd4_PAI_4.6" name="kd4_PAI_4.6" />
-        4.6
-        </label><br>
-        <label for="kd4_PAI_4.7">
-            <input class="cekliskd" type="checkbox" id="kd4_PAI_4.7" name="kd4_PAI_4.7" />
-        4.7
-        </label><br>
-        <label for="kd4_PAI_4.8">
-            <input class="cekliskd" type="checkbox" id="kd4_PAI_4.8" name="kd4_PAI_4.8" />
-        4.8
-        </label><br>
-        <label for="kd4_PAI_4.9">
-            <input class="cekliskd" type="checkbox" id="kd4_PAI_4.9" name="kd4_PAI_4.9" />
-        4.9
-        </label><br>
-        <label for="kd4_PAI_4.10">
-            <input class="cekliskd" type="checkbox" id="kd4_PAI_3.10" name="kd4_PAI_4.10" />
-        4.10
-        </label><br>
-        <label for="kd4_PAI_4.11">
-            <input class="cekliskd" type="checkbox" id="kd4_PAI_4.11" name="kd4_PAI_4.11" />
-        4.11
-        </label><br>
-        <label for="kd4_PAI_4.12">
-            <input class="cekliskd" type="checkbox" id="kd4_PAI_4.12" name="kd4_PAI_4.12" />
-        4.12
-        </label><br>
-        <label for="kd4_PAI_4.13">
-            <input class="cekliskd" type="checkbox" id="kd4_PAI_4.13" name="kd4_PAI_4.13" />
-        4.13
-        </label><br>
-        <label for="kd4_PAI_4.14">
-            <input class="cekliskd" type="checkbox" id="kd4_PAI_4.14" name="kd4_PAI_4.14" />
-        4.14
-        </label><br>
-        <label for="kd4_PAI_4.15">
-            <input class="cekliskd" type="checkbox" id="kd4_PAI_4.15" name="kd4_PAI_4.15" />
-        4.15
-        </label><br>
-        <label for="kd4_PAI_4.16">
-            <input class="cekliskd" type="checkbox" id="kd4_PAI_4.16" name="kd4_PAI_4.16" />
-        4.16
-        </label><br>
-        <label for="kd4_PAI_4.17">
-            <input class="cekliskd" type="checkbox" id="kd4_PAI_4.17" name="kd4_PAI_4.17" />
-        4.17
-        </label><br>
-        <label for="kd4_PAI_4.18">
-            <input class="cekliskd" type="checkbox" id="kd4_PAI_4.18" name="kd4_PAI_4.18" />
-        4.18
-        </label><br>
-        <label for="kd4_PAI_4.19">
-            <input class="cekliskd" type="checkbox" id="kd4_PAI_4.19" name="kd4_PAI_4.19" />
-        4.19
-        </label><br>
-        <label for="kd4_PAI_4.20">
-            <input class="cekliskd" type="checkbox" id="kd4_PAI_4.20" name="kd4_PAI_4.20" />
-        4.20
-        </label><br>
-        <label for="kd4_PAI_4.21">
-            <input class="cekliskd" type="checkbox" id="kd4_PAI_4.21" name="kd4_PAI_4.21" />
-        4.21
-        </label>
-        </td>
-        </tr>`;
-        elkkm += `<tr><td>PAI</td><td contenteditable="true" id="namamapelraport_PAI">Pendidikan Agama Islam dan Budi Pekerti</td><td contenteditable="true" id="angkakkm_PAI">00</td></tr>`;
-    }
-    if (bolkristen) {
-        tragama += `<tr><td>Pendidikan Agama Kristen dan Budi Pekerti<br><br><sub class="w3-text-red">Siswa di kelas Anda terdeteksi memiliki jumlah siswa beragama Kristen sebanyak ${kristen} siswa.<sub></td><td>PKRIS</td>
-        <td>
-            <label for="kd3_PKRIS_3.1">
-                <input class="cekliskd" type="checkbox" id="kd3_PKRIS_3.1" name="kd3_PKRIS_3.1" />
-                3.1
-            </label><br>
-            <label for="kd3_PKRIS_3.2">
-                <input class="cekliskd" type="checkbox" id="kd3_PKRIS_3.2" name="kd3_PKRIS_3.2" />
-                3.2
-                </label><br>
-            <label for="kd3_PKRIS_3.3">
-                <input class="cekliskd" type="checkbox" id="kd3_PKRIS_3.3" name="kd3_PKRIS_3.3" />
-                3.3
-                </label><br>
-            <label for="kd3_PKRIS_3.4">
-                <input class="cekliskd" type="checkbox" id="kd3_PKRIS_3.4" name="kd3_PKRIS_3.4" />
-                3.4
-            </label><br>
-            
-        </td>
-        <td>
-        
-        <label for="kd4_PKRIS_4.1">
-            <input class="cekliskd" type="checkbox" id="kd4_PKRIS_4.1" name="kd4_PKRIS_4.1" />
-        4.1
-        </label><br>
-        <label for="kd4_PKRIS_4.2">
-            <input class="cekliskd" type="checkbox" id="kd4_PKRIS_4.2" name="kd4_PKRIS_4.2" />
-        4.2
-        </label><br>
-        <label for="kd4_PKRIS_4.3">
-            <input class="cekliskd" type="checkbox" id="kd4_PKRIS_4.3" name="kd4_PKRIS_4.3" />
-        4.3
-        </label><br>
-        <label for="kd4_PKRIS_4.4">
-            <input class="cekliskd" type="checkbox" id="kd4_PKRIS_4.4" name="kd4_PKRIS_4.4" />
-        4.4
-        </label><br>
-
-        </td>
-        </tr>`;
-        elkkm += `<tr><td>PKRIS</td><td contenteditable="true" id="namamapelraport_PKRIS">Pendidikan Agama Kristen dan Budi Pekerti</td><td contenteditable="true" id="angkakkm_PKRIS">00</td></tr>`;
-    }
-    if (bolkatolik) {
-        tragama += `<tr><td>Pendidikan Agama Katholik dan Budi Pekerti<br><br><sub class="w3-text-red">Siswa di kelas Anda terdeteksi memiliki jumlah siswa beragama Katolik sebanyak ${katolik} siswa.<sub></td><td>PKATO</td>
-        <td>
-            <label for="kd3_PKATO_3.1">
-                <input class="cekliskd" type="checkbox" id="kd3_PKATO_3.1" name="kd3_PKATO_3.1" />
-                3.1
-            </label><br>
-            <label for="kd3_PKATO_3.2">
-                <input class="cekliskd" type="checkbox" id="kd3_PKATO_3.2" name="kd3_PKATO_3.2" />
-                3.2
-                </label><br>
-            <label for="kd3_PKATO_3.3">
-                <input class="cekliskd" type="checkbox" id="kd3_PKATO_3.3" name="kd3_PKATO_3.3" />
-                3.3
-                </label><br>
-            <label for="kd3_PKATO_3.4">
-                <input class="cekliskd" type="checkbox" id="kd3_PKATO_3.4" name="kd3_PKATO_3.4" />
-                3.4
-            </label><br>
-            <label for="kd3_PKATO_3.5">
-                <input class="cekliskd" type="checkbox" id="kd3_PKATO_3.5" name="kd3_PKATO_3.5" />
-                3.5
-            </label><br>
-            <label for="kd3_PKATO_3.6">
-                <input class="cekliskd" type="checkbox" id="kd3_PKATO_3.6" name="kd3_PKATO_3.6" />
-                3.6
-                </label><br>
-            <label for="kd3_PKATO_3.7">
-                <input class="cekliskd" type="checkbox" id="kd3_PKATO_3.7" name="kd3_PKATO_3.7" />
-                3.7
-                </label><br>
-            <label for="kd3_PKATO_3.8">
-                <input class="cekliskd" type="checkbox" id="kd3_PKATO_3.8" name="kd3_PKATO_3.8" />
-                3.8
-            </label><br>
-           
-        </td>
-        <td>
-        
-        <label for="kd4_PKATO_4.1">
-            <input class="cekliskd" type="checkbox" id="kd4_PKATO_4.1" name="kd4_PKATO_4.1" />
-        4.1
-        </label><br>
-        <label for="kd4_PKATO_4.2">
-            <input class="cekliskd" type="checkbox" id="kd4_PKATO_4.2" name="kd4_PKATO_4.2" />
-        4.2
-        </label><br>
-        <label for="kd4_PKATO_4.3">
-            <input class="cekliskd" type="checkbox" id="kd4_PKATO_4.3" name="kd4_PKATO_4.3" />
-        4.3
-        </label><br>
-        <label for="kd4_PKATO_4.4">
-            <input class="cekliskd" type="checkbox" id="kd4_PKATO_4.4" name="kd4_PKATO_4.4" />
-        4.4
-        </label><br>
-        <label for="kd4_PKATO_4.5">
-            <input class="cekliskd" type="checkbox" id="kd4_PKATO_4.5" name="kd4_PKATO_4.5" />
-        4.5
-        </label><br>
-        <label for="kd4_PKATO_4.6">
-            <input class="cekliskd" type="checkbox" id="kd4_PKATO_4.6" name="kd4_PKATO_4.6" />
-        4.6
-        </label><br>
-        <label for="kd4_PKATO_4.7">
-            <input class="cekliskd" type="checkbox" id="kd4_PKATO_4.7" name="kd4_PKATO_4.7" />
-        4.7
-        </label><br>
-        <label for="kd4_PKATO_4.8">
-            <input class="cekliskd" type="checkbox" id="kd4_PKATO_4.8" name="kd4_PKATO_4.8" />
-        4.8
-        </label><br>
-        
-        </td>
-        </tr>`;
-        elkkm += `<tr><td>PKATO</td><td contenteditable="true" id="namamapelraport_PKATO">Pendidikan Agama Katholik dan Budi Pekerti</td><td contenteditable="true" id="angkakkm_PKATO">00</td></tr>`;
-    }
-    if (bolbudha) {
-        tragama += `<tr><td>Pendidikan Agama Budha dan Budi Pekerti<br><br><sub class="w3-text-red">Siswa di kelas Anda terdeteksi memiliki jumlah siswa beragama Budha sebanyak ${budha} siswa.<sub></td><td>PBUDH</td>
-        <td>
-            <label for="kd3_PBUDH_3.1">
-                <input class="cekliskd" type="checkbox" id="kd3_PBUDH_3.1" name="kd3_PBUDH_3.1" />
-                3.1
-            </label><br>
-            <label for="kd3_PBUDH_3.2">
-                <input class="cekliskd" type="checkbox" id="kd3_PBUDH_3.2" name="kd3_PBUDH_3.2" />
-                3.2
-                </label><br>
-            <label for="kd3_PBUDH_3.3">
-                <input class="cekliskd" type="checkbox" id="kd3_PBUDH_3.3" name="kd3_PBUDH_3.3" />
-                3.3
-                </label><br>
-            <label for="kd3_PBUDH_3.4">
-                <input class="cekliskd" type="checkbox" id="kd3_PBUDH_3.4" name="kd3_PBUDH_3.4" />
-                3.4
-            </label><br>
-            
-        </td>
-        <td>
-        
-        <label for="kd4_PBUDH_4.1">
-            <input class="cekliskd" type="checkbox" id="kd4_PBUDH_4.1" name="kd4_PBUDH_4.1" />
-        4.1
-        </label><br>
-        <label for="kd4_PBUDH_4.2">
-            <input class="cekliskd" type="checkbox" id="kd4_PBUDH_4.2" name="kd4_PBUDH_4.2" />
-        4.2
-        </label><br>
-        <label for="kd4_PBUDH_4.3">
-            <input class="cekliskd" type="checkbox" id="kd4_PBUDH_4.3" name="kd4_PBUDH_4.3" />
-        4.3
-        </label><br>
-        <label for="kd4_PBUDH_4.4">
-            <input class="cekliskd" type="checkbox" id="kd4_PBUDH_4.4" name="kd4_PBUDH_4.4" />
-        4.4
-        </label><br>
-
-        </td>
-        </tr>`;
-        elkkm += `<tr><td>PBUDH</td><td contenteditable="true" id="namamapelraport_PBUDH">Pendidikan Agama Budha dan Budi Pekerti</td><td contenteditable="true" id="angkakkm_PBUDH">00</td></tr>`;
-    }
-    if (bolhindu) {
-        tragama += `<tr><td>Pendidikan Agama Hindu dan Budi Pekerti<br><br><sub class="w3-text-red">Siswa di kelas Anda terdeteksi memiliki jumlah siswa beragama Hindu sebanyak ${hindu} siswa.<sub></td><td>PHIND</td>
-        <td>
-            <label for="kd3_PHIND_3.1">
-                <input class="cekliskd" type="checkbox" id="kd3_PHIND_3.1" name="kd3_PHIND_3.1" />
-                3.1
-            </label><br>
-            <label for="kd3_PHIND_3.2">
-                <input class="cekliskd" type="checkbox" id="kd3_PHIND_3.2" name="kd3_PHIND_3.2" />
-                3.2
-                </label><br>
-            <label for="kd3_PHIND_3.3">
-                <input class="cekliskd" type="checkbox" id="kd3_PHIND_3.3" name="kd3_PHIND_3.3" />
-                3.3
-                </label><br>
-            <label for="kd3_PHIND_3.4">
-                <input class="cekliskd" type="checkbox" id="kd3_PHIND_3.4" name="kd3_PHIND_3.4" />
-                3.4
-            </label><br>
-            <label for="kd3_PHIND_3.5">
-                <input class="cekliskd" type="checkbox" id="kd3_PHIND_3.5" name="kd3_PHIND_3.5" />
-                3.5
-            </label><br>
-            <label for="kd3_PHIND_3.6">
-                <input class="cekliskd" type="checkbox" id="kd3_PHIND_3.6" name="kd3_PHIND_3.6" />
-                3.6
-                </label><br>
-            <label for="kd3_PHIND_3.7">
-                <input class="cekliskd" type="checkbox" id="kd3_PHIND_3.7" name="kd3_PHIND_3.7" />
-                3.7
-                </label><br>
-            
-           
-        </td>
-        <td>
-        
-        <label for="kd4_PHIND_4.1">
-            <input class="cekliskd" type="checkbox" id="kd4_PHIND_4.1" name="kd4_PHIND_4.1" />
-        4.1
-        </label><br>
-        <label for="kd4_PHIND_4.2">
-            <input class="cekliskd" type="checkbox" id="kd4_PHIND_4.2" name="kd4_PHIND_4.2" />
-        4.2
-        </label><br>
-        <label for="kd4_PHIND_4.3">
-            <input class="cekliskd" type="checkbox" id="kd4_PHIND_4.3" name="kd4_PHIND_4.3" />
-        4.3
-        </label><br>
-        <label for="kd4_PHIND_4.4">
-            <input class="cekliskd" type="checkbox" id="kd4_PHIND_4.4" name="kd4_PHIND_4.4" />
-        4.4
-        </label><br>
-        <label for="kd4_PHIND_4.5">
-            <input class="cekliskd" type="checkbox" id="kd4_PHIND_4.5" name="kd4_PHIND_4.5" />
-        4.5
-        </label><br>
-        <label for="kd4_PHIND_4.6">
-            <input class="cekliskd" type="checkbox" id="kd4_PHIND_4.6" name="kd4_PHIND_4.6" />
-        4.6
-        </label><br>
-        <label for="kd4_PHIND_4.7">
-            <input class="cekliskd" type="checkbox" id="kd4_PHIND_4.7" name="kd4_PHIND_4.7" />
-        4.7
-        </label>
-        
-        </td>
-        </tr>`;
-        elkkm += `<tr><td>PHIND</td><td contenteditable="true" id="namamapelraport_PHIND">Pendidikan Agama Hindu dan Budi Pekerti</td><td contenteditable="true" id="angkakkm_PHIND">00</td></tr>`;
-    }
-    if (bolkhonghucu) {
-        tragama += `<tr><td>Pendidikan Agama Khonghucu dan Budi Pekerti<br><br><sub class="w3-text-red">Siswa di kelas Anda terdeteksi memiliki jumlah siswa beragama Khonghucu sebanyak ${khonghucu} siswa.<sub></td><td>PHIND</td>
-        <td>
-            <label for="kd3_PKONG_3.1">
-                <input class="cekliskd" type="checkbox" id="kd3_PKONG_3.1" name="kd3_PKONG_3.1" />
-                3.1
-            </label><br>
-            <label for="kd3_PKONG_3.2">
-                <input class="cekliskd" type="checkbox" id="kd3_PKONG_3.2" name="kd3_PKONG_3.2" />
-                3.2
-                </label><br>
-            <label for="kd3_PKONG_3.3">
-                <input class="cekliskd" type="checkbox" id="kd3_PKONG_3.3" name="kd3_PKONG_3.3" />
-                3.3
-                </label><br>
-            <label for="kd3_PKONG_3.4">
-                <input class="cekliskd" type="checkbox" id="kd3_PKONG_3.4" name="kd3_PKONG_3.4" />
-                3.4
-            </label><br>
-            <label for="kd3_PKONG_3.5">
-                <input class="cekliskd" type="checkbox" id="kd3_PKONG_3.5" name="kd3_PKONG_3.5" />
-                3.5
-            </label><br>
-            <label for="kd3_PKONG_3.6">
-                <input class="cekliskd" type="checkbox" id="kd3_PKONG_3.6" name="kd3_PKONG_3.6" />
-                3.6
-                </label><br>
-            <label for="kd3_PKONG_3.7">
-                <input class="cekliskd" type="checkbox" id="kd3_PKONG_3.7" name="kd3_PKONG_3.7" />
-                3.7
-                </label><br>
-            
-           
-        </td>
-        <td>
-        
-        <label for="kd4_PKONG_4.1">
-            <input class="cekliskd" type="checkbox" id="kd4_PKONG_4.1" name="kd4_PKONG_4.1" />
-        4.1
-        </label><br>
-        <label for="kd4_PKONG_4.2">
-            <input class="cekliskd" type="checkbox" id="kd4_PKONG_4.2" name="kd4_PKONG_4.2" />
-        4.2
-        </label><br>
-        <label for="kd4_PKONG_4.3">
-            <input class="cekliskd" type="checkbox" id="kd4_PKONG_4.3" name="kd4_PKONG_4.3" />
-        4.3
-        </label><br>
-        <label for="kd4_PKONG_4.4">
-            <input class="cekliskd" type="checkbox" id="kd4_PKONG_4.4" name="kd4_PKONG_4.4" />
-        4.4
-        </label><br>
-        <label for="kd4_PKONG_4.5">
-            <input class="cekliskd" type="checkbox" id="kd4_PKONG_4.5" name="kd4_PKONG_4.5" />
-        4.5
-        </label><br>
-        <label for="kd4_PKONG_4.6">
-            <input class="cekliskd" type="checkbox" id="kd4_PKONG_4.6" name="kd4_PKONG_4.6" />
-        4.6
-        </label><br>
-        <label for="kd4_PKONG_4.7">
-            <input class="cekliskd" type="checkbox" id="kd4_PKONG_4.7" name="kd4_PKONG_4.7" />
-        4.7
-        </label>
-        
-        </td>
-        </tr>`;
-        elkkm += `<tr><td>PKONG</td><td contenteditable="true" id="namamapelraport_PKONG">Pendidikan Agama Khonghucu dan Budi Pekerti</td><td contenteditable="true" id="angkakkm_PKONG">00</td></tr>`;
-    }
-
-    if (!bolislam && !bolkristen && !bolkatolik && !bolbudha && !bolhindu && !bolkhonghucu) {
-        tragama += `
-        <tr>
-            <td>Tidak terdeteksi adanya isian Agama di kelas Anda</td>
-            <td>???</td>
-            <td>Silakan lengkapi data siswa Anda</td>
-            <td>Silakan lengkapi data siswa Anda</td>
-        </tr>
-        `;
-        elkkm += `<tr><td>AGAMA</td><td>Tidak terdeteksi data agama di Data Siswa Anda</td><td>00</td=></tr>`;
-    }
-
-    let ipsipa = "";
-    if (idJenjang >= 4) {
-        ipsipa = `
-        <tr>
-        <td>Ilmu Pengetahuan Alam</td>
-        <td>IPA</td>
-        <td>
-        <label for="kd3_IPA_3.1">
-        <input class="cekliskd" type="checkbox" id="kd3_IPA_3.1" name="kd3_IPA_3.1" />
-        3.1
-    </label><br>
-    <label for="kd3_IPA_3.2">
-        <input class="cekliskd" type="checkbox" id="kd3_IPA_3.2" name="kd3_IPA_3.2" />
-        3.2
-        </label><br>
-    <label for="kd3_IPA_3.3">
-        <input class="cekliskd" type="checkbox" id="kd3_IPA_3.3" name="kd3_IPA_3.3" />
-        3.3
-        </label><br>
-    <label for="kd3_IPA_3.4">
-        <input class="cekliskd" type="checkbox" id="kd3_IPA_3.4" name="kd3_IPA_3.4" />
-        3.4
-    </label><br>
-    <label for="kd3_IPA_3.5">
-        <input class="cekliskd" type="checkbox" id="kd3_IPA_3.5" name="kd3_IPA_3.5" />
-        3.5
-    </label><br>
-    <label for="kd3_IPA_3.6">
-        <input class="cekliskd" type="checkbox" id="kd3_IPA_3.6" name="kd3_IPA_3.6" />
-        3.6
-        </label><br>
-    <label for="kd3_IPA_3.7">
-        <input class="cekliskd" type="checkbox" id="kd3_IPA_3.7" name="kd3_IPA_3.7" />
-        3.7
-        </label><br>
-    <label for="kd3_IPA_3.8">
-        <input class="cekliskd" type="checkbox" id="kd3_IPA_3.8" name="kd3_IPA_3.8" />
-        3.8
-    </label><br>
-    <label for="kd3_IPA_3.9">
-        <input class="cekliskd" type="checkbox" id="kd3_IPA_3.9" name="kd3_IPA_3.9" />
-        3.9
-</label>
-    
- 
-        </td><td>
-        <label for="kd4_IPA_4.1">
-        <input class="cekliskd" type="checkbox" id="kd4_IPA_4.1" name="kd4_IPA_4.1" />
-        4.1
-    </label><br>
-    <label for="kd4_IPA_4.2">
-        <input class="cekliskd" type="checkbox" id="kd4_IPA_4.2" name="kd4_IPA_4.2" />
-        4.2
-        </label><br>
-    <label for="kd4_IPA_4.3">
-        <input class="cekliskd" type="checkbox" id="kd4_IPA_4.3" name="kd4_IPA_4.3" />
-        4.3
-        </label><br>
-    <label for="kd4_IPA_4.4">
-        <input class="cekliskd" type="checkbox" id="kd4_IPA_4.4" name="kd4_IPA_4.4" />
-        4.4
-    </label><br>
-    <label for="kd4_IPA_4.5">
-        <input class="cekliskd" type="checkbox" id="kd4_IPA_4.5" name="kd4_IPA_4.5" />
-        4.5
-    </label><br>
-    <label for="kd4_IPA_4.6">
-        <input class="cekliskd" type="checkbox" id="kd4_IPA_4.6" name="kd4_IPA_4.6" />
-        4.6
-        </label><br>
-    <label for="kd4_IPA_4.7">
-        <input class="cekliskd" type="checkbox" id="kd4_IPA_4.7" name="kd4_IPA_4.7" />
-        4.7
-        </label><br>
-    <label for="kd4_IPA_4.8">
-        <input class="cekliskd" type="checkbox" id="kd4_IPA_4.8" name="kd4_IPA_4.8" />
-        4.8
-    </label><br>
-    <label for="kd4_IPA_4.9">
-        <input class="cekliskd" type="checkbox" id="kd4_IPA_4.9" name="kd4_IPA_4.9" />
-        4.9
-    </label><br>
-        </td>
-
-    </tr> 
-    <tr>    
-        <td>Ilmu Pengetahuan Sosial</td>
-        <td>IPS</td>
-        <td>
-        <label for="kd3_IPS_3.1">
-        <input class="cekliskd" type="checkbox" id="kd3_IPS_3.1" name="kd3_IPS_3.1" />
-        3.1
-    </label><br>
-    <label for="kd3_IPS_3.2">
-        <input class="cekliskd" type="checkbox" id="kd3_IPS_3.2" name="kd3_IPS_3.2" />
-        3.2
-        </label><br>
-    <label for="kd3_IPS_3.3">
-        <input class="cekliskd" type="checkbox" id="kd3_IPS_3.3" name="kd3_IPS_3.3" />
-        3.3
-        </label><br>
-    <label for="kd3_IPS_3.4">
-        <input class="cekliskd" type="checkbox" id="kd3_IPS_3.4" name="kd3_IPS_3.4" />
-        3.4
-    </label><br>
-        </td>
-        <td>
-        <label for="kd4_IPS_4.1">
-        <input class="cekliskd" type="checkbox" id="kd4_IPS_4.1" name="kd4_IPS_4.1" />
-        4.1
-    </label><br>
-    <label for="kd4_IPS_4.2">
-        <input class="cekliskd" type="checkbox" id="kd4_IPS_4.2" name="kd4_IPS_4.2" />
-        4.2
-        </label><br>
-    <label for="kd4_IPS_4.3">
-        <input class="cekliskd" type="checkbox" id="kd4_IPS_4.3" name="kd4_IPS_4.3" />
-        4.3
-        </label><br>
-    <label for="kd4_IPS_4.4">
-        <input class="cekliskd" type="checkbox" id="kd4_IPS_4.4" name="kd4_IPS_4.4" />
-        4.4
-    </label><br>
-    
-        </td>
-    </tr> 
-        `
-    }
-
-    tekshtml += `<div style="overflow-x:auto">
-    <table class='versi-table' id="datadatakdraport">
-    <tr >
-        <th>Mata Pelajaran</th>
-        <th>Kode Mapel</th>
-        <th>Kompetensi Pengetahuan<br> (KI-3)</the>
-        <th>Kompetensi Keterampilan <br>(KI-4)</thtyle>
-    </tr>
-    ${tragama}
-    <tr>
-        <td>Pendidikan Kewarganegaraan</td>
-        <td>PKN</td>
-    
-        <td>
-        <label for="kd3_PKN_3.1">
-            <input class="cekliskd" type="checkbox" id="kd3_PKN_3.1" name="kd3_PKN_3.1" />
-            3.1
-        </label><br>
-        <label for="kd3_PKN_3.2">
-            <input class="cekliskd" type="checkbox" id="kd3_PKN_3.2" name="kd3_PKN_3.2" />
-            3.2
-            </label><br>
-        <label for="kd3_PKN_3.3">
-            <input class="cekliskd" type="checkbox" id="kd3_PKN_3.3" name="kd3_PKN_3.3" />
-            3.3
-            </label><br>
-        <label for="kd3_PKN_3.4">
-            <input class="cekliskd" type="checkbox" id="kd3_PKN_3.4" name="kd3_PKN_3.4" />
-            3.4
-        </label><br>
-                   
-       
-    </td>
-    <td>
-            <label for="kd4_PKN_4.1">
-            <input class="cekliskd" type="checkbox" id="kd4_PKN_4.1" name="kd4_PKN_4.1" />
-        4.1
-        </label><br>
-        <label for="kd4_PKN_4.2">
-            <input class="cekliskd" type="checkbox" id="kd4_PKN_4.2" name="kd4_PKN_4.2" />
-        4.2
-        </label><br>
-        <label for="kd4_PKN_4.3">
-            <input class="cekliskd" type="checkbox" id="kd4_PKN_4.3" name="kd4_PKN_4.3" />
-        4.3
-        </label><br>
-        <label for="kd4_PKN_4.4">
-            <input class="cekliskd" type="checkbox" id="kd4_PKN_4.4" name="kd4_PKN_4.4" />
-        4.4
-        </label><br>
-    
-            </td>
-        </tr>
-    <tr>
-        <td> Bahasa Indonesia
-        </td><td>BINDO</td><td>
-        <label for="kd3_BINDO_3.1">
-        <input class="cekliskd" type="checkbox" id="kd3_BINDO_3.1" name="kd3_BINDO_3.1" />
-        3.1
-    </label><br>
-    <label for="kd3_BINDO_3.2">
-        <input class="cekliskd" type="checkbox" id="kd3_BINDO_3.2" name="kd3_BINDO_3.2" />
-        3.2
-        </label><br>
-    <label for="kd3_BINDO_3.3">
-        <input class="cekliskd" type="checkbox" id="kd3_BINDO_3.3" name="kd3_BINDO_3.3" />
-        3.3
-        </label><br>
-    <label for="kd3_BINDO_3.4">
-        <input class="cekliskd" type="checkbox" id="kd3_BINDO_3.4" name="kd3_BINDO_3.4" />
-        3.4
-    </label><br>
-    <label for="kd3_BINDO_3.5">
-        <input class="cekliskd" type="checkbox" id="kd3_BINDO_3.5" name="kd3_BINDO_3.5" />
-        3.5
-    </label><br>
-    <label for="kd3_BINDO_3.6">
-        <input class="cekliskd" type="checkbox" id="kd3_BINDO_3.6" name="kd3_BINDO_3.6" />
-        3.6
-        </label><br>
-    <label for="kd3_BINDO_3.7">
-        <input class="cekliskd" type="checkbox" id="kd3_BINDO_3.7" name="kd3_BINDO_3.7" />
-        3.7
-        </label><br>
-    <label for="kd3_BINDO_3.8">
-        <input class="cekliskd" type="checkbox" id="kd3_BINDO_3.8" name="kd3_BINDO_3.8" />
-        3.8
-    </label><br>
-    <label for="kd3_BINDO_3.9">
-        <input class="cekliskd" type="checkbox" id="kd3_BINDO_3.9" name="kd3_BINDO_3.9" />
-        3.9
-    </label><br>
-    <label for="kd3_BINDO_3.10">
-        <input class="cekliskd" type="checkbox" id="kd3_BINDO_3.10" name="kd3_BINDO_3.10" />
-        3.10
-        </label><br>
-    <label for="kd3_BINDO_3.11">
-        <input class="cekliskd" type="checkbox" id="kd3_BINDO_3.11" name="kd3_BINDO_3.11" />
-        3.11
-        </label><br>
- 
-        </td><td>
-        <label for="kd4_BINDO_4.1">
-        <input class="cekliskd" type="checkbox" id="kd4_BINDO_4.1" name="kd4_BINDO_4.1" />
-        4.1
-    </label><br>
-    <label for="kd4_BINDO_4.2">
-        <input class="cekliskd" type="checkbox" id="kd4_BINDO_4.2" name="kd4_BINDO_4.2" />
-        4.2
-        </label><br>
-    <label for="kd4_BINDO_4.3">
-        <input class="cekliskd" type="checkbox" id="kd4_BINDO_4.3" name="kd4_BINDO_4.3" />
-        4.3
-        </label><br>
-    <label for="kd4_BINDO_4.4">
-        <input class="cekliskd" type="checkbox" id="kd4_BINDO_4.4" name="kd4_BINDO_4.4" />
-        4.4
-    </label><br>
-    <label for="kd4_BINDO_4.5">
-        <input class="cekliskd" type="checkbox" id="kd4_BINDO_4.5" name="kd4_BINDO_4.5" />
-        4.5
-    </label><br>
-    <label for="kd4_BINDO_4.6">
-        <input class="cekliskd" type="checkbox" id="kd4_BINDO_4.6" name="kd4_BINDO_4.6" />
-        4.6
-        </label><br>
-    <label for="kd4_BINDO_4.7">
-        <input class="cekliskd" type="checkbox" id="kd4_BINDO_4.7" name="kd4_BINDO_4.7" />
-        4.7
-        </label><br>
-    <label for="kd4_BINDO_4.8">
-        <input class="cekliskd" type="checkbox" id="kd4_BINDO_4.8" name="kd4_BINDO_4.8" />
-        4.8
-    </label><br>
-    <label for="kd4_BINDO_4.9">
-        <input class="cekliskd" type="checkbox" id="kd4_BINDO_4.9" name="kd4_BINDO_4.9" />
-        4.9
-    </label><br>
-    <label for="kd4_BINDO_4.10">
-        <input class="cekliskd" type="checkbox" id="kd4_BINDO_4.10" name="kd4_BINDO_4.10" />
-        4.10
-        </label><br>
-    <label for="kd4_BINDO_4.11">
-        <input class="cekliskd" type="checkbox" id="kd4_BINDO_4.11" name="kd4_BINDO_4.11" />
-        4.11
-        </label><br>
- 
-        </td>
-    </tr>
-    <tr>
-        <td>Matematika</td>
-        <td>MTK</td>
-        <td>
-        <label for="kd3_MTK_3.1">
-        <input class="cekliskd" type="checkbox" id="kd3_MTK_3.1" name="kd3_MTK_3.1" />
-        3.1
-    </label><br>
-    <label for="kd3_MTK_3.2">
-        <input class="cekliskd" type="checkbox" id="kd3_MTK_3.2" name="kd3_MTK_3.2" />
-        3.2
-        </label><br>
-    <label for="kd3_MTK_3.3">
-        <input class="cekliskd" type="checkbox" id="kd3_MTK_3.3" name="kd3_MTK_3.3" />
-        3.3
-        </label><br>
-    <label for="kd3_MTK_3.4">
-        <input class="cekliskd" type="checkbox" id="kd3_MTK_3.4" name="kd3_MTK_3.4" />
-        3.4
-    </label><br>
-    <label for="kd3_MTK_3.5">
-        <input class="cekliskd" type="checkbox" id="kd3_MTK_3.5" name="kd3_MTK_3.5" />
-        3.5
-    </label><br>
-    <label for="kd3_MTK_3.6">
-        <input class="cekliskd" type="checkbox" id="kd3_MTK_3.6" name="kd3_MTK_3.6" />
-        3.6
-        </label><br>
-    <label for="kd3_MTK_3.7">
-        <input class="cekliskd" type="checkbox" id="kd3_MTK_3.7" name="kd3_MTK_3.7" />
-        3.7
-        </label><br>
-    <label for="kd3_MTK_3.8">
-        <input class="cekliskd" type="checkbox" id="kd3_MTK_3.8" name="kd3_MTK_3.8" />
-        3.8
-    </label><br>
-    <label for="kd3_MTK_3.9">
-        <input class="cekliskd" type="checkbox" id="kd3_MTK_3.9" name="kd3_MTK_3.9" />
-        3.9
-    </label><br>
-    <label for="kd3_MTK_3.10">
-        <input class="cekliskd" type="checkbox" id="kd3_MTK_3.10" name="kd3_MTK_3.10" />
-        3.10
-        </label><br>
-    <label for="kd3_MTK_3.11">
-        <input class="cekliskd" type="checkbox" id="kd3_MTK_3.11" name="kd3_MTK_3.11" />
-        3.11
-        </label><br>
-<label for="kd3_MTK_3.12">
-        <input class="cekliskd" type="checkbox" id="kd3_MTK_3.12" name="kd3_MTK_3.12" />
-        3.12
-        </label><br>
-    <label for="kd3_MTK_3.13">
-        <input class="cekliskd" type="checkbox" id="kd3_MTK_3.13" name="kd3_MTK_3.13" />
-        3.13
-        </label><br>
- 
-        </td>
-        <td>
-        <label for="kd4_MTK_4.1">
-        <input class="cekliskd" type="checkbox" id="kd4_MTK_4.1" name="kd4_MTK_4.1" />
-        4.1
-    </label><br>
-    <label for="kd4_MTK_4.2">
-        <input class="cekliskd" type="checkbox" id="kd4_MTK_4.2" name="kd4_MTK_4.2" />
-        4.2
-        </label><br>
-    <label for="kd4_MTK_4.3">
-        <input class="cekliskd" type="checkbox" id="kd4_MTK_4.3" name="kd4_MTK_4.3" />
-        4.3
-        </label><br>
-    <label for="kd4_MTK_4.4">
-        <input class="cekliskd" type="checkbox" id="kd4_MTK_4.4" name="kd4_MTK_4.4" />
-        4.4
-    </label><br>
-    <label for="kd4_MTK_4.5">
-        <input class="cekliskd" type="checkbox" id="kd4_MTK_4.5" name="kd4_MTK_4.5" />
-        4.5
-    </label><br>
-    <label for="kd4_MTK_4.6">
-        <input class="cekliskd" type="checkbox" id="kd4_MTK_4.6" name="kd4_MTK_4.6" />
-        4.6
-        </label><br>
-    <label for="kd4_MTK_4.7">
-        <input class="cekliskd" type="checkbox" id="kd4_MTK_4.7" name="kd4_MTK_4.7" />
-        4.7
-        </label><br>
-    <label for="kd4_MTK_4.8">
-        <input class="cekliskd" type="checkbox" id="kd4_MTK_4.8" name="kd4_MTK_4.8" />
-        4.8
-    </label><br>
-    <label for="kd4_MTK_4.9">
-        <input class="cekliskd" type="checkbox" id="kd4_MTK_4.9" name="kd4_MTK_4.9" />
-        4.9
-    </label><br>
-    <label for="kd4_MTK_4.10">
-        <input class="cekliskd" type="checkbox" id="kd4_MTK_4.10" name="kd4_MTK_4.10" />
-        4.10
-        </label><br>
-    <label for="kd4_MTK_4.11">
-        <input class="cekliskd" type="checkbox" id="kd4_MTK_4.11" name="kd4_MTK_4.11" />
-        4.11
-        </label><br>
-<label for="kd4_MTK_4.12">
-        <input class="cekliskd" type="checkbox" id="kd4_MTK_4.12" name="kd4_MTK_4.12" />
-        4.12
-        </label><br>
-    <label for="kd4_MTK_4.13">
-        <input class="cekliskd" type="checkbox" id="kd4_MTK_4.13" name="kd4_MTK_4.13" />
-        4.13
-        </label><br>
- 
-        </td>
-    </tr> 
-   ${ipsipa}
-    <tr>
-        <td>Seni Budaya dan Prakarya</td>
-        <td>SBDP</td>
-        <td>
-        <label for="kd3_SBDP_3.1">
-        <input class="cekliskd" type="checkbox" id="kd3_SBDP_3.1" name="kd3_SBDP_3.1" />
-        3.1
-    </label><br>
-    <label for="kd3_SBDP_3.2">
-        <input class="cekliskd" type="checkbox" id="kd3_SBDP_3.2" name="kd3_SBDP_3.2" />
-        3.2
-        </label><br>
-    <label for="kd3_SBDP_3.3">
-        <input class="cekliskd" type="checkbox" id="kd3_SBDP_3.3" name="kd3_SBDP_3.3" />
-        3.3
-        </label><br>
-    <label for="kd3_SBDP_3.4">
-        <input class="cekliskd" type="checkbox" id="kd3_SBDP_3.4" name="kd3_SBDP_3.4" />
-        3.4
-    </label><br>
-        </td>
-        <td>
-        <label for="kd4_SBDP_4.1">
-        <input class="cekliskd" type="checkbox" id="kd4_SBDP_4.1" name="kd4_SBDP_4.1" />
-        4.1
-    </label><br>
-    <label for="kd4_SBDP_4.2">
-        <input class="cekliskd" type="checkbox" id="kd4_SBDP_4.2" name="kd4_SBDP_4.2" />
-        4.2
-        </label><br>
-    <label for="kd4_SBDP_4.3">
-        <input class="cekliskd" type="checkbox" id="kd4_SBDP_4.3" name="kd4_SBDP_4.3" />
-        4.3
-        </label><br>
-    <label for="kd4_SBDP_4.4">
-        <input class="cekliskd" type="checkbox" id="kd4_SBDP_4.4" name="kd4_SBDP_4.4" />
-        4.4
-    </label><br>
-        </td>
-    </tr> 
-    <tr>
-        <td>Pendidikan Jasmani dan Kesehatan<br>PJOK</td>
-        <td>PJOK</td>
-        <td>
-        <label for="kd3_PJOK_3.1">
-        <input class="cekliskd" type="checkbox" id="kd3_PJOK_3.1" name="kd3_PJOK_3.1" />
-        3.1
-    </label><br>
-    <label for="kd3_PJOK_3.2">
-        <input class="cekliskd" type="checkbox" id="kd3_PJOK_3.2" name="kd3_PJOK_3.2" />
-        3.2
-        </label><br>
-    <label for="kd3_PJOK_3.3">
-        <input class="cekliskd" type="checkbox" id="kd3_PJOK_3.3" name="kd3_PJOK_3.3" />
-        3.3
-        </label><br>
-    <label for="kd3_PJOK_3.4">
-        <input class="cekliskd" type="checkbox" id="kd3_PJOK_3.4" name="kd3_PJOK_3.4" />
-        3.4
-    </label><br>
-    <label for="kd3_PJOK_3.5">
-        <input class="cekliskd" type="checkbox" id="kd3_PJOK_3.5" name="kd3_PJOK_3.5" />
-        3.5
-    </label><br>
-    <label for="kd3_PJOK_3.6">
-        <input class="cekliskd" type="checkbox" id="kd3_PJOK_3.6" name="kd3_PJOK_3.6" />
-        3.6
-        </label><br>
-    <label for="kd3_PJOK_3.7">
-        <input class="cekliskd" type="checkbox" id="kd3_PJOK_3.7" name="kd3_PJOK_3.7" />
-        3.7
-        </label><br>
-    <label for="kd3_PJOK_3.8">
-        <input class="cekliskd" type="checkbox" id="kd3_PJOK_3.8" name="kd3_PJOK_3.8" />
-        3.8
-    </label><br>
-    <label for="kd3_PJOK_3.9">
-        <input class="cekliskd" type="checkbox" id="kd3_PJOK_3.9" name="kd3_PJOK_3.9" />
-        3.9
-    </label><br>
-    <label for="kd3_PJOK_3.10">
-        <input class="cekliskd" type="checkbox" id="kd3_PJOK_3.10" name="kd3_PJOK_3.10" />
-        3.10
-        </label><br>
-   
- 
-        </td>
-        <td>
-        <label for="kd4_PJOK_4.1">
-        <input class="cekliskd" type="checkbox" id="kd4_PJOK_4.1" name="kd4_PJOK_4.1" />
-        4.1
-    </label><br>
-    <label for="kd4_PJOK_4.2">
-        <input class="cekliskd" type="checkbox" id="kd4_PJOK_4.2" name="kd4_PJOK_4.2" />
-        4.2
-        </label><br>
-    <label for="kd4_PJOK_4.3">
-        <input class="cekliskd" type="checkbox" id="kd4_PJOK_4.3" name="kd4_PJOK_4.3" />
-        4.3
-        </label><br>
-    <label for="kd4_PJOK_4.4">
-        <input class="cekliskd" type="checkbox" id="kd4_PJOK_4.4" name="kd4_PJOK_4.4" />
-        4.4
-    </label><br>
-    <label for="kd4_PJOK_4.5">
-        <input class="cekliskd" type="checkbox" id="kd4_PJOK_4.5" name="kd4_PJOK_4.5" />
-        4.5
-    </label><br>
-    <label for="kd4_PJOK_4.6">
-        <input class="cekliskd" type="checkbox" id="kd4_PJOK_4.6" name="kd4_PJOK_4.6" />
-        4.6
-        </label><br>
-    <label for="kd4_PJOK_4.7">
-        <input class="cekliskd" type="checkbox" id="kd4_PJOK_4.7" name="kd4_PJOK_4.7" />
-        4.7
-        </label><br>
-    <label for="kd4_PJOK_4.8">
-        <input class="cekliskd" type="checkbox" id="kd4_PJOK_4.8" name="kd4_PJOK_4.8" />
-        4.8
-    </label><br>
-    <label for="kd4_PJOK_4.9">
-        <input class="cekliskd" type="checkbox" id="kd4_PJOK_4.9" name="kd4_PJOK_4.9" />
-        4.9
-    </label><br>
-    <label for="kd4_PJOK_4.10">
-        <input class="cekliskd" type="checkbox" id="kd4_PJOK_4.10" name="kd4_PJOK_4.10" />
-        4.10
-        </label><br>
-        </td>
-    </tr>
-    <tr>
-        <td>Bahasa Sunda</td>
-        <td>BSUND</td>
-        <td>
-        <label for="kd3_BSUND_3.1">
-        <input class="cekliskd" type="checkbox" id="kd3_BSUND_3.1" name="kd3_BSUND_3.1" />
-        3.1
-    </label><br>
-    <label for="kd3_BSUND_3.2">
-        <input class="cekliskd" type="checkbox" id="kd3_BSUND_3.2" name="kd3_BSUND_3.2" />
-        3.2
-        </label><br>
-    <label for="kd3_BSUND_3.3">
-        <input class="cekliskd" type="checkbox" id="kd3_BSUND_3.3" name="kd3_BSUND_3.3" />
-        3.3
-        </label><br>
-    <label for="kd3_BSUND_3.4">
-        <input class="cekliskd" type="checkbox" id="kd3_BSUND_3.4" name="kd3_BSUND_3.4" />
-        3.4
-    </label><br>
-    <label for="kd3_BSUND_3.5">
-        <input class="cekliskd" type="checkbox" id="kd3_BSUND_3.5" name="kd3_BSUND_3.5" />
-        3.5
-    </label><br>
-    <label for="kd3_BSUND_3.6">
-        <input class="cekliskd" type="checkbox" id="kd3_BSUND_3.6" name="kd3_BSUND_3.6" />
-        3.6
-        </label><br>
-    <label for="kd3_BSUND_3.7">
-        <input class="cekliskd" type="checkbox" id="kd3_BSUND_3.7" name="kd3_BSUND_3.7" />
-        3.7
-        </label><br>
-    <label for="kd3_BSUND_3.8">
-        <input class="cekliskd" type="checkbox" id="kd3_BSUND_3.8" name="kd3_BSUND_3.8" />
-        3.8
-    </label><br>
-    <label for="kd3_BSUND_3.9">
-        <input class="cekliskd" type="checkbox" id="kd3_BSUND_3.9" name="kd3_BSUND_3.9" />
-        3.9
-    </label><br>
-    
- 
-        </td>
-        <td>
-        <label for="kd4_BSUND_4.1">
-        <input class="cekliskd" type="checkbox" id="kd4_BSUND_4.1" name="kd4_BSUND_4.1" />
-        4.1
-    </label><br>
-    <label for="kd4_BSUND_4.2">
-        <input class="cekliskd" type="checkbox" id="kd4_BSUND_4.2" name="kd4_BSUND_4.2" />
-        4.2
-        </label><br>
-    <label for="kd4_BSUND_4.3">
-        <input class="cekliskd" type="checkbox" id="kd4_BSUND_4.3" name="kd4_BSUND_4.3" />
-        4.3
-        </label><br>
-    <label for="kd4_BSUND_4.4">
-        <input class="cekliskd" type="checkbox" id="kd4_BSUND_4.4" name="kd4_BSUND_4.4" />
-        4.4
-    </label><br>
-    <label for="kd4_BSUND_4.5">
-        <input class="cekliskd" type="checkbox" id="kd4_BSUND_4.5" name="kd4_BSUND_4.5" />
-        4.5
-    </label><br>
-    <label for="kd4_BSUND_4.6">
-        <input class="cekliskd" type="checkbox" id="kd4_BSUND_4.6" name="kd4_BSUND_4.6" />
-        4.6
-        </label><br>
-    <label for="kd4_BSUND_4.7">
-        <input class="cekliskd" type="checkbox" id="kd4_BSUND_4.7" name="kd4_BSUND_4.7" />
-        4.7
-        </label><br>
-    <label for="kd4_BSUND_4.8">
-        <input class="cekliskd" type="checkbox" id="kd4_BSUND_4.8" name="kd4_BSUND_4.8" />
-        4.8
-    </label><br>
-    <label for="kd4_BSUND_4.9">
-        <input class="cekliskd" type="checkbox" id="kd4_BSUND_4.9" name="kd4_BSUND_4.9" />
-        4.9
-    </label><br>
-    
-        </td>
-    </tr>
-    </table></div>`
-
-    kurikulum_kkm.innerHTML = `<h3>Data Kriteria Ketuntasan Minimal (KKM)</h3>
-    <button class="w3-button w3-blue" onclick="fnprinttabelkkm('printtabelkkm,DATA KKM KELAS ${idJenjang}, SEMESTER ${idSemester} TAHUN PELAJARAN ${idTeksTapel},${StringTanggal(new Date())}')"><i class="fa fa-print"></i> Cetak</button>
-   
-    <hr/><div id="printtabelkkm"><center><table class="versi-table" id="ttttt">
-        <tr>
-            <th>Kode Mapel</th>
-            <th>Identitas Mapel<br/><sub>Edit identitas mapel ini untuk identitas Mapel di Buku Raport</sub></th>
-            <th>Nilai KKM</th>
-        </tr>
-        ${elkkm}
-        <tr><td>PKN</td><td contenteditable="true" id="namamapelraport_PKN">Pendidikan Kewarganegaraan</td><td contenteditable="true" id="angkakkm_PKN">00</td></tr>
-        <tr><td>BINDO</td><td contenteditable="true" id="namamapelraport_BINDO">Bahasa Indonesia</td><td contenteditable="true" id="angkakkm_BINDO">00</td></tr>
-        <tr><td>MTK</td><td contenteditable="true" id="namamapelraport_MTK">Matematika</td><td contenteditable="true" id="angkakkm_MTK">00</td></tr>
-        <tr><td>IPA</td><td contenteditable="true" id="namamapelraport_IPA">Ilmu Pengetahuan Alam</td><td contenteditable="true" id="angkakkm_IPA">00</td></tr>
-        <tr><td>IPS</td><td contenteditable="true" id="namamapelraport_IPS">Ilmu Pengetahuan Sosial</td><td contenteditable="true" id="angkakkm_IPS">00</td></tr>
-        <tr><td>PJOK</td><td contenteditable="true" id="namamapelraport_PJOK">Pendidikan Jasmani, Olahraga, dan Kesehatan</td><td contenteditable="true" id="angkakkm_PJOK">00</td></tr>
-        <tr><td>SBDP</td><td contenteditable="true" id="namamapelraport_SBDP">Seni Budaya dan Prakarya</td><td contenteditable="true" id="angkakkm_SBDP">00</td></tr>
-        <tr><td>BSUND</td><td contenteditable="true" id="namamapelraport_BSUND">Bahasa Sunda</td><td contenteditable="true" id="angkakkm_BSUND">00</td></tr>
-    </table></center></div>
-    <button onclick="fnsimpanidkkm()" class="w3-button w3-green w3-right">Simpan Perubahan</button><hr/>
-    Keterangan: <sub class="w3-text-blue">Di tabel ini, Anda dapat mengedit nama mata pelajaran yang akan ditampilkan di Buku Raport Siswa. Di sini pula, Anda dapat mengubah KKM masing-masing mata pelajaran yang nantinya setiap KD akan otomatis menyesuaikan angka KKM yang Anda Edit di KKM yang Anda unggah di UPLOAD DATA (Setelah mengeklik tombol SIMPAN)</sub>
-    
-    `
-
-    let tas = "kelas" + idJenjang;
-    await fetch(linkmateri + "&action=cekdkkm&tab=" + tas)
-        .then(m => m.json())
-        .then(k => {
-
-            let statusunggah = (k.unggah == "Jenjang Kelas Anda sudah mengunggah KKM dan KD") ? true : false;
-            let data = k.result;
-
-            if (statusunggah) {
-
-                let teks = "<hr/><div style='overflow-x:auto'><table class='versi-table w3-small tabelkkmkd'><tr><th>Mata Pelajaran</th><th>KD-3</th><th>Indikator KI-3 <br>(Pengetahuan)</th><th>KD-4</th><th>Indikator KI-4 <br>(Keterampilan)</th><th>KKM</th></tr>";
-                for (i = 0; i < data.length; i++) {
-                    let divelkkm = document.getElementById("angkakkm_" + data[i].mapel);
-                    if (divelkkm !== null) {
-                        divelkkm.innerHTML = data[i].kkm;
-                    }
-                    // teks += "<tr><td>" + data[i].mapel + "</td><td>" + data[i].kd3 + "</td><td contenteditable='true'>" + data[i].indikatorkd3 + "</td><td>" + data[i].kd4 + "</td><td  contenteditable='true'>" + data[i].indikatorkd4 + "</td><td  contenteditable='true'>" + data[i].kkm + "</td></tr>";
-                    teks += `<tr><td>${data[i].mapel}</td><td>${data[i].kd3}</td><td contenteditable="true" id="deskripsikd3_${data[i].mapel}_${data[i].kd3}">${data[i].indikatorkd3}</td><td>${data[i].kd4}</td><td contenteditable="true" id="deskripsikd4_${data[i].mapel}_${data[i].kd4}">${data[i].indikatorkd4}</td><td contenteditable="true">${data[i].kkm}</td></tr>`;
-                    let truekd3 = data[i].cekliskd3;
-                    let truekd4 = data[i].cekliskd4;
-                    let iddiv = "kd3_" + data[i].mapel + "_" + data[i].kd3;
-                    let divnya = document.getElementById(iddiv);
-                    if (divnya !== null) {
-                        if (truekd3) {
-                            divnya.checked = true;
-                        } else {
-                            divnya.checked = false;
-                        }
-                    }
-                    let iddivv = "kd4_" + data[i].mapel + "_" + data[i].kd4;
-                    let divnyaa = document.getElementById(iddivv);
-                    if (divnyaa !== null) {
-                        if (truekd4) {
-                            divnyaa.checked = true;
-                        } else {
-                            divnyaa.checked = false;
-                        }
-                    }
-
-
-                }
-
-                pisahpisah.innerHTML = k.unggah + `<hr/><button class='w3-button w3-round-large w3-blue' onclick="datacekliskd()">Simpan</button><button class='w3-button w3-round-large w3-red' onclick="hapuskkmkd()">Hapus KKM dan KD</button><hr/>` + teks + "</table></div>";
-
-            } else {
-                pisahpisah.innerHTML = k.unggah + `<br/>Jika Anda belum mengunggah file KKM dan KD di server dan
-                membutuhkan format filenya, silakan kunjungi Repository.</br><br /> Disana akan dijelaskan bagaimana caranya.<hr><label for="uploadcsv"><i class="fa fa-upload w3-button w3-blue w3-round-large"> Unggah File
-                Format</i></label>
-        <input type="file" onchange="uploadcsv()" id="uploadcsv" class="w3-hide" /><hr/>
-        Berikut ini adalah contoh file KKM dan KD. Silakan unduh lalu Anda unggah pada tombol di atas, kemudian Anda edit (jika diperlukan);
-        <table class='versi-table'>
-            <tr>
-                <th>Jenjang</th>
-                <th>Aksi</th>
-            </tr>
-            <tr>
-                <td> Kelas 1 </td>
-                <td><button class='w3-button w3-blue'><a href='https://drive.google.com/uc?id=1OiOKNuU_KOLS5Osg8j9sPnaq7SsE7DI8&export=download' target='_blank'> UNDUH Kelas 1</a></button></td>
-            </tr>
-            <tr>
-                <td> Kelas 2 </td>
-                <td><button class='w3-button w3-blue'><a href='https://drive.google.com/uc?id=1LuSF4YRgNP1AXMxCfWUdzqw2dyk0L655&export=download' target='_blank'> UNDUH Kelas 2</a></button></td>
-            </tr>
-            <tr>
-                <td> Kelas 3 </td>
-                <td><button class='w3-button w3-blue'><a href='https://drive.google.com/uc?id=1QTa6pklrukQzuhurJU5AQGWDqautNQzO&export=download' target='_blank'> UNDUH Kelas 3</a></button></td>
-            </tr>
-             <tr>
-                <td> Kelas 4 </td>
-                <td><button class='w3-button w3-blue'><a href='https://drive.google.com/uc?id=18-vYgLHb6CgSzmGsB2oloTbd3mH6-TvT&export=download' target='_blank'> UNDUH Kelas 4</a></button></td>
-            </tr>
-            <tr>
-                <td> Kelas 5 </td>
-                <td><button class='w3-button w3-blue'><a href='https://drive.google.com/uc?id=1mW1ag1e1V_DmhtO15xcSD7jH3o2N92SX&export=download' target='_blank'> UNDUH Kelas 5</a></button></td>
-            </tr>
-            <tr>
-                <td> Kelas 6 </td>
-                <td><button class='w3-button w3-blue'><a href='https://drive.google.com/uc?id=1xjM7DsTJCgN6DAqfblk0mi0sjcgvkPji&export=download' target='_blank'> UNDUH Kelas 6</a></button></td>
-            </tr>
-        </table>
-        Keterangan:<br>
-        <ul>
-            <li>Silakan pilih salah satu file KKM dan KD di atas, lalu Unduh.  Kemudian file diunggah.
-            </li><li>Sangat tidak disarankan Anda mengedit langsung dari filenya. Sebab akan mempengaruhi proses rekap nilai Raport
-            </li><li>Anda boleh mengeditnya (jika berbeda dengan repository dari Tim Elamaso di Menu UPLOAD KURIKULUM. Di sana tabel KKM dan KD bisa diedit secara manual
-            </li><li>Data Indikator pada file-file di tabel di atas adalah data indikator yang telah disusun oleh Tim ELamaso sesuai dengan PERMENDIKBUD No. 37 Tahun 2018
-            </li>
-        </ul>
-        `
-            }
-            tabkd.innerHTML = "Kompetensi Dasar"
-            tabkkm.innerHTML = "KKM"
-            tabupl.innerHTML = "Upload Kurikulum"
-
-        })
-        .catch(er => {
-            console.log(er);
-            tabkd.innerHTML = "Kompetensi Dasar !"
-            tabkkm.innerHTML = "KKM !"
-            tabupl.innerHTML = "Upload Kurikulum !"
-        })
-
-    divkurikulum.innerHTML = tekshtml;
-
-
-
-};
-
 //////////////////////////////// source EDITOR.JS //////////////
-window.onscroll = function () { scrollFunction() };
-let elementini = document.querySelector(".tomboleditor");
-let el_set_kuncipg = document.querySelector(".tekeditorpg");
+// window.onscroll = function () { scrollFunction() };
+// let elementini = document.querySelector(".tomboleditor");
+// let el_set_kuncipg = document.querySelector(".tekeditorpg");
 
-function scrollFunction() {
-    let a = document.querySelector("#idmateri").offsetTop;
+// function scrollFunction() {
+//     let a = document.querySelector("#idmateri").offsetTop;
 
-    let b = document.querySelector("#loadketKD").offsetTop;// + 20;
-    //console.log((rounded >= a && rounded <= b))
-    var rounded = Math.round(document.documentElement.scrollTop);
-    if (rounded >= a && rounded <= b) {
-        elementini.className = elementini.className.replace("l12", "l9");
-    } else {
-        elementini.className = elementini.className.replace("l9", "l12");
+//     let b = document.querySelector("#loadketKD").offsetTop;// + 20;
+//     console.log("rounded=" + rounded + "(a=" + a + ")(b=" + b);
+//     var rounded = Math.round(document.documentElement.scrollTop);
+//     if (rounded >= a && rounded <= b) {
+//         elementini.className = elementini.className.replace("l12", "l9");
+//     } else {
+//         elementini.className = elementini.className.replace("l9", "l12");
 
-    }
-};
+//     }
+// };
 
 let btneditor = document.querySelector(".bukatekseditor");
 let btneditor2 = document.querySelector(".bukatekseditor2");
@@ -3736,6 +2503,21 @@ btn_elamaso5.addEventListener("click", function () {
     textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
 });
 
+let btn_edborder = document.querySelector(".ed_borderteks");
+btn_edborder.addEventListener("click", function () {
+    var textarea = document.getElementById("idmateri");
+
+
+    var len = textarea.value.length;
+    var start = textarea.selectionStart;
+    var end = textarea.selectionEnd;
+    var sel = textarea.value.substring(start, end);
+    var replace = `<div class="w3-card-4 w3-container">${sel}</div>`;
+    //sel.slice(0, sel.length).replace(/\n/g, " <br> ");
+
+    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
+});
+
 let btn_elamaso6 = document.querySelector(".ed_tabel");
 btn_elamaso6.addEventListener("click", function () {
     var textarea = document.getElementById("idmateri");
@@ -4133,14 +2915,16 @@ const modalfnkalenderkehadiranguru = () => {
         alert("Silakan pilih bulannya untuk mengetahui daftar piket Anda.");
         return
     }
-    let namabulan = y[x].text;
-    modalnamabulan.innerHTML = namabulan.toUpperCase() + " 2021";
+    // let namabulan = y[x].text.replace("2021", "").replace(/\s+/g, "");;
 
     let notgl = new Date(y[x].value);
 
 
     let tyear = notgl.getFullYear();
     let mont = notgl.getMonth();
+    let namabulan = timekbm_arraybulan[mont]
+
+    modalnamabulan.innerHTML = namabulan.toUpperCase() + " 2021";
     let tmont = notgl.getMonth() + 1;
     let tglakhir = daysInMonth(tmont, tyear);
     let lr = 1;
@@ -4177,11 +2961,46 @@ const modalfnkalenderkehadiranguru = () => {
             lr++
         }
     }
-    if (ket.length == 0) {
-        ketketliburkehadiranguru.innerHTML = ""
-    } else {
-        ketketliburkehadiranguru.innerHTML = ket.join("<br>")
+    // if (ket.length == 0) {
+    //     ketketliburkehadiranguru.innerHTML = ""
+    // } else {
+    //     ketketliburkehadiranguru.innerHTML = ket.join("<br>")
+    // }
+    let keta = localStorage.getItem("Kaldik");
+    let ketc = JSON.parse(keta);
+    let ketm = mont;
+    let kety = tyear;
+    let b = ketc.filter(s => (new Date(s.start_tgl).getMonth() == ketm || new Date(s.end_tgl).getMonth() == ketm) && (new Date(s.start_tgl).getFullYear() == kety || new Date(s.end_tgl).getFullYear() == kety));
+    let ketlibur = "";
+    if (b.length !== 0) {
+        ketlibur = "Keterangan Tanggal:<ul>";
+        for (i = 0; i < b.length; i++) {
+            let thn_awal = new Date(b[i].start_tgl).getFullYear();
+            let thn_akhir = new Date(b[i].end_tgl).getFullYear();
+            // console.log(thn_awal + " " + thn_akhir)
+            let bln_awal = new Date(b[i].start_tgl).getMonth();
+            let bln_akhir = new Date(b[i].end_tgl).getMonth();
+            let tgl_awal = new Date(b[i].start_tgl).getDate();
+            let tgl_akhir = new Date(b[i].end_tgl).getDate();
+            if (thn_awal == thn_akhir) {
+                if (bln_awal == bln_akhir) {
+                    if (tgl_awal == tgl_akhir) {
+
+                        ketlibur += `<li> Tgl ${tgl_awal} ${timekbm_arraybulan[ketm]} ${new Date(b[i].start_tgl).getFullYear()}= ${b[i].keterangan}</li>`;
+                    } else {
+                        ketlibur += `<li> Tgl ${tgl_awal} - ${tgl_akhir} ${timekbm_arraybulan[ketm]}  ${new Date(b[i].end_tgl).getFullYear()}= ${b[i].keterangan}</li>`;
+                    }
+                } else {
+                    ketlibur += `<li> Tgl ${tgl_awal} ${timekbm_arraybulan[bln_awal]} - ${tgl_akhir} ${timekbm_arraybulan[bln_akhir]}  ${thn_awal}= ${b[i].keterangan}</li>`;
+                }
+            } else {
+                ketlibur += `<li> Tgl ${tgl_awal} ${timekbm_arraybulan[bln_awal]} ${thn_awal} - ${tgl_akhir} ${timekbm_arraybulan[bln_akhir]}  ${thn_akhir}= ${b[i].keterangan}</li>`;
+            }
+        }
+        ketlibur += "</ul>";
     }
+    ketketliburkehadiranguru.innerHTML = ketlibur
+
     let datee = StringTanggal(notgl);
     dataabsenbulanan(datee, namabulan)
 }
@@ -4227,7 +3046,7 @@ const dataabsenbulanan = async (datee, namabulan) => {
         .then(k => {
             //jsonabsenkelasperbulan = k[bulanapi];
             rekapabsensiswabulanan = k[namabulan];//.filter(s => s.name == namasiswa);
-            //console.log(k)
+
             //---------------------------------------------------
 
             for (var i = 0; i < rekapabsensiswabulanan.length; i++) {
@@ -5813,144 +4632,6 @@ const fnprinttabelkkm = (xx) => {
     //datasiswadiv.innerHTML = ""
 }
 ////////////////////////////////// source NILAI.js
-function nilaimapel() {
-
-    if (window.location.href.indexOf("gmp.html") > -1) {
-
-        let valuekelas = document.getElementById("gmppilihrombel");//.value;
-
-        if (valuekelas !== "null" && valuekelas.value == "none") {
-            alert("Anda belum memilih kelas. Silakan pilih Kelas terlebih dulu")
-            return
-
-        }
-    }
-
-
-    tampilinsublamangurukelas("mapel");
-    ulhar.style.display = "block";
-    //document.getElementById("kurikulum_kd").click();
-    //------------------------------------------
-    let islam = jsondatasiswa.filter(function (lk) {
-        if (lk.pd_agama == "ISLAM" || lk.pd_agama == "Islam" || lk.pd_agama == "islam") {
-            return true;
-        }
-    }).length;
-    let bolislam = (islam == 0) ? false : true;
-
-    let kristen = jsondatasiswa.filter(function (lk) {
-        if (lk.pd_agama == "KRISTEN" ||
-            lk.pd_agama == "Kristen" ||
-            lk.pd_agama == "kristen" ||
-            lk.pd_agama == "PROTESTAN" || lk.pd_agama == "Protestan") {
-            return true;
-        }
-    }).length;
-    let bolkristen = (kristen == 0) ? false : true;
-
-    let katolik = jsondatasiswa.filter(function (lk) {
-        if (lk.pd_agama == "KATHOLIK" || lk.pd_agama == "Katolik" || lk.pd_agama == "KATHOLIK" || lk.pd_agama == "Katholik" || lk.pd_agama == "katholik") {
-            return true;
-        }
-    }).length;
-    let bolkatolik = (katolik == 0) ? false : true;
-
-    let hindu = jsondatasiswa.filter(function (lk) {
-        if (lk.pd_agama == "HINDU" || lk.pd_agama == "Hindu" || lk.pd_agama == "hindu") {
-            return true;
-        }
-    }).length;
-    let bolhindu = (hindu == 0) ? false : true;
-
-    let budha = jsondatasiswa.filter(function (lk) {
-        if (lk.pd_agama == "BUDHA" || lk.pd_agama == "BUDA" || lk.pd_agama == "Budha" || lk.pd_agama == "Buda" || lk.pd_agama == "buda") {
-            return true;
-        }
-    }).length;
-    let bolbudha = (budha == 0) ? false : true;
-    let khonghucu = jsondatasiswa.filter(function (lk) {
-        if (lk.pd_agama == "KHONGHUCU" || lk.pd_agama == "Khong Hu Cu" || lk.pd_agama == "KHONG HUCU" || lk.pd_agama == "Khong Hucu" || lk.pd_agama == "Khong hucu") {
-            return true;
-        }
-    }).length;
-    let bolkhonghucu = (khonghucu == 0) ? false : true;
-
-
-    let divkurikulum = document.getElementById("kurikulum_kd");
-
-
-    let tekshtml = "<h3> Kompetensi Dasar</h3>";
-    tekshtml += `<button class='w3-button w3-round-large w3-blue' onclick="datacekliskd()">Simpan</button><hr/>`;
-
-    let opsimapelagama = ""
-
-    if (bolislam) {
-        opsimapelagama += `<option id='agama1' value='PAI'>Pendidikan Agama Islam dan Budi Pekerti</option>`;
-    }
-    if (bolkristen) {
-        opsimapelagama += `<option id='agama2' value='PKRIS'>Pendidikan Agama Kristen dan Budi Pekerti</option>`;
-    }
-    if (bolkatolik) {
-        opsimapelagama += `<option id='agama3' value='PKATO'>Pendidikan Agama Katholik dan Budi Pekerti</option>`;
-    }
-    if (bolbudha) {
-        opsimapelagama += `<option id='agama4' value='PBUDH'>Pendidikan Agama Budha dan Budi Pekerti</option>`;
-    }
-    if (bolhindu) {
-        opsimapelagama += `<option id='agama5' value='PHIND'>Pendidikan Agama Hindu dan Budi Pekerti</option>`;
-    }
-    if (bolkhonghucu) {
-        opsimapelagama += `<option id='agama6' value='PKONG'>Pendidikan Agama Khonghucu dan Budi Pekerti</option>`;
-    }
-
-    let adaips = "";
-    if (idJenjang >= 4) {
-        adaips = `
-        <option value="IPA">Ilmu Pengetahuan Alam(IPA)</option>
-    <option  value="IPS">Ilmu Pengetahuan SOSIAL (IPS)</option>
-        `
-    }
-    let htmlseleksiulhar = `<select class="w3-select w3-gray w3-hover-light-grey" id="selectnilaimapelulhar" onchange="nilaimapelulhar()">
-    <option id="pilihnol" value="">Silakan Pilih Mata Pelajaran</option>
-    ${opsimapelagama}
-    <option id="selulhar0" value="PKN">Pendidikan Kewarganegaraan (PKN)</option>
-    <option id="selulhar1" value="BINDO">Bahasa Indonesia (BINDO)</option>
-    <option id="selulhar2" value="MTK">MATEMATIKA (MTK)</option>
-    ${adaips}    
-    <option id="selulhar5" value="PJOK">Pendidikan Jasmani, Olahraga, dan Kesehatan (PJOK)</option>
-    <option id="selulhar6" value="SBDP">Seni Budaya dan Prakarya (SBDP)</option>
-    <option id="selulhar6" value="BSUND">Bahasa Sunda (BSUND)</option>
-    </select>
-    `;
-    opsimapelulhar.innerHTML = htmlseleksiulhar;
-
-    htmlseleksiulhar = `<select class="w3-select w3-gray w3-hover-light-grey" id="selectnilaimapelpts" onchange="nilaimapelpts()">
-    <option id="pilihnolpts" value="">Silakan Pilih Mata Pelajaran</option>
-    ${opsimapelagama}
-    <option id="selptsr0" value="PKN">Pendidikan Kewarganegaraan (PKN)</option>
-    <option id="selpts1" value="BINDO">Bahasa Indonesia (BINDO)</option>
-    <option id="selpts2" value="MTK">MATEMATIKA (MTK)</option>
-    ${adaips}    
-    <option id="selpts5" value="PJOK">Pendidikan Jasmani, Olahraga, dan Kesehatan (PJOK)</option>
-    <option id="selpts6" value="SBDP">Seni Budaya dan Prakarya (SBDP)</option>
-    <option id="selpts7" value="BSUND">Bahasa Sunda (BSUND)</option>
-    </select>
-    `;
-    opsimapelpts.innerHTML = htmlseleksiulhar;
-    htmlseleksiulhar = `<select class="w3-select w3-gray w3-hover-light-grey" id="selectnilaimapelpaspak" onchange="nilaimapelpaspak()">
-    <option id="pilihnolpaspak" value="">Silakan Pilih Mata Pelajaran</option>
-    ${opsimapelagama}
-    <option id="selpaspak0" value="PKN">Pendidikan Kewarganegaraan (PKN)</option>
-    <option id="selpaspak1" value="BINDO">Bahasa Indonesia (BINDO)</option>
-    <option id="selpaspak2" value="MTK">MATEMATIKA (MTK)</option>
-    ${adaips}    
-    <option id="selpaspak5" value="PJOK">Pendidikan Jasmani, Olahraga, dan Kesehatan (PJOK)</option>
-    <option id="selpaspak6" value="SBDP">Seni Budaya dan Prakarya (SBDP)</option>
-    <option id="selpaspak7" value="BSUND">Bahasa Sunda (BSUND)</option>
-    </select>
-    `;
-    opsimapelpaspak.innerHTML = htmlseleksiulhar;
-}
 
 const fnkeyobjekmapel = (mapel, banyakkd) => {
     //let banyakkd = ["8_PH_03022021_PAI_3.8", "8_PH_03022021_PAI_3.9", "70_PH_03022021_PAI_3.8", "70_PH_03022021_PAI_3.9", "18_PH_16022021_IPA_3.8", "29_PH_22022021_PKN_3.3", "29_PH_22022021_BINDO_3.8", "29_PH_22022021_MTK_3.8", "34_PH_25022021_MTK_3.2", "36_PH_26022021_SBDP_3.2"];
@@ -6697,7 +5378,7 @@ const previewsoalnilairekap = (par) => {
                 tempattombol.innerHTML += "<br/><sub>atau</sub></br/> "
                 var tomboldua = document.createElement("button");
                 tomboldua.setAttribute("onclick", "tomboluploadjawaban('" + inidEl + "')");
-                var tekstomboldua = document.createTextNode("Upload Jawaban No " + inidEl);
+                var tekstomboldua = document.createTextNode("Upload Media No " + inidEl);
                 tomboldua.appendChild(tekstomboldua);
                 tempattombol.appendChild(tomboldua);
                 tempattombol.innerHTML += "<br/><sub>Pilih Salah satu cara Kalian menjawab soal ini</sub>"
@@ -6715,13 +5396,73 @@ const previewsoalnilairekap = (par) => {
     // ;
 
 
-}
+};
+const nilaimapelpas = () => {
+    let x = document.getElementById("selectnilaimapelpas").selectedIndex;
+    let y = document.getElementById("selectnilaimapelpas").options;
+    //alert("Index: " + y[x].index + " is " + y[x].text + " dan value = " + y[x].value);
+
+    if (y[x].value == "") {
+        alert("Silakan Pilih Mata Pelajaran");
+        return
+    }
+
+    let tagihan = "pas";
+    let idelemen = "datatabelnilai" + tagihan;
+    let mapelnya = y[x].value;
+    getnilaimapelgurukelas(tagihan, idelemen, mapelnya)
+
+};
+const nilaimapelkpraktik = () => {
+    let x = document.getElementById("selectnilaimapelkpraktik").selectedIndex;
+    let y = document.getElementById("selectnilaimapelkpraktik").options;
+    //alert("Index: " + y[x].index + " is " + y[x].text + " dan value = " + y[x].value);
+
+    if (y[x].value == "") {
+        alert("Silakan Pilih Mata Pelajaran");
+        return
+    }
+
+    let tagihan = "kpraktik";
+    let idelemen = "datatabelnilai" + tagihan;
+    let mapelnya = y[x].value;
+    getnilaimapelgurukelas(tagihan, idelemen, mapelnya)
+
+};
+const nilaimapelkproduk = () => {
+    let x = document.getElementById("selectnilaimapelkproduk").selectedIndex;
+    let y = document.getElementById("selectnilaimapelkproduk").options;
+    //alert("Index: " + y[x].index + " is " + y[x].text + " dan value = " + y[x].value);
+
+    if (y[x].value == "") {
+        alert("Silakan Pilih Mata Pelajaran");
+        return
+    }
+    let tagihan = "kproduk";
+    let idelemen = "datatabelnilai" + tagihan;
+    let mapelnya = y[x].value;
+    getnilaimapelgurukelas(tagihan, idelemen, mapelnya)
+
+};
+const nilaimapelkproyek = () => {
+    let x = document.getElementById("selectnilaimapelkproyek").selectedIndex;
+    let y = document.getElementById("selectnilaimapelkproyek").options;
+    //alert("Index: " + y[x].index + " is " + y[x].text + " dan value = " + y[x].value);
+
+    if (y[x].value == "") {
+        alert("Silakan Pilih Mata Pelajaran");
+        return
+    }
+    let tagihan = "kproyek";
+    let idelemen = "datatabelnilaikproyek";
+    let mapelnya = y[x].value;
+    getnilaimapelgurukelas(tagihan, idelemen, mapelnya)
+};
 
 const koleksinamasiswaberdasarkanagama = (idmapel) => {
     let namanamasiswa = [];
     if (idmapel == "PAI") {
         namanamasiswa = jsondatasiswa.filter(f => f.pd_agama == "ISLAM");//.map(k => k.pd_nama);
-
     }
     if (idmapel == "PKRIS") {
         namanamasiswa = jsondatasiswa.filter(f => f.pd_agama == "KRISTEN");//.map(k => k.pd_nama);
@@ -6747,9 +5488,176 @@ const koleksinamasiswaberdasarkanagama = (idmapel) => {
         namanamasiswa = jsondatasiswa;//.map(k => k.pd_nama);
 
     }
-
     return namanamasiswa
+}
 
+
+function getnilaimapelgurukelas(tagihan, idelemen, mapelnya) {
+    let namasubjek = {
+        "PAI": "Pendidikan Agama Islam",
+        "PKRIS": "Pendidikan Agama Kristen",
+        "PKATO": "Pendidikan Agama Katholik",
+        "PBUDH": "Pendidikan Agama Budha",
+        "PHIND": "Pendidikan Agama Hindu",
+        "PKONG": "Pendidikan Agama Khonghucu",
+        "PJOK": "PJOK",
+        "BSUND": "Bahasa Sunda"
+    }
+    let kecil = tagihan.toLowerCase();
+
+    let teks = namasubjek[mapelnya];
+
+
+    let koleksiswa = koleksinamasiswaberdasarkanagama(mapelnya).map(k => k.pd_nama);
+    let koleksitokensiswa = koleksinamasiswaberdasarkanagama(mapelnya).map(k => k.id);
+    let div = document.getElementById(idelemen);
+    div.innerHTML = "<hr/><i class='fa fa-refresh fa-spin w3-xxlarge'></i> Proses loading..."
+    //alert("Fungsi baru")
+    fetch(constlinknilai + "?action=lihatnilairekap&tab=" + tagihan + "&kelas=" + idNamaKelas)
+        .then(m => m.json())
+        .then(r => {
+            let PH = fnkeyobjekmapel(mapelnya, r.banyakkd);
+            let cPH = Object.keys(PH.koleksiul);
+            let allcount = 0;
+            let arrallcount = [];
+            for (a = 0; a < cPH.length; a++) {
+                // allcount = allcount + PH.koleksiul[cPH[k]].datakey.length
+                allcount += PH.koleksiul[cPH[a]].datakey.length;
+                arrallcount.push(PH.koleksiul[cPH[a]].datakey.length);
+            }
+
+            let tekshtml = "";
+            if (cPH.length > 0) {
+                let tabel = document.createElement("table");
+                tabel.setAttribute("class", "versi-table w3-small");
+                tabel.setAttribute("id", "nilai" + kecil + "_" + mapelnya);
+                let thead = tabel.createTHead();
+                let tr = thead.insertRow(0);
+                let th = document.createElement("th");
+                th.setAttribute("rowspan", 3);
+                th.innerHTML = "No.";
+                tr.appendChild(th);
+                th = document.createElement("th");
+                th.setAttribute("rowspan", 3);
+                th.setAttribute("style", "position:sticky;position:-webkit-sticky;left:0px;box-shadow: inset 0 0 1px #000000");
+                th.innerHTML = "Nama Siswa";
+                tr.appendChild(th);
+
+
+                th = document.createElement("th");
+                th.setAttribute("colspan", allcount);// cPH.length);
+                th.innerHTML = `Rekap Penilaian Harian<br/><sub>${teks}</sub>`;
+                tr.appendChild(th);
+
+                tr = thead.insertRow(1);
+                tr2 = thead.insertRow(2);
+                for (i = 0; i < cPH.length; i++) {
+                    let th = document.createElement("th");
+                    th.setAttribute("colspan", arrallcount[i]);
+                    th.innerHTML = inverstanggal(cPH[i].split("_")[2]) + `<button class="w3-blue w3-button" onclick="previewsoalnilairekap('${cPH[i].split("_")[0]}')"><i class="fa fa-eye"></i></button>`;
+                    tr.appendChild(th);
+
+                    for (c = 0; c < arrallcount[i]; c++) {
+                        th2 = document.createElement("th");
+                        th2.innerHTML = "KD " + PH.koleksiul[cPH[i]].datakey[c].split("_")[4];
+                        tr2.appendChild(th2);
+                    }
+                }
+                let trr = tabel.createTBody();
+                for (j = 0; j < koleksiswa.length; j++) {
+                    tr = trr.insertRow(-1);
+                    let td = tr.insertCell(-1);
+                    td.innerHTML = j + 1;
+                    td = tr.insertCell(-1);
+                    td.setAttribute("style", "position:sticky;position:-webkit-sticky;left:0px;box-shadow: inset 0 0 1px #000000");
+                    td.innerHTML = koleksiswa[j];//.toUpperCase();
+                    // let datanilai = r.records.filter(k => k.namasiswa == koleksiswa[j]);
+                    let datanilai = r.records.filter(k => k.tokensiswa == koleksitokensiswa[j]);
+                    for (k = 0; k < cPH.length; k++) {
+                        for (d = 0; d < arrallcount[k]; d++) {
+                            td = tr.insertCell(-1);
+                            td.setAttribute("contenteditable", true);
+                            let key = PH.koleksiul[cPH[k]].datakey[d];
+                            let isikan = (datanilai.length > 0) ? datanilai[datanilai.length - 1][key].replace(".", ",") : "0,00";
+                            //revisi
+                            let isinilai =
+
+                                td.innerHTML = isikan;// && k.indexOf(PH.koleksiul[cPH[k]].datakey[d]) > -1);//k.records.filter(k = k.)
+                        }
+                    }
+                }
+
+                div.innerHTML = `<hr/><button class="w3-button w3-dark-gray fa fa-print" onclick="printModalL('nilai${kecil}_${mapelnya},DAFTAR NILAI HARIAN <br>MATA PELAJARAN ${teks.replace(/\,/g, " ").toUpperCase()}, Semester ${idSemester} Tahun Pelajaran ${idTeksTapel}, ${StringTanggal(new Date())}')"> Print</button>  <button class="w3-button w3-gray fa fa-file-excel-o" onclick="ExcelModalTabNilai('nilai${kecil}_${mapelnya},DAFTAR NILAI HARIAN MATA PELAJARAN ${teks.toUpperCase()},DAFTAR NILAI HARIAN MATA PELAJARAN ${teks.replace(/\,/g, " ").toUpperCase()}, ${StringTanggal(new Date())}')"> Ms. Excel</button><hr/>`;
+                div.appendChild(tabel)
+            } else {
+
+                let tabel = document.createElement("table");
+                tabel.setAttribute("class", "versi-table w3-small");
+                tabel.setAttribute("id", "nilai" + kecil + "_" + mapelnya);
+
+                let thead = tabel.createTHead();
+                let tr = thead.insertRow(0);
+                let th = document.createElement("th");
+                th.setAttribute("rowspan", 3);
+                th.innerHTML = "No.";
+                tr.appendChild(th);
+                th = document.createElement("th");
+                th.setAttribute("rowspan", 3);
+                th.setAttribute("style", "position:sticky;position:-webkit-sticky;left:0px;box-shadow: inset 0 0 1px #000000");
+                th.innerHTML = "Nama Siswa";
+                tr.appendChild(th);
+
+
+                th = document.createElement("th");
+                th.setAttribute("colspan", 2);// cPH.length);
+                th.innerHTML = `Rekap Penilaian Harian<br/><sub>${teks}</sub>`;
+                tr.appendChild(th);
+
+                tr = thead.insertRow(1);
+                tr2 = thead.insertRow(2);
+                for (i = 0; i < 2; i++) {
+                    let th = document.createElement("th");
+                    th.setAttribute("colspan", 1);
+                    th.setAttribute("contenteditable", true);
+                    th.innerHTML = "Ketik Tanggal";//inverstanggal(cPH[i].split("_")[2]) + `<br/><button class="w3-blue w3-button" onclick=" previewsoalnilairekap('${cPH[i].split("_")[0]}')"><i class="fa fa-eye"></i> Lihat Materi</button>`;
+                    tr.appendChild(th);
+
+                    for (c = 0; c < 1; c++) {
+                        th2 = document.createElement("th");
+                        th2.setAttribute("contenteditable", true)
+                        th2.innerHTML = "KD ";//+ PH.koleksiul[cPH[i]].datakey[c].split("_")[4];
+                        tr2.appendChild(th2);
+                    }
+                }
+                let trr = tabel.createTBody();
+                for (j = 0; j < koleksiswa.length; j++) {
+                    tr = trr.insertRow(-1);
+                    let td = tr.insertCell(-1);
+                    td.innerHTML = j + 1;
+                    td = tr.insertCell(-1);
+                    td.setAttribute("style", "position:sticky;position:-webkit-sticky;left:0px;box-shadow: inset 0 0 1px #000000");
+                    td.innerHTML = koleksiswa[j];//.toUpperCase();
+
+                    // console.log(datanilai);// && k.indexOf(PH.koleksiul[cPH[k]].datakey[d]) > -1))
+                    for (k = 0; k < 2; k++) {
+                        for (d = 0; d < 1; d++) {
+                            td = tr.insertCell(-1);
+                            td.setAttribute("contenteditable", true);
+
+                            let isikan = "tidak ada data"
+                            td.innerHTML = isikan;// && k.indexOf(PH.koleksiul[cPH[k]].datakey[d]) > -1);//k.records.filter(k = k.)
+                        }
+                    }
+                }
+
+
+                div.innerHTML = `<hr/><button class="w3-button w3-dark-gray fa fa-print" onclick="printModalL('nilai${kecil}_${mapelnya},DAFTAR NILAI HARIAN <br>MATA PELAJARAN ${teks.replace(/\,/g, " ").toUpperCase()}, Semester ${idSemester} Tahun Pelajaran ${idTeksTapel}, ${StringTanggal(new Date())}')"> Print</button>  <button class="w3-button w3-gray fa fa-file-excel-o" onclick="ExcelModalTabNilai('nilai${kecil}_${mapelnya},DAFTAR NILAI HARIAN MATA PELAJARAN ${teks.replace(/\,/g, " ").toUpperCase()},DAFTAR NILAI HARIAN MATA PELAJARAN ${teks.replace(/\,/g, " ").toUpperCase()}, ${StringTanggal(new Date())}')"> Ms. Excel</button><hr/>`;
+                div.appendChild(tabel)
+
+            }
+
+        })
+        .catch(er => { alert(er); console.log(er) })
 }
 
 const ExcelModalTabNilai = (xx) => {
@@ -8066,7 +6974,7 @@ const daftarvideo = async () => {
                 cell.innerHTML = i + 1;
                 cell = row.insertCell(-1);
                 cell.innerHTML = j.records[i].htmlgambar;
-                console.log(j.records[i].htmlgambar);
+                //console.log(j.records[i].htmlgambar);
                 cell = row.insertCell(-1);
 
 
@@ -8131,6 +7039,9 @@ bukalayar.addEventListener('click', (ev) => {
                 mediaRecorderr.ondataavailable = handleDataAvailable;
                 mediaRecorderr.onstop = handleStop;
                 tanda = 1;
+                baru_rekamlangsung();
+                console.log(layar)
+                /////
             })
 
 
@@ -8167,6 +7078,28 @@ mulairekamlayar.addEventListener('click', (ev) => {
     // Register Event Handlers
 
 });
+function baru_rekamlangsung() {
+    if (tanda == 0) {
+        alert("Anda belum memilih layar untuk direkam. Silakan klik PILIH LAYAR dan arahkan pada layar yang ingin Anda rekam aktivitasnya.");
+        return
+    };
+    spanstatus2.innerHTML = "Sedang merekam <i class='fa fa-spin fa-refresh'></i>";
+    videostatus.removeAttribute("class");//.replace("w3-blue w3-opacity w3-display-topmiddle w3-hide", "w3-blue w3-opacity w3-display-topmiddle w3-show");
+    videostatus.setAttribute("class", "w3-blue w3-opacity w3-display-topmiddle w3-show");//.replace("w3-blue w3-opacity w3-display-topmiddle w3-hide", "w3-blue w3-opacity w3-display-topmiddle w3-show");
+    elvid1.removeAttribute("class");
+    elvid1.setAttribute("class", "containerbaru w3-center w3-show");
+    elvid2.removeAttribute("class");
+    elvid2.setAttribute("class", "containerbaru w3-center w3-hide");
+    //console.log(mediaRecorderr);
+    vidlayar.play();
+
+    mediaRecorderr.start();
+
+
+    resultuploadvideomateri.innerHTML = "";
+    // Register Event Handlers
+
+}
 stoprekamlayar.addEventListener('click', (ev) => {
     if (tanda == 0 || mediaRecorderr.state == "inactive") {
         alert("Anda belum melakukan aktivitas rekam layar.")
@@ -8182,12 +7115,32 @@ stoprekamlayar.addEventListener('click', (ev) => {
     elvid2.setAttribute("class", "containerbaru w3-center w3-show");
 
 });
+
+function baru_stoprekamlayar() {
+    if (tanda == 0 || mediaRecorderr.state == "inactive") {
+        //alert("Anda belum melakukan aktivitas rekam layar.")
+        return
+    }
+    mediaRecorderr.stop();
+    spanstatus2.innerHTML = "Rekaman Layar selesai dengan ";
+    videostatus.removeAttribute("class");
+    videostatus.setAttribute("class", "w3-blue w3-opacity w3-display-topmiddle w3-hide");//.replace("w3-blue w3-opacity w3-display-topmiddle w3-show", "w3-blue w3-opacity w3-display-topmiddle w3-hide");
+    elvid1.removeAttribute("class");
+    elvid1.setAttribute("class", "containerbaru w3-center w3-hide");
+    elvid2.removeAttribute("class");
+    elvid2.setAttribute("class", "containerbaru w3-center w3-show");
+
+}
 function handleDataAvailable(e) {
 
     recordedChunks.push(e.data);
 }
 // Saves the video file on stop
 async function handleStop(e) {
+    console.log("Tes ini stop atas")
+
+
+
     resultuploadvideomateri.innerHTML = "";
     let blob = new Blob(recordedChunks, { 'type': 'video/mp4;' });
     recordedChunks = [];
@@ -8227,12 +7180,15 @@ async function handleStop(e) {
         resultuploadvideomateri.appendChild(inputbase64);
         resultuploadvideomateri.appendChild(inputfilename);
         resultuploadvideomateri.appendChild(inputmimetype);
+
     }
     //---------------------------------------------------
     recordedChunks = [];
     //vidlayar.src = "";
     tanda = 0;
     tutupkamera();
+
+
 
 
 }
@@ -8563,6 +7519,14 @@ function cekbulandisemesterberapa(stringdate) { // untuk mengecek (stringdate) "
 }
 const tglStringZero = () => {
     let a = new Date();
+    let b = a.getDate();
+    let c = a.getMonth() + 1;
+    let d = a.getFullYear()
+    let idokmateri = addZero(b) + "" + addZero(c) + "" + d;
+    return idokmateri
+}
+const tglStringZeroparam = (tgl) => {
+    let a = new Date(tgl);
     let b = a.getDate();
     let c = a.getMonth() + 1;
     let d = a.getFullYear()
@@ -8931,43 +7895,13 @@ const uplgmbrmateri = async () => {
     })
         .then(m => m.json())
         .then(k => {
-            //console.log(k);
+            console.log(k);
 
-            resultuploadpotomateri.innerHTML = k.result;
-            let txtarea = document.createElement("textarea");
-            txtarea.setAttribute("id", "kodegambarjson")
-            txtarea.textContent = k.result
-
-            resultuploadpotomateri.innerHTML += `<br><button class="w3-button w3-tiny w3-round-xlarge w3-dark-grey" onclick="kopipaste('kodegambarjson')">Copy Kode</button>`;
-            //tempattextarea.innerHTML = "";
-            tempattextarea.appendChild(txtarea)
-            //cell = row.insertCell(-1);
-            //cell.innerHTML = j.records[i].keterangan;
-
-
-            // document.getElementById("tabelkoleksigambarmateri").appendChild(tabelmateri)
-            //document.getElementById("tabelkoleksigambarmateri").appendChild()
+            resultuploadpotomateri.innerHTML = k.result.replace("width:50%", "width:193px;height:252px");
+            resultuploadpotomateri.innerHTML += `<br/>Silakan klik Copy Kode pada thumbnail di bawah, kemudian paste-kan di teks area ketikan Anda.`;
             daftarGambar()
-            // let tb = document.getElementById("tabeltabelkoleksiuploadgambar"); //.appendChild(txtarea)
-            // let tr = tb.insertRow(-1);
-            // let sel = tr.insertCell(-1);
-            // sel.innerHTML = "NEW";
-            // sel = tr.insertCell(-1);
-            // sel.innerHTML = k.result;
-            // sel = tr.insertCell(-1);
-            // sel.innerHTML = `<button class="w3-button w3-tiny w3-round-xlarge w3-green" onclick="kopipaste('kodegambarjson')">Copy Kode</button>`;
-            // sel = tr.insertCell(-1);
-            // sel.innerHTML = `Terbaru`;
-
-
-
-
-
-
-
-            ///--------------------------------------------          
         })
-    //.catch(er => console.log(er))
+        .catch(er => console.log(er))
 
 
 
@@ -9455,7 +8389,7 @@ const petunjukuploadmateri = () => {
                             Ketik Jawaban No 5
                         </button><br><sub>atau</sub><br>
                         <button onclick="alert('hanya bisa diakses siswa')">
-                            Upload Jawaban No 5
+                            Upload Media No 5
                         </button><br>
                         <sub>Pilih Salah satu cara Kalian menjawab soal ini</sub>
                     </div><br>
@@ -11150,7 +10084,7 @@ const siapkirimnilai = () => {
 //                 tempattombol.innerHTML += "<br/><sub>atau</sub></br/> "
 //                 var tomboldua = document.createElement("button");
 //                 tomboldua.setAttribute("onclick", "tomboluploadjawaban2('" + inidEl + "_" + idsw + "')");
-//                 var tekstomboldua = document.createTextNode("Upload Jawaban No " + inidEl);
+//                 var tekstomboldua = document.createTextNode("Upload Media No " + inidEl);
 //                 tomboldua.appendChild(tekstomboldua);
 //                 tempattombol.appendChild(tomboldua);
 //                 tempattombol.innerHTML += "<br/><sub>Pilih Salah satu cara Kalian menjawab soal ini</sub>"
@@ -11370,7 +10304,7 @@ const bantusiswaisiljk = (param) => {
     var td = tr.insertCell(-1);
     td.innerHTML = "Sekolah"
     var td = tr.insertCell(-1);
-    td.innerHTML = datamateri[par].idSekolah
+    td.innerHTML = idNamaSekolah;//datamateri[par].idSekolah
     var tr = tabelidentitas.insertRow(-1);
     var td = tr.insertCell(-1);
     td.innerHTML = "Nama Siswa"
@@ -11476,6 +10410,10 @@ const bantusiswaisiljk = (param) => {
     cel1.appendChild(cddetik);
 
     tes.appendChild(tabelidentitas);
+    let loadi = document.createElement("div")
+    loadi.setAttribute("id", "loadi");
+    loadi.innerHTML = `<img src="/img/barloading.gif"/>`;
+    tes.appendChild(loadi)
 
 
 
@@ -11490,7 +10428,7 @@ const bantusiswaisiljk = (param) => {
 
 
     $.getJSON(constpreviewljk + "?idmateri=" + datamateri[par].idmateri + "&action=previewriwayat", function (json) {
-
+        document.getElementById("loadi").remove();
         document.querySelector("#infoloadingljk").innerHTML += brkline(json).teks;
 
 
@@ -11509,7 +10447,7 @@ const bantusiswaisiljk = (param) => {
                 tempattombol.innerHTML += "<br/><sub>atau</sub></br/> "
                 var tomboldua = document.createElement("button");
                 tomboldua.setAttribute("onclick", "tomboluploadjawaban2('" + inidEl + "_" + idsw + "')");
-                var tekstomboldua = document.createTextNode("Upload Jawaban No " + inidEl);
+                var tekstomboldua = document.createTextNode("Upload Media No " + inidEl);
                 tomboldua.appendChild(tekstomboldua);
                 tempattombol.appendChild(tomboldua);
                 tempattombol.innerHTML += "<br/><sub>Pilih Salah satu cara Kalian menjawab soal ini</sub>"
@@ -11801,7 +10739,7 @@ function hasilakhirelamaso(id) {
     if (jumlahpg !== 0) {
 
         let nilaiskorarray = (arrskor.length == 0) ? 0 : arrskor.reduce((a, b) => a + b);
-        
+
         let skorakhirpg = (nilaiskorarray / elSoal.length * 100).toFixed(2)
         let tekskorpg = ((isNaN(skorakhirpg)) ? "" : skorakhirpg);
         document.getElementById("nilaiPGku").innerHTML = tekskorpg;
@@ -12302,7 +11240,7 @@ function tombolketikjawaban2(idpar) {
     tempatnya.innerHTML += "<br/>Ganti dengan mengupload media:";
     var tombollain = document.createElement("button")
     tombollain.setAttribute("onclick", "tomboluploadjawaban2('" + idpar + "')");
-    tombollain.innerHTML = "Upload Jawaban No " + id
+    tombollain.innerHTML = "Upload Media No " + id
     tempatnya.appendChild(tombollain);
     tempatnya.innerHTML += "<sub> dengan memilih cara lain, jawaban yang sudah diketik akan hilang dan diganti dengan jawaban berupa gambar/media yang diunggah</sub>"
 
@@ -12382,6 +11320,7 @@ const taruhcatatansementara = () => {
     let jenistagihan = document.formuploadmateri.jenistagihan;
     let idtgl = document.formuploadmateri.idtgl;
     let idtglend = document.formuploadmateri.idtglend;
+    let br = document.formuploadmateri.crtToken;
 
     let isiteks = document.formuploadmateri.idmateri
 
@@ -12391,8 +11330,11 @@ const taruhcatatansementara = () => {
         iddurasi.value = teks.iddurasi;
         idaksessiswa.value = teks.idaksessiswa;
         jenistagihan.value = teks.jenistagihan;
-        idtgl.value = teks.idtgl;
-        idtglend.value = teks.idtglend;
+
+
+        idtgl.value = getlocalDateTime(teks.idtgl);
+        idtglend.value = getlocalDateTime(teks.idtglend);
+        br.value = tglStringZeroparam(idtgl.value);
         let botakin = teks.botakin;
         //console.log(botakin);
         isiteks.value = window.atob(unescape(encodeURIComponent(botakin)));
@@ -12400,12 +11342,22 @@ const taruhcatatansementara = () => {
         alert("Anda mempunyai Draft")
     } else {
         alert("Maaf, Anda tidak memiliki Draft.")
-
-
-
     }
-    return true
+    pratinjaubuatmateri();
 }
+const getlocalDateTime = (dd) => {
+    let result;
+    let d = new Date(dd);
+    // "yyyy-MM-ddThh:mm"
+    result = d.getFullYear() + "-" + addZero(d.getMonth() + 1) + "-" + addZero(d.getDate()) + "T" + addZero(d.getHours()) + ":" + addZero(d.getMinutes());
+    // [addZero(d.getMonth() + 1),
+    // new Date(d.getDate()),
+    // d.getFullYear()].join('/') + ', ' +
+    //     [addZero(d.getHours()),
+    //     addZero(d.getMinutes())].join(':');
+    return result;
+}
+
 const editfilemateri = (id) => {
     let file = kronologijson[id]; //.idmateri;
     let idbaris = file.idbaris;
@@ -12441,10 +11393,13 @@ const editfilemateri = (id) => {
     iddurasi.value = file.iddurasi;
     idaksessiswa.value = file.idaksessiswa;
     jenistagihan.value = file.jenistagihan;
-    idtgl.value = file.idtgl;
-    idtglend.value = file.idtglend;
+    idtgl.value = stringForDateTimeLocal(file.idtgl);//file.idtgl;
+    idtglend.value = stringForDateTimeLocal(file.idtglend);//file.idtglend;
     let botakin = file.idmateri;
     let idm = encodeURIComponent(botakin)
+
+    //generatetoken datamateri[par].crtToken
+    document.formuploadmateri.crtToken.value = file.crtToken;
 
 
 
@@ -12465,6 +11420,7 @@ const editfilemateri = (id) => {
             if (ingindownload) {
                 downloadfiledraft(k, idmapel.value);
             }
+            pratinjaubuatmateri();
         }).catch(er => {
             isiteks.textContent = er
         })
@@ -12582,11 +11538,12 @@ const infoupdate = () => {
     loadingljk.style.display = "block";
     fetch("/statis/update.json").then(m => m.json())
         .then(k => {
+
             // console.log(k.data);
 
             let html = "<h3 class='w3-center'>Perbaikan beberapa versi </h3><ul class='w3-ul'>";
-            for (let i = 0; i < k.length; k++) {
-                html = `<li>Nama Versi ${k[i].namaversi} (Update ${k[i].tanggal})
+            for (let i = k.length - 1; i >= 0; i--) {
+                html += `<li>Nama Versi ${k[i].namaversi} (Update ${k[i].tanggal})
                 <br/><ul style="type-list-style:decimal">`;
                 let ket = k[i].ket;
                 for (j = 0; j < ket.length; j++) {
@@ -12642,5 +11599,1647 @@ function dragElement(elmnt) {
         /* stop moving when mouse button is released:*/
         document.onmouseup = null;
         document.onmousemove = null;
+    }
+}
+
+/// absen di guru kelas maupun guru mapel sama saja
+/*
+* penentuan jsondatassiswa
+-----------------------------------------
+    GURU KELAS              |     GURU MAPEL
+    ----------------------------------
+    - sudah terload dulu     |   - harus pilih rombel
+* penentuan idjenjang- 
+*/
+
+
+async function pilihopsibulanrekap() {
+    let isidivscroll = document.getElementById("isiscrolltabelbulanan");
+    document.getElementById("tabel_rekap_absen_sia_tgl").innerHTML = "";
+    let idselect = document.getElementById("pilihbulanrekap");
+    let xx = idselect.selectedIndex;
+    let strdate = idselect[xx].value;
+
+    let d = new Date(strdate);
+    let m = d.getMonth();
+    let y = d.getFullYear()
+    let dt = d.getDate();
+    let sm = d.getMonth() + 1;
+    let nolbulan = addZero(sm);
+    let namabulan = NamaBulandariIndex(m);
+    let jumlahharibulanini = daysInMonth(sm, y);
+
+    document.getElementById("bulanrekap").innerHTML = "Tabel Rekap Absensi Bulan " + namabulan + " " + y;
+
+    let tabel = document.createElement("table");
+    tabel.setAttribute("class", "versi-table w3-tiny tahankiripertama");
+    tabel.setAttribute("id", "tabelxx");
+
+    let thead = tabel.createTHead();
+    let tr = thead.insertRow(0);
+
+    let th = document.createElement("th");
+    th.setAttribute("rowspan", "2");
+    th.innerHTML = "NAMA SISWA";
+    tr.appendChild(th);
+
+    th = document.createElement("th");
+    th.setAttribute("colspan", jumlahharibulanini);
+    th.setAttribute("id", "namaheaderbulan");
+
+    th.innerHTML = "Bulan " + namabulan + " " + y;
+    tr.appendChild(th);
+
+    tr = thead.insertRow(-1);
+    let itgl = 1;
+    let arrayKeteranganLibur = [];
+    let itungHE = 0;
+
+    for (let i = 0; i < jumlahharibulanini; i++) {
+        let d_tbl = new Date(y, m, itgl);
+        let sd_tbl = StringTanggal(d_tbl);
+        let indekshari = d_tbl.getDay()
+        let libur = (arrayStringTglLibur.indexOf(sd_tbl) > -1) ? true : false;
+        let indekslibur = (arrayStringTglLibur.indexOf(sd_tbl) > -1) ? arrayStringTglLibur.indexOf(sd_tbl) : -1;
+        let weekend = (indekshari == 0 || indekshari == 6) ? true : false;
+        th = document.createElement("th");
+
+        // th.setAttribute("style", "position:sticky;position:-webkit-sticky;top:50px; box-shadow: inset 0 0 1px #000000");
+
+        if (libur) {
+            th.setAttribute("class", "w3-red");
+            let teksbawah = "Tgl. " + tanggalfull(d_tbl) + " " + arrayKetLibur[indekslibur];
+            arrayKeteranganLibur.push(teksbawah)
+        } else if (weekend) {
+            th.setAttribute("class", "w3-red");
+        } else {
+
+
+            itungHE++
+        }
+
+        th.innerHTML = itgl + "<br>" + NamaHaridariIndex(indekshari);
+
+
+        tr.appendChild(th);
+
+        itgl++
+    }
+
+    let datanama = Object.keys(jsondatasiswa).map(k => jsondatasiswa[k].pd_nama);
+    let datatoken = Object.keys(jsondatasiswa).map(k => jsondatasiswa[k].id);
+    let encodenama;
+
+
+    let tbody = tabel.createTBody()
+    for (let j = 0; j < datanama.length; j++) {
+
+        //encodenama = encodeURIComponent(unescape(datanama[j]));//
+        encodenama = datatoken[j]
+
+        tr = tbody.insertRow(-1);
+        let cell = tr.insertCell(-1);
+        // cell.setAttribute("style", "position:sticky;position:-webkit-sticky;left:0px; box-shadow: inset 0 0 1px #000000");
+        cell.innerHTML = "<span style='font-size:12px;' id='datakelas" + j + "'>" + datanama[j] + "</span>";
+
+
+        let ke = 1;
+
+
+        for (let k = 0; k < jumlahharibulanini; k++) {
+            cell = tr.insertCell(-1);
+
+            d_tbl = new Date(y, m, ke);
+            sd_tbl = StringTanggal(d_tbl);
+            indekshari = d_tbl.getDay()
+            libur = (arrayStringTglLibur.indexOf(sd_tbl) > -1) ? true : false;
+            indekslibur = (arrayStringTglLibur.indexOf(sd_tbl) > -1) ? arrayStringTglLibur.indexOf(sd_tbl) : -1;
+            weekend = (indekshari == 0 || indekshari == 6) ? true : false;
+            if (libur) {
+                cell.setAttribute("class", "w3-red");
+                cell.setAttribute("style", "background-color:red")
+            } else if (weekend) {
+                cell.setAttribute("class", "w3-red");
+                cell.setAttribute("style", "background-color:red")
+            } else {
+
+                cell.setAttribute("style", "cursor:pointer");
+                cell.setAttribute("id", "td_" + encodenama + "_" + ke + "" + nolbulan + "" + y + "");
+                cell.setAttribute("onclick", "bantuabsen('" + encodenama + "_" + ke + "" + nolbulan + "" + y + "')");
+
+                cell.innerHTML = "<span style='font-size:10px' id='" + ke + "" + nolbulan + "" + y + "_" + ruangankelas + "_" + encodenama + "'>x</span>";
+            }
+            ke++
+        }
+    }
+
+
+
+    document.getElementById("tabel_rekap_absen_sia_tgl").appendChild(tabel);
+    let tbl = document.getElementById("tabelxx")
+
+
+    let lebar = tbl.offsetWidth + 26;
+
+    let a = localStorage.getItem("Kaldik");
+    let c = JSON.parse(a);
+
+    let b = c.filter(s => (new Date(s.start_tgl).getMonth() == m || new Date(s.end_tgl).getMonth() == m) && (new Date(s.start_tgl).getFullYear() == y || new Date(s.end_tgl).getFullYear() == y));
+    let ketlibur = "";
+    if (b.length !== 0) {
+        ketlibur = "Keterangan Tanggal:<ul>";
+        for (i = 0; i < b.length; i++) {
+            let thn_awal = new Date(b[i].start_tgl).getFullYear();
+            let thn_akhir = new Date(b[i].end_tgl).getFullYear();
+            // console.log(thn_awal + " " + thn_akhir)
+            let bln_awal = new Date(b[i].start_tgl).getMonth();
+            let bln_akhir = new Date(b[i].end_tgl).getMonth();
+            let tgl_awal = new Date(b[i].start_tgl).getDate();
+            let tgl_akhir = new Date(b[i].end_tgl).getDate();
+            if (thn_awal == thn_akhir) {
+                if (bln_awal == bln_akhir) {
+                    if (tgl_awal == tgl_akhir) {
+
+                        ketlibur += `<li> Tgl ${tgl_awal} ${timekbm_arraybulan[m]} ${new Date(b[i].start_tgl).getFullYear()}= ${b[i].keterangan}</li>`;
+                    } else {
+                        ketlibur += `<li> Tgl ${tgl_awal} - ${tgl_akhir} ${timekbm_arraybulan[m]}  ${new Date(b[i].end_tgl).getFullYear()}= ${b[i].keterangan}</li>`;
+                    }
+                } else {
+                    ketlibur += `<li> Tgl ${tgl_awal} ${timekbm_arraybulan[bln_awal]} - ${tgl_akhir} ${timekbm_arraybulan[bln_akhir]}  ${thn_awal}= ${b[i].keterangan}</li>`;
+                }
+            } else {
+                ketlibur += `<li> Tgl ${tgl_awal} ${timekbm_arraybulan[bln_awal]} ${thn_awal} - ${tgl_akhir} ${timekbm_arraybulan[bln_akhir]}  ${thn_akhir}= ${b[i].keterangan}</li>`;
+
+            }
+        }
+        ketlibur += "</ul>";
+    }
+    document.getElementById("tabel_rekap_absen_sia_tgl").innerHTML += ketlibur;
+    var TglCetak = new Date(y, m, 1);
+
+    let datee = StringTanggal(TglCetak)
+    await lihatrekapkelas(datee);
+    isidivscroll.setAttribute("style", `width:${lebar}px;height:5px;`)
+    let tombolprint = document.getElementById("printke1");
+    tombolprint.removeAttribute("onclick");
+    tombolprint.setAttribute("onclick", "print('tabel_rekap_absen_sia_tgl,Daftar Absensi Siswa Kelas " + ruangankelas + ",Bulan " + namabulan + " " + y + "," + TglCetak + "')");
+
+    tombolprint = document.getElementById("simpanabsenbulananexcel");
+    tombolprint.removeAttribute("onclick");
+    tombolprint.setAttribute("onclick", "excelrekapbulan()");
+
+
+    let elstablengkap1 = document.getElementById("scrolltabelbulanan")
+    let elstablengkap2 = document.getElementById("tabel_rekap_absen_sia_tgl")
+
+    elstablengkap1.onscroll = function () {
+        elstablengkap2.scrollLeft = elstablengkap1.scrollLeft;
+    };
+    elstablengkap2.onscroll = function () {
+        elstablengkap1.scrollLeft = elstablengkap2.scrollLeft;
+    };
+
+
+    // let selpertama = dtopp.rows.deleteCell(0);
+    //let selpertama = tbl.getBoundingClientRect();
+    // console.log(selpertama)
+    //
+    //     let x = classpts[0].offsetLeft;
+    //    let ku = tabel.getElementsByTagName("thead")[0].rows[0].cells[1].offsetWidth;
+    //     div.scrollLeft = (x - ku);
+
+
+
+
+
+
+
+
+}
+const excelrekapbulan = () => {
+    var datasiswadiv = document.getElementById("datasiswaprint");
+    datasiswadiv.innerHTML = "";
+    var tabelhasil = document.createElement("table");
+    tabelhasil.setAttribute("class", "versi-table");
+    tabelhasil.setAttribute("id", "myTableCopy");
+
+    var tabeleditt = document.getElementById("tabelxx");
+
+
+    var cln = tabeleditt.cloneNode(true);
+    tabelhasil.appendChild(cln);
+    datasiswadiv.appendChild(tabelhasil);
+    var tabeledithead = document.getElementById("myTableCopy").getElementsByTagName("thead")[0];
+    //tabeledithead.rows[0].deleteCell(1);
+    var identitasbulanrekap = tabeledithead.rows[0].cells[1].innerHTML
+
+    var tabeledit = document.getElementById("myTableCopy").getElementsByTagName("tbody")[0];
+    for (i = 0; i < tabeledit.rows.length; i++) {
+        for (j = 0; j < tabeledit.rows[i].cells.length; j++) {
+
+            let teks = tabeledit.rows[i].cells[j].innerHTML.replace("<br>", "")
+            let tekss = teks.replace("poto", "")
+            tabeledit.rows[i].cells[j].innerHTML = tekss;
+
+        };
+
+
+    }
+    let countcol = tabeledit.rows[0].cells.length;
+    let brs = tabeledithead.insertRow(0)
+    let sel = brs.insertCell(-1)
+    sel.setAttribute("colspan", countcol);
+    sel.setAttribute("style", "text-align:center");
+    sel.innerHTML = idNamaSekolah.toUpperCase()
+
+    brs = tabeledithead.insertRow(1)
+    sel = brs.insertCell(-1)
+    sel.setAttribute("colspan", countcol)
+    sel.innerHTML = "REKAPITULASI KEHADIRAN SISWA KELAS  " + idNamaKelas.toUpperCase() + " " + identitasbulanrekap.toUpperCase();
+
+    brs = tabeledithead.insertRow(2)
+    sel = brs.insertCell(-1)
+    sel.setAttribute("colspan", countcol);
+    sel.innerHTML = "Semester " + idSemester + " Tahun Pelajaran " + idTeksTapel
+
+    brs = tabeledithead.insertRow(3)
+    sel = brs.insertCell(-1)
+    sel.setAttribute("colspan", countcol)
+
+    let rowcount = tabeledit.rows.length;
+    console.log(rowcount)
+    let colcount = tabeledit.rows[0].cells.length;
+    countcol = tabeledit.rows[0].cells.length;
+    if (colcount >= 5) {
+
+
+
+        brs = tabeledit.insertRow(rowcount)
+        sel = brs.insertCell(-1)
+        sel = brs.insertCell(-1)
+        sel.setAttribute("style", "word-wrap: normal;")
+        sel.innerHTML = "NIP. " + idNipKepsek;
+        for (let a = 0; a < colcount - 4; a++) {
+            sel = brs.insertCell(-1)
+        }
+        sel = brs.insertCell(-1)
+        sel.setAttribute("style", "word-wrap: normal;")
+        sel.innerHTML = "NIP. " + idNipGuruKelas;
+        sel = brs.insertCell(-1)
+
+        brs = tabeledit.insertRow(rowcount)
+        sel = brs.insertCell(-1)
+        sel = brs.insertCell(-1)
+        sel.setAttribute("style", "word-wrap: normal;")
+        sel.innerHTML = "<b><u>" + idNamaKepsek + "</u></b>";
+        for (let a = 0; a < colcount - 4; a++) {
+            sel = brs.insertCell(-1)
+        }
+        sel = brs.insertCell(-1)
+        sel.setAttribute("style", "word-wrap: normal;")
+        sel.innerHTML = "<b><u>" + namauser + "</u></b>"
+        sel = brs.insertCell(-1)
+
+        brs = tabeledit.insertRow(rowcount)
+        brs = tabeledit.insertRow(rowcount)
+        brs = tabeledit.insertRow(rowcount)
+
+        brs = tabeledit.insertRow(rowcount)
+        sel = brs.insertCell(-1);
+        sel = brs.insertCell(-1) /// colom kedua ttd kepsek
+        sel.setAttribute("style", "word-wrap: normal;")
+        sel.innerHTML = "Kepala " + idNamaSekolah;
+        for (let a = 0; a < colcount - 4; a++) {
+            sel = brs.insertCell(-1) /// colom kedua ttd kepsek
+        }
+        sel = brs.insertCell(-1) /// colom ketiga titimangsa guru kelas
+        sel.setAttribute("style", "word-wrap: normal;")
+        sel.innerHTML = idJenisGuru + " " + idNamaKelas
+        sel = brs.insertCell(-1) /// colom ketiga titimangsa guru kelas
+
+
+
+        brs = tabeledit.insertRow(rowcount)
+        sel = brs.insertCell(-1)
+        sel = brs.insertCell(-1) /// colom kedua ttd kepsek
+        sel.setAttribute("style", "word-wrap: normal;")
+        sel.innerHTML = "Mengetahui,";
+        for (let a = 0; a < colcount - 4; a++) {
+            sel = brs.insertCell(-1) /// colom kedua ttd kepsek
+        }
+        sel = brs.insertCell(-1) /// colom ketiga titimangsa guru kelas
+        sel.setAttribute("style", "word-wrap: normal;")
+        sel.innerHTML = jlo.kota + ", " + tanggalfull(new Date())
+        sel = brs.insertCell(-1) /// colom ketiga titimangsa guru kelas
+
+
+
+
+        brs = tabeledit.insertRow(rowcount)
+
+        brs = tabeledit.insertRow(rowcount)
+
+
+    }
+
+
+
+    $("#myTableCopy").table2excel({
+        name: " SDN Ratujaya 1",
+        filename: "Rekap kehadiran siswa Kelas " + ruangankelas + " " + identitasbulanrekap + " ID FILE " + new Date().getTime(),
+        fileext: ".xls",
+        exclude_img: true,
+        exclude_judul: true,
+        exclude_links: true,
+        exclude_inputs: true,
+        preserveColors: true,
+        jumlahheader: 2
+    });
+    datasiswadiv.innerHTML = "";
+}
+const lihatrekapkelas = async (datee) => {
+    let kelas = ruangankelas;
+    document.getElementById("tabel_rekap_absen_nama_tgl").innerHTML = "";
+    document.getElementById("spinspin").innerHTML = "<i class='fa fa-spin fa-spinner w3-xxxlarge'></i>"
+    var kodeid;
+    var kodetd
+    var hadir;
+    let ind = new Date(datee).getMonth();
+    let namabulansekarang = NamaBulandariIndex(new Date().getMonth())
+    let bulanapi = NamaBulandariIndex(ind)
+    var jsonabsenkelasperbulan = [];
+    jsonlocalstorage = JSON.parse(localStorage.getItem("inst_id"));
+    await fetch(url_absensiswa + "?action=rekapbulan&kelas=" + ruangankelas + "&strtgl=" + datee)
+        .then(m => m.json())
+        .then(k => {
+            jsonabsenkelasperbulan = k[bulanapi];
+
+            localStorage.setItem(bulanapi, JSON.stringify(k[bulanapi]))
+        }).catch(er => { console.log(er) })
+
+    // if (localStorage.hasOwnProperty(bulanapi)) {
+    //     if (bulanapi !== namabulansekarang) {
+    //         let kk = JSON.parse(localStorage.getItem(bulanapi));
+    //         jsonabsenkelasperbulan = kk;
+
+    //     } else {
+    //         await fetch(url_absensiswa + "?action=rekapbulan&kelas=" + ruangankelas + "&strtgl=" + datee)
+    //             .then(m => m.json())
+    //             .then(k => {
+    //                 jsonabsenkelasperbulan = k[bulanapi];
+
+    //                 localStorage.setItem(bulanapi, JSON.stringify(k[bulanapi]))
+    //             }).catch(er => {
+    //                 console.log("muat ulang: " + er);
+    //                 fetch(url_absensiswa + "?action=rekapbulan&kelas=" + ruangankelas + "&strtgl=" + datee)
+    //                     .then(m => m.json())
+    //                     .then(k => {
+    //                         jsonabsenkelasperbulan = k[bulanapi];
+
+    //                         localStorage.setItem(bulanapi, JSON.stringify(k[bulanapi]))
+    //                     }).catch(err => {
+    //                         console.log(err + " paksa reload");
+    //                         location.reload()
+    //                     })
+    //             })
+    //     }
+
+    // } else {
+    //     await fetch(url_absensiswa + "?action=rekapbulan&kelas=" + ruangankelas + "&strtgl=" + datee)
+    //         .then(m => m.json())
+    //         .then(k => {
+    //             jsonabsenkelasperbulan = k[bulanapi];
+    //             //console.log("ga punya local, dan sedang buat local")
+    //             localStorage.setItem(bulanapi, JSON.stringify(k[bulanapi]))
+    //         }).catch(er => {
+    //             //console.log(er);
+    //             fetch(url_absensiswa + "?action=rekapbulan&kelas=" + encodeURIComponent(ruangankelas) + "&strtgl=" + datee)
+    //                 .then(m => m.json())
+    //                 .then(k => {
+    //                     jsonabsenkelasperbulan = k[bulanapi];
+    //                     console.log("ga punya local, dan sedang buat local dari " + er)
+    //                     localStorage.setItem(bulanapi, JSON.stringify(k[bulanapi]))
+    //                 }).catch(er => {
+    //                     console.log(er + " paksa reload");
+    //                     location.reload()
+    //                 })
+
+    //         })
+
+    // }
+
+
+
+    spinspin.innerHTML = "";
+
+    for (var i = 0; i < jsonabsenkelasperbulan.length; i++) {
+        kodeid = jsonabsenkelasperbulan[i].id + "_" + kelas + "_" + jsonabsenkelasperbulan[i].tokensiswa;
+        kodetd = "td_" + jsonabsenkelasperbulan[i].tokensiswa + "_" + jsonabsenkelasperbulan[i].id;
+        var isikehadiran = document.getElementById(kodeid)
+
+        if (isikehadiran == null) {
+            // document.getElementById("tabel_rekap_absen_nama_tgl").innerHTML += "<li>" + decodeURIComponent(jsonabsenkelasperbulan[i].name) + " pada tanggal " + new Date(jsonabsenkelasperbulan[i].Time_Stamp).getDate() + " Tidak ada/diubah namanya.</li>";
+        } else {
+            var link = jsonabsenkelasperbulan[i].fileContent;
+            if (link !== "") {
+                var linksplit = link.replace("https://drive.google.com/file/d/", "");
+                var linksplitt = linksplit.replace("/view?usp=drivesdk", "");
+
+            } else {
+
+                var linksplitt = "1BZwicOBix4eILY0IQrJs4H825w2k4g-3";
+            }
+
+
+            var cekdiv = document.getElementById(kodetd);
+            if (cekdiv != null) {
+                document.getElementById(kodetd).removeAttribute("onclick");
+
+                isikehadiran.innerHTML = `<img src="https://drive.google.com/uc?export=view&id=${linksplitt}" style="width:20px; height:30px;cursor:pointer" alt="poto" onclick="klikpotosiswa(this)"/><br/>${jsonabsenkelasperbulan[i].kehadiran}`;
+
+            }
+        }
+
+    }
+
+    //document.getElementById("tabel_rekap_absen_nama_tgl").innerHTML += "</ol>"
+
+    if (BolehEksekusiJikaDiSemesterIni(datee)) {
+        let namatabel = document.getElementById("tabelxx"); //.rows.length; ;
+        let datanama = Object.keys(jsondatasiswa).map(k => jsondatasiswa[k].pd_nama);
+
+        let arrayy = [];
+        let indektabelrekapsemester = [2, 7, 12, 17, 22, 27];
+        let indeksbulanini = IndeksBulanDiSemesteTertentu(datee);
+        let iStart = indektabelrekapsemester[indeksbulanini];
+        let tabelnya = document.getElementById("idtabelrekapsemester")
+        for (let k = 0; k < datanama.length; k++) {
+            let objdata = {}
+            objdata.namasiswa = datanama[k];
+
+
+            let countHadir = 0,
+                countIjin = 0,
+                countSakit = 0;
+
+            let countHE = namatabel.rows[2].cells.length - 1;
+
+            for (let l = 1; l < namatabel.rows[k + 2].cells.length; l++) {
+                let el = namatabel.rows[k + 2].cells[l].outerHTML;
+                if (el.indexOf("red") > -1) {
+                    countHE -= 1
+                }
+
+                let tes = namatabel.rows[k + 2].cells[l].innerHTML;
+                if (tes.indexOf("Hadir") > -1) {
+                    countHadir++
+                } else if (tes.indexOf("Ijin") > -1) {
+                    countIjin++
+                } else if (tes.indexOf("Sakit") > -1) {
+                    countSakit++
+                }
+            }
+            objdata.Hadir = countHadir;
+            objdata.Ijin = countIjin;
+            objdata.Sakit = countSakit;
+            objdata.Alpa = countHE - (countHadir + countIjin + countSakit);
+            objdata.HariEfektif = countHE;
+
+            arrayy.push(objdata)
+
+            tabelnya.rows[k + 3].cells[iStart].innerHTML = countHE; // HE
+            tabelnya.rows[k + 3].cells[iStart * 1 + 1].innerHTML = countHadir; //Hadir
+            tabelnya.rows[k + 3].cells[iStart * 1 + 2].innerHTML = countSakit; //Sakit
+            tabelnya.rows[k + 3].cells[iStart * 1 + 3].innerHTML = countIjin; //Ijin
+            tabelnya.rows[k + 3].cells[iStart * 1 + 4].innerHTML = countHE - (countHadir + countIjin + countSakit); //alpa
+
+        }
+        REKAPAbsen[bulanapi] = arrayy;
+
+    }
+    // let tbl = document.getElementById("tabelxx");
+    // let elementini = tbl.getElementsByTagName("thead")[0];
+    // let topheader = document.createElement("table")
+    // topheader.setAttribute("class", "versi-table w3-tiny kloningan_opsibulanrekap");
+    // var cln = elementini.cloneNode(true);
+    // topheader.appendChild(cln);
+    // $('#isiscrolltabelbulanan').nextAll('table').remove();
+    // document.getElementById("isiscrolltabelbulanan").after(topheader);
+    // let dto = document.querySelector(".kloningan_opsibulanrekap");
+    // let dtopp = document.querySelector(".kloningan_opsibulanrekap").getElementsByTagName("thead")[0];
+    // let nsis = tbl.offsetWidth;
+    // let nsisd = dto.offsetWidth;
+    // let n = nsis - nsisd;
+    // // dto.setAttribute("style", `position:sticky;position:-webkit-sticky;top:0px;left:${lebar}`)
+    // console.log(nsis)
+    // topheader.setAttribute("style", `margin-left:${n}px`)
+
+}
+const updateLocaleRekapkelas = async (datee) => {
+    let kelas = ruangankelas;
+    document.getElementById("tabel_rekap_absen_nama_tgl").innerHTML = "";
+    document.getElementById("spinspin").innerHTML = "<i class='fa fa-spin fa-spinner w3-xxxlarge'></i>"
+    var kodeid;
+    var kodetd
+    var hadir;
+    document.getElementById("tabel_rekap_absen_nama_tgl").innerHTML = "Nama Siswa yang tidak ada di absen, tapi terdata di kelas ini: <ol>";
+
+    let ind = new Date(datee).getMonth();
+    let namabulansekarang = NamaBulandariIndex(new Date().getMonth())
+    let bulanapi = NamaBulandariIndex(ind)
+    var jsonabsenkelasperbulan = [];
+    await fetch(url_absensiswa + "?action=rekapbulan&kelas=" + encodeURIComponent(ruangankelas) + "&strtgl=" + datee)
+        .then(m => m.json())
+        .then(k => {
+            jsonabsenkelasperbulan = k[bulanapi];
+            localStorage.setItem(bulanapi, JSON.stringify(k[bulanapi]))
+        }).catch(er => alert("OUps, terjadi kesalahan. Silakan ulangi perintahnya. \n" + er))
+    spinspin.innerHTML = "";
+
+    for (var i = 0; i < jsonabsenkelasperbulan.length; i++) {
+        //mengecek element kodeid
+        kodeid = jsonabsenkelasperbulan[i].id + "_" + kelas + "_" + jsonabsenkelasperbulan[i].tokensiswa;
+        kodetd = "td_" + jsonabsenkelasperbulan[i].tokensiswa + "_" + jsonabsenkelasperbulan[i].id;
+        var isikehadiran = document.getElementById(kodeid)
+
+        if (isikehadiran == null) {
+            document.getElementById("tabel_rekap_absen_nama_tgl").innerHTML += "<li>" + decodeURIComponent(jsonabsenkelasperbulan[i].name) + " pada tanggal " + new Date(jsonabsenkelasperbulan[i].Time_Stamp).getDate() + " Tidak ada/diubah namanya.</li>";
+        } else {
+            var link = jsonabsenkelasperbulan[i].fileContent;
+            if (link !== "") {
+                var linksplit = link.replace("https://drive.google.com/file/d/", "");
+                var linksplitt = linksplit.replace("/view?usp=drivesdk", "");
+
+            } else {
+                linksplitt = "1BZwicOBix4eILY0IQrJs4H825w2k4g-3"
+            }
+
+            var cekdiv = document.getElementById(kodetd);
+            if (cekdiv != null) {
+                document.getElementById(kodetd).removeAttribute("onclick");
+
+                isikehadiran.innerHTML = "<div style='width:22px;height:32px;cursor:pointer;border:1px solid blue'><a href='" + jsonabsenkelasperbulan[i].fileContent + "' target='_blank'><img src='https://drive.google.com/uc?export=view&id=" + linksplitt + "'  style='width:20px; height:30px'  alt='poto'><br/>" + jsonabsenkelasperbulan[i].kehadiran + "</a></div>";
+            }
+        }
+
+    }
+    document.getElementById("tabel_rekap_absen_nama_tgl").innerHTML += "</ol>"
+
+}
+var datasiswaklik = [];
+function kirimwauntukabsen(id) {
+    var noid = id.split("_")[1];
+    datasiswaklik = jsondatasiswa.filter(x => x.id == noid)
+    var tgl = new Date();
+    var stgl = tgl.getDate();
+    var xbln = tgl.getMonth() + 1;
+    var sbln = addZero(xbln);
+
+
+    var sthn = tgl.getFullYear();
+    var idok = stgl + "" + sbln + "" + sthn;
+
+    var kelas = ruangankelas;
+    document.getElementById("namaanakdiwa").innerHTML = datasiswaklik[0].pd_nama;
+    document.getElementById('wasiswa').style.display = 'block';
+    document.kirimwasiswa.nowasiswa.value = "";
+    var nowanya = datasiswaklik[0].pd_hp;
+    if (nowanya.length > 11) {
+        document.kirimwasiswa.nowasiswa.disabled = true;
+        document.kirimwasiswa.nowasiswa.value = nowanya;
+        pesanawalwa.innerHTML = "No WA sudah terisi dan siap menghubungi Ananda  ";
+    } else {
+        document.kirimwasiswa.nowasiswa.disabled = false;
+        pesanawalwa.innerHTML = "No WA belum terisi untuk mengirim pesan WA ke Ananda  ";
+    }
+
+    var tombolwamodal = document.createElement("button");
+    tombolwamodal.setAttribute("class", "login");
+    tombolwamodal.setAttribute("onclick", "btnkirimwasiswa()");
+    tombolwamodal.innerHTML = "<i class='fa fa-whatsapp'></i> Kirim Pesan";
+    document.getElementById("tombolotomatis").innerHTML = "";
+    document.getElementById("tombolotomatis").appendChild(tombolwamodal);
+}
+function btnkirimwasiswa() {
+    pesanawalwa.innerHTML = "";
+    var teksnya = "Assalamualaikum, Salam sejahtera. \n \n Kami melacak  bahwa Ananda " + namaanakdiwa.innerHTML + " belum mengisi kehadiran, silakan kunjungi alamat  atau balas WA ini dengan mengirimkan Poto untuk Kami bantu kehadirannya. \n \n Berikut pesan khususnya: ";
+    var nowaa = document.kirimwasiswa.nowasiswa.value;
+    var nowa;
+    if (nowaa.slice(0, 1) == "0") {
+        nowa = "+62" + nowaa.slice(1, 12);
+    } else if (nowaa.slice(0, 1) == "6") {
+        nowa = "+" + nowaa;
+    } else {
+        nowa = nowaa
+    }
+    var urlnya = getLinkWhastapp(nowa, teksnya + "\n \n " + document.kirimwasiswa.tekssiswa.value);
+    window.open(urlnya)
+    document.kirimwasiswa.reset();
+    document.getElementById("wasiswa").style.display = "none";
+}
+function bantuabsen(encodenama) {
+    document.bantuisi.reset();
+    document.bantukirim.reset();
+    var teks = encodenama;
+    var split = teks.split("_");
+    var kodenama = jsondatasiswa.filter(s => s.id == split[0])[0];//parseInt(split[0]);
+
+    var tgl = split[1];
+
+    document.getElementById("divbantuabsen").style.display = "block";
+    document.bantuisi.style.display = "block";
+    document.getElementById("loginbantu").style.display = "none";
+    document.getElementById("tombolbantusimpan").style.display = "block";
+    document.getElementById("thankyou_messagekirim").style.display = "none";
+    loginclosebantu.innerHTML = "Batal";
+    kodefilepotosiswaabsen.innerHTML = "";
+
+    document.getElementById("bantusiapa").innerHTML = kodenama.pd_nama;//jsondatasiswa[kodenama].pd_nama; //decodeURIComponent(kodenama);
+    document.bantukirim.name.value = kodenama.pd_nama;//jsondatasiswa[kodenama].pd_nama; //decodeURIComponent(kodenama);
+    document.bantukirim.kelas.value = ruangankelas;
+    document.bantukirim.tokensiswa.value = parseInt(split[0]);//jsondatasiswa[kodenama].id;
+    document.getElementById("potosiswa").src = "/img/eabsensi.webp";
+    var ltgl = tgl.length;
+    var dtg, dbln, dthn
+    if (ltgl == 7) { //7082020 --> 7(
+        dtg = addZero(tgl.slice(0, 1));
+        dbln = tgl.slice(1, 3);
+        dthn = tgl.slice(3, 7)
+
+    } else {
+        dtg = tgl.slice(0, 2);
+        dbln = tgl.slice(2, 4);
+        dthn = tgl.slice(4, 8)
+
+    }
+    var tglnya = dthn + "-" + dbln + "-" + dtg;
+    document.bantuisi.time_stampbantu.value = tglnya;
+    document.bantukirim.Time_Stamp.value = tglnya;
+    document.bantukirim.id.value = deleteZero(dtg) + "" + dbln + "" + dthn;
+
+    var namabulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+    document.getElementById("dibaca").innerHTML = "Tanggal " + deleteZero(dtg) + "  bulan: " + namabulan[deleteZero(dbln) - 1] + "  Tahun: " + dthn;
+
+}
+function getLinkWhastapp(number, message) {
+    var url = 'https://api.whatsapp.com/send?phone=' +
+        number +
+        '&text=' +
+        encodeURIComponent(message)
+
+    return url
+}
+function tombolbantukirim() {
+    document.getElementById("bantusiapa").innerHTML = "<i class='fa fa-spin fa-spinner'></i> Sedang proses ...";
+    document.bantuisi.style.display = "none";
+    document.getElementById("loginbantu").style.display = "none";
+    var tgl = document.bantuisi.time_stampbantu.value;
+    var id1 = tgl.split("-")[0]; //tahun
+    var id2 = tgl.split("-")[1]; //bulan
+    var id3 = tgl.split("-")[2]; //tgl
+    var stringdate = id1 + "-" + deleteZero(id2) + "-" + deleteZero(id3);
+    var en = $("#bantukirim").serialize();
+    var url = url_absensiswa + "?action=siswaabsen";
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+    xhr.onreadystatechange = function () {
+
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            document.getElementById("bantusiapa").innerHTML = ""; //+ "  Data telah berhasil dibantu, Terima kasih";
+            document.getElementById("thankyou_messagekirim").style.display = "block";
+            document.getElementById("thankyou_messagekirim").innerHTML = JSON.parse(xhr.responseText);
+            document.getElementById("tombolbantusimpan").style.display = "block"; //????
+            document.getElementById("loginclosebantu").innerHTML = "Selesai dan Keluar";
+            refreshAbsenHariIni();
+            updateLocaleRekapkelas(stringdate);
+        }
+    };
+    xhr.send(en);
+}
+function uploadfilebantu() {
+
+
+    //define the width to resize e.g 600px
+    var resize_width = 150; //without px
+
+    //get the image selected
+    var item = document.querySelector('#lampirkanpotoabsen').files[0];
+
+    //create a FileReader
+    var reader = new FileReader();
+
+    //image turned to base64-encoded Data URI.
+    reader.readAsDataURL(item);
+    reader.name = item.name; //get the image's name
+    reader.size = item.size; //get the image's size
+    reader.onload = function (event) {
+        var img = new Image(); //create a image
+        img.src = event.target.result; //result is base64-encoded Data URI
+        img.name = event.target.name; //set name (optional)
+        img.size = event.target.size; //set size (optional)
+        img.onload = function (el) {
+            var elem = document.createElement('canvas'); //create a canvas
+
+            //scale the image to 600 (width) and keep aspect ratio
+            var scaleFactor = resize_width / el.target.width;
+            elem.width = resize_width;
+            elem.height = el.target.height * scaleFactor;
+
+            //draw in canvas
+            var ctx = elem.getContext('2d');
+            ctx.drawImage(el.target, 0, 0, elem.width, elem.height);
+
+            //get the base64-encoded Data URI from the resize image
+            var srcEncoded = ctx.canvas.toDataURL(el.target, 'image/jpeg', 0);
+
+            //assign it to thumb src
+            var poto = document.querySelector('#potosiswa')
+            poto.src = srcEncoded;
+
+
+            kodefilepotosiswaabsen.innerHTML = "";
+
+            var inputbase64 = document.createElement("input");
+            inputbase64.setAttribute("name", "fileContent");
+            inputbase64.value = srcEncoded.replace(/^.*,/, '');
+
+            var inputfilename = document.createElement("input");
+            inputfilename.setAttribute("name", "filename");
+            inputfilename.value = "avatar_" + namebantukirim.value.toUpperCase().replace(/\s+/, "_");
+
+            var inputmimetype = document.createElement("input");
+            inputmimetype.setAttribute("name", "mimeType")
+            inputmimetype.value = "data:image/jpeg"; //e.target.result.match(/^.*(?=;)/)[0]
+
+            kodefilepotosiswaabsen.appendChild(inputbase64);
+            kodefilepotosiswaabsen.appendChild(inputfilename);
+            kodefilepotosiswaabsen.appendChild(inputmimetype);
+
+
+        }
+        loginbantu.style.display = "block";
+    }
+
+}
+function gantikehadiranbantu() {
+    var sss = document.bantuisi.pilih_kehadiran;
+    document.bantukirim.kehadiran.value = sss.value;
+}
+function bantuisitanggal() {
+    var tgl = document.bantuisi.time_stampbantu.value;
+    var id1 = tgl.split("-")[0]; //tahun
+    var id2 = tgl.split("-")[1]; //bulan
+    var id3 = tgl.split("-")[2]; //tgl
+    var idok = deleteZero(id3) + "" + id2 + "" + id1;
+    document.bantukirim.Time_Stamp.value = tgl;
+    document.bantukirim.id.value = idok;
+    var namabulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+    document.getElementById("dibaca").innerHTML = "Tanggal " + deleteZero(id3) + "  bulan: " + namabulan[deleteZero(id2) - 1] + "  Tahun: " + id1;
+}
+
+const buattabelrekapsemester = () => {
+    let indekssemester = SemesterBerapaSekarang();
+    let divtabel = document.getElementById("tabelabsenrekap");
+    divtabel.innerHTML = "";
+    let tabel = document.createElement("table");
+    tabel.setAttribute("class", "versi-table w3-border modifgaris w3-tiny idtabelrekapsemester")
+    tabel.setAttribute("id", "idtabelrekapsemester")
+
+
+    let thead = tabel.createTHead();
+    let brstr = thead.insertRow(0);
+    let th0 = document.createElement("th");
+    th0.setAttribute("class", "w3-blue-grey");
+    th0.setAttribute("rowspan", "3");
+    th0.innerHTML = "No";
+    brstr.appendChild(th0);
+    let th1 = document.createElement("th");
+    th1.setAttribute("class", "w3-khaki");
+    th1.setAttribute("rowspan", "3");
+    th1.setAttribute("style", "position:sticky;position:-webkit-sticky;left:0px;box-shadow: inset 0 0 1px #000000");
+    th0.innerHTML = "No";
+    th1.innerHTML = "Nama";
+    brstr.appendChild(th1);
+
+
+    let th2 = document.createElement("th");
+    th2.setAttribute("class", "w3-light-blue");
+    th2.setAttribute("colspan", "30");
+    th2.innerHTML = "Bulan";
+    brstr.appendChild(th2);
+
+    let brstrhead = thead.insertRow(-1);
+    let brstrket = thead.insertRow(-1);
+    let warnabulan = ["w3-red", "w3-blue", "w3-aqua", "w3-sand", "w3-yellow", "w3-deep-orange"]
+    for (var a = 0; a < 6; a++) {
+        var indeks = arrayIndeksBulan[a];
+        var indek = parseFloat(indeks)
+        var th3 = document.createElement("th");
+        th3.setAttribute("class", warnabulan[a]);
+        th3.setAttribute("colspan", "5");
+        th3.innerHTML = namaBulanDiSemesterBerarpa(indekssemester, a); //NamaBulandariIndex(indek);
+        brstrhead.appendChild(th3);
+
+        var thhe = document.createElement("th");
+        thhe.setAttribute("class", warnabulan[a]);
+        thhe.innerHTML = "HE"
+        brstrket.appendChild(thhe);
+        //jumlah hadir
+        var thhe = document.createElement("th");
+        thhe.setAttribute("class", warnabulan[a]);
+        thhe.innerHTML = "Hadir"
+        brstrket.appendChild(thhe);
+        //jumlah Sakit
+        var thhe = document.createElement("th");
+        thhe.setAttribute("class", warnabulan[a]);
+        thhe.innerHTML = "Sakit"
+        brstrket.appendChild(thhe);
+        //jumlah Ijin
+        var thhe = document.createElement("th");
+        thhe.setAttribute("class", warnabulan[a]);
+        thhe.innerHTML = "Ijin"
+        brstrket.appendChild(thhe);
+        //jumlah Sakit
+        var thhe = document.createElement("th");
+        thhe.setAttribute("class", warnabulan[a]);
+        thhe.innerHTML = "alpa"
+        brstrket.appendChild(thhe);
+
+
+    }
+
+    let i = 1,
+        x, y, z, o; // = 0;
+
+    let tbody = tabel.createTBody();
+    jsondatasiswa.forEach(element => {
+
+
+        let brs = tbody.insertRow(-1);
+        let selbaris = brs.insertCell(-1);
+        selbaris.setAttribute("class", "w3-aqua")
+        selbaris.innerHTML = i;
+        let selbaris1 = brs.insertCell(-1);
+        selbaris1.setAttribute("style", "position:sticky;position:-webkit-sticky;left:0px;box-shadow: inset 0 0 1px #000000");
+        selbaris1.setAttribute("class", "w3-khaki")
+        selbaris1.innerHTML = element.pd_nama;
+        for (let b = 0; b < 30; b++) {
+            if (b == 0) {
+                o = 0
+            } else if (b % 5 == 0) {
+                o += 1
+            }
+            let selbaris3 = brs.insertCell(-1);
+            selbaris3.setAttribute("class", warnabulan[o])
+            selbaris3.innerHTML = "-";
+        }
+        i++;
+
+
+    });
+
+
+
+
+
+    // }
+    divtabel.innerHTML += `<button class="w3-button w3-aqua w3-round-large" onclick="excelRekapSemester()"><i class="fa fa-file-excel-o"><i> Simpan Excel</button>`
+    divtabel.innerHTML += `   <button class="w3-button w3-blue-grey w3-round-large" onclick="printRekapSemester()"><i class="fa fa-print"><i> Print </button><hr>`
+
+    divtabel.appendChild(tabel);
+
+    let wid = document.querySelector(".idtabelrekapsemester").offsetWidth;
+    //console.log(wid);
+    let divscroll = document.getElementById("scrolltabelabsenrekap");
+    let isidivscroll = document.getElementById("isiscrolltabelabsenrekap");
+
+    // divscroll.setAttribute("style", `x-index:999;border: none 0px red;overflow-x: scroll;position:sticky;position:-webkit-sticky;top:25px;">`)
+    isidivscroll.setAttribute("style", `width:1474px;height:5px;`)
+
+};
+let elstablengkap1 = document.getElementById("scrolltabelabsenrekap")
+let elstablengkap2 = document.getElementById("tabelabsenrekap")
+elstablengkap1.onscroll = function () {
+    elstablengkap2.scrollLeft = elstablengkap1.scrollLeft;
+};
+elstablengkap2.onscroll = function () {
+    elstablengkap1.scrollLeft = elstablengkap2.scrollLeft;
+};
+const RekapAbsenSemester = () => {
+    let semester = SemesterBerapaSekarang();
+
+    let ini = document.getElementById("idtabelrekapsemester")
+    let cek = ini.rows[3].cells[1].innerHTML
+    alert(cek);
+    alert(ini.rows.length - 3)
+}
+function excelRekapSemester() {
+    var datasiswadiv = document.getElementById("datasiswaprint");
+    datasiswadiv.innerHTML = "";
+    var tabelhasil = document.createElement("table");
+    tabelhasil.setAttribute("class", "versi-table");
+    tabelhasil.setAttribute("id", "myTableCopy");
+
+    var tabeleditt = document.getElementById("idtabelrekapsemester"); //.getElementsByTagName("tbody")[0];
+    var cln = tabeleditt.cloneNode(true);
+    tabelhasil.appendChild(cln);
+    datasiswadiv.appendChild(tabelhasil);
+    //------------------
+    let tabeledit = document.getElementById("myTableCopy").getElementsByTagName("tbody")[0]
+    let tabeledithead = document.getElementById("myTableCopy").getElementsByTagName("thead")[0];
+    let countcol = tabeledit.rows[0].cells.length;
+    let brs = tabeledithead.insertRow(0)
+    let sel = brs.insertCell(-1)
+    sel.setAttribute("colspan", countcol);
+    sel.setAttribute("style", "text-align:center");
+    sel.innerHTML = idNamaSekolah.toUpperCase()
+
+    brs = tabeledithead.insertRow(1)
+    sel = brs.insertCell(-1)
+    sel.setAttribute("colspan", countcol)
+    sel.innerHTML = "REKAP KEHADIRAN DALAM SATU SEMESTER KELAS  " + idNamaKelas.toUpperCase();
+
+    brs = tabeledithead.insertRow(2)
+    sel = brs.insertCell(-1)
+    sel.setAttribute("colspan", countcol);
+    sel.innerHTML = "Semester " + idSemester + " Tahun Pelajaran " + idTeksTapel
+
+    brs = tabeledithead.insertRow(3)
+    sel = brs.insertCell(-1)
+    sel.setAttribute("colspan", countcol)
+
+    //---------- TAMBAHKAN TANDA TANGAN
+
+    let rowcount = tabeledit.rows.length;
+    // console.log(rowcount)
+    let colcount = tabeledit.rows[0].cells.length;
+    countcol = tabeledit.rows[0].cells.length;
+    if (colcount >= 5) {
+
+        brs = tabeledit.insertRow(rowcount)
+        sel = brs.insertCell(-1)
+        sel = brs.insertCell(-1) /// colom kedua ttd kepsek
+        sel.innerHTML = "NIP. " + idNipKepsek;
+        for (let a = 0; a < colcount - 4; a++) {
+            sel = brs.insertCell(-1) /// colom kedua ttd kepsek
+        }
+        sel = brs.insertCell(-1) /// colom ketiga titimangsa guru kelas
+        sel.innerHTML = "NIP. " + idNipGuruKelas;
+        sel = brs.insertCell(-1) /// colom ketiga titimangsa guru kelas
+
+        brs = tabeledit.insertRow(rowcount)
+        sel = brs.insertCell(-1)
+        sel = brs.insertCell(-1) /// colom kedua ttd kepsek
+        sel.innerHTML = "<b><u>" + idNamaKepsek + "</u></b>"
+        for (let a = 0; a < colcount - 4; a++) {
+            sel = brs.insertCell(-1) /// colom kedua ttd kepsek
+        }
+        sel = brs.insertCell(-1) /// colom ketiga titimangsa guru kelas
+        sel.innerHTML = "<b><u>" + namauser + "</u></b>"
+        sel = brs.insertCell(-1) /// colom ketiga titimangsa guru kelas
+
+        brs = tabeledit.insertRow(rowcount)
+        brs = tabeledit.insertRow(rowcount)
+        brs = tabeledit.insertRow(rowcount)
+
+        brs = tabeledit.insertRow(rowcount)
+        sel = brs.insertCell(-1);
+        sel = brs.insertCell(-1) /// colom kedua ttd kepsek
+        sel.innerHTML = "Kepala " + idNamaSekolah;
+        for (let a = 0; a < colcount - 4; a++) {
+            sel = brs.insertCell(-1) /// colom kedua ttd kepsek
+        }
+        sel = brs.insertCell(-1) /// colom ketiga titimangsa guru kelas
+        sel.innerHTML = idJenisGuru + " " + idNamaKelas
+        sel = brs.insertCell(-1) /// colom ketiga titimangsa guru kelas
+
+        brs = tabeledit.insertRow(rowcount)
+        sel = brs.insertCell(-1)
+        sel = brs.insertCell(-1) /// colom kedua ttd kepsek
+        sel.innerHTML = "Mengetahui,";
+        for (let a = 0; a < colcount - 4; a++) {
+            sel = brs.insertCell(-1) /// colom kedua ttd kepsek
+        }
+        sel = brs.insertCell(-1) /// colom ketiga titimangsa guru kelas
+        sel.innerHTML = jlo.kota + ", " + tanggalfull(new Date())
+        sel = brs.insertCell(-1) /// colom ketiga titimangsa guru kelas
+
+        brs = tabeledit.insertRow(rowcount)
+        brs = tabeledit.insertRow(rowcount)
+
+
+    } else {
+        brs = tabeledit.insertRow(rowcount)
+        sel = brs.insertCell(-1)
+        sel = brs.insertCell(-1) /// colom kedua ttd kepsek
+        sel.innerHTML = "NIP. " + idNipKepsek;
+
+        brs = tabeledit.insertRow(rowcount)
+        sel = brs.insertCell(-1)
+        sel = brs.insertCell(-1) /// colom kedua ttd kepsek
+        sel.innerHTML = "<b><u>" + idNamaKepsek + "</u></b>"
+
+
+        brs = tabeledit.insertRow(rowcount)
+        brs = tabeledit.insertRow(rowcount)
+        brs = tabeledit.insertRow(rowcount)
+
+        brs = tabeledit.insertRow(rowcount)
+        sel = brs.insertCell(-1);
+        sel = brs.insertCell(-1) /// colom kedua ttd kepsek
+        sel.innerHTML = "Kepala " + idNamaSekolah;
+
+
+        brs = tabeledit.insertRow(rowcount)
+        sel = brs.insertCell(-1)
+        sel = brs.insertCell(-1) /// colom kedua ttd kepsek
+        sel.innerHTML = "Mengetahui,";
+
+
+
+
+        brs = tabeledit.insertRow(rowcount)
+        brs = tabeledit.insertRow(rowcount)
+        brs = tabeledit.insertRow(rowcount)
+        brs = tabeledit.insertRow(rowcount)
+        sel = brs.insertCell(-1)
+        sel = brs.insertCell(-1) /// colom kedua ttd kepsek
+        sel.innerHTML = "NIP. " + idNipGuruKelas;
+
+
+        brs = tabeledit.insertRow(rowcount)
+        sel = brs.insertCell(-1)
+        sel = brs.insertCell(-1) /// colom kedua ttd kepsek
+        sel.innerHTML = "<b><u>" + namauser + "</u></b>"
+
+
+        brs = tabeledit.insertRow(rowcount)
+        brs = tabeledit.insertRow(rowcount)
+        brs = tabeledit.insertRow(rowcount)
+
+        brs = tabeledit.insertRow(rowcount)
+        sel = brs.insertCell(-1);
+        sel = brs.insertCell(-1) /// colom kedua ttd kepsek
+        sel.innerHTML = idJenisGuru + " " + idNamaKelas
+
+
+        brs = tabeledit.insertRow(rowcount)
+        sel = brs.insertCell(-1)
+        sel = brs.insertCell(-1) /// colom kedua ttd kepsek
+
+        sel.innerHTML = jlo.kota + ", " + tanggalfull(new Date())
+
+
+
+
+        brs = tabeledit.insertRow(rowcount)
+        brs = tabeledit.insertRow(rowcount)
+
+
+    }
+
+
+    let s = SemesterBerapaSekarang()
+    $("#myTableCopy").table2excel({
+        name: "Worksheet Name",
+        filename: "Data Rekap Absen Kelas " + ruangankelas + " Semester " + s + " id file " + new Date().getTime(),
+        fileext: ".xls",
+        exclude_img: true,
+        exclude_links: true,
+        exclude_inputs: true,
+        preserveColors: true,
+        jumlahheader: 3
+    });
+    datasiswadiv.innerHTML = "";
+}
+const printRekapSemester = () => {
+    // alert("tes print rekap semeste");
+    let t = new Date()
+    let s = StringTanggal(t);
+    var datasiswadiv = document.getElementById("datasiswaprint");
+    datasiswadiv.innerHTML = "";
+    var tabelhasil = document.createElement("table");
+    tabelhasil.setAttribute("id", "myTableCopy");
+
+    var tabeleditt = document.getElementById("idtabelrekapsemester"); //.getElementsByTagName("tbody")[0];
+    tabeleditt.outerHTML.replace("position:sticky;position:-webkit-sticky;", "")
+    tabeleditt.outerHTML.replace("box-shadow: inset 0 0 1px #000000", "")
+    tabeleditt.getElementsByTagName("tbody")[0].removeAttribute("class");
+    var cln = tabeleditt.cloneNode(true);
+
+    tabelhasil.appendChild(cln);
+    datasiswadiv.appendChild(tabelhasil);
+    let sr = SemesterBerapaSekarang();
+    print("myTableCopy,Daftar Rekap Absen Kelas " + ruangankelas + ", Semester " + sr + " Tahun Pelajaran " + idTeksTapel + "," + s);
+    datasiswadiv.innerHTML = "";
+}
+//tes klik selain ngeklik bagian absen:
+document.addEventListener("click", function (e) {
+    let el = e.target;
+    let cls = el.classList.contains('tabkaldik')
+    let kal = JSON.parse(localStorage.getItem('Kaldik'))
+
+    let clsx = el.classList.contains('kbmtoday')
+    let upmat = el.classList.contains('klikuploadmateri')
+
+    let a = new Date();
+    let b = a.getDate();
+    let c = a.getMonth() + 1;
+    let d = a.getFullYear()
+    let idokmateri = addZero(b) + "" + addZero(c) + "" + d;
+
+
+
+
+    if (cls) {
+        tabelkaldikss.innerHTML = "";
+        let tabel = document.createElement("table")
+        tabel.setAttribute("class", "versi-table");
+
+        let thead = tabel.createTHead();
+        let tr = thead.insertRow(0);
+        let th = document.createElement("th")
+        th.innerHTML = "No"
+        tr.appendChild(th)
+        th = document.createElement("th")
+        th.innerHTML = "Keterangan"
+        tr.appendChild(th)
+        th = document.createElement("th")
+        th.innerHTML = "Durasi (hari)"
+        tr.appendChild(th)
+        th = document.createElement("th")
+        th.innerHTML = "Tanggal Mulai"
+        tr.appendChild(th)
+        th = document.createElement("th")
+        th.innerHTML = "Tanggal Akhir"
+        tr.appendChild(th)
+        th = document.createElement("th")
+        th.innerHTML = "Diedit Oleh";
+        tr.appendChild(th)
+        th = document.createElement("th")
+        th.innerHTML = "Aksi"
+        tr.appendChild(th)
+        let tbody = tabel.createTBody()
+        for (let i = 0; i < kal.length; i++) {
+            tr = tbody.insertRow(-1);
+            let td = tr.insertCell(-1)
+            td.innerHTML = i + 1;
+
+            td = tr.insertCell(-1)
+            td.innerHTML = kal[i].keterangan;
+            td = tr.insertCell(-1)
+            td.innerHTML = kal[i].lama;
+            td = tr.insertCell(-1)
+            td.innerHTML = tanggalfull(kal[i].start_tgl);
+            td = tr.insertCell(-1)
+            td.innerHTML = tanggalfull(kal[i].end_tgl);
+            td = tr.insertCell(-1);
+            td.innerHTML = kal[i].oleh;
+            td = tr.insertCell(-1);
+            td.innerHTML = `<button onclick="ubahtanggalini(${kal[i].idbaris})">Ubah</button><button onclick="hapustanggalini('${kal[i].idbaris}')"})">Hapus</button>`;
+        }
+        tabelkaldikss.appendChild(tabel)
+        tabelkaldikss.innerHTML += `<hr><button onclick="tambahKaldik()" class="wa"><i class="fa fa-calendar-plus-o w3-xxxlarge"></i>   Tambah Kalender</button>`
+
+    } else if (clsx) {
+        kbm_hari_ini.innerHTML = `<i class="fa fa-spin fa-spinner"></i>`
+        //alert("iya ini kbm today")
+        if (localStorage.hasOwnProperty("kbmtoday" + idokmateri)) {
+            let data = JSON.parse(localStorage.getItem("kbmtoday" + idokmateri));
+            kbm_hari_ini.innerHTML = `
+            <h3 class="w3-card w3-padding"><button class="w3-button w3-pink w3-round w3-right w3-tiny" onclick="updatematerikan()"><i class="fa fa-refresh"></i> Materi</button><br>Ada ${data.length} Materi Pembelajaran untuk hari Hari:</h3><br>`
+            for (i = 0; i < data.length; i++) {
+                kbm_hari_ini.innerHTML += `<h4> Materi ke- ${i + 1}</h4>`
+                let tabel = document.createElement("table");
+                tabel.setAttribute("class", "versi-table w3-card w3-bordered");
+                let brs = tabel.insertRow(0);
+                let sel = brs.insertCell(-1)
+                sel.innerHTML = "Identitas Materi"
+                sel = brs.insertCell(-1);
+                sel.innerHTML = data[i].idmapel;
+
+                brs = tabel.insertRow(-1);
+                sel = brs.insertCell(-1)
+                sel.innerHTML = "Jenis Tagihan"
+                sel = brs.insertCell(-1);
+                sel.innerHTML = (data[i].idaksessiswa == "sekali") ? "Ulangan (Menerima data nilai)" : "Latihan (tidak menerima nilai siswa)";
+
+                brs = tabel.insertRow(-1);
+                sel = brs.insertCell(-1)
+                sel.innerHTML = "Jumlah PG"
+                sel = brs.insertCell(-1);
+                sel.innerHTML = data[i].jumlahpg;
+
+                brs = tabel.insertRow(-1);
+                sel = brs.insertCell(-1)
+                sel.innerHTML = "Jumlah Essay"
+                sel = brs.insertCell(-1);
+                sel.innerHTML = data[i].jumlahessay;
+
+                brs = tabel.insertRow(-1);
+                sel = brs.insertCell(-1)
+                sel.innerHTML = "Lihat Materi"
+                sel = brs.insertCell(-1);
+                sel.innerHTML = `<button class="w3-button w3-green" onclick="previewriwayat(${i})">Tampilkan</button>`;
+
+                if (data[i].idaksessiswa == "beberapa kali") {
+                    brs = tabel.insertRow(-1);
+                    sel = brs.insertCell(-1)
+                    sel.innerHTML = "Respon Siswa"
+                    sel = brs.insertCell(-1);
+                    sel.innerHTML = `Tidak ada tagihan`;
+                } else {
+                    brs = tabel.insertRow(-1);
+                    sel = brs.insertCell(-1)
+                    sel.innerHTML = "Lihat Materi"
+                    sel = brs.insertCell(-1);
+                    sel.innerHTML = `<button class="w3-button w3-blue" onclick="getdaftarnilai(${i})">Nilai Siswa</button>`;
+                }
+
+
+
+                kbm_hari_ini.appendChild(tabel)
+            }
+        } else {
+            updatematerikan()
+        }
+    } else if (upmat) {
+
+        if (tombolpublikasikan.innerHTML !== "PUBLIKASIKAN") {
+            let konfirm = confirm("Anda dalam posisi ingin mengedit materi. Apakah Anda akan melanjutkan edit? \n \n Klik OK untuk kembali mengedit. \n \n Klik CANCEL untuk Membuat Materi Baru.")
+            if (!konfirm) {
+                document.formuploadmateri.reset();
+                document.formuploadmateri.idmateri.value = "";
+                tombolpublikasikan.setAttribute("onclick", "publikasikanmateribaru()")
+                tombolpublikasikan.removeAttribute("class"); //.wa w3-deep-purple w3-hover-aqua);
+                tombolpublikasikan.setAttribute("class", "wa w3-deep-purple w3-hover-aqua");
+                tombolpublikasikan.innerHTML = "PUBLIKASIKAN";
+
+            }
+            //wa w3-deep-purple w3-hover-aqua
+        }
+        let cektabel = document.querySelector('.mbs_tabelbantusebarankd');
+        if (cektabel !== null) {
+            cektabel.getElementsByTagName("tbody")[0].innerHTML = ` <tr>
+            <td>
+                <select class="w3-select mbs_selectmapel brsmapel_0"
+                    onchange="fn_mbs_selectmapel(this)">
+                    <option value="" selected>PILIH MAPEL</option>
+                </select>
+            </td>
+            <td>
+                <select class="w3-select mbs_selectkd brskd_0" onchange="fn_mbs_selectkd(this)">
+                    <option value="" selected>PILIH KD</option>
+                </select>
+            </td>
+            <td>
+                <input class="w3-input w3-border w3-border-teal mbs_textarea brsnosoal_0"
+                    placeholder="Contoh pengisian: 1, 2, 3 (di akhir nomor jangan diberi koma)"></input>
+            </td>
+        </tr>`;
+
+            // generaterasebarankd();
+
+        }
+
+
+    }
+    //return
+
+});
+
+const editkronologi = (par) => {
+    let datamateri = kronologijson;
+    let tdata = kronologijson[par].idtgl;
+    let timeTdata = new Date(tdata).getTime();
+    let nowtime = new Date().getTime()
+
+    pranalamateri.style.display = "block";
+    document.querySelector(".classReviewMateri").innerHTML = "";
+    let tes = document.querySelector(".classReviewMateri");
+
+
+    ///jika waktu yang dibuat belum dimulai, boleh diedit, kalo lewat jangan diedit
+
+
+    $('.classReviewMateri').nextAll('button').remove();
+
+    tes.innerHTML = `<h3 class='w3-cursive w3-border-bottom w3-border-cyan w3-center'>EDIT AKSES MATERI</h3> `;
+
+
+    let form = document.createElement("form");
+    form.setAttribute("id", "formeditmateri")
+    form.setAttribute("name", "formeditmateri")
+    form.setAttribute("class", "w3-card-4 w3-padding w3-margin-bottom w3-center w3-round-xlarge")
+
+
+    let input = document.createElement("input");
+    input.setAttribute("type", "text");
+    input.setAttribute("id", "idbaris");
+    input.setAttribute("class", "w3-round-xxlarge w3-padding");
+    input.setAttribute("style", "width:20%;display:none");
+    input.setAttribute("name", "idbaris");
+    input.setAttribute("value", datamateri[par].idbaris);
+
+
+    form.appendChild(input)
+
+
+    input = document.createElement("input");
+    input.setAttribute("type", "text");
+    input.setAttribute("id", "crtToken");
+    input.setAttribute("name", "crtToken");
+    input.setAttribute("class", "w3-round-xxlarge w3-padding w3-center");
+    input.setAttribute("style", "width:40%;display:none");
+
+    input.setAttribute("value", datamateri[par].crtToken);
+
+    form.appendChild(input)
+
+
+    input = document.createElement("input");
+    input.setAttribute("type", "text");
+    input.setAttribute("id", "dibuatoleh");
+    input.setAttribute("name", "dibuatoleh");
+    input.setAttribute("class", "w3-round-xxlarge w3-padding w3-center");
+    input.setAttribute("style", "width:90%;display:none");
+    input.setAttribute("value", namauser);
+
+    form.appendChild(input)
+    let label = document.createElement("label");
+    label.setAttribute("for", "idmapel");
+    label.innerHTML = "Identitas Materi"
+
+    input = document.createElement("input");
+    input.setAttribute("type", "text");
+    input.setAttribute("id", "idmapel");
+    input.setAttribute("name", "idmapel");
+    input.setAttribute("class", "w3-round-xxlarge w3-padding w3-center");
+    input.setAttribute("style", "width:90%");
+    input.value = datamateri[par].idmapel;
+
+    br = document.createElement("br")
+    form.appendChild(br)
+    br = document.createElement("br")
+    form.appendChild(br)
+    br = document.createElement("br")
+    form.appendChild(br)
+    form.appendChild(label)
+    form.appendChild(br)
+    form.appendChild(input)
+
+
+    label = document.createElement("label");
+    label.setAttribute("for", "idaksessiswa");
+    label.innerHTML = "Jenis Pembelajaran"
+    let selek = document.createElement("select");
+    selek.setAttribute("id", "idaksessiswa");
+    selek.setAttribute("name", "idaksessiswa");
+    selek.setAttribute("class", "w3-round-xxlarge w3-padding w3-center");
+    selek.setAttribute("style", "width:40%");
+    selek.setAttribute("onclick", "janganadatagihan()");
+    let selekopsi = document.createElement("option");
+    selekopsi.setAttribute("id", "selekopsi01");
+    selekopsi.setAttribute("value", "sekali");
+    selekopsi.setAttribute("class", "w3-round-xxlarge w3-padding w3-center");
+    selekopsi.innerHTML = "Menerima Jawaban siswa"
+    selek.appendChild(selekopsi)
+
+    selekopsi = document.createElement("option");
+    selekopsi.setAttribute("id", "selekopsi02");
+    selekopsi.setAttribute("value", "beberapa kali");
+    selekopsi.innerHTML = "Tidak menerima Jawaban"
+    selek.appendChild(selekopsi)
+
+    selek.value = datamateri[par].idaksessiswa;
+
+    br = document.createElement("br")
+    form.appendChild(br)
+    br = document.createElement("br")
+    form.appendChild(br)
+    br = document.createElement("br")
+    form.appendChild(br)
+    form.appendChild(label)
+    form.appendChild(br)
+    form.appendChild(selek)
+
+
+    label = document.createElement("label");
+    label.setAttribute("for", "jenistagihan");
+    label.innerHTML = "Jenis Tagihan"
+    selek = document.createElement("select");
+    selek.setAttribute("id", "jenistagihan");
+    selek.setAttribute("name", "jenistagihan");
+    selek.setAttribute("class", "w3-round-xxlarge w3-padding w3-center");
+    selek.setAttribute("style", "width:30%");
+    selek.setAttribute("onchange", "gabolehaksessekali()");
+
+    selekopsi = document.createElement("option");
+    selekopsi.setAttribute("id", "seleKOpsi10");
+    selekopsi.setAttribute("value", "");
+    selekopsi.setAttribute("class", "w3-round-xxlarge w3-padding w3-center");
+    selekopsi.innerHTML = ""
+    selek.appendChild(selekopsi);
+
+    selekopsi = document.createElement("option");
+    selekopsi.setAttribute("id", "selekopsi1");
+    selekopsi.setAttribute("value", "PH");
+    selekopsi.setAttribute("class", "w3-round-xxlarge w3-padding w3-center");
+    selekopsi.innerHTML = "PH"
+    selek.appendChild(selekopsi)
+
+    selekopsi = document.createElement("option");
+    selekopsi.setAttribute("id", "selekopsi2");
+    selekopsi.setAttribute("value", "PTS");
+    selekopsi.innerHTML = "PTS"
+    selek.appendChild(selekopsi)
+
+    selekopsi = document.createElement("option");
+    selekopsi.setAttribute("id", "selekopsi3");
+    selekopsi.setAttribute("value", "PAS");
+    selekopsi.innerHTML = "PAS (untuk semester 1)"
+    selek.appendChild(selekopsi)
+
+    selekopsi = document.createElement("option");
+    selekopsi.setAttribute("id", "selekopsi4");
+    selekopsi.setAttribute("value", "PAK");
+    selekopsi.innerHTML = "PAK (untuk semester 2)"
+    selek.appendChild(selekopsi);
+
+    selekopsi = document.createElement("option");
+    selekopsi.setAttribute("id", "selekopsi5");
+    selekopsi.setAttribute("value", "kpraktik");
+    selekopsi.innerHTML = "Praktik (KI-4)"
+    selek.appendChild(selekopsi);
+
+    selekopsi = document.createElement("option");
+    selekopsi.setAttribute("id", "selekopsi6");
+    selekopsi.setAttribute("value", "kproduk");
+    selekopsi.innerHTML = "Produk (KI-4)";
+    selek.appendChild(selekopsi);
+
+    selekopsi = document.createElement("option");
+    selekopsi.setAttribute("id", "selekopsi7");
+    selekopsi.setAttribute("value", "kproyek");
+    selekopsi.innerHTML = "Proyek (KI-4)";
+    selek.appendChild(selekopsi);
+
+    selekopsi = document.createElement("option");
+    selekopsi.setAttribute("id", "selekopsi8");
+    selekopsi.setAttribute("value", "ustertulis");
+    selekopsi.innerHTML = "US Tertulis (kelas 6)";
+    selek.appendChild(selekopsi);
+
+    selekopsi = document.createElement("option");
+    selekopsi.setAttribute("id", "selekopsi9");
+    selekopsi.setAttribute("value", "uspraktek");
+    selekopsi.innerHTML = "US Praktek (kelas 6)";
+    selek.appendChild(selekopsi);
+
+
+
+    selek.value = datamateri[par].jenistagihan;
+
+    br = document.createElement("br")
+    form.appendChild(br)
+    br = document.createElement("br")
+    form.appendChild(br)
+    br = document.createElement("br")
+    form.appendChild(br)
+    form.appendChild(label)
+    form.appendChild(br)
+    form.appendChild(selek)
+
+    //------------------------------
+    label = document.createElement("label");
+    label.setAttribute("for", "iddurasi");
+    label.innerHTML = "Durasi (Menit)"
+    input = document.createElement("input");
+    input.setAttribute("type", "number");
+    input.setAttribute("id", "iddurasi");
+    input.setAttribute("name", "iddurasi");
+    input.setAttribute("class", "w3-round-xxlarge w3-padding w3-center");
+    input.setAttribute("style", "width:30%");
+    input.setAttribute("min", 1);
+    input.setAttribute("max", 120);
+    input.setAttribute("value", datamateri[par].iddurasi);
+
+    br = document.createElement("br")
+    form.appendChild(br)
+
+    br = document.createElement("br")
+    form.appendChild(br)
+    form.appendChild(label)
+    br = document.createElement("br")
+    form.appendChild(br)
+    form.appendChild(input)
+    let divsembunyikan = document.createElement("div");
+    divsembunyikan.setAttribute("id", "editakses_sembunyikan");
+    let divketsembunyi = document.createElement("div");
+    divketsembunyi.setAttribute("class", "w3-text-blue w3-justify w3-container editakses_keterangan_sembunyikan");
+    divketsembunyi.innerHTML = "Waktu Awal"
+
+    let tglawal = datamateri[par].idtgl;
+    label = document.createElement("label");
+    label.setAttribute("for", "idtgl");
+    label.innerHTML = "Waktu Mulai:"
+
+    input = document.createElement("input");
+    input.setAttribute("type", "datetime-local");
+    input.setAttribute("id", "idtgl");
+    input.setAttribute("name", "idtgl");
+    input.setAttribute("style", "width:90%");
+    input.setAttribute("onchange", "pengenbuatcrtToken()");
+    input.setAttribute("class", "w3-round-xxlarge w3-padding w3-center");
+
+    //2020-12-01T17:00:00.000Z
+    input.setAttribute("value", stringForDateTimeLocal(tglawal))
+
+    br = document.createElement("br")
+    form.appendChild(br)
+    br = document.createElement("br")
+    form.appendChild(br)
+    br = document.createElement("br")
+    form.appendChild(br)
+    divsembunyikan.appendChild(label);
+    br = document.createElement("br")
+    divsembunyikan.appendChild(br);
+    divsembunyikan.appendChild(input);
+    form.appendChild(divketsembunyi)
+    br = document.createElement("br")
+    form.appendChild(br)
+    form.appendChild(divsembunyikan);
+
+    //element 5
+    let tglakhir = datamateri[par].idtglend;
+    label = document.createElement("label");
+    label.setAttribute("for", "idtglend");
+    label.innerHTML = "Waktu Selesai:"
+
+    input = document.createElement("input");
+    input.setAttribute("type", "datetime-local");
+    input.setAttribute("id", "idtglend");
+    input.setAttribute("name", "idtglend");
+    input.setAttribute("style", "width:90%");
+    input.setAttribute("class", "w3-round-xxlarge w3-padding w3-center");
+
+    //2020-12-01T17:00:00.000Z
+    input.setAttribute("value", stringForDateTimeLocal(tglakhir))
+    // console.log(par)
+    // console.log(tglawal)
+    // console.log(datamateri[par].idtgl)
+
+
+    br = document.createElement("br")
+    form.appendChild(br)
+    br = document.createElement("br")
+    form.appendChild(br)
+    br = document.createElement("br")
+    form.appendChild(br)
+    form.appendChild(label)
+    form.appendChild(br)
+    form.appendChild(input)
+
+    br = document.createElement("br")
+    form.appendChild(br)
+    br = document.createElement("br")
+    form.appendChild(br)
+
+    tes.appendChild(form)
+    let subm = document.createElement("button");
+    subm.setAttribute("onclick", "kirimeditmateri()");
+    subm.setAttribute("class", "w3-button w3-hover-green w3-blue w3-round-xxlarge w3-margin");
+    subm.innerHTML = `<i class="fa fa-paper-plane  w3-xlarge"></i>   SIMPAN`;
+    let cente = document.createElement("div");
+    cente.setAttribute("class", "w3-margin w3-center warnaeka w3-border-bottom w3-border-black w3-container w3-padding w3-round-large")
+    cente.appendChild(subm)
+
+    subm = document.createElement("button");
+    subm.setAttribute("onclick", "pranalamateri.style.display='none';idpracetak.innerHTML = ''");
+    subm.setAttribute("class", "w3-button w3-hover-black w3-red w3-round-xxlarge");
+    subm.innerHTML = `<i class="fa fa-window-close-o w3-xlarge"></i>   BATAL`;
+    cente.appendChild(subm)
+
+
+    tes.appendChild(cente);
+    let tombolsimpandraft = document.createElement("button");
+    tombolsimpandraft.setAttribute("onclick", `fn8editakses_simpandraft(${par})`);
+    tombolsimpandraft.setAttribute("id", `editakses_simpandraft_${par}`);
+    tombolsimpandraft.setAttribute("class", `w3-hide`);
+    tombolsimpandraft.innerHTML = "KLIK"
+    tes.appendChild(tombolsimpandraft);
+    let divket = document.querySelector(".editakses_keterangan_sembunyikan");
+    let divtgl = document.querySelector("#editakses_sembunyikan");
+    if (nowtime < timeTdata) {
+        divket.innerHTML = "Pembelajaran akan dilalaksanakan pada " + tanggalfulllengkap(new Date(tdata));
+        divket.innerHTML += `<br/><br/>Anda bisa mengatur ulang waktu mulai pembeljarannya.`;
+    } else {
+        divket.innerHTML = "Pembelajaran telah dimulai sejak " + tanggalfulllengkap(new Date(tdata));
+        divket.innerHTML += `<br/><br/>Anda tidak bisa mengedit <b class="w3-text-red">waktu awal</b> pembelajaran ini lagi. Karena akan mempengerahui nilai siswa yang telah masuk.`;
+        divket.innerHTML += `<br/><sub>Jika Anda ingin menggunakan materi ini lagi silakan membuatnya dalam versi terbaru di </sub> <label for="editakses_simpandraft_${par}" class="fn8editakses_tombolaksi warnaeka w3-small w3-round w3-bottom-border w3-border-black w3-text-black" style="cursor:pointer" title="Simpan ini,lalu klik TARUH DRAFT dari menu Unggah Pembelajaran">SINI</label>`;
+        divtgl.setAttribute("class", "w3-hide");
+
     }
 }

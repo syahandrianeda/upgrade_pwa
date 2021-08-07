@@ -18,8 +18,9 @@ let url_login_guru,
             url_login_guru = k.url_datauser + "?action=login&idss=" + k.ss_datauser; // pengganti script_url untuk memanggil data_user!
             url_login_siswa = k.url_datauser + "?action=loginsiswa&idss=" + k.ss_datauser; // pengganti script_url untuk memanggil data_user!
             url_absenkaldik = k.url_dataabsen + "?action=datakaldik&idss=" + k.ss_dataabsen; // pengganti script_url untuk memanggil data_user!
-
+            logologologo.innerHTML = `<img src="/img/lamaso.webp" style="height:60px;width:60px;object-fit: contain;"/>`
             namasekolah.innerHTML = k.namainstansi;
+            document.querySelector(".class_awassekolahbeda").innerHTML = k.namainstansi;
             namakota.innerHTML = k.idkota + " " + k.kota;
 
         }).catch(er => {

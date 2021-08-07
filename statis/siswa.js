@@ -94,7 +94,7 @@ function logout() {
 
 
     window.localStorage.clear();
-    window.location.replace("/index.html")
+    window.location.replace("/index.html");
 }
 
 var mySidebar = document.getElementById("mySidebar"); // Get the Sidebar
@@ -388,36 +388,29 @@ function uploadfilebantu() {
             data.append("filename", d_fname);
             data.append("fileContent", d_bs64);
             data.append("mimeType", d_mtp);
+            data.append("kelas", namakelas);
+
+
             var url = url_absensiswa + "?action=uploaddulu";
             fetch(url, {
                 method: 'post',
                 body: data
             }).then(m => m.json())
                 .then(k => {
-                    console.log(k)
                     var inputbase64 = document.createElement("input");
                     inputbase64.setAttribute("name", "fileContent");
-                    poto.src = (k.idfile == "") ? srcEncoded : "https://drive.google.com/uc?export=view&id=" + k.idfile;
-
+                    poto.src = (k.idfile == "") ? "/img/NO+GAGAL.png" : "https://drive.google.com/uc?export=view&id=" + k.idfile;
                     if (k.sukses == "Sukses") {
                         document.bantuisi.style.display = "none";
                         document.querySelector(".inginkirim").style.display = "block";
                         thankyou_messagekirim.innerHTML = "Data Siap Dikirim"
                         inputbase64.value = k.idfile;
-
                     } else {
                         document.bantuisi.style.display = "block";
-                        document.querySelector(".inginkirim").style.display = "block";
-                        thankyou_messagekirim.innerHTML = "Data Siap dikirim (pengecualian)"
+                        document.querySelector(".inginkirim").style.display = "none";
+                        thankyou_messagekirim.innerHTML = "Poto Gagal Masuk, coba lagi ya..."
                         inputbase64.value = srcEncoded;
-
-
                     }
-
-
-                    // akhir.sukses = "Sukses";
-                    // akhir.respon = "";
-                    // akhir.idfile = idFile;
                     let a = new Date();
                     let b = a.getDate();
                     let c = a.getMonth() + 1;
@@ -430,9 +423,6 @@ function uploadfilebantu() {
                     //document.bantukirim.name.value = namasiswa;
                     kodefilepotosiswaabsen.appendChild(inputbase64);
                 }).catch(er => console.log(er));
-
-
-
         }
         loginbantu.style.display = "inline-block";
     }
@@ -544,6 +534,7 @@ const loadingtopbarin = (el) => {
 
 (async function () {
     namasekolah.innerHTML = identitassekolah;
+    awasekolahbeda.innerHTML = identitassekolah.toUpperCase();
     namakota.innerHTML = identitaskotasekolah;
 
     var elem = document.querySelector(".loadingtopbar");
@@ -2883,7 +2874,7 @@ const panggilmateri = async () => {
             if (kontenmateri.length == 0) {
                 html = "Hari ini tidak ada materi."
             } else {
-                html += `Materi Ananda hari ini ada ${kontenmateri.length}:`
+                html += `Materi Ananda hari ini ada ${kontenmateri.length} Materi:`
                 for (i = 0; i < kontenmateri.length; i++) {
                     html += `<div class="w3-card-4 mhi mhi_ke${i} w3-container w3-margin-bottom w3-margin-top">
                     <div class="w3-badge w3-left w3-black">${i + 1}</div>
@@ -3071,11 +3062,46 @@ const modalfnkalender = () => {
             lr++
         }
     }
-    if (ket.length == 0) {
-        ketketlibur.innerHTML = ""
-    } else {
-        ketketlibur.innerHTML = ket.join("<br>")
+
+    // if (ket.length == 0) {
+    //     ketketlibur.innerHTML = ""
+    // } else {
+    //     ketketlibur.innerHTML = ket.join("<br>")
+    // }
+    let keta = localStorage.getItem("Kaldik");
+    let ketc = JSON.parse(keta);
+    let ketm = mont;
+    let kety = tyear;
+    let b = ketc.filter(s => (new Date(s.start_tgl).getMonth() == ketm || new Date(s.end_tgl).getMonth() == ketm) && (new Date(s.start_tgl).getFullYear() == kety || new Date(s.end_tgl).getFullYear() == kety));
+    let ketlibur = "";
+    if (b.length !== 0) {
+        ketlibur = "Keterangan Tanggal:<ul>";
+        for (i = 0; i < b.length; i++) {
+            let thn_awal = new Date(b[i].start_tgl).getFullYear();
+            let thn_akhir = new Date(b[i].end_tgl).getFullYear();
+            // console.log(thn_awal + " " + thn_akhir)
+            let bln_awal = new Date(b[i].start_tgl).getMonth();
+            let bln_akhir = new Date(b[i].end_tgl).getMonth();
+            let tgl_awal = new Date(b[i].start_tgl).getDate();
+            let tgl_akhir = new Date(b[i].end_tgl).getDate();
+            if (thn_awal == thn_akhir) {
+                if (bln_awal == bln_akhir) {
+                    if (tgl_awal == tgl_akhir) {
+
+                        ketlibur += `<li> Tgl ${tgl_awal} ${timekbm_arraybulan[ketm]} ${new Date(b[i].start_tgl).getFullYear()}= ${b[i].keterangan}</li>`;
+                    } else {
+                        ketlibur += `<li> Tgl ${tgl_awal} - ${tgl_akhir} ${timekbm_arraybulan[ketm]}  ${new Date(b[i].end_tgl).getFullYear()}= ${b[i].keterangan}</li>`;
+                    }
+                } else {
+                    ketlibur += `<li> Tgl ${tgl_awal} ${timekbm_arraybulan[bln_awal]} - ${tgl_akhir} ${timekbm_arraybulan[bln_akhir]}  ${thn_awal}= ${b[i].keterangan}</li>`;
+                }
+            } else {
+                ketlibur += `<li> Tgl ${tgl_awal} ${timekbm_arraybulan[bln_awal]} ${thn_awal} - ${tgl_akhir} ${timekbm_arraybulan[bln_akhir]}  ${thn_akhir}= ${b[i].keterangan}</li>`;
+            }
+        }
+        ketlibur += "</ul>";
     }
+    ketketlibur.innerHTML = ketlibur;
     let datee = StringTanggal(notgl);
     dataabsenbulanan(datee, namabulan)
 }
@@ -3188,9 +3214,7 @@ const menudatapembelajaran = () => {
     fetch(linkmateri + "&action=kronolog&idtoken=" + jenjang)
         .then(m => m.json())
         .then(j => {
-
             spanlabelmateri.innerHTML = "Jumlah Materi ada " + j.result.length + " Silakan pilih : <br><sub class='w3-text-blue'>Materi terbaru ada di urutan terakhir</sub>";
-
             jsonmenudatapembelajaran = j.result;
             siswapilihmateri.innerHTML = "<option value=''>Silakan Pilih Materinya</option>"
             for (let i = 0; i < j.result.length; i++) {
@@ -3200,7 +3224,6 @@ const menudatapembelajaran = () => {
                 let teks = document.createTextNode(j.result[i].idmapel)
                 op.appendChild(teks)
                 siswapilihmateri.appendChild(op)
-
             }
 
 
@@ -3389,7 +3412,7 @@ function uploadpotoessayt(id) {
                 tampilan.innerHTML = "<div class='w3-red w3-large'>Ups, Maaf. Media gagal diunggah ke server. Jaringan Ananda sedang terjadi trafick, silakan UNGGAH ULANG (klik UPLOAD JAWABAN lagi ...) </div><br><br>Kode Error: " + er;
                 // // let divhapus = document.getElementById("tomboljawaban" + id);
                 // // divhapus.innerHTML = ``;
-                // tampilan.innerHTML = `media gagal diunggah silakan upload ulang kode ${er}`;//`<div id="tomboljawaban${id}"><hr>Maaf, jaringan skrip 1 Ananda terjadi trafik (kode error: ${er}). Media gagal diunggah. Silakan coba lagi ya ...<br><button onclick="tombolketikjawaban('${id}')">Ketik Jawaban No ${id}</button><br><sub>atau</sub><br> <button onclick="tomboluploadjawaban('${id}')">Upload Jawaban No ${id}</button><br><sub>Pilih Salah satu cara Kalian menjawab soal ini</sub></div>`;
+                // tampilan.innerHTML = `media gagal diunggah silakan upload ulang kode ${er}`;//`<div id="tomboljawaban${id}"><hr>Maaf, jaringan skrip 1 Ananda terjadi trafik (kode error: ${er}). Media gagal diunggah. Silakan coba lagi ya ...<br><button onclick="tombolketikjawaban('${id}')">Ketik Jawaban No ${id}</button><br><sub>atau</sub><br> <button onclick="tomboluploadjawaban('${id}')">Upload Media No ${id}</button><br><sub>Pilih Salah satu cara Kalian menjawab soal ini</sub></div>`;
 
             })
 
@@ -3419,8 +3442,8 @@ const siswauploadmediajawaban = () => {
             let teks = "Ups, maaf. Upload Gagal.<br>Kode error: " + er
             // let divhapus = document.getElementById("tomboljawaban" + id);
             // divhapus.innerHTML = "";
-            // //tampilan.innerHTML = `<div id="tomboljawaban${id}"><hr>Maaf, jaringan skrip 1 Ananda terjadi trafik (kode error: ${er}). Media gagal diunggah. Silakan coba lagi ya ...<br><button onclick="tombolketikjawaban('${id}')">Ketik Jawaban No ${id}</button><br><sub>atau</sub><br> <button onclick="tomboluploadjawaban('${id}')">Upload Jawaban No ${id}</button><br><sub>Pilih Salah satu cara Kalian menjawab soal ini</sub></div>`;
-            // let teks = `<div id="tomboljawaban${id}"><hr>Maaf, jaringan Ananda skrip 2 terjadi trafik (kode error: ${er}). Media gagal diunggah. Silakan coba lagi ya ...<br><button onclick="tombolketikjawaban('${id}')">Ketik Jawaban No ${id}</button><br><sub>atau</sub><br> <button onclick="tomboluploadjawaban('${id}')">Upload Jawaban No ${id}</button><br><sub>Pilih Salah satu cara Kalian menjawab soal ini</sub></div>`;
+            // //tampilan.innerHTML = `<div id="tomboljawaban${id}"><hr>Maaf, jaringan skrip 1 Ananda terjadi trafik (kode error: ${er}). Media gagal diunggah. Silakan coba lagi ya ...<br><button onclick="tombolketikjawaban('${id}')">Ketik Jawaban No ${id}</button><br><sub>atau</sub><br> <button onclick="tomboluploadjawaban('${id}')">Upload Media No ${id}</button><br><sub>Pilih Salah satu cara Kalian menjawab soal ini</sub></div>`;
+            // let teks = `<div id="tomboljawaban${id}"><hr>Maaf, jaringan Ananda skrip 2 terjadi trafik (kode error: ${er}). Media gagal diunggah. Silakan coba lagi ya ...<br><button onclick="tombolketikjawaban('${id}')">Ketik Jawaban No ${id}</button><br><sub>atau</sub><br> <button onclick="tomboluploadjawaban('${id}')">Upload Media No ${id}</button><br><sub>Pilih Salah satu cara Kalian menjawab soal ini</sub></div>`;
             return teks
         })
 }
@@ -3950,7 +3973,7 @@ const uploadvideorekaman = async (id) => {
             tempat.innerHTML = "<div class='w3-red w3-large'>Ups, Maaf. Media gagal diunggah ke server. Jaringan Ananda sedang terjadi trafick, silakan UNGGAH ULANG (klik UPLOAD JAWABAN lagi ...) </div><br><br>Kode Error: " + er;
             // // let divhapus = document.getElementById("tomboljawaban" + id);
             // // divhapus.innerHTML = ``;
-            // tampilan.innerHTML = `media gagal diunggah silakan upload ulang kode ${er}`;//`<div id="tomboljawaban${id}"><hr>Maaf, jaringan skrip 1 Ananda terjadi trafik (kode error: ${er}). Media gagal diunggah. Silakan coba lagi ya ...<br><button onclick="tombolketikjawaban('${id}')">Ketik Jawaban No ${id}</button><br><sub>atau</sub><br> <button onclick="tomboluploadjawaban('${id}')">Upload Jawaban No ${id}</button><br><sub>Pilih Salah satu cara Kalian menjawab soal ini</sub></div>`;
+            // tampilan.innerHTML = `media gagal diunggah silakan upload ulang kode ${er}`;//`<div id="tomboljawaban${id}"><hr>Maaf, jaringan skrip 1 Ananda terjadi trafik (kode error: ${er}). Media gagal diunggah. Silakan coba lagi ya ...<br><button onclick="tombolketikjawaban('${id}')">Ketik Jawaban No ${id}</button><br><sub>atau</sub><br> <button onclick="tomboluploadjawaban('${id}')">Upload Media No ${id}</button><br><sub>Pilih Salah satu cara Kalian menjawab soal ini</sub></div>`;
 
         })
 
@@ -3990,7 +4013,7 @@ const uploadpotokamera = async (id) => {
             tempat.innerHTML = "<div class='w3-red w3-large'>Ups, Maaf. Media gagal diunggah ke server. Jaringan Ananda sedang terjadi trafick, silakan UNGGAH ULANG (klik UPLOAD JAWABAN lagi ...) </div><br><br>Kode Error: " + er;
             // // let divhapus = document.getElementById("tomboljawaban" + id);
             // // divhapus.innerHTML = ``;
-            // tampilan.innerHTML = `media gagal diunggah silakan upload ulang kode ${er}`;//`<div id="tomboljawaban${id}"><hr>Maaf, jaringan skrip 1 Ananda terjadi trafik (kode error: ${er}). Media gagal diunggah. Silakan coba lagi ya ...<br><button onclick="tombolketikjawaban('${id}')">Ketik Jawaban No ${id}</button><br><sub>atau</sub><br> <button onclick="tomboluploadjawaban('${id}')">Upload Jawaban No ${id}</button><br><sub>Pilih Salah satu cara Kalian menjawab soal ini</sub></div>`;
+            // tampilan.innerHTML = `media gagal diunggah silakan upload ulang kode ${er}`;//`<div id="tomboljawaban${id}"><hr>Maaf, jaringan skrip 1 Ananda terjadi trafik (kode error: ${er}). Media gagal diunggah. Silakan coba lagi ya ...<br><button onclick="tombolketikjawaban('${id}')">Ketik Jawaban No ${id}</button><br><sub>atau</sub><br> <button onclick="tomboluploadjawaban('${id}')">Upload Media No ${id}</button><br><sub>Pilih Salah satu cara Kalian menjawab soal ini</sub></div>`;
 
         })
 
@@ -4027,7 +4050,7 @@ const uploadmediagaleri = async (id) => {
             tempat.innerHTML = "<div class='w3-red w3-large'>Ups, Maaf. Media gagal diunggah ke server. Jaringan Ananda sedang terjadi trafick, silakan UNGGAH ULANG (klik UPLOAD JAWABAN lagi ...) </div><br><br>Kode Error: " + er;
             // // let divhapus = document.getElementById("tomboljawaban" + id);
             // // divhapus.innerHTML = ``;
-            // tampilan.innerHTML = `media gagal diunggah silakan upload ulang kode ${er}`;//`<div id="tomboljawaban${id}"><hr>Maaf, jaringan skrip 1 Ananda terjadi trafik (kode error: ${er}). Media gagal diunggah. Silakan coba lagi ya ...<br><button onclick="tombolketikjawaban('${id}')">Ketik Jawaban No ${id}</button><br><sub>atau</sub><br> <button onclick="tomboluploadjawaban('${id}')">Upload Jawaban No ${id}</button><br><sub>Pilih Salah satu cara Kalian menjawab soal ini</sub></div>`;
+            // tampilan.innerHTML = `media gagal diunggah silakan upload ulang kode ${er}`;//`<div id="tomboljawaban${id}"><hr>Maaf, jaringan skrip 1 Ananda terjadi trafik (kode error: ${er}). Media gagal diunggah. Silakan coba lagi ya ...<br><button onclick="tombolketikjawaban('${id}')">Ketik Jawaban No ${id}</button><br><sub>atau</sub><br> <button onclick="tomboluploadjawaban('${id}')">Upload Media No ${id}</button><br><sub>Pilih Salah satu cara Kalian menjawab soal ini</sub></div>`;
 
         })
 }
@@ -4622,7 +4645,7 @@ function tambahtombolisijawaban() {
             tempattombol.innerHTML += "<br/><sub>atau</sub></br/> "
             var tomboldua = document.createElement("button");
             tomboldua.setAttribute("onclick", "tomboluploadjawaban('" + inidEl + "')");
-            var tekstomboldua = document.createTextNode("Upload Jawaban No " + inidEl);
+            var tekstomboldua = document.createTextNode("Upload Media No " + inidEl);
             tomboldua.appendChild(tekstomboldua);
             tempattombol.appendChild(tomboldua);
             tempattombol.innerHTML += "<br/><sub>Pilih Salah satu cara Kalian menjawab soal ini</sub>"
@@ -4699,7 +4722,7 @@ function tombolketikjawaban(id) {
     tempatnya.innerHTML += "<br/>Ganti dengan mengupload media:";
     var tombollain = document.createElement("button")
     tombollain.setAttribute("onclick", "tomboluploadjawaban('" + id + "')");
-    tombollain.innerHTML = "Upload Jawaban No " + id
+    tombollain.innerHTML = "Upload Media No " + id
     tempatnya.appendChild(tombollain);
     tempatnya.innerHTML += "<sub> dengan memilih cara lain, jawaban yang sudah diketik akan hilang dan diganti dengan jawaban berupa gambar/media yang diunggah</sub>"
 
@@ -4720,7 +4743,7 @@ function tombolketikjawaban2(id) {
     tempatnya.innerHTML += "<br/>Ganti dengan mengupload media:";
     var tombollain = document.createElement("button")
     tombollain.setAttribute("onclick", "tomboluploadjawaban2('" + id + "')");
-    tombollain.innerHTML = "Upload Jawaban No " + id
+    tombollain.innerHTML = "Upload Media No " + id
     tempatnya.appendChild(tombollain);
     tempatnya.innerHTML += "<sub> dengan memilih cara lain, jawaban yang sudah diketik akan hilang dan diganti dengan jawaban berupa gambar/media yang diunggah</sub>"
 
@@ -5008,7 +5031,7 @@ const soaloffline = (html_jawaban) => {
                 tempattombol.innerHTML += "<br/><sub>atau</sub></br/> "
                 var tomboldua = document.createElement("button");
                 tomboldua.setAttribute("onclick", "tomboluploadjawaban2('" + inidEl + "')");
-                var tekstomboldua = document.createTextNode("Upload Jawaban No " + inidEl);
+                var tekstomboldua = document.createTextNode("Upload Media No " + inidEl);
                 tomboldua.appendChild(tekstomboldua);
                 tempattombol.appendChild(tomboldua);
                 tempattombol.innerHTML += "<br/><sub>Pilih Salah satu cara Kalian menjawab soal ini</sub>"
@@ -5710,7 +5733,7 @@ const previewriwayatlama = (par) => {
                 tempattombol.innerHTML += "<br/><sub>atau</sub></br/> "
                 var tomboldua = document.createElement("button");
                 tomboldua.setAttribute("onclick", "tomboluploadjawaban('" + inidEl + "')");
-                var tekstomboldua = document.createTextNode("Upload Jawaban No " + inidEl);
+                var tekstomboldua = document.createTextNode("Upload Media No " + inidEl);
                 tomboldua.appendChild(tekstomboldua);
                 tempattombol.appendChild(tomboldua);
                 tempattombol.innerHTML += "<br/><sub>Pilih Salah satu cara Kalian menjawab soal ini</sub>"
@@ -5906,7 +5929,7 @@ const previewriwayat = (par) => {
                     tempattombol.innerHTML += "<br/><sub>atau</sub></br/> "
                     var tomboldua = document.createElement("button");
                     tomboldua.setAttribute("onclick", "tomboluploadjawaban('" + inidEl + "')");
-                    var tekstomboldua = document.createTextNode("Upload Jawaban No " + inidEl);
+                    var tekstomboldua = document.createTextNode("Upload Media No " + inidEl);
                     tomboldua.appendChild(tekstomboldua);
                     tempattombol.appendChild(tomboldua);
                     tempattombol.innerHTML += "<br/><sub>Pilih Salah satu cara Kalian menjawab soal ini</sub>"

@@ -1,6 +1,7 @@
 let jsonlocalstorage, jsonlocalstoragetypeuser, linkdatauser;
 let linkDataUserWithIdss, linkAbsenKaldik // digunakan untuk link yang mengakses SS DataUSer (guru/siswa)
-let namauser, ruangankelas, gmpkelas
+let namauser, ruangankelas, gmpkelas;
+let idgurumapelmapel
 let idguru = "",
     idgurubaru = "";
 let jsondatasiswa = [],
@@ -75,6 +76,7 @@ const loadingtopbarin = (el) => {
     namauser = jsonlocalstoragetypeuser.user;
     gmpkelas = jsonlocalstoragetypeuser.akses;
     ruangankelas = jsonlocalstoragetypeuser.room;
+    idgurumapelmapel = jsonlocalstoragetypeuser.room;
     idguru = jsonlocalstoragetypeuser.idrow;
     idimage = jsonlocalstoragetypeuser.idimg; //
     idNamaKelas = jsonlocalstoragetypeuser.room;
@@ -544,9 +546,9 @@ function tabeldatakelassaya() { // Versi ngambil data dari TAB SPREADSHEET .... 
         tempattabel.appendChild(btnx);
         tampilinsublamangurukelas("datakelas");
     } catch (err) {
-        tampilinsublamangurukelas("beranda");
         console.log(err)
         alert("Laman Belum Siap");
+        tampilinsublamangurukelas("beranda");
 
     }
 }
@@ -2752,70 +2754,70 @@ const validasiajuandata = async (tokensiswa) => {
 
     if (dataelemen.dok_akte == "" || dataelemen.dok_kk == "") {
         alert("Anda wajib mengunggah file akte dan kartu keluarga");
-        return
-    }
-    let objekada = {};
-    let keyurut = [];
-    let valurut = [];
-    for (let i = 0; i < cekhead.length; i++) {
-        if (dataelemen[cekhead[i]] == undefined) {
-            datagaada.push(cekhead[i]);
-            if (angkadistring.indexOf(cekhead[i]) > -1) {
-                let n = "'"; //+ dataelemen[cekhead[i]]
-                valurut.push(n);
-            } else {
-                valurut.push("")
-            }
-        } else {
-            dataoke.push(cekhead[i])
-            objekada[cekhead[i]] = dataelemen[cekhead[i]]
-            if (angkadistring.indexOf(cekhead[i]) > -1) {
-                let n = "'" + dataelemen[cekhead[i]]
-                valurut.push(n);
-            } else {
 
-                valurut.push(dataelemen[cekhead[i]]);
+    } else {
+        let objekada = {};
+        let keyurut = [];
+        let valurut = [];
+        for (let i = 0; i < cekhead.length; i++) {
+            if (dataelemen[cekhead[i]] == undefined) {
+                datagaada.push(cekhead[i]);
+                if (angkadistring.indexOf(cekhead[i]) > -1) {
+                    let n = "'"; //+ dataelemen[cekhead[i]]
+                    valurut.push(n);
+                } else {
+                    valurut.push("")
+                }
+            } else {
+                dataoke.push(cekhead[i])
+                objekada[cekhead[i]] = dataelemen[cekhead[i]]
+                if (angkadistring.indexOf(cekhead[i]) > -1) {
+                    let n = "'" + dataelemen[cekhead[i]]
+                    valurut.push(n);
+                } else {
+
+                    valurut.push(dataelemen[cekhead[i]]);
+                }
             }
+            keyurut.push(cekhead[i]);
         }
-        keyurut.push(cekhead[i]);
+        // console.log(keyurut);
+        // console.log(valurut)
+        let cocok = (JSON.stringify(keyurut) == JSON.stringify(cekhead)) ? "COCOK" : "BEDA";
+        // console.log(cocok);
+
+        // console.log("dataoke");
+        // console.log(dataoke);
+        // console.log("datagaada");
+        // console.log(datagaada);
+        let tabel = JSON.stringify(valurut);
+        let datakirim = new FormData();
+        // datakirim.append("action", );
+        //datakirim.append("tab", "new_datasiswa");
+        datakirim.append("tabel", tabel);
+        datakirim.append("tokensiswa", tokensiswa);
+        datakirim.append("idss", jlo.ss_datauser);
+
+        infoloadingljk.innerHTML = `<p class="w3-center"><img src="/img/barloading.gif"/></p>`
+        await fetch(url_absensiswa + "?action=daftarulangduasheet", {
+            method: "post",
+            body: datakirim
+        })
+            .then(m => m.json())
+            .then(r => {
+                infoloadingljk.innerHTML = r.result;
+                // console.log(r)
+                let datasiswakelasini = r.datasiswa.filter(s => s.nama_rombel == idNamaKelas && s.aktif == "aktif");
+                // console.log(datasiswakelasini)
+                jsondatasiswa = datasiswakelasini;
+                localStorage.setItem("datasiswa_" + ruangankelas, JSON.stringify(datasiswakelasini));
+            })
+            .catch(er => {
+                console.log(er);
+                infoloadingljk.innerHTML = "Terjadi kesalahan";
+            })
+        updatesetelahverifikasidaftarulang();
     }
-    // console.log(keyurut);
-    // console.log(valurut)
-    let cocok = (JSON.stringify(keyurut) == JSON.stringify(cekhead)) ? "COCOK" : "BEDA";
-    // console.log(cocok);
-
-    // console.log("dataoke");
-    // console.log(dataoke);
-    // console.log("datagaada");
-    // console.log(datagaada);
-    let tabel = JSON.stringify(valurut);
-    let datakirim = new FormData();
-    // datakirim.append("action", );
-    //datakirim.append("tab", "new_datasiswa");
-    datakirim.append("tabel", tabel);
-    datakirim.append("tokensiswa", tokensiswa);
-    datakirim.append("idss", jlo.ss_datauser);
-
-    infoloadingljk.innerHTML = `<p class="w3-center"><img src="/img/barloading.gif"/></p>`
-    await fetch(url_absensiswa + "?action=daftarulangduasheet", {
-        method: "post",
-        body: datakirim
-    })
-        .then(m => m.json())
-        .then(r => {
-            infoloadingljk.innerHTML = r.result;
-            // console.log(r)
-            let datasiswakelasini = r.datasiswa.filter(s => s.nama_rombel == idNamaKelas && s.aktif == "aktif");
-            // console.log(datasiswakelasini)
-            jsondatasiswa = datasiswakelasini;
-            localStorage.setItem("datasiswa_" + ruangankelas, JSON.stringify(datasiswakelasini));
-        })
-        .catch(er => {
-            console.log(er);
-            infoloadingljk.innerHTML = "Terjadi kesalahan";
-        })
-    updatesetelahverifikasidaftarulang();
-
 };
 const updatesetelahverifikasidaftarulang = async () => {
     await updateDatasiswa()
@@ -3029,7 +3031,7 @@ const ajuanperubahandata = async (tokensiswa) => {
         .then(k => {
             // console.log(k);
             let sumber = k.datasiswa.filter(s => s.id == tokensiswa);
-            //console.log(sumber);
+
             datahtml = htmlformulirdatasiswa(tokensiswa);
             infoloadingljk.innerHTML = datahtml;
             let obj = sumber[0];
@@ -3037,6 +3039,7 @@ const ajuanperubahandata = async (tokensiswa) => {
             let statussebelumnya = obj.usulanperubahandata
 
             obj.usulanperubahandata = "Ajuan Ke-" + (parseInt(statussebelumnya.match(/(\d+)/)[0])) + " disetujui";
+
 
 
             let key = Object.keys(obj); // key == header
@@ -4269,22 +4272,6 @@ async function absensisiswa() {
     if (jsondatasiswa.length == 0) {
         alert("Liat data siswa dulu");
         tabeldatakelassaya();
-        // let elstablengkap1 = document.getElementById('scrolltabelabsenrekap');
-        // let elstablengkap2 = document.getElementById('idtabelrekapsemester');
-        // let wid = elstablengkap2.offsetWidth;
-        // // let divscroll = document.getElementById("scrollatas");
-        // let isidivscroll = document.getElementById("isiscrolltabelabsenrekap");
-
-        // //let ww = divolahnilai.offsetWidth;
-
-        // // elstablengkap1.setAttribute("style", `border: none 0px red;overflow-x: scroll;position:sticky;position:-webkit-sticky;top:25px;`)
-
-        // isidivscroll.setAttribute("style", `width:${wid}px;height:20px`)
-        // let divolahnilai = document.getElementById("olahnilai");
-        // let ww = divolahnilai.offsetWidth;
-
-
-
     } else {
         await createtableabsenhariini();
     }
@@ -4383,7 +4370,8 @@ async function createtableabsenhariini() {
         if (u !== 0) {
             if (jsonabsenkelasperbulan.length > 0) {
                 for (var v = 0; v < jsonabsenkelasperbulan.length; v++) {
-                    if (datatabel.rows[u].cells[1].innerHTML == jsonabsenkelasperbulan[v].name) {
+                    // if (datatabel.rows[u].cells[1].innerHTML == jsonabsenkelasperbulan[v].name) {
+                    if (jsondatasiswa[u - 1].id == jsonabsenkelasperbulan[v].tokensiswa) {
                         var link = jsonabsenkelasperbulan[v].fileContent;
                         if (link !== "") {
                             var linksplit = link.replace("https://drive.google.com/file/d/", "");
@@ -4443,1288 +4431,8 @@ const fecjsonabsen = () => {
         });
 
 }
-async function pilihopsibulanrekap() {
-    let isidivscroll = document.getElementById("isiscrolltabelbulanan");
-    document.getElementById("tabel_rekap_absen_sia_tgl").innerHTML = "";
-    let idselect = document.getElementById("pilihbulanrekap");
-    let xx = idselect.selectedIndex;
-    let strdate = idselect[xx].value;
 
-    let d = new Date(strdate);
-    let m = d.getMonth();
-    let y = d.getFullYear()
-    let dt = d.getDate();
-    let sm = d.getMonth() + 1;
-    let nolbulan = addZero(sm);
-    let namabulan = NamaBulandariIndex(m);
-    let jumlahharibulanini = daysInMonth(sm, y);
 
-    document.getElementById("bulanrekap").innerHTML = "Tabel Rekap Absensi Bulan " + namabulan + " " + y;
-
-    let tabel = document.createElement("table");
-    tabel.setAttribute("class", "versi-table w3-tiny tahankiripertama");
-    tabel.setAttribute("id", "tabelxx");
-
-    let thead = tabel.createTHead();
-    let tr = thead.insertRow(0);
-
-    let th = document.createElement("th");
-    th.setAttribute("rowspan", "2");
-    th.innerHTML = "NAMA SISWA";
-    tr.appendChild(th);
-
-    th = document.createElement("th");
-    th.setAttribute("colspan", jumlahharibulanini);
-    th.setAttribute("id", "namaheaderbulan");
-
-    th.innerHTML = "Bulan " + namabulan + " " + y;
-    tr.appendChild(th);
-
-    tr = thead.insertRow(-1);
-    let itgl = 1;
-    let arrayKeteranganLibur = [];
-    let itungHE = 0;
-
-    for (let i = 0; i < jumlahharibulanini; i++) {
-        let d_tbl = new Date(y, m, itgl);
-        let sd_tbl = StringTanggal(d_tbl);
-        let indekshari = d_tbl.getDay()
-        let libur = (arrayStringTglLibur.indexOf(sd_tbl) > -1) ? true : false;
-        let indekslibur = (arrayStringTglLibur.indexOf(sd_tbl) > -1) ? arrayStringTglLibur.indexOf(sd_tbl) : -1;
-        let weekend = (indekshari == 0 || indekshari == 6) ? true : false;
-        th = document.createElement("th");
-
-        // th.setAttribute("style", "position:sticky;position:-webkit-sticky;top:50px; box-shadow: inset 0 0 1px #000000");
-
-        if (libur) {
-            th.setAttribute("class", "w3-red");
-            let teksbawah = "Tgl. " + tanggalfull(d_tbl) + " " + arrayKetLibur[indekslibur];
-            arrayKeteranganLibur.push(teksbawah)
-        } else if (weekend) {
-            th.setAttribute("class", "w3-red");
-        } else {
-
-
-            itungHE++
-        }
-
-        th.innerHTML = itgl + "<br>" + NamaHaridariIndex(indekshari);
-
-
-        tr.appendChild(th);
-
-        itgl++
-    }
-
-    let datanama = Object.keys(jsondatasiswa).map(k => jsondatasiswa[k].pd_nama);
-    let datatoken = Object.keys(jsondatasiswa).map(k => jsondatasiswa[k].id);
-    let encodenama;
-
-
-    let tbody = tabel.createTBody()
-    for (let j = 0; j < datanama.length; j++) {
-
-        //encodenama = encodeURIComponent(unescape(datanama[j]));//
-        encodenama = datatoken[j]
-
-        tr = tbody.insertRow(-1);
-        let cell = tr.insertCell(-1);
-        // cell.setAttribute("style", "position:sticky;position:-webkit-sticky;left:0px; box-shadow: inset 0 0 1px #000000");
-        cell.innerHTML = "<span style='font-size:12px;' id='datakelas" + j + "'>" + datanama[j] + "</span>";
-
-
-        let ke = 1;
-
-
-        for (let k = 0; k < jumlahharibulanini; k++) {
-            cell = tr.insertCell(-1);
-
-            d_tbl = new Date(y, m, ke);
-            sd_tbl = StringTanggal(d_tbl);
-            indekshari = d_tbl.getDay()
-            libur = (arrayStringTglLibur.indexOf(sd_tbl) > -1) ? true : false;
-            indekslibur = (arrayStringTglLibur.indexOf(sd_tbl) > -1) ? arrayStringTglLibur.indexOf(sd_tbl) : -1;
-            weekend = (indekshari == 0 || indekshari == 6) ? true : false;
-            if (libur) {
-                cell.setAttribute("class", "w3-red");
-                cell.setAttribute("style", "background-color:red")
-            } else if (weekend) {
-                cell.setAttribute("class", "w3-red");
-                cell.setAttribute("style", "background-color:red")
-            } else {
-
-                cell.setAttribute("style", "cursor:pointer");
-                cell.setAttribute("id", "td_" + encodenama + "_" + ke + "" + nolbulan + "" + y + "");
-                cell.setAttribute("onclick", "bantuabsen('" + encodenama + "_" + ke + "" + nolbulan + "" + y + "')");
-
-                cell.innerHTML = "<span style='font-size:10px' id='" + ke + "" + nolbulan + "" + y + "_" + ruangankelas + "_" + encodenama + "'>x</span>";
-            }
-            ke++
-        }
-    }
-
-
-
-    document.getElementById("tabel_rekap_absen_sia_tgl").appendChild(tabel);
-    let tbl = document.getElementById("tabelxx")
-
-
-    let lebar = tbl.offsetWidth + 26;
-
-    let a = localStorage.getItem("Kaldik");
-    let c = JSON.parse(a);
-
-    let b = c.filter(s => (new Date(s.start_tgl).getMonth() == m || new Date(s.end_tgl).getMonth() == m) && (new Date(s.start_tgl).getFullYear() == y || new Date(s.end_tgl).getFullYear() == m));
-    let ketlibur = "";
-    if (b.length !== 0) {
-        ketlibur = "Keterangan Tanggal:<ul>";
-        for (i = 0; i < b.length; i++) {
-            let thn_awal = new Date(b[i].start_tgl).getFullYear();
-            let thn_akhir = new Date(b[i].end_tgl).getFullYear();
-            // console.log(thn_awal + " " + thn_akhir)
-            let bln_awal = new Date(b[i].start_tgl).getMonth();
-            let bln_akhir = new Date(b[i].end_tgl).getMonth();
-            let tgl_awal = new Date(b[i].start_tgl).getDate();
-            let tgl_akhir = new Date(b[i].end_tgl).getDate();
-            if (thn_awal == thn_akhir) {
-                if (bln_awal == bln_akhir) {
-                    if (tgl_awal == tgl_akhir) {
-
-                        ketlibur += `<li> Tgl ${tgl_awal} ${timekbm_arraybulan[m]} ${new Date(b[i].start_tgl).getFullYear()}= ${b[i].keterangan}</li>`;
-                    } else {
-                        ketlibur += `<li> Tgl ${tgl_awal} - ${tgl_akhir} ${timekbm_arraybulan[m]}  ${new Date(b[i].end_tgl).getFullYear()}= ${b[i].keterangan}</li>`;
-                    }
-                } else {
-                    ketlibur += `<li> Tgl ${tgl_awal} ${timekbm_arraybulan[bln_awal]} - ${tgl_akhir} ${timekbm_arraybulan[bln_akhir]}  ${thn_awal}= ${b[i].keterangan}</li>`;
-                }
-            } else {
-                ketlibur += `<li> Tgl ${tgl_awal} ${timekbm_arraybulan[bln_awal]} ${thn_awal} - ${tgl_akhir} ${timekbm_arraybulan[bln_akhir]}  ${thn_akhir}= ${b[i].keterangan}</li>`;
-
-            }
-        }
-        ketlibur += "</ul>";
-    }
-    document.getElementById("tabel_rekap_absen_sia_tgl").innerHTML += ketlibur;
-    var TglCetak = new Date(y, m, 1);
-
-    let datee = StringTanggal(TglCetak)
-    await lihatrekapkelas(datee);
-    isidivscroll.setAttribute("style", `width:${lebar}px;height:5px;`)
-    let tombolprint = document.getElementById("printke1");
-    tombolprint.removeAttribute("onclick");
-    tombolprint.setAttribute("onclick", "print('tabel_rekap_absen_sia_tgl,Daftar Absensi Siswa Kelas " + ruangankelas + ",Bulan " + namabulan + " " + y + "," + TglCetak + "')");
-
-    tombolprint = document.getElementById("simpanabsenbulananexcel");
-    tombolprint.removeAttribute("onclick");
-    tombolprint.setAttribute("onclick", "excelrekapbulan()");
-
-
-    let elstablengkap1 = document.getElementById("scrolltabelbulanan")
-    let elstablengkap2 = document.getElementById("tabel_rekap_absen_sia_tgl")
-
-    elstablengkap1.onscroll = function () {
-        elstablengkap2.scrollLeft = elstablengkap1.scrollLeft;
-    };
-    elstablengkap2.onscroll = function () {
-        elstablengkap1.scrollLeft = elstablengkap2.scrollLeft;
-    };
-
-
-    // let selpertama = dtopp.rows.deleteCell(0);
-    //let selpertama = tbl.getBoundingClientRect();
-    // console.log(selpertama)
-    //
-    //     let x = classpts[0].offsetLeft;
-    //    let ku = tabel.getElementsByTagName("thead")[0].rows[0].cells[1].offsetWidth;
-    //     div.scrollLeft = (x - ku);
-
-
-
-
-
-
-
-
-}
-const excelrekapbulan = () => {
-    var datasiswadiv = document.getElementById("datasiswaprint");
-    datasiswadiv.innerHTML = "";
-    var tabelhasil = document.createElement("table");
-    tabelhasil.setAttribute("class", "versi-table");
-    tabelhasil.setAttribute("id", "myTableCopy");
-
-    var tabeleditt = document.getElementById("tabelxx");
-
-
-    var cln = tabeleditt.cloneNode(true);
-    tabelhasil.appendChild(cln);
-    datasiswadiv.appendChild(tabelhasil);
-    var tabeledithead = document.getElementById("myTableCopy").getElementsByTagName("thead")[0];
-    //tabeledithead.rows[0].deleteCell(1);
-    var identitasbulanrekap = tabeledithead.rows[0].cells[1].innerHTML
-
-    var tabeledit = document.getElementById("myTableCopy").getElementsByTagName("tbody")[0];
-    for (i = 0; i < tabeledit.rows.length; i++) {
-        for (j = 0; j < tabeledit.rows[i].cells.length; j++) {
-
-            let teks = tabeledit.rows[i].cells[j].innerHTML.replace("<br>", "")
-            let tekss = teks.replace("poto", "")
-            tabeledit.rows[i].cells[j].innerHTML = tekss;
-
-        };
-
-
-    }
-    let countcol = tabeledit.rows[0].cells.length;
-    let brs = tabeledithead.insertRow(0)
-    let sel = brs.insertCell(-1)
-    sel.setAttribute("colspan", countcol);
-    sel.setAttribute("style", "text-align:center");
-    sel.innerHTML = idNamaSekolah.toUpperCase()
-
-    brs = tabeledithead.insertRow(1)
-    sel = brs.insertCell(-1)
-    sel.setAttribute("colspan", countcol)
-    sel.innerHTML = "REKAPITULASI KEHADIRAN SISWA KELAS  " + idNamaKelas.toUpperCase() + " " + identitasbulanrekap.toUpperCase();
-
-    brs = tabeledithead.insertRow(2)
-    sel = brs.insertCell(-1)
-    sel.setAttribute("colspan", countcol);
-    sel.innerHTML = "Semester " + idSemester + " Tahun Pelajaran " + idTeksTapel
-
-    brs = tabeledithead.insertRow(3)
-    sel = brs.insertCell(-1)
-    sel.setAttribute("colspan", countcol)
-
-    let rowcount = tabeledit.rows.length;
-    console.log(rowcount)
-    let colcount = tabeledit.rows[0].cells.length;
-    countcol = tabeledit.rows[0].cells.length;
-    if (colcount >= 5) {
-
-
-
-        brs = tabeledit.insertRow(rowcount)
-        sel = brs.insertCell(-1)
-        sel = brs.insertCell(-1)
-        sel.setAttribute("style", "word-wrap: normal;")
-        sel.innerHTML = "NIP. " + idNipKepsek;
-        for (let a = 0; a < colcount - 4; a++) {
-            sel = brs.insertCell(-1)
-        }
-        sel = brs.insertCell(-1)
-        sel.setAttribute("style", "word-wrap: normal;")
-        sel.innerHTML = "NIP. " + idNipGuruKelas;
-        sel = brs.insertCell(-1)
-
-        brs = tabeledit.insertRow(rowcount)
-        sel = brs.insertCell(-1)
-        sel = brs.insertCell(-1)
-        sel.setAttribute("style", "word-wrap: normal;")
-        sel.innerHTML = "<b><u>" + idNamaKepsek + "</u></b>";
-        for (let a = 0; a < colcount - 4; a++) {
-            sel = brs.insertCell(-1)
-        }
-        sel = brs.insertCell(-1)
-        sel.setAttribute("style", "word-wrap: normal;")
-        sel.innerHTML = "<b><u>" + namauser + "</u></b>"
-        sel = brs.insertCell(-1)
-
-        brs = tabeledit.insertRow(rowcount)
-        brs = tabeledit.insertRow(rowcount)
-        brs = tabeledit.insertRow(rowcount)
-
-        brs = tabeledit.insertRow(rowcount)
-        sel = brs.insertCell(-1);
-        sel = brs.insertCell(-1) /// colom kedua ttd kepsek
-        sel.setAttribute("style", "word-wrap: normal;")
-        sel.innerHTML = "Kepala " + idNamaSekolah;
-        for (let a = 0; a < colcount - 4; a++) {
-            sel = brs.insertCell(-1) /// colom kedua ttd kepsek
-        }
-        sel = brs.insertCell(-1) /// colom ketiga titimangsa guru kelas
-        sel.setAttribute("style", "word-wrap: normal;")
-        sel.innerHTML = idJenisGuru + " " + idNamaKelas
-        sel = brs.insertCell(-1) /// colom ketiga titimangsa guru kelas
-
-
-
-        brs = tabeledit.insertRow(rowcount)
-        sel = brs.insertCell(-1)
-        sel = brs.insertCell(-1) /// colom kedua ttd kepsek
-        sel.setAttribute("style", "word-wrap: normal;")
-        sel.innerHTML = "Mengetahui,";
-        for (let a = 0; a < colcount - 4; a++) {
-            sel = brs.insertCell(-1) /// colom kedua ttd kepsek
-        }
-        sel = brs.insertCell(-1) /// colom ketiga titimangsa guru kelas
-        sel.setAttribute("style", "word-wrap: normal;")
-        sel.innerHTML = jlo.kota + ", " + tanggalfull(new Date())
-        sel = brs.insertCell(-1) /// colom ketiga titimangsa guru kelas
-
-
-
-
-        brs = tabeledit.insertRow(rowcount)
-
-        brs = tabeledit.insertRow(rowcount)
-
-
-    }
-
-
-
-    $("#myTableCopy").table2excel({
-        name: " SDN Ratujaya 1",
-        filename: "Rekap kehadiran siswa Kelas " + ruangankelas + " " + identitasbulanrekap + " ID FILE " + new Date().getTime(),
-        fileext: ".xls",
-        exclude_img: true,
-        exclude_judul: true,
-        exclude_links: true,
-        exclude_inputs: true,
-        preserveColors: true,
-        jumlahheader: 2
-    });
-    datasiswadiv.innerHTML = "";
-}
-const lihatrekapkelas = async (datee) => {
-    let kelas = ruangankelas;
-    document.getElementById("tabel_rekap_absen_nama_tgl").innerHTML = "";
-    document.getElementById("spinspin").innerHTML = "<i class='fa fa-spin fa-spinner w3-xxxlarge'></i>"
-    var kodeid;
-    var kodetd
-    var hadir;
-    let ind = new Date(datee).getMonth();
-    let namabulansekarang = NamaBulandariIndex(new Date().getMonth())
-    let bulanapi = NamaBulandariIndex(ind)
-    var jsonabsenkelasperbulan = [];
-    jsonlocalstorage = JSON.parse(localStorage.getItem("inst_id"));
-    await fetch(url_absensiswa + "?action=rekapbulan&kelas=" + ruangankelas + "&strtgl=" + datee)
-        .then(m => m.json())
-        .then(k => {
-            jsonabsenkelasperbulan = k[bulanapi];
-
-            localStorage.setItem(bulanapi, JSON.stringify(k[bulanapi]))
-        }).catch(er => { console.log(er) })
-
-    // if (localStorage.hasOwnProperty(bulanapi)) {
-    //     if (bulanapi !== namabulansekarang) {
-    //         let kk = JSON.parse(localStorage.getItem(bulanapi));
-    //         jsonabsenkelasperbulan = kk;
-
-    //     } else {
-    //         await fetch(url_absensiswa + "?action=rekapbulan&kelas=" + ruangankelas + "&strtgl=" + datee)
-    //             .then(m => m.json())
-    //             .then(k => {
-    //                 jsonabsenkelasperbulan = k[bulanapi];
-
-    //                 localStorage.setItem(bulanapi, JSON.stringify(k[bulanapi]))
-    //             }).catch(er => {
-    //                 console.log("muat ulang: " + er);
-    //                 fetch(url_absensiswa + "?action=rekapbulan&kelas=" + ruangankelas + "&strtgl=" + datee)
-    //                     .then(m => m.json())
-    //                     .then(k => {
-    //                         jsonabsenkelasperbulan = k[bulanapi];
-
-    //                         localStorage.setItem(bulanapi, JSON.stringify(k[bulanapi]))
-    //                     }).catch(err => {
-    //                         console.log(err + " paksa reload");
-    //                         location.reload()
-    //                     })
-    //             })
-    //     }
-
-    // } else {
-    //     await fetch(url_absensiswa + "?action=rekapbulan&kelas=" + ruangankelas + "&strtgl=" + datee)
-    //         .then(m => m.json())
-    //         .then(k => {
-    //             jsonabsenkelasperbulan = k[bulanapi];
-    //             //console.log("ga punya local, dan sedang buat local")
-    //             localStorage.setItem(bulanapi, JSON.stringify(k[bulanapi]))
-    //         }).catch(er => {
-    //             //console.log(er);
-    //             fetch(url_absensiswa + "?action=rekapbulan&kelas=" + encodeURIComponent(ruangankelas) + "&strtgl=" + datee)
-    //                 .then(m => m.json())
-    //                 .then(k => {
-    //                     jsonabsenkelasperbulan = k[bulanapi];
-    //                     console.log("ga punya local, dan sedang buat local dari " + er)
-    //                     localStorage.setItem(bulanapi, JSON.stringify(k[bulanapi]))
-    //                 }).catch(er => {
-    //                     console.log(er + " paksa reload");
-    //                     location.reload()
-    //                 })
-
-    //         })
-
-    // }
-
-
-
-    spinspin.innerHTML = "";
-
-    for (var i = 0; i < jsonabsenkelasperbulan.length; i++) {
-        kodeid = jsonabsenkelasperbulan[i].id + "_" + kelas + "_" + jsonabsenkelasperbulan[i].tokensiswa;
-        kodetd = "td_" + jsonabsenkelasperbulan[i].tokensiswa + "_" + jsonabsenkelasperbulan[i].id;
-        var isikehadiran = document.getElementById(kodeid)
-
-        if (isikehadiran == null) {
-            // document.getElementById("tabel_rekap_absen_nama_tgl").innerHTML += "<li>" + decodeURIComponent(jsonabsenkelasperbulan[i].name) + " pada tanggal " + new Date(jsonabsenkelasperbulan[i].Time_Stamp).getDate() + " Tidak ada/diubah namanya.</li>";
-        } else {
-            var link = jsonabsenkelasperbulan[i].fileContent;
-            if (link !== "") {
-                var linksplit = link.replace("https://drive.google.com/file/d/", "");
-                var linksplitt = linksplit.replace("/view?usp=drivesdk", "");
-
-            } else {
-
-                var linksplitt = "1BZwicOBix4eILY0IQrJs4H825w2k4g-3";
-            }
-
-
-            var cekdiv = document.getElementById(kodetd);
-            if (cekdiv != null) {
-                document.getElementById(kodetd).removeAttribute("onclick");
-
-                isikehadiran.innerHTML = `<img src="https://drive.google.com/uc?export=view&id=${linksplitt}" style="width:20px; height:30px;cursor:pointer" alt="poto" onclick="klikpotosiswa(this)"/><br/>${jsonabsenkelasperbulan[i].kehadiran}`;
-
-            }
-        }
-
-    }
-
-    //document.getElementById("tabel_rekap_absen_nama_tgl").innerHTML += "</ol>"
-
-    if (BolehEksekusiJikaDiSemesterIni(datee)) {
-        let namatabel = document.getElementById("tabelxx"); //.rows.length; ;
-        let datanama = Object.keys(jsondatasiswa).map(k => jsondatasiswa[k].pd_nama);
-
-        let arrayy = [];
-        let indektabelrekapsemester = [2, 7, 12, 17, 22, 27];
-        let indeksbulanini = IndeksBulanDiSemesteTertentu(datee);
-        let iStart = indektabelrekapsemester[indeksbulanini];
-        let tabelnya = document.getElementById("idtabelrekapsemester")
-        for (let k = 0; k < datanama.length; k++) {
-            let objdata = {}
-            objdata.namasiswa = datanama[k];
-
-
-            let countHadir = 0,
-                countIjin = 0,
-                countSakit = 0;
-
-            let countHE = namatabel.rows[2].cells.length - 1;
-
-            for (let l = 1; l < namatabel.rows[k + 2].cells.length; l++) {
-                let el = namatabel.rows[k + 2].cells[l].outerHTML;
-                if (el.indexOf("red") > -1) {
-                    countHE -= 1
-                }
-
-                let tes = namatabel.rows[k + 2].cells[l].innerHTML;
-                if (tes.indexOf("Hadir") > -1) {
-                    countHadir++
-                } else if (tes.indexOf("Ijin") > -1) {
-                    countIjin++
-                } else if (tes.indexOf("Sakit") > -1) {
-                    countSakit++
-                }
-            }
-            objdata.Hadir = countHadir;
-            objdata.Ijin = countIjin;
-            objdata.Sakit = countSakit;
-            objdata.Alpa = countHE - (countHadir + countIjin + countSakit);
-            objdata.HariEfektif = countHE;
-
-            arrayy.push(objdata)
-
-            tabelnya.rows[k + 3].cells[iStart].innerHTML = countHE; // HE
-            tabelnya.rows[k + 3].cells[iStart * 1 + 1].innerHTML = countHadir; //Hadir
-            tabelnya.rows[k + 3].cells[iStart * 1 + 2].innerHTML = countSakit; //Sakit
-            tabelnya.rows[k + 3].cells[iStart * 1 + 3].innerHTML = countIjin; //Ijin
-            tabelnya.rows[k + 3].cells[iStart * 1 + 4].innerHTML = countHE - (countHadir + countIjin + countSakit); //alpa
-
-        }
-        REKAPAbsen[bulanapi] = arrayy;
-
-    }
-    // let tbl = document.getElementById("tabelxx");
-    // let elementini = tbl.getElementsByTagName("thead")[0];
-    // let topheader = document.createElement("table")
-    // topheader.setAttribute("class", "versi-table w3-tiny kloningan_opsibulanrekap");
-    // var cln = elementini.cloneNode(true);
-    // topheader.appendChild(cln);
-    // $('#isiscrolltabelbulanan').nextAll('table').remove();
-    // document.getElementById("isiscrolltabelbulanan").after(topheader);
-    // let dto = document.querySelector(".kloningan_opsibulanrekap");
-    // let dtopp = document.querySelector(".kloningan_opsibulanrekap").getElementsByTagName("thead")[0];
-    // let nsis = tbl.offsetWidth;
-    // let nsisd = dto.offsetWidth;
-    // let n = nsis - nsisd;
-    // // dto.setAttribute("style", `position:sticky;position:-webkit-sticky;top:0px;left:${lebar}`)
-    // console.log(nsis)
-    // topheader.setAttribute("style", `margin-left:${n}px`)
-
-}
-const updateLocaleRekapkelas = async (datee) => {
-    let kelas = ruangankelas;
-    document.getElementById("tabel_rekap_absen_nama_tgl").innerHTML = "";
-    document.getElementById("spinspin").innerHTML = "<i class='fa fa-spin fa-spinner w3-xxxlarge'></i>"
-    var kodeid;
-    var kodetd
-    var hadir;
-    document.getElementById("tabel_rekap_absen_nama_tgl").innerHTML = "Nama Siswa yang tidak ada di absen, tapi terdata di kelas ini: <ol>";
-
-    let ind = new Date(datee).getMonth();
-    let namabulansekarang = NamaBulandariIndex(new Date().getMonth())
-    let bulanapi = NamaBulandariIndex(ind)
-    var jsonabsenkelasperbulan = [];
-    await fetch(url_absensiswa + "?action=rekapbulan&kelas=" + encodeURIComponent(ruangankelas) + "&strtgl=" + datee)
-        .then(m => m.json())
-        .then(k => {
-            jsonabsenkelasperbulan = k[bulanapi];
-            localStorage.setItem(bulanapi, JSON.stringify(k[bulanapi]))
-        }).catch(er => alert("OUps, terjadi kesalahan. Silakan ulangi perintahnya. \n" + er))
-    spinspin.innerHTML = "";
-
-    for (var i = 0; i < jsonabsenkelasperbulan.length; i++) {
-        //mengecek element kodeid
-        kodeid = jsonabsenkelasperbulan[i].id + "_" + kelas + "_" + jsonabsenkelasperbulan[i].tokensiswa;
-        kodetd = "td_" + jsonabsenkelasperbulan[i].tokensiswa + "_" + jsonabsenkelasperbulan[i].id;
-        var isikehadiran = document.getElementById(kodeid)
-
-        if (isikehadiran == null) {
-            document.getElementById("tabel_rekap_absen_nama_tgl").innerHTML += "<li>" + decodeURIComponent(jsonabsenkelasperbulan[i].name) + " pada tanggal " + new Date(jsonabsenkelasperbulan[i].Time_Stamp).getDate() + " Tidak ada/diubah namanya.</li>";
-        } else {
-            var link = jsonabsenkelasperbulan[i].fileContent;
-            if (link !== "") {
-                var linksplit = link.replace("https://drive.google.com/file/d/", "");
-                var linksplitt = linksplit.replace("/view?usp=drivesdk", "");
-
-            } else {
-                linksplitt = "1BZwicOBix4eILY0IQrJs4H825w2k4g-3"
-            }
-
-            var cekdiv = document.getElementById(kodetd);
-            if (cekdiv != null) {
-                document.getElementById(kodetd).removeAttribute("onclick");
-
-                isikehadiran.innerHTML = "<div style='width:22px;height:32px;cursor:pointer;border:1px solid blue'><a href='" + jsonabsenkelasperbulan[i].fileContent + "' target='_blank'><img src='https://drive.google.com/uc?export=view&id=" + linksplitt + "'  style='width:20px; height:30px'  alt='poto'><br/>" + jsonabsenkelasperbulan[i].kehadiran + "</a></div>";
-            }
-        }
-
-    }
-    document.getElementById("tabel_rekap_absen_nama_tgl").innerHTML += "</ol>"
-
-}
-var datasiswaklik = [];
-function kirimwauntukabsen(id) {
-    var noid = id.split("_")[1];
-    datasiswaklik = jsondatasiswa.filter(x => x.id == noid)
-    var tgl = new Date();
-    var stgl = tgl.getDate();
-    var xbln = tgl.getMonth() + 1;
-    var sbln = addZero(xbln);
-
-
-    var sthn = tgl.getFullYear();
-    var idok = stgl + "" + sbln + "" + sthn;
-
-    var kelas = ruangankelas;
-    document.getElementById("namaanakdiwa").innerHTML = datasiswaklik[0].pd_nama;
-    document.getElementById('wasiswa').style.display = 'block';
-    document.kirimwasiswa.nowasiswa.value = "";
-    var nowanya = datasiswaklik[0].pd_hp;
-    if (nowanya.length > 11) {
-        document.kirimwasiswa.nowasiswa.disabled = true;
-        document.kirimwasiswa.nowasiswa.value = nowanya;
-        pesanawalwa.innerHTML = "No WA sudah terisi dan siap menghubungi Ananda  ";
-    } else {
-        document.kirimwasiswa.nowasiswa.disabled = false;
-        pesanawalwa.innerHTML = "No WA belum terisi untuk mengirim pesan WA ke Ananda  ";
-    }
-
-    var tombolwamodal = document.createElement("button");
-    tombolwamodal.setAttribute("class", "login");
-    tombolwamodal.setAttribute("onclick", "btnkirimwasiswa()");
-    tombolwamodal.innerHTML = "<i class='fa fa-whatsapp'></i> Kirim Pesan";
-    document.getElementById("tombolotomatis").innerHTML = "";
-    document.getElementById("tombolotomatis").appendChild(tombolwamodal);
-}
-function btnkirimwasiswa() {
-    pesanawalwa.innerHTML = "";
-    var teksnya = "Assalamualaikum, Salam sejahtera. \n \n Kami melacak  bahwa Ananda " + namaanakdiwa.innerHTML + " belum mengisi kehadiran, silakan kunjungi alamat  atau balas WA ini dengan mengirimkan Poto untuk Kami bantu kehadirannya. \n \n Berikut pesan khususnya: ";
-    var nowaa = document.kirimwasiswa.nowasiswa.value;
-    var nowa;
-    if (nowaa.slice(0, 1) == "0") {
-        nowa = "+62" + nowaa.slice(1, 12);
-    } else if (nowaa.slice(0, 1) == "6") {
-        nowa = "+" + nowaa;
-    } else {
-        nowa = nowaa
-    }
-    var urlnya = getLinkWhastapp(nowa, teksnya + "\n \n " + document.kirimwasiswa.tekssiswa.value);
-    window.open(urlnya)
-    document.kirimwasiswa.reset();
-    document.getElementById("wasiswa").style.display = "none";
-}
-function bantuabsen(encodenama) {
-    document.bantuisi.reset();
-    document.bantukirim.reset();
-    var teks = encodenama;
-    var split = teks.split("_");
-    var kodenama = jsondatasiswa.filter(s => s.id == split[0])[0];//parseInt(split[0]);
-
-    var tgl = split[1];
-
-    document.getElementById("divbantuabsen").style.display = "block";
-    document.bantuisi.style.display = "block";
-    document.getElementById("loginbantu").style.display = "none";
-    document.getElementById("tombolbantusimpan").style.display = "block";
-    document.getElementById("thankyou_messagekirim").style.display = "none";
-    loginclosebantu.innerHTML = "Batal";
-    kodefilepotosiswaabsen.innerHTML = "";
-
-    document.getElementById("bantusiapa").innerHTML = kodenama.pd_nama;//jsondatasiswa[kodenama].pd_nama; //decodeURIComponent(kodenama);
-    document.bantukirim.name.value = kodenama.pd_nama;//jsondatasiswa[kodenama].pd_nama; //decodeURIComponent(kodenama);
-    document.bantukirim.kelas.value = ruangankelas;
-    document.bantukirim.tokensiswa.value = parseInt(split[0]);//jsondatasiswa[kodenama].id;
-    document.getElementById("potosiswa").src = "/img/eabsensi.webp";
-    var ltgl = tgl.length;
-    var dtg, dbln, dthn
-    if (ltgl == 7) { //7082020 --> 7(
-        dtg = addZero(tgl.slice(0, 1));
-        dbln = tgl.slice(1, 3);
-        dthn = tgl.slice(3, 7)
-
-    } else {
-        dtg = tgl.slice(0, 2);
-        dbln = tgl.slice(2, 4);
-        dthn = tgl.slice(4, 8)
-
-    }
-    var tglnya = dthn + "-" + dbln + "-" + dtg;
-    document.bantuisi.time_stampbantu.value = tglnya;
-    document.bantukirim.Time_Stamp.value = tglnya;
-    document.bantukirim.id.value = deleteZero(dtg) + "" + dbln + "" + dthn;
-
-    var namabulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-    document.getElementById("dibaca").innerHTML = "Tanggal " + deleteZero(dtg) + "  bulan: " + namabulan[deleteZero(dbln) - 1] + "  Tahun: " + dthn;
-
-}
-function getLinkWhastapp(number, message) {
-    var url = 'https://api.whatsapp.com/send?phone=' +
-        number +
-        '&text=' +
-        encodeURIComponent(message)
-
-    return url
-}
-function tombolbantukirim() {
-    document.getElementById("bantusiapa").innerHTML = "<i class='fa fa-spin fa-spinner'></i> Sedang proses ...";
-    document.bantuisi.style.display = "none";
-    document.getElementById("loginbantu").style.display = "none";
-    var tgl = document.bantuisi.time_stampbantu.value;
-    var id1 = tgl.split("-")[0]; //tahun
-    var id2 = tgl.split("-")[1]; //bulan
-    var id3 = tgl.split("-")[2]; //tgl
-    var stringdate = id1 + "-" + deleteZero(id2) + "-" + deleteZero(id3);
-    var en = $("#bantukirim").serialize();
-    var url = url_absensiswa + "?action=siswaabsen";
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", url, true);
-    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-    xhr.onreadystatechange = function () {
-
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            document.getElementById("bantusiapa").innerHTML = ""; //+ "  Data telah berhasil dibantu, Terima kasih";
-            document.getElementById("thankyou_messagekirim").style.display = "block";
-            document.getElementById("thankyou_messagekirim").innerHTML = JSON.parse(xhr.responseText);
-            document.getElementById("tombolbantusimpan").style.display = "block"; //????
-            document.getElementById("loginclosebantu").innerHTML = "Selesai dan Keluar";
-            refreshAbsenHariIni();
-            updateLocaleRekapkelas(stringdate);
-        }
-    };
-    xhr.send(en);
-}
-function uploadfilebantu() {
-
-
-    //define the width to resize e.g 600px
-    var resize_width = 150; //without px
-
-    //get the image selected
-    var item = document.querySelector('#lampirkanpotoabsen').files[0];
-
-    //create a FileReader
-    var reader = new FileReader();
-
-    //image turned to base64-encoded Data URI.
-    reader.readAsDataURL(item);
-    reader.name = item.name; //get the image's name
-    reader.size = item.size; //get the image's size
-    reader.onload = function (event) {
-        var img = new Image(); //create a image
-        img.src = event.target.result; //result is base64-encoded Data URI
-        img.name = event.target.name; //set name (optional)
-        img.size = event.target.size; //set size (optional)
-        img.onload = function (el) {
-            var elem = document.createElement('canvas'); //create a canvas
-
-            //scale the image to 600 (width) and keep aspect ratio
-            var scaleFactor = resize_width / el.target.width;
-            elem.width = resize_width;
-            elem.height = el.target.height * scaleFactor;
-
-            //draw in canvas
-            var ctx = elem.getContext('2d');
-            ctx.drawImage(el.target, 0, 0, elem.width, elem.height);
-
-            //get the base64-encoded Data URI from the resize image
-            var srcEncoded = ctx.canvas.toDataURL(el.target, 'image/jpeg', 0);
-
-            //assign it to thumb src
-            var poto = document.querySelector('#potosiswa')
-            poto.src = srcEncoded;
-
-
-            kodefilepotosiswaabsen.innerHTML = "";
-
-            var inputbase64 = document.createElement("input");
-            inputbase64.setAttribute("name", "fileContent");
-            inputbase64.value = srcEncoded.replace(/^.*,/, '');
-
-            var inputfilename = document.createElement("input");
-            inputfilename.setAttribute("name", "filename");
-            inputfilename.value = "avatar_" + namebantukirim.value.toUpperCase().replace(/\s+/, "_");
-
-            var inputmimetype = document.createElement("input");
-            inputmimetype.setAttribute("name", "mimeType")
-            inputmimetype.value = "data:image/jpeg"; //e.target.result.match(/^.*(?=;)/)[0]
-
-            kodefilepotosiswaabsen.appendChild(inputbase64);
-            kodefilepotosiswaabsen.appendChild(inputfilename);
-            kodefilepotosiswaabsen.appendChild(inputmimetype);
-
-
-        }
-        loginbantu.style.display = "block";
-    }
-
-}
-function gantikehadiranbantu() {
-    var sss = document.bantuisi.pilih_kehadiran;
-    document.bantukirim.kehadiran.value = sss.value;
-}
-function bantuisitanggal() {
-    var tgl = document.bantuisi.time_stampbantu.value;
-    var id1 = tgl.split("-")[0]; //tahun
-    var id2 = tgl.split("-")[1]; //bulan
-    var id3 = tgl.split("-")[2]; //tgl
-    var idok = deleteZero(id3) + "" + id2 + "" + id1;
-    document.bantukirim.Time_Stamp.value = tgl;
-    document.bantukirim.id.value = idok;
-    var namabulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-    document.getElementById("dibaca").innerHTML = "Tanggal " + deleteZero(id3) + "  bulan: " + namabulan[deleteZero(id2) - 1] + "  Tahun: " + id1;
-}
-
-const buattabelrekapsemester = () => {
-    let indekssemester = SemesterBerapaSekarang();
-    let divtabel = document.getElementById("tabelabsenrekap");
-    divtabel.innerHTML = "";
-    let tabel = document.createElement("table");
-    tabel.setAttribute("class", "versi-table w3-border modifgaris w3-tiny idtabelrekapsemester")
-    tabel.setAttribute("id", "idtabelrekapsemester")
-
-
-    let thead = tabel.createTHead();
-    let brstr = thead.insertRow(0);
-    let th0 = document.createElement("th");
-    th0.setAttribute("class", "w3-blue-grey");
-    th0.setAttribute("rowspan", "3");
-    th0.innerHTML = "No";
-    brstr.appendChild(th0);
-    let th1 = document.createElement("th");
-    th1.setAttribute("class", "w3-khaki");
-    th1.setAttribute("rowspan", "3");
-    th1.setAttribute("style", "position:sticky;position:-webkit-sticky;left:0px;box-shadow: inset 0 0 1px #000000");
-    th0.innerHTML = "No";
-    th1.innerHTML = "Nama";
-    brstr.appendChild(th1);
-
-
-    let th2 = document.createElement("th");
-    th2.setAttribute("class", "w3-light-blue");
-    th2.setAttribute("colspan", "30");
-    th2.innerHTML = "Bulan";
-    brstr.appendChild(th2);
-
-    let brstrhead = thead.insertRow(-1);
-    let brstrket = thead.insertRow(-1);
-    let warnabulan = ["w3-red", "w3-blue", "w3-aqua", "w3-sand", "w3-yellow", "w3-deep-orange"]
-    for (var a = 0; a < 6; a++) {
-        var indeks = arrayIndeksBulan[a];
-        var indek = parseFloat(indeks)
-        var th3 = document.createElement("th");
-        th3.setAttribute("class", warnabulan[a]);
-        th3.setAttribute("colspan", "5");
-        th3.innerHTML = namaBulanDiSemesterBerarpa(indekssemester, a); //NamaBulandariIndex(indek);
-        brstrhead.appendChild(th3);
-
-        var thhe = document.createElement("th");
-        thhe.setAttribute("class", warnabulan[a]);
-        thhe.innerHTML = "HE"
-        brstrket.appendChild(thhe);
-        //jumlah hadir
-        var thhe = document.createElement("th");
-        thhe.setAttribute("class", warnabulan[a]);
-        thhe.innerHTML = "Hadir"
-        brstrket.appendChild(thhe);
-        //jumlah Sakit
-        var thhe = document.createElement("th");
-        thhe.setAttribute("class", warnabulan[a]);
-        thhe.innerHTML = "Sakit"
-        brstrket.appendChild(thhe);
-        //jumlah Ijin
-        var thhe = document.createElement("th");
-        thhe.setAttribute("class", warnabulan[a]);
-        thhe.innerHTML = "Ijin"
-        brstrket.appendChild(thhe);
-        //jumlah Sakit
-        var thhe = document.createElement("th");
-        thhe.setAttribute("class", warnabulan[a]);
-        thhe.innerHTML = "alpa"
-        brstrket.appendChild(thhe);
-
-
-    }
-
-    let i = 1,
-        x, y, z, o; // = 0;
-
-    let tbody = tabel.createTBody();
-    jsondatasiswa.forEach(element => {
-
-
-        let brs = tbody.insertRow(-1);
-        let selbaris = brs.insertCell(-1);
-        selbaris.setAttribute("class", "w3-aqua")
-        selbaris.innerHTML = i;
-        let selbaris1 = brs.insertCell(-1);
-        selbaris1.setAttribute("style", "position:sticky;position:-webkit-sticky;left:0px;box-shadow: inset 0 0 1px #000000");
-        selbaris1.setAttribute("class", "w3-khaki")
-        selbaris1.innerHTML = element.pd_nama;
-        for (let b = 0; b < 30; b++) {
-            if (b == 0) {
-                o = 0
-            } else if (b % 5 == 0) {
-                o += 1
-            }
-            let selbaris3 = brs.insertCell(-1);
-            selbaris3.setAttribute("class", warnabulan[o])
-            selbaris3.innerHTML = "-";
-        }
-        i++;
-
-
-    });
-
-
-
-
-
-    // }
-    divtabel.innerHTML += `<button class="w3-button w3-aqua w3-round-large" onclick="excelRekapSemester()"><i class="fa fa-file-excel-o"><i> Simpan Excel</button>`
-    divtabel.innerHTML += `   <button class="w3-button w3-blue-grey w3-round-large" onclick="printRekapSemester()"><i class="fa fa-print"><i> Print </button><hr>`
-
-    divtabel.appendChild(tabel);
-
-    let wid = document.querySelector(".idtabelrekapsemester").offsetWidth;
-    //console.log(wid);
-    let divscroll = document.getElementById("scrolltabelabsenrekap");
-    let isidivscroll = document.getElementById("isiscrolltabelabsenrekap");
-
-    // divscroll.setAttribute("style", `x-index:999;border: none 0px red;overflow-x: scroll;position:sticky;position:-webkit-sticky;top:25px;">`)
-    isidivscroll.setAttribute("style", `width:1474px;height:5px;`)
-
-};
-let elstablengkap1 = document.getElementById("scrolltabelabsenrekap")
-let elstablengkap2 = document.getElementById("tabelabsenrekap")
-elstablengkap1.onscroll = function () {
-    elstablengkap2.scrollLeft = elstablengkap1.scrollLeft;
-};
-elstablengkap2.onscroll = function () {
-    elstablengkap1.scrollLeft = elstablengkap2.scrollLeft;
-};
-const cekElementidRekapTabel = () => {
-    let semester = SemesterBerapaSekarang();
-
-    let ini = document.getElementById("idtabelrekapsemester")
-    let cek = ini.rows[3].cells[1].innerHTML
-    alert(cek);
-    alert(ini.rows.length - 3)
-}
-const RekapAbsenSemester = () => {
-    let semester = SemesterBerapaSekarang();
-
-    let ini = document.getElementById("idtabelrekapsemester")
-    let cek = ini.rows[3].cells[1].innerHTML
-    alert(cek);
-    alert(ini.rows.length - 3)
-}
-function excelRekapSemester() {
-    var datasiswadiv = document.getElementById("datasiswaprint");
-    datasiswadiv.innerHTML = "";
-    var tabelhasil = document.createElement("table");
-    tabelhasil.setAttribute("class", "versi-table");
-    tabelhasil.setAttribute("id", "myTableCopy");
-
-    var tabeleditt = document.getElementById("idtabelrekapsemester"); //.getElementsByTagName("tbody")[0];
-    var cln = tabeleditt.cloneNode(true);
-    tabelhasil.appendChild(cln);
-    datasiswadiv.appendChild(tabelhasil);
-    //------------------
-    let tabeledit = document.getElementById("myTableCopy").getElementsByTagName("tbody")[0]
-    let tabeledithead = document.getElementById("myTableCopy").getElementsByTagName("thead")[0];
-    let countcol = tabeledit.rows[0].cells.length;
-    let brs = tabeledithead.insertRow(0)
-    let sel = brs.insertCell(-1)
-    sel.setAttribute("colspan", countcol);
-    sel.setAttribute("style", "text-align:center");
-    sel.innerHTML = idNamaSekolah.toUpperCase()
-
-    brs = tabeledithead.insertRow(1)
-    sel = brs.insertCell(-1)
-    sel.setAttribute("colspan", countcol)
-    sel.innerHTML = "REKAP KEHADIRAN DALAM SATU SEMESTER KELAS  " + idNamaKelas.toUpperCase();
-
-    brs = tabeledithead.insertRow(2)
-    sel = brs.insertCell(-1)
-    sel.setAttribute("colspan", countcol);
-    sel.innerHTML = "Semester " + idSemester + " Tahun Pelajaran " + idTeksTapel
-
-    brs = tabeledithead.insertRow(3)
-    sel = brs.insertCell(-1)
-    sel.setAttribute("colspan", countcol)
-
-    //---------- TAMBAHKAN TANDA TANGAN
-
-    let rowcount = tabeledit.rows.length;
-    // console.log(rowcount)
-    let colcount = tabeledit.rows[0].cells.length;
-    countcol = tabeledit.rows[0].cells.length;
-    if (colcount >= 5) {
-
-        brs = tabeledit.insertRow(rowcount)
-        sel = brs.insertCell(-1)
-        sel = brs.insertCell(-1) /// colom kedua ttd kepsek
-        sel.innerHTML = "NIP. " + idNipKepsek;
-        for (let a = 0; a < colcount - 4; a++) {
-            sel = brs.insertCell(-1) /// colom kedua ttd kepsek
-        }
-        sel = brs.insertCell(-1) /// colom ketiga titimangsa guru kelas
-        sel.innerHTML = "NIP. " + idNipGuruKelas;
-        sel = brs.insertCell(-1) /// colom ketiga titimangsa guru kelas
-
-        brs = tabeledit.insertRow(rowcount)
-        sel = brs.insertCell(-1)
-        sel = brs.insertCell(-1) /// colom kedua ttd kepsek
-        sel.innerHTML = "<b><u>" + idNamaKepsek + "</u></b>"
-        for (let a = 0; a < colcount - 4; a++) {
-            sel = brs.insertCell(-1) /// colom kedua ttd kepsek
-        }
-        sel = brs.insertCell(-1) /// colom ketiga titimangsa guru kelas
-        sel.innerHTML = "<b><u>" + namauser + "</u></b>"
-        sel = brs.insertCell(-1) /// colom ketiga titimangsa guru kelas
-
-        brs = tabeledit.insertRow(rowcount)
-        brs = tabeledit.insertRow(rowcount)
-        brs = tabeledit.insertRow(rowcount)
-
-        brs = tabeledit.insertRow(rowcount)
-        sel = brs.insertCell(-1);
-        sel = brs.insertCell(-1) /// colom kedua ttd kepsek
-        sel.innerHTML = "Kepala " + idNamaSekolah;
-        for (let a = 0; a < colcount - 4; a++) {
-            sel = brs.insertCell(-1) /// colom kedua ttd kepsek
-        }
-        sel = brs.insertCell(-1) /// colom ketiga titimangsa guru kelas
-        sel.innerHTML = idJenisGuru + " " + idNamaKelas
-        sel = brs.insertCell(-1) /// colom ketiga titimangsa guru kelas
-
-        brs = tabeledit.insertRow(rowcount)
-        sel = brs.insertCell(-1)
-        sel = brs.insertCell(-1) /// colom kedua ttd kepsek
-        sel.innerHTML = "Mengetahui,";
-        for (let a = 0; a < colcount - 4; a++) {
-            sel = brs.insertCell(-1) /// colom kedua ttd kepsek
-        }
-        sel = brs.insertCell(-1) /// colom ketiga titimangsa guru kelas
-        sel.innerHTML = jlo.kota + ", " + tanggalfull(new Date())
-        sel = brs.insertCell(-1) /// colom ketiga titimangsa guru kelas
-
-        brs = tabeledit.insertRow(rowcount)
-        brs = tabeledit.insertRow(rowcount)
-
-
-    } else {
-        brs = tabeledit.insertRow(rowcount)
-        sel = brs.insertCell(-1)
-        sel = brs.insertCell(-1) /// colom kedua ttd kepsek
-        sel.innerHTML = "NIP. " + idNipKepsek;
-
-        brs = tabeledit.insertRow(rowcount)
-        sel = brs.insertCell(-1)
-        sel = brs.insertCell(-1) /// colom kedua ttd kepsek
-        sel.innerHTML = "<b><u>" + idNamaKepsek + "</u></b>"
-
-
-        brs = tabeledit.insertRow(rowcount)
-        brs = tabeledit.insertRow(rowcount)
-        brs = tabeledit.insertRow(rowcount)
-
-        brs = tabeledit.insertRow(rowcount)
-        sel = brs.insertCell(-1);
-        sel = brs.insertCell(-1) /// colom kedua ttd kepsek
-        sel.innerHTML = "Kepala " + idNamaSekolah;
-
-
-        brs = tabeledit.insertRow(rowcount)
-        sel = brs.insertCell(-1)
-        sel = brs.insertCell(-1) /// colom kedua ttd kepsek
-        sel.innerHTML = "Mengetahui,";
-
-
-
-
-        brs = tabeledit.insertRow(rowcount)
-        brs = tabeledit.insertRow(rowcount)
-        brs = tabeledit.insertRow(rowcount)
-        brs = tabeledit.insertRow(rowcount)
-        sel = brs.insertCell(-1)
-        sel = brs.insertCell(-1) /// colom kedua ttd kepsek
-        sel.innerHTML = "NIP. " + idNipGuruKelas;
-
-
-        brs = tabeledit.insertRow(rowcount)
-        sel = brs.insertCell(-1)
-        sel = brs.insertCell(-1) /// colom kedua ttd kepsek
-        sel.innerHTML = "<b><u>" + namauser + "</u></b>"
-
-
-        brs = tabeledit.insertRow(rowcount)
-        brs = tabeledit.insertRow(rowcount)
-        brs = tabeledit.insertRow(rowcount)
-
-        brs = tabeledit.insertRow(rowcount)
-        sel = brs.insertCell(-1);
-        sel = brs.insertCell(-1) /// colom kedua ttd kepsek
-        sel.innerHTML = idJenisGuru + " " + idNamaKelas
-
-
-        brs = tabeledit.insertRow(rowcount)
-        sel = brs.insertCell(-1)
-        sel = brs.insertCell(-1) /// colom kedua ttd kepsek
-
-        sel.innerHTML = jlo.kota + ", " + tanggalfull(new Date())
-
-
-
-
-        brs = tabeledit.insertRow(rowcount)
-        brs = tabeledit.insertRow(rowcount)
-
-
-    }
-
-
-    let s = SemesterBerapaSekarang()
-    $("#myTableCopy").table2excel({
-        name: "Worksheet Name",
-        filename: "Data Rekap Absen Kelas " + ruangankelas + " Semester " + s + " id file " + new Date().getTime(),
-        fileext: ".xls",
-        exclude_img: true,
-        exclude_links: true,
-        exclude_inputs: true,
-        preserveColors: true,
-        jumlahheader: 3
-    });
-    datasiswadiv.innerHTML = "";
-}
-const printRekapSemester = () => {
-    // alert("tes print rekap semeste");
-    let t = new Date()
-    let s = StringTanggal(t);
-    var datasiswadiv = document.getElementById("datasiswaprint");
-    datasiswadiv.innerHTML = "";
-    var tabelhasil = document.createElement("table");
-    tabelhasil.setAttribute("id", "myTableCopy");
-
-    var tabeleditt = document.getElementById("idtabelrekapsemester"); //.getElementsByTagName("tbody")[0];
-    tabeleditt.outerHTML.replace("position:sticky;position:-webkit-sticky;", "")
-    tabeleditt.outerHTML.replace("box-shadow: inset 0 0 1px #000000", "")
-    tabeleditt.getElementsByTagName("tbody")[0].removeAttribute("class");
-    var cln = tabeleditt.cloneNode(true);
-
-    tabelhasil.appendChild(cln);
-    datasiswadiv.appendChild(tabelhasil);
-    let sr = SemesterBerapaSekarang();
-    print("myTableCopy,Daftar Rekap Absen Kelas " + ruangankelas + ", Semester " + sr + " Tahun Pelajaran " + idTeksTapel + "," + s);
-    datasiswadiv.innerHTML = "";
-}
-//tes klik selain ngeklik bagian absen:
-document.addEventListener("click", function (e) {
-    let el = e.target;
-    let cls = el.classList.contains('tabkaldik')
-    let kal = JSON.parse(localStorage.getItem('Kaldik'))
-
-    let clsx = el.classList.contains('kbmtoday')
-    let upmat = el.classList.contains('klikuploadmateri')
-
-    let a = new Date();
-    let b = a.getDate();
-    let c = a.getMonth() + 1;
-    let d = a.getFullYear()
-    let idokmateri = addZero(b) + "" + addZero(c) + "" + d;
-
-
-
-
-    if (cls) {
-        tabelkaldikss.innerHTML = "";
-        let tabel = document.createElement("table")
-        tabel.setAttribute("class", "versi-table");
-
-        let thead = tabel.createTHead();
-        let tr = thead.insertRow(0);
-        let th = document.createElement("th")
-        th.innerHTML = "No"
-        tr.appendChild(th)
-        th = document.createElement("th")
-        th.innerHTML = "Keterangan"
-        tr.appendChild(th)
-        th = document.createElement("th")
-        th.innerHTML = "Durasi (hari)"
-        tr.appendChild(th)
-        th = document.createElement("th")
-        th.innerHTML = "Tanggal Mulai"
-        tr.appendChild(th)
-        th = document.createElement("th")
-        th.innerHTML = "Tanggal Akhir"
-        tr.appendChild(th)
-        th = document.createElement("th")
-        th.innerHTML = "Diedit Oleh";
-        tr.appendChild(th)
-        th = document.createElement("th")
-        th.innerHTML = "Aksi"
-        tr.appendChild(th)
-        let tbody = tabel.createTBody()
-        for (let i = 0; i < kal.length; i++) {
-            tr = tbody.insertRow(-1);
-            let td = tr.insertCell(-1)
-            td.innerHTML = i + 1;
-
-            td = tr.insertCell(-1)
-            td.innerHTML = kal[i].keterangan;
-            td = tr.insertCell(-1)
-            td.innerHTML = kal[i].lama;
-            td = tr.insertCell(-1)
-            td.innerHTML = tanggalfull(kal[i].start_tgl);
-            td = tr.insertCell(-1)
-            td.innerHTML = tanggalfull(kal[i].end_tgl);
-            td = tr.insertCell(-1);
-            td.innerHTML = kal[i].oleh;
-            td = tr.insertCell(-1);
-            td.innerHTML = `<button onclick="ubahtanggalini(${kal[i].idbaris})">Ubah</button><button onclick="hapustanggalini('${kal[i].idbaris}')"})">Hapus</button>`;
-        }
-        tabelkaldikss.appendChild(tabel)
-        tabelkaldikss.innerHTML += `<hr><button onclick="tambahKaldik()" class="wa"><i class="fa fa-calendar-plus-o w3-xxxlarge"></i>   Tambah Kalender</button>`
-
-    } else if (clsx) {
-        kbm_hari_ini.innerHTML = `<i class="fa fa-spin fa-spinner"></i>`
-        //alert("iya ini kbm today")
-        if (localStorage.hasOwnProperty("kbmtoday" + idokmateri)) {
-            let data = JSON.parse(localStorage.getItem("kbmtoday" + idokmateri));
-            kbm_hari_ini.innerHTML = `
-            <h3 class="w3-card w3-padding"><button class="w3-button w3-pink w3-round w3-right w3-tiny" onclick="updatematerikan()"><i class="fa fa-refresh"></i> Materi</button><br>Ada ${data.length} Materi Pembelajaran untuk hari Hari:</h3><br>`
-            for (i = 0; i < data.length; i++) {
-                kbm_hari_ini.innerHTML += `<h4> Materi ke- ${i + 1}</h4>`
-                let tabel = document.createElement("table");
-                tabel.setAttribute("class", "versi-table w3-card w3-bordered");
-                let brs = tabel.insertRow(0);
-                let sel = brs.insertCell(-1)
-                sel.innerHTML = "Identitas Materi"
-                sel = brs.insertCell(-1);
-                sel.innerHTML = data[i].idmapel;
-
-                brs = tabel.insertRow(-1);
-                sel = brs.insertCell(-1)
-                sel.innerHTML = "Jenis Tagihan"
-                sel = brs.insertCell(-1);
-                sel.innerHTML = (data[i].idaksessiswa == "sekali") ? "Ulangan (Menerima data nilai)" : "Latihan (tidak menerima nilai siswa)";
-
-                brs = tabel.insertRow(-1);
-                sel = brs.insertCell(-1)
-                sel.innerHTML = "Jumlah PG"
-                sel = brs.insertCell(-1);
-                sel.innerHTML = data[i].jumlahpg;
-
-                brs = tabel.insertRow(-1);
-                sel = brs.insertCell(-1)
-                sel.innerHTML = "Jumlah Essay"
-                sel = brs.insertCell(-1);
-                sel.innerHTML = data[i].jumlahessay;
-
-                brs = tabel.insertRow(-1);
-                sel = brs.insertCell(-1)
-                sel.innerHTML = "Lihat Materi"
-                sel = brs.insertCell(-1);
-                sel.innerHTML = `<button class="w3-button w3-green" onclick="previewriwayat(${i})">Tampilkan</button>`;
-
-                if (data[i].idaksessiswa == "beberapa kali") {
-                    brs = tabel.insertRow(-1);
-                    sel = brs.insertCell(-1)
-                    sel.innerHTML = "Respon Siswa"
-                    sel = brs.insertCell(-1);
-                    sel.innerHTML = `Tidak ada tagihan`;
-                } else {
-                    brs = tabel.insertRow(-1);
-                    sel = brs.insertCell(-1)
-                    sel.innerHTML = "Lihat Materi"
-                    sel = brs.insertCell(-1);
-                    sel.innerHTML = `<button class="w3-button w3-blue" onclick="getdaftarnilai(${i})">Nilai Siswa</button>`;
-                }
-
-
-
-                kbm_hari_ini.appendChild(tabel)
-            }
-        } else {
-            updatematerikan()
-        }
-    } else if (upmat) {
-
-        if (tombolpublikasikan.innerHTML !== "PUBLIKASIKAN") {
-            let konfirm = confirm("Anda dalam posisi ingin mengedit materi. Apakah Anda akan melanjutkan edit? \n \n Klik OK untuk kembali mengedit. \n \n Klik CANCEL untuk Membuat Materi Baru.")
-            if (!konfirm) {
-                document.formuploadmateri.reset();
-                document.formuploadmateri.idmateri.value = "";
-                tombolpublikasikan.setAttribute("onclick", "publikasikanmateribaru()")
-                tombolpublikasikan.removeAttribute("class"); //.wa w3-deep-purple w3-hover-aqua);
-                tombolpublikasikan.setAttribute("class", "wa w3-deep-purple w3-hover-aqua");
-                tombolpublikasikan.innerHTML = "PUBLIKASIKAN";
-
-            }
-            //wa w3-deep-purple w3-hover-aqua
-        }
-
-
-
-    }
-    //return
-
-})
 const ubahtanggalini = (w) => {
     let ind = parseInt(w);
     modaleditkaldik.style.display = "block";
@@ -6426,7 +5134,7 @@ const previewriwayat = (par) => {
                 tempattombol.innerHTML += "<br/><sub>atau</sub></br/> "
                 var tomboldua = document.createElement("button");
                 tomboldua.setAttribute("onclick", "tomboluploadjawaban('" + inidEl + "')");
-                var tekstomboldua = document.createTextNode("Upload Jawaban No " + inidEl);
+                var tekstomboldua = document.createTextNode("Upload Media No " + inidEl);
                 tomboldua.appendChild(tekstomboldua);
                 tempattombol.appendChild(tomboldua);
                 tempattombol.innerHTML += "<br/><sub>Pilih Salah satu cara Kalian menjawab soal ini</sub>"
@@ -8074,7 +6782,7 @@ function tambahtombolisijawaban() {
             tempattombol.innerHTML += "<br/><sub>atau</sub></br/> "
             var tomboldua = document.createElement("button");
             tomboldua.setAttribute("onclick", "tomboluploadjawaban('" + inidEl + "')");
-            var tekstomboldua = document.createTextNode("Upload Jawaban No " + inidEl);
+            var tekstomboldua = document.createTextNode("Upload Media No " + inidEl);
             tomboldua.appendChild(tekstomboldua);
             tempattombol.appendChild(tomboldua);
             tempattombol.innerHTML += "<br/><sub>Pilih Salah satu cara Kalian menjawab soal ini</sub>"
@@ -8280,7 +6988,7 @@ const previewkronologi = (par) => {
                 tempattombol.innerHTML += "<br/><sub>atau</sub></br/> "
                 var tomboldua = document.createElement("button");
                 tomboldua.setAttribute("onclick", "tomboluploadjawaban('" + inidEl + "')");
-                var tekstomboldua = document.createTextNode("Upload Jawaban No " + inidEl);
+                var tekstomboldua = document.createTextNode("Upload Media No " + inidEl);
                 tomboldua.appendChild(tekstomboldua);
                 tempattombol.appendChild(tomboldua);
                 tempattombol.innerHTML += "<br/><sub>Pilih Salah satu cara Kalian menjawab soal ini</sub>"
@@ -8298,364 +7006,6 @@ const previewkronologi = (par) => {
     // ;
 
 
-}
-const editkronologi = (par) => {
-    let datamateri = kronologijson;
-    let tdata = kronologijson[par].idtgl;
-    let timeTdata = new Date(tdata).getTime();
-    let nowtime = new Date().getTime()
-
-    pranalamateri.style.display = "block";
-    document.querySelector(".classReviewMateri").innerHTML = "";
-    let tes = document.querySelector(".classReviewMateri");
-
-    if (nowtime < timeTdata) { ///jika waktu yang dibuat belum dimulai, boleh diedit, kalo lewat jangan diedit
-
-
-        $('.classReviewMateri').nextAll('button').remove();
-        //let keyy = "kbmtoday" + tglStringZero()
-
-        //let datamateri = JSON.parse(localStorage.getItem(keyy))
-        // let datamateri = kronologijson;
-        tes.innerHTML = `<h3 class='w3-cursive w3-border-bottom w3-border-cyan w3-center'>EDIT AKSES MATERI</h3> `;
-
-
-        let form = document.createElement("form");
-        form.setAttribute("id", "formeditmateri")
-        form.setAttribute("name", "formeditmateri")
-        form.setAttribute("class", "w3-card-4 w3-padding w3-margin-bottom w3-center w3-round-xlarge")
-        //form.setAttribute("enctype","application/x-form-encoded")
-
-        //elemen 1
-        // let label = document.createElement("label");       
-        //     label.setAttribute("for","idbaris");
-        //     label.innerHTML = "ID Materi:"
-
-        let input = document.createElement("input");
-        input.setAttribute("type", "text");
-        input.setAttribute("id", "idbaris");
-        input.setAttribute("class", "w3-round-xxlarge w3-padding");
-        input.setAttribute("style", "width:20%;display:none");
-        input.setAttribute("name", "idbaris");
-        input.setAttribute("value", datamateri[par].idbaris);
-
-
-        // form.appendChild(label)
-        // let br = document.createElement("br")
-        //     form.appendChild(br)
-        form.appendChild(input)
-
-        // Element 2
-        //  label = document.createElement("label");       
-        //  label.setAttribute("for","crtToken");
-        //  label.innerHTML = "crtToken:"
-
-        input = document.createElement("input");
-        input.setAttribute("type", "text");
-        input.setAttribute("id", "crtToken");
-        input.setAttribute("name", "crtToken");
-        input.setAttribute("class", "w3-round-xxlarge w3-padding w3-center");
-        input.setAttribute("style", "width:40%;display:none");
-
-        input.setAttribute("value", datamateri[par].crtToken);
-
-        //  br = document.createElement("br")
-        //  form.appendChild(br)
-        //  form.appendChild(label)
-        //  br = document.createElement("br")
-        //  form.appendChild(br)
-        form.appendChild(input)
-
-
-        // Element 3
-        // label = document.createElement("label");       
-        // label.setAttribute("for","dibuatoleh");
-        // label.innerHTML = "Oleh:"
-
-        input = document.createElement("input");
-        input.setAttribute("type", "text");
-        input.setAttribute("id", "dibuatoleh");
-        input.setAttribute("name", "dibuatoleh");
-        input.setAttribute("class", "w3-round-xxlarge w3-padding w3-center");
-        input.setAttribute("style", "width:90%;display:none");
-        input.setAttribute("value", namauser);
-
-        // br = document.createElement("br")
-        // form.appendChild(br)
-        // br = document.createElement("br")
-        // form.appendChild(br)
-        // form.appendChild(label)
-        // form.appendChild(br)
-        form.appendChild(input)
-        let label = document.createElement("label");
-        label.setAttribute("for", "idmapel");
-        label.innerHTML = "Identitas Materi"
-
-        input = document.createElement("input");
-        input.setAttribute("type", "text");
-        input.setAttribute("id", "idmapel");
-        input.setAttribute("name", "idmapel");
-        input.setAttribute("class", "w3-round-xxlarge w3-padding w3-center");
-        input.setAttribute("style", "width:90%");
-        input.value = datamateri[par].idmapel;
-
-        br = document.createElement("br")
-        form.appendChild(br)
-        br = document.createElement("br")
-        form.appendChild(br)
-        br = document.createElement("br")
-        form.appendChild(br)
-        form.appendChild(label)
-        form.appendChild(br)
-        form.appendChild(input)
-
-        // Element 7
-        label = document.createElement("label");
-        label.setAttribute("for", "idaksessiswa");
-        label.innerHTML = "Jenis Pembelajaran"
-        let selek = document.createElement("select");
-        selek.setAttribute("id", "idaksessiswa");
-        selek.setAttribute("name", "idaksessiswa");
-        selek.setAttribute("class", "w3-round-xxlarge w3-padding w3-center");
-        selek.setAttribute("style", "width:40%");
-        selek.setAttribute("onclick", "janganadatagihan()");
-        let selekopsi = document.createElement("option");
-        selekopsi.setAttribute("id", "selekopsi01");
-        selekopsi.setAttribute("value", "sekali");
-        selekopsi.setAttribute("class", "w3-round-xxlarge w3-padding w3-center");
-        selekopsi.innerHTML = "Ulangan (Menerima tugas siswa)"
-        selek.appendChild(selekopsi)
-
-        selekopsi = document.createElement("option");
-        selekopsi.setAttribute("id", "selekopsi02");
-        selekopsi.setAttribute("value", "beberapa kali");
-        selekopsi.innerHTML = "Latihan (Tidak menerima tugas)"
-        selek.appendChild(selekopsi)
-
-        selek.value = datamateri[par].idaksessiswa;
-
-        br = document.createElement("br")
-        form.appendChild(br)
-        br = document.createElement("br")
-        form.appendChild(br)
-        br = document.createElement("br")
-        form.appendChild(br)
-        form.appendChild(label)
-        form.appendChild(br)
-        form.appendChild(selek)
-
-        // Element 8
-        label = document.createElement("label");
-        label.setAttribute("for", "jenistagihan");
-        label.innerHTML = "Jenis Tagihan"
-        selek = document.createElement("select");
-        selek.setAttribute("id", "jenistagihan");
-        selek.setAttribute("name", "jenistagihan");
-        selek.setAttribute("class", "w3-round-xxlarge w3-padding w3-center");
-        selek.setAttribute("style", "width:30%");
-        selek.setAttribute("onchange", "gabolehaksessekali()");
-
-
-        selekopsi = document.createElement("option");
-        selekopsi.setAttribute("id", "seleKOpsi10");
-        selekopsi.setAttribute("value", "");
-        selekopsi.setAttribute("class", "w3-round-xxlarge w3-padding w3-center");
-        selekopsi.innerHTML = ""
-        selek.appendChild(selekopsi);
-
-        selekopsi = document.createElement("option");
-        selekopsi.setAttribute("id", "selekopsi1");
-        selekopsi.setAttribute("value", "PH");
-        selekopsi.setAttribute("class", "w3-round-xxlarge w3-padding w3-center");
-        selekopsi.innerHTML = "PH"
-        selek.appendChild(selekopsi)
-
-        selekopsi = document.createElement("option");
-        selekopsi.setAttribute("id", "selekopsi2");
-        selekopsi.setAttribute("value", "PTS");
-        selekopsi.innerHTML = "PTS"
-        selek.appendChild(selekopsi)
-
-        selekopsi = document.createElement("option");
-        selekopsi.setAttribute("id", "selekopsi3");
-        selekopsi.setAttribute("value", "PAS");
-        selekopsi.innerHTML = "PAS (untuk semester 1)"
-        selek.appendChild(selekopsi)
-
-        selekopsi = document.createElement("option");
-        selekopsi.setAttribute("id", "selekopsi4");
-        selekopsi.setAttribute("value", "PAK");
-        selekopsi.innerHTML = "PAK (untuk semester 2)"
-        selek.appendChild(selekopsi);
-
-        selekopsi = document.createElement("option");
-        selekopsi.setAttribute("id", "selekopsi5");
-        selekopsi.setAttribute("value", "kpraktik");
-        selekopsi.innerHTML = "Praktik (KI-4)"
-        selek.appendChild(selekopsi);
-
-        selekopsi = document.createElement("option");
-        selekopsi.setAttribute("id", "selekopsi6");
-        selekopsi.setAttribute("value", "kproduk");
-        selekopsi.innerHTML = "Produk (KI-4)";
-        selek.appendChild(selekopsi);
-
-        selekopsi = document.createElement("option");
-        selekopsi.setAttribute("id", "selekopsi7");
-        selekopsi.setAttribute("value", "kproyek");
-        selekopsi.innerHTML = "Proyek (KI-4)";
-        selek.appendChild(selekopsi);
-
-        selekopsi = document.createElement("option");
-        selekopsi.setAttribute("id", "selekopsi8");
-        selekopsi.setAttribute("value", "ustertulis");
-        selekopsi.innerHTML = "US Tertulis (kelas 6)";
-        selek.appendChild(selekopsi);
-
-        selekopsi = document.createElement("option");
-        selekopsi.setAttribute("id", "selekopsi9");
-        selekopsi.setAttribute("value", "uspraktek");
-        selekopsi.innerHTML = "US Praktek (kelas 6)";
-        selek.appendChild(selekopsi);
-
-        // <option id="seltagih6" value=></option>
-        // <option id="seltagih7" value="kproduk">Produk (KI-4)</option>
-        // <option id="seltagih8" value="kproyek">Proyek (KI-4)</option>
-        // <option id="seltagih9" value="ustertulis">US Tertulis (kelas 6)</option>
-        // <option id="seltagih10" value="uspraktek">US Praktek (kelas 6)</option>
-
-
-        //selek.setAttribute("value",datamateri[par].jenistagihan);
-        selek.value = datamateri[par].jenistagihan;
-
-        br = document.createElement("br")
-        form.appendChild(br)
-        br = document.createElement("br")
-        form.appendChild(br)
-        br = document.createElement("br")
-        form.appendChild(br)
-        form.appendChild(label)
-        form.appendChild(br)
-        form.appendChild(selek)
-
-        //------------------------------
-        label = document.createElement("label");
-        label.setAttribute("for", "iddurasi");
-        label.innerHTML = "Durasi (Menit)"
-        input = document.createElement("input");
-        input.setAttribute("type", "number");
-        input.setAttribute("id", "iddurasi");
-        input.setAttribute("name", "iddurasi");
-        input.setAttribute("class", "w3-round-xxlarge w3-padding w3-center");
-        input.setAttribute("style", "width:30%");
-        input.setAttribute("min", 1);
-        input.setAttribute("max", 120);
-        input.setAttribute("value", datamateri[par].iddurasi);
-
-        br = document.createElement("br")
-        form.appendChild(br)
-
-        br = document.createElement("br")
-        form.appendChild(br)
-        form.appendChild(label)
-        br = document.createElement("br")
-        form.appendChild(br)
-        form.appendChild(input)
-
-        //--------------------------------
-
-        //element 4
-        let tglawal = datamateri[par].idtgl;
-        label = document.createElement("label");
-        label.setAttribute("for", "idtgl");
-        label.innerHTML = "Waktu Mulai:"
-
-        input = document.createElement("input");
-        input.setAttribute("type", "datetime-local");
-        input.setAttribute("id", "idtgl");
-        input.setAttribute("name", "idtgl");
-        input.setAttribute("style", "width:90%");
-        input.setAttribute("onchange", "pengenbuatcrtToken()");
-        input.setAttribute("class", "w3-round-xxlarge w3-padding w3-center");
-
-        //2020-12-01T17:00:00.000Z
-        input.setAttribute("value", stringForDateTimeLocal(tglawal))
-        // console.log(par)
-        // console.log(tglawal)
-        // console.log(datamateri[par].idtgl)
-
-
-        br = document.createElement("br")
-        form.appendChild(br)
-        br = document.createElement("br")
-        form.appendChild(br)
-        br = document.createElement("br")
-        form.appendChild(br)
-        form.appendChild(label)
-        form.appendChild(br)
-        form.appendChild(input)
-
-        //element 5
-        let tglakhir = datamateri[par].idtglend;
-        label = document.createElement("label");
-        label.setAttribute("for", "idtglend");
-        label.innerHTML = "Waktu Selesai:"
-
-        input = document.createElement("input");
-        input.setAttribute("type", "datetime-local");
-        input.setAttribute("id", "idtglend");
-        input.setAttribute("name", "idtglend");
-        input.setAttribute("style", "width:90%");
-        input.setAttribute("class", "w3-round-xxlarge w3-padding w3-center");
-
-        //2020-12-01T17:00:00.000Z
-        input.setAttribute("value", stringForDateTimeLocal(tglakhir))
-        // console.log(par)
-        // console.log(tglawal)
-        // console.log(datamateri[par].idtgl)
-
-
-        br = document.createElement("br")
-        form.appendChild(br)
-        br = document.createElement("br")
-        form.appendChild(br)
-        br = document.createElement("br")
-        form.appendChild(br)
-        form.appendChild(label)
-        form.appendChild(br)
-        form.appendChild(input)
-
-        // Element 6
-
-
-
-
-
-
-
-
-
-        tes.appendChild(form)
-        let subm = document.createElement("button");
-        subm.setAttribute("onclick", "kirimeditmateri()");
-        subm.setAttribute("class", "w3-button w3-hover-green w3-blue w3-round-xxlarge");
-        subm.innerHTML = `<i class="fa fa-paper-plane  w3-xlarge"></i>   KIRIM PERUBAHAN`;
-        let cente = document.createElement("div");
-        cente.setAttribute("class", "w3-margin w3-center")
-        cente.appendChild(subm)
-
-        subm = document.createElement("button");
-        subm.setAttribute("onclick", "pranalamateri.style.display='none';idpracetak.innerHTML = ''");
-        subm.setAttribute("class", "w3-button w3-hover-black w3-red w3-round-xxlarge");
-        subm.innerHTML = `<i class="fa fa-cross  w3-xlarge"></i>   BATAL`;
-        cente.appendChild(subm)
-
-
-        tes.appendChild(cente)
-    } else {
-        tes.innerHTML = `<h3 class='w3-cursive w3-border-bottom w3-border-cyan w3-center'>MAAF, MATERI ANDA TIDAK BISA DIEDIT</h3> `;
-        tes.innerHTML += "Akses materi yang dapat diedit hanya materi yang belum dilaksankan."
-    }
 }
 const pengenbuatcrtToken = () => {
     let val = document.formeditmateri.idtgl.value;
@@ -9040,7 +7390,11 @@ function updatenilaikoreksihariini(id) {
     // document.getElementById("nilaiakhiressay").value = nilai;
     document.getElementById("nilaiakhiressay").value = nilaiakhir;
     /// ---------------------------------------------------
-    document.getElementById("nilaiEssayku").innerHTML = nilaiakhir;
+    // document.getElementById("nilaiEssayku").innerHTML = nilaiakhir;
+    let adaelemenini = document.getElementById("nilaiEssayku")
+    if (adaelemenini !== null) {
+        adaelemenini.innerHTML = nilaiakhir;
+    }
 
     //document.getElementById("nilaiakhiressay").value = nilaiakhir;
     //document.getElementById("htmlljkkoreksi").textContent = divljkkoreksi.innerHTML;
@@ -17356,3 +15710,196 @@ function ProcessExcel3(data, kelas) {
     div.innerHTML = html;
 
 };
+
+/////////// pindahan nilaimapel untuk guru kelas
+function nilaimapel() {
+    //sembunyikan
+    let btnpak = document.querySelector(".btnpak");
+    let btnpas = document.querySelector(".btnpas");
+    if (idSemester == 1) {
+        btnpak.className += " w3-hide";
+    } else {
+        btnpas.className += " w3-hide";
+    }
+
+    tampilinsublamangurukelas("mapel");
+    ulhar.style.display = "block";
+    //document.getElementById("kurikulum_kd").click();
+    //------------------------------------------
+    let islam = jsondatasiswa.filter(function (lk) {
+        if (lk.pd_agama == "ISLAM" || lk.pd_agama == "Islam" || lk.pd_agama == "islam") {
+            return true;
+        }
+    }).length;
+    let bolislam = (islam == 0) ? false : true;
+
+    let kristen = jsondatasiswa.filter(function (lk) {
+        if (lk.pd_agama == "KRISTEN" ||
+            lk.pd_agama == "Kristen" ||
+            lk.pd_agama == "kristen" ||
+            lk.pd_agama == "PROTESTAN" || lk.pd_agama == "Protestan") {
+            return true;
+        }
+    }).length;
+    let bolkristen = (kristen == 0) ? false : true;
+
+    let katolik = jsondatasiswa.filter(function (lk) {
+        if (lk.pd_agama == "KATHOLIK" || lk.pd_agama == "Katolik" || lk.pd_agama == "KATHOLIK" || lk.pd_agama == "Katholik" || lk.pd_agama == "katholik") {
+            return true;
+        }
+    }).length;
+    let bolkatolik = (katolik == 0) ? false : true;
+
+    let hindu = jsondatasiswa.filter(function (lk) {
+        if (lk.pd_agama == "HINDU" || lk.pd_agama == "Hindu" || lk.pd_agama == "hindu") {
+            return true;
+        }
+    }).length;
+    let bolhindu = (hindu == 0) ? false : true;
+
+    let budha = jsondatasiswa.filter(function (lk) {
+        if (lk.pd_agama == "BUDHA" || lk.pd_agama == "BUDA" || lk.pd_agama == "Budha" || lk.pd_agama == "Buda" || lk.pd_agama == "buda") {
+            return true;
+        }
+    }).length;
+    let bolbudha = (budha == 0) ? false : true;
+    let khonghucu = jsondatasiswa.filter(function (lk) {
+        if (lk.pd_agama == "KHONGHUCU" || lk.pd_agama == "Khong Hu Cu" || lk.pd_agama == "KHONG HUCU" || lk.pd_agama == "Khong Hucu" || lk.pd_agama == "Khong hucu") {
+            return true;
+        }
+    }).length;
+    let bolkhonghucu = (khonghucu == 0) ? false : true;
+
+
+    let divkurikulum = document.getElementById("kurikulum_kd");
+
+
+    let tekshtml = "<h3> Kompetensi Dasar</h3>";
+    tekshtml += `<button class='w3-button w3-round-large w3-blue' onclick="datacekliskd()">Simpan</button><hr/>`;
+
+    let opsimapelagama = ""
+
+    if (bolislam) {
+        opsimapelagama += `<option id='agama1' value='PAI'>Pendidikan Agama Islam dan Budi Pekerti</option>`;
+    }
+    if (bolkristen) {
+        opsimapelagama += `<option id='agama2' value='PKRIS'>Pendidikan Agama Kristen dan Budi Pekerti</option>`;
+    }
+    if (bolkatolik) {
+        opsimapelagama += `<option id='agama3' value='PKATO'>Pendidikan Agama Katholik dan Budi Pekerti</option>`;
+    }
+    if (bolbudha) {
+        opsimapelagama += `<option id='agama4' value='PBUDH'>Pendidikan Agama Budha dan Budi Pekerti</option>`;
+    }
+    if (bolhindu) {
+        opsimapelagama += `<option id='agama5' value='PHIND'>Pendidikan Agama Hindu dan Budi Pekerti</option>`;
+    }
+    if (bolkhonghucu) {
+        opsimapelagama += `<option id='agama6' value='PKONG'>Pendidikan Agama Khonghucu dan Budi Pekerti</option>`;
+    }
+
+    let adaips = "";
+    if (idJenjang >= 4) {
+        adaips = `
+        <option value="IPA">Ilmu Pengetahuan Alam(IPA)</option>
+    <option  value="IPS">Ilmu Pengetahuan SOSIAL (IPS)</option>
+        `
+    }
+    let htmlseleksiulhar = `<select class="w3-select w3-gray w3-hover-light-grey" id="selectnilaimapelulhar" onchange="nilaimapelulhar()">
+    <option id="pilihnol" value="">Silakan Pilih Mata Pelajaran</option>
+    ${opsimapelagama}
+    <option id="selulhar0" value="PKN">Pendidikan Kewarganegaraan (PKN)</option>
+    <option id="selulhar1" value="BINDO">Bahasa Indonesia (BINDO)</option>
+    <option id="selulhar2" value="MTK">MATEMATIKA (MTK)</option>
+    ${adaips}    
+    <option id="selulhar5" value="PJOK">Pendidikan Jasmani, Olahraga, dan Kesehatan (PJOK)</option>
+    <option id="selulhar6" value="SBDP">Seni Budaya dan Prakarya (SBDP)</option>
+    <option id="selulhar6" value="BSUND">Bahasa Sunda (BSUND)</option>
+    </select>
+    `;
+    opsimapelulhar.innerHTML = htmlseleksiulhar;
+
+    htmlseleksiulhar = `<select class="w3-select w3-gray w3-hover-light-grey" id="selectnilaimapelpts" onchange="nilaimapelpts()">
+    <option id="pilihnolpts" value="">Silakan Pilih Mata Pelajaran</option>
+    ${opsimapelagama}
+    <option id="selptsr0" value="PKN">Pendidikan Kewarganegaraan (PKN)</option>
+    <option id="selpts1" value="BINDO">Bahasa Indonesia (BINDO)</option>
+    <option id="selpts2" value="MTK">MATEMATIKA (MTK)</option>
+    ${adaips}    
+    <option id="selpts5" value="PJOK">Pendidikan Jasmani, Olahraga, dan Kesehatan (PJOK)</option>
+    <option id="selpts6" value="SBDP">Seni Budaya dan Prakarya (SBDP)</option>
+    <option id="selpts7" value="BSUND">Bahasa Sunda (BSUND)</option>
+    </select>
+    `;
+    opsimapelpts.innerHTML = htmlseleksiulhar;
+    htmlseleksiulhar = `<select class="w3-select w3-gray w3-hover-light-grey" id="selectnilaimapelpaspak" onchange="nilaimapelpaspak()">
+    <option id="pilihnolpaspak" value="">Silakan Pilih Mata Pelajaran</option>
+    ${opsimapelagama}
+    <option id="selpaspak0" value="PKN">Pendidikan Kewarganegaraan (PKN)</option>
+    <option id="selpaspak1" value="BINDO">Bahasa Indonesia (BINDO)</option>
+    <option id="selpaspak2" value="MTK">MATEMATIKA (MTK)</option>
+    ${adaips}    
+    <option id="selpaspak5" value="PJOK">Pendidikan Jasmani, Olahraga, dan Kesehatan (PJOK)</option>
+    <option id="selpaspak6" value="SBDP">Seni Budaya dan Prakarya (SBDP)</option>
+    <option id="selpaspak7" value="BSUND">Bahasa Sunda (BSUND)</option>
+    </select>
+    `;
+    opsimapelpaspak.innerHTML = htmlseleksiulhar;
+
+    htmlseleksiulhar = `<select class="w3-select w3-gray w3-hover-light-grey" id="selectnilaimapelpas" onchange="nilaimapelpas()">
+    <option id="pilihnolpas" value="">Silakan Pilih Mata Pelajaran</option>
+    ${opsimapelagama}
+    <option id="selpas0" value="PKN">Pendidikan Kewarganegaraan (PKN)</option>
+    <option id="selpas1" value="BINDO">Bahasa Indonesia (BINDO)</option>
+    <option id="selpas2" value="MTK">MATEMATIKA (MTK)</option>
+    ${adaips}    
+    <option id="selpas5" value="PJOK">Pendidikan Jasmani, Olahraga, dan Kesehatan (PJOK)</option>
+    <option id="selpas6" value="SBDP">Seni Budaya dan Prakarya (SBDP)</option>
+    <option id="selpas7" value="BSUND">Bahasa Sunda (BSUND)</option>
+    </select>
+    `;
+    opsimapelpas.innerHTML = htmlseleksiulhar;
+
+    htmlseleksiulhar = `<select class="w3-select w3-gray w3-hover-light-grey" id="selectnilaimapelkpraktik" onchange="nilaimapelkpraktik()">
+    <option id="pilihnolkpraktik" value="">Silakan Pilih Mata Pelajaran</option>
+    ${opsimapelagama}
+    <option id="selkpraktik0" value="PKN">Pendidikan Kewarganegaraan (PKN)</option>
+    <option id="selkpraktik1" value="BINDO">Bahasa Indonesia (BINDO)</option>
+    <option id="selkpraktik2" value="MTK">MATEMATIKA (MTK)</option>
+    ${adaips}    
+    <option id="selkpraktik5" value="PJOK">Pendidikan Jasmani, Olahraga, dan Kesehatan (PJOK)</option>
+    <option id="selkpraktik6" value="SBDP">Seni Budaya dan Prakarya (SBDP)</option>
+    <option id="selkpraktik7" value="BSUND">Bahasa Sunda (BSUND)</option>
+    </select>
+    `;
+    opsimapelkpraktik.innerHTML = htmlseleksiulhar;
+
+    htmlseleksiulhar = `<select class="w3-select w3-gray w3-hover-light-grey" id="selectnilaimapelkproduk" onchange="nilaimapelkproyek()">
+    <option id="pilihnolkproduk" value="">Silakan Pilih Mata Pelajaran</option>
+    ${opsimapelagama}
+    <option id="selkproduk0" value="PKN">Pendidikan Kewarganegaraan (PKN)</option>
+    <option id="selkproduk1" value="BINDO">Bahasa Indonesia (BINDO)</option>
+    <option id="selkproduk2" value="MTK">MATEMATIKA (MTK)</option>
+    ${adaips}    
+    <option id="selkproduk5" value="PJOK">Pendidikan Jasmani, Olahraga, dan Kesehatan (PJOK)</option>
+    <option id="selkproduk6" value="SBDP">Seni Budaya dan Prakarya (SBDP)</option>
+    <option id="selkproduk7" value="BSUND">Bahasa Sunda (BSUND)</option>
+    </select>
+    `;
+    opsimapelkproduk.innerHTML = htmlseleksiulhar;
+
+    htmlseleksiulhar = `<select class="w3-select w3-gray w3-hover-light-grey" id="selectnilaimapelkproyek" onchange="nilaimapelpaspak()">
+    <option id="pilihnolkproyek" value="">Silakan Pilih Mata Pelajaran</option>
+    ${opsimapelagama}
+    <option id="selkproyek0" value="PKN">Pendidikan Kewarganegaraan (PKN)</option>
+    <option id="selkproyek1" value="BINDO">Bahasa Indonesia (BINDO)</option>
+    <option id="selkproyek2" value="MTK">MATEMATIKA (MTK)</option>
+    ${adaips}    
+    <option id="selkproyek5" value="PJOK">Pendidikan Jasmani, Olahraga, dan Kesehatan (PJOK)</option>
+    <option id="selkproyek6" value="SBDP">Seni Budaya dan Prakarya (SBDP)</option>
+    <option id="selkproyek7" value="BSUND">Bahasa Sunda (BSUND)</option>
+    </select>
+    `;
+    opsimapelkproyek.innerHTML = htmlseleksiulhar
+}
+
