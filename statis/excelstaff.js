@@ -15,7 +15,7 @@
             exclude_judul: true,
             // exclude_ttd: true,
             name: "Table2Excel",
-            sheetName: "created by_Ade Andriansyah_",
+            sheetName: "by_Syahandrian_Eda",
             filename: "table2excel",
             fileext: ".xlsx",
             exclude_img: true,
@@ -23,7 +23,8 @@
             exclude_inputs: true,
             preserveColors: false,
             jumlahheader: 1,
-            barisatas: 4
+            barisatas: 4,
+            tabelmana: 21
         };
 
     // The actual plugin constructor
@@ -67,18 +68,15 @@
             // Styling variables
             var additionalStyles = "";
             var compStyle = null;
-            //let = e.elementmyTable
-            //console.log(e.element)
-            // let mautau = document.getElementById("myTable").rows.length;
-            // let mautau = e.element.children[0].getAttribute("id");
-            // console.log(mautau)
 
-            //let baristabel = document.getElementById("myTableCopy").rows.length;
-            //let baristabel = 21 + e.settings.jumlahheader + 4;// e.settings.barisatas;
-            //let baristabel = jsondatasiswa.length + e.settings.jumlahheader + 4;
-            let baristabel = dataapiguru.length + e.settings.jumlahheader + e.settings.barisatas;//4;
-            //console.log(baristabel)
+            let baristabel;//
+            if (e.settings.tabelmana == dataapiguru.length) {
+                baristabel = dataapiguru.length + e.settings.jumlahheader + e.settings.barisatas;//4;
+            } else {
+                baristabel = e.settings.tabelmana + e.settings.jumlahheader + e.settings.barisatas;//4;
+            }
             let lr = e.settings.barisatas;
+
 
 
 
@@ -87,10 +85,6 @@
                 var tempRows = "";
 
                 $(o).find("tr").not(e.settings.exclude).each(function (i, p) {
-
-                    // Reset for this row
-
-                    ////// seleesaaaai =================================
 
                     additionalStyles = "";
 

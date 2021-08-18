@@ -108,6 +108,37 @@ if (linkyangsedangaktif.indexOf("guru.html") > -1) {
     <option id="repo3" value="3">Download File KKM dan KD</option>`;
 
 
+} else if (linkyangsedangaktif.indexOf("kepsek.html") > -1) {
+
+    document.getElementById("daftarpilihbulankehadiranguru").innerHTML = `
+    <option id="indeka" value="${yyyyxmmxdd(new Date())}">Pilih Bulan</option>
+    <option id="indek0" value="2021-07-01">Juli 2021</option>
+    <option id="indek1" value="2021-08-01">Agustus 2021</option>
+    <option id="indek2" value="2021-09-01">September 2021</option>
+    <option id="indek3" value="2021-10-01">Oktober 2021</option>
+    <option id="indek4" value="2021-11-01">Nopember 2021</option>
+    <option id="indek5" value="2021-12-01">Desember 2021</option>`;
+
+} else if (linkyangsedangaktif.indexOf("staff.html") > -1) {
+
+    document.getElementById("daftarpilihbulankehadiranguru").innerHTML = `
+    <option id="indeka" value="${yyyyxmmxdd(new Date())}">Pilih Bulan</option>
+    <option id="indek0" value="2021-07-01">Juli 2021</option>
+    <option id="indek1" value="2021-08-01">Agustus 2021</option>
+    <option id="indek2" value="2021-09-01">September 2021</option>
+    <option id="indek3" value="2021-10-01">Oktober 2021</option>
+    <option id="indek4" value="2021-11-01">Nopember 2021</option>
+    <option id="indek5" value="2021-12-01">Desember 2021</option>`;
+    
+    document.getElementById("daftarpilihbulankehadirangurupribadi").innerHTML = `
+    <option id="indeka" value="${yyyyxmmxdd(new Date())}">Pilih Bulan</option>
+    <option id="indek0" value="2021-07-01">Juli 2021</option>
+    <option id="indek1" value="2021-08-01">Agustus 2021</option>
+    <option id="indek2" value="2021-09-01">September 2021</option>
+    <option id="indek3" value="2021-10-01">Oktober 2021</option>
+    <option id="indek4" value="2021-11-01">Nopember 2021</option>
+    <option id="indek5" value="2021-12-01">Desember 2021</option>`;
+
 }
 
 var tapel_bulan_ini = new Date().getMonth();
@@ -286,3 +317,67 @@ const pilihrepositorymapel = () => {
     }
 
 };
+function hariefektif(indekbulan, y) {
+
+    let holiday = JSON.parse(localStorage.getItem("TglLibur"));
+    let arrLibur = holiday.map(s => Object.keys(s)[0])// result ["2021-5-7","2021-5-8", dst]
+        .filter(d => new Date(d).getMonth() == indekbulan && new Date(d).getFullYear() == y && new Date(d).getDay() !== 0 && new Date(d).getDay() !== 6);
+    let arrKalender = [];
+    let bulanke = (indekbulan + 1);
+
+    let jmlHariKalender = daysInMonth(bulanke, y);
+    let weekend;
+    for (let i = 1; i <= jmlHariKalender; i++) {
+        weekend = new Date(y, indekbulan, i).getDay();
+       if(weekend == 0 || weekend == 6){
+
+       }else{
+           arrKalender.push(weekend)
+       }
+    }
+    let kal = arrKalender.length;
+    let lib = arrLibur.length
+    return kal - lib;
+
+
+};
+const arrObjek = (dataHead, datanya) => {
+    let arr = []
+    for (let i = 0 ; i < datanya.length ; i++){
+        let valu = datanya[i];
+        let obj ={};
+        for( x in dataHead){
+          obj[dataHead[x]] =valu[x]
+        }
+      arr.push(obj)
+    }
+    return arr
+  }
+
+  
+const infoupdate = () => {
+    loadingljk.style.display = "block";
+    fetch("/statis/update.json").then(m => m.json())
+        .then(k => {
+
+            // console.log(k.data);
+
+            let html = "<h3 class='w3-center'>Perbaikan beberapa versi </h3><ul class='w3-ul'>";
+            for (let i = k.length - 1; i >= 0; i--) {
+                html += `<li>Nama Versi ${k[i].namaversi} (Update ${k[i].tanggal})
+                <br/><ul style="type-list-style:decimal">`;
+                let ket = k[i].ket;
+                for (j = 0; j < ket.length; j++) {
+                    html += `<li>${ket[j]}</li>`
+                }
+
+                html += `</ul></li>`
+            };
+            html += "</ul>"
+            infoloadingljk.innerHTML = html;
+        })
+        .catch(er => {
+            console.log(er);
+
+        })
+}

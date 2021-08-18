@@ -766,6 +766,8 @@ function tabeldatakelassaya() { // Versi ngambil data dari TAB SPREADSHEET .... 
 
 
 function tampilinsublamangurukelas(fitur) {
+    let div = document.getElementById("batasaksesguru")
+    let y = div.offsetTop - 45;
     if (fitur == "datakelas") {
         datakelassaya.style.display = "block";
         dataabsensi.style.display = "none";
@@ -774,7 +776,8 @@ function tampilinsublamangurukelas(fitur) {
         datanilaimapel.style.display = "none";
         datakehadiranguru.style.display = "none";
         dataframekreatif.style.display = "none";
-        document.getElementById("batasaksesguru").scrollIntoView();
+        divgaleri.style.display = "none";
+        window.scrollTo({ top: y, behavior: 'smooth' });
     } else if (fitur == "absen") {
         datakelassaya.style.display = "none";
         dataabsensi.style.display = "block";
@@ -783,7 +786,8 @@ function tampilinsublamangurukelas(fitur) {
         datanilaimapel.style.display = "none";
         datakehadiranguru.style.display = "none";
         dataframekreatif.style.display = "none";
-        document.getElementById("batasaksesguru").scrollIntoView();
+        divgaleri.style.display = "none";
+        window.scrollTo({ top: y, behavior: 'smooth' });
 
     } else if (fitur == "pembelajaran") {
         datakelassaya.style.display = "none";
@@ -794,8 +798,8 @@ function tampilinsublamangurukelas(fitur) {
         datakehadiranguru.style.display = "none";
         dataframekreatif.style.display = "none";
         upload_materi.style.display = "none";
-
-        document.getElementById("batasaksesguru").scrollIntoView();
+        divgaleri.style.display = "none";
+        window.scrollTo({ top: y, behavior: 'smooth' });
     } else if (fitur == "kurikulum") {
         datakelassaya.style.display = "none";
         dataabsensi.style.display = "none";
@@ -804,7 +808,8 @@ function tampilinsublamangurukelas(fitur) {
         datanilaimapel.style.display = "none";
         datakehadiranguru.style.display = "none";
         dataframekreatif.style.display = "none";
-        document.getElementById("batasaksesguru").scrollIntoView();
+        divgaleri.style.display = "none";
+        window.scrollTo({ top: y, behavior: 'smooth' });
     } else if (fitur == "mapel") {
         datakelassaya.style.display = "none";
         dataabsensi.style.display = "none";
@@ -813,7 +818,8 @@ function tampilinsublamangurukelas(fitur) {
         datanilaimapel.style.display = "block";
         datakehadiranguru.style.display = "none";
         dataframekreatif.style.display = "none";
-        document.getElementById("batasaksesguru").scrollIntoView();
+        divgaleri.style.display = "none";
+        window.scrollTo({ top: y, behavior: 'smooth' });
     } else if (fitur == "kehadiranguru") {
         datakelassaya.style.display = "none";
         dataabsensi.style.display = "none";
@@ -822,9 +828,8 @@ function tampilinsublamangurukelas(fitur) {
         datanilaimapel.style.display = "none";
         datakehadiranguru.style.display = "block";
         dataframekreatif.style.display = "none";
-
-
-        document.getElementById("batasaksesguru").scrollIntoView();
+        divgaleri.style.display = "none";
+        window.scrollTo({ top: y, behavior: 'smooth' });
     } else if (fitur == "meme") {
         datakelassaya.style.display = "none";
         dataabsensi.style.display = "none";
@@ -834,14 +839,36 @@ function tampilinsublamangurukelas(fitur) {
         datakehadiranguru.style.display = "none";
         // dataraport.style.display = "none";
         dataframekreatif.style.display = "block";
-
-
-
-        document.getElementById("batasaksesguru").scrollIntoView();
+        divgaleri.style.display = "none";
+        window.scrollTo({ top: y, behavior: 'smooth' });
+    } else if (fitur == "galery") {
+        datakelassaya.style.display = "none";
+        dataabsensi.style.display = "none";
+        datapembelajaran.style.display = "none";
+        datakurikulum.style.display = "none";
+        datanilaimapel.style.display = "none";
+        datakehadiranguru.style.display = "none";
+        // dataraport.style.display = "none";
+        dataframekreatif.style.display = "none";
+        divgaleri.style.display = "block";
+        window.scrollTo({ top: y, behavior: 'smooth' });
+    }  else if (fitur == "beranda") {
+        datakelassaya.style.display = "none";
+        dataabsensi.style.display = "none";
+        datapembelajaran.style.display = "none";
+        datakurikulum.style.display = "none";
+        datanilaimapel.style.display = "none";
+        datakehadiranguru.style.display = "none";
+        // dataraport.style.display = "none";
+        dataframekreatif.style.display = "none";
+        divgaleri.style.display = "none";
+        window.scrollTo({ top: 43, behavior: 'smooth' });
     }
 
     w3_close();
 }
+
+
 
 
 const profilguru = async () => {

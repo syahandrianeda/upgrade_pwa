@@ -1,5 +1,6 @@
-const staticCacheName = "pwa1_statis_v1.3.1";// + new Date().getTime();
-const dynamicChace = "pwa2_dinamis_v1.3.1";// + new Date().getTime();
+
+const staticCacheName = "pwa2021_statis_v1.4.4.v2";// + new Date().getTime();
+const dynamicChace = "pwa2021_dinamis_v1.4.4.v2";// + new Date().getTime();
 
 const assets = [
     "/",
@@ -27,7 +28,9 @@ const assets = [
     "/img/pngegg%20(1).png",
     "/img/pngegg%20(12).png",
     "/img/pngegg%20(13).png",
+    "/img/pngegg%20(15).png",
     "/img/pngegg%20(17).png",
+    "/img/pngegg%20(14).png",
     "/img/pngegg%20(2).png",
     "/img/pngegg%20(3).png",
     "/img/akarkuadrat.PNG",
@@ -43,6 +46,10 @@ const assets = [
     "/img/pangkat.PNG",
     "/img/pecahanbiasa.PNG",
     "/img/pecahancampuran.PNG",
+    "/img/arsipsurat.png",
+    "/img/galeri.jpg",
+    "/img/studio.png",
+    "/img/googlemeet.png",
 
 
     "/statis/app.js",
@@ -50,13 +57,17 @@ const assets = [
     "/statis/gk.js",
     "/statis/guru.js",
     "/statis/exceltabel.js",
+    "/statis/excelstaff.js",
+    "/statis/excelkepsek.js",
     "/statis/gmp.js",
     "/statis/kepsek.js",
     "/statis/ortu.js",
     "/statis/siswa.js",
     "/idsekolah.js",
+    "/statis/staff.js",
     "/timekbm.js",
     "/statis/update.json",
+    "/statis/dataakreditasi.json",
 
 
     "/user/gmp.html",

@@ -5297,7 +5297,7 @@ function deleteZero(i) {
 }
 
 
-const infoupdate = () => {
+const infoupdate2 = () => {
     infoinfo.style.display = "block"
 }
 const tahapselanjutnya = () => {

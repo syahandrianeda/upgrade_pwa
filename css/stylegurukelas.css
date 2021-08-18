@@ -2,7 +2,9 @@
 #datakelassaya,
 #datakurikulum,
 #datanilaimapel,
-#datapembelajaran {
+#datapembelajaran,
+#divsuratsurat, 
+#divgaleri {
   display: none
 }
 
@@ -405,10 +407,10 @@ input:checked+.slider:before {
   background: #29f300;
 }
 
-;
+
 
 .tangan {
-  cursor: pointer;
+  cursor: pointer !important;
 }
 
 #prev_dragable {
@@ -429,9 +431,9 @@ input:checked+.slider:before {
 }
 
 .up_gam_mat {
-  width: 300px;
-  height: 200px;
-  object-fit: contain;
+  width: 180px;
+  height: 150px;
+  object-fit: fill;
   cursor: pointer;
 }
 
@@ -444,4 +446,66 @@ input:checked+.slider:before {
 
 .w3-lobster {
   font-family: "Lobster", serif;
+}
+.tabelbiasa, .tabelbiasa td,.tabelbiasa th{
+  border: 1px solid rgb(0, 0, 0);
+  padding:5px
+}
+.tabelbiasa th{
+background-color:rgb(177, 177, 177)
+}
+.tabelbiasaputih th{
+background-color:#fff !important;
+}
+
+.tabelbiasa  {
+width:100%;
+  border-collapse: collapse;
+}
+.isigaleri {
+  position: relative;
+  width: 100%
+}
+
+.isigaleri img,.isigaleri iframe {
+  display: block;
+  width: 100%;
+  height: 270px;
+  object-fit: scale-down;
+
+}
+
+.overlaygaleri {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #00000080;
+  overflow: hidden;
+  width: 100%;
+  height: 0;
+  transition: .5s ease;
+  color:white;
+  
+}
+.overlaygaleri button{
+  cursor:pointer;
+}
+.overlaygaleri button:hover{
+  background-color: #29f300;
+}
+.isigaleri:hover .overlaygaleri {
+  height: 100%;font-size: 12px;
+}
+
+.textgaleri {
+  color: white;
+  position: absolute;
+  bottom:15px;
+  left:50%;
+  width:99%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: center;
 }

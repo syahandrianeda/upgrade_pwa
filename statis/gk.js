@@ -1354,6 +1354,8 @@ const cekDiskLocalStorage = async () => {
 
 
 function tampilinsublamangurukelas(fitur) {
+    let div = document.getElementById("batasaksesguru")
+    let y = div.offsetTop - 45;
 
     if (fitur == "beranda") {
         datakelassaya.style.display = "none";
@@ -1363,7 +1365,8 @@ function tampilinsublamangurukelas(fitur) {
         datanilaimapel.style.display = "none";
         datakehadiranguru.style.display = "none";
         dataraport.style.display = "none";
-        dataframekreatif.style.display = "none";
+        dataframekreatif.style.display = "none";divgaleri.style.display = "none";
+        window.scrollTo({ top: 43, behavior: 'smooth' });
 
     } else if (fitur == "datakelas") {
         datakelassaya.style.display = "block";
@@ -1374,7 +1377,8 @@ function tampilinsublamangurukelas(fitur) {
         datakehadiranguru.style.display = "none";
         dataraport.style.display = "none";
         dataframekreatif.style.display = "none";
-        document.getElementById("batasaksesguru").scrollIntoView();
+        divgaleri.style.display = "none";
+        window.scrollTo({ top: y, behavior: 'smooth' });
     } else if (fitur == "absen") {
         datakelassaya.style.display = "none";
         dataabsensi.style.display = "block";
@@ -1384,7 +1388,8 @@ function tampilinsublamangurukelas(fitur) {
         datakehadiranguru.style.display = "none";
         dataraport.style.display = "none";
         dataframekreatif.style.display = "none";
-        document.getElementById("batasaksesguru").scrollIntoView();
+        divgaleri.style.display = "none";
+        window.scrollTo({ top: y, behavior: 'smooth' });
 
     } else if (fitur == "pembelajaran") {
         datakelassaya.style.display = "none";
@@ -1396,7 +1401,8 @@ function tampilinsublamangurukelas(fitur) {
         dataraport.style.display = "none";
         dataframekreatif.style.display = "none";
         upload_materi.style.display = "none";
-        document.getElementById("batasaksesguru").scrollIntoView();
+        divgaleri.style.display = "none";
+        window.scrollTo({ top: y, behavior: 'smooth' });
     } else if (fitur == "kurikulum") {
         datakelassaya.style.display = "none";
         dataabsensi.style.display = "none";
@@ -1406,7 +1412,8 @@ function tampilinsublamangurukelas(fitur) {
         datakehadiranguru.style.display = "none";
         dataraport.style.display = "none";
         dataframekreatif.style.display = "none";
-        document.getElementById("batasaksesguru").scrollIntoView();
+        divgaleri.style.display = "none";
+        window.scrollTo({ top: y, behavior: 'smooth' });
     } else if (fitur == "mapel") {
         datakelassaya.style.display = "none";
         dataabsensi.style.display = "none";
@@ -1416,7 +1423,8 @@ function tampilinsublamangurukelas(fitur) {
         datakehadiranguru.style.display = "none";
         dataraport.style.display = "none";
         dataframekreatif.style.display = "none";
-        document.getElementById("batasaksesguru").scrollIntoView();
+        divgaleri.style.display = "none";
+        window.scrollTo({ top: y, behavior: 'smooth' });
     } else if (fitur == "kehadiranguru") {
         datakelassaya.style.display = "none";
         dataabsensi.style.display = "none";
@@ -1426,8 +1434,8 @@ function tampilinsublamangurukelas(fitur) {
         datakehadiranguru.style.display = "block";
         dataraport.style.display = "none";
         dataframekreatif.style.display = "none";
-
-        document.getElementById("batasaksesguru").scrollIntoView();
+        divgaleri.style.display = "none";
+        window.scrollTo({ top: y, behavior: 'smooth' });
     } else if (fitur == "raport") {
         datakelassaya.style.display = "none";
         dataabsensi.style.display = "none";
@@ -1437,10 +1445,8 @@ function tampilinsublamangurukelas(fitur) {
         datakehadiranguru.style.display = "none";
         dataraport.style.display = "block";
         dataframekreatif.style.display = "none";
-
-
-
-        document.getElementById("batasaksesguru").scrollIntoView();
+        divgaleri.style.display = "none";
+        window.scrollTo({ top: y, behavior: 'smooth' });
     } else if (fitur == "meme") {
         datakelassaya.style.display = "none";
         dataabsensi.style.display = "none";
@@ -1450,10 +1456,24 @@ function tampilinsublamangurukelas(fitur) {
         datakehadiranguru.style.display = "none";
         dataraport.style.display = "none";
         dataframekreatif.style.display = "block";
+        divgaleri.style.display = "none";
+        window.scrollTo({ top: y, behavior: 'smooth' });
+
+    } else if (fitur == "galery") {
+        datakelassaya.style.display = "none";
+        dataabsensi.style.display = "none";
+        datapembelajaran.style.display = "none";
+        datakurikulum.style.display = "none";
+        datanilaimapel.style.display = "none";
+        datakehadiranguru.style.display = "none";
+        dataraport.style.display = "none";
+        dataframekreatif.style.display = "none";
+        divgaleri.style.display = "block";
+        window.scrollTo({ top: y, behavior: 'smooth' });
 
 
 
-        document.getElementById("batasaksesguru").scrollIntoView();
+       
     }
     w3_close();
 }
@@ -1948,6 +1968,9 @@ const htmlformulirdatasiswa = (tokensiswa) => {
             <label for="hfd_usulanperubahandata">Status Data:</label>
             <br/>
             <input type="text" class="w3-input  w3-border w3-border-black w3-round"  name="usulanperubahandata" id="hfd_usulanperubahandata" disabled>
+            <br/>
+            <br/>
+            Akan disetujui Oleh <b class="pengapprove"></b>
         </fieldset> 
         <fieldset class="w3-card-4 w3-margin w3-light-grey">
         <h3 class="w3-light-green w3-center" >JENJANG KELAS<br>(Tidak bisa diubah)</h3>
@@ -3066,7 +3089,13 @@ const ajuanperubahandata = async (tokensiswa) => {
                             if (angkadistring.indexOf(key[d]) > -1) {
                                 elementform[x].value = nilai[d];
                             } else {
-                                elementform[x].value = nilai[d]
+                                if (key[d] == "dieditoleh") {
+                                    elementform[x].value = namauser;
+
+                                } else {
+                                    elementform[x].value = nilai[d]
+
+                                }
 
                             }
                         };
@@ -3147,7 +3176,13 @@ const ajuanperubahandataolehguru = async (tokensiswa) => {
                             if (angkadistring.indexOf(key[d]) > -1) {
                                 elementform[x].value = nilai[d].replace("'", "")
                             } else {
-                                elementform[x].value = nilai[d]
+                                if (key[d] == "dieditoleh") {
+                                    elementform[x].value = namauser;
+
+                                } else {
+                                    elementform[x].value = nilai[d]
+
+                                }
                             }
                         };
                         //ganti id
@@ -3849,7 +3884,7 @@ function exceldatasiswa() {
     datasiswadiv.innerHTML = "";
 };
 const exportdatasiswa = () => {
-    alert("Mengekspor Data Siswa Kelas Anda adalah mengekspor data berdasarkan database yang telah disimpan dan format sesuai dengan Database E-Lamaso (isi sesuai Dapodik). File ini bisa digunakan untuk mengekspor ke Tabel (jika diperlukan)");
+    alert("Mengekspor Data Siswa Kelas Anda adalah mengekspor data berdasarkan database yang telah disimpan dan format sesuai dengan Database E-Lamaso (isi sesuai Dapodik). Jika Anda baru saja mengedit di laman tabel data siswa dan belum menyimpannya ke server, sebaiknya Anda simpan terlebih dahulu. File ini bisa digunakan untuk mengekspor ke Tabel (jika diperlukan)");
     let datasiswadiv = document.getElementById("datasiswaprint");
     datasiswadiv.innerHTML = "";
     let html = `<table class="versi-table" id="myTableCopy"><tr>`;

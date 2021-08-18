@@ -13,6 +13,9 @@ let objekdataguru = {};
 let absensekarang;
 let jsonabsenkelasperbulan;
 let dataseluruhmateri = [];
+let jsonprofilsekolah =[];
+let rekapabsensiswabulanan =[]
+
 var mySidebar = document.getElementById("mySidebar"); // Get the Sidebar
 var overlayBg = document.getElementById("myOverlay"); // Get the DIV with overlay effect
 jsonlocalstoragetypeuser = JSON.parse(localStorage.getItem("typeuser"));
@@ -40,17 +43,37 @@ jsonlocalstorage = JSON.parse(localStorage.getItem("inst_id"));
 linkDataUserWithIdss = jsonlocalstorage.url_datauser + "?idss=" + jsonlocalstorage.ss_datauser;
 linkAbsenKaldik = jsonlocalstorage.url_dataabsen + "?idss=" + jsonlocalstorage.ss_dataabsen;
 url_absenkaldik = jsonlocalstorage.url_dataabsen + "?action=datakaldik&idss=" + jsonlocalstorage.ss_dataabsen
-OBJEKHariEfektif = {
-    "Januari": 0, "Februari": 0, "Maret": 0,
-    "April": 0, "Mei": 0, "Juni": 0, "Juli": 0, "Agustus": 0,
-    "September": 0, "Oktober": 0, "November": 0, "Desember": 0
-};
+OBJEKHariEfektif = { "Januari": 0, "Februari": 0, "Maret": 0, "April": 0, "Mei": 0, "Juni": 0, "Juli": 0, "Agustus": 0, "September": 0, "Oktober": 0, "November": 0, "Desember": 0 };
 
 obDataRekapKehadiran = { "Hadir": 0, "Ijin": 0, "Sakit": 0, "Alpa": 0 };
+let informasiusulandata = {};
+let absenheader;
 const linkkehadiranguru = jlo.ss_datanilai;
+let stoploadingtopbar;
+const loadingtopbarin = (el) => {
+    var elem = document.querySelector("." + el);
+    elem.className = elem.className.replace("w3-hide", "")
+    var width = 1;
+    stoploadingtopbar = setInterval(frame2, 10);
+
+    function frame2() {
+        // if (width >= 1000000) {
+        //     clearInterval(stoploadingtopbar);
+        //     // elem.style.width = 0;
+        //     // elem.style.width = 90 + '%';
+        //     // elem.innerHTML = `100%`;
+        // } else {
+        width += 100;
+        elem.style.width = width / 1000 + '%';
+        //elem.innerHTML = (width / 105).toFixed(0) + "% ";
+        //}
+    }
+}
+
+const upp_url = window.location.href;
 (async function () {
 
-
+    loadingtopbarin("loadingtopbar");
     let tgl = new Date();
     let m = tgl.getMonth();
     let sm = tgl.getMonth() + 1;
@@ -69,26 +92,26 @@ const linkkehadiranguru = jlo.ss_datanilai;
         arrayKetLibur = k.stringTgl.map(m => Object.keys(m).map(n => m[n])).reduce((a, b) => a.concat(b));
     }).catch(er => {
         console.log("muat ulang: " + er);
-        jsonlocalstorage = JSON.parse(localStorage.getItem("inst_id"));
-        url_absenkaldik = jsonlocalstorage.url_dataabsen + "?action=datakaldik&idss=" + jsonlocalstorage.ss_dataabsen
+        // jsonlocalstorage = JSON.parse(localStorage.getItem("inst_id"));
+        // url_absenkaldik = jsonlocalstorage.url_dataabsen + "?action=datakaldik&idss=" + jsonlocalstorage.ss_dataabsen
 
-        fetch(url_absenkaldik).then(m => m.json()).then(k => {
-            //console.table(k.records)
-            localStorage.setItem('Kaldik', JSON.stringify(k.records));
+        // fetch(url_absenkaldik).then(m => m.json()).then(k => {
+        //     //console.table(k.records)
+        //     localStorage.setItem('Kaldik', JSON.stringify(k.records));
 
-            localStorage.setItem('TglLibur', JSON.stringify(k.stringTgl))
-            arrayStringTglLibur = k.stringTgl.map(m => Object.keys(m)).reduce((a, b) => a.concat(b));
-            arrayKetLibur = k.stringTgl.map(m => Object.keys(m).map(n => m[n])).reduce((a, b) => a.concat(b));
-            // console.log(k.records)
-            // console.log(k.stringTgl)
-        })
+        //     localStorage.setItem('TglLibur', JSON.stringify(k.stringTgl))
+        //     arrayStringTglLibur = k.stringTgl.map(m => Object.keys(m)).reduce((a, b) => a.concat(b));
+        //     arrayKetLibur = k.stringTgl.map(m => Object.keys(m).map(n => m[n])).reduce((a, b) => a.concat(b));
+        //     // console.log(k.records)
+        //     // console.log(k.stringTgl)
+        //})
     });
 
     await fetch(linkdataguru)
         .then(m => m.json())
         .then(k => {
             dataapiguru = k.result;
-            console.log(k.result)
+
 
         })
 
@@ -102,26 +125,19 @@ const linkkehadiranguru = jlo.ss_datanilai;
     logo.setAttribute("alt", "Poto Guru");
     logo.setAttribute("style", "width:90px; height:90px");
     if (ruangankelas !== "Penjaga") {
-        if (localStorage.hasOwnProperty("datasiswa_all")) {
-            jsondatasiswa = JSON.parse(localStorage.getItem("datasiswa_all")).datasiswa;
-        } else {
-            await fetch(linkDataUserWithIdss + "&action=datakelasaktifall")
-                .then(m => m.json())
-                .then(k => {
-                    jsondatasiswa = k.datasiswa;
-                    localStorage.setItem("datasiswa_all", JSON.stringify(k));
+        barstaff.style.display = "block";
+        barpenjaga.style.display = "none";
 
-                }).catch(er => {
-                    console.log("muat ulang lagi: " + er);
-                    fetch(linkDataUserWithIdss + "&action=datakelasaktifall")
-                        .then(m => m.json())
-                        .then(k => {
-                            jsondatasiswa = k.datasiswa;
-                            localStorage.setItem("datasiswa_all", JSON.stringify(k));
+        await fetch(linkDataUserWithIdss + "&action=datakelasaktifall")
+            .then(m => m.json())
+            .then(k => {
+                jsondatasiswa = k.datasiswa;
+                localStorage.setItem("datasiswa_all", JSON.stringify(k));
 
-                        })
-                });
-        }
+            }).catch(er => {
+                console.log("muat ulang lagi: " + er);
+
+            });
 
         await fetch(linkDataUserWithIdss + "&action=datasiswatidakaktif")
             .then(m => m.json())
@@ -130,21 +146,12 @@ const linkkehadiranguru = jlo.ss_datanilai;
                 jumlahseluruhsiswadisekolah = k.total
                 localStorage.setItem("datasiswatidakaktif", JSON.stringify(k))
 
-
             }).catch(er => {
                 console.log("muat ulang: " + er);
-                fetch(linkDataUserWithIdss + "&action=datasiswatidakaktif")
-                    .then(m => m.json())
-                    .then(k => {
-                        arraysiswatidakaktif = k.datasiswa;
-                        jumlahseluruhsiswadisekolah = k.total
-                        localStorage.setItem("datasiswatidakaktif", JSON.stringify(k))
 
-
-                    })
 
             });
-        await fetch("/kepsek/dataakreditasi.json").then(m => m.json())
+        await fetch("/statis/dataakreditasi.json").then(m => m.json())
             .then(k => {
                 // console.log(k.data);
                 dataketeranganakreditasi = k.data;
@@ -155,21 +162,41 @@ const linkkehadiranguru = jlo.ss_datanilai;
 
             })
 
+        await fetch(linkDataUserWithIdss + "&action=usulanperbaikandata")
+            .then(m => m.json())
+            .then(k => {
+                let dataaktif = k.datasiswa.filter(s => s.aktif == "aktif");
+                let usulkelasini = k.datasiswa;//.filter(k => (k.nama_rombel == idNamaKelas));
+                let usulkelasinibelumdisetujui = dataaktif.filter(k => (k.id !== "" && k.usulanperubahandata.indexOf("disetujui") == -1));
+                // console.log(usulkelasinibelumdisetujui.length);
+                // console.log(usulkelasinibelumdisetujui.length);
 
-        // await fetch(linktendik + "?action=noticeabsenkepsek")
-        //     .then(m => m.json())
-        //     .then(k => {
-        //         //console.log(k)
-        //         absensekarang = k.siapaaja;
-        //         //console.log(absensekarang)
-        //         if (absensekarang.length > 0) {
-        //             // alert("ada " + absensekarang.length + " PTK yang sudah absen hari ini. Yaitu " + absensekarang.join("\n").idabsen)
-        //             showmodalkonfirmasi(absensekarang)
-        //         } else {
-        //             datadivperlupersetujuan.innerHTML = "Sudah Tidak ada lagi. Periksa Kehadiran/Piket PTK Harian";
-        //             modalkonfirmasiabsen.style.display = "none";
-        //         }
-        //     }).catch(er => alert(er))
+                let usulkelasinisudahdisetujui = dataaktif.filter(k => (k.id !== "" && k.usulanperubahandata.indexOf("disetujui") > -1));
+                informasiusulandata["usulanbaru"] = usulkelasinibelumdisetujui;
+                informasiusulandata["usulandisetujui"] = usulkelasinisudahdisetujui;
+                informasiusulandata["all"] = usulkelasini;
+
+
+
+            })
+            .catch(er => {
+                console.log(er);
+            })
+
+    } else {
+        menumenu0.style.display = "none";
+        menumenu1.style.display = "block";
+        menumenu2.style.display = "none";
+        menumenu3.style.display = "none";
+        menumenu4.style.display = "none";
+        menumenu5.style.display = "none";
+        menumenu7.style.display = "none";
+        barstaff.style.display = "none";
+        barpenjaga.style.display = "block";
+        menumenu6.style.display = "block";
+        document.querySelector(".tabrekappiket").style.display = "none";
+        document.querySelector(".petunjukmeme").style.display = "none";
+        document.querySelector(".uploadmeme").style.display = "none";
     }
     if (navigator.storage && navigator.storage.estimate) {
         const quota = await navigator.storage.estimate();
@@ -180,7 +207,15 @@ const linkkehadiranguru = jlo.ss_datanilai;
     }
     //await buattabelrekapsemester();
 
-    dashboardgurukelas.innerHTML = dataapiguru.filter(k => k.idabsen == constidguruabsen)[0].jenjang + " ( " + namauser + " )"
+    dashboardgurukelas.innerHTML = dataapiguru.filter(k => k.idabsen == constidguruabsen)[0].jenjang + " ( " + namauser + " )";
+    clearInterval(stoploadingtopbar);
+    let divlod = document.querySelector(".loadingtopbar");
+    divlod.style.width = "100%";
+    setTimeout(() => {
+        divlod.style.width = "1px"
+        divlod.className += " w3-hide";
+
+    }, 3000);
 })();
 
 function w3_open() { // Toggle between showing and hiding the sidebar, and add overlay effect
@@ -372,6 +407,10 @@ function logout() {
 
 function tampilinsublamangurukelas(fitur) {
 
+    let div = document.getElementById("batasaksesguru")
+    let y = div.offsetTop - 40;
+
+
 
     if (fitur == "dataguru") {
         datakelassaya.style.display = "block";
@@ -383,7 +422,12 @@ function tampilinsublamangurukelas(fitur) {
         dataframeeditor.style.display = "none";
         dataakreditasi.style.display = "none";
         divdatasiswa.style.display = "none";
-        document.getElementById("batasaksesguru").scrollIntoView();
+        dataprofilsekolah.style.display = "none";
+        divsuratsurat.style.display = "none";
+        divgaleri.style.display = "none";
+        document.querySelector(".btntab_dataguru").click();
+        window.scrollTo({ top: y, behavior: 'smooth' });
+
     } else if (fitur == "absen") {
         datakelassaya.style.display = "none";
         dataabsensi.style.display = "block";
@@ -394,7 +438,27 @@ function tampilinsublamangurukelas(fitur) {
         dataframeeditor.style.display = "none";
         dataakreditasi.style.display = "none";
         divdatasiswa.style.display = "none";
-        document.getElementById("batasaksesguru").scrollIntoView();
+        dataprofilsekolah.style.display = "none";
+        divsuratsurat.style.display = "none";
+        divgaleri.style.display = "none";
+        window.scrollTo({ top: y, behavior: 'smooth' });
+
+
+    } else if (fitur == "beranda") {
+        datakelassaya.style.display = "none";
+        dataabsensi.style.display = "none";
+        datapembelajaran.style.display = "none";
+        datakurikulum.style.display = "none";
+        datanilaimapel.style.display = "none";
+        datakehadiranguru.style.display = "none";
+        dataframeeditor.style.display = "none";
+        dataakreditasi.style.display = "none";
+        divdatasiswa.style.display = "none";
+        dataprofilsekolah.style.display = "none";
+        divsuratsurat.style.display = "none";
+        divgaleri.style.display = "none";
+        window.scrollTo({ top: 43, behavior: 'smooth' });
+
 
     } else if (fitur == "pembelajaran") {
         datakelassaya.style.display = "none";
@@ -406,7 +470,11 @@ function tampilinsublamangurukelas(fitur) {
         dataframeeditor.style.display = "none";
         dataakreditasi.style.display = "none";
         divdatasiswa.style.display = "none";
-        document.getElementById("batasaksesguru").scrollIntoView();
+        dataprofilsekolah.style.display = "none";
+        divsuratsurat.style.display = "none";
+        divgaleri.style.display = "none";
+        window.scrollTo({ top: y, behavior: 'smooth' });
+
     } else if (fitur == "kurikulum") {
         datakelassaya.style.display = "none";
         dataabsensi.style.display = "none";
@@ -417,7 +485,11 @@ function tampilinsublamangurukelas(fitur) {
         dataframeeditor.style.display = "none";
         dataakreditasi.style.display = "none";
         divdatasiswa.style.display = "none";
-        document.getElementById("batasaksesguru").scrollIntoView();
+        dataprofilsekolah.style.display = "none";
+        divsuratsurat.style.display = "none";
+        divgaleri.style.display = "none";
+        window.scrollTo({ top: y, behavior: 'smooth' });
+
     } else if (fitur == "mapel") {
         datakelassaya.style.display = "none";
         dataabsensi.style.display = "none";
@@ -428,7 +500,11 @@ function tampilinsublamangurukelas(fitur) {
         dataframeeditor.style.display = "none";
         dataakreditasi.style.display = "none";
         divdatasiswa.style.display = "none";
-        document.getElementById("batasaksesguru").scrollIntoView();
+        dataprofilsekolah.style.display = "none";
+        divsuratsurat.style.display = "none";
+        divgaleri.style.display = "none";
+        window.scrollTo({ top: y, behavior: 'smooth' });
+
     }
     else if (fitur == "kehadiranguru") {
         datakelassaya.style.display = "none";
@@ -437,12 +513,31 @@ function tampilinsublamangurukelas(fitur) {
         datakurikulum.style.display = "none";
         datanilaimapel.style.display = "none";
         datakehadiranguru.style.display = "block";
-
+        divgaleri.style.display = "none";
         dataakreditasi.style.display = "none";
         dataframeeditor.style.display = "none";
         divdatasiswa.style.display = "none";
+        dataprofilsekolah.style.display = "none";
+        divsuratsurat.style.display = "none";
+        window.scrollTo({ top: y, behavior: 'smooth' });
 
-        document.getElementById("batasaksesguru").scrollIntoView();
+    }
+    else if (fitur == "profilesekolah") {
+        datakelassaya.style.display = "none";
+        dataabsensi.style.display = "none";
+        datapembelajaran.style.display = "none";
+        datakurikulum.style.display = "none";
+        datanilaimapel.style.display = "none";
+        datakehadiranguru.style.display = "none";
+        dataprofilsekolah.style.display = "block";
+        divgaleri.style.display = "none";
+        divsuratsurat.style.display = "none";
+        dataakreditasi.style.display = "none";
+        dataframeeditor.style.display = "none";
+        divdatasiswa.style.display = "none";
+        window.scrollTo({ top: y, behavior: 'smooth' });
+
+
     }
     else if (fitur == "meme") {
         datakelassaya.style.display = "none";
@@ -454,9 +549,13 @@ function tampilinsublamangurukelas(fitur) {
         dataframeeditor.style.display = "block";
         dataakreditasi.style.display = "none";
         divdatasiswa.style.display = "none";
+        dataprofilsekolah.style.display = "none";
+        divsuratsurat.style.display = "none";
+        divgaleri.style.display = "none";
+        window.scrollTo({ top: y, behavior: 'smooth' });
 
 
-        document.getElementById("batasaksesguru").scrollIntoView();
+
     }
     else if (fitur == "akreditasi") {
         datakelassaya.style.display = "none";
@@ -468,9 +567,13 @@ function tampilinsublamangurukelas(fitur) {
         dataakreditasi.style.display = "block";
         dataframeeditor.style.display = "none";
         divdatasiswa.style.display = "none";
+        dataprofilsekolah.style.display = "none";
+        divsuratsurat.style.display = "none";
+        divgaleri.style.display = "none";
+        window.scrollTo({ top: y, behavior: 'smooth' });
 
 
-        document.getElementById("batasaksesguru").scrollIntoView();
+
     } else if (fitur == "kesiswaan") {
         datakelassaya.style.display = "none";
         dataabsensi.style.display = "none";
@@ -481,11 +584,42 @@ function tampilinsublamangurukelas(fitur) {
         dataakreditasi.style.display = "none";
         dataframeeditor.style.display = "none";
         divdatasiswa.style.display = "block";
-
-
-        document.getElementById("batasaksesguru").scrollIntoView();
+        dataprofilsekolah.style.display = "none";
+        divsuratsurat.style.display = "none";
+        divgaleri.style.display = "none";
+        window.scrollTo({ top: y, behavior: 'smooth' });
+    }else if (fitur == "surat") {
+        datakelassaya.style.display = "none";
+        dataabsensi.style.display = "none";
+        datapembelajaran.style.display = "none";
+        datakurikulum.style.display = "none";
+        datanilaimapel.style.display = "none";
+        datakehadiranguru.style.display = "none";
+        dataakreditasi.style.display = "none";
+        dataframeeditor.style.display = "none";
+        divsuratsurat.style.display = "block";
+        divdatasiswa.style.display = "none";
+        dataprofilsekolah.style.display = "none";
+        divgaleri.style.display = "none";
+        window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+    else if (fitur == "galery") {
+        datakelassaya.style.display = "none";
+        dataabsensi.style.display = "none";
+        datapembelajaran.style.display = "none";
+        datakurikulum.style.display = "none";
+        datanilaimapel.style.display = "none";
+        datakehadiranguru.style.display = "none";
+        dataakreditasi.style.display = "none";
+        dataframeeditor.style.display = "none";
+        divsuratsurat.style.display = "none";
+        divdatasiswa.style.display = "none";
+        dataprofilsekolah.style.display = "none";
+        divgaleri.style.display = "block";
+        window.scrollTo({ top: y, behavior: 'smooth' });
     }
     w3_close();
+
 }
 
 
@@ -546,7 +680,8 @@ const dataguru = () => {
         .then(m => m.json()).then(k => {
             //console.log(k);
             arraydatatendik = k;
-            let temp = "<h3 class='w3-center'>DATA PENDIDIK DAN TENAGA KEPENDIDIKAN " + idNamaSekolah.toUpperCase() + "<br/><sub>Format Daftar 1</sub></h3><table class='versi-table w3-tiny' id='tbldaftar1pertama'><thead><tr>";
+            let temp = ``;
+            temp += "<h3 class='w3-center' style='position:sticky;position:-webkit-sticky;left:0px;'>DATA PENDIDIK DAN TENAGA KEPENDIDIKAN " + idNamaSekolah.toUpperCase() + "<br/><sub>Format Daftar 1</sub></h3><table class='versi-table w3-tiny' id='tbldaftar1pertama'><thead><tr>";
 
             for (a = 0; a < arhead.length; a++) {
                 if (a == 1) {
@@ -647,9 +782,14 @@ const dataguru = () => {
             temp += "</table>";
 
             tabeltempatdaftarkelassaya.innerHTML = temp;
+            let wid = document.querySelector("#tbldaftar1pertama").offsetWidth + 26;
+            //  let divscroll = document.getElementById("scrolltabelabsenrekap");
+            let isidivscroll = document.getElementById("isiscrolltabelabsenrekap3");
+            isidivscroll.setAttribute("style", `width:${wid}px;height:5px;`)
+
             notice.data = arrperguru;//.filter(u => u.statuspegawai !== "HNR");
             // console.table(notice.data);
-            let tabelkgb = `<table class='versi-table w3-tiny'>
+            let tabelkgb = `<table class='versi-table' style="margin:0 auto">
             <thead><tr>
             <th>No.</th>
             <th>Nama Guru</th>
@@ -657,7 +797,7 @@ const dataguru = () => {
             <th>Keterangan</th>
             </tr></thead><tbody>
             `;
-            let tabelpangkat = `<table class='versi-table w3-tiny'>
+            let tabelpangkat = `<table class='versi-table' style="margin:0 auto">
             <thead><tr>
             <th>No.</th>
             <th>Nama Guru</th>
@@ -724,9 +864,175 @@ const dataguru = () => {
             tabelpangkat += "</tbody></table>Keterangan:<br/>KGB YAD : Kenaikan Gaji Berkala Yang Akan Datang";
             tabeltempatkgb.innerHTML = "<hr/><h3 class='w3-center'>NOTIFIKASI USULAN KENAIKAN GAJI BERKALA (KGB)<br/>PER BULAN " + NamaBulandariIndex(new Date().getMonth()).toUpperCase() + " " + new Date().getFullYear() + "</h3>" + tabelkgb;
             tabeltempatpangkat.innerHTML = "<hr/><h3 class='w3-center'>NOTIFIKASI USULAN KENAIKAN PANGKAT<br/>PER BULAN " + NamaBulandariIndex(new Date().getMonth()).toUpperCase() + " " + new Date().getFullYear() + "</h3>" + tabelpangkat;
+            //DUK
+            let htmlduk = "";
+            htmlduk += `
+            <button class="w3-btn warnaeka w3-border-bottom w3-border-black" onclick="simpanduk()"><i class="fa fa-save"> Simpan Ke Server</i></button>
+            <hr/><table class="versi-table garis kelas_tabel_duk" style="margin: 0 auto">
+            <thead>
+                <tr>
+                    <th>Aksi</th>
+                    <th>ID</th>
+                    <th>Nama PTK</th>
+                    <th>Status Pegawai</th>
+                    <th>Jabatan</th>
+                    <th>Gol/Ruang</th>
+                </tr>
+            </thead>
+            <tbody>`
+            for (i = 1; i < k.length; i++) {
+                // let kol = k[i];
+                htmlduk += `<tr>
+                <td>
+                    <button onclick="MoveUp.call(this)" class="warnaeka w3-button" title="Naikkan">&#8679;</button>
+                    <button onclick="MoveDown.call(this)" class="warnaeka w3-button" title="Turunkan">&#8681;</button>
+                </td>
+                <td>
+                    ${k[i][0]}
+                </td>
+                <td>
+                    ${k[i][2]}
+                </td>
+                <td>
+                    ${k[i][14]}
+                    </td>
+                <td>
+                    ${k[i][15]}
+                </td>
+                <td>
+                    ${k[i][24]}
+                </td>
+                `;
 
-        })//.catch(er => alert(er))
+                htmlduk += `</tr>`;
+            }
+            htmlduk += `</tbody></table>`;
+            document.querySelector(".tempattabelduk").innerHTML = htmlduk;
 
+
+
+
+        }).catch(er => console.log(er))
+    let elstablengkap1 = document.getElementById("scrolltabelabsenrekap3")
+    let elstablengkap2 = document.getElementById("tabeltempatdaftarkelassaya")
+
+    elstablengkap1.onscroll = function () {
+        elstablengkap2.scrollLeft = elstablengkap1.scrollLeft;
+    };
+    elstablengkap2.onscroll = function () {
+        elstablengkap1.scrollLeft = elstablengkap2.scrollLeft;
+    };
+}
+//http://jsfiddle.net/z5hroz4p/8/
+function get_previoussibling(n) {
+    x = n.previousSibling;
+    while (x.nodeType != 1) {
+        x = x.previousSibling;
+    }
+    return x;
+}
+function get_nextsibling(n) {
+    x = n.nextSibling;
+    while (x != null && x.nodeType != 1) {
+        x = x.nextSibling;
+    }
+
+    return x;
+}
+function MoveUp() {
+    var table,
+        row = this.parentNode;
+
+
+    while (row != null) {
+        if (row.nodeName == 'TR') {
+            break;
+        }
+        row = row.parentNode;
+    }
+    table = row.parentNode;
+    // let batas = row.rowIndex;
+    // if (batas !== 1) {
+    //     table.insertBefore(row, get_previoussibling(row));
+
+    // } else {
+    //     alert("Cukup, tidak bisa dinaikkan lagi.")
+    // }
+
+    let batas = row.rowIndex;
+    if (batas !== 1) {
+        table.insertBefore(row, get_previoussibling(row));
+
+    } else {
+        alert("Cukup, tidak bisa dinaikkan lagi.")
+    }
+
+
+
+}
+function MoveDown() {
+    var table,
+        row = this.parentNode;
+    let cektabel = document.querySelector(".kelas_tabel_duk");
+    let batasbawah = cektabel.rows.length;
+
+    while (row != null) {
+        if (row.nodeName == 'TR') {
+            break;
+        }
+        row = row.parentNode;
+    }
+    table = row.parentNode;
+    // let batas = row.rowIndex;
+    // console.log(batas);
+    // if (batas !== (batasbawah - 1)) {
+    //     table.insertBefore(row, get_nextsibling(get_nextsibling(row)));
+
+    // } else {
+    //     alert
+    // }
+
+    let batas = row.rowIndex;
+    if (batas !== (batasbawah - 1)) {
+        table.insertBefore(row, get_nextsibling(get_nextsibling(row)));
+
+    } else {
+        alert("Cukup, tidak bisa diturunkan lagi.")
+    }
+
+
+
+}
+
+function simpanduk() {
+    let lr = document.querySelector('.kelas_tabel_duk').getElementsByTagName("tbody")[0];
+    let kol = [];
+    for (i = 0; i < lr.rows.length; i++) {
+        let isi = parseInt(lr.rows[i].cells[1].innerHTML);
+        kol.push(isi)
+    }
+    
+    let data = [];
+    data.push(arraydatatendik[0]);//headernya
+    for (j = 0; j < kol.length; j++) {
+        let lr = arraydatatendik.filter(s => s[0] == kol[j])[0];
+        data.push(lr)
+    }
+
+    let dataa = JSON.stringify(data);
+
+    let kirimin = new FormData();
+    kirimin.append("tabel", dataa);
+    fetch(linktendik + "?action=simpantendikA", {
+        method: "post",
+        body: kirimin
+    }).then(m => m.json())
+        .then(k => {
+            alert(k.result);
+            dataguru();
+            document.querySelector(".btntab_dataguru").click();
+        })
+        .catch(er => alert(er))
 }
 
 const edittanggal = (r, c) => {
@@ -779,7 +1085,7 @@ const tanggaloke = (r, c) => {
             namatabel.rows[r].cells[17].innerHTML = umur(formatbalikin(kolomtahun)).tahun;
             namatabel.rows[r].cells[18].innerHTML = umur(formatbalikin(kolomtahun)).bulan;
         } else {
-            alert("tidak kosong \n kolomtahun=" + kolomtahun);
+
             namatabel.rows[r].cells[17].innerHTML = umur(tanggal.value).tahun;// kolomtahun;//umur(kolomtahun).tahun;
             namatabel.rows[r].cells[18].innerHTML = umur(tanggal.value).bulan;//new Date(kolomtahun);//'d';//umur(new Date(kolomtahun)).bulan;
         }
@@ -1211,7 +1517,8 @@ tabkehadiranpiket.addEventListener("click", function () {
         return
     }
     let ind = new Date().getMonth() + 1;
-    document.getElementById("daftarpilihbulankehadirangurupribadi").selectedIndex = ind;
+    // document.getElementById("daftarpilihbulankehadirangurupribadi").selectedIndex = ind;
+    document.getElementById("daftarpilihbulankehadirangurupribadi").value = new Date().getFullYear() + "-" + addZero(new Date().getMonth() + 1) + "-01";
     modalfnkalenderkehadirangurupribadi();
     //divtabelpikethariini.innerHTML = tekshtml;
     //refreshAbsenHariIni();
@@ -1224,11 +1531,228 @@ tabrekappiket.addEventListener("click", function () {
     // let xx = idselect.selectedIndex;
     let ind = new Date().getMonth() + 1;
     // xx = ind;
-    document.getElementById("daftarpilihbulankehadiranguru").selectedIndex = ind;
+    // document.getElementById("daftarpilihbulankehadiranguru").selectedIndex = ind;
+    document.getElementById("daftarpilihbulankehadiranguru").value = new Date().getFullYear() + "-" + addZero(new Date().getMonth() + 1) + "-01";
     modalfnkalenderkehadiranguru();
 })
 
+let cektabeldataguru = [];
 const modalfnkalenderkehadiranguru = async () => {
+    //kondisikan dulu, jika arraydatatendik kosong, load dulu datanya:
+    if (arraydatatendik.length == 0) {
+        await fetch(linktendik + "?action=tabeltendik")
+            .then(m => m.json()).then(k => {
+                // console.table(k);
+                arraydatatendik = k;
+                cektabeldataguru = k.filter(s => s[0] !== "idabsen");;
+            })
+            .catch(er => console.log(er))
+    }
+    document.getElementById("rekapabsenguru").innerHTML = "";
+    let idselect = document.getElementById("daftarpilihbulankehadiranguru");
+    let xx = idselect.selectedIndex;
+    let strdate = idselect[xx].value;
+
+    let d = new Date(strdate);
+    let m = d.getMonth();
+    let y = d.getFullYear()
+    let dt = d.getDate();
+    let sm = d.getMonth() + 1;
+    let nolbulan = addZero(sm);
+    let namabulan = NamaBulandariIndex(m);
+    let jumlahharibulanini = daysInMonth(sm, y);
+
+    //document.getElementById("bulanrekap").innerHTML = "Tabel Rekap Absensi Bulan " + namabulan + " " + y;
+
+    let tabel = document.createElement("table");
+    tabel.setAttribute("class", "versi-table w3-tiny");
+    tabel.setAttribute("id", "tabelxx");
+    let thead = tabel.createTHead();
+    let tr = thead.insertRow(0);
+
+    let th = document.createElement("th");
+    th.setAttribute("rowspan", "2");
+    th.innerHTML = "No. Urut";
+    tr.appendChild(th);
+
+    th = document.createElement("th");
+    th.setAttribute("rowspan", "2");
+    th.setAttribute("style", "position:sticky;position:-webkit-sticky;left:0px;box-shadow: inset 0 0 1px #000000");
+    th.innerHTML = "NAMA PTK";
+    tr.appendChild(th);
+
+    th = document.createElement("th");
+    th.setAttribute("rowspan", "2");
+    th.innerHTML = "Jabatan/Tugas";
+    tr.appendChild(th);
+
+    th = document.createElement("th");
+    th.setAttribute("rowspan", "2");
+    th.innerHTML = "Golongan/Ruang";
+    tr.appendChild(th);
+
+    th = document.createElement("th");
+    th.setAttribute("colspan", jumlahharibulanini);
+    th.setAttribute("id", "namaheaderbulan");
+    th.innerHTML = "Bulan " + namabulan + " " + y;
+    tr.appendChild(th);
+
+    tr = thead.insertRow(-1);
+    let itgl = 1;
+    let arrayKeteranganLibur = [];
+    let itungHE = 0;
+
+    for (let i = 0; i < jumlahharibulanini; i++) {
+        let d_tbl = new Date(y, m, itgl);
+        let sd_tbl = StringTanggal2(d_tbl);
+        let indekshari = d_tbl.getDay()
+        let libur = (arrayStringTglLibur.indexOf(sd_tbl) > -1) ? true : false;
+        let indekslibur = (arrayStringTglLibur.indexOf(sd_tbl) > -1) ? arrayStringTglLibur.indexOf(sd_tbl) : -1;
+        let weekend = (indekshari == 0 || indekshari == 6) ? true : false;
+        th = document.createElement("th");
+
+        if (libur) {
+            th.setAttribute("class", "w3-red");
+            let teksbawah = "Tgl. " + tanggalfull(d_tbl) + " " + arrayKetLibur[indekslibur];
+            arrayKeteranganLibur.push(teksbawah)
+        } else if (weekend) {
+            th.setAttribute("class", "w3-red");
+        } else {
+
+            itungHE++
+        }
+
+        th.innerHTML = itgl + "<br>" + NamaHaridariIndex(indekshari);
+
+
+        tr.appendChild(th);
+
+        itgl++
+    }
+
+    let datanama = Object.keys(dataapiguru).map(k => dataapiguru[k].guru_namalengkap);
+    //console.log(datanama)
+    // let datajabatan = Object.keys(dataapiguru).map(k => dataapiguru[k].guru_namalengkap);
+    // let datagolruang = Object.keys(dataapiguru).map(k => dataapiguru[k].guru_namalengkap);
+    let encodenama = [];// arraydatatendik.map(s=> s[1]); //idabsen
+    let encodenamaO = arraydatatendik.map(s => parseInt(s[0]));//.filter(s => s !== "idabsen"); //idabsen//Object.keys(dataapiguru).map(k => parseInt(dataapiguru[k].idabsen));
+    // console.table(encodenamaO);
+    
+
+    let tbody = tabel.createTBody()
+    for (let j = 0; j < cektabeldataguru.length; j++) {
+
+        //encodenama = encodeURIComponent(unescape(datanama[j]));
+        // encodenama = encodeURIComponent(unescape(arraydatatendik[j + 1]));
+        encodenama = cektabeldataguru[j][0];
+        //console.log(encodenama);
+        let tes = cektabeldataguru[j];
+
+        tr = tbody.insertRow(-1);
+        let cell = tr.insertCell(-1);
+        cell.innerHTML = j + 1;
+
+        //tr = tbody.insertRow(-1);
+        cell = tr.insertCell(-1);
+        cell.setAttribute("style", "position:sticky;position:-webkit-sticky;left:0px; box-shadow: inset 0 0 1px #000000");
+        cell.innerHTML = tes[2];//arraydatatendik[(j + 1)][2];//"<span style='font-size:12px;' id='datakelas" + j + "'>" + datanama[j] + "</span>";
+
+        //tr = tbody.insertRow(-1);
+        cell = tr.insertCell(-1);
+        cell.innerHTML = tes[22];//arraydatatendik[j + 1][22];///jabatan 22
+
+        //tr = tbody.insertRow(-1);
+        cell = tr.insertCell(-1);
+        cell.innerHTML = tes[24];//arraydatatendik[j + 1][24].toUpperCase();//golongan ruang
+
+
+        let ke = 1;
+
+
+        for (let k = 0; k < jumlahharibulanini; k++) {
+            cell = tr.insertCell(-1);
+
+            d_tbl = new Date(y, m, ke);
+            sd_tbl = StringTanggal2(d_tbl);
+            indekshari = d_tbl.getDay()
+            libur = (arrayStringTglLibur.indexOf(sd_tbl) > -1) ? true : false;
+            indekslibur = (arrayStringTglLibur.indexOf(sd_tbl) > -1) ? arrayStringTglLibur.indexOf(sd_tbl) : -1;
+            weekend = (indekshari == 0 || indekshari == 6) ? true : false;
+            if (libur) {
+                cell.setAttribute("class", "w3-red");
+                cell.setAttribute("style", "background-color:red")
+            } else if (weekend) {
+                cell.setAttribute("class", "w3-red");
+                cell.setAttribute("style", "background-color:red")
+            } else {
+
+                cell.setAttribute("style", "cursor:pointer");
+                cell.setAttribute("id", "td_" + encodenama + "_" + ke + "" + nolbulan + "" + y + "");
+                // // cell.setAttribute("onclick", "bantuabsen('" + encodenama + "_" + ke + "" + nolbulan + "" + y + "')");
+                cell.setAttribute("onclick", "alert('Hanya Kepala sekolah yang berhak membantu absen')");
+
+                cell.innerHTML = "<span style='font-size:10px' id='" + ke + "" + nolbulan + "" + y + "_" + encodenama + "'>x</span>";
+            }
+            ke++
+        }
+
+    }
+
+
+
+    document.getElementById("rekapabsenguru").appendChild(tabel);
+    let wid = document.querySelector("#tabelxx").offsetWidth + 26;
+    //  let divscroll = document.getElementById("scrolltabelabsenrekap");
+    let isidivscroll = document.getElementById("isiscrolltabelabsenrekap2");
+    isidivscroll.setAttribute("style", `width:${wid}px;height:5px;`)
+
+    let keta = localStorage.getItem("Kaldik");
+    let ketc = JSON.parse(keta);
+    let ketm = m;
+    let kety = y;
+    let b = ketc.filter(s => (new Date(s.start_tgl).getMonth() == ketm || new Date(s.end_tgl).getMonth() == ketm) && (new Date(s.start_tgl).getFullYear() == kety || new Date(s.end_tgl).getFullYear() == kety));
+    let ketlibur = "";
+    if (b.length !== 0) {
+        ketlibur = "Keterangan Tanggal:<ul>";
+        for (i = 0; i < b.length; i++) {
+            let thn_awal = new Date(b[i].start_tgl).getFullYear();
+            let thn_akhir = new Date(b[i].end_tgl).getFullYear();
+            // console.log(thn_awal + " " + thn_akhir)
+            let bln_awal = new Date(b[i].start_tgl).getMonth();
+            let bln_akhir = new Date(b[i].end_tgl).getMonth();
+            let tgl_awal = new Date(b[i].start_tgl).getDate();
+            let tgl_akhir = new Date(b[i].end_tgl).getDate();
+            if (thn_awal == thn_akhir) {
+                if (bln_awal == bln_akhir) {
+                    if (tgl_awal == tgl_akhir) {
+
+                        ketlibur += `<li> Tgl ${tgl_awal} ${timekbm_arraybulan[ketm]} ${new Date(b[i].start_tgl).getFullYear()}= ${b[i].keterangan}</li>`;
+                    } else {
+                        ketlibur += `<li> Tgl ${tgl_awal} - ${tgl_akhir} ${timekbm_arraybulan[ketm]}  ${new Date(b[i].end_tgl).getFullYear()}= ${b[i].keterangan}</li>`;
+                    }
+                } else {
+                    ketlibur += `<li> Tgl ${tgl_awal} ${timekbm_arraybulan[bln_awal]} - ${tgl_akhir} ${timekbm_arraybulan[bln_akhir]}  ${thn_awal}= ${b[i].keterangan}</li>`;
+                }
+            } else {
+                ketlibur += `<li> Tgl ${tgl_awal} ${timekbm_arraybulan[bln_awal]} ${thn_awal} - ${tgl_akhir} ${timekbm_arraybulan[bln_akhir]}  ${thn_akhir}= ${b[i].keterangan}</li>`;
+            }
+        }
+        ketlibur += "</ul>";
+    }
+    document.getElementById("rekapabsenguru").innerHTML += ketlibur;
+    tetetetetetet(strdate);
+    let elstablengkap1 = document.getElementById("scrolltabelabsenrekap2")
+    let elstablengkap2 = document.getElementById("rekapabsenguru")
+
+    elstablengkap1.onscroll = function () {
+        elstablengkap2.scrollLeft = elstablengkap1.scrollLeft;
+    };
+    elstablengkap2.onscroll = function () {
+        elstablengkap1.scrollLeft = elstablengkap2.scrollLeft;
+    };
+};
+
+const modalfnkalenderkehadirangurulama = async () => {
     //kondisikan dulu, jika arraydatatendik kosong, load dulu datanya:
     if (arraydatatendik.length == 0) {
         await fetch(linktendik + "?action=tabeltendik")
@@ -1419,6 +1943,60 @@ const tetetetetetet = (ed) => {
 
 
             for (var i = 0; i < jsonabsenkelasperbulan.length; i++) {
+                kodeid = jsonabsenkelasperbulan[i].idtanggal + "_" + encodeURIComponent(dataapiguru.filter(k => k.idabsen == jsonabsenkelasperbulan[i].idabsen)[0].idabsen);
+               
+                //"<span style='font-size:10px' id='" + ke + "" + nolbulan + "" + y + "_" + ruangankelas + "_" + encodenama + "'>x</span>";
+
+                kodetd = "td_" + encodeURIComponent(dataapiguru.filter(k => k.idabsen == jsonabsenkelasperbulan[i].idabsen)[0].idabsen) + "_" + jsonabsenkelasperbulan[i].idtanggal;
+                var isikehadiran = document.getElementById(kodeid)
+
+                if (isikehadiran == null) {
+                    // document.getElementById("tabel_rekap_absen_nama_tgl").innerHTML += "<li>" + decodeURIComponent(jsonabsenkelasperbulan[i].name) + " pada tanggal " + new Date(jsonabsenkelasperbulan[i].timestamp).getDate() + " Tidak ada/diubah namanya.</li>";
+                } else {
+                    var link = jsonabsenkelasperbulan[i].fileContent;
+                    if (link !== "") {
+                        var linksplit = link.replace("https://drive.google.com/file/d/", "");
+                        var linksplitt = linksplit.replace("/view?usp=drivesdk", "");
+
+                    } else {
+
+                        var linksplitt = "1BZwicOBix4eILY0IQrJs4H825w2k4g-3";;
+                    }
+
+
+                    var cekdiv = document.getElementById(kodetd);
+                    if (cekdiv != null) {
+                        document.getElementById(kodetd).removeAttribute("onclick");
+
+                        isikehadiran.innerHTML = `<img src="https://drive.google.com/uc?export=view&id=${linksplitt}" style="width:20px; height:30px;cursor:pointer" alt="poto" onclick="klikpotoguru(this,'${jsonabsenkelasperbulan[i].kehadiran}<br/>${jsonabsenkelasperbulan[i].timestamp}')"/><br/>${jsonabsenkelasperbulan[i].kehadiran}`;
+
+                    }
+                }
+
+            }
+
+        })
+        .catch(er => alert(er))
+}
+
+const tetetetetetetlama = (ed) => {
+    let datee = StringTanggal2(new Date(ed));
+    //console.log(datee)
+    let namabulan = NamaBulandariIndex(new Date(datee).getMonth());
+    //console.log(namabulan);
+
+    fetch(linktendik + "?action=rekapbulanall&strtgl=" + datee)
+        .then(m => m.json())
+        .then(k => {
+            //console.log(k);
+            jsonabsenkelasperbulan = k[namabulan].filter(d => d.resume == "disetujui");
+            //console.log(jsonabsenkelasperbulan);
+
+
+            // var datatabel = document.getElementById("tabelxx").getElementsByTagName("tbody")[0];
+
+
+            for (var i = 0; i < jsonabsenkelasperbulan.length; i++) {
                 kodeid = jsonabsenkelasperbulan[i].idtanggal + "_" + encodeURIComponent(dataapiguru.filter(k => k.idabsen == jsonabsenkelasperbulan[i].idabsen)[0].guru_namalengkap);
                 //  console.log(kodeid);
                 //"<span style='font-size:10px' id='" + ke + "" + nolbulan + "" + y + "_" + ruangankelas + "_" + encodenama + "'>x</span>";
@@ -1526,7 +2104,32 @@ async function refreshAbsenHariIni() {
 
 }
 
+
 function bantuabsen(encodenama) {
+
+
+    var teks = encodenama;
+    var split = teks.split("_");
+    var kodenama = split[0];
+    console.log(kodenama);
+    var tgl = split[1];
+    var strtgl = balikinidok(tgl);
+    modalkameraabsen.style.display = "block";
+    belumabsenkehadiranguru.style.display = "block";
+    let data = dataapiguru.filter(s => s.idabsen == kodenama)[0]
+    namagurupiket.innerHTML = data.guru_namalengkap;//decodeURIComponent(kodenama);
+
+    document.querySelector(".ketabsenkehadiranguru").innerHTML = tanggalfull(new Date(strtgl));
+    let kodedivpoto = document.querySelector("#datakirimgurupiket")
+    kodedivpoto.innerHTML = "";
+
+    tempatidok.value = tgl;
+    tempatidabsen.value = data.idabsen;//dataapiguru.filter(k => k.guru_namalengkap == decodeURIComponent(kodenama))[0].idabsen;
+    avatargurupiket.src = "/img/lamaso.webp"
+
+};
+
+function bantuabsenlama(encodenama) {
 
 
     var teks = encodenama;
@@ -1914,64 +2517,6 @@ tombolexcelpiket.addEventListener("click", function () {
 
 
 
-// async function absensisiswa() {
-//     alert("FItur belum diaktifkan")
-//     // if (dataapiguru.length == 0) {
-//     //     alert("Anda harus melihat data guru Anda terlebih dahulu.");
-//     //     return
-//     // }
-//     // tampilinsublamangurukelas("absen");
-//     // let tabKBM = document.querySelector(".KBM");
-//     // tabKBM.click();
-//     // // let namarombel = arrayrombel();
-//     // // let tekshtml = "<table class='versi-table w3-tiny' id='kelasaktif'><thead><tr><th>Jenjang Kelas</th><th>Kelas</th><th>Keaktifan (KBM Berlangsung)</th><th>Konten</th><th>Pembuat Konten</th><th>Pengedit Konten</th></tr></thead><tbody>";
-//     // // for (i = 0; i < 6; i++) {
-//     // //     tekshtml += `<tr>
-//     // //     <td>Kelas ${i + 1}</td>
-//     // //     <td>${namarombel.filter(k => k.match(/(\d+)/)[0] == (i + 1)).join("<br/>")}</td>
-//     // //     <td>Sedang berlangsung / Tidak ada KBM</td>
-//     // //     <td><button onclick="alert('Cek Konten')" class='w3-blue w3-btn'>Cek Konten</button></td>
-//     // //     <td>PEmbuat</td>
-//     // //     <td>diedit</td>
-//     // //     </tr>
-//     // //     `
-//     // // }
-//     // // tekshtml += "</tbody></table>";
-//     // tabelabsenhariini.innerHTML = "FITUR BELUM DIAKTIFKAN";//tekshtml;
-//     // let data = await datadatakontenmateri();
-//     // dataseluruhmateri = data;
-//     // let tabel = document.getElementById("kelasaktif").getElementsByTagName("tbody")[0];
-//     // for (j = 0; j < tabel.rows.length; j++) {
-//     //     let adamateri = data.filter(k => k.idtoken == (j + 1) && k.crtToken == zerozeroidok());
-//     //     let adaaktifitas = data.filter(k => k.idtoken == (j + 1) && k.crtToken == zerozeroidok()).length;
-//     //     tabel.rows[j].cells[2].innerHTML = (adaaktifitas == 0) ? "Tidak ada aktifitas KBM " : "Ada " + adaaktifitas + " Materi Hari ini";//+ " Materi";
-//     //     tabel.rows[j].cells[3].innerHTML = "";
-//     //     tabel.rows[j].cells[4].innerHTML = "";
-//     //     tabel.rows[j].cells[5].innerHTML = "-";
-//     //     if (adaaktifitas > 0) {
-//     //         localStorage.setItem("kbmtodaykelas_" + (j + 1), JSON.stringify(adamateri));
-//     //         for (u = 0; u < adaaktifitas; u++) {
-//     //             tabel.rows[j].cells[3].innerHTML += `<button class="w3-button w3-blue w3-tiny" onclick="previewriwayat(${(j + 1)},${u})">Materi ${u + 1}</button><br/><br/>`;
-//     //             tabel.rows[j].cells[4].innerHTML += adamateri[u].pembuatpertama + "<br/><br/>";
-//     //             if (adamateri[u].action == "materibaru") {
-//     //                 tabel.rows[j].cells[5].innerHTML = "- <br/><br/>";
-//     //             } else {
-//     //                 tabel.rows[j].cells[5].innerHTML += adamateri[u].dibuatoleh + "<br/><br/>";
-
-//     //             }
-//     //         }
-//     //     }
-//     //     // tabel.rows[j].cells[5].innerHTML = data.filter(k => k.idtoken == 1 && k.crtToken == zerozeroidok()).length + " Materi";
-//     // }
-
-
-// }
-
-
-// let misal1 = data.filter(k => k.idtoken == 1)
-// console.log(data)
-// console.log(misal1)
-
 
 const arrayrombel = () => {
     let arraykelas = jsondatasiswa.map(m => m.nama_rombel).filter((a, b, c) => c.indexOf(a) == b)
@@ -2165,8 +2710,8 @@ const modalfnkalenderkehadirangurupribadi = () => {
         alert("Silakan pilih bulannya untuk mengetahui daftar piket Anda.");
         return
     }
-    let namabulan = y[x].text;
-    modalnamabulan.innerHTML = namabulan.toUpperCase() + " 2021";
+    let namabulan = y[x].text.replace(/\s+\d+/,"");
+    modalnamabulan.innerHTML = namabulan.toUpperCase();// + " 2021";
 
     let notgl = new Date(y[x].value);
 
@@ -2258,23 +2803,13 @@ const keteranganlibur = (tgl) => { /// bolean
 }
 
 const dataabsenbulanan = async (datee, namabulan) => {
-    // console.log(datee + "\n\n" + namabulan)
     await fetch(linkkehadiranguru + "?action=rekapbulan&idguruabsen=" + constidguruabsen + "&strtgl=" + datee)
         .then(m => m.json())
         .then(k => {
-            //jsonabsenkelasperbulan = k[bulanapi];
-            rekapabsensiswabulanan = k[namabulan];//.filter(s => s.name == namasiswa);
-            // console.log(k)
-            // console.log(rekapabsensiswabulanan)
-            //---------------------------------------------------
-
+            rekapabsensiswabulanan = k[namabulan];
             for (var i = 0; i < rekapabsensiswabulanan.length; i++) {
-                //mengecek element kodeid
-                //kodeid = jsonabsenkelasperbulan[i].id + "_" + kelas + "_" + encodeURIComponent(jsonabsenkelasperbulan[i].name);
                 let kodetd = "td_" + encodeURIComponent(rekapabsensiswabulanan[i].idabsen) + "_" + rekapabsensiswabulanan[i].idtanggal;
-                //console.log(kodetd)
                 var isikehadiran = document.getElementById(kodetd)
-
                 if (isikehadiran == null) {
                     //document.getElementById("tabel_rekap_absen_nama_tgl").innerHTML += "<li>" + decodeURIComponent(jsonabsenkelasperbulan[i].name) + " pada tanggal " + new Date(jsonabsenkelasperbulan[i].Time_Stamp).getDate() + " Tidak ada/diubah namanya.</li>";
                 } else {
@@ -2282,26 +2817,16 @@ const dataabsenbulanan = async (datee, namabulan) => {
                     if (link !== "") {
                         var linksplit = link.replace("https://drive.google.com/file/d/", "");
                         var linksplitt = linksplit.replace("/view?usp=drivesdk", "");
-
                     } else {
-
                         var linksplitt = idlogo;
                     }
-
-
                     var cekdiv = document.getElementById(kodetd);
                     if (cekdiv != null) {
-                        //document.getElementById(kodetd).removeAttribute("onclick");
-
-                        // isikehadiran.innerHTML = "<div style='width:22px;height:32px;cursor:pointer;border:1px solid blue'><a href='" + jsonabsenkelasperbulan[i].fileContent + "' target='_blank'><img src='https://drive.google.com/uc?export=view&id=" + linksplitt + "'  style='width:20px; height:30px'  alt='poto'><br/>" + jsonabsenkelasperbulan[i].kehadiran + "</a></div>";
                         isikehadiran.innerHTML = `<img class="w3-image" src="https://drive.google.com/uc?export=view&id=${linksplitt}" style="width:20px; height:30px;cursor:pointer" alt="poto" onclick="klikpotoguru(this,'${rekapabsensiswabulanan[i].kehadiran}<br/>${rekapabsensiswabulanan[i].timestamp}')"/><br/>${rekapabsensiswabulanan[i].kehadiran}`;
-
                     }
-                    //document.getElementById("tabel_rekap_absen_nama_tgl").innerHTML +="";
+                    
                 }
-
             }
-
         }).catch(er => {
             console.log(er)
         })
@@ -3104,25 +3629,29 @@ const printdataakreditasi = (butir) => {
 }
 
 const absensisiswa = () => {
-    tampilinsublamangurukelas("kesiswaan");
-    document.querySelector(".tabkesiswaan1").click();
-    let div = document.querySelector(".face_divdatabasesiswa");
-    let arr = JSON.parse(localStorage.getItem("datasiswa_all"))["datasiswa"];
-    let html = `<table class="versi-table w3-tiny tabel_db_siswa"><thead>
-        <tr>
-            <th rowspan="2">Status</th>
-            <th rowspan="2">No Urut</th>
-            <th rowspan="2">ID Token</th>
-            <th colspan="2">Jenjang dan Rombel</th>
-            <th colspan="4">Penomoran</th>
-            <th rowspan="2">Nama Siswa</th>
-            <th rowspan="2">Jenis Kelamin</th>
-            <th colspan="2">Tempat Tanggal Lahir</th>
-            <th rowspan="2">Agama</th>
-            <th colspan="2">Data Orang Tua</th>
-            <th rowspan="2">Alamat</th>
-            <th rowspan="2">No Handphone</th>
-            <th rowspan="2">Aksi</th>
+    try {
+        tampilinsublamangurukelas("kesiswaan");
+        document.querySelector(".tabkesiswaan1").click();
+        let div = document.querySelector(".face_divdatabasesiswa");
+        let arr = JSON.parse(localStorage.getItem("datasiswa_all"))["datasiswa"];
+        let perluverifikasi = informasiusulandata["usulanbaru"]; //.filter(s => s.usulanperubahandata.indexOf);
+        let sudahverifikasi = informasiusulandata["usulandisetujui"]; //.filter(s => s.usulanperubahandata.indexOf);
+
+        let html = `<table class="versi-table w3-tiny tabel_db_siswa" style="margin-left:2px;margin-right:5px"><thead>
+    <tr>
+    <th rowspan="2">Aksi</th>
+       
+        <th rowspan="2">No Urut</th>
+        <th rowspan="2">ID Token</th>
+        <th colspan="2">Jenjang dan Rombel</th>
+        <th colspan="4">Penomoran</th>
+        <th rowspan="2">Nama Siswa</th>
+        <th rowspan="2">Jenis Kelamin</th>
+        <th colspan="2">Tempat Tanggal Lahir</th>
+        <th rowspan="2">Agama</th>
+        <th colspan="2">Data Orang Tua</th>
+        <th rowspan="2">Alamat</th>
+        <th rowspan="2">No Handphone</th>
             
             </tr>
             <tr>
@@ -3144,10 +3673,29 @@ const absensisiswa = () => {
       
     </thead>
     <tbody>`;
-    for (i = 0; i < arr.length; i++) {
-        let tls = (arr[i].pd_tanggallahir == "") ? "" : tanggalfull(arr[i].pd_tanggallahir);
-        html += `<tr>
-            <td contenteditable="true">${arr[i].aktif}</td>
+        for (i = 0; i < arr.length; i++) {
+            let tls = (arr[i].pd_tanggallahir == "") ? "" : tanggalfull(arr[i].pd_tanggallahir);
+            let btnDetail, btnEdit;
+            if (perluverifikasi.filter(s => s.id == arr[i].id).length > 0) {
+                //bbt.setAttribute("class", "w3-button w3-red w3-round w3-card-4 w3-border-bottom w3-border-black w3-border-right");
+                btnDetail = `<button onclick="detailformulir('${arr[i].id}')" title="Info Detail" class="w3-button w3-red w3-round w3-card-4 w3-border-bottom w3-border-black w3-border-right"><i class="fa fa-info-circle"></i></button>`;
+            } else {
+                //bbt.setAttribute("class", "w3-button warnaeka w3-round w3-card-4 w3-border-bottom w3-border-black w3-border-right");
+                btnDetail = `<button onclick="detailformulir('${arr[i].id}')" title="Info Detail" class="w3-button warnaeka w3-round w3-card-4 w3-border-bottom w3-border-black w3-border-right"><i class="fa fa-info-circle"></i></button>`;
+            };
+            if (sudahverifikasi.filter(s => s.id == arr[i].id).length > 0) {
+
+                btnEdit = `<button onclick="editsiswa('${i}')" title="Simpan Perubahan" class="w3-button w3-light-green w3-round w3-card-4 w3-border-bottom w3-border-black w3-border-right"><i class="fa fa-save"></i></button>`;
+            } else {
+                btnEdit = `<button onclick="editsiswa('${i}')" title="Simpan Perubahan" class="w3-button warnaeka w3-round w3-card-4 w3-border-bottom w3-border-black w3-border-right"><i class="fa fa-save"></i></button>`;
+            }
+            html += `<tr>
+       <td>
+                ${btnDetail}${btnEdit}
+                
+            
+            </td>
+        
             <td>${i + 1}</td>
             <td>${arr[i].id}</td>
             <td contenteditable="true">${arr[i].jenjang}</td>
@@ -3165,33 +3713,50 @@ const absensisiswa = () => {
             <td contenteditable="true">${arr[i].pd_namaibu}</td>
             <td contenteditable="true">${arr[i].pd_alamat}</td>
             <td contenteditable="true">${arr[i].pd_hp}</td>
-                <td>
-                    <button onclick="editsiswa('${i}')" title="Simpan Perubahan" class="w3-button w3-green"><i class="fa fa-save"></i></button>
-                    <button onclick="hapussiswa('${arr[i].id}')" title="Hapus Siswa Ini" class="w3-button w3-red"><i class="fa fa-trash"></i></button>
-                
-                </td>
-                
-            </tr>`;
+            
+            
+        </tr>
+            `;
 
+        }
+        html += `</tbody></table>`
+        div.innerHTML = html;
+        // console.log(dbaktif);
+        document.querySelector(".status_divdatabasesiswa").innerHTML = "Database Aktif Sekolah Anda Saat Ini";
+        let wid = document.querySelector(".tabel_db_siswa").offsetWidth + 26;
+        //  let divscroll = document.getElementById("scrolltabelabsenrekap");
+        let isidivscroll = document.getElementById("isiscrolldatabasesiswa");
+        isidivscroll.setAttribute("style", `width:${wid}px;height:5px;`);
+
+    } catch (er) {
+        alert('Data Belum siap. Tunggu proses loading selesai');
+        tampilinsublamangurukelas("beranda");
+        console.log(er)
     }
-    html += `</tbody></table>`
-    div.innerHTML = html;
-    // console.log(dbaktif);
-    document.querySelector(".status_divdatabasesiswa").innerHTML = "Database Aktif Sekolah Anda Saat Ini";
+
 }
 
+let scrdbase1 = document.getElementById("scrolldatabasesiswa");
+let scrdbase2 = document.querySelector(".face_divdatabasesiswa");
+
+scrdbase1.onscroll = function () {
+    scrdbase2.scrollLeft = scrdbase1.scrollLeft;
+};
+scrdbase2.onscroll = function () {
+    scrdbase1.scrollLeft = scrdbase2.scrollLeft;
+};
 const tambahkriteria = () => {
     let div = document.querySelector(".sortirsortir");
     let array = ["id",
         "jenjang", "nama_rombel", "nis", "nisn", "nik",
         "nokk", "pd_nama", "pd_jk", "pd_tl", "pd_tanggallahir",
         "pd_agama", "pd_namaayah", "pd_namaibu",
-        "pd_alamat", "pd_hp", "aktif"];
+        "pd_alamat", "pd_hp", "aktif", "dok_kip", "dok_kks", "dapo_kpspkh", "dapo_bank","dapo_jenjangpendidikanayah"];
     let arrayArti = ["Kode Token",
         "Jenjang", "Rombel", "NIS", "NISN", "NIK",
         "No Kartu Keluarga", "Nama Siswa", "Jenis Kelamin", "Tempat Lahir", "Tanggal Lahir",
         "Agama Siswa", "Nama Ayah", "Nama Ibu",
-        "Alamat", "No HP", "Aktif"];
+        "Alamat", "No HP", "Aktif", "Punya KIP", "Punya KKS", "Punya KPS/PKH", "Bank PIP","Pendidikan Ayah"];
     //cari array
     let divcari = document.querySelectorAll(".kriteria_dinamis");
     for (i = 0; i < divcari.length; i++) {
@@ -3209,7 +3774,7 @@ const tambahkriteria = () => {
         return;
     }
     let html = `
-    <select class="w3-select w3-small w3-border w3-border-blue kriteria_dinamis" onchange="tambah_input_kriteria('${divcari.length + 1}')">
+    <select class="w3-select w3-col l2 s2 w3-left w3-border w3-border-blue kriteria_dinamis" onchange="tambah_input_kriteria('${divcari.length + 1}')" >
     `
     for (j = 0; j < array.length; j++) {
         if (j == 0) {
@@ -3219,7 +3784,7 @@ const tambahkriteria = () => {
         }
     }
     html += `</select>
-    <input class="w3-input w3-small w3-border w3-border-red classinputkriteria_${divcari.length + 1}" placeholder="Masukan nilai kriteria ${arrayArti[0]} yang ingin dicari"/>
+    <input class="w3-input  w3-col l10 s10  w3-right w3-border w3-border-red classinputkriteria_${divcari.length + 1}" placeholder="Masukan nilai kriteria ${arrayArti[0]} yang ingin dicari. Gunakan tanda <> untuk mencari nilai selainnya." />
     
     `;
     div.innerHTML += html;
@@ -3241,7 +3806,7 @@ const tambah_input_kriteria = (id) => {
     let sel = elselect.selectedIndex;
 
     let div = document.querySelector(".classinputkriteria_" + id);
-    div.placeholder = `Masukan nilai kriteria ${opp[sel].text} yang ingin dicari`;
+    div.placeholder = `Masukan nilai kriteria ${opp[sel].text} yang ingin dicari. Gunakan tanda <> untuk mencari nilai selainnya.`;
 }
 const hapuskriteria = () => {
     let elakhir = document.querySelectorAll(".kriteria_dinamis");
@@ -3262,6 +3827,9 @@ const carikriteria = () => {
     let sel1_selected = sel1.selectedIndex;
     let vv = sel1_ops[sel1_selected].value;
     let vT = sel1_ops[sel1_selected].text;
+    let perluverifikasi = informasiusulandata["usulanbaru"]; //.filter(s => s.usulanperubahandata.indexOf);
+    let sudahverifikasi = informasiusulandata["usulandisetujui"]; //.filter(s => s.usulanperubahandata.indexOf);
+
     let tbdy = document.querySelector(".tabel_db_siswa").getElementsByTagName("tbody")[0];
     let arrb = [];
     let arr = [];
@@ -3290,9 +3858,28 @@ const carikriteria = () => {
             krit_n = ops[slctd].value;
             let krit_t = ops[slctd].text;
             i_ind = (a + 1);
-            nil_k = document.querySelector(".classinputkriteria_" + i_ind).value;
-            prm_filter += `, ${krit_t} = ${nil_k}`;
-            arr = arrb.filter(k => k[krit_n] == nil_k);
+            let cektanda = document.querySelector(".classinputkriteria_" + i_ind).value;
+            //nil_k = document.querySelector(".classinputkriteria_" + i_ind).value;
+            let kosong;
+            if (cektanda.indexOf("<>") > -1) {
+                nil_k = cektanda.replace("<>", "")
+
+                kosong = (nil_k == "") ? "Tidak diisi" : nil_k;
+                prm_filter += `, ${krit_t} selain ${kosong}`;
+                if (nil_k == "") {
+                    arr = arrb.filter(k => k[krit_n] !== "");
+
+                } else {
+                    arr = arrb.filter(k => k[krit_n] !== nil_k);
+
+                }
+            } else {
+                nil_k = cektanda;
+                kosong = (nil_k == "") ? "Tidak diisi" : nil_k;
+                prm_filter += `, ${krit_t} = ${kosong}`;
+                arr = arrb.filter(k => k[krit_n] == nil_k);
+            }
+
 
 
             arrb = arr;
@@ -3309,8 +3896,27 @@ const carikriteria = () => {
     } else {
         for (i = 0; i < arr.length; i++) {
             let tls = (arr[i].pd_tanggallahir == "") ? "" : tanggalfull(arr[i].pd_tanggallahir);
+            let btnDetail, btnEdit;
+            if (perluverifikasi.filter(s => s.id == arr[i].id).length > 0) {
+                //bbt.setAttribute("class", "w3-button w3-red w3-round w3-card-4 w3-border-bottom w3-border-black w3-border-right");
+                btnDetail = `<button onclick="detailformulir('${arr[i].id}')" title="Info Detail" class="w3-button w3-red w3-round w3-card-4 w3-border-bottom w3-border-black w3-border-right"><i class="fa fa-info-circle"></i></button>`;
+            } else {
+                //bbt.setAttribute("class", "w3-button warnaeka w3-round w3-card-4 w3-border-bottom w3-border-black w3-border-right");
+                btnDetail = `<button onclick="detailformulir('${arr[i].id}')" title="Info Detail" class="w3-button warnaeka w3-round w3-card-4 w3-border-bottom w3-border-black w3-border-right"><i class="fa fa-info-circle"></i></button>`;
+            };
+            if (sudahverifikasi.filter(s => s.id == arr[i].id).length > 0) {
+
+                btnEdit = `<button onclick="editsiswa('${i}')" title="Simpan Perubahan" class="w3-button w3-light-green w3-round w3-card-4 w3-border-bottom w3-border-black w3-border-right"><i class="fa fa-save"></i></button>`;
+            } else {
+                btnEdit = `<button onclick="editsiswa('${i}')" title="Simpan Perubahan" class="w3-button warnaeka w3-round w3-card-4 w3-border-bottom w3-border-black w3-border-right"><i class="fa fa-save"></i></button>`;
+            }
             html += `<tr>
-            <td contenteditable="true">${arr[i].aktif}</td>
+       <td>
+                ${btnDetail}${btnEdit}
+                
+            
+            </td>
+        
             <td>${i + 1}</td>
             <td>${arr[i].id}</td>
             <td contenteditable="true">${arr[i].jenjang}</td>
@@ -3328,13 +3934,10 @@ const carikriteria = () => {
             <td contenteditable="true">${arr[i].pd_namaibu}</td>
             <td contenteditable="true">${arr[i].pd_alamat}</td>
             <td contenteditable="true">${arr[i].pd_hp}</td>
-                <td>
-                    <button onclick="editsiswa('${i}')" title="Simpan Perubahan" class="w3-button w3-green"><i class="fa fa-save"></i></button>
-                    <button onclick="hapussiswa('${arr[i].id}')" title="Hapus Siswa Ini" class="w3-button w3-red"><i class="fa fa-trash"></i></button>
+                
 
-                </td>
-
-            </tr>`;
+            </tr>
+            `;
         }
     }
     tbdy.innerHTML = html;
@@ -3385,14 +3988,134 @@ const hapustanggalsiswa = (r, c) => {
 
 
 
-
-
-
-
-
-
-
 async function editsiswa(y) {
+    loadingtopbarin("loadingtopbar");
+    let tab = document.querySelector(".tabel_db_siswa").getElementsByTagName("tbody")[0];
+    let tr = tab.rows[y];
+    let id = parseInt(tr.cells[2].innerHTML);
+    let jenjang = tr.cells[3].innerHTML.replace(/\s+|<br>/g, "");
+    let rombel = tr.cells[4].innerHTML.replace(/\s+|<br>/g, "").toUpperCase();
+    let nis = tr.cells[5].innerHTML.replace(/\s+|<br>/g, "");
+    let nisn = tr.cells[6].innerHTML.replace(/\s+|<br>/g, "");
+    let nik = tr.cells[7].innerHTML.replace(/\s+|<br>/g, "");
+    let nokk = tr.cells[8].innerHTML.replace(/\s+|<br>/g, "");
+    let nama = tr.cells[9].innerHTML.toUpperCase();
+    let jk = tr.cells[10].innerHTML.toUpperCase()
+    let tl = tr.cells[11].innerHTML.toUpperCase()
+    let ttl = (tr.cells[12].innerHTML == "") ? "" : formatbalikin(tr.cells[12].innerHTML);
+    let agama = tr.cells[13].innerHTML.toUpperCase()
+    let ayah = tr.cells[14].innerHTML.toUpperCase()
+    let ibu = tr.cells[15].innerHTML.toUpperCase()
+    let alamat = tr.cells[16].innerHTML.toUpperCase()
+    let hp = tr.cells[17].innerHTML.toUpperCase()
+    let siswa = jsondatasiswa.filter(s => s.id == id)[0];
+    siswa["jenjang"] = jenjang;
+    siswa["nama_rombel"] = rombel;
+    siswa["nis"] = nis;
+    siswa["nisn"] = nisn;
+    siswa["nik"] = nik;
+    siswa["nokk"] = nokk;
+    siswa["pd_nama"] = nama
+    siswa["pd_jk"] = jk;
+    siswa["pd_tl"] = tl;
+    siswa["pd_tanggallahir"] = StringTanggal(ttl);
+    siswa["pd_agama"] = agama;
+    siswa["pd_namaayah"] = ayah;
+    siswa["pd_namaibu"] = ibu;
+    siswa["pd_alamat"] = alamat;
+    siswa["pd_hp"] = hp;
+    siswa["dieditoleh"] = namauser;
+
+    delete siswa["time_stamp"];
+
+
+    let pus = [];
+    let key = arrayheadsumber.filter(s => s !== "time_stamp"); //array
+
+    //Jika sebelumnya belum daftar ulang, maka API yang digunakan ini
+    let databelumkirim = new FormData();
+    for (let i = 0; i < key.length; i++) {
+        pus.push(siswa[key[i]]);
+        databelumkirim.append(key[i], siswa[key[i]]);
+    }
+
+    //Jika sebelumnya sudah daftar ulang, maka API yang digunakan ini
+    let tabel = JSON.stringify(pus);
+    let datakirim = new FormData();
+    datakirim.append("tabel", tabel);
+    datakirim.append("tokensiswa", id);
+    datakirim.append("idss", jlo.ss_datauser);
+
+    console.log(siswa);
+    //periksa apakah datanya pernah mengusulkan atau tidak
+    let cekusul = informasiusulandata["all"].filter(s => s.id == id)
+    if (cekusul.length > 0) {
+        //kirim kedua tab
+        let jenjkelas = jenjang.match(/\d/g)[0]
+
+        absenheader = "absen" + jenjkelas;
+        url_absensiswa = jlo[absenheader];
+        await fetch(url_absensiswa + "?action=daftarulangduasheet", {
+            method: "post",
+            body: datakirim
+        })
+            .then(m => m.json())
+            .then(r => {
+                //infoloadingljk.innerHTML = r.result;
+                console.log(r)
+                // let datasiswakelasini = r.datasiswa.filter(s => s.nama_rombel == idNamaKelas && s.aktif == "aktif");
+                // // console.log(datasiswakelasini)
+                // pararrayobjek = datasiswakelasini;
+                // localStorage.setItem("datasiswa_" + ruangankelas, JSON.stringify(datasiswakelasini));
+
+
+
+            })
+            .catch(er => {
+                console.log(er);
+
+                // infoloadingljk.innerHTML = "Terjadi kesalahan";
+            })
+    } else {
+        //kirim ke satu tab utama saja
+        let aaa = linkDataUserWithIdss + "&action=editsiswa";
+        await fetch(aaa, {
+            method: "post",
+            body: databelumkirim
+        }).then(m => m.json())
+            .then(f => {
+                console.log(f);
+
+
+            })
+            .catch(er => {
+                console.log(er);
+
+            });
+    }
+    sinkronkandatasiswa();
+    clearInterval(stoploadingtopbar);
+    let divlod = document.querySelector(".loadingtopbar");
+    divlod.style.width = "100%";
+    setTimeout(() => {
+        divlod.style.width = "1px"
+        divlod.className += " w3-hide";
+        alert("Berhasil tersimpan ke server. Perubahan yang ditampilkan di tabel mungkin saja belum berubah. Silakan klik tombol cari kriteria lagi")
+
+    }, 3000);
+
+};
+async function hapussiswa(y) {
+    alert("tokennya= " + y)
+}
+
+
+
+
+
+
+
+async function xxxxeditsiswa(y) {
     let konfirm = confirm("Apa Anda yakin ingin mengedit data siswa ini?\n\n Klik [OK] untuk mengedit\n\n Klik [CANCEL] untuk membatalkan");
     if (!konfirm) {
         return
@@ -3469,7 +4192,7 @@ async function editsiswa(y) {
         .catch(er => alert(er));
     new_loading.style.display = "none";
 }
-async function hapussiswa(id) {
+async function xxxxhapussiswa(id) {
     var konfirm = confirm("Siswa ini akan dihilangkan dari kelas Anda. \n \n Tapi data masih berada di database kami. \n \n Anda yakin ingin menghapusnya? id " + id)
     if (!konfirm) {
         return;
@@ -3508,7 +4231,7 @@ async function hapussiswa(id) {
     new_loading.style.display = "none";
 }
 
-const exceldatabase = () => {
+const exceldatabasexx = () => {
     var datasiswadiv = document.getElementById("datasiswaprint");
     datasiswadiv.innerHTML = "";
     var tabelhasil = document.createElement("table");
@@ -3527,7 +4250,8 @@ const exceldatabase = () => {
 
     var tabeledit = document.getElementById("myTableCopy").getElementsByTagName("tbody")[0];
     let tesjumlahbaris = tabeledit.rows.length;
-    console.log(tesjumlahbaris);
+
+
     // for (i = 0; i < tabeledit.rows.length; i++) {
     //     for (j = 0; j < tabeledit.rows[i].cells.length; j++) {
 
@@ -3627,8 +4351,78 @@ const exceldatabase = () => {
         exclude_links: true,
         exclude_inputs: true,
         preserveColors: true,
-        jumlahheader: 3,
+        jumlahheader: 2,
         barisatas: 3,
+        tabelmana: tesjumlahbaris
+    });
+    datasiswadiv.innerHTML = "";
+}
+
+const exceldatabase = () => {
+    alert("Mengekspor Database berdasarkan kriteria  adalah mengekspor data berdasarkan database yang telah disimpan dan format sesuai dengan Database E-Lamaso (isi sesuai Dapodik). Jika Anda baru saja mengedit di laman tabel data siswa dan belum menyimpannya ke server, sebaiknya Anda simpan terlebih dahulu. File ini bisa digunakan untuk mengekspor ke Tabel (jika diperlukan)");
+
+    var datasiswadiv = document.getElementById("datasiswaprint");
+    datasiswadiv.innerHTML = "";
+    let jud = document.querySelector(".status_divdatabasesiswa").innerHTML
+    let html = `<table class="versi-table" id="myTableCopy">
+    <tr>
+    <th colspan="5">${jud}</th>
+    <th colspan="${arrayheadsumber.length - 5}"></th></tr>
+    <tr>`;
+    //head
+    for (let i = 0; i < arrayheadsumber.length; i++) {
+        html += `<td>${arrayheadsumber[i]}</td>`;
+    }
+    html += `</tr>`;
+
+    let dataid = document.querySelector(".tabel_db_siswa").getElementsByTagName("tbody")[0].rows;
+    let arrid = [];
+    for (let i = 0; i < dataid.length; i++) {
+        let col = dataid[i].cells[2].innerHTML;
+        arrid.push(col)
+
+    }
+    console.log(arrid);
+    let datashow = jsondatasiswa.filter(s => arrid.indexOf(s.id) > -1)
+    for (let j = 0; j < datashow.length; j++) {
+        html += `<tr>`;
+        let ob = datashow[j];
+        for (k = 0; k < arrayheadsumber.length; k++) {
+            let form_number = angkadistring.indexOf(arrayheadsumber[k])
+            if (form_number > -1) {
+                html += `<td>${(ob[arrayheadsumber[k]] == "") ? "" : "'" + ob[arrayheadsumber[k]]}</td>`;
+
+            } else {
+                let cek = arrayheadsumber[k];
+                let isi = "";
+                if (cek == "pd_tanggallahir" || cek == "dapo_tahunlahirwali" || cek == "dapo_tahunlahiribu" || cek == "dapo_tahunlahirayah") {
+
+                    isi = (ob[cek] == "") ? "" : new Date(ob[cek]).getDate() + "/" + (new Date(ob[cek]).getMonth() + 1) + "/" + new Date(ob[cek]).getFullYear();
+                } else {
+                    isi = ob[cek]
+                }
+                html += `<td>${isi}</td>`;
+
+            }
+        }
+
+        html += `</tr>`
+    }
+
+    datasiswadiv.innerHTML = html;
+
+    let tesjumlahbaris = dataid.length;
+    $("#myTableCopy").table2excel({
+        name: idNamaSekolah,
+        filename: "Database Siswa " + " ID FILE " + new Date().getTime(),
+        fileext: ".xls",
+        exclude_img: true,
+        exclude_judul: true,
+        exclude_links: true,
+        exclude_inputs: true,
+        preserveColors: true,
+        jumlahheader: 1,
+        barisatas: 1,
         tabelmana: tesjumlahbaris
     });
     datasiswadiv.innerHTML = "";
@@ -3692,6 +4486,8 @@ const printdaftarsatu = () => {
     head.innerHTML += `<style type="text/css">
     .versii-table{width:950px;max-width:100%;border-collapse:collapse}.versi-table{width:auto;max-width:100%;border-collapse:collapse}.versi-table td,.versi-table th,.versi-table tr,.versii-table td,.versii-table th,.versii-table tr{border:1px solid #000;color:#000;padding:5px 10px 5px 10px}.versi-table th,.versii-table th{background-color:#eee;color:#00f;vertical-align:middle;text-align:center}.versi-table tr:nth-of-type(even) td,.versii-table tr:nth-of-type(even) td{border:0;background-color:#fff;border:1px solid #000}.versi-table tr:nth-of-type(odd) td,.versii-table tr:nth-of-type(odd) td{border:0;background-color:#eef;border:1px solid #000}
     .garis td,.garis th,.garis tr{border:1px solid #000}.garis th{border:1px solid #000;text-align:center;vertical-align:middle}
+    .tabelbiasa, .tabelbiasa td,.tabelbiasa th{ border: 1px solid rgb(0, 0, 0); padding:5px } .tabelbiasa th{ background-color:rgb(177, 177, 177) } .tabelbiasa  { width:100%; border-collapse: collapse; }
+    .tabelbiasaputih th{ background-color:#fff !important; }
     </style>`;
 
     head.innerHTML += `<style type="text/css" media="print">
@@ -3700,14 +4496,18 @@ const printdaftarsatu = () => {
         
          @page {
             size: A4 landscape;
-            max-height:100%;
-            max-width:100%;
+            height: 21cm;
+            width: 29.7cm;
+            margin: 10mm 10mm 10mm 10mm; 
             
-            }
+        }
     }
     </style>`;
-
     body.innerHTML = isibody;
+    // size: A4 landscape;
+    //         max-height:100%;
+    //         max-width:900px;
+
 
 
     window.frames["iframeprint"].focus();
@@ -3718,12 +4518,12 @@ const printdaftarsatu = () => {
 let daftarsatu = document.querySelector(".tabkesiswaan2");
 daftarsatu.addEventListener('click', function () {
     let div = document.getElementById("divdaftar2");
-    let html = `            <div class="w3-border w3-border-blue w3-padding">Sub Menu:
+    let html = `<div class="w3-border w3-border-blue w3-padding">Sub Menu:
     <button class="w3-button w3-teal w3-round" title="Print Laman ini" onclick="printdaftarsatu()"><i
             class="fa fa-print"></i></button>
 </div>
 <h3>Daftar 1 (Bagian 2)</h3>
-<div id="htmldaftar2" style="overflow-x: auto;font-size: 10px;border:.5pt solid black;padding:2px">
+<div id="htmldaftar2" style="overflow-x: hidden;font-size: 12px;border:.5pt solid black;padding:2px;background-color:white">
     <b>PEMERINTAH DAERAH KOTA DEPOK</b><br />
     <b>DINAS PENDIDIKAN KOTA DEPOK</b><br />
     <b>KECAMATAN CIPAYUNG</b><br />
@@ -3746,32 +4546,32 @@ daftarsatu.addEventListener('click', function () {
                 <tr>
                     <td>KODE SEKOLAH</td>
                     <td>:</td>
-                    <td contenteditable="true" class="w3-border w3-border-black w3-padding-small"
+                    <td contenteditable="true" data-getkey="kodesekolah" class="w3-border w3-border-black w3-padding-small"
                         colspan="4">000</td>
                 </tr>
                 <tr>
                     <td>NAMA SEKOLAH</td>
                     <td>:</td>
-                    <td contenteditable="true" class="df1_2 w3-border w3-border-black  w3-padding-small"
+                    <td contenteditable="true"  class="df1_2 w3-border w3-border-black  w3-padding-small"
                         colspan="4">${idNamaSekolah.toUpperCase()}
                     </td>
                 </tr>
                 <tr>
                     <td>NIS/NSS/NPSN</td>
                     <td>:</td>
-                    <td contenteditable="true" class="df1_2 w3-border w3-border-black  w3-padding-small"
+                    <td contenteditable="true" dataset-getkey="gabungan_nis_nss_npsn" class="df1_2 w3-border w3-border-black  w3-padding-small"
                         colspan="4">000000
                     </td>
                 </tr>
                 <tr>
                     <td>STATUS SEKOLAH</td>
                     <td>:</td>
-                    <td contenteditable="true" class="df1_2 w3-border w3-border-black  w3-padding-small">
+                    <td contenteditable="true"  data-getkey="statussekolah"  class="df1_2 w3-border w3-border-black  w3-padding-small">
                         NEGERI
                     </td>
                     <td>AKREDITASI</td>
                     <td>:</td>
-                    <td contenteditable="true" class="df1_2 w3-border w3-border-black  w3-padding-small">A
+                    <td contenteditable="true"  data-getkey="akreditasi" class="df1_2 w3-border w3-border-black  w3-padding-small">A
                     </td>
                 </tr>
             </table>
@@ -3782,41 +4582,39 @@ daftarsatu.addEventListener('click', function () {
                 <tr>
                     <td>Tahun Pendirian</td>
                     <td>:</td>
-                    <td contenteditable="true" class="w3-border w3-border-black" style="padding:5px"
+                    <td contenteditable="true" data-getkey="tahunpendirian"  class="w3-border w3-border-black" style="padding:5px"
                         colspan="3">1900</td>
                 </tr>
                 <tr>
                     <td>No Ijin Operasional</td>
                     <td>:</td>
-                    <td contenteditable="true" class="w3-border w3-border-black" style="padding:5px">
-                        1987</td>
+                    <td contenteditable="true"  data-getkey="noijin" class="w3-border w3-border-black" style="padding:5px" colspan="3">
+                        </td>
+                        </tr><tr>
                     <td>Tanggal</td>
-                    <td contenteditable="true" class="w3-border w3-border-black" style="padding:5px">
+                    <td>:</td>
+                    <td contenteditable="true"  data-getkey="tanggal" class="w3-border w3-border-black" style="padding:5px" colspan="3">
                         1900</td>
                 </tr>
                 <tr>
                     <td>Alamat: Jln/Kmp.</td>
                     <td>:</td>
-                    <td contenteditable="true" class="w3-border w3-border-black" style="padding:5px"
-                        colspan="3">1987</td>
+                    <td contenteditable="true"  data-getkey="alamat" class="w3-border w3-border-black" style="padding:5px"
+                        colspan="3"></td>
                 </tr>
                 <tr>
                     <td>Kelurahan</td>
                     <td>:</td>
-                    <td contenteditable="true" class="w3-border w3-border-black" style="padding:5px">
-                        Depok</td>
-                    <td>RT/RW</td>
-                    <td contenteditable="true" class="w3-border w3-border-black" style="padding:5px">
-                        01/01</td>
+                    <td contenteditable="true" data-getkey="kelurahan"class="w3-border w3-border-black" style="padding:5px" colspan="3"></td>
                 </tr>
                 <tr>
                     <td>Telepon</td>
                     <td>:</td>
-                    <td contenteditable="true" class="w3-border w3-border-black" style="padding:5px">
-                        00000</td>
-                    <td>Email</td>
-                    <td contenteditable="true" class="w3-border w3-border-black" style="padding:5px">
-                        ${jlo.surel}</td>
+                    <td contenteditable="true" data-getkey="telepon" class="w3-border w3-border-black" style="padding:5px" colspan="3">
+                        00000</td></tr><tr>
+                    <td>Email</td><td>:</td>
+                    <td contenteditable="true" data-getkey="email" class="w3-border w3-border-black" style="padding:5px" colspan="3">
+                        ${idNamaSekolah.toLowerCase().replace(/\s+/g, "")}@gmail.com</td>
                 </tr>
             </table>
         </div>
@@ -3824,11 +4622,11 @@ daftarsatu.addEventListener('click', function () {
 
     <div class="w3-clear">
         <b>A. KEADAAN MURID</b>
-        <table class="w3-table garis">
+        <table class="tabelbiasa" style="font-size:8px !important;">>
             <thead class="w3-light-gray">
                 <tr>
                     <th rowspan="3">TINGKAT</th>
-                    <th rowspan="3">JML ROM BEL</th>
+                    <th rowspan="3">JML <br/>ROMBEL</th>
                     <th rowspan="2" colspan="3">KEADAAN AWAL BULAN</th>
                     <th rowspan="2" colspan="2">KELUAR BULAN INI</th>
                     <th rowspan="2" colspan="2">MASUK BULAN INI</th>
@@ -4485,10 +5283,10 @@ daftarsatu.addEventListener('click', function () {
             </tbody>
         </table>
     </div>
-    <div class="w3-left w3-border w3-border-black" style="width:60%">
+    <div class="w3-left w3-border w3-border-black" style="width:50%">
         <div class="w3-left w3-container">
             <b>B. ABSENSI DAN SOSIAL EKONOMI ORANG TUA MURID</b>
-            <table>
+            <table style="font-size:10px">
                 <tr>
                     <td>1. Absensi Murid</td>
                     <td>:</td>
@@ -4521,13 +5319,13 @@ daftarsatu.addEventListener('click', function () {
                 <tr>
                     <td>3. Jumlah Pegawai</td>
                     <td>:</td>
-                    <td contenteditable="true" class="w3-border w3-border-black w3-padding-small">... %</td>
+                    <td contenteditable="true" class="w3-border w3-border-black w3-padding-small">...</td>
                     <td colspan="9"></td>
                 </tr>
                 <tr>
                     <td>4. Jumlah Hari Efektif</td>
                     <td>:</td>
-                    <td contenteditable="true" class="w3-border w3-border-black w3-padding-small">... %</td>
+                    <td contenteditable="true"  class="w3-border w3-border-black w3-padding-small">${hariefektif(new Date().getMonth(), new Date().getFullYear())}</td>
                     <td colspan="9"></td>
 
                 </tr>
@@ -4537,19 +5335,19 @@ daftarsatu.addEventListener('click', function () {
                     <td rowspan="3" style="vertical-align:top">:</td>
                     <td>Mampu</td>
 
-                    <td contenteditable="true" class="w3-border w3-border-black w3-padding-small">... %</td>
+                    <td contenteditable="true" data-getkey="mampu" class="w3-border w3-border-black w3-padding-small">... %</td>
                     <td colspan="8"></td>
                 </tr>
                 <tr>
                     <td>Kurang Mampu</td>
 
-                    <td contenteditable="true" class="w3-border w3-border-black w3-padding-small">... %</td>
+                    <td contenteditable="true" data-getkey="kurangmampu" class="w3-border w3-border-black w3-padding-small">... %</td>
                     <td colspan="8"></td>
                 </tr>
                 <tr>
                     <td>Tidak Mampu</td>
 
-                    <td contenteditable="true" class="w3-border w3-border-black w3-padding-small">..</td>
+                    <td contenteditable="true"  data-getkey="tidakmampu"  class="w3-border w3-border-black w3-padding-small">..</td>
                     <td colspan="8"></td>
                 </tr>
 
@@ -4557,11 +5355,11 @@ daftarsatu.addEventListener('click', function () {
             </table>
         </div>
 
-        <div class="w3-right">
-            <table>
+        <div class="w3-left">
+            <table style="font-size:10px">
                 <thead>
                     <tr>
-                        <th colspan="3">DAFTAR PENERIMA KIP</th>
+                        <th colspan="3">DAFTAR PENERIMA PIP</th>
                     </tr>
                 </thead>
                 <tbody class="w3-table garis">
@@ -4570,53 +5368,32 @@ daftarsatu.addEventListener('click', function () {
                         <th>L</th>
                         <th>P</th>
                     </tr>
-                    <tr>
-                        <td>Tingkat 1</td>
-                        <td>...</td>
-                        <td>...</td>
-                    </tr>
-                    <tr>
-                        <td>Tingkat 2</td>
-                        <td>...</td>
-                        <td>...</td>
-                    </tr>
-
-                    <tr>
-                        <td>Tingkat 3</td>
-                        <td>...</td>
-                        <td>...</td>
-                    </tr>
-
-                    <tr>
-                        <td>Tingkat 4</td>
-                        <td>...</td>
-                        <td>...</td>
-                    </tr>
-
-                    <tr>
-                        <td>Tingkat 5</td>
-                        <td>...</td>
-                        <td>...</td>
-                    </tr>
-
-                    <tr>
-                        <td>Tingkat 6</td>
-                        <td>...</td>
-                        <td>...</td>
-                    </tr>
-                    <tr>
+                    `
+    for(let a = 0 ; a < 6 ; a++){
+        let tk = a+1;
+        let dataL = jsondatasiswa.filter(s=> s.pd_jk == "L" && s.dapo_bank !== "" && s.jenjang == tk).length;
+        let dataP = jsondatasiswa.filter(s=> s.pd_jk == "P" && s.dapo_bank !== "" && s.jenjang == tk).length;
+        html+=`<tr>
+        <td>Tingkat ${tk}</td>
+        <td>${dataL}</td>
+        <td>${dataP}</td>
+    </tr>`
+    }
+    let jmL = jsondatasiswa.filter(s=> s.pd_jk == "L" && s.dapo_bank !== "").length;
+    let jmP = jsondatasiswa.filter(s=> s.pd_jk == "P" && s.dapo_bank !== "").length;
+                        html+=`
                         <td>Jumlah</td>
-                        <td>...</td>
-                        <td>...</td>
+                        <td>${jmL}</td>
+                        <td>${jmP}</td>
                     </tr>
 
                 </tbody>
             </table>
         </div>
     </div>
-    <div class="w3-left w3-border-black w3-border w3-container" style="width:40%">
+    <div class="w3-left w3-border-black w3-border w3-container" style="width:50%">
         <div class="w3-container">
-            <table>
+            <table style="font-size:10px">
                 <thead>
                     <tr>
                         <td colspan="3">
@@ -4633,28 +5410,28 @@ daftarsatu.addEventListener('click', function () {
                     </tr>
                     <tr class="garis">
                         <td>a. Luas Tanah</td>
-                        <td contenteditable="true">... m<sup>2</sup></td>
-                        <td contenteditable="true">... m<sup>2</sup></td>
+                        <td contenteditable="true" data-getkey="hakmilik_luastanah">... m<sup>2</sup></td>
+                        <td contenteditable="true"data-getkey="bukanhakmilik_luastanah">... m<sup>2</sup></td>
                     </tr>
                     <tr class="garis">
                         <td>b. Digunakan Bangunan</td>
-                        <td contenteditable="true">... m<sup>2</sup></td>
-                        <td contenteditable="true">... m<sup>2</sup></td>
+                        <td contenteditable="true"data-getkey="hakmilik_digunakanbangunan">... m<sup>2</sup></td>
+                        <td contenteditable="true"data-getkey="bukanhakmilik_digunakanbangunan">... m<sup>2</sup></td>
                     </tr>
                     <tr class="garis">
                         <td>c. Asal Tanah</td>
-                        <td contenteditable="true">Pasos/Pasom/Wakaf</td>
-                        <td contenteditable="true"></td>
+                        <td colspan="2" data-getkey="asaltanah" contenteditable="true">Pasos/Pasom/Wakaf</td>
+                        
                     </tr>
                     <tr class="garis">
                         <td>d. Surat Hak Milik</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
+                        <td contenteditable="true" data-getkey="hakmilik_surathakmilik">...</td>
+                        <td contenteditable="true"data-getkey="bukanhakmilik_surathakmilik">...</td>
                     </tr>
                     <tr class="garis">
                         <td colspan="2">e. Luas Tanah yang digunakan untuk RKB</td>
 
-                        <td contenteditable="true">...m<sup>2</sup></td>
+                        <td contenteditable="true"data-getkey="luastanahrkb">...m<sup>2</sup></td>
                     </tr>
 
                     <tr>
@@ -4675,7 +5452,7 @@ daftarsatu.addEventListener('click', function () {
             menumpang)</b>
         <div class="w3-clear"></div>
         <div class="w3-left" >
-            <table class="w3-table" >
+            <table class="tabelbiasa tabelbiasaputih" style="font-size:10px">
                 <tbody class="garis">
 
                     <tr>
@@ -4692,111 +5469,111 @@ daftarsatu.addEventListener('click', function () {
                     </tr>
                     <tr>
                         <td>a. Jumlah Bangunan</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
+                        <td contenteditable="true" data-getkey="br_jumlahbangunan_jumlah" >...</td>
+                        <td contenteditable="true" data-getkey="br_jumlahbangunan_b" >...</td>
+                        <td contenteditable="true" data-getkey="br_jumlahbangunan_s" >...</td>
+                        <td contenteditable="true" data-getkey="br_jumlahbangunan_rr" >...</td>
+                        <td contenteditable="true" data-getkey="br_jumlahbangunan_rb" >...</td>
+                        <td contenteditable="true" data-getkey="br_jumlahbangunan_rt" >...</td>
                     </tr>
                     <tr>
                         <td>b. Jumlah Ruang Kelas</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
+                        <td contenteditable="true" data-getkey="br_jumlahruangankelas_jumlah" >...</td>
+                        <td contenteditable="true" data-getkey="br_jumlahruangankelas_b">...</td>
+                        <td contenteditable="true" data-getkey="br_jumlahruangankelas_s">...</td>
+                        <td contenteditable="true" data-getkey="br_jumlahruangankelas_rr">...</td>
+                        <td contenteditable="true" data-getkey="br_jumlahruangankelas_rb">...</td>
+                        <td contenteditable="true" data-getkey="br_jumlahruangankelas_rt">...</td>
                     </tr>
                     <tr>
                         <td>c. Jumlah Ruang Perpustakaan</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
+                        <td contenteditable="true" data-getkey="br_jumlahruanganperpustakaan_jumlah">...</td>
+                        <td contenteditable="true" data-getkey="br_jumlahruanganperpustakaan_b">...</td>
+                        <td contenteditable="true" data-getkey="br_jumlahruanganperpustakaan_s">...</td>
+                        <td contenteditable="true" data-getkey="br_jumlahruanganperpustakaan_rr">...</td>
+                        <td contenteditable="true" data-getkey="br_jumlahruanganperpustakaan_rb">...</td>
+                        <td contenteditable="true" data-getkey="br_jumlahruanganperpustakaan_rt">...</td>
                     </tr>
                     <tr>
                         <td>d. Jumlah Ruang Komputer</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
+                        <td contenteditable="true" data-getkey="br_jumlahruangankomputer_jumlah">...</td>
+                        <td contenteditable="true" data-getkey="br_jumlahruangankomputer_b">...</td>
+                        <td contenteditable="true" data-getkey="br_jumlahruangankomputer_s">...</td>
+                        <td contenteditable="true" data-getkey="br_jumlahruangankomputer_rr">...</td>
+                        <td contenteditable="true" data-getkey="br_jumlahruangankomputer_rb">...</td>
+                        <td contenteditable="true" data-getkey="br_jumlahruangankomputer_rt">...</td>
                     </tr>
                     <tr>
                         <td>e. Jumlah Ruang Laboratorium</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
+                        <td contenteditable="true" data-getkey="br_jumlahruanganlaboratorium_jumlah">...</td>
+                        <td contenteditable="true" data-getkey="br_jumlahruanganlaboratorium_b">...</td>
+                        <td contenteditable="true" data-getkey="br_jumlahruanganlaboratorium_s">...</td>
+                        <td contenteditable="true" data-getkey="br_jumlahruanganlaboratorium_rr">...</td>
+                        <td contenteditable="true" data-getkey="br_jumlahruanganlaboratorium_rb">...</td>
+                        <td contenteditable="true" data-getkey="br_jumlahruanganlaboratorium_rt">...</td>
                     </tr>
                     <tr>
                         <td>f. Jumlah Ruang Guru & TU</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
+                        <td contenteditable="true" data-getkey="br_jumlahruanggurutu_jumlah">...</td>
+                        <td contenteditable="true" data-getkey="br_jumlahruanggurutu_b">...</td>
+                        <td contenteditable="true" data-getkey="br_jumlahruanggurutu_s">...</td>
+                        <td contenteditable="true" data-getkey="br_jumlahruanggurutu_rr">...</td>
+                        <td contenteditable="true" data-getkey="br_jumlahruanggurutu_rb">...</td>
+                        <td contenteditable="true" data-getkey="br_jumlahruanggurutu_rt">...</td>
                     </tr>
                     <tr>
                         <td>g. WC Siswa</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
+                        <td contenteditable="true" data-getkey="br_wcsiswa_jumlah">...</td>
+                        <td contenteditable="true" data-getkey="br_wcsiswa_b">...</td>
+                        <td contenteditable="true" data-getkey="br_wcsiswa_s">...</td>
+                        <td contenteditable="true" data-getkey="br_wcsiswa_rr">...</td>
+                        <td contenteditable="true" data-getkey="br_wcsiswa_rb">...</td>
+                        <td contenteditable="true" data-getkey="br_wcsiswa_rt">...</td>
                     </tr>
                     <tr>
                         <td>h. WC Guru</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
+                        <td contenteditable="true" data-getkey="br_wcguru_jumlah">...</td>
+                        <td contenteditable="true" data-getkey="br_wcguru_b">...</td>
+                        <td contenteditable="true" data-getkey="br_wcguru_s">...</td>
+                        <td contenteditable="true" data-getkey="br_wcguru_rr">...</td>
+                        <td contenteditable="true" data-getkey="br_wcguru_rb">...</td>
+                        <td contenteditable="true" data-getkey="br_wcguru_rt">...</td>
                     </tr>
                     <tr>
                         <td>i. Rumah Dinas Kepsek </td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
+                        <td contenteditable="true" data-getkey="br_rumahdinaskepsek_jumlah">...</td>
+                        <td contenteditable="true" data-getkey="br_rumahdinaskepsek_b">...</td>
+                        <td contenteditable="true" data-getkey="br_rumahdinaskepsek_s">...</td>
+                        <td contenteditable="true" data-getkey="br_rumahdinaskepsek_rr">...</td>
+                        <td contenteditable="true" data-getkey="br_rumahdinaskepsek_rb">...</td>
+                        <td contenteditable="true" data-getkey="br_rumahdinaskepsek_rt">...</td>
                     </tr>
                     <tr>
                         <td>j. Rumah Dinas Guru</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
+                        <td contenteditable="true" data-getkey="br_rumahdinasguru_jumlah">...</td>
+                        <td contenteditable="true" data-getkey="br_rumahdinasguru_b">...</td>
+                        <td contenteditable="true" data-getkey="br_rumahdinasguru_s">...</td>
+                        <td contenteditable="true" data-getkey="br_rumahdinasguru_rr">...</td>
+                        <td contenteditable="true" data-getkey="br_rumahdinasguru_rb">...</td>
+                        <td contenteditable="true" data-getkey="br_rumahdinasguru_rt">...</td>
                     </tr>
                     <tr>
                         <td>k. Rumah Dinas Penjaga</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
-                        <td contenteditable="true">...</td>
+                        <td contenteditable="true" data-getkey="br_rumahdinaspenjaga_jumlah">...</td>
+                        <td contenteditable="true" data-getkey="br_rumahdinaspenjaga_b">...</td>
+                        <td contenteditable="true" data-getkey="br_rumahdinaspenjaga_s">...</td>
+                        <td contenteditable="true" data-getkey="br_rumahdinaspenjaga_rr">...</td>
+                        <td contenteditable="true" data-getkey="br_rumahdinaspenjaga_rb">...</td>
+                        <td contenteditable="true" data-getkey="br_rumahdinaspenjaga_rt">...</td>
                     </tr>
                     <tr>
                         <td>l. Sarana Air Bersih</td>
-                        <td contenteditable="true">...</td>
+                        <td contenteditable="true" data-getkey="br_saranaairbersih">...</td>
                         <td colspan="5">1. Ledeng; 2. Sumur; <br />3. Tidak ada; 4. Lainnya</td>
                     </tr>
                     <tr>
                         <td>m. Sarana Listrik</td>
-                        <td contenteditable="true">...</td>
+                        <td contenteditable="true" data-getkey="br_saranalistrik">...</td>
                         <td colspan="5">1. 450VA; 2. 900 VA;<br />3. 1300VA; 4. >1300VA <br />5. >2200VA; 6.
                             lainnya
                         </td>
@@ -4807,7 +5584,7 @@ daftarsatu.addEventListener('click', function () {
         </div>
         <div class="w3-left w3-margin"> </div>
         <div class="w3-right" >
-            <table class="w3-table">
+            <table class="tabelbiasa tabelbiasaputih" style="font-size:10px">
 
                 <tbody class="garis">
                     <tr>
@@ -4819,7 +5596,7 @@ daftarsatu.addEventListener('click', function () {
                     </tr>
                     <tr>
                         <th>B</th>
-                        <th>oK</th>
+                        <th>OK</th>
                         <th>R</th>
 
                     </tr>
@@ -4827,131 +5604,91 @@ daftarsatu.addEventListener('click', function () {
                         <td>
                             a. Meja Siswa <br />(Double)
                         </td>
-                        <td contenteditable="true">
-                        </td>
-                        <td contenteditable="true">
-                        </td>
-                        <td contenteditable="true">
-                        </td>
-                        <td contenteditable="true">
-                        </td>
+                        <td contenteditable="true" data-getkey="sd_mejasiswadouble_jumlah"></td>
+                        <td contenteditable="true" data-getkey="sd_mejasiswadouble_b"></td>
+                        <td contenteditable="true" data-getkey="sd_mejasiswadouble_ok"></td>
+                        <td contenteditable="true" data-getkey="sd_mejasiswadouble_r"></td>
                     </tr>
                     <tr>
                         <td>
                             b.Bangku (Double)
                         </td>
-                        <td contenteditable="true">
-                        </td>
-                        <td contenteditable="true">
-                        </td>
-                        <td contenteditable="true">
-                        </td>
-                        <td contenteditable="true">
-                        </td>
+                        <td contenteditable="true" data-getkey="sd_bangkudouble_jumlah"></td>
+                        <td contenteditable="true" data-getkey="sd_bangkudouble_b"></td>
+                        <td contenteditable="true" data-getkey="sd_bangkudouble_ok"></td>
+                        <td contenteditable="true" data-getkey="sd_bangkudouble_r"></td>
                     </tr>
                     <tr>
                         <td>
                             c. Meja Siswa (Single)
                         </td>
-                        <td contenteditable="true">
-                        </td>
-                        <td contenteditable="true">
-                        </td>
-                        <td contenteditable="true">
-                        </td>
-                        <td contenteditable="true">
-                        </td>
+                        <td contenteditable="true" data-getkey="sd_mejasiswasingle_jumlah"></td>
+                        <td contenteditable="true" data-getkey="sd_mejasiswasingle_b"></td>
+                        <td contenteditable="true" data-getkey="sd_mejasiswasingle_ok"></td>
+                        <td contenteditable="true" data-getkey="sd_mejasiswasingle_r"></td>
                     </tr>
                     <tr>
                         <td>
                             d. Kursi (Single)
                         </td>
-                        <td contenteditable="true">
-                        </td>
-                        <td contenteditable="true">
-                        </td>
-                        <td contenteditable="true">
-                        </td>
-                        <td contenteditable="true">
-                        </td>
+                        <td contenteditable="true" data-getkey="sd_kursisingle_jumlah"></td>
+                        <td contenteditable="true" data-getkey="sd_kursisingle_b"></td>
+                        <td contenteditable="true" data-getkey="sd_kursisingle_ok"></td>
+                        <td contenteditable="true" data-getkey="sd_kursisingle_r"></td>
                     </tr>
                     <tr>
                         <td>
                             e.Lemari
                         </td>
-                        <td contenteditable="true">
-                        </td>
-                        <td contenteditable="true">
-                        </td>
-                        <td contenteditable="true">
-                        </td>
-                        <td contenteditable="true">
-                        </td>
+                        <td contenteditable="true" data-getkey="sd_lemari_jumlah"></td>
+                        <td contenteditable="true" data-getkey="sd_lemari_b"></td>
+                        <td contenteditable="true" data-getkey="sd_lemari_ok"></td>
+                        <td contenteditable="true" data-getkey="sd_lemari_r"></td>
                     </tr>
                     <tr>
                         <td>
                             f. Meja Guru
                         </td>
-                        <td contenteditable="true">
-                        </td>
-                        <td contenteditable="true">
-                        </td>
-                        <td contenteditable="true">
-                        </td>
-                        <td contenteditable="true">
-                        </td>
+                        <td contenteditable="true" data-getkey="sd_mejaguru_jumlah"></td>
+                        <td contenteditable="true" data-getkey="sd_mejaguru_b"></td>
+                        <td contenteditable="true" data-getkey="sd_mejaguru_ok"></td>
+                        <td contenteditable="true" data-getkey="sd_mejaguru_r"></td>
                     </tr>
                     <tr>
                         <td>
                             g.Kursi Guru
                         </td>
-                        <td contenteditable="true">
-                        </td>
-                        <td contenteditable="true">
-                        </td>
-                        <td contenteditable="true">
-                        </td>
-                        <td contenteditable="true">
-                        </td>
+                        <td contenteditable="true" data-getkey="sd_kursiguru_jumlah"></td>
+                        <td contenteditable="true" data-getkey="sd_kursiguru_b"></td>
+                        <td contenteditable="true" data-getkey="sd_kursiguru_ok"></td>
+                        <td contenteditable="true" data-getkey="sd_kursiguru_r"></td>
                     </tr>
                     <tr>
                         <td>
                             h.Papan Tulis
                         </td>
-                        <td contenteditable="true">
-                        </td>
-                        <td contenteditable="true">
-                        </td>
-                        <td contenteditable="true">
-                        </td>
-                        <td contenteditable="true">
-                        </td>
+                        <td contenteditable="true" data-getkey="sd_papantulis_jumlah"></td>
+                        <td contenteditable="true" data-getkey="sd_papantulis_b"></td>
+                        <td contenteditable="true" data-getkey="sd_papantulis_ok"></td>
+                        <td contenteditable="true" data-getkey="sd_papantulis_r"></td>
                     </tr>
                     <tr>
                         <td>
                             i.Kursi Tamu
                         </td>
-                        <td contenteditable="true">
-                        </td>
-                        <td contenteditable="true">
-                        </td>
-                        <td contenteditable="true">
-                        </td>
-                        <td contenteditable="true">
-                        </td>
+                        <td contenteditable="true" data-getkey="sd_kursitamu_jumlah"></td>
+                        <td contenteditable="true" data-getkey="sd_kursitamu_b"></td>
+                        <td contenteditable="true" data-getkey="sd_kursitamu_ok"></td>
+                        <td contenteditable="true" data-getkey="sd_kursitamu_r"></td>
                     </tr>
                     <tr>
                         <td>
                             j. Rak Buku
                         </td>
-                        <td contenteditable="true">
-                        </td>
-                        <td contenteditable="true">
-                        </td>
-                        <td contenteditable="true">
-                        </td>
-                        <td contenteditable="true">
-                        </td>
+                        <td contenteditable="true" data-getkey="sd_rakbuku_jumlah"></td>
+                        <td contenteditable="true" data-getkey="sd_rakbuku_b"></td>
+                        <td contenteditable="true" data-getkey="sd_rakbuku_ok"></td>
+                        <td contenteditable="true" data-getkey="sd_rakbuku_r"></td>
 
                     </tr>
                     </tr>
@@ -4959,14 +5696,10 @@ daftarsatu.addEventListener('click', function () {
                         <td>
                             l. Komputer
                         </td>
-                        <td contenteditable="true">
-                        </td>
-                        <td contenteditable="true">
-                        </td>
-                        <td contenteditable="true">
-                        </td>
-                        <td contenteditable="true">
-                        </td>
+                        <td contenteditable="true" data-getkey="sd_komputer_jumlah"></td>
+                        <td contenteditable="true" data-getkey="sd_komputer_b"></td>
+                        <td contenteditable="true" data-getkey="sd_komputer_ok"></td>
+                        <td contenteditable="true" data-getkey="sd_komputer_r"></td>
 
                     </tr>
 
@@ -5018,7 +5751,64 @@ daftarsatu.addEventListener('click', function () {
 
 </div>`;
     div.innerHTML = html;
-})
+    let getkey; //objek dataprofil
+    let el = document.querySelectorAll("[data-getkey]");
+    let ob,h,v;
+    if(jsonprofilsekolah.length == 0){
+        
+        let tab = "profilsekolah"
+        let tabel = tabel_profilsekolah();
+        
+        let head = tabel[0];
+        let key = JSON.stringify(head);
+        let datakirim = new FormData();
+    
+        datakirim.append("tab",tab)
+        datakirim.append("key",key)
+        fetch(linktendik+"?action=getpostdatafromtab",{
+            method:"post",
+            body:datakirim
+        }).then(m => m.json())
+        .then(r => {
+           
+           let dataa = r.data[0];
+           let data = Object.keys(dataa)
+           getkey = r.data[0];
+            jsonprofilsekolah = r.data;
+            let koso = [];
+            
+            el.forEach(s =>{
+                let k = s.getAttribute("data-getkey");
+                let div = document.querySelector(`[data-getkey=${k}]`);
+                if(div !== null){
+                    div.innerHTML = getkey[k]
+                }else{
+                    koso.push(k)
+                }
+        
+            });
+            document.querySelector('[dataset-getkey="gabungan_nis_nss_npsn"').innerHTML = getkey.nis+"/"+getkey.nss+"/"+getkey.npsn;
+
+        })
+        .catch(er => console.log(er))
+    }else{
+        getkey = jsonprofilsekolah[0];
+        let koso = [];
+       
+        el.forEach(s =>{
+            let k = s.getAttribute("data-getkey");
+            let div = document.querySelector(`[data-getkey=${k}]`);
+            if(div !== null){
+                div.innerHTML = getkey[k]
+            }else{
+                koso.push(k)
+            };
+            
+        })
+        document.querySelector('[dataset-getkey="gabungan_nis_nss_npsn"').innerHTML = getkey.nis+"/"+getkey.nss+"/"+getkey.npsn;
+    }
+
+});
 
 const sinkronkandatasiswa = async () => {
     new_loading.style.display = "block";
@@ -5047,6 +5837,26 @@ const sinkronkandatasiswa = async () => {
             alert('Maaf, Terjadi gangguan. Coba lagi nanti...')
 
         });
+    await fetch(linkDataUserWithIdss + "&action=usulanperbaikandata")
+        .then(m => m.json())
+        .then(k => {
+            let dataaktif = k.datasiswa.filter(s => s.aktif == "aktif");
+            let usulkelasini = k.datasiswa;//.filter(k => (k.nama_rombel == idNamaKelas));
+            let usulkelasinibelumdisetujui = dataaktif.filter(k => (k.id !== "" && k.usulanperubahandata.indexOf("disetujui") == -1));
+            // console.log(usulkelasinibelumdisetujui.length);
+            // console.log(usulkelasinibelumdisetujui.length);
+
+            let usulkelasinisudahdisetujui = dataaktif.filter(k => (k.id !== "" && k.usulanperubahandata.indexOf("disetujui") > -1));
+            informasiusulandata["usulanbaru"] = usulkelasinibelumdisetujui;
+            informasiusulandata["usulandisetujui"] = usulkelasinisudahdisetujui;
+            informasiusulandata["all"] = usulkelasini;
+
+
+
+        })
+        .catch(er => {
+            console.log(er);
+        })
     new_loading.style.display = "none";
     alert('Proses sinkron berhasil.')
 }
@@ -6841,4 +7651,3812 @@ const kopipaste = (id) => {
     // alert("Copied the text: " + copyText.value);
     // alert("Berhasil Ngopi ... ^_^");
     //resultuploadpotomateri.innerHTML = "";
+}
+
+
+///////////////
+
+const htmldataprofil = () => {
+    let html = `
+    <h3 class="w3-center warnaeka w3-round-large w3-card-4">DATA SISWA</h3>
+    <div style="overflow-x:auot">
+    <table class="w3-table w3-striped w3-border">
+        <tr>
+            <th class="w3-light-green w3-center" colspan="3">KODE AKSES</th>
+        </tr>
+        <tr>
+            <td>Kode Token</td>
+            <td>:</td>
+            <td class="hdp_id">hdp_id</td>
+        </tr>
+        <tr>
+            <td>Status Data</td>
+            <td>:</td>
+            <td class="hdp_usulanperubahandata">usulanperubahandata</td>
+        </tr>
+        <tr>
+            <th colspan="3"></th>
+        </tr>
+        <tr>
+            <th class="w3-light-green w3-center" colspan="3">NARAHUBUNG</th>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td>:</td>
+            <td class="hdp_dapo_email">hdp__dapo_email</td>
+        </tr>
+        <tr>
+            <td>No. HP WA</td>
+            <td>:</td>
+            <td class="hdp_pd_hp">hdp_pd_hp"</td>
+        </tr>
+        <tr>
+            <th colspan="3"></th>
+        </tr>
+        <tr>
+            <th class="w3-light-green w3-center" colspan="3">JENJANG KELAS</th>
+        </tr>
+        <tr>
+            <td>Jenjang Kelas</td>
+            <td>:</td>
+            <td class="hdp_jenjang">hdp_jenjang</td>
+        </tr>
+        <tr>
+            <td>Rombel</td>
+            <td>:</td>
+            <td class="hdp_nama_rombel">hdp_nama_rombel</td>
+        </tr>
+        <tr>
+            <th colspan="3"></th>
+        </tr>
+        <tr>
+            <th class="w3-light-green w3-center" colspan="3">DATA PRIBADI</th>
+        </tr>
+        <tr>
+        <td>NIS</td>
+        <td>:</td>
+        <td class="hdp_nis"> hdp_nis</td>
+    </tr>
+     <tr>
+        <td>NISN</td>
+        <td>:</td>
+        <td class="hdp_nisn">hdp_nisn</td>
+    </tr>
+        <tr>
+            <td>Nama Lengkap</td>
+            <td>:</td>
+            <td class="hdp_pd_nama">pd_nama</td>
+        </tr>
+        <tr>
+            <td>Jenis Kelamin</td>
+            <td>:</td>
+            <td class="hdp_pd_jk">hdp_pd_jk</td>
+        </tr>
+
+        <tr>
+        <td>Agama</td>
+        <td>:</td>
+        <td class="hdp_pd_agama">hdp_pd_agama</td>
+        </tr>
+        <tr>
+            <td>Tempat Lahir</td>
+            <td>:</td>
+            <td class="hdp_pd_tl"> hdp_pd_tl</td>
+        </tr>
+        <tr>
+            <td>Tanggal Lahir</td>
+            <td>:</td>
+            <td class="hdp_pd_tanggallahir"> hdp_pd_tanggallahir</td>
+        </tr>
+        <tr>
+            <td>No Registrasi Akta Kelahiran</td>
+            <td>:</td>
+            <td class="hdp_dapo_noregistrasiaktalahir"> hdp_dapo_noregistrasiaktalahir</td>
+        </tr>
+        <tr>
+            <td>Anak Ke-</td>
+            <td>:</td>
+            <td class="hdp_dapo_anakkeberapa"></td>
+        </tr>
+        <tr>
+            <td>Jumlah Saudara Kandung</td>
+            <td>:</td>
+            <td><span class="hdp_dapo_jumlahsaudarakandung">...</span> Saudara</td>
+        </tr>
+        
+        <tr>
+            <td>Berkebutuhan Khusus?</td>
+            <td>:</td>
+            <td class="hdp_dapo_kebutuhankhusus"></td>
+        </tr>
+        <tr>
+            <td>Sekolah Asal</td>
+            <td>:</td>
+            <td class="hdp_dapo_sekolahasal"></td>
+        </tr>
+        <tr>
+            <td colspan="3" class="w3-center"><b>Dokumen Akta Kelahiran/Surat Kenal Lahir</b></td>
+        </tr>
+        <tr>
+            <td colspan="3" class="hdp_dok_akte">
+                
+            </td>
+        </tr>
+        <tr>
+            <td>NIK</td>
+            <td>:</td>
+            <td class="hdp_nik">hdp_nik</td>
+        </tr>
+         <tr>
+            <td>Nomor KK</td>
+            <td>:</td>
+            <td class="hdp_nokk">hdp_nokk</td>
+        </tr>
+        <tr>
+            <td>Alamat Jalan</td>
+            <td>:</td>
+            <td class="hdp_pd_alamat">hdp_pd_alamat</td>
+        </tr>
+        <tr>
+            <td>Nama Dusun</td>
+            <td>:</td>
+            <td class="hdp_dapo_dusun">hdp_dapo_dusun</td>
+        </tr>
+        <tr>
+            <td>RT</td>
+            <td>:</td>
+            <td class="hdp_dapo_rt"></td>
+        </tr>
+        
+        <tr>
+            <td>RW</td>
+            <td>:</td>
+            <td class="hdp_dapo_rw"></td>
+        </tr>
+        <tr>
+            <td>Kelurahan</td>
+            <td>:</td>
+            <td class="hdp_dapo_kelurahan">hdp_dapo_kelurahan</td>
+        </tr>
+        <tr>
+            <td>Kecamatan</td>
+            <td>:</td>
+            <td class="hdp_dapo_kecamatan">hdp_dapo_kecamatan</td>
+        </tr>
+        <tr>
+            <td>Kota</td>
+            <td>:</td>
+            <td class="hdp_dapo_kota">hdp_dapo_kota</td>
+        </tr>
+        <tr>
+            <td>Provinsi</td>
+            <td>:</td>
+            <td class="hdp_dapo_provinsi">hdp_dapo_provinsi</td>
+        </tr>
+        <tr>
+            <td>Kode Pos</td>
+            <td>:</td>
+            <td class="hdp_dapo_kodepos"></td>
+        </tr>
+        <tr>
+            <td>Jenis Tinggal</td>
+            <td>:</td>
+            <td class="hdp_dapo_jenistinggal">hdp_dapo_jenistinggal</td>
+        </tr>
+
+        <tr>
+            <td>Moda Transportasi</td>
+            <td>:</td>
+            <td class="hdp_dapo_alattransportasi">hdp_dapo_alattransportasi</td>
+        </tr>
+        <tr>
+            <td colspan="3" class="w3-center"><b>Dokumen Kartu Keluarga</b></td>
+        </tr>
+        <tr>
+            <td colspan="3" class="hdp_dok_kk">
+                
+            </td>
+        </tr>
+        <tr>
+            <th colspan="3"></th>
+        </tr>
+        <tr>
+            <th class="w3-light-green w3-center" colspan="3">Koordinat Geografis</th>
+        </tr>
+        <tr>
+            <td>Lintang (Latitude)</td>
+            <td>:</td>
+            <td class="hdp_dapo_lintang">hdp_dapo_lintang</td>
+        </tr>
+        <tr>
+            <td>Bujur (Longitude)</td>
+            <td>:</td>
+            <td class="hdp_dapo_bujur">hdp_dapo_longitude</td>
+        </tr>
+        <tr>
+            <td>Jarak Rumah Ke sekolah</td>
+            <td>:</td>
+            <td class="hdp_dapo_jarakrumahkesekolah">hdp_dapo_jarakrumahkesekoilah</td>
+        </tr>
+        <tr>
+            <th colspan="3"></th>
+        </tr>
+        <tr>
+            <th class="w3-light-green w3-center" colspan="3">Program KIP/KKS/KPS/PKH/PIP</th>
+        </tr>
+        <tr>
+            <td>Nomor KKS<br><sub>Kartu Keluarga Sejahtera)</sub></td>
+            <td>:</td>
+            <td class="hdp_dapo_nomorkks"></td>
+        </tr>
+        
+        <tr>
+            <td colspan="3" class="w3-center"><b>Dokumen KKS (Kartu Keluarga Sejahtera)</b></td>
+        </tr>
+        <tr>
+            <td colspan="3" class="hdp_dok_kks">
+               
+            </td>
+        </tr>
+        <tr>
+            <td>Penerima KPS/PKH?</td>
+            <td>:</td>
+            <td class="hdp_dapo_penerimakps"></td>
+        </tr>
+        <tr>
+            <td>Nomor KPS/PKH</td>
+            <td>:</td>
+            <td class="hdp_dapo_nokps">hdp_dapo_nokps</td>
+        </tr>
+        
+        <tr>
+            <td colspan="3" class="w3-center"><b>Dokumen KPS(Kartu Perlindungan Sosial) / PKH(Program Keluarga Harapan)</b></td>
+        </tr>
+        <tr>
+            <td colspan="3" class="hdp_dok_kpspkh">
+                
+            </td>
+        </tr>
+        <tr>
+            <td>Memiliki KIP?</td>
+            <td>:</td>
+            <td class="hdp_dapo_penerimakip">hdp_dapo_penerimakip</td>
+        </tr>
+        <tr>
+            <td>Nomor KIP</td>
+            <td>:</td>
+            <td class="hdp_dapo_nomorkip">hdp_dapo_nomorkip</td>
+        </tr>
+        <tr>
+            <td>Nama di KIP</td>
+            <td>:</td>
+            <td class="hdp_dapo_namadikip">hdp_dapo_namadikip</td>
+        </tr>
+        
+        <tr>
+            <td colspan="3" class="w3-center"><b>Dokumen KIP(Kartu Indonesia Pintar)</b></td>
+        </tr>
+        <tr>
+            <td colspan="3" class="hdp_dok_kip">
+                
+            </td>
+        </tr>
+        
+        <tr>
+            <th colspan="3"></th>
+        </tr>
+        <tr>
+            <th class="w3-light-green w3-center" colspan="3">Alasan Layak PIP</th>
+        </tr>
+        <tr>
+            <td>Layak PIP?</td>
+            <td>:</td>
+            <td class="hdp_dapo_layakpip">hdp_dapo_layakpip</td>
+        </tr>
+        <tr>
+            <td>Alasan layak</td>
+            <td>:</td>
+            <td class="hdp_dapo_alasanlayakpip">hdp_dapo_alasanlayakpip</td>
+        </tr>
+        <tr>
+            <th colspan="3"></th>
+        </tr>
+        <tr>
+            <th class="w3-light-green w3-center" colspan="3">BANK PENERIMA PIP<br/>Khusus bagi siswa yang mendapatkan dana PIP</th>
+        </tr>
+        <tr>
+            <td>Nama Bank</td>
+            <td>:</td>
+            <td class="hdp_dapo_bank"></td>
+        </tr>
+        <tr>
+            <td>Nomor Rekening Bank</td>
+            <td>:</td>
+            <td class="hdp_dapo_namarekeningbank"></td>
+        </tr>
+        <tr>
+            <td>Rekening Atas Nama</td>
+            <td>:</td>
+            <td class="hdp_dapo_rekeningatasnama"></td>
+        </tr>
+        <tr>
+            <th colspan="3"></th>
+        </tr>
+        <tr>
+            <th class="w3-light-green w3-center" colspan="3">DATA ORANG TUA</th>
+        </tr>
+        <tr>
+            <td colspan="3" class="w3-center"><b>Ayah Kandung</b></td>
+        </tr>
+        <tr>
+            <td>Nama Lengkap Ayah</td>
+            <td>:</td>
+            <td class="hdp_pd_namaayah"></td>
+        </tr>
+        <tr>
+            <td>Tanggal Lahir Ayah</td>
+            <td>:</td>
+            <td class="hdp_dapo_tahunlahirayah"></td>
+        </tr>
+        <tr>
+            <td>Pendidikan Ayah</td>
+            <td>:</td>
+            <td class="hdp_dapo_jenjangpendidikanayah"></td>
+        </tr>
+        <tr>
+            <td>NIK Ayah</td>
+            <td>:</td>
+            <td class="hdp_dapo_nikayah"></td>
+        </tr>
+        <tr>
+            <td>Pekerjaan Ayah</td>
+            <td>:</td>
+            <td class="hdp_dapo_pekerjaanayah"></td>
+        </tr>
+        <tr>
+            <td>Penghasilan Ayah</td>
+            <td>:</td>
+            <td class="hdp_dapo_penghasilanayah"></td>
+        </tr>
+        
+        <tr>
+            <td>Berkebutuhan Khusus?</td>
+            <td>:</td>
+            <td class="hdp_dapo_abkayah"></td>
+        </tr>
+        <tr>
+            <td colspan="3" class="w3-center"><b>Ibu Kandung</b></td>
+        </tr>
+        <tr>
+            <td>Nama Lengkap Ibu</td>
+            <td>:</td>
+            <td class="hdp_pd_namaibu"></td>
+        </tr>
+        <tr>
+            <td>Tanggal Lahir Ibu</td>
+            <td>:</td>
+            <td class="hdp_dapo_tahunlahiribu"></td>
+        </tr>
+        
+        <tr>
+            <td>Pendidikan Ibu</td>
+            <td>:</td>
+            <td class="hdp_dapo_jenjangpendidikanibu"></td>
+        </tr>
+        <tr>
+            <td>NIK Ibu</td>
+            <td>:</td>
+            <td class="hdo_dapo_nikibu"></td>
+        </tr>
+        <tr>
+            <td>Pekerjaan Ibu</td>
+            <td>:</td>
+            <td class="hdp_dapo_pekerjaanibu"></td>
+        </tr>
+        <tr>
+            <td>Penghasilan Ibu</td>
+            <td>:</td>
+            <td class="hdp_dapo_penghasilanibu"></td>
+        </tr>
+        
+        <tr>
+            <td>Berkebutuhan Khusus?</td>
+            <td>:</td>
+            <td class="hdp_dapo_abkibu"></td>
+        </tr>
+        <tr>
+            <td colspan="3" class="w3-center"><b>Wali</b></td>
+        </tr>
+        <tr>
+            <td>Nama Lengkap Wali</td>
+            <td>:</td>
+            <td class="hdp_dapo"></td>
+        </tr>
+        <tr>
+            <td>Tanggal Lahir Wali</td>
+            <td>:</td>
+            <td class="hdp_dapo_tahunlahirwali"></td>
+        </tr>
+        
+        <tr>
+            <td>Pendidikan Wali</td>
+            <td>:</td>
+            <td class="hdp_dapo_jenjangpendidikanwali"></td>
+        </tr>
+        <tr>
+            <td>NIK Wali</td>
+            <td>:</td>
+            <td class="hdo_dapo_nikwali"></td>
+        </tr>
+        <tr>
+            <td>Pekerjaan Wali</td>
+            <td>:</td>
+            <td class="hdp_dapo_pekerjaanwali"></td>
+        </tr>
+        <tr>
+            <td>Penghasilan Wali</td>
+            <td>:</td>
+            <td class="hdp_dapo_penghasilanwali"></td>
+        </tr>
+        <tr>
+            <td>Berkebutuhan Khusus (Wali)</td>
+            <td>:</td>
+            <td class="hdp_dapo_abkwali"></td>
+        </tr>
+        <tr>
+            <th colspan="3"></th>
+        </tr>
+        <tr>
+            <th class="w3-light-green w3-center" colspan="3">DATA PRIODIK PERKEMBANGAN SISWA</th>
+        </tr>
+        <tr>
+            <td>Tinggi Badan (Cm)</td>
+            <td>:</td>
+            <td class="hdp_dapo_tinggibadan"></td>
+        </tr>
+        <tr>
+            <td>Berat Badan (Kg)</td>
+            <td>:</td>
+            <td class="hdp_dapo_beratbadan"></td>
+        </tr>
+        <tr>
+            <td>Lingkar Kepala</td>
+            <td>:</td>
+            <td class="hdp_dapo_lingkarkepala"></td>
+        </tr>
+    </table>
+    </div>
+    `;
+
+    return html
+};
+
+const htmlformulirdatasiswa = (tokensiswa) => {
+    let html = `
+    <h3 class="w3-center warnaeka w3-round-large w3-card-4">FORMULIR AJUAN DATA SISWA</h3>
+    <div style="overflow-x:auto">
+    <form name="formajuandatasiswa" id="formajuandatasiswa">
+        <fieldset class="w3-card-4 w3-margin w3-light-grey">
+            <h3 class="w3-light-green w3-center" >KODE AKSES<br>(Tidak bisa diubah)</h3>
+            <label for="hfd_id">Kode Token:
+        <br/><input type="text" class="w3-input  w3-border w3-border-black w3-round" name="id" id="hfd_id" disabled/>
+            <hr/>
+            <label for="hfd_usulanperubahandata">Status Data:</label>
+            <br/>
+            <input type="text" class="w3-input  w3-border w3-border-black w3-round"  name="usulanperubahandata" id="hfd_usulanperubahandata" disabled>
+            <br/>
+            <br/>
+            Akan disetujui Oleh <b class="pengapprove"></b>
+        </fieldset> 
+        <fieldset class="w3-card-4 w3-margin w3-light-grey">
+        <h3 class="w3-light-green w3-center" >JENJANG KELAS<br>(Tidak bisa diubah)</h3>
+        <label for="hfd_jenjang">Jenjang Kelas:</label>
+            <br/>
+            <input type="number" class="w3-input  w3-border" name="jenjang" id="hfd_jenjang" disabled>
+            <br/>
+            <label>Rombel:</label>
+            <br/>
+            <input type="text" class="w3-input w3-border w3-border-black w3-round"  name="nama_rombel" id="hfd_nama_rombel" disabled/>
+
+        </fieldset>   
+        <fieldset class="w3-card-4 w3-margin w3-light-grey">
+            <h3 class="w3-light-green w3-center" >NARAHUBUNG</h3>
+        <label for="hfd_dapo_email">Email:</label>
+            <br/>
+            <input type="text" class="w3-input w3-white w3-border w3-border-black w3-round"  name="dapo_email" id="hfd_dapo_email"/>
+            <br/>
+            <label for="hfd_pd_hp">No. HP WA:</label>
+            (bisa dihubungi)
+            <br/>
+            <input type="tel" class="w3-input w3-white w3-border w3-border-black w3-round"  name="pd_hp" id="hfd_pd_hp"/>
+            <br/>
+            <label for="hfd_dapo_telepon">No Telpon Rumah</label>
+            <br/>
+            <input type="tel" class="w3-input w3-white w3-border w3-border-black w3-round"  name="dapo_telepon" id="hfd_dapo_telepon"/>
+        </fieldset>
+        <fieldset class="w3-card-4 w3-margin w3-light-grey">
+        <h3 class="w3-light-green w3-center" >DATA PRIBADI</h3>
+        <label for="hfd_nis">NIS:</label>
+        <br/>
+        <input type="text" class="w3-input w3-white w3-border w3-border-black w3-round"  name="nis" id="hfd_nis">
+        <br/>
+        <label for="hfd_nisn">NISN:</label>
+        <br/>
+        <input type="text" class="w3-input w3-white w3-border w3-border-black w3-round" name="nisn" id="hfd_nisn">
+        <br/>
+        <label for="hfd_pd_nama">Nama Lengkap:</label>
+            <br/>
+            <input type="text" class="w3-input w3-white w3-border w3-border-black w3-round" name="pd_nama" id="hfd_pd_nama" oninput="ketik_kapital(this)"/>
+            <br/>
+            Jenis Kelamin: <br/>
+            <label for="hfd_pd_jk_l">
+                <input type="radio" class="w3-radio" name="pd_jk" id="hfd_pd_jk_l" value="L"/>
+                Laki-laki
+            </label>
+            <label for="hfd_pd_jk_p">
+                <input type="radio" class="w3-radio" name="pd_jk" ="hfd_pd_jk_p" value="P"/>
+                Perempuan
+            </label>
+        <br/>
+        <br/>
+        <label for="hfd_pd_agama">Agama:</label>
+        <br/>
+        <select class="w3-select warnaeka w3-border warnaeka" name="pd_agama" id="hfd_pd_agama">
+        <option value="">Silakan Pilih</option>
+                    <option value="ISLAM" >ISLAM</option>
+                    <option value="KRISTEN">KRISTEN/PROTESTAN</option>
+                    <option value="KATHOLIK">KATHOLIK</option>
+                    <option value="HINDU">HINDU</option>
+                    <option value="BUDHA">BUDHA</option>
+                    <option value="KHONGHUCU">KHONGHUCU</option>
+                    <option value="Kepercayaan Lain">Kepercayaan Lainnya</option>
+        </select>
+        <br/>
+        <br/>
+        <label for="hfd_pd_tl">Tempat Lahir:</label>
+            <br/>
+            <input type="text" class="w3-input w3-white w3-border w3-border-black w3-round" name="pd_tl" id="hdf_pd_tl" oninput="ketik_kapital(this)">
+            <br/>
+            <label for="hfd_pd_tanggallahir">Tanggal Lahir:</label>
+            <input type="date" class="w3-padding w3-border w3-border-black w3-round"  name="pd_tanggallahir" id="hfd_pd_tanggallahir" onchange="konversi_tanggal(this,'sub_arti_tanggal')"/>
+            Teks Tanggal Lahir: <b class="sub_arti_tanggal w3-text-red"></b>
+          <br/>  
+          <br/>  
+            <label for="hfd_dapo_noregistrasiaktalahir">No Registrasi Akta Kelahiran:</label>
+            <br/>
+            <input type="text" class="w3-input w3-white w3-border w3-border-black w3-round" name="dapo_noregistrasiaktalahir"/>
+            <br/>
+            <label for="hfd_dapo_anakkeberapa">Anak Ke-:</label>
+            <input type="number" class="w3-white w3-padding w3-border w3-border-black w3-round" name="dapo_anakkeberapa" id="hfd_dapo_anakkeberapa" style="width:100px"/>
+            
+            <label for="hfd_dapo_jumlahsaudarakandung">Jumlah Saudara Kandung:</label>
+            <input type="number" class="w3-white w3-padding w3-border w3-border-black w3-round" name="dapo_jumlahsaudarakandung" id="hfd_dapo_jumlahsaudarakandung" style="width:100px"/>
+            <br/>
+
+            <br/>
+            <br/>
+            <label for="hfd_dapo_kebutuhankhusus">Berkebutuhan Khusus?</label>
+
+                <select id="hfd_dapo_kebutuhankhusus" name="dapo_kebutuhankhusus" class="w3-select w3-border warnaeka">
+            <option value="">Silakan Pilih</option>
+                    <option value="TIDAK" >Tidak</option> 
+                    <option value="NETRA (A)">Netra (A)</option>
+                    <option value="RUNGU (B)">Rungu (B)</option>
+                    <option value="GRAHITA RINGAN (C)">Grahita Ringan (C)</option>
+                    <option value="GRAHITA SEDANG (C1)">Grahita Sedang (C1)</option>
+                    <option value="DAKSA RINGAN (D)">Daksa Ringan (D)</option>
+                    <option value="DAKSA SEDANG (D1)">Daksa Sedang (D1)</option>
+                    <option value="INDIGO (O)">Indigo (O)</option>
+                    <option value="DOWN SINDROME (P)">Down Sindrome (P)</option>
+                    <option value="AUTIS (Q)">Autis (Q)</option>
+                    <option value="LARAS (E)">Laras ( E)</option>
+                    <option value="WICARA (F)">Wicara (F)</option>
+                    <option value="TUNA GANDA (G)">Tuna Ganda (G)</option>
+                    <option value="HIPERAKTIF (H)">Hiperaktif (H)</option>
+                    <option value="CERDAS ISTIMEWA (I)">Cerdas Istimewa (i)</option>
+                    <option value="BAKAT ISTIMEWA (J)">Bakat Istimewa (J)</option>
+                    <option value="KESULITAN BELAJAR (K)">Kesulitan Belajar (K)</option> 
+                </select>
+                <br>
+                <br>
+                
+            </fieldset>
+            <fieldset class="w3-card-4 w3-margin w3-light-grey">
+            <h5 class="w3-light-green w3-center">Dokumen Akta Kelahiran/Surat Kenal Lahir</h5>
+            Unggah Dokumen Akta Kelahiran / Surat Keterangan Lahir:<br/>    
+            <label for="input_dok_akte" id="label_dok_akte" class="w3-button warnaeka w3-round-large w3-card-4 w3-border-bottom w3-border-black"><i class="fa fa-upload"></i> Unggah Dokumen</label>
+                <input type="text" name="dok_akte" id="hfd_dok_akte" class="w3-input  w3-round" disabled/>
+                <div class="status_idfile_akta w3-center w3-text-blue"></div>
+                <div id="hdp_dok_akte" class="w3-card-4 w3-padding">PREVIEW</div>
+            </fieldset>
+            <fieldset class="w3-card-4 w3-margin w3-light-grey"> 
+            <h3 class="w3-light-green w3-center">ALAMAT</h3>
+            <span class="w3-text-red">Disi sesuai dengan dokumen Kartu Keluarga</span>  <br/><br/> 
+            <label for="hfd_nik">NIK:</label>
+            <input type="number" class="w3-input w3-white w3-border w3-border-black w3-round" name="nik" id="hfd_nik">
+        <br/>
+            <label for="hfd_nokk">Nomor KK:</label>
+            
+            <input type="number" class="w3-input w3-white w3-border w3-border-black w3-round" name="nokk" ="hfd_nokk">
+            <br/>
+            <label for="hfd_pd_alamat">Alamat Jalan:</label>
+            <input type="text" class="w3-input w3-white w3-border w3-border-black w3-round" name="pd_alamat" id="hfd_pd_alamat">
+            <br/>
+            <label for="hfd_dapo_dusun">Nama Dusun:</label>
+            <input type="text" class="w3-input w3-white w3-border w3-border-black w3-round" name="dapo_dusun" id="hfd_dapo_dusun">
+            <br/>
+            <label for="hfd_rt">RT: </label> <input type="number" class="w3-white w3-border w3-border-black w3-round w3-padding" name="dapo_rt" id="hfd_dapo_rt" min="1" style="width:100px"/>
+            <label for="hfd_rw">RW: </label> <input type="number" class="w3-white w3-border w3-border-black w3-round w3-padding" name="dapo_rw" id="hfd_dapo_rw" min="1" style="width:100px"/>
+            <br/>
+            <br/>
+            <label for="hfd_dapo_kelurahan">Kelurahan:</label>
+            <input type="text" class="w3-input w3-white w3-border w3-border-black w3-round" name="dapo_kelurahan" id="hfd_dapo_kelurahan" oninput="ketik_kapital(this)">
+            <div class="w3-tiny">
+            Refrensi Tulisan Kelurahan (Perhatikan spasinya)<br/>
+            RATUJAYA, CIPAYUNG JAYA, BOJONG PONDOK TERONG, PONDOK JAYA
+            </div><br/>
+            <label for="hfd_dapo_kecamatan">Kecamatan :</label>
+            <input type="text" class="w3-input w3-white w3-border w3-border-black w3-round" name="dapo_kecamatan" id="hfd_dapo_kecamatan" oninput="ketik_kapital(this)"/>
+            <br/>
+            <laber for="hfd_dapo_kota">Kota:</td>
+            <input type="text" class="w3-input w3-white w3-border w3-border-black w3-round" name="dapo_kota" id="hfd_dapo_kota" oninput="ketik_kapital(this)"/>
+            <br/>
+            <label for="hfd_dapo_provinsi">Provinsi:</label>
+            <input type="text" class="w3-input w3-white w3-border w3-border-black w3-round" name="dapo_provinsi" id="hfd_dapo_provinsi" oninput="ketik_kapital(this)"/>
+            <br/>
+            <label for="hfd_dapo_kodepos">Kode Pos:</label>
+            <input type="number" class="w3-white w3-border w3-border-black w3-round w3-padding" name="dapo_kodepos" id="hfd_dapo_kodepos" style="width:150px;"/>
+            <br/>
+            <br/>
+            <label for="hfd_dapo_jenistinggal">Jenis Tinggal:</label>
+            <select class="w3-select w3-border warnaeka" name="dapo_jenistinggal" id="hfd_dapo_jenistinggal">
+            <option value="">Silakan Pilih</option>
+            <option value="Bersama Orang Tua" >Bersama Orang tua</option>
+                <option value="Wali">Wali</option>
+                <option value="Kos">Kos</option>
+                <option value="Asrama">Asrama</option>
+                <option value="Panti Asuhan">Panti Asuhan</option>
+                <option value="Lainnya">Lainnya</option>
+            </select>
+            <br/>
+            <br/>
+            
+            <label for="hfd_dapo_alattransportasi">Moda Transportasi:</label>
+            <select class="w3-select warnaeka w3-border" name="dapo_alattransportasi" id="hfd_dapo_alattransportasi">
+            <option value="">Silakan Pilih</option>
+            <option value="Jalan Kaki" >Jalan Kaki</option>
+                <option value="Kendaraan Pribadi">Kendaraan Pribadi</option>
+                <option value="Kendaraan Umum/Angkot/Pete-pete">Kendaraan Umum/Angkot/Pete-pete</option>
+                <option value="Jemputan Sekolah">Jemputan Sekolah</option>
+                <option value="Kereta Api">Kereta Api</option>
+                <option value="Ojek">Ojek</option>
+                <option value="Andong/Bendi/Sado/Dokar/Delman/Beca">Andong/Bendi/Sado/Dokar/Delman/Beca</option>
+                <option value="Perahu Penyebrangan/Rakit/Getek">Perahu Penyebrangan/Rakit/Getek</option>
+                <option value="Lainnya">Lainnya</option>
+            </option>
+            </select>
+        </fieldset>
+        <fieldset class="w3-card-4 w3-margin w3-light-grey">
+            <h5 class="w3-light-green w3-center">Dokumen Kartu Keluarga</h5>
+            Unggah Dokumen Kartu Keluarga:<br/>
+            <label for="input_dok_kk" id="label_dok_kk" class="w3-button warnaeka w3-round-large w3-card-4 w3-border-bottom w3-border-black"><i class="fa fa-upload"></i> Unggah Dokumen</label>
+                <input type="text" name="dok_kk" id="hfd_dok_kk" class="w3-input  w3-round" disabled/>
+                <div class="status_idfile_kk w3-center w3-text-blue"></div>
+                <div id="hdp_dok_kk" class="w3-card-4 w3-padding">PREVIEW</div>
+        </fieldset>
+        <fieldset class="w3-card-4 w3-margin w3-light-grey">
+            <h3 class="w3-light-green w3-center">Koordinat Geografis</h3>
+        Pastikan dalam pengisian ini, Anda berada di tempat tinggal Anda. Silakan klik tombol berikut untuk menggenerate titik koordinat rumah tinggal Ananda di sini.
+        <br/>
+        <br/>
+        <label for="tombol_titikkoordinat" id="label_tombol_titikkoordinat" class="w3-button w3-card-4 warnaeka w3-border-bottom w3-border-black w3-round-large"><i class="fa fa-map-marker"></i> Koordinat Saya</label>
+        <br/>
+        <br/>
+        <label for="hfd_dapo_lintang">Lintang (Latitude):</label>
+        <input type="text" class="w3-input  w3-border w3-border-black w3-round" name="dapo_lintang" id="hfd_dapo_lintang" disabled/>
+        <br/>
+        <label for="hfd_dapo_bujur">Bujur (Longitude)</td>
+        <input type="text" class="w3-input  w3-border w3-border-black w3-round" name="dapo_bujur" id="hfd_dapo_bujur" disabled/>
+        <br/>
+        <label for="hfd_dapo_jarakrumahkesekolah">Jarak Rumah Ke sekolah (Km)</label>
+        <input type="text" class="w3-input  w3-border w3-border-black w3-round" name="dapo_jarakrumahkesekolah" id="hfd_dapo_jarakrumahkesekolah" disabled />
+        </fieldset>
+        <fieldset class="w3-card-4 w3-margin w3-light-grey">
+            <h3 class="w3-light-green w3-center">Program KIP/KKS/KPS/PKH/PIP</h3>
+            <h4 class="w3-light-green w3-center">KKS (Kartu Keluarga Sejahtera) </h4>
+        <label for="hfd_dapo_nomorkks">Nomor KKS:</label>
+        <input type="text" class="w3-input w3-white w3-border w3-border-black w3-round" name="dapo_nomorkks" id="hfd_dapo_nomorkks"/>
+        <br/>
+        <br/>
+        Dokumen KKS<br/>
+        <label for="input_dok_kks" id="label_dok_kks" class="w3-button warnaeka w3-round-large w3-card-4 w3-border-bottom w3-border-black"><i class="fa fa-upload"></i> Unggah Dokumen</label>
+        <input type="text" class="w3-input  w3-round" name="dok_kks" id="hfd_dok_kks" disabled/>
+        <div id="hdp_dok_kks" class="w3-card-4 w3-padding">PREVIEW</div>
+        <br/>     
+        <br/>     
+        <br/>     
+        <h4 class="w3-light-green w3-center">KPS/PKH</h4>
+        <sub class="w3-text-blue">KPS(Kartu Perlindungan Sosial) / PKH(Program Keluarga Harapan)</sub><br/><br/>
+        <label for="hfd_dapo_penerimakps">Penerima KPS/PKH?</label>
+        <select class="w3-select warnaeka w3-border" name="dapo_penerimakps" id="hfd_dapo_penerimakps">
+            <option value="TIDAK" >TIDAK</option>
+            <option value="YA" >YA</option>
+        </select>
+        <br/>    
+        <label for="hfd_dapo_nokps">Nomor KPS/PKH:</label>
+        <input type="text" class="w3-input w3-white w3-border w3-border-black w3-round" name="dapo_nokps" id="hfd_dapo_nokps"/>
+            <br/>
+            <br/>
+            Dokumen Kartu KPS atau PKH<br/>
+        <label for="input_dok_kpspkh" id="label_dok_kpspkh" class="w3-button warnaeka w3-round-large w3-card-4 w3-border-bottom w3-border-black"><i class="fa fa-upload"></i> Unggah Dokumen</label>
+        <input type="text" class="w3-input w3-round" name="dok_kpspkh" id="hfd_dok_kpspkh" disabled/>
+        <div id="hdp_dok_kpspkh" class="w3-card-4 w3-padding">PREVIEW</div>
+        <br/>
+        <br/>
+        <br/>
+        <h4 class="w3-light-green w3-center">KIP (Kartu Indonesia Pintar)</h4>
+            <label for="hfd_dapo_penerimakip">Memiliki KIP?</label>
+            <select class="w3-select warnaeka w3-border" name="dapo_penerimakip" id="hfd_dapo_penerimakip">
+            <option value="TIDAK" >TIDAK</option>
+            <option value="YA">YA</option>
+            </select>
+            <br/>
+            <br/>
+        <label for="hfd_dapo_nomorkip">Nomor KIP</label>
+        <input type="text" class="w3-input w3-white w3-border w3-border-black w3-round" name="dapo_nomorkip" id="hfd_dapo_nomorkip"/>
+        <br/>
+        <label for="hfd_dapo_namadikip">Nama di KIP:</label>
+        <input type="text" class="w3-input w3-white w3-border w3-border-black w3-round" name="dapo_namadikip" id="hfd_dapo_namadikip"/>
+        <br/><br/>
+        Dokumen KIP(Kartu Indonesia Pintar):<br/>
+        <label for="input_dok_kip" id="label_dok_kip" class="w3-button warnaeka w3-round-large w3-card-4 w3-border-bottom w3-border-black"><i class="fa fa-upload"></i> Unggah Dokumen</label>
+        <input type="text" class="w3-input  w3-round" name="dok_kip" id="hfd_dok_kip" disabled/>
+        <div id="hdp_dok_kip" class="w3-card-4 w3-padding">PREVIEW</div>
+        <br/>
+        <br/>
+        <br/>
+        <h4 class="w3-light-green w3-center">Kelayakan PIP:</h4>
+        
+        <label for="hfd_dapo_layakpip">Layak PIP?</label>
+        <select class="w3-select warnaeka w3-border" name="dapo_layakpip" id="hfd_dapo_layakpip" disabled>
+            <option value="TIDAK" >TIDAK</option>
+            <option value="YA" >YA</option>
+        </select>
+        <br/>
+        <br/>
+        <input type="text" class="w3-input  w3-round" name="dapo_alasanlayakpip" id="hfd_dapo_alasanlayakpip" placeholder="Terotomasi oleh Dapodik" disabled/>
+        </fieldset>
+        <fieldset class="w3-card-4 w3-margin w3-light-grey">
+        <h3 class="w3-light-green w3-center">DATA ORANG TUA</h3>
+        </fieldset>
+        <fieldset class="w3-card-4 w3-margin w3-light-grey">
+            <h4 class="w3-light-green w3-center">Ayah Kandung</h4>
+        <label for="hfd_pd_namaayah">Nama Lengkap Ayah:</label>
+        <input type="text" class="w3-input w3-white w3-border w3-border-black w3-round" name="pd_namaayah" ="hfd_pd_namaayah" oninput="ketik_kapital(this)"/>
+        <br/>
+        <label for="hfd_dapo_tahunlahirayah">Tanggal Lahir Ayah:</label>
+        <input type="date" class="w3-padding w3-border w3-border-black w3-round" name="dapo_tahunlahirayah" id="hfd_dapo_tahunlahirayah" onchange="konversi_tanggal(this,'sub_arti_tanggal_ayah')"/>
+        Teks Tanggal Lahir: <b class="sub_arti_tanggal_ayah w3-text-red"></b>
+        <br/>
+        <br/>
+        <label for="hfd_dapo_jenjangpendidikanayah">Pendidikan Ayah</label>
+            <select class="w3-select warnaeka w3-border" name="dapo_jenjangpendidikanayah" id="hfd_dapo_jenjangpendidikanayah">
+            <option value="">Silakan Pilih</option>
+            <option value="Tidak Sekolah" >Tidak Sekolah</option>
+                <option value="Putus SD">Putus SD</option>
+                <option value="SD Sederajat">SD Sederajat</option>
+                <option value="SMP Sederajat">SMP Sederajat</option>
+                <option value="SMA Sederajat" >SMA Sederajat</option>
+                <option value="DI">D1</option>
+                <option value="D2">D2</option>
+                <option value="D3">D3</option>
+                <option value="D4/S1">D4/S1</option>
+                <option value="S2">S2</option>
+                <option value="S3">S3</option>
+            </select>
+        <br/>
+        <br/>
+        <label for="hfd_dapo_nikayah">NIK Ayah:</label>
+        <input type="number" class="w3-input w3-white w3-border w3-border-black w3-round"  name="dapo_nikayah" id="hfd_dapo_nikayah">
+            <br/>
+            <label for="hfd_dapo_pekerjaanayah">Pekerjaan Ayah</label>
+            <select class="w3-select warnaeka w3-border" name="dapo_pekerjaanayah" id="hfd_dapo_pekerjaanayah">
+            <option value="">Silakan Pilih</option>
+            <option value="Tidak bekerja" >Tidak bekerja</option>
+                <option value="Nelayan">Nelayan</option>
+                <option value="Petani">Petani</option>
+                <option value="Peternak">Peternak</option>
+                <option value="PNS/TNI/Polri">PNS/TNI/Polri</option>
+                <option value="Karyawan Swasta">Karyawan Swasta</option>
+                <option value="Pedagang Kecil">Pedagang Kecil</option>
+                <option value="Pedagang Besar">Pedagang Besar</option>
+                <option value="Wiraswasta" >Wiraswasta</option>
+                <option value="Wirausaha">Wirausaha</option>
+                <option value="Buruh">Buruh</option>
+                <option value="Pensiunan">Pensiunan</option>
+                <option value="Tenaga Kerja Indonesia (TKI)">Tenaga Kerja Indonesia (TKI)</option>
+                <option value="Tidak dapat diterapkan">Tidak dapat diterapkan</option>
+                <option value="Meninggal Dunia">Meninggal Dunia</option>
+                <option value="Lainnya">Lainnya</option>
+            </select>
+            <br>
+            <br>
+            <label for="hfd_dapo_penghasilanayah">Penghasilan Ayah</label>
+            <select class="w3-select warnaeka w3-border" name="dapo_penghasilanayah" ="hfd_dapo_penghasilanayah">
+            <option value="">Silakan Pilih</option>
+            <option value="Kurang dari Rp. 1.000.000,-">Kurang dari Rp. 1.000.000,-</option>
+            <option value="Rp. 1.000.000 - Rp. 2.000.000">Rp. 1.000.000 - Rp. 2.000.000</option>
+                <option value="Lebih dari Rp. 2.000.000">Lebih dari Rp. 2.000.000</option>
+                <option value="Kurang dari Rp. 500.000">Kurang dari Rp. 500.000</option>
+                <option value="Rp. 500.000 - Rp. 999.999">Rp. 500.000 - Rp. 999.999</option>
+                <option value="Rp. 1.000.000 - Rp. 1.999.999" >Rp. 1.000.000 - Rp. 1.999.999</option>
+                <option value="Rp. 2.000.000 - Rp. 4.999.999" >Rp. 2.000.000 - Rp. 4.999.999</option>
+                <option value="Rp. 5.000.000 - Rp. 20.000.000">Rp. 5.000.000 - Rp. 20.000.000</option>
+                <option value="Lebih dari Rp.20.000.000">Lebih dari Rp.20.000.000</option>
+                <option value="Tidak Berpenghasilan">Tidak Berpenghasilan</option>
+                <option value="Lainnya">Lainnya</option>
+        </select>
+        <br/>
+        <br/>
+        <label for="hfd_dapo_abkayah">Berkebutuhan Khusus?</label>
+            <select class="w3-select warnaeka w3-border" name="dapo_abkayah" id="hfd_dapo_abkayah">
+            <option value="">Silakan Pilih</option>
+                <option value="TIDAK" >Tidak</option> 
+                <option value="NETRA (A)">Netra (A)</option>
+                <option value="RUNGU (B)">Rungu (B)</option>
+                <option value="GRAHITA RINGAN (C)">Grahita Ringan (C)</option>
+                <option value="GRAHITA SEDANG (C1)">Grahita Sedang (C1)</option>
+                <option value="DAKSA RINGAN (D)">Daksa Ringan (D)</option>
+                <option value="DAKSA SEDANG (D1)">Daksa Sedang (D1)</option>
+                <option value="INDIGO (O)">Indigo (O)</option>
+                <option value="DOWN SINDROME (P)">Down Sindrome (P)</option>
+                <option value="AUTIS (Q)">Autis (Q)</option>
+                <option value="LARAS (E)">Laras ( E)</option>
+                <option value="WICARA (F)">Wicara (F)</option>
+                <option value="TUNA GANDA (G)">Tuna Ganda (G)</option>
+                <option value="HIPERAKTIF (H)">Hiperaktif (H)</option>
+                <option value="CERDAS ISTIMEWA (I)">Cerdas Istimewa (i)</option>
+                <option value="BAKAT ISTIMEWA (J)">Bakat Istimewa (J)</option>
+                <option value="KESULITAN BELAJAR (K)">Kesulitan Belajar (K)</option> 
+            </select>
+        </fieldset>
+        <fieldset class="w3-card-4 w3-margin w3-light-grey">
+        <h4 class="w3-light-green w3-center">Ibu Kandung</h4>
+        <label for="hfd_pd_namaibu">Nama Lengkap ibu:</label>
+        <input type="text" class="w3-input w3-white w3-border w3-border-black w3-round" name="pd_namaibu" ="hfd_pd_namaibu" oninput="ketik_kapital(this)"/>
+        <br/>
+        <label for="hfd_dapo_tahunlahiribu">Tanggal Lahir ibu:</label>
+        <input type="date" class="w3-padding w3-border w3-border-black w3-round" name="dapo_tahunlahiribu" id="hfd_dapo_tahunlahiribu" onchange="konversi_tanggal(this,'sub_arti_tanggal_ibu')"/>
+        Teks Tanggal Lahir: <b class="sub_arti_tanggal_ibu w3-text-red"></b>
+        <br/>
+        <br/>
+        <label for="hfd_dapo_jenjangpendidikanibu">Pendidikan ibu</label>
+            <select class="w3-select warnaeka w3-border" name="dapo_jenjangpendidikanibu" id="hfd_dapo_jenjangpendidikanibu">
+                <option value="">Silakan Pilih</option>
+                <option value="Tidak Sekolah" >Tidak Sekolah</option>
+                <option value="Putus SD">Putus SD</option>
+                <option value="SD Sederajat">SD Sederajat</option>
+                <option value="SMP Sederajat">SMP Sederajat</option>
+                <option value="SMA Sederajat" >SMA Sederajat</option>
+                <option value="DI">D1</option>
+                <option value="D2">D2</option>
+                <option value="D3">D3</option>
+                <option value="D4/S1">D4/S1</option>
+                <option value="S2">S2</option>
+                <option value="S3">S3</option>
+            </select>
+        <br/>
+        <br/>
+        <label for="hfd_dapo_nikibu">NIK ibu:</label>
+        <input type="number" class="w3-input w3-white w3-border w3-border-black w3-round"  name="dapo_nikibu" id="hfd_dapo_nikibu">
+            <br/>
+            <label for="hfd_dapo_pekerjaanibu">Pekerjaan ibu</label>
+            <select class="w3-select warnaeka w3-border" name="dapo_pekerjaanibu" id="hfd_dapo_pekerjaanibu">
+            <option value="">Silakan Pilih</option>
+            <option value="Tidak bekerja" >Tidak bekerja</option>
+                <option value="Nelayan">Nelayan</option>
+                <option value="Petani">Petani</option>
+                <option value="Peternak">Peternak</option>
+                <option value="PNS/TNI/Polri">PNS/TNI/Polri</option>
+                <option value="Karyawan Swasta">Karyawan Swasta</option>
+                <option value="Pedagang Kecil">Pedagang Kecil</option>
+                <option value="Pedagang Besar">Pedagang Besar</option>
+                <option value="Wiraswasta" >Wiraswasta</option>
+                <option value="Wirausaha">Wirausaha</option>
+                <option value="Buruh">Buruh</option>
+                <option value="Pensiunan">Pensiunan</option>
+                <option value="Tenaga Kerja Indonesia (TKI)">Tenaga Kerja Indonesia (TKI)</option>
+                <option value="Tidak dapat diterapkan">Tidak dapat diterapkan</option>
+                <option value="Meninggal Dunia">Meninggal Dunia</option>
+                <option value="Lainnya">Lainnya</option>
+            </select>
+            <br>
+            <br>
+            <label for="hfd_dapo_penghasilanibu">Penghasilan ibu</label>
+            <select class="w3-select warnaeka w3-border" name="dapo_penghasilanibu" ="hfd_dapo_penghasilanibu">
+            <option value="">Silakan Pilih</option>
+            <option value="Kurang dari Rp. 1.000.000,-" >Kurang dari Rp. 1.000.000,-</option>
+            <option value="Rp. 1.000.000 - Rp. 2.000.000">Rp. 1.000.000 - Rp. 2.000.000</option>
+                <option value="Lebih dari Rp. 2.000.000">Lebih dari Rp. 2.000.000</option>
+                <option value="Kurang dari Rp. 500.000">Kurang dari Rp. 500.000</option>
+                <option value="Rp. 500.000 - Rp. 999.999" >Rp. 500.000 - Rp. 999.999</option>
+                <option value="Rp. 1.000.000 - Rp. 1.999.999">Rp. 1.000.000 - Rp. 1.999.999</option>
+                <option value="Rp. 2.000.000 - Rp. 4.999.999" >Rp. 2.000.000 - Rp. 4.999.999</option>
+                <option value="Rp. 5.000.000 - Rp. 20.000.000">Rp. 5.000.000 - Rp. 20.000.000</option>
+                <option value="Lebih dari Rp.20.000.000">Lebih dari Rp.20.000.000</option>
+                <option value="Tidak Berpenghasilan">Tidak Berpenghasilan</option>
+                <option value="Lainnya">Lainnya</option>
+        </select>
+        <br/>
+        <br/>
+        <label for="hfd_dapo_abkibu">Berkebutuhan Khusus?</label>
+        <select class="w3-select warnaeka w3-border" name="dapo_abkibu" id="hfd_dapo_abkibu">
+        <option value="">Silakan Pilih</option>
+                <option value="TIDAK" >Tidak</option> 
+                <option value="NETRA (A)">Netra (A)</option>
+                <option value="RUNGU (B)">Rungu (B)</option>
+                <option value="GRAHITA RINGAN (C)">Grahita Ringan (C)</option>
+                <option value="GRAHITA SEDANG (C1)">Grahita Sedang (C1)</option>
+                <option value="DAKSA RINGAN (D)">Daksa Ringan (D)</option>
+                <option value="DAKSA SEDANG (D1)">Daksa Sedang (D1)</option>
+                <option value="INDIGO (O)">Indigo (O)</option>
+                <option value="DOWN SINDROME (P)">Down Sindrome (P)</option>
+                <option value="AUTIS (Q)">Autis (Q)</option>
+                <option value="LARAS (E)">Laras ( E)</option>
+                <option value="WICARA (F)">Wicara (F)</option>
+                <option value="TUNA GANDA (G)">Tuna Ganda (G)</option>
+                <option value="HIPERAKTIF (H)">Hiperaktif (H)</option>
+                <option value="CERDAS ISTIMEWA (I)">Cerdas Istimewa (i)</option>
+                <option value="BAKAT ISTIMEWA (J)">Bakat Istimewa (J)</option>
+                <option value="KESULITAN BELAJAR (K)">Kesulitan Belajar (K)</option> 
+            </select>
+        </fieldset>
+        <fieldset class="w3-card-4 w3-margin w3-light-grey">
+        <h4 class="w3-light-green w3-center">Wali</h4>
+        <label for="hfd_dapo_namawali">Nama Lengkap wali:</label>
+        <input type="text" class="w3-input w3-white w3-border w3-border-black w3-round" name="dapo_namawali" ="hfd_dapo_namawali" oninput="ketik_kapital(this)"/>
+        <br/>
+        <label for="hfd_dapo_tahunlahirwali">Tanggal Lahir wali:</label>
+        <input type="date" class="w3-padding w3-border w3-border-black w3-round" name="dapo_tahunlahirwali" id="hfd_dapo_tahunlahirwali" onchange="konversi_tanggal(this,'sub_arti_tanggal_wali')"/>
+        Teks Tanggal Lahir: <b class="sub_arti_tanggal_wali w3-text-red"></b>
+        <br/>
+        <br/>
+        <label for="hfd_dapo_jenjangpendidikanwali">Pendidikan wali</label>
+            <select class="w3-select warnaeka w3-border" name="dapo_jenjangpendidikanwali" id="hfd_dapo_jenjangpendidikanwali">
+            <option value="">Silakan Pilih</option>
+            <option value="Tidak Sekolah">Tidak Sekolah</option>
+                <option value="Putus SD">Putus SD</option>
+                <option value="SD Sederajat">SD Sederajat</option>
+                <option value="SMP Sederajat">SMP Sederajat</option>
+                <option value="SMA Sederajat" >SMA Sederajat</option>
+                <option value="DI">D1</option>
+                <option value="D2">D2</option>
+                <option value="D3">D3</option>
+                <option value="D4/S1">D4/S1</option>
+                <option value="S2">S2</option>
+                <option value="S3">S3</option>
+            </select>
+        <br/>
+        <br/>
+        <label for="hfd_dapo_nikwali">NIK wali:</label>
+        <input type="number" class="w3-input w3-white w3-border w3-border-black w3-round"  name="dapo_nikwali" id="hfd_dapo_nikwali">
+            <br/>
+            <label for="hfd_dapo_pekerjaanwali">Pekerjaan wali</label>
+            <select class="w3-select warnaeka w3-border" name="dapo_pekerjaanwali" id="hfd_dapo_pekerjaanwali">
+            <option value="">Silakan Pilih</option>
+            <option value="Tidak bekerja">Tidak bekerja</option>
+                <option value="Nelayan">Nelayan</option>
+                <option value="Petani">Petani</option>
+                <option value="Peternak">Peternak</option>
+                <option value="PNS/TNI/Polri">PNS/TNI/Polri</option>
+                <option value="Karyawan Swasta">Karyawan Swasta</option>
+                <option value="Pedagang Kecil">Pedagang Kecil</option>
+                <option value="Pedagang Besar">Pedagang Besar</option>
+                <option value="Wiraswasta" >Wiraswasta</option>
+                <option value="Wirausaha">Wirausaha</option>
+                <option value="Buruh">Buruh</option>
+                <option value="Pensiunan">Pensiunan</option>
+                <option value="Tenaga Kerja Indonesia (TKI)">Tenaga Kerja Indonesia (TKI)</option>
+                <option value="Tidak dapat diterapkan">Tidak dapat diterapkan</option>
+                <option value="Meninggal Dunia">Meninggal Dunia</option>
+                <option value="Lainnya">Lainnya</option>
+            </select>
+            <br>
+            <br>
+            <label for="hfd_dapo_penghasilanwali">Penghasilan wali</label>
+            <select class="w3-select warnaeka w3-border" name="dapo_penghasilanwali" ="hfd_dapo_penghasilanwali">
+            <option value="">Silakan Pilih</option>
+            <option value="Kurang dari Rp. 1.000.000,-">Kurang dari Rp. 1.000.000,-</option>
+            <option value="Rp. 1.000.000 - Rp. 2.000.000">Rp. 1.000.000 - Rp. 2.000.000</option>
+                <option value="Lebih dari Rp. 2.000.000">Lebih dari Rp. 2.000.000</option>
+                <option value="Kurang dari Rp. 500.000">Kurang dari Rp. 500.000</option>
+                <option value="Rp. 500.000 - Rp. 999.999">Rp. 500.000 - Rp. 999.999</option>
+                <option value="Rp. 1.000.000 - Rp. 1.999.999">Rp. 1.000.000 - Rp. 1.999.999</option>
+                <option value="Rp. 2.000.000 - Rp. 4.999.999" >Rp. 2.000.000 - Rp. 4.999.999</option>
+                <option value="Rp. 5.000.000 - Rp. 20.000.000">Rp. 5.000.000 - Rp. 20.000.000</option>
+                <option value="Lebih dari Rp.20.000.000">Lebih dari Rp.20.000.000</option>
+                <option value="Tidak Berpenghasilan">Tidak Berpenghasilan</option>
+                <option value="Lainnya">Lainnya</option>
+        </select>
+        <br/>
+        <br/>
+        <label for="hfd_dapo_abkwali">Berkebutuhan Khusus?</label>
+            <select class="w3-select warnaeka w3-border" name="dapo_abkwali" id="hfd_dapo_abkwali">
+            <option value="">Silakan Pilih</option>
+            <option value="TIDAK" >Tidak</option> 
+                <option value="NETRA (A)">Netra (A)</option>
+                <option value="RUNGU (B)">Rungu (B)</option>
+                <option value="GRAHITA RINGAN (C)">Grahita Ringan (C)</option>
+                <option value="GRAHITA SEDANG (C1)">Grahita Sedang (C1)</option>
+                <option value="DAKSA RINGAN (D)">Daksa Ringan (D)</option>
+                <option value="DAKSA SEDANG (D1)">Daksa Sedang (D1)</option>
+                <option value="INDIGO (O)">Indigo (O)</option>
+                <option value="DOWN SINDROME (P)">Down Sindrome (P)</option>
+                <option value="AUTIS (Q)">Autis (Q)</option>
+                <option value="LARAS (E)">Laras ( E)</option>
+                <option value="WICARA (F)">Wicara (F)</option>
+                <option value="TUNA GANDA (G)">Tuna Ganda (G)</option>
+                <option value="HIPERAKTIF (H)">Hiperaktif (H)</option>
+                <option value="CERDAS ISTIMEWA (I)">Cerdas Istimewa (i)</option>
+                <option value="BAKAT ISTIMEWA (J)">Bakat Istimewa (J)</option>
+                <option value="KESULITAN BELAJAR (K)">Kesulitan Belajar (K)</option> 
+            </select>
+        </fieldset>
+        <fieldset class="w3-card-4 w3-margin w3-light-grey">
+            <h4 class="w3-light-green w3-center">DATA PRIODIK PERKEMBANGAN SISWA</h4>
+        <label for="hfd_dapo_tinggibadan">Tinggi Badan (Cm):</label>
+        <input type="number" class="w3-padding w3-white w3-border w3-border-black w3-round" name="dapo_tinggibadan" id="hfd_dapo_tinggibadan" style="width=80px"/>
+        <br/>
+        <br/>
+            <label for="hfd_dapo_beratbadan">Berat Badan (Kg):</label>
+            <input type="number" class="w3-padding w3-white w3-border w3-border-black w3-round" name="dapo_beratbadan" id="hfd_dapo_beratbadan" style="width=80px"/>
+            <br/>
+            <br/>
+            <label for="hfd_dapo_lingkarkepala">Lingkar Kepala:</label>
+            <input type="number" class="w3-padding w3-white w3-border w3-border-black w3-round" name="dapo_lingkarkepala" id="hfd_dapo_lingkarkepala" style="width=80px"/>
+    </fieldset>
+    <fieldset class="w3-card-4 w3-margin w3-light-grey">
+            <h4 class="w3-light-green w3-center">BANK PENERIMA KIP</h4>
+    <label for="hfd_dapo_bank">Nama Bank PIP:</label>
+    <input type="text" class="w3-input w3-white w3-border w3-border-black w3-round"  name="dapo_bank" id="hfd_dapo_bank"/>
+    <br/>
+    <label for="hfd_dapo_bank">Nomor Rekening Bank PIP:</label>
+    <input type="text" class="w3-input w3-white w3-border w3-border-black w3-round"  name="dapo_nomorrekeningbank" id="hfd_dapo_nomorrekeningbank"/>
+    <br/>
+    <label for="hfd_dapo_rekeningatasnama">Rekening Atas Nama:</label>
+    <input type="text" class="w3-input w3-white w3-border w3-border-black w3-round"  name="dapo_rekeningatasnama" id="hfd_dapo_rekeningatasnama"/>
+    <br/>
+
+    </fieldset>
+    <fieldset class="w3-card-4 w3-margin w3-light-grey">
+    <h4 class="w3-light-green w3-center">RIWAYAT SEKOLAH</h4>
+    Isian ini untuk mengisi data riwayat sekolah sebelum di ${idNamaSekolah}. Contoh TK, RA, PAUD.<br/><br/>
+    Bagi Siswa Pindahan, Isikan nama sekolah sebelumnya.
+    <br/>
+    <br/>
+    <label for="hfd_dapo_sekolahasal">Sekolah Asal:</label>
+    <input type="text" class="w3-input w3-white w3-border w3-border-black w3-round" name="dapo_sekolahasal" id="hfd_dapo_sekolahasal" oninput="ketik_kapital(this)"/>
+    </fieldset> 
+    <fieldset class="w3-hide">
+    <input type="text" class="w3-input w3-white w3-border w3-border-black w3-round" name="aktif" id="hfd_aktif" disabled placeholder="Status Aktif"/>
+    <input type="text" class="w3-input w3-white w3-border w3-border-black w3-round" name="dieditoleh" id="hfd_dieditoleh" placeholder="Diusulkan Kepada" disabled />
+    <input type="text" class="w3-input w3-white w3-border w3-border-black w3-round" name="action" id="hfd_action" disabled placeholder="Aktifasi"/>
+    <input type="text" class="w3-input w3-white w3-border w3-border-black w3-round" name="dapo_nopesertaujiannasional" id="hfd_dapo_nopesertaujiannasional" disabled placeholder="No Peserta Ujian (untuk lulusan kelas 6)"/>
+    <input type="text" class="w3-input w3-white w3-border w3-border-black w3-round" name="dapo_skhun" id="hfd_dapo_skhun" disabled placeholder="Data SKHUN (untuk lulusan kelas 6)"/>
+    <input type="text" class="w3-input w3-white w3-border w3-border-black w3-round" name="dapo_noseriijazah" id="hfd_dapo_noseriijazah" disabled placeholder="No Seri Ijazah (untuk lulusan kelas 6)"/>
+    </fieldset>       
+    </form>
+   <div class="w3-hide">
+        <input type="file" id="input_dok_akte" onchange="fnbaru_unggahfiledulu(this)"/>
+        <input type="file" id="input_dok_kk" onchange="fnbaru_unggahfiledulu(this)"/>
+        <button id="tombol_titikkoordinat" onclick="getLocation(this)">Koordinat</button>
+        <input type="file" id="input_dok_kks" onchange="fnbaru_unggahfiledulu(this)"/>
+        <input type="file" id="input_dok_kpspkh" onchange="fnbaru_unggahfiledulu(this)"/>
+        <input type="file" id="input_dok_kip" onchange="fnbaru_unggahfiledulu(this)"/>
+        </div>
+        <div class="w3-margin-top w3-center">
+        <button onclick="validasiajuandata(${tokensiswa})" class="w3-button w3-card-4 warnaeka w3-margin w3-border-bottom w3-border-black w3-round-large"><i class="fa fa-paper-plane"></i> Kirim Ajuan </button>
+        <button class="w3-button warnaeka w3-card-4 w3-round-large w3-margin w3-border-bottom w3-border-black " onclick="infoloadingljk.innerHTML='';loadingljk.style.display='none'">Tutup Form</button>
+        </div>
+    </div>
+    
+    `;
+
+    return html
+};
+
+const StringTanggalnol = (tgl) => { //parameter tgl bentuk tgl
+    let m = tgl.getMonth() + 1;
+    let d = tgl.getDate();
+    let y = tgl.getFullYear();
+
+
+    let string = y + "-" + addZero(m) + "-" + addZero(d);
+
+
+    //console.log(string)
+    return string
+}
+
+
+const fnbaru_unggahfiledulu = (el) => {
+    let elemen_id = el.getAttribute("id");
+    let id_label = elemen_id.replace("input_", "label_");
+    let id_input = elemen_id.replace("input_", "hfd_");
+
+    let elemen_label = document.getElementById(id_label);
+    elemen_label.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+        inline: "end"
+    });
+    let innersebelumnya = elemen_label.innerHTML;
+    elemen_label.innerHTML = `<img scr="/img/barloading.gif"/>`;
+    var file = document.getElementById(elemen_id).files[0];
+    var reader = new FileReader();
+    reader.onload = function (e) {
+        //document.getElementById('uploadForm').submit();
+
+        let src = e.target.result;
+        let data = src.replace(/^.*,/, '');
+        let tipe = e.target.result.match(/^.*(?=;)/)[0];
+        fn_upload_file(id_input, data, tipe);
+        // console.log(tipe);
+        // console.log(data);
+    }
+    reader.readAsDataURL(file);
+}
+
+const fn_upload_file = (id_input, param, tipe) => {
+    let inputnama = document.querySelector("input[id='hfd_pd_nama']").value; //cpdb_id_file_akta
+    let div = document.querySelector("input[id=" + id_input + "]"); //cpdb_id_file_akta
+    let namadokumen = id_input.replace("hfd_", "");
+    let id_label = id_input.replace("hfd_", "label_")
+    let el_label = document.querySelector("label[id=" + id_label + "]"); //cpdb_id_file_akta
+    el_label.innerHTML = `<img src="/img/barloading.gif"/>`;
+    el_label.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+        inline: "end"
+    });
+    let namafile = inputnama.value + "_" + namadokumen;
+    let jenjkelas = document.querySelector("input[id=hfd_jenjang]").value;
+    console.log(jenjkelas)
+    absenheader = "absen" + jenjkelas;
+    url_absensiswa = jlo[absenheader];
+
+    let data = new FormData();
+    data.append("action", "uploadfiledulu");
+    data.append("fileContent", param);
+    data.append("mimeType", tipe);
+    data.append("filename", namafile);
+    data.append("kelas", idNamaKelas);
+    var url = url_absensiswa; // + "?action=uploaddulu";
+    fetch(url, {
+        method: 'post',
+        body: data
+    }).then(m => m.json())
+        .then(r => {
+            if (r.sukses == "Gagal") {
+                setTimeout(() => {
+                    el_label.innerHTML = `<i class="fa fa-upload"></i> Unggah Dokumen`;
+
+                }, 3000);
+                el_label.innerHTML = `Gagal Mengunggah`;
+            } else {
+                el_label.innerHTML = `<i class="fa fa-upload"></i> Unggah Dokumen`;
+                div.value = r.idfile;
+            }
+        })
+        .catch(er => {
+            console.log(er);
+            setTimeout(() => {
+                el_label.innerHTML = `<i class="fa fa-upload"></i> Unggah Dokumen`;
+
+            }, 3000);
+            el_label.innerHTML = `Gagal Mengunggah`;
+            alert("Maaf, terjadi kesalahan. Silakan ulangi sesi Anda sesaat lagi.")
+        })
+};
+
+function getLocation(el) {
+    let id = el.getAttribute("id")
+    let elemenlabel = document.getElementById("label_" + id)
+    elemenlabel.scrollIntoView();
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+        hfd_dapo_lintang.value = "Duh, HP Anda tidak support. Coba dengan HP Lain";
+        hfd_dapo_bujur.value = "Duh, HP Anda tidak support. Coba dengan HP Lain";
+    }
+}
+
+function showPosition(position) {
+    hfd_dapo_lintang.value = position.coords.latitude;
+    hfd_dapo_bujur.value = position.coords.longitude;
+    var xJarak = distance(hfd_dapo_lintang.value, hfd_dapo_bujur.value, "K");
+    hfd_dapo_jarakrumahkesekolah.value = xJarak.toFixed(3);
+}
+
+function distance(lat1, lon1, unit) {
+    // var lat2 = -6.4198454;
+    // var lon2 = 106.8134214;
+
+    var radlat1 = Math.PI * lat1 / 180
+    var radlat2 = Math.PI * lat2 / 180
+
+    var radlon1 = Math.PI * lon1 / 180
+    var radlon2 = Math.PI * lon2 / 180
+    var theta = lon1 - lon2
+    var radtheta = Math.PI * theta / 180
+    var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+    dist = Math.acos(dist)
+    dist = dist * 180 / Math.PI
+    dist = dist * 60 * 1.1515
+    if (unit == "K") {
+        dist = dist * 1.609344
+    }
+    // if (unit == "K") { dist = dist * 0.01609344 }
+    if (unit == "N") {
+        dist = dist * 0.8684
+    }
+    return dist
+}
+
+function komponenform(form) { // fungsi untuk membuat Array Object beserta value-nya dalam bentuk JSON
+    var koleksielement = form.elements;
+    var buatkolomheader = Object.keys(koleksielement).filter(function (k) {
+        if (koleksielement[k].name === "time_stamp") {
+            koleksispam = koleksielement[k].value;
+            return false;
+        }
+        return true; // hasilnya [0,1,2,3, ..., "dieditoleh", "id", "nis", ....berdasarkan nama]
+
+    }).map(function (k) {
+        if (koleksielement[k].name !== undefined) {
+            return koleksielement[k].name;
+        } else if (koleksielement[k].length > 0) {
+            return koleksielement[k].item(0).name; //
+        }
+    }).filter(function (item, pos, self) {
+        return self.indexOf(item) == pos && item;
+    });
+
+    var dataJSON = {};
+
+    buatkolomheader.forEach(function (name) { // masing-masing element yang memiliki attribute name;
+        var nameselement = koleksielement[name];
+        dataJSON[name] = nameselement.value;
+        if (nameselement.length) {
+            var data = [];
+            for (var i = 0; i < nameselement.length; i++) {
+                var item = nameselement.item(i);
+                if (item.checked || item.selected) {
+                    data.push(item.value);
+                }
+            }
+            dataJSON[name] = data.join(', ');
+        }
+
+    });
+    //dataJSON.formDataNameOrder = JSON.stringify(buatkolomheader);
+    return {
+        data: dataJSON,
+        head: buatkolomheader
+    }
+}
+const validasiajuandata = async (tokensiswa) => {
+    let namaform = document.getElementById("formajuandatasiswa"); //.elements;
+    let dataoke = [];
+    let datagaada = [];
+    let cekhead = arrayheadsumber.filter(s => s !== "time_stamp"); //array
+
+    let avoid_head = ["aktif", "dieditoleh", "action", "usulanperubahandata"];
+    let elemenform = komponenform(namaform); /// object
+    let dataelemen = elemenform.data; // {id:"", data: "", dst}
+
+    if (dataelemen.dok_akte == "" || dataelemen.dok_kk == "") {
+        alert("Anda wajib mengunggah file akte dan kartu keluarga");
+
+    } else {
+        let objekada = {};
+        let keyurut = [];
+        let valurut = [];
+        for (let i = 0; i < cekhead.length; i++) {
+            if (dataelemen[cekhead[i]] == undefined) {
+                datagaada.push(cekhead[i]);
+                if (angkadistring.indexOf(cekhead[i]) > -1) {
+                    let n = "'"; //+ dataelemen[cekhead[i]]
+                    valurut.push(n);
+                } else {
+                    valurut.push("")
+                }
+            } else {
+                dataoke.push(cekhead[i])
+                objekada[cekhead[i]] = dataelemen[cekhead[i]]
+                if (angkadistring.indexOf(cekhead[i]) > -1) {
+                    let n = "'" + dataelemen[cekhead[i]]
+                    valurut.push(n);
+                } else {
+
+                    valurut.push(dataelemen[cekhead[i]]);
+                }
+            }
+            keyurut.push(cekhead[i]);
+        }
+        // console.log(keyurut);
+        // console.log(valurut)
+        let cocok = (JSON.stringify(keyurut) == JSON.stringify(cekhead)) ? "COCOK" : "BEDA";
+        // console.log(cocok);
+
+        // console.log("dataoke");
+        // console.log(dataoke);
+        // console.log("datagaada");
+        // console.log(datagaada);
+        let tabel = JSON.stringify(valurut);
+        let datakirim = new FormData();
+        // datakirim.append("action", );
+        //datakirim.append("tab", "new_datasiswa");
+        datakirim.append("tabel", tabel);
+        datakirim.append("tokensiswa", tokensiswa);
+        datakirim.append("idss", jlo.ss_datauser);
+        let jenjkelas = dataelemen["jenjang"];
+        console.log(jenjkelas);
+        absenheader = "absen" + jenjkelas;
+        url_absensiswa = jlo[absenheader];
+
+        infoloadingljk.innerHTML = `<p class="w3-center"><img src="/img/barloading.gif"/></p>`
+        await fetch(url_absensiswa + "?action=daftarulangduasheet", {
+            method: "post",
+            body: datakirim
+        })
+            .then(m => m.json())
+            .then(r => {
+                infoloadingljk.innerHTML = r.result;
+                console.log(r)
+                let dataaktif = r.datasiswa.filter(s => s.aktif == "aktif");
+                let bl = {};
+                bl["datasiswa"] = dataaktif;
+                jsondatasiswa = dataaktif;
+                localStorage.setItem("datasiswa_all", JSON.stringify(bl));
+                carikriteria();
+            })
+            .catch(er => {
+                console.log(er);
+                infoloadingljk.innerHTML = "Terjadi kesalahan";
+            })
+        //updatesetelahverifikasidaftarulang();
+    }
+};
+const updatesetelahverifikasidaftarulang = async () => {
+    //await updateDatasiswa()
+    // document.querySelector(".pesankhusussiswa").innerHTML = `<p class="w3-center"><img src="/img/barloading.gif"/></p>`;
+    await fetch(linkDataUserWithIdss + "&action=usulanperbaikandata")
+        .then(m => m.json())
+        .then(k => {
+            //console.log(k);
+            let dataaktif = k.datasiswa.filter(s => s.aktif == "aktif");
+            jsondatasiswa = dataaktif;
+            localStorage.setItem("datasiswa_all", JSON.stringify(k))
+
+        })
+        .catch(er => {
+            console.log(er);
+        })
+};
+
+const printModalinfoljk = (title, ele) => {
+    let isi = document.querySelector("#" + ele).innerHTML;
+    let el = document.getElementById("iframeprint");
+    let doc = el.contentDocument;
+    // head, body
+    let head = doc.head;
+    let body = doc.body;
+    //isikan HEAD dengan title, style, link, dll.
+    head.innerHTML = `<title>E-LAMASO ${title}</title>`;
+    head.innerHTML += `<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">`;
+    head.innerHTML += `<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">`;
+    head.innerHTML += `<link href="https://fonts.googleapis.com/css?family=Raleway">`;
+    head.innerHTML += `<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>`;
+    head.innerHTML += `<style type="text/css"> .versii-table{width:950px;max-width:100%;border-collapse:collapse}.versi-table{width:auto;max-width:100%;border-collapse:collapse}.versi-table td,.versi-table th,.versi-table tr,.versii-table td,.versii-table th,.versii-table tr{border:1px solid #000;color:#000;padding:5px 10px 5px 10px}.versi-table th,.versii-table th{background-color:#eee;color:#00f;vertical-align:middle;text-align:center}.versi-table tr:nth-of-type(even) td,.versii-table tr:nth-of-type(even) td{border:0;background-color:#fff;border:1px solid #000}.versi-table tr:nth-of-type(odd) td,.versii-table tr:nth-of-type(odd) td{border:0;background-color:#eef;border:1px solid #000} .garis td,.garis th,.garis tr{border:0.5px solid rgb(119, 116, 116)} .garis th{border:1px solid #000;text-align:center;vertical-align:middle} </style>`;
+
+    head.innerHTML += `<style type="text/css" media="print">
+    @media print {
+        html,body{height:100%;width:100%;margin:0;padding:0}
+        
+         @page {
+            size: A4 portrait;
+            max-height:100%;
+            max-width:100%;
+            
+            }
+    }
+    </style>`;
+
+    body.innerHTML = `${isi}`;
+
+
+    window.frames["iframeprint"].focus();
+    window.frames["iframeprint"].print();
+
+}
+const ketik_kapital = (el) => el.value = el.value.toUpperCase();
+
+
+const detailformulir = async (tokensiswa) => {
+    let ss = jlo.ss_datauser;
+    let ur = jlo.url_datauser;
+    let ling = ur + "?idss=" + ss;
+    let datahtml = "",
+        fil;
+    loadingljk.style.display = "block";
+    $('#infoloadingljk').nextAll('button').remove();
+
+    // let img = document.querySelector(".avatarsiswa");
+    // let srcimg = img.getAttribute("src");
+    // // console.log(srcimg)'
+    infoloadingljk.innerHTML = `<p class="w3-center"><img src="/img/barloading.gif"></p>`;
+
+    await fetch(ling + "&action=usulanperbaikandata")
+        .then(m => m.json())
+        .then(k => {
+            let cariidd = k.datasiswa.filter(s => s.id == tokensiswa);
+            let httml = "";
+            if (cariidd.length == 0) {
+                httml = `<div id="bio_print"><h4 class="w3-center">Siswa ini belum pernah mengusulkan Perubahan Data (Belum pernah mendaftar ulang)</h4>`;
+                httml += htmldataprofil();
+                httml += `</div><div class="w3-center tempattomboltambahan">
+                <br/>        
+                <button class="w3-button w3-card-4 w3-round-large warnaeka" onclick="ajuanperubahandataolehguru(${tokensiswa})"> Bantu Isi</button>
+                <br/>
+                <br/>
+                <button class="w3-button w3-card-4 w3-round-large warnaeka" onclick="printModalinfoljk('Data Siswa','bio_print')">Cetak</button>
+                <button class="w3-button warnaeka w3-card-4 w3-round-large" onclick="infoloadingljk.innerHTML='';loadingljk.style.display='none'">Tutup Form</button>
+                
+                </div>`;
+            } else {
+                httml = `<div id="bio_print">${htmldataprofil()}`;
+                httml += `</div><div class="w3-center tempattomboltambahan">
+                        <button class="w3-button w3-card-4 w3-round-large warnaeka" onclick="ajuanperubahandata(${tokensiswa})">Verifikasikan</button>
+                        <br>
+                        <br>
+                        <button class="w3-button w3-card-4 w3-round-large warnaeka" onclick="printModalinfoljk('Data Siswa','bio_print')">Cetak</button>
+                        <button class="w3-button warnaeka w3-card-4 w3-round-large" onclick="infoloadingljk.innerHTML='';loadingljk.style.display='none'">Tutup Form</button>
+                        </div>`;
+            }
+            infoloadingljk.innerHTML = `${httml}
+                `;
+            if (cariidd.length !== 0) {
+                let cariid = cariidd[0];
+                let keyss = Object.keys(cariid);
+                let keys = keyss.filter(s => s !== "time_stamp");
+                for (i = 0; i < keys.length; i++) {
+                    let el = document.querySelector(".hdp_" + keys[i]);
+                    if (el == undefined || el == null) { } else {
+                        if (keys[i].indexOf("dok_") > -1) {
+                            let iddoc = (cariid[keys[i]] == "") ? `<b class="w3-text-red">Tidak Melampirkan</b>` : `<div class="containerbaru"><iframe class="responsive-iframebaru" src="https://drive.google.com/file/d/${(cariid[keys[i]] == "") ? "18Zvo5idM92xYEIzqKDDFnc0iqI6JvUnS" : cariid[keys[i]]}/preview" title="dokumen"></iframe></div>`;
+                            el.innerHTML = iddoc;
+                        } else if (keys[i].indexOf("tahunlahir") > -1) {
+                            el.innerHTML = (cariid[keys[i]] == "") ? "" : tanggalfull(cariid[keys[i]]);
+                        } else if (keys[i].indexOf("tanggallahir") > -1) {
+                            el.innerHTML = (cariid[keys[i]] == "") ? "" : tanggalfull(cariid[keys[i]]);
+                        } else {
+                            el.innerHTML = cariid[keys[i]];
+                        }
+                    }
+                }
+                let teks = "";
+                let status = cariid.usulanperubahandata;
+
+                if (status.indexOf("disetujui") > -1) {
+                    teks = ""; //status
+                } else {
+                    teks = "dan Anda harus segera memverifikasinya"
+                }
+                if (cariidd.length == 0) {
+                    alert("Ananda belum pernah mengirimkan perubahan data (Belum daftar ulang)");
+                } else {
+                    alert("Siswa ini mengirimkan perubahan data " + status + " " + teks);
+
+
+                }
+            } else {
+                let cariid = jsondatasiswa.filter(s => s.id == tokensiswa)[0];
+               
+                let keyss = Object.keys(cariid);
+                let keys = keyss.filter(s => s !== "time_stamp");
+                for (i = 0; i < keys.length; i++) {
+                    let el = document.querySelector(".hdp_" + keys[i]);
+                    if (el == undefined || el == null) { } else {
+                        if (keys[i].indexOf("dok_") > -1) {
+                            let iddoc = (cariid[keys[i]] == "") ? `<b class="w3-text-red">Tidak Melampirkan</b>` : `<div class="containerbaru"><iframe class="responsive-iframebaru" src="https://drive.google.com/file/d/${(cariid[keys[i]] == "") ? "18Zvo5idM92xYEIzqKDDFnc0iqI6JvUnS" : cariid[keys[i]]}/preview" title="dokumen"></iframe></div>`;
+                            el.innerHTML = iddoc;
+                        } else if (keys[i].indexOf("tahunlahir") > -1) {
+                            el.innerHTML = (cariid[keys[i]] == "") ? "" : tanggalfull(cariid[keys[i]]);
+                        } else if (keys[i].indexOf("tanggallahir") > -1) {
+                            el.innerHTML = (cariid[keys[i]] == "") ? "" : tanggalfull(cariid[keys[i]]);
+                        } else {
+                            el.innerHTML = cariid[keys[i]];
+                        }
+                    }
+                }
+            }
+        })
+        .catch(er => {
+            console.log(er);
+            infoloadingljk.innerHTML = "Terjadi kesalahan. Ulangi sesi Anda sesaat lagi."
+        })
+};
+const ajuanperubahandata = async (tokensiswa) => {
+    let ss = jlo.ss_datauser;
+    let ur = jlo.url_datauser;
+    let ling = ur + "?idss=" + ss;
+    let datahtml = "",
+        cariid;
+    let namakelas = idNamaKelas;
+    loadingljk.style.display = "block";
+    $('#infoloadingljk').nextAll('button').remove();
+    // let img = document.querySelector(".avatarsiswa");
+    // let srcimg = img.getAttribute("src");
+    // // console.log(srcimg)'
+    infoloadingljk.innerHTML = `<p class="w3-center"><img src="/img/barloading.gif"></p>`;
+
+    await fetch(ling + "&action=usulanperbaikandata")
+        .then(m => m.json())
+        .then(k => {
+            // console.log(k);
+            let sumber = k.datasiswa.filter(s => s.id == tokensiswa);
+
+            datahtml = htmlformulirdatasiswa(tokensiswa);
+            infoloadingljk.innerHTML = datahtml;
+            document.querySelector(".pengapprove").innerHTML = namauser.toUpperCase();
+            let obj = sumber[0];
+            obj.action = "";
+            let statussebelumnya = obj.usulanperubahandata
+
+            obj.usulanperubahandata = "Ajuan Ke-" + (parseInt(statussebelumnya.match(/(\d+)/)[0])) + " disetujui";
+
+
+
+            let key = Object.keys(obj); // key == header
+            let nilai = Object.keys(obj).map(m => obj[m]);
+
+            var elementform = document.getElementById("formajuandatasiswa").elements;
+            for (x = 0; x < elementform.length; x++) {
+                for (d = 0; d < key.length; d++) {
+                    if (elementform[x].name == key[d]) {
+                        if (elementform[x].type == "date") {
+                            elementform[x].value = StringTanggalnol(new Date(nilai[d])) //;
+                        } else if (elementform[x].type == "radio") {
+                            if (elementform[x].value == nilai[d]) {
+                                elementform[x].checked = true;
+                            }
+                        } else if (elementform[x].type == "select-one") {
+                            // if (elementform[x].options[elementform[x].selectedIndex].value == nilai[d]) {
+                            //     elementform[x].options[elementform[x].selectedIndex].selected = true;
+                            //     //     elementform[x].selected = true;
+                            // }
+                            elementform[x].value = nilai[d];
+                            // console.log(elementform[x].name + "|" + elementform[x].type)
+                        } else {
+                            if (angkadistring.indexOf(key[d]) > -1) {
+                                elementform[x].value = nilai[d];
+                            } else {
+                                if (key[d] == "dieditoleh") {
+                                    elementform[x].value = namauser;
+
+                                } else {
+                                    elementform[x].value = nilai[d]
+
+                                }
+
+                            }
+                        };
+                        //ganti id
+                        if (key[d].indexOf("dok_") > -1) {
+                            let idel = "hdp_" + key[d];
+                            //console.log(idel);
+                            let elemendiv = document.querySelector("#" + idel);
+                            if (elemendiv !== undefined || elemendiv !== null) {
+                                let iddrive = (nilai[d] == "") ? `<p class="w3-text-red w3-ceneter">Tidak Melampirkan</p><div class="containerbaru"><iframe class="responsive-iframebaru" src="https://drive.google.com/file/d/18Zvo5idM92xYEIzqKDDFnc0iqI6JvUnS/preview" title="dokumen"></iframe></div>` : `<div class="containerbaru"><iframe class="responsive-iframebaru" src="https://drive.google.com/file/d/${nilai[d]}/preview" title="dokumen"></iframe></div>`;
+                                elemendiv.innerHTML = iddrive;
+                            }
+
+                        }
+                    }
+
+                }
+            }
+
+        }).catch(er => {
+            console.log(er);
+            infoloadingljk.innerHTML = "Terjadi kesalahan."
+        })
+
+};
+const ajuanperubahandataolehguru = async (tokensiswa) => {
+    let ss = jlo.ss_datauser;
+    let ur = jlo.url_datauser;
+    let ling = ur + "?idss=" + ss;
+    let datahtml = "",
+        cariid;
+    let namakelas = idNamaKelas;
+    loadingljk.style.display = "block";
+    $('#infoloadingljk').nextAll('button').remove();
+    // let img = document.querySelector(".avatarsiswa");
+    // let srcimg = img.getAttribute("src");
+    // // console.log(srcimg)'
+    infoloadingljk.innerHTML = `<p class="w3-center"><img src="/img/barloading.gif"></p>`;
+
+    await fetch(linkDataUserWithIdss + "&action=datakelasaktifall")
+        .then(m => m.json())
+        .then(k => {
+            // console.log(k);
+            ///update local storage
+            jsondatasiswa = k.datasiswa;
+            localStorage.setItem("datasiswa_all", JSON.stringify(k));
+
+            let sumber = k.datasiswa.filter(s => s.id == tokensiswa);
+
+            // console.log(sumber);
+            datahtml = htmlformulirdatasiswa(tokensiswa);
+            infoloadingljk.innerHTML = `<div class="bio_print">${datahtml}</div>`;
+            document.querySelector(".pengapprove").innerHTML = namauser.toUpperCase();
+            let obj = sumber[0];
+           
+            obj.action = "";
+            
+            let statussebelumnya = obj.usulanperubahandata
+            if (statussebelumnya.indexOf("disetujui") > -1) {
+                obj.usulanperubahandata = "Ajuan Ke-" + (parseInt(statussebelumnya.match(/(\d+)/)[0]) + 1) + "disetujui dan isian dibantu guru ke-" + parseInt(statussebelumnya.match(/(\d+)/)[0]) + 1;
+            } else {
+                obj.usulanperubahandata = "Ajuan Ke-1";
+            }
+            let key = Object.keys(obj); // key == header
+            let nilai = Object.keys(obj).map(m => obj[m]);
+
+            var elementform = document.getElementById("formajuandatasiswa").elements;
+            for (x = 0; x < elementform.length; x++) {
+                for (d = 0; d < key.length; d++) {
+                    if (elementform[x].name == key[d]) {
+                        if (elementform[x].type == "date") {
+                            elementform[x].value = StringTanggalnol(new Date(nilai[d])) //;
+                        } else if (elementform[x].type == "radio") {
+                            if (elementform[x].value == nilai[d]) {
+                                elementform[x].checked = true;
+                            }
+                        } else if (elementform[x].type == "select-one") {
+                            elementform[x].value = nilai[d];
+                        } else {
+                            if (angkadistring.indexOf(key[d]) > -1) {
+                                elementform[x].value = nilai[d].replace("'", "")
+                            } else {
+                                if (key[d] == "dieditoleh") {
+                                    elementform[x].value = namauser;
+
+                                } else {
+                                    elementform[x].value = nilai[d]
+
+                                }
+                            }
+                        };
+                        //ganti id
+                        if (key[d].indexOf("dok_") > -1) {
+                            let idel = "hdp_" + key[d];
+                            //console.log(idel);
+                            let elemendiv = document.querySelector("#" + idel);
+                            if (elemendiv !== undefined || elemendiv !== null) {
+                                let iddrive = (nilai[d] == "") ? `<p class="w3-text-red w3-ceneter">Tidak Melampirkan</p><div class="containerbaru"><iframe class="responsive-iframebaru" src="https://drive.google.com/file/d/18Zvo5idM92xYEIzqKDDFnc0iqI6JvUnS/preview" title="dokumen"></iframe></div>` : `<div class="containerbaru"><iframe class="responsive-iframebaru" src="https://drive.google.com/file/d/${nilai[d]}/preview" title="dokumen"></iframe></div>`;
+                                elemendiv.innerHTML = iddrive;
+                            }
+
+                        }
+                    }
+
+                }
+            }
+
+        }).catch(er => {
+            console.log(er);
+            infoloadingljk.innerHTML = "Terjadi kesalahan."
+        })
+
+};
+
+const tutuploadingljk = () => {
+    $('#infoloadingljk').nextAll('button').remove();
+    $('#infoloadingljk').nextAll('center').remove();
+    infoloadingljk.innerHTML = "";
+    loadingljk.style.display = 'none'
+}
+
+const tabel_profilsekolah = () =>{
+    let el = document.querySelectorAll(".ps_kirim");
+    let table = [];
+    let key, val;
+    let arr = [];//head
+    let br = []
+    for (i = 0; i < el.length; i++) {
+        key = [el[i].getAttribute("data-setkey")];
+        val = [el[i].innerHTML];
+
+        arr.push(key)
+        br.push(val)
+    }
+
+    table.push(arr);
+    table.push(br);
+    return table
+
+}
+
+const profilsekolah = async () => {
+    let divlod = document.querySelector(".loadingtopbar");
+    clearInterval(stoploadingtopbar);
+
+    loadingtopbarin("loadingtopbar");
+
+        tampilinsublamangurukelas("profilesekolah");
+        let dataguru;
+        if(arraydatatendik.length == 0){
+            await fetch(linktendik + "?action=tabeltendik")
+            .then(m => m.json()).then(k => {
+                
+                arraydatatendik = k;
+            }).catch(er=> console.log(er));
+        };
+
+        let tabel_identitas = document.querySelector(".tabel_identitassekolah");
+        tabel_identitas.rows[0].cells[2].innerHTML = idNamaSekolah.toUpperCase();
+        let tabel_jeniskelamintendik = document.querySelector(".tabel_jeniskelamintendik");
+        let tabel_statuskepegawaian = document.querySelector(".tabel_statuskepegawaian");
+        let tabel_kualifikasipendidikan = document.querySelector(".tabel_kualifikasipendidikan");
+        
+        let tabel_siswaumur = document.querySelector(".tabel_siswaumur");
+        let ket_tabel_siswaumur = document.querySelector(".ket_tabel_siswaumur");
+        let tabel_siswaagama = document.querySelector(".tabel_siswaagama")
+        let ket_tabel_siswaagama = document.querySelector(".ket_tabel_siswaagama")
+        let tabel_siswapip = document.querySelector(".tabel_siswapip");
+        
+        let tabel_ortu_pendidikan = document.querySelector(".tabel_ortu_pendidikan");
+        let ket_tabel_ortu_pendidikan = document.querySelector(".ket_tabel_ortu_pendidikan");
+        
+    let tdumur = tabel_siswaumur.getElementsByTagName("tbody")[0]
+    let tfumur = tabel_siswaumur.getElementsByTagName("tfoot")[0];
+    let lr, umursiswa, tingkatumur, u6, u7, u13;
+    let td_pip = tabel_siswapip.getElementsByTagName("tbody")[0];
+    let tf_pip = tabel_siswapip.getElementsByTagName("tfoot")[0];
+    let pipL, pipP, pipJ;
+    let td_agama = tabel_siswaagama.getElementsByTagName("tbody")[0];
+    let tf_agama = tabel_siswaagama.getElementsByTagName("tfoot")[0];
+    let td_ortu_pendidikan = tabel_ortu_pendidikan.getElementsByTagName("tbody")[0];
+    let tf_ortu_pendidikan = tabel_ortu_pendidikan.getElementsByTagName("tfoot")[0];
+    
+
+        let tab = "profilsekolah"
+        let tabel = tabel_profilsekolah();
+        
+        let head = tabel[0];
+        let key = JSON.stringify(head);
+        let datakirim = new FormData();
+    
+        datakirim.append("tab",tab)
+        datakirim.append("key",key)
+        await fetch(linktendik+"?action=getpostdatafromtab",{
+            method:"post",
+            body:datakirim
+        }).then(m => m.json())
+        .then(r => {
+           
+           let dataa = r.data[0];
+           let data = Object.keys(dataa)
+           
+            jsonprofilsekolah = r.data;
+            
+            for(let i = 0 ; i < data.length; i++){
+                
+                document.querySelector(`[data-setkey=${data[i]}]`).innerHTML = dataa[data[i]];
+
+            }
+        }).catch(er => console.log(er))
+        
+        // jk tendik
+        let tdtendik = tabel_jeniskelamintendik.getElementsByTagName("tbody")[0];
+        let tftendik = tabel_jeniskelamintendik.getElementsByTagName("tfoot")[0];
+        let tdpeg = tabel_statuskepegawaian.getElementsByTagName("tbody")[0];
+        let tfpeg = tabel_statuskepegawaian.getElementsByTagName("tfoot")[0];
+
+        let headD = arraydatatendik[0]
+        let val = arraydatatendik.filter(s=> s[0] !== "idabsen");
+        let tptk = arrObjek(headD,val);
+       
+        tdtendik.rows[0].cells[1].innerHTML = tptk.filter(s => s.jk == "L" && s.pnsnonpns == "PNS").length;
+        tdtendik.rows[0].cells[2].innerHTML = tptk.filter(s => s.jk == "L" && s.pnsnonpns == "PPPK").length;
+        tdtendik.rows[0].cells[3].innerHTML = tptk.filter(s => s.jk == "L" && s.pnsnonpns !== "PNS" && s.pnsnonpns !== "PPPK").length;
+        tdtendik.rows[0].cells[4].innerHTML = tptk.filter(s => s.jk == "L").length;
+        
+        tdtendik.rows[1].cells[1].innerHTML = tptk.filter(s => s.jk == "P" && s.pnsnonpns == "PNS").length;
+        tdtendik.rows[1].cells[2].innerHTML = tptk.filter(s => s.jk == "P" && s.pnsnonpns == "PPPK").length;
+        tdtendik.rows[1].cells[3].innerHTML = tptk.filter(s => s.jk == "P" && s.pnsnonpns !== "PNS" && s.pnsnonpns !== "PPPK").length;
+        tdtendik.rows[1].cells[4].innerHTML = tptk.filter(s => s.jk == "P").length;
+        
+        tftendik.rows[0].cells[1].innerHTML = tptk.filter(s =>  s.pnsnonpns == "PNS").length;
+        tftendik.rows[0].cells[2].innerHTML = tptk.filter(s =>  s.pnsnonpns == "PPPK").length;
+        tftendik.rows[0].cells[3].innerHTML = tptk.filter(s =>  s.pnsnonpns !== "PNS" && s.pnsnonpns !== "PPPK").length;
+        tftendik.rows[0].cells[4].innerHTML = tptk.length;
+        
+        //status kepegawaian
+
+        tdpeg.rows[0].cells[1].innerHTML =tptk.filter(s => s.jabatan == "Guru Kelas" && s.pnsnonpns == "PNS").length;
+        tdpeg.rows[0].cells[2].innerHTML =tptk.filter(s => (s.jabatan == "Guru PAI" || s.jabatan == "Guru PKRIS" || s.jabatan == "Guru PKATO" || s.jabatan == "Guru PHIND" || s.jabatan == "Guru PBUDH" ||  s.jabatan == "Guru PKONG" )&& s.pnsnonpns == "PNS").length;
+        tdpeg.rows[0].cells[3].innerHTML =tptk.filter(s => s.jabatan == "Guru PJOK" && s.pnsnonpns == "PNS").length;;
+        tdpeg.rows[0].cells[4].innerHTML =tptk.filter(s =>  s.jabatan == "Guru BSUND" && s.pnsnonpns == "PNS").length;;
+        tdpeg.rows[0].cells[5].innerHTML =tptk.filter(s => (s.jabatan == "Kepala Sekolah" || s.jabatan == "Guru BING"|| s.jabatan == "Guru TIK")&& s.pnsnonpns == "PNS").length;
+        tdpeg.rows[0].cells[6].innerHTML =tptk.filter(s => (s.tugasjabatan == "Tata Usaha"|| s.tugasjabatan == "TU"|| s.tugasjabatan == "Penjaga"|| s.tugasjabatan == "OB"|| s.tugasjabatan == "Office Boy"|| s.tugasjabatan == "Satpam")&& s.pnsnonpns == "PNS").length;
+        tdpeg.rows[0].cells[7].innerHTML =tptk.filter(s => (s.tugasjabatan == "Operator Sekolah" || s.tugasjabatan == "OPS")&& s.pnsnonpns == "PNS").length;
+        tdpeg.rows[0].cells[8].innerHTML =tptk.filter(s => s.pnsnonpns == "PNS").length;;
+        
+        tdpeg.rows[1].cells[1].innerHTML =tptk.filter(s => s.jabatan == "Guru Kelas" && s.pnsnonpns == "PPPK").length;
+        tdpeg.rows[1].cells[2].innerHTML =tptk.filter(s => (s.jabatan == "Guru PAI" || s.jabatan == "Guru PKRIS" || s.jabatan == "Guru PKATO" || s.jabatan == "Guru PHIND" || s.jabatan == "Guru PBUDH" ||  s.jabatan == "Guru PKONG" )&& s.pnsnonpns == "PPPK").length;
+        tdpeg.rows[1].cells[3].innerHTML =tptk.filter(s => s.jabatan == "Guru PJOK" && s.pnsnonpns == "PPPK").length;;
+        tdpeg.rows[1].cells[4].innerHTML =tptk.filter(s =>  s.jabatan == "Guru BSUND" && s.pnsnonpns == "PPPK").length;;
+        tdpeg.rows[1].cells[5].innerHTML =tptk.filter(s => (s.jabatan == "Kepala Sekolah" || s.jabatan == "Guru BING"|| s.jabatan == "Guru TIK")&& s.pnsnonpns == "PPPK").length;
+        tdpeg.rows[1].cells[6].innerHTML =tptk.filter(s => (s.tugasjabatan == "Tata Usaha"|| s.tugasjabatan == "TU"|| s.tugasjabatan == "Penjaga"|| s.tugasjabatan == "OB"|| s.tugasjabatan == "Office Boy"|| s.tugasjabatan == "Satpam")&& s.pnsnonpns == "PPPK").length;
+        tdpeg.rows[1].cells[7].innerHTML =tptk.filter(s => (s.tugasjabatan == "Operator Sekolah" || s.tugasjabatan == "OPS")&& s.pnsnonpns == "PPPK").length;
+        tdpeg.rows[1].cells[8].innerHTML =tptk.filter(s => s.pnsnonpns == "PPPK").length;;
+
+       
+        tdpeg.rows[2].cells[1].innerHTML =tptk.filter(s => s.jabatan == "Guru Kelas" && (s.pnsnonpns == "HONOR" || s.pnsnonpns =="HONORER" || s.pnsnonpns =="HNR"|| s.pnsnonpns == "Honor" || s.pnsnonpns == "Honorer")).length;
+        tdpeg.rows[2].cells[2].innerHTML =tptk.filter(s => (s.jabatan == "Guru PAI" || s.jabatan == "Guru PKRIS" || s.jabatan == "Guru PKATO" || s.jabatan == "Guru PHIND" || s.jabatan == "Guru PBUDH" ||  s.jabatan == "Guru PKONG" )&& (s.pnsnonpns == "HONOR" || s.pnsnonpns =="HONORER" || s.pnsnonpns =="HNR"|| s.pnsnonpns == "Honor" || s.pnsnonpns == "Honorer")).length;
+        tdpeg.rows[2].cells[3].innerHTML =tptk.filter(s => s.jabatan == "Guru PJOK"&& (s.pnsnonpns !== "PNS" || s.pnsnonpns !== "PPPK")).length;
+        tdpeg.rows[2].cells[4].innerHTML =tptk.filter(s =>  s.jabatan == "Guru BSUND"&& (s.pnsnonpns !== "PNS" || s.pnsnonpns !== "PPPK")).length;
+        tdpeg.rows[2].cells[5].innerHTML =tptk.filter(s => (s.jabatan == "Kepala Sekolah" || s.jabatan == "Guru BING"|| s.jabatan == "Guru TIK")&& (s.pnsnonpns !== "PNS" || s.pnsnonpns !== "PPPK")).length;
+        tdpeg.rows[2].cells[6].innerHTML =tptk.filter(s => (s.tugasjabatan == "Tata Usaha"|| s.tugasjabatan == "TU"|| s.tugasjabatan == "Penjaga"|| s.tugasjabatan == "OB"|| s.tugasjabatan == "Office Boy"|| s.tugasjabatan == "Satpam")&& (s.pnsnonpns == "HONOR" || s.pnsnonpns =="HONORER" || s.pnsnonpns =="HNR"|| s.pnsnonpns == "Honor" || s.pnsnonpns == "Honorer")).length;
+        tdpeg.rows[2].cells[7].innerHTML =tptk.filter(s => (s.tugasjabatan == "Operator Sekolah" || s.tugasjabatan == "OPS")&& (s.pnsnonpns == "HONOR" || s.pnsnonpns =="HONORER" || s.pnsnonpns =="HNR"|| s.pnsnonpns == "Honor" || s.pnsnonpns == "Honorer")).length;
+        tdpeg.rows[2].cells[8].innerHTML =tptk.filter(s => s.pnsnonpns == "HONOR" || s.pnsnonpns =="HONORER" || s.pnsnonpns =="HNR"|| s.pnsnonpns == "Honor" || s.pnsnonpns == "Honorer").length;
+        
+        tfpeg.rows[0].cells[1].innerHTML =tptk.filter(s => s.jabatan == "Guru Kelas").length;
+        tfpeg.rows[0].cells[2].innerHTML =tptk.filter(s => (s.jabatan == "Guru PAI" || s.jabatan == "Guru PKRIS" || s.jabatan == "Guru PKATO" || s.jabatan == "Guru PHIND" || s.jabatan == "Guru PBUDH" ||  s.jabatan == "Guru PKONG" )).length;
+        tfpeg.rows[0].cells[3].innerHTML =tptk.filter(s => s.jabatan == "Guru PJOK" ).length;;
+        tfpeg.rows[0].cells[4].innerHTML =tptk.filter(s =>  s.jabatan == "Guru BSUND").length;;
+        tfpeg.rows[0].cells[5].innerHTML =tptk.filter(s => (s.jabatan == "Kepala Sekolah" || s.jabatan == "Guru BING"|| s.jabatan == "Guru TIK")).length;
+        tfpeg.rows[0].cells[6].innerHTML =tptk.filter(s => s.tugasjabatan == "Tata Usaha"|| s.tugasjabatan == "TU"|| s.tugasjabatan == "Penjaga"|| s.tugasjabatan == "OB"|| s.tugasjabatan == "Office Boy"|| s.tugasjabatan == "Satpam").length;
+        tfpeg.rows[0].cells[7].innerHTML =tptk.filter(s => s.tugasjabatan == "Operator Sekolah" || s.tugasjabatan == "OPS").length;
+        tfpeg.rows[0].cells[8].innerHTML =tptk.length;;
+
+        tfpeg.rows[1].cells[1].innerHTML = tptk.filter(s=>!(s.tugasjabatan == "Tata Usaha"|| s.tugasjabatan == "TU"|| s.tugasjabatan == "Penjaga"|| s.tugasjabatan == "OB"|| s.tugasjabatan == "Office Boy"|| s.tugasjabatan == "Satpam"||s.tugasjabatan == "Operator Sekolah" || s.tugasjabatan == "OPS")).length;
+        tfpeg.rows[1].cells[2].innerHTML = tptk.filter(s=>s.tugasjabatan == "Tata Usaha"|| s.tugasjabatan == "TU"|| s.tugasjabatan == "Penjaga"|| s.tugasjabatan == "OB"|| s.tugasjabatan == "Office Boy"|| s.tugasjabatan == "Satpam"||s.tugasjabatan == "Operator Sekolah" || s.tugasjabatan == "OPS").length
+        tfpeg.rows[1].cells[3].innerHTML = tptk.length;
+        let ptkijazah =["S2","S1","D3", "D2", "D1", "SPG","SMA","SMP","SD"];
+        let tdklf = tabel_kualifikasipendidikan.getElementsByTagName("tbody")[0];
+        let tfklf = tabel_kualifikasipendidikan.getElementsByTagName("tfoot")[0];
+        for (let c = 0 ; c < ptkijazah.length ; c++){
+            let r = c+1;
+            tdklf.rows[c].cells[1].innerHTML =tptk.filter(s => s.jabatan == "Guru Kelas" && s.ijazah == ptkijazah[c]).length;
+            tdklf.rows[c].cells[2].innerHTML =tptk.filter(s => (s.jabatan == "Guru PAI" || s.jabatan == "Guru PKRIS" || s.jabatan == "Guru PKATO" || s.jabatan == "Guru PHIND" || s.jabatan == "Guru PBUDH" ||  s.jabatan == "Guru PKONG" )&& s.ijazah == ptkijazah[c]).length;
+            tdklf.rows[c].cells[3].innerHTML =tptk.filter(s => s.jabatan == "Guru PJOK" && s.ijazah == ptkijazah[c]).length;;
+            tdklf.rows[c].cells[4].innerHTML =tptk.filter(s =>  s.jabatan == "Guru BSUND" && s.ijazah == ptkijazah[c]).length;;
+            tdklf.rows[c].cells[5].innerHTML =tptk.filter(s => (s.jabatan == "Kepala Sekolah" || s.jabatan == "Guru BING"|| s.jabatan == "Guru TIK")&&s.ijazah == ptkijazah[c]).length;
+            tdklf.rows[c].cells[6].innerHTML =tptk.filter(s => (s.tugasjabatan == "Tata Usaha"|| s.tugasjabatan == "TU"|| s.tugasjabatan == "Penjaga"|| s.tugasjabatan == "OB"|| s.tugasjabatan == "Office Boy"|| s.tugasjabatan == "Satpam")&& s.ijazah == ptkijazah[c]).length;
+            tdklf.rows[c].cells[7].innerHTML =tptk.filter(s => (s.tugasjabatan == "Operator Sekolah" || s.tugasjabatan == "OPS")&& s.ijazah == ptkijazah[c]).length;
+            tdklf.rows[c].cells[8].innerHTML =tptk.filter(s => s.ijazah == ptkijazah[c]).length;;
+         
+
+        }
+        tfklf.rows[0].cells[1].innerHTML =tptk.filter(s => s.jabatan == "Guru Kelas").length;
+        tfklf.rows[0].cells[2].innerHTML =tptk.filter(s => (s.jabatan == "Guru PAI" || s.jabatan == "Guru PKRIS" || s.jabatan == "Guru PKATO" || s.jabatan == "Guru PHIND" || s.jabatan == "Guru PBUDH" ||  s.jabatan == "Guru PKONG" )).length;
+        tfklf.rows[0].cells[3].innerHTML =tptk.filter(s => s.jabatan == "Guru PJOK" ).length;;
+        tfklf.rows[0].cells[4].innerHTML =tptk.filter(s =>  s.jabatan == "Guru BSUND").length;;
+        tfklf.rows[0].cells[5].innerHTML =tptk.filter(s => (s.jabatan == "Kepala Sekolah" || s.jabatan == "Guru BING"|| s.jabatan == "Guru TIK")).length;
+        tfklf.rows[0].cells[6].innerHTML =tptk.filter(s => s.tugasjabatan == "Tata Usaha"|| s.tugasjabatan == "TU"|| s.tugasjabatan == "Penjaga"|| s.tugasjabatan == "OB"|| s.tugasjabatan == "Office Boy"|| s.tugasjabatan == "Satpam").length;
+        tfklf.rows[0].cells[7].innerHTML =tptk.filter(s => s.tugasjabatan == "Operator Sekolah" || s.tugasjabatan == "OPS").length;
+        tfklf.rows[0].cells[8].innerHTML =tptk.length;;
+       
+        tfklf.rows[1].cells[1].innerHTML = tptk.filter(s=>!(s.tugasjabatan == "Tata Usaha"|| s.tugasjabatan == "TU"|| s.tugasjabatan == "Penjaga"|| s.tugasjabatan == "OB"|| s.tugasjabatan == "Office Boy"|| s.tugasjabatan == "Satpam"||s.tugasjabatan == "Operator Sekolah" || s.tugasjabatan == "OPS")).length;
+        tfklf.rows[1].cells[2].innerHTML = tptk.filter(s=>s.tugasjabatan == "Tata Usaha"|| s.tugasjabatan == "TU"|| s.tugasjabatan == "Penjaga"|| s.tugasjabatan == "OB"|| s.tugasjabatan == "Office Boy"|| s.tugasjabatan == "Satpam"||s.tugasjabatan == "Operator Sekolah" || s.tugasjabatan == "OPS").length
+        tfklf.rows[1].cells[3].innerHTML = tptk.length;
+      
+    
+
+        for(i=1 ; i <= 6 ; i++){
+            lr = i-1;
+            //umur dulu
+             umursiswa = jsondatasiswa.filter(s=> s.jenjang == i).filter(l => l.pd_tanggallahir !== "");
+            tingkatumur = jsondatasiswa.filter(s=> s.jenjang == i).length;
+            //kol 6 tahun 
+             u6 = umursiswa.map(u => umur(u.pd_tanggallahir).tahun).filter(k => k <= 6).length;
+             u7 = umursiswa.map(u => umur(u.pd_tanggallahir).tahun).filter(k => k >= 7 && k < 13).length;
+             u13 = umursiswa.map(u => umur(u.pd_tanggallahir).tahun).filter(k => k >= 13).length;
+            tdumur.rows[lr].cells[1].innerHTML = u6;
+            tdumur.rows[lr].cells[2].innerHTML = u7;
+            tdumur.rows[lr].cells[3].innerHTML = u13;
+            tdumur.rows[lr].cells[4].innerHTML = tingkatumur;
+
+            pipL = jsondatasiswa.filter(s=> s.jenjang == i && s.dapo_bank !=="" & s.pd_jk == "L").length;
+            pipP = jsondatasiswa.filter(s=> s.jenjang == i &&  s.dapo_bank !=="" & s.pd_jk == "P").length;
+            pipJ = jsondatasiswa.filter(s=> s.jenjang == i &&  s.dapo_bank !=="" ).length;
+            td_pip.rows[lr].cells[1].innerHTML = pipL;
+            td_pip.rows[lr].cells[2].innerHTML = pipP;
+            td_pip.rows[lr].cells[3].innerHTML = pipJ;
+            let ar = ["ISLAM","ISLAM","KRISTEN","KRISTEN","KATHOLIK","KATHOLIK","HINDU","HINDU","BUDHA","BUDHA","KHONGHUCU","KHONGHUCU"]
+            for(u=1 ; u <=12 ; u++){
+                //islam =   
+                if(u % 2 == 0){
+                    td_agama.rows[lr].cells[u].innerHTML = jsondatasiswa.filter(s=> s.jenjang == i && s.pd_jk == "P" && s.pd_agama == ar[u-1]).length;
+                    
+                }else{
+                    td_agama.rows[lr].cells[u].innerHTML = jsondatasiswa.filter(s=> s.jenjang == i && s.pd_jk == "L" && s.pd_agama == ar[u-1]).length;
+
+                }
+            }
+
+            td_agama.rows[lr].cells[13].innerHTML = jsondatasiswa.filter(s=> s.jenjang == i && s.pd_agama !=="" ).length;
+            let ars = ["ISLAM","KRISTEN","KATHOLIK","HINDU","BUDHA","KHONGHUCU"];
+            tf_agama.rows[1].cells[i].innerHTML = jsondatasiswa.filter(s=>s.pd_agama == ars[i-1]&& s.pd_jk !=="").length;
+            //  pendidikan 
+            let pdd =["S3","S2","D4/S1","D3", "D2", "DI", "SMA Sederajat","SMP Sederajat","SD Sederajat","Putus SD","Tidak Sekolah"];
+            for(let v = 0; v < pdd.length; v++){
+            td_ortu_pendidikan.rows[lr].cells[(v+1)].innerHTML = jsondatasiswa.filter(s=> s.dapo_jenjangpendidikanayah == pdd[v] && s.jenjang == i).length;
+            tf_ortu_pendidikan.rows[0].cells[(v+1)].innerHTML = jsondatasiswa.filter(s=> s.dapo_jenjangpendidikanayah == pdd[v]).length;
+            }
+            td_ortu_pendidikan.rows[lr].cells[12].innerHTML = jsondatasiswa.filter(s=> s.dapo_jenjangpendidikanayah !== "" && s.jenjang == i).length;
+            tf_ortu_pendidikan.rows[0].cells[12].innerHTML = jsondatasiswa.filter(s=> s.dapo_jenjangpendidikanayah !== "" ).length;
+        }
+    //tfoot
+    umursiswa = jsondatasiswa.filter(l => l.pd_tanggallahir !== "");        
+    u6 = umursiswa.map(u => umur(u.pd_tanggallahir).tahun).filter(k => k <= 6).length;  
+    u7 = umursiswa.map(u => umur(u.pd_tanggallahir).tahun).filter(k => k >= 7 && k < 13).length;
+    u13 = umursiswa.map(u => umur(u.pd_tanggallahir).tahun).filter(k => k >= 13).length;
+   tfumur.rows[0].cells[1].innerHTML = u6;
+   tfumur.rows[0].cells[2].innerHTML = u7;
+   tfumur.rows[0].cells[3].innerHTML = u13;
+   tfumur.rows[0].cells[4].innerHTML = umursiswa.length;
+   // pip
+   pipL = jsondatasiswa.filter(s=> s.dapo_bank !=="" && s.pd_jk == "L").length;
+   pipP = jsondatasiswa.filter(s=>  s.dapo_bank !=="" && s.pd_jk == "P").length;
+   pipJ = jsondatasiswa.filter(s=>  s.dapo_bank !=="" ).length;
+   tf_pip.rows[0].cells[1].innerHTML = pipL;
+   tf_pip.rows[0].cells[2].innerHTML = pipP;
+   tf_pip.rows[0].cells[3].innerHTML = pipJ;
+   // foot agama
+   let ar = ["ISLAM","ISLAM","KRISTEN","KRISTEN","KATHOLIK","KATHOLIK","HINDU","HINDU","BUDHA","BUDHA","KHONGHUCU","KHONGHUCU"];
+   let ars = ["ISLAM","KRISTEN","KATHOLIK","HINDU","BUDHA","KHONGHUCU"];
+   for(u=1 ; u <=12 ; u++){
+         if(u % 2 == 0){
+           tf_agama.rows[0].cells[u].innerHTML = jsondatasiswa.filter(s=> s.pd_jk == "P" && s.pd_agama == ar[u-1]).length;
+           
+       }else{
+           tf_agama.rows[0].cells[u].innerHTML = jsondatasiswa.filter(s=>s.pd_jk == "L" && s.pd_agama == ar[u-1]).length;
+           
+        }
+    }
+    tf_agama.rows[0].cells[13].innerHTML = jsondatasiswa.filter(s=> s.pd_agama !==""&& s.pd_jk !=="" ).length; 
+    tf_agama.rows[1].cells[7].innerHTML = jsondatasiswa.filter(s=> s.pd_agama !==""&& s.pd_jk !=="").length; 
+    let ucek = jsondatasiswa.filter(s=>s.pd_tanggallahir =="").length;
+    if(ucek>0){
+        ket_tabel_siswaumur.innerHTML =`Isian Data <b class="w3-text-blue">Tanggal lahir</b> tidak diisi ada ${ucek} siswa. Periksa di Data Siswa.`;
+
+    }
+    let ujk = jsondatasiswa.filter(s=>s.pd_jk == "" ).length;
+    let uga = jsondatasiswa.filter(s=>s.pd_agama == "" ).length;
+    if(ujk>0){
+        ket_tabel_siswaagama.innerHTML = `Pengisian <b class="w3-text-blue">Jenis Kelamin</b> pada data siswa tidak diisi ada ${ujk} siswa.`;
+    }
+    if(uga>0){
+        ket_tabel_siswaagama.innerHTML += `<br>Pengisian <b class="w3-text-blue">Agama</b> pada data siswa tidak diisi ada ${uga} siswa.`;
+    }
+    if(uga > 0 || ujk > 0){
+        ket_tabel_siswaagama.innerHTML += `<br> Segera periksa masing-masing datanya agar valid. Data siswa aktif elamaso seluruhnya ada: ${jsondatasiswa.length} Siswa<br><br>`;
+    }
+    //foot Pendidikan ayah
+    let updkn = jsondatasiswa.filter(s=> s.dapo_jenjangpendidikanayah =="").length;
+    ket_tabel_ortu_pendidikan.innerHTML = `Data Siswa <b class="w3-text-blue">Pendidikan Ayah</b> yang tidak diisi ada ${updkn} siswa.`;
+
+        clearInterval(stoploadingtopbar);
+        // let divlod = document.querySelector(".loadingtopbar");
+        divlod.style.width = "100%";
+        setTimeout(() => {
+            divlod.className += " w3-hide";
+            divlod.style.width = "1px"
+    
+        }, 3000);
+}
+const simpanserverprofilsekolah = () => {
+ 
+    let tab = "profilsekolah";
+    let tipes = [];
+    let tipe = JSON.stringify(tipes);
+    let tabel = tabel_profilsekolah();
+    //tab
+    //key
+    let head = tabel;
+    let key = JSON.stringify(tabel);
+    let datakirim = new FormData();
+   
+    datakirim.append("tab",tab)
+    datakirim.append("tabel",key)
+    datakirim.append("tipe",tipe)
+    fetch(linktendik+"?action=postpostdatatotab",{
+        method:"post",
+        body:datakirim
+    }).then(m => m.json())
+    .then(r => {
+        console.log(r)
+        jsonprofilsekolah = r.data;
+        alert("Data berhasil tersimpan");
+    }).catch(er => {
+        console.log(er);
+        alert("Maaf, terjadi kesalahan. Ulangi sesi Anda sesaat lagi...")
+    })
+
+}
+const printprofilsekolah = ()=>{
+    let isibody = document.querySelector(".printprofilsekolah").innerHTML;
+    let el = document.getElementById("iframeprint");
+    let doc = el.contentDocument;
+    // head, body
+    let head = doc.head;
+    let body = doc.body;
+    //isikan HEAD dengan title, style, link, dll.
+    head.innerHTML = `<title>E-LAMASO PROFIL SEKOLAH</title>`;
+    head.innerHTML += `<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">`;
+    head.innerHTML += `<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">`;
+    head.innerHTML += `<link href="https://fonts.googleapis.com/css?family=Raleway">`;
+    head.innerHTML += `<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>`;
+    head.innerHTML += `<style type="text/css">
+    .versii-table{width:950px;max-width:100%;border-collapse:collapse}.versi-table{width:auto;max-width:100%;border-collapse:collapse}.versi-table td,.versi-table th,.versi-table tr,.versii-table td,.versii-table th,.versii-table tr{border:1px solid #000;color:#000;padding:5px 10px 5px 10px}.versi-table th,.versii-table th{background-color:#eee;color:#00f;vertical-align:middle;text-align:center}.versi-table tr:nth-of-type(even) td,.versii-table tr:nth-of-type(even) td{border:0;background-color:#fff;border:1px solid #000}.versi-table tr:nth-of-type(odd) td,.versii-table tr:nth-of-type(odd) td{border:0;background-color:#eef;border:1px solid #000}
+    .garis td,.garis th,.garis tr{border:1px solid #000}.garis th{border:1px solid #000;text-align:center;vertical-align:middle}
+    .tabelbiasa, .tabelbiasa td,.tabelbiasa th{ border: 1px solid rgb(0, 0, 0); padding:5px } .tabelbiasa th{ background-color:rgb(177, 177, 177) } .tabelbiasa  { width:100%; border-collapse: collapse; }
+    .tabelbiasaputih th{ background-color:#fff !important; }
+    </style>`;
+
+    head.innerHTML += `<style type="text/css" media="print">
+    @media print {
+        html,body{height:100%;width:100%;margin:0;padding:0}
+        
+         @page {
+            size: A4 portrait;
+            max-height:100%;
+            max-width:100%;
+            
+            }
+    }
+    </style>`;
+
+    body.innerHTML = isibody;
+    body.innerHTML += '<br/><div style="float:right;position:relative;text-align:center"> ' + jlo.kota + ',' + tanggalfull(new Date()) + '<br/>Kepala ' + idNamaSekolah + '<br/><br/><br/><br/><b><u>' + idNamaKepsek + '</u></b><br/>NIP. ' + idNipKepsek + '</div>';
+
+    window.frames["iframeprint"].focus();
+    window.frames["iframeprint"].print();
+
+}
+let jsonsuratmasuk = [];
+let jsonsuratkeluar = [];
+let jsongaleri = [];
+let jsongaleridihapus = [];
+const suratsurat = async() =>{
+    loadingtopbarin("loadingtopbar");
+    tampilinsublamangurukelas("surat");
+    document.querySelector(".btn_suratmasuk").click();
+    let aks = document.querySelectorAll(".aksi_surat");
+    aks.forEach(s => {
+        if(s.className.indexOf("w3-hide")==-1){
+            s.className += " w3-hide";
+        }
+    });
+    
+    
+        let tab = "suratmasuk"
+        let tabel = ["idbaris","tglditerima","nosurat","asalsurat","tglsurat","perihal","indekssurat","ditujukankepada","idfile","status","oleh"];
+        let html = "";
+        let ttbody = document.querySelector(".tabel_suratmasuk").getElementsByTagName("tbody")[0];
+        
+        let key = JSON.stringify(tabel);
+        let datakirim = new FormData();
+    
+        datakirim.append("tab",tab)
+        datakirim.append("key",key)
+        await fetch(linktendik+"?action=getpostdatafromtab",{
+            method:"post",
+            body:datakirim
+        }).then(m => m.json())
+        .then(r => {
+           // console.log(r);
+            
+           let res = r.result;
+           let rec = r.data.filter(s=> s.status !== "hapus");
+           //console.log(rec)
+           if(res > 1){
+               jsonsuratmasuk = rec;
+              // console.log(res);
+               // (let i = jsonmateri.length - 1; i >= 0; i--)
+                for(i = rec.length-1; i>=0; i--){
+                    html += `<tr>
+                    <td>${i+1}</td>
+                    <td>${tanggalfull(rec[i].tglditerima)}</td>
+                    <td>${rec[i].nosurat}</td>
+                    <td>${rec[i].asalsurat}</td>
+                    <td>${tanggalfull(rec[i].tglsurat)}</td>
+                    <td>${rec[i].perihal}</td>
+                    <td>${rec[i].indekssurat}</td>
+                    <td>${rec[i].ditujukkankepada}</td>
+                    <td>
+                        <i class="fa fa-edit warnaeka w3-btn w3-margin-bottom" title="edit" onclick="editsurat(${rec[i].idbaris})"></i> 
+                        <i class="fa fa-eye warnaeka w3-btn w3-margin-bottom" title="lihat surat" onclick="lihatsurat(${rec[i].idbaris})"></i> 
+                        <i class="fa fa-trash warnaeka w3-btn w3-margin-bottom" title="hapus dari data surat masuk" onclick="hapussurat(${rec[i].idbaris})"></i> 
+                    </td>
+                    </tr>`;
+                }
+           }else{
+            html = `<tr><td colspan="9" class="w3-red w3-center">Belum ada data</td></tr>`;
+           }
+        //    console.log(r);
+        ttbody.innerHTML = html;
+        }).catch(er => console.log(er))
+
+        clearInterval(stoploadingtopbar);
+        let divlod = document.querySelector(".loadingtopbar");
+        divlod.style.width = "100%";
+        setTimeout(() => {
+            divlod.style.width = "1px"
+            divlod.className += " w3-hide";
+    
+        }, 3000);
+}
+const urutkanTabel=(elclas,bol)=>{
+   
+    let div = document.querySelector("." + elclas).getElementsByTagName("tbody")[0];
+    let el = document.querySelector(".bturut_" + elclas.replace("tabel_",""));
+    let rows, switching, i, x, y, shouldSwitch;
+
+    let kolom = 0;
+    if (bol) {
+        switching = true;
+        while (switching) {
+            switching = false;
+            rows = div.rows;
+            for (i = 0; i < rows.length; i++) {
+                shouldSwitch = false;
+                x = Number(rows[i].cells[kolom].innerHTML);
+                if (i == rows.length - 1) {
+                    y = Number(rows[i].cells[kolom].innerHTML);
+                } else {
+                    y = Number(rows[i + 1].cells[kolom].innerHTML);
+                };
+                if (x > y) {
+                    shouldSwitch = true;
+                    break;
+                }
+            }
+            if (shouldSwitch) {
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+            }
+        }
+
+        el.setAttribute("onclick", `urutkanTabel('${elclas}',false)`);
+        el.innerHTML = "&#8679;";
+    } else {
+        //let kolom = 0;
+        switching = true;
+        while (switching) {
+            switching = false;
+            rows = div.rows;
+            for (i = 0; i < rows.length; i++) {
+                shouldSwitch = false;
+                x = Number(rows[i].cells[kolom].innerHTML);
+                if (i == rows.length - 1) {
+                    y = Number(rows[i].cells[kolom].innerHTML);
+                } else {
+                    y = Number(rows[i + 1].cells[kolom].innerHTML);
+                };
+                if (x < y) {
+                    shouldSwitch = true;
+                    break;
+                }
+            }
+            if (shouldSwitch) {
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+            }
+        }
+        el.setAttribute("onclick", `urutkanTabel('${elclas}',true)`);
+        el.innerHTML = "&#8681;";
+        // alert(kolom);
+    }   
+}
+const lampirkansurat = (cl) =>{
+    var file = "";
+    file = document.getElementById("lampirkan"+cl).files[0];
+    let namafiler = file.name;
+    let namafilerr = namafiler.replace(/[.\/\s+]/g,"_");//+ new Date().getTime();
+    let namafile = namafilerr;
+
+
+    let elinput,el_label,namafolder;
+    if (cl == "suratmasuk"){
+        elinput = document.querySelector("[data-idsm=idfile");
+        el_label = document.querySelector(".labelfile_suratmasuk");
+        namafolder ="000 Surat Masuk" ;
+    }else{
+        elinput = document.querySelector("[data-idsk=idfile");
+        el_label = document.querySelector(".labelfile_suratkeluar");
+        namafolder = "000 Surat Keluar";
+        
+    }
+    el_label.innerHTML = `<img src="/img/barloading.gif"/>`
+    var reader = new FileReader();
+    reader.onload = function (e) {
+        //document.getElementById('uploadForm').submit();
+
+        let src = e.target.result;
+        let dataa = src.replace(/^.*,/, '');
+        let tipe = e.target.result.match(/^.*(?=;)/)[0];
+        //fn_upload_file(id_input, data, tipe);
+        // console.log(tipe);
+        // console.log(data);
+        
+    
+        let data = new FormData();
+      
+        data.append("fileContent", dataa);
+        data.append("mimeType", tipe);
+        data.append("filename", namafile);
+        data.append("kelas", namafolder);
+         // + "?action=uploaddulu";
+        fetch(linktendik+"?action=uploadfiledulu", {
+            method: 'post',
+            body: data
+        }).then(m => m.json())
+            .then(r => {
+                if (r.sukses == "Gagal") {
+                    setTimeout(() => {
+                        el_label.innerHTML = `<i class="fa fa-upload warnaeka  w3-round-large w3-padding w3-border-black w3-border-bottom w3-center"> Unggah File</i>`;
+    
+                    }, 3000);
+                    el_label.innerHTML = `Gagal Mengunggah`;
+                } else {
+                    el_label.innerHTML = `<i class="fa fa-upload warnaeka  w3-round-large w3-padding w3-border-black w3-border-bottom w3-center"> Unggah File</i>`;
+                    elinput.value = r.idfile;
+                }
+            })
+            .catch(er => {
+                console.log(er);
+                
+                alert("Maaf, terjadi kesalahan. Silakan ulangi sesi Anda sesaat lagi.")
+                el_label.innerHTML = `<i class="fa fa-upload warnaeka  w3-round-large w3-padding w3-border-black w3-border-bottom w3-center"> Unggah File</i>`;
+            })
+    }
+    reader.readAsDataURL(file);
+}
+const tambahsuratmasuk = () =>{
+   
+    let divv = document.querySelector(".pencariansuratmasuk");
+    if(divv.className.indexOf("w3-hide")==-1){
+        divv.className +=" w3-hide";
+    }   
+    let div = document.querySelector(".penambahansuratmasuk");
+    div.className = div.className.replace("w3-hide","");
+
+    let bt = document.querySelector(".tombolkirimsuratmasuk");
+    bt.setAttribute("onclick",`kirimserver_suratmasuk()`);
+    bt.innerHTML = `<i class="fa fa-paper-plane"></i>  Tambah`;
+    let setdata = document.querySelectorAll("[data-idsm]");
+    setdata.forEach(s => s.value ="");
+
+    let y = div.offsetTop - 45;
+    window.scrollTo({ top: y, behavior: 'smooth' });
+
+}
+const tambahsuratkeluar = () =>{
+    
+    let divv = document.querySelector(".pencariansuratkeluar");
+    if(divv.className.indexOf("w3-hide")==-1){
+        divv.className +=" w3-hide";
+    }
+
+    let div = document.querySelector(".penambahansuratkeluar");
+    div.className = div.className.replace("w3-hide","");
+
+    let bt = document.querySelector(".tombolkirimsuratkeluar");
+     bt.setAttribute("onclick",`kirimserver_suratkeluar()`);
+     bt.innerHTML = `<i class="fa fa-paper-plane"></i>  Tambah`;
+     let setdata = document.querySelectorAll("[data-idsk]");
+     setdata.forEach(s => s.value ="");
+
+     let y = div.offsetTop - 45;
+     window.scrollTo({ top: y, behavior: 'smooth' });
+    
+}
+const carisuratmasuk = () =>{
+    
+    
+    let divv = document.querySelector(".penambahansuratmasuk");
+    if(divv.className.indexOf("w3-hide")==-1){
+        divv.className +=" w3-hide";
+    }
+    let div = document.querySelector(".pencariansuratmasuk");
+    div.className = div.className.replace("w3-hide","");
+         let y = div.offsetTop - 45;
+         window.scrollTo({ top: y, behavior: 'smooth' });
+        
+    
+    
+}
+const carisuratkeluar = () =>{
+    
+    
+       
+        let divv = document.querySelector(".penambahansuratkeluar");
+        if(divv.className.indexOf("w3-hide")==-1){
+            divv.className +=" w3-hide";
+        }
+        
+         let div = document.querySelector(".pencariansuratkeluar");
+        div.className = div.className.replace("w3-hide","");
+        let y = div.offsetTop - 45;
+         window.scrollTo({ top: y, behavior: 'smooth' });
+        
+    
+    
+}
+const printsuratmasuk = () =>{
+    if(jsonsuratmasuk.length==0){
+        alert("Maaf, Tidak bisa dicetak");
+        return
+    }
+    let isibody = document.querySelector(".printdatasuratmasuk");
+    let el = document.getElementById("iframeprint");
+    let doc = el.contentDocument;
+    // head, body
+    let head = doc.head;
+    let body = doc.body;
+    //isikan HEAD dengan title, style, link, dll.
+    head.innerHTML = `<title>E-LAMASO Surat Maasuk</title>`;
+    head.innerHTML += `<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">`;
+    head.innerHTML += `<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">`;
+    head.innerHTML += `<link href="https://fonts.googleapis.com/css?family=Raleway">`;
+    head.innerHTML += `<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>`;
+    head.innerHTML += `<style type="text/css">
+    .versii-table{width:950px;max-width:100%;border-collapse:collapse}.versi-table{width:auto;max-width:100%;border-collapse:collapse}.versi-table td,.versi-table th,.versi-table tr,.versii-table td,.versii-table th,.versii-table tr{border:1px solid #000;color:#000;padding:5px 10px 5px 10px}.versi-table th,.versii-table th{background-color:#eee;color:#00f;vertical-align:middle;text-align:center}.versi-table tr:nth-of-type(even) td,.versii-table tr:nth-of-type(even) td{border:0;background-color:#fff;border:1px solid #000}.versi-table tr:nth-of-type(odd) td,.versii-table tr:nth-of-type(odd) td{border:0;background-color:#eef;border:1px solid #000}
+    .garis td,.garis th,.garis tr{border:1px solid #000}.garis th{border:1px solid #000;text-align:center;vertical-align:middle}
+    .tabelbiasa, .tabelbiasa td,.tabelbiasa th{ border: 1px solid rgb(0, 0, 0); padding:5px } .tabelbiasa th{ background-color:rgb(177, 177, 177) } .tabelbiasa  { width:100%; border-collapse: collapse; }
+    .tabelbiasaputih th{ background-color:#fff !important; }
+    </style>`;
+
+    head.innerHTML += `<style type="text/css" media="print">
+    @media print {
+        html,body{height:100%;width:100%;margin:0;padding:0}
+        
+         @page {
+            size: A4 landscape;
+            max-height:100%;
+            max-width:100%;
+            
+            }
+    }
+    </style>`;
+    let cdiv = document.createElement("div");
+    cdiv.setAttribute("class","kloningsuratmasuk");
+    let klon  = isibody.cloneNode(true);
+    let h = klon.querySelector(".tabel_suratmasuk");
+    let hh = klon.querySelector(".tabel_suratmasuk");
+    //console.log(h)
+    for(i=1; i < h.rows.length ; i++){
+        let indek = parseInt(h.rows[i].cells[0].innerHTML - 1);
+        if(jsonsuratmasuk[indek].idfile == ""){
+            h.rows[i].cells[8].innerHTML = `Tidak ada file`;
+
+        }else{
+            h.rows[i].cells[8].setAttribute("style","word-wrap: break-word;");
+            h.rows[i].cells[8].innerHTML = `<a href="https://drive.google.com/file/d/${jsonsuratmasuk[indek].idfile}/view?usp=drivesdk">https://drive.google.com/file/d/${jsonsuratmasuk[indek].idfile}/view</a>`;
+        }
+    }
+
+    
+    
+    cdiv.appendChild(klon);
+    
+    body.innerHTML = "";
+    body.appendChild(cdiv);
+    // hapus[0].remove();
+
+    body.innerHTML += '<br/><div style="float:right;position:relative;text-align:center"> ' + jlo.kota + ',' + tanggalfull(new Date()) + '<br/>Kepala ' + idNamaSekolah + '<br/><br/><br/><br/><b><u>' + idNamaKepsek + '</u></b><br/>NIP. ' + idNipKepsek + '</div>';
+
+    window.frames["iframeprint"].focus();
+    window.frames["iframeprint"].print();
+}
+const printsuratkeluar = () =>{
+    if(jsonsuratkeluar.length==0){
+        alert("Maaf, Tidak bisa dicetak");
+        return
+    }
+    let isibody = document.querySelector(".printdatasuratkeluar");
+    let el = document.getElementById("iframeprint");
+    let doc = el.contentDocument;
+    // head, body
+    let head = doc.head;
+    let body = doc.body;
+    //isikan HEAD dengan title, style, link, dll.
+    head.innerHTML = `<title>E-LAMASO Surat Keluar</title>`;
+    head.innerHTML += `<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">`;
+    head.innerHTML += `<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">`;
+    head.innerHTML += `<link href="https://fonts.googleapis.com/css?family=Raleway">`;
+    head.innerHTML += `<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>`;
+    head.innerHTML += `<style type="text/css">
+    .versii-table{width:950px;max-width:100%;border-collapse:collapse}.versi-table{width:auto;max-width:100%;border-collapse:collapse}.versi-table td,.versi-table th,.versi-table tr,.versii-table td,.versii-table th,.versii-table tr{border:1px solid #000;color:#000;padding:5px 10px 5px 10px}.versi-table th,.versii-table th{background-color:#eee;color:#00f;vertical-align:middle;text-align:center}.versi-table tr:nth-of-type(even) td,.versii-table tr:nth-of-type(even) td{border:0;background-color:#fff;border:1px solid #000}.versi-table tr:nth-of-type(odd) td,.versii-table tr:nth-of-type(odd) td{border:0;background-color:#eef;border:1px solid #000}
+    .garis td,.garis th,.garis tr{border:1px solid #000}.garis th{border:1px solid #000;text-align:center;vertical-align:middle}
+    .tabelbiasa, .tabelbiasa td,.tabelbiasa th{ border: 1px solid rgb(0, 0, 0); padding:5px } .tabelbiasa th{ background-color:rgb(177, 177, 177) } .tabelbiasa  { width:100%; border-collapse: collapse; }
+    .tabelbiasaputih th{ background-color:#fff !important; }
+    </style>`;
+
+    head.innerHTML += `<style type="text/css" media="print">
+    @media print {
+        html,body{height:100%;width:100%;margin:0;padding:0}
+        
+         @page {
+            size: A4 landscape;
+            max-height:100%;
+            max-width:100%;
+            
+            }
+    }
+    </style>`;
+    let cdiv = document.createElement("div");
+    cdiv.setAttribute("class","kloningsuratkeluar");
+    let klon  = isibody.cloneNode(true);
+    let h = klon.querySelector(".tabel_suratkeluar");
+    let hh = klon.querySelector(".tabel_suratkeluar");
+    //console.log(h)
+    for(i=1; i < h.rows.length ; i++){
+        let indek = parseInt(h.rows[i].cells[0].innerHTML - 1);
+        if(jsonsuratkeluar[indek].idfile == ""){
+            h.rows[i].cells[6].innerHTML = `Tidak ada file`;
+
+        }else{
+            h.rows[i].cells[6].setAttribute("style","word-wrap: break-word;");
+            h.rows[i].cells[6].innerHTML = `<a href="https://drive.google.com/file/d/${jsonsuratkeluar[indek].idfile}/view?usp=drivesdk">https://drive.google.com/file/d/${jsonsuratmasuk[indek].idfile}/view</a>`;
+        }
+    }
+
+    
+    
+    cdiv.appendChild(klon);
+    
+    body.innerHTML = "";
+    body.appendChild(cdiv);
+    // hapus[0].remove();
+
+    body.innerHTML += '<br/><div style="float:right;position:relative;text-align:center"> ' + jlo.kota + ',' + tanggalfull(new Date()) + '<br/>Kepala ' + idNamaSekolah + '<br/><br/><br/><br/><b><u>' + idNamaKepsek + '</u></b><br/>NIP. ' + idNipKepsek + '</div>';
+
+    window.frames["iframeprint"].focus();
+    window.frames["iframeprint"].print();
+}
+const carisuratinput = (cl,el) =>{
+    let tbody,html = "",html2 = "";
+    let json;
+    if(cl == "suratmasuk"){
+        tbody = document.querySelector(".tabel_suratmasuk").getElementsByTagName("tbody")[0];
+        json= jsonsuratmasuk;
+    }else{
+        tbody = document.querySelector(".tabel_suratkeluar").getElementsByTagName("tbody")[0];
+        json = jsonsuratkeluar
+    }
+    
+    if(json.length == 0){
+        console.log(el.value)
+        return;
+    }else{
+        let rec;
+        if(el.value ==""){
+            rec = json;
+        }else{
+            rec = json.filter(s => Object.entries(s).filter(([k,v]) =>{
+                let vv = v.toString().indexOf(el.value)//el.value.indexOf(v);
+                console.log(vv);
+                if(vv>-1){
+                    return true
+                }else{
+                    return false
+                }
+            }).length!==0);
+        }
+        
+        if(rec.length == 0){
+            html = `<tr><td colspan="9" class="w3-red w3-center">Belum ada data</td></tr>`;
+            html2 = `<tr><td colspan="7" class="w3-red w3-center">Belum ada data</td></tr>`;
+        }else{
+            
+            // for(i = 0; i < rec.length ; i++){
+                for(i = rec.length-1; i>=0; i--){
+                html += `<tr>
+                <td>${i+1}</td>
+                <td>${tanggalfull(rec[i].tglditerima)}</td>
+                <td>${rec[i].nosurat}</td>
+                <td>${rec[i].asalsurat}</td>
+                <td>${tanggalfull(rec[i].tglsurat)}</td>
+                <td>${rec[i].perihal}</td>
+                <td>${rec[i].indekssurat}</td>
+                <td>${rec[i].ditujukkankepada}</td>
+                <td>
+                <i class="fa fa-edit warnaeka w3-btn w3-margin-bottom" title="edit" onclick="editsurat(${rec[i].idbaris})"></i> 
+                <i class="fa fa-eye warnaeka w3-btn w3-margin-bottom" title="lihat surat" onclick="lihatsurat(${rec[i].idbaris})"></i> 
+                <i class="fa fa-trash warnaeka w3-btn w3-margin-bottom" title="hapus dari data surat masuk" onclick="hapussurat(${rec[i].idbaris})"></i> 
+                </td>
+                </tr>`;
+                html2 += `<tr>
+                <td>${i+1}</td>
+                <td>${rec[i].nosurat}</td>
+                <td>${tanggalfull(rec[i].tglsurat)}</td>
+                <td>${rec[i].ditujukkankepada}</td>
+                <td>${rec[i].perihal}</td>
+                <td>${rec[i].indekssurat}</td>
+                
+                <td>
+                <i class="fa fa-edit warnaeka w3-btn w3-margin-bottom" title="edit" onclick="editsuratkeluar(${rec[i].idbaris})"></i> 
+                <i class="fa fa-eye warnaeka w3-btn w3-margin-bottom" title="lihat surat" onclick="lihatsuratkeluar(${rec[i].idbaris})"></i> 
+                <i class="fa fa-trash warnaeka w3-btn w3-margin-bottom" title="hapus dari data surat masuk" onclick="hapussuratkeluar(${rec[i].idbaris})"></i> 
+                </td>
+                </tr>`;
+            }
+        }
+        if(cl == "suratmasuk"){
+        tbody.innerHTML = html;
+        }else{
+            tbody.innerHTML = html2;
+
+        }
+    }
+    
+    
+    
+    
+};
+const cariinvalueindek = (val) =>{
+    return jsonsuratmasuk.filter(s => Object.entries(s).filter(([k,v]) => v == el.value).length!==0);
+}
+const kirimserver_suratmasuk = () => {
+    let divlod = document.querySelector(".loadingtopbar");
+    divlod.style.width = "1px";
+    
+    let isioleh = document.querySelector("[data-idsm=oleh");
+    isioleh.value = namauser;
+    let isistatus = document.querySelector("[data-idsm=status]");
+    isistatus.value ="diarsipkan";
+    let setdata = document.querySelectorAll("[data-idsm]");
+    let atsetdata ;
+    let key = ["idbaris"];
+    let val = [];
+    let type = [2,5];
+    let v;
+    let nol=[]
+    for(i = 0 ; i < setdata.length; i++){
+        atsetdata = setdata[i].getAttribute("data-idsm");
+        v = setdata[i].value;
+        key.push(atsetdata);
+        val.push(v);
+        if(v ==""){
+            nol.push(i)
+        }
+    };
+    
+    if(nol.length !==0){
+        alert("Data ada yang kosong. Pengisian harus lengkap");
+        return;
+    }
+    loadingtopbarin("loadingtopbar");
+    let aks = document.querySelectorAll(".aksi_surat");
+    aks.forEach(s => {
+        if(s.className.indexOf("w3-hide")==-1){
+            s.className += " w3-hide";
+        }
+    });
+
+    let tabel = JSON.stringify(val);
+    let keyy = JSON.stringify(key);
+    let tipe = JSON.stringify(type);
+    let datakirim = new FormData();
+
+    datakirim.append("key",keyy);
+    datakirim.append("tab","suratmasuk");
+    datakirim.append("tabel",tabel);
+    datakirim.append("tipe",tipe);
+    let html = "";
+    let ttbody = document.querySelector(".tabel_suratmasuk").getElementsByTagName("tbody")[0];
+    ttbody.innerhtml= `<tr><td colspan="9"><img src="/img/barloading.gif"/> sedang proses kriim</td></tr>`;
+    setdata.forEach(s => s.value ="");
+    
+
+        
+     fetch(linktendik+"?action=simpanbarisketaburut",{
+        method:"post",
+        body:datakirim
+    }).then(m => m.json())
+    .then(r => {
+       //console.log(r);
+       alert("Berhasil diinput.")
+       let res = r.result;
+           let rec = r.data.filter(s=> s.status !== "hapus");
+           //console.log(rec)
+           if(res > 1){
+               jsonsuratmasuk = rec;
+              // console.log(res);
+               // (let i = jsonmateri.length - 1; i >= 0; i--)
+                for(i = rec.length-1; i>=0; i--){
+                    html += `<tr>
+                    <td>${i+1}</td>
+                    <td>${tanggalfull(rec[i].tglditerima)}</td>
+                    <td>${rec[i].nosurat}</td>
+                    <td>${rec[i].asalsurat}</td>
+                    <td>${tanggalfull(rec[i].tglsurat)}</td>
+                    <td>${rec[i].perihal}</td>
+                    <td>${rec[i].indekssurat}</td>
+                    <td>${rec[i].ditujukkankepada}</td>
+                    <td>
+                        <i class="fa fa-edit warnaeka w3-btn w3-margin-bottom" title="edit" onclick="editsurat(${rec[i].idbaris})"></i> 
+                        <i class="fa fa-eye warnaeka w3-btn w3-margin-bottom" title="lihat surat" onclick="lihatsurat(${rec[i].idbaris})"></i> 
+                        <i class="fa fa-trash warnaeka w3-btn w3-margin-bottom" title="hapus dari data surat masuk" onclick="hapussurat(${rec[i].idbaris})"></i> 
+                    </td>
+                    </tr>`;
+                }
+           }else{
+            html = `<tr><td colspan="9" class="w3-red w3-center">Belum ada data</td></tr>`;
+           }
+        //    console.log(r);
+        ttbody.innerHTML = html;
+        clearInterval(stoploadingtopbar);
+        
+        divlod.style.width = "100%";
+        setTimeout(() => {
+            divlod.style.width = "1px"
+            divlod.className += " w3-hide";
+    
+        }, 3000);
+    })
+    .catch(er => console.log(er))
+}
+const kirimserver_suratkeluar = () => {
+    let divlod = document.querySelector(".loadingtopbar");
+    divlod.style.width = "1px";
+    
+    let isioleh = document.querySelector("[data-idsk=oleh");
+    isioleh.value = namauser;
+    let isistatus = document.querySelector("[data-idsk=status]");
+    isistatus.value ="diarsipkan";
+    let setdata = document.querySelectorAll("[data-idsk]");
+    let atsetdata ;
+    let key = ["idbaris"];
+    let val = [];
+    let type = [3];
+    let v;
+    let nol=[]
+    for(i = 0 ; i < setdata.length; i++){
+        atsetdata = setdata[i].getAttribute("data-idsk");
+        v = setdata[i].value;
+        key.push(atsetdata);
+        val.push(v);
+        if(v ==""){
+            nol.push(i)
+        }
+    };
+    
+    if(nol.length !==0){
+        alert("Data ada yang kosong. Pengisian harus lengkap");
+        return;
+    }
+    loadingtopbarin("loadingtopbar");
+    let aks = document.querySelectorAll(".aksi_surat");
+    aks.forEach(s => {
+        if(s.className.indexOf("w3-hide")==-1){
+            s.className += " w3-hide";
+        }
+    });
+
+    let tabel = JSON.stringify(val);
+    let keyy = JSON.stringify(key);
+    let tipe = JSON.stringify(type);
+    let datakirim = new FormData();
+
+    datakirim.append("key",keyy);
+    datakirim.append("tab","suratkeluar");
+    datakirim.append("tabel",tabel);
+    datakirim.append("tipe",tipe);
+    let html = "";
+    let ttbody = document.querySelector(".tabel_suratkeluar").getElementsByTagName("tbody")[0];
+    ttbody.innerhtml= `<tr><td colspan="9"><img src="/img/barloading.gif"/> sedang proses kriim</td></tr>`;
+    setdata.forEach(s => s.value ="");
+    
+
+        
+     fetch(linktendik+"?action=simpanbarisketaburut",{
+        method:"post",
+        body:datakirim
+    }).then(m => m.json())
+    .then(r => {
+       //console.log(r);
+       alert("Berhasil diinput.")
+       let res = r.result;
+           let rec = r.data.filter(s=> s.status !== "hapus");
+           //console.log(rec)
+           if(res > 1){
+               jsonsuratkeluar = rec;
+              // console.log(res);
+               // (let i = jsonmateri.length - 1; i >= 0; i--)
+                for(i = rec.length-1; i>=0; i--){
+                    html += `<tr>
+                    <td>${i+1}</td>
+                    <td>${rec[i].nosurat}</td>
+                    <td>${tanggalfull(rec[i].tglsurat)}</td>
+                    <td>${rec[i].ditujukkankepada}</td>
+                    <td>${rec[i].perihal}</td>
+                    <td>${rec[i].indekssurat}</td>
+
+                    <td>
+                        <i class="fa fa-edit warnaeka w3-btn w3-margin-bottom" title="edit" onclick="editsuratkeluar(${rec[i].idbaris})"></i> 
+                        <i class="fa fa-eye warnaeka w3-btn w3-margin-bottom" title="lihat surat" onclick="lihatsuratkeluar(${rec[i].idbaris})"></i> 
+                        <i class="fa fa-trash warnaeka w3-btn w3-margin-bottom" title="hapus dari data surat masuk" onclick="hapussuratkeluar(${rec[i].idbaris})"></i> 
+                    </td>
+                    </tr>`;
+                }
+           }else{
+            html = `<tr><td colspan="9" class="w3-red w3-center">Belum ada data</td></tr>`;
+           }
+        //    console.log(r);
+        ttbody.innerHTML = html;
+        clearInterval(stoploadingtopbar);
+        
+        divlod.style.width = "100%";
+        setTimeout(() => {
+            divlod.style.width = "1px"
+            divlod.className += " w3-hide";
+    
+        }, 3000);
+    })
+    .catch(er => console.log(er))
+}
+const lihatsurat = (i) =>{
+    let d = jsonsuratmasuk.filter(s => s.idbaris==i)[0];
+    let f = d.idfile;
+    let link = `https://drive.google.com/file/d/${f}/view?usp=drivesdk`;
+    window.open(link,'', 'width=720,height=600');
+}
+const lihatsuratkeluar = (i) =>{
+    let d = jsonsuratkeluar.filter(s => s.idbaris==i)[0];
+    let f = d.idfile;
+    let link = `https://drive.google.com/file/d/${f}/view?usp=drivesdk`;
+    window.open(link,'', 'width=720,height=600');
+}
+const editsurat = (i)=>{
+    tambahsuratmasuk();
+    //ganti! <button onclick="kirimserver_suratmasuk()" class="w3-btn w3-teal w3-border-bottom tombolkirimsuratmasuk w3-border-black w3-round-large" title="Kirim ke server untuk ditambahkan"><i class="fa fa-paper-plane"></i>  Tambah</button>
+    let d = jsonsuratmasuk.filter(s=> s.idbaris== i)[0];
+    let o = Object.keys(d);
+    for(j = 0 ; j < o.length; j++){
+        let ele = document.querySelector(`[data-idsm=${o[j]}]`);
+        if(ele !== null){
+            if(o[j].indexOf("tgl")>-1){
+                ele.value = StringTanggal(new Date(d[o[j]]))
+            }else{
+                ele.value = d[o[j]];
+       	    }
+        }
+    };
+     let bt = document.querySelector(".tombolkirimsuratmasuk");
+     bt.setAttribute("onclick",`kirimserver_editsuratmasuk(${i})`);
+     bt.innerHTML = `<i class="fa fa-edit"></i>  Perbarui`;
+}
+const editsuratkeluar = (i)=>{
+    tambahsuratkeluar();
+
+    //ganti! <button onclick="kirimserver_suratmasuk()" class="w3-btn w3-teal w3-border-bottom tombolkirimsuratmasuk w3-border-black w3-round-large" title="Kirim ke server untuk ditambahkan"><i class="fa fa-paper-plane"></i>  Tambah</button>
+    let d = jsonsuratkeluar.filter(s=> s.idbaris== i)[0];
+    let o = Object.keys(d);
+    for(j = 0 ; j < o.length; j++){
+        let ele = document.querySelector(`[data-idsk=${o[j]}]`);
+        if(ele !== null){
+            if(o[j].indexOf("tgl")>-1){
+                ele.value = StringTanggal(new Date(d[o[j]]))
+            }else{
+                ele.value = d[o[j]];
+       	    }
+        }
+    };
+     let bt = document.querySelector(".tombolkirimsuratkeluar");
+     bt.setAttribute("onclick",`kirimserver_editsuratkeluar(${i})`);
+     bt.innerHTML = `<i class="fa fa-edit"></i>  Perbarui`;
+}
+
+const kirimserver_editsuratmasuk = (a)=>{
+    let divlod = document.querySelector(".loadingtopbar");
+    divlod.style.width = "1px";
+    loadingtopbarin("loadingtopbar");
+    let setdata = document.querySelectorAll("[data-idsm]");
+    let atsetdata ;
+    let key = ["idbaris"];
+    let val = [a];
+    let type = [2,5];
+    let v;
+    let nol=[]
+    for(i = 0 ; i < setdata.length; i++){
+        atsetdata = setdata[i].getAttribute("data-idsm");
+        v = setdata[i].value;
+        key.push(atsetdata);
+        val.push(v);
+        if(v ==""){
+            nol.push(i)
+        }
+    };
+   
+    let tabel = JSON.stringify(val);
+    let keyy = JSON.stringify(key);
+    let tipe = JSON.stringify(type);
+    let datakirim = new FormData();
+
+    datakirim.append("key",keyy);
+    datakirim.append("idbaris",a);
+    datakirim.append("tab","suratmasuk");
+    datakirim.append("tabel",tabel);
+    datakirim.append("tipe",tipe);
+    let html = "";
+    let ttbody = document.querySelector(".tabel_suratmasuk").getElementsByTagName("tbody")[0];
+    ttbody.innerhtml= `<tr><td colspan="9"><img src="/img/barloading.gif"/> sedang proses Edit</td></tr>`;
+    setdata.forEach(s => s.value ="");
+    let bt = document.querySelector(".tombolkirimsuratmasuk");
+     bt.setAttribute("onclick",`kirimserver_suratmasuk()`);
+     bt.innerHTML = `<i class="fa fa-paper-plane"></i>  Tambah`;
+     let aks = document.querySelectorAll(".aksi_surat");
+     aks.forEach(s => {
+     if(s.className.indexOf("w3-hide")==-1){
+         s.className += " w3-hide";
+     }
+     });
+
+        
+     fetch(linktendik+"?action=simpanbarisketabidbaris",{
+        method:"post",
+        body:datakirim
+    }).then(m => m.json())
+    .then(r => {
+      // console.log(r);
+      alert("Berhasil disimpan.")
+       let res = r.result;
+           let rec = r.data.filter(s=> s.status !== "hapus");
+           //console.log(rec)
+           if(res > 1){
+               jsonsuratmasuk = rec;
+              // console.log(res);
+               // (let i = jsonmateri.length - 1; i >= 0; i--)
+                for(i = rec.length-1; i>=0; i--){
+                    html += `<tr>
+                    <td>${i+1}</td>
+                    <td>${tanggalfull(rec[i].tglditerima)}</td>
+                    <td>${rec[i].nosurat}</td>
+                    <td>${rec[i].asalsurat}</td>
+                    <td>${tanggalfull(rec[i].tglsurat)}</td>
+                    <td>${rec[i].perihal}</td>
+                    <td>${rec[i].indekssurat}</td>
+                    <td>${rec[i].ditujukkankepada}</td>
+                    <td>
+                        <i class="fa fa-edit warnaeka w3-btn w3-margin-bottom" title="edit" onclick="editsurat(${rec[i].idbaris})"></i> 
+                        <i class="fa fa-eye warnaeka w3-btn w3-margin-bottom" title="lihat surat" onclick="lihatsurat(${rec[i].idbaris})"></i> 
+                        <i class="fa fa-trash warnaeka w3-btn w3-margin-bottom" title="hapus dari data surat masuk" onclick="hapussurat(${rec[i].idbaris})"></i> 
+                    </td>
+                    </tr>`;
+                }
+           }else{
+            html = `<tr><td colspan="9" class="w3-red w3-center">Belum ada data</td></tr>`;
+           }
+        //    console.log(r);
+        ttbody.innerHTML = html;
+        clearInterval(stoploadingtopbar);
+        
+        divlod.style.width = "100%";
+        setTimeout(() => {
+            divlod.style.width = "1px"
+            divlod.className += " w3-hide";
+    
+        }, 3000);
+       
+    })
+    .catch(er => console.log(er))
+};
+const kirimserver_editsuratkeluar = (a)=>{
+    let divlod = document.querySelector(".loadingtopbar");
+    divlod.style.width = "1px";
+    loadingtopbarin("loadingtopbar");
+    let setdata = document.querySelectorAll("[data-idsk]");
+    let atsetdata ;
+    let key = ["idbaris"];
+    let val = [a];
+    let type = [3];
+    let v;
+    let nol=[]
+    for(i = 0 ; i < setdata.length; i++){
+        atsetdata = setdata[i].getAttribute("data-idsk");
+        v = setdata[i].value;
+        key.push(atsetdata);
+        val.push(v);
+        if(v ==""){
+            nol.push(i)
+        }
+    };
+   
+    let tabel = JSON.stringify(val);
+    let keyy = JSON.stringify(key);
+    let tipe = JSON.stringify(type);
+    let datakirim = new FormData();
+
+    datakirim.append("key",keyy);
+    datakirim.append("idbaris",a);
+    datakirim.append("tab","suratkeluar");
+    datakirim.append("tabel",tabel);
+    datakirim.append("tipe",tipe);
+    let html = "";
+    let ttbody = document.querySelector(".tabel_suratkeluar").getElementsByTagName("tbody")[0];
+    ttbody.innerhtml= `<tr><td colspan="9"><img src="/img/barloading.gif"/> sedang proses Edit</td></tr>`;
+    setdata.forEach(s => s.value ="");
+    let bt = document.querySelector(".tombolkirimsuratkeluar");
+     bt.setAttribute("onclick",`kirimserver_suratkeluar()`);
+     bt.innerHTML = `<i class="fa fa-paper-plane"></i>  Tambah`;
+     let aks = document.querySelectorAll(".aksi_surat");
+     aks.forEach(s => {
+     if(s.className.indexOf("w3-hide")==-1){
+         s.className += " w3-hide";
+     }
+     });
+
+        
+     fetch(linktendik+"?action=simpanbarisketabidbaris",{
+        method:"post",
+        body:datakirim
+    }).then(m => m.json())
+    .then(r => {
+      // console.log(r);
+      alert("Berhasil disimpan.")
+       let res = r.result;
+           let rec = r.data.filter(s=> s.status !== "hapus");
+           //console.log(rec)
+           if(res > 1){
+               jsonsuratkeluar = rec;
+              // console.log(res);
+               // (let i = jsonmateri.length - 1; i >= 0; i--)
+                for(i = rec.length-1; i>=0; i--){
+                    html += `<tr>
+                    <td>${i+1}</td>
+                    <td>${rec[i].nosurat}</td>
+                    <td>${tanggalfull(rec[i].tglsurat)}</td>
+                    <td>${rec[i].ditujukkankepada}</td>
+                    <td>${rec[i].perihal}</td>
+                    <td>${rec[i].indekssurat}</td>
+
+                    <td>
+                        <i class="fa fa-edit warnaeka w3-btn w3-margin-bottom" title="edit" onclick="editsuratkeluar(${rec[i].idbaris})"></i> 
+                        <i class="fa fa-eye warnaeka w3-btn w3-margin-bottom" title="lihat surat" onclick="lihatsuratkeluar(${rec[i].idbaris})"></i> 
+                        <i class="fa fa-trash warnaeka w3-btn w3-margin-bottom" title="hapus dari data surat masuk" onclick="hapussuratkeluar(${rec[i].idbaris})"></i> 
+                    </td>
+                    </tr>`;
+                }
+           }else{
+            html = `<tr><td colspan="7" class="w3-red w3-center">Belum ada data</td></tr>`;
+           }
+        //    console.log(r);
+        ttbody.innerHTML = html;
+        clearInterval(stoploadingtopbar);
+        
+        divlod.style.width = "100%";
+        setTimeout(() => {
+            divlod.style.width = "1px"
+            divlod.className += " w3-hide";
+    
+        }, 3000);
+       
+    })
+    .catch(er => console.log(er))
+};
+const hapussurat = (a)=>{
+    let konf = confirm("Anda yakin akan menghapus surat ini? Klik OK untuk menghapus atau CANCEL untuk membatalkan.");
+    if(!konf){
+        alert("Terima kasih, Anda membatalkan perintah hapus.");
+        return
+    };
+    let divlod = document.querySelector(".loadingtopbar");
+    divlod.style.width = "1px";
+    loadingtopbarin("loadingtopbar");
+    let setdata = document.querySelectorAll("[data-idsm]");
+    let obj = jsonsuratmasuk.filter(s => s.idbaris == a)[0];
+    let atsetdata ;
+    let key = ["idbaris"];
+    let val = [a];
+    let type = [2,5];
+    let v;
+    let nol=[]
+    for(i = 0 ; i < setdata.length; i++){
+        atsetdata = setdata[i].getAttribute("data-idsm");
+        v = obj[atsetdata];// setdata[i].value;
+        key.push(atsetdata);
+        val.push(v);
+        if(v ==""){
+            nol.push(i)
+        }
+    };
+    //console.log(key);
+   
+    val.splice(9,1,"hapus")
+  
+    let tabel = JSON.stringify(val);
+    let keyy = JSON.stringify(key);
+    let tipe = JSON.stringify(type);
+    let datakirim = new FormData();
+
+    datakirim.append("key",keyy);
+    datakirim.append("idbaris",a);
+    datakirim.append("tab","suratmasuk");
+    datakirim.append("tabel",tabel);
+    datakirim.append("tipe",tipe);
+    let html = "";
+    let ttbody = document.querySelector(".tabel_suratmasuk").getElementsByTagName("tbody")[0];
+    ttbody.innerhtml= `<tr><td colspan="9"><img src="/img/barloading.gif"/> sedang proses Edit</td></tr>`;
+    
+
+        
+     fetch(linktendik+"?action=simpanbarisketabidbaris",{
+        method:"post",
+        body:datakirim
+    }).then(m => m.json())
+    .then(r => {
+       //console.log(r);
+       alert("Berhasil dihapus");
+       let res = r.result;
+           let rec = r.data.filter(s=> s.status !== "hapus");
+           //console.log(rec)
+           if(res > 1){
+               jsonsuratmasuk = rec;
+              // console.log(res);
+               // (let i = jsonmateri.length - 1; i >= 0; i--)
+                for(i = rec.length-1; i>=0; i--){
+                    html += `<tr>
+                    <td>${i+1}</td>
+                    <td>${tanggalfull(rec[i].tglditerima)}</td>
+                    <td>${rec[i].nosurat}</td>
+                    <td>${rec[i].asalsurat}</td>
+                    <td>${tanggalfull(rec[i].tglsurat)}</td>
+                    <td>${rec[i].perihal}</td>
+                    <td>${rec[i].indekssurat}</td>
+                    <td>${rec[i].ditujukkankepada}</td>
+                    <td>
+                        <i class="fa fa-edit warnaeka w3-btn w3-margin-bottom" title="edit" onclick="editsurat(${rec[i].idbaris})"></i> 
+                        <i class="fa fa-eye warnaeka w3-btn w3-margin-bottom" title="lihat surat" onclick="lihatsurat(${rec[i].idbaris})"></i> 
+                        <i class="fa fa-trash warnaeka w3-btn w3-margin-bottom" title="hapus dari data surat masuk" onclick="hapussurat(${rec[i].idbaris})"></i> 
+                    </td>
+                    </tr>`;
+                }
+           }else{
+            html = `<tr><td colspan="9" class="w3-red w3-center">Belum ada data</td></tr>`;
+           }
+        //    console.log(r);
+        ttbody.innerHTML = html;
+        clearInterval(stoploadingtopbar);
+       
+        divlod.style.width = "100%";
+        setTimeout(() => {
+            divlod.style.width = "1px"
+            divlod.className += " w3-hide";
+    
+        }, 3000);
+    })
+    .catch(er => console.log(er))
+}
+const hapussuratkeluar = (a)=>{
+    let konf = confirm("Anda yakin akan menghapus surat ini? Klik OK untuk menghapus atau CANCEL untuk membatalkan.");
+    if(!konf){
+        alert("Terima kasih, Anda membatalkan perintah hapus.");
+        return
+    };
+    let divlod = document.querySelector(".loadingtopbar");
+    divlod.style.width = "1px";
+    loadingtopbarin("loadingtopbar");
+    let setdata = document.querySelectorAll("[data-idsk]");
+    let obj = jsonsuratkeluar.filter(s => s.idbaris == a)[0];
+    let atsetdata ;
+    let key = ["idbaris"];
+    let val = [a];
+    let type = [2,5];
+    let v;
+    let nol=[]
+    for(i = 0 ; i < setdata.length; i++){
+        atsetdata = setdata[i].getAttribute("data-idsk");
+        v = obj[atsetdata];// setdata[i].value;
+        key.push(atsetdata);
+        val.push(v);
+        if(v ==""){
+            nol.push(i)
+        }
+    };
+    //console.log(key);
+   
+    val.splice(7,1,"hapus")
+  
+    let tabel = JSON.stringify(val);
+    let keyy = JSON.stringify(key);
+    let tipe = JSON.stringify(type);
+    let datakirim = new FormData();
+
+    datakirim.append("key",keyy);
+    datakirim.append("idbaris",a);
+    datakirim.append("tab","suratkeluar");
+    datakirim.append("tabel",tabel);
+    datakirim.append("tipe",tipe);
+    let html = "";
+    let ttbody = document.querySelector(".tabel_suratkeluar").getElementsByTagName("tbody")[0];
+    ttbody.innerhtml= `<tr><td colspan="9"><img src="/img/barloading.gif"/> sedang proses Edit</td></tr>`;
+    
+
+        
+     fetch(linktendik+"?action=simpanbarisketabidbaris",{
+        method:"post",
+        body:datakirim
+    }).then(m => m.json())
+    .then(r => {
+       //console.log(r);
+       alert("Berhasil dihapus");
+       let res = r.result;
+           let rec = r.data.filter(s=> s.status !== "hapus");
+           //console.log(rec)
+           if(res > 1){
+               jsonsuratkeluar = rec;
+              // console.log(res);
+               // (let i = jsonmateri.length - 1; i >= 0; i--)
+                for(i = rec.length-1; i>=0; i--){
+                   
+                        html += `<tr>
+                        <td>${i+1}</td>
+                        <td>${rec[i].nosurat}</td>
+                        <td>${tanggalfull(rec[i].tglsurat)}</td>
+                        <td>${rec[i].ditujukkankepada}</td>
+                        <td>${rec[i].perihal}</td>
+                        <td>${rec[i].indekssurat}</td>
+    
+                        <td>
+                            <i class="fa fa-edit warnaeka w3-btn w3-margin-bottom" title="edit" onclick="editsuratkeluar(${rec[i].idbaris})"></i> 
+                            <i class="fa fa-eye warnaeka w3-btn w3-margin-bottom" title="lihat surat" onclick="lihatsuratkeluar(${rec[i].idbaris})"></i> 
+                            <i class="fa fa-trash warnaeka w3-btn w3-margin-bottom" title="hapus dari data surat masuk" onclick="hapussuratkeluar(${rec[i].idbaris})"></i> 
+                        </td>
+                        </tr>`;
+                }
+           }else{
+            html = `<tr><td colspan="7" class="w3-red w3-center">Belum ada data</td></tr>`;
+           }
+        //    console.log(r);
+        ttbody.innerHTML = html;
+        clearInterval(stoploadingtopbar);
+       
+        divlod.style.width = "100%";
+        setTimeout(() => {
+            divlod.style.width = "1px"
+            divlod.className += " w3-hide";
+    
+        }, 3000);
+    })
+    .catch(er => console.log(er))
+}
+const headersuratkeluar = () =>{
+    let isioleh = document.querySelector("[data-idsk=oleh");
+    isioleh.value = namauser;
+    let isistatus = document.querySelector("[data-idsk=status]");
+    isistatus.value ="diarsipkan";
+    let setdata = document.querySelectorAll("[data-idsk]");
+    let atsetdata ;
+    let key = ["idbaris"];
+    let val = [];
+    let type = [2,5];
+    let v;
+    let nol=[]
+    for(i = 0 ; i < setdata.length; i++){
+        atsetdata = setdata[i].getAttribute("data-idsk");
+        v = setdata[i].value;
+        key.push(atsetdata);
+        val.push(v);
+        if(v ==""){
+            nol.push(i)
+        }
+    };
+     return key
+}
+let btn_suratkeluar = document.querySelector(".btn_suratkeluar");
+btn_suratkeluar.addEventListener("click",async()=>{
+    loadingtopbarin("loadingtopbar");
+    
+    let aks = document.querySelectorAll(".aksi_surat");
+    aks.forEach(s => {
+        if(s.className.indexOf("w3-hide")==-1){
+            s.className += " w3-hide";
+        }
+    });
+    
+    
+        let tab = "suratkeluar";
+        let tabel = headersuratkeluar();
+        let html = "";
+        let ttbody = document.querySelector(".tabel_suratkeluar").getElementsByTagName("tbody")[0];
+        
+        let key = JSON.stringify(tabel);
+        let datakirim = new FormData();
+    
+        datakirim.append("tab",tab)
+        datakirim.append("key",key)
+        await fetch(linktendik+"?action=getpostdatafromtab",{
+            method:"post",
+            body:datakirim
+        }).then(m => m.json())
+        .then(r => {
+           // console.log(r);
+            
+           let res = r.result;
+           let rec = r.data.filter(s=> s.status !== "hapus");
+           //console.log(rec)
+           if(res > 1){
+               jsonsuratkeluar = rec;
+              // console.log(res);
+               // (let i = jsonmateri.length - 1; i >= 0; i--)
+                for(i = rec.length-1; i>=0; i--){
+                    html += `<tr>
+                    <td>${i+1}</td>
+                    <td>${rec[i].nosurat}</td>
+                    <td>${tanggalfull(rec[i].tglsurat)}</td>
+                    <td>${rec[i].ditujukkankepada}</td>
+                    <td>${rec[i].perihal}</td>
+                    <td>${rec[i].indekssurat}</td>
+
+                    <td>
+                        <i class="fa fa-edit warnaeka w3-btn w3-margin-bottom" title="edit" onclick="editsuratkeluar(${rec[i].idbaris})"></i> 
+                        <i class="fa fa-eye warnaeka w3-btn w3-margin-bottom" title="lihat surat" onclick="lihatsuratkeluar(${rec[i].idbaris})"></i> 
+                        <i class="fa fa-trash warnaeka w3-btn w3-margin-bottom" title="hapus dari data surat masuk" onclick="hapussuratkeluar(${rec[i].idbaris})"></i> 
+                    </td>
+                    </tr>`;
+                }
+           }else{
+            html = `<tr><td colspan="7" class="w3-red w3-center">Belum ada data</td></tr>`;
+           }
+        //    console.log(r);
+        ttbody.innerHTML = html;
+        }).catch(er => console.log(er))
+
+        clearInterval(stoploadingtopbar);
+        let divlod = document.querySelector(".loadingtopbar");
+        divlod.style.width = "100%";
+        setTimeout(() => {
+            divlod.style.width = "1px"
+            divlod.className += " w3-hide";
+    
+        }, 3000);
+});
+const atributgaleri = () =>{
+    let setdata = document.querySelectorAll("[data-galeri]");
+    let atsetdata ;
+    let key = ["idbaris"];
+    let val = [];
+    let type = [3];
+    let v;
+    let nol=[]
+    for(i = 0 ; i < setdata.length; i++){
+        atsetdata = setdata[i].getAttribute("data-galeri");
+        v = setdata[i].value;
+        key.push(atsetdata);
+        val.push(v);
+        if(v ==""){
+            nol.push(i)
+        }
+    };
+    let ret = {}
+    ret.key = key;
+    ret.val = val;
+    ret.nol = nol;
+    return ret;
+}
+const galery = async() => {
+    
+    loadingtopbarin("loadingtopbar");
+    let js = atributgaleri();
+    let keyy = js.key;
+    
+    //////////////
+    let tab = "galeri";
+    
+    let html = "";
+    let ttbody = document.querySelector(".tempatgaleri");
+    
+    let key = JSON.stringify(keyy);
+    let datakirim = new FormData();
+
+    datakirim.append("tab",tab)
+    datakirim.append("key",key)
+    await fetch(linktendik+"?action=getpostdatafromtab",{
+        method:"post",
+        body:datakirim
+    }).then(m => m.json())
+    .then(r => {
+        
+        let res = r.result;
+        let dtt = r.data;
+        let dt = r.data.filter(s => s.status !== "hapus");
+        jsongaleridihapus = dtt.filter(s=> s.status == "hapus");
+        jsongaleri = dtt.filter(s=> s.status !== "hapus");
+        
+        if(res > 1){
+            for(i = dt.length-1 ;  i>=0;i--){
+                let d = dt[i];
+                let hh = cekpreviewupload2(d.tipe,d.idfile);
+                html +=`<div class="w3-col l2" style="height: 270px;">
+                <div class="isigaleri">
+                    ${hh}
+                    <div class="overlaygaleri">
+                    Tgl ${tanggalfull(new Date(d.tglkejadian))}
+                        <div class="w3-text-white w3-margin">${d.keterangan}</div>
+                        <div class="w3-text-white w3-margin w3-tiny">Ditambahkan oleh: <br> ${d.oleh}</div>
+                        <div class="w3-white w3-margin w3-tiny">${d.tags}</div>
+                    <div class="textgaleri">
+                            <button onclick="window.open('https://drive.google.com/file/d/${d.idfile}/view?usp=drivesdk','', 'width=720,height=600')">Detail</button>
+                            <button onclick="hapusgaleri(${d.idbaris})">Hapus</button>
+                            
+                        </div>
+                      </div>
+                </div>
+            </div>`;
+            }
+            ttbody.innerHTML = html;
+        }
+        
+        
+        
+        tampilinsublamangurukelas("galery");
+    }).catch(er => {
+        console.log(er);
+        alert("Terjadi kesalahan. Silakan ulangi sesi Anda sesaat lagi.")
+    })
+
+    clearInterval(stoploadingtopbar);
+    let divlod = document.querySelector(".loadingtopbar");
+    divlod.style.width = "100%";
+    setTimeout(() => {
+        divlod.style.width = "1px"
+        divlod.className += " w3-hide";
+
+    }, 3000);
+
+    //////////////
+    
+
+
+}
+const cekpreviewupload = (tipe,idfile) =>{
+    let res;
+    let img = ["jpg","jpeg","JPG","JPEG","png","PNG","gif","GIF"]
+    let pdf = ["pdf","PDF"];
+    let word = ["doc","docx","DOC","DOCX"];
+    let ppt = ["ppt","pptx","pptm"]
+    let excel = ["xls","csv","CSV","XLS","xlsx","xlsm","xlsb","XLSX","XLSM","XLSB"];
+    let video = ["mp4","mkv","3gp","mpeg","flv"];
+    let audio = ["mp3","wav"];
+    let rar = ["rar","zip","7-zip"];
+    if(img.indexOf(tipe)>-1){
+        res = `<img src="https://drive.google.com/uc?export=view&id=${idfile}" class="w3-third"/>`;
+    }else if(pdf.indexOf(tipe)>-1){
+        res = `<iframe src="https://drive.google.com/uc?export=view&id=${idfile}" class="w3-third"></iframe>`;
+
+    }else if(word.indexOf(tipe) >-1){
+        res = `<img src="/img/word_icon.png"  class="w3-third"/>`;
+        
+    }else if(excel.indexOf(tipe) >-1){
+        res = `<img src="/img/excel_icon.png"  class="w3-third"/>`;
+        
+    }else if(video.indexOf(tipe) >-1){
+        res = `<img src="/img/video_icon.png"  class="w3-third"/>`;
+        
+    }else if(audio.indexOf(tipe) >-1){
+        res = `<img src="/img/sound_icon.png"  class="w3-third"/>`;
+        
+    }else if(rar.indexOf(tipe) >-1){
+        res = `<img src="/img/rar_icon.png"  class="w3-third"/>`;
+        
+    }else if(ppt.indexOf(tipe) >-1){
+        res = `<img src="/img/ppt_icon.png"  class="w3-third"/>`;
+        
+    }else{
+        res = `<img src="/img/file_icon.png"  class="w3-third"/>`;
+        
+        
+    }
+    return res
+
+}
+const cekpreviewupload2 = (tipe,idfile) =>{
+    let res;
+    let img = ["jpg","jpeg","JPG","JPEG","png","PNG","gif","GIF"]
+    let pdf = ["pdf","PDF"];
+    let word = ["doc","docx","DOC","DOCX"];
+    let ppt = ["ppt","pptx","pptm"]
+    let excel = ["xls","csv","CSV","XLS","xlsx","xlsm","xlsb","XLSX","XLSM","XLSB"];
+    let video = ["mp4","mkv","3gp","mpeg","flv"];
+    let audio = ["mp3","wav"];
+    let rar = ["rar","zip","7-zip"];
+    if(img.indexOf(tipe)>-1){
+        res = `<img src="https://drive.google.com/uc?export=view&id=${idfile}" />`;
+    }else if(pdf.indexOf(tipe)>-1){
+        res = `<iframe src="https://drive.google.com/uc?export=view&id=${idfile}"></iframe>`;
+        
+    }else if(word.indexOf(tipe) >-1){
+        res = `<img src="/img/word_icon.png" />`;
+        
+    }else if(excel.indexOf(tipe) >-1){
+        res = `<img src="/img/excel_icon.png" />`;
+        
+    }else if(video.indexOf(tipe) >-1){
+        res = `<img src="/img/video_icon.png" />`;
+        
+    }else if(audio.indexOf(tipe) >-1){
+        res = `<img src="/img/sound_icon.png" />`;
+        
+    }else if(rar.indexOf(tipe) >-1){
+        res = `<img src="/img/rar_icon.png" />`;
+        
+    }else if(ppt.indexOf(tipe) >-1){
+        res = `<img src="/img/ppt_icon.png" />`;
+        
+    }else{
+        res = `<img src="/img/file_icon.png" />`;
+        
+        
+    }
+    return res
+
+}
+const inputfileunggahgaleri = () =>{
+    let item = "";
+    item = document.getElementById("unggahmediagaleri").files[0];
+    
+    let elin = document.querySelector("[data-galeri=tipe]");
+    let elinn = document.querySelector(".ukuranfilegaleri");
+    let prv = document.querySelector(".previewgaleri");
+    prv.innerHTML = `<img src="/img/barloading.gif">`
+    let idfile = document.querySelector("[data-galeri=idfile]");
+    let namafile = item.name;
+    let namafolder = "000 GALERI"
+    elin.value = namafile.match(/(\.[^.]+)$/g)[0].replace(".","");
+    elinn.innerHTML = formatBytes(item.size,2);
+    
+    var reader = new FileReader();
+    reader.onload = function (e) {
+        //document.getElementById('uploadForm').submit();
+
+        let src = e.target.result;
+        let dataa = src.replace(/^.*,/, '');
+        let tipe = e.target.result.match(/^.*(?=;)/)[0];
+        //fn_upload_file(id_input, data, tipe);
+        // console.log(tipe);
+        // console.log(data);
+        
+    
+        let data = new FormData();
+      
+        data.append("fileContent", dataa);
+        data.append("mimeType", tipe);
+        data.append("filename", namafile);
+        data.append("kelas", namafolder);
+         // + "?action=uploaddulu";
+        fetch(linktendik+"?action=uploadfiledulu", {
+            method: 'post',
+            body: data
+        }).then(m => m.json())
+            .then(r => {
+                if (r.sukses == "Gagal") {
+                    setTimeout(() => {
+                        //el_label.innerHTML = `<i class="fa fa-upload warnaeka  w3-round-large w3-padding w3-border-black w3-border-bottom w3-center"> Unggah File</i>`;
+                        alert("gagal Unggah")
+                    }, 3000);
+                    //el_label.innerHTML = `Gagal Mengunggah`;
+                } else {
+                    idfile.value =r.idfile;
+                    prv.innerHTML= cekpreviewupload(elin.value,r.idfile);
+
+                }
+            })
+            .catch(er => {
+                console.log(er);
+                
+                alert("Maaf, terjadi kesalahan. Silakan ulangi sesi Anda sesaat lagi.")
+               })
+    }
+    reader.readAsDataURL(item);
+
+}
+
+const kirimmserver_mediagaleri = ()=>{
+    let d = atributgaleri();
+    let val = d.val;
+    let key = d.key;
+    let nol = d.nol;
+    
+    if(nol.length !== 0){
+        alert("Ada yang tidak diisi. Semua data harus terisi");
+        return
+    }
+    let divlod = document.querySelector(".loadingtopbar");
+    loadingtopbarin("loadingtopbar");
+    let ttbody = document.querySelector(".tempatgaleri");
+    let type = [3];
+    let tabel = JSON.stringify(val);
+    let keyy = JSON.stringify(key);
+    let tipe = JSON.stringify(type);
+    let datakirim = new FormData();
+
+    datakirim.append("key",keyy);
+    datakirim.append("tab","galeri");
+    datakirim.append("tabel",tabel);
+    datakirim.append("tipe",tipe);
+    let html = "";
+    //bersihkan inputannya;
+    let datagaleri = document.querySelectorAll("[data-galeri]");
+    for(i = 0 ; i < datagaleri.length; i++){
+    
+        datagaleri[i].value ="";
+    }
+    
+    let ab = document.querySelector("[data-galeri=dihapusoleh]");
+    ab.value = "tidak ada";
+    let ac = document.querySelector("[data-galeri=alasandihapus]");
+    ac.value = "tidak ada";
+
+    let eldiv = document.querySelector(".tambahmediagaleri");
+    
+    eldiv.className += " w3-hide";
+
+        
+     fetch(linktendik+"?action=simpanbarisketaburut",{
+        method:"post",
+        body:datakirim
+    }).then(m => m.json())
+    .then(r => {
+       //console.log(r);
+       alert("Berhasil diinput.")
+       let res = r.result;
+        let dtt = r.data;
+        let dt = r.data.filter(s => s.status !== "hapus");
+        jsongaleridihapus = dtt.filter(s=> s.status == "hapus");
+        jsongaleri = dtt.filter(s=> s.status !== "hapus");
+        
+        if(res > 1){
+            for(i = dt.length-1 ;  i>=0;i--){
+                let d = dt[i];
+                let hh = cekpreviewupload2(d.tipe,d.idfile);
+                html +=`<div class="w3-col l2" style="height: 270px;">
+                <div class="isigaleri">
+                    ${hh}
+                    <div class="overlaygaleri">
+                    Tgl ${tanggalfull(new Date(d.tglkejadian))}
+                        <div class="w3-text-white w3-margin">${d.keterangan}</div>
+                        <div class="w3-text-white w3-margin w3-tiny">Ditambahkan oleh: <br> ${d.oleh}</div>
+                        <div class="w3-white w3-margin w3-tiny">${d.tags}</div>
+                    <div class="textgaleri">
+                            <button onclick="window.open('https://drive.google.com/file/d/${d.idfile}/view?usp=drivesdk','', 'width=720,height=600')">Detail</button>
+                            <button onclick="hapusgaleri(${d.idbaris})">Hapus</button>
+                            
+                        </div>
+                      </div>
+                </div>
+            </div>`;
+            }
+            ttbody.innerHTML = html;
+        }
+        
+        clearInterval(stoploadingtopbar);
+               
+        divlod.style.width = "100%";
+        setTimeout(() => {
+            divlod.style.width = "1px"
+            divlod.className += " w3-hide";
+    
+        }, 3000);
+       
+        
+    })
+    .catch(er => console.log(er))
+    
+    
+
+};
+
+const btn_tambahmedia = ()=>{
+    let oleh = document.querySelector("[data-galeri=oleh");
+    oleh.value = namauser;
+    let status = document.querySelector("[data-galeri=status");
+    status.value = "dipublikasikan";
+    let eldiv = document.querySelector(".tambahmediagaleri");
+    let prv = document.querySelector(".previewgaleri");
+    prv.innerHTML ="";
+    eldiv.className = eldiv.className.replace("w3-hide","");
+}
+
+const gantispasi = (el) =>{
+    el.value = el.value.replace(/\s+/,"_");
+}
+
+const carimediagaleri = (el)=>{
+    let tbody,html = "",html2 = "";
+    let json = jsongaleri;;
+    tbody =  document.querySelector(".tempatgaleri");
+    
+    
+    if(json.length == 0){
+       
+        return;
+    }else{
+        let rec;
+        if(el.value ==""){
+            rec = json;
+        }else{
+            rec = json.filter(s => Object.entries(s).filter(([k,v]) =>{
+                let vv = v.toString().indexOf(el.value)//el.value.indexOf(v);
+                
+                if(vv>-1){
+                    return true
+                }else{
+                    return false
+                }
+            }).length!==0);
+        }
+        
+        if(rec.length == 0){
+            html = `<div class="w3-red w3-col l12 w3-center">Tidak ditemukan</div>`;
+            
+        }else{
+            let dt = rec;
+            for(i = dt.length-1 ;  i>=0;i--){
+                let d = dt[i];
+                let hh = cekpreviewupload2(d.tipe,d.idfile);
+                html +=`<div class="w3-col l2" style="height: 270px;">
+                <div class="isigaleri">
+                    ${hh}
+                    <div class="overlaygaleri">
+                    Tgl ${tanggalfull(new Date(d.tglkejadian))}
+                        <div class="w3-text-white w3-margin">${d.keterangan}</div>
+                        <div class="w3-text-white w3-margin w3-tiny">Ditambahkan oleh: <br> ${d.oleh}</div>
+                        <div class="w3-white w3-margin w3-tiny">${d.tags}</div>
+                    <div class="textgaleri">
+                            <button onclick="window.open('https://drive.google.com/file/d/${d.idfile}/view?usp=drivesdk','', 'width=720,height=600')">Detail</button>
+                            <button onclick="hapusgaleri(${d.idbaris})">Hapus</button>
+                    </div>
+                </div>
+                </div>
+                </div>`;
+            }
+            
+        
+        
+        
+            //////
+           
+            }
+            
+    }
+    
+    tbody.innerHTML = html;
+};
+const hapusgaleri = (id) =>{
+    let d = jsongaleri.filter(s=> s.idbaris == id)[0];
+
+    //console.log(d);
+    let konf = confirm("Anda yakin ingin menghapusnya? Jika iya, silakan berikan alasannya.")
+    if(konf){
+        let pr = prompt("Berikan Alasan dihapus","Contoh: Salah upload");
+        if(pr!== null){
+            let dt = atributgaleri();
+            let k = dt.key;
+            let val = [];
+            for(i = 0 ; i < k.length; i++){
+                val.push(d[k[i]])
+            }
+            val.splice(-4,3,"hapus",namauser,pr);
+            console.log(k);
+            console.log(val);
+            console.log(d);
+            let type=[3];
+            let tabel = JSON.stringify(val);
+            let keyy = JSON.stringify(k);
+            let tipe = JSON.stringify(type);
+            let datakirim = new FormData();
+        
+            datakirim.append("key",keyy);
+            datakirim.append("idbaris",id);
+            datakirim.append("tab","galeri");
+            datakirim.append("tabel",tabel);
+            datakirim.append("tipe",tipe);
+            let html = "";
+            let ttbody = document.querySelector(".tempatgaleri");
+            let divlod = document.querySelector(".loadingtopbar");
+            loadingtopbarin("loadingtopbar"); 
+            fetch(linktendik+"?action=simpanbarisketabidbaris",{
+                method:"post",
+                body:datakirim
+            }).then(m => m.json())
+            .then(r => {
+               //console.log(r);
+               alert("Berhasil dihapus");
+               
+               let res = r.result;
+                let dtt = r.data;
+                let dt = r.data.filter(s => s.status !== "hapus");
+                jsongaleridihapus = dtt.filter(s=> s.status == "hapus");
+                jsongaleri = dtt.filter(s=> s.status !== "hapus");
+                
+                if(res > 1){
+                    for(i = dt.length-1 ;  i>=0;i--){
+                        let d = dt[i];
+                        let hh = cekpreviewupload2(d.tipe,d.idfile);
+                        html +=`<div class="w3-col l2" style="height: 270px;">
+                        <div class="isigaleri">
+                            ${hh}
+                            <div class="overlaygaleri">
+                                Tgl ${tanggalfull(new Date(d.tglkejadian))}
+                                <div class="w3-text-white w3-margin">${d.keterangan}</div>
+                                <div class="w3-text-white w3-margin w3-tiny">Ditambahkan oleh: <br> ${d.oleh}</div>
+                                <div class="w3-white w3-margin w3-tiny">${d.tags}</div>
+                            <div class="textgaleri">
+                                    <button onclick="window.open('https://drive.google.com/file/d/${d.idfile}/view?usp=drivesdk','', 'width=720,height=600')">Detail</button>
+                                    <button onclick="hapusgaleri(${d.idbaris})">Hapus</button>
+                                    
+                                </div>
+                              </div>
+                        </div>
+                    </div>`;
+                    }
+                    ttbody.innerHTML = html;
+                }
+                
+                clearInterval(stoploadingtopbar);
+               
+                divlod.style.width = "100%";
+                setTimeout(() => {
+                    divlod.style.width = "1px"
+                    divlod.className += " w3-hide";
+            
+                }, 3000);
+            })
+            .catch(er => console.log(er))
+        }
+    }
+};
+
+const btn_historimedia = () =>{
+    let d = jsongaleridihapus;
+    let ttbody = document.querySelector(".tempatgaleri");
+    let html = `<button onclick="galery()" class="w3-btn warnaeka w3-border-bottom w3-border-black">Kembali</button>
+    <table class="w3-table-all garis">
+    <tr class="w3-pale-green">
+        <th>No.</th>
+        <th>Keterangan</th>
+        <th>Diunggah oleh</th>
+        <th>Dihapus Oleh</th>
+        <th>Alasan dihapus</th>
+        <th>link file</th>
+    </tr>`
+    for(i = 0 ; i < d.length; i++){
+        html +=`<tr>
+            <td>${i+1}</td>
+            <td>${d[i].keterangan}</td>
+            <td>${d[i].oleh}</td>
+            <td>${d[i].dihapusoleh}</td>
+            <td>${d[i].alasandihapus}</td>
+            
+            <td>
+                <button onclick="window.open('https://drive.google.com/file/d/${d[i].idfile}/view?usp=drivesdk','', 'width=720,height=600')">File</button>
+            </td>
+
+        </tr>`;
+    }
+    html +=`</table>`;
+    if(d.length ==0){
+        alert("Tidak ada file yang dihapus")
+    }else{
+        ttbody.innerHTML = html;
+    }
 }

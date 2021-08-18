@@ -39,7 +39,7 @@ const anjangsanaguru = () => {
     alert("Maaf, fitur belum tersedia")
 };
 
-
+const linktendik = jlo.ss_datanilai;
 
 ///////////////// source aafnbaruv7.js//////////////////////////////////////////////
 const pgeditnosoal = () => {
@@ -7740,11 +7740,14 @@ const daftarGambar = async () => {
         .then(j => {
             let html = `<div class="w3-row">`;
             for (let i = j.records.length - 1; i >= 0; i--) {
-                html += `<div class="w3-col l2 w3-border  w3-center">
-                ${j.records[i].htmlgambar.replace("img src", "img class='up_gam_mat' onclick='klikpotosiswa(this)' src")}
-                <br/><sub>${j.records[i].keterangan}</sub><br/>
-                <button class="w3-button w3-tiny w3-round-xlarge w3-green" onclick="kopipaste('kodegambar${i}')">Copy Kode</button>
-                </div>`;
+                html += `<div class="w3-col l2 w3-border w3-center w3-container w3-card"  >
+                <div style="height:80px;" >${j.records[i].keterangan}</div>
+                ${j.records[i].htmlgambar.replace("style=","").replace("img src", "img class='up_gam_mat l2' onclick='klikpotosiswa(this)' src").replace("'width:50%'","")}   
+                <br/>
+                <div class="w3-margin">
+                <button class="w3-button w3-tiny w3-round-xlarge w3-green" title="Copy kodenya, kemudian pastekan ditempat yang Anda inginkan" onclick="kopipaste('kodegambar${i}')">Copy Kode</button>
+                </div></div>`;
+               
                 let txtarea = document.createElement("textarea");
                 txtarea.setAttribute("id", "kodegambar" + i)
                 txtarea.value = j.records[i].htmlgambar;
@@ -7755,7 +7758,8 @@ const daftarGambar = async () => {
                 tempattextarea.appendChild(txtarea)
             }
 
-            html += `</div>`;
+            html += `</div>`; 
+            
             // let tabelmateri = document.createElement("table");
             // tabelmateri.setAttribute("class", "versi-table w3-card-4 w3-center");
             // tabelmateri.setAttribute("id", "tabeltabelkoleksiuploadgambar");
@@ -11534,33 +11538,6 @@ function uploadpotoessay(idpar) {
 
 };
 
-const infoupdate = () => {
-    loadingljk.style.display = "block";
-    fetch("/statis/update.json").then(m => m.json())
-        .then(k => {
-
-            // console.log(k.data);
-
-            let html = "<h3 class='w3-center'>Perbaikan beberapa versi </h3><ul class='w3-ul'>";
-            for (let i = k.length - 1; i >= 0; i--) {
-                html += `<li>Nama Versi ${k[i].namaversi} (Update ${k[i].tanggal})
-                <br/><ul style="type-list-style:decimal">`;
-                let ket = k[i].ket;
-                for (j = 0; j < ket.length; j++) {
-                    html += `<li>${ket[j]}</li>`
-                }
-
-                html += `</ul></li>`
-            };
-            html += "</ul>"
-            infoloadingljk.innerHTML = html;
-        })
-        .catch(er => {
-            console.log(er);
-
-        })
-}
-
 function dragElement(elmnt) {
     var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
     if (document.getElementById(elmnt.id + "header")) {
@@ -13241,5 +13218,536 @@ const editkronologi = (par) => {
         divket.innerHTML += `<br/><sub>Jika Anda ingin menggunakan materi ini lagi silakan membuatnya dalam versi terbaru di </sub> <label for="editakses_simpandraft_${par}" class="fn8editakses_tombolaksi warnaeka w3-small w3-round w3-bottom-border w3-border-black w3-text-black" style="cursor:pointer" title="Simpan ini,lalu klik TARUH DRAFT dari menu Unggah Pembelajaran">SINI</label>`;
         divtgl.setAttribute("class", "w3-hide");
 
+    }
+}
+
+
+const atributgaleri = () =>{
+    let setdata = document.querySelectorAll("[data-galeri]");
+    let atsetdata ;
+    let key = ["idbaris"];
+    let val = [];
+    let type = [3];
+    let v;
+    let nol=[]
+    for(i = 0 ; i < setdata.length; i++){
+        atsetdata = setdata[i].getAttribute("data-galeri");
+        v = setdata[i].value;
+        key.push(atsetdata);
+        val.push(v);
+        if(v ==""){
+            nol.push(i)
+        }
+    };
+    let ret = {}
+    ret.key = key;
+    ret.val = val;
+    ret.nol = nol;
+    return ret;
+}
+const galery = async() => {
+    
+    loadingtopbarin("loadingtopbar");
+    let js = atributgaleri();
+    let keyy = js.key;
+    
+    //////////////
+    let tab = "galeri";
+    
+    let html = "";
+    let ttbody = document.querySelector(".tempatgaleri");
+    
+    let key = JSON.stringify(keyy);
+    let datakirim = new FormData();
+
+    datakirim.append("tab",tab)
+    datakirim.append("key",key)
+    await fetch(linktendik+"?action=getpostdatafromtab",{
+        method:"post",
+        body:datakirim
+    }).then(m => m.json())
+    .then(r => {
+        
+        let res = r.result;
+        let dtt = r.data;
+        let dt = r.data.filter(s => s.status !== "hapus");
+        jsongaleridihapus = dtt.filter(s=> s.status == "hapus");
+        jsongaleri = dtt.filter(s=> s.status !== "hapus");
+        
+        if(res > 1){
+            for(i = dt.length-1 ;  i>=0;i--){
+                let d = dt[i];
+                let hh = cekpreviewupload2(d.tipe,d.idfile);
+                html +=`<div class="w3-col l2" style="height: 270px;">
+                <div class="isigaleri">
+                    ${hh}
+                    <div class="overlaygaleri">
+                    Tgl ${tanggalfull(new Date(d.tglkejadian))}
+                        <div class="w3-text-white w3-margin">${d.keterangan}</div>
+                        <div class="w3-text-white w3-margin w3-tiny">Ditambahkan oleh: <br> ${d.oleh}</div>
+                        <div class="w3-white w3-margin w3-tiny">${d.tags}</div>
+                    <div class="textgaleri">
+                            <button onclick="window.open('https://drive.google.com/file/d/${d.idfile}/view?usp=drivesdk','', 'width=720,height=600')">Detail</button>
+                            <button onclick="hapusgaleri(${d.idbaris})">Hapus</button>
+                            
+                        </div>
+                      </div>
+                </div>
+            </div>`;
+            }
+            ttbody.innerHTML = html;
+        }
+        
+        
+        
+        tampilinsublamangurukelas("galery");
+    }).catch(er => {
+        console.log(er);
+        alert("Terjadi kesalahan. Silakan ulangi sesi Anda sesaat lagi.")
+    })
+
+    clearInterval(stoploadingtopbar);
+    let divlod = document.querySelector(".loadingtopbar");
+    divlod.style.width = "100%";
+    setTimeout(() => {
+        divlod.style.width = "1px"
+        divlod.className += " w3-hide";
+
+    }, 3000);
+
+    //////////////
+    
+
+
+}
+const cekpreviewupload = (tipe,idfile) =>{
+    let res;
+    let img = ["jpg","jpeg","JPG","JPEG","png","PNG","gif","GIF"]
+    let pdf = ["pdf","PDF"];
+    let word = ["doc","docx","DOC","DOCX"];
+    let ppt = ["ppt","pptx","pptm"]
+    let excel = ["xls","csv","CSV","XLS","xlsx","xlsm","xlsb","XLSX","XLSM","XLSB"];
+    let video = ["mp4","mkv","3gp","mpeg","flv"];
+    let audio = ["mp3","wav"];
+    let rar = ["rar","zip","7-zip"];
+    if(img.indexOf(tipe)>-1){
+        res = `<img src="https://drive.google.com/uc?export=view&id=${idfile}" class="w3-third"/>`;
+    }else if(pdf.indexOf(tipe)>-1){
+        res = `<iframe src="https://drive.google.com/uc?export=view&id=${idfile}" class="w3-third"></iframe>`;
+
+    }else if(word.indexOf(tipe) >-1){
+        res = `<img src="/img/word_icon.png"  class="w3-third"/>`;
+        
+    }else if(excel.indexOf(tipe) >-1){
+        res = `<img src="/img/excel_icon.png"  class="w3-third"/>`;
+        
+    }else if(video.indexOf(tipe) >-1){
+        res = `<img src="/img/video_icon.png"  class="w3-third"/>`;
+        
+    }else if(audio.indexOf(tipe) >-1){
+        res = `<img src="/img/sound_icon.png"  class="w3-third"/>`;
+        
+    }else if(rar.indexOf(tipe) >-1){
+        res = `<img src="/img/rar_icon.png"  class="w3-third"/>`;
+        
+    }else if(ppt.indexOf(tipe) >-1){
+        res = `<img src="/img/ppt_icon.png"  class="w3-third"/>`;
+        
+    }else{
+        res = `<img src="/img/file_icon.png"  class="w3-third"/>`;
+        
+        
+    }
+    return res
+
+}
+const cekpreviewupload2 = (tipe,idfile) =>{
+    let res;
+    let img = ["jpg","jpeg","JPG","JPEG","png","PNG","gif","GIF"]
+    let pdf = ["pdf","PDF"];
+    let word = ["doc","docx","DOC","DOCX"];
+    let ppt = ["ppt","pptx","pptm"]
+    let excel = ["xls","csv","CSV","XLS","xlsx","xlsm","xlsb","XLSX","XLSM","XLSB"];
+    let video = ["mp4","mkv","3gp","mpeg","flv"];
+    let audio = ["mp3","wav"];
+    let rar = ["rar","zip","7-zip"];
+    if(img.indexOf(tipe)>-1){
+        res = `<img src="https://drive.google.com/uc?export=view&id=${idfile}" />`;
+    }else if(pdf.indexOf(tipe)>-1){
+        res = `<iframe src="https://drive.google.com/uc?export=view&id=${idfile}"></iframe>`;
+        
+    }else if(word.indexOf(tipe) >-1){
+        res = `<img src="/img/word_icon.png" />`;
+        
+    }else if(excel.indexOf(tipe) >-1){
+        res = `<img src="/img/excel_icon.png" />`;
+        
+    }else if(video.indexOf(tipe) >-1){
+        res = `<img src="/img/video_icon.png" />`;
+        
+    }else if(audio.indexOf(tipe) >-1){
+        res = `<img src="/img/sound_icon.png" />`;
+        
+    }else if(rar.indexOf(tipe) >-1){
+        res = `<img src="/img/rar_icon.png" />`;
+        
+    }else if(ppt.indexOf(tipe) >-1){
+        res = `<img src="/img/ppt_icon.png" />`;
+        
+    }else{
+        res = `<img src="/img/file_icon.png" />`;
+        
+        
+    }
+    return res
+
+}
+const inputfileunggahgaleri = () =>{
+    let item = "";
+    item = document.getElementById("unggahmediagaleri").files[0];
+    
+    let elin = document.querySelector("[data-galeri=tipe]");
+    let elinn = document.querySelector(".ukuranfilegaleri");
+    let prv = document.querySelector(".previewgaleri");
+    prv.innerHTML = `<img src="/img/barloading.gif">`
+    let idfile = document.querySelector("[data-galeri=idfile]");
+    let namafile = item.name;
+    let namafolder = "000 GALERI"
+    elin.value = namafile.match(/(\.[^.]+)$/g)[0].replace(".","");
+    elinn.innerHTML = formatBytes(item.size,2);
+    
+    var reader = new FileReader();
+    reader.onload = function (e) {
+        //document.getElementById('uploadForm').submit();
+
+        let src = e.target.result;
+        let dataa = src.replace(/^.*,/, '');
+        let tipe = e.target.result.match(/^.*(?=;)/)[0];
+        //fn_upload_file(id_input, data, tipe);
+        // console.log(tipe);
+        // console.log(data);
+        
+    
+        let data = new FormData();
+      
+        data.append("fileContent", dataa);
+        data.append("mimeType", tipe);
+        data.append("filename", namafile);
+        data.append("kelas", namafolder);
+         // + "?action=uploaddulu";
+        fetch(linktendik+"?action=uploadfiledulu", {
+            method: 'post',
+            body: data
+        }).then(m => m.json())
+            .then(r => {
+                if (r.sukses == "Gagal") {
+                    setTimeout(() => {
+                        //el_label.innerHTML = `<i class="fa fa-upload warnaeka  w3-round-large w3-padding w3-border-black w3-border-bottom w3-center"> Unggah File</i>`;
+                        alert("gagal Unggah")
+                    }, 3000);
+                    //el_label.innerHTML = `Gagal Mengunggah`;
+                } else {
+                    idfile.value =r.idfile;
+                    prv.innerHTML= cekpreviewupload(elin.value,r.idfile);
+
+                }
+            })
+            .catch(er => {
+                console.log(er);
+                
+                alert("Maaf, terjadi kesalahan. Silakan ulangi sesi Anda sesaat lagi.")
+               })
+    }
+    reader.readAsDataURL(item);
+
+}
+
+const kirimmserver_mediagaleri = ()=>{
+    let d = atributgaleri();
+    let val = d.val;
+    let key = d.key;
+    let nol = d.nol;
+    
+    if(nol.length !== 0){
+        alert("Ada yang tidak diisi. Semua data harus terisi");
+        return
+    }
+    let divlod = document.querySelector(".loadingtopbar");
+    loadingtopbarin("loadingtopbar");
+    let ttbody = document.querySelector(".tempatgaleri");
+    let type = [3];
+    let tabel = JSON.stringify(val);
+    let keyy = JSON.stringify(key);
+    let tipe = JSON.stringify(type);
+    let datakirim = new FormData();
+
+    datakirim.append("key",keyy);
+    datakirim.append("tab","galeri");
+    datakirim.append("tabel",tabel);
+    datakirim.append("tipe",tipe);
+    let html = "";
+    //bersihkan inputannya;
+    let datagaleri = document.querySelectorAll("[data-galeri]");
+    for(i = 0 ; i < datagaleri.length; i++){
+    
+        datagaleri[i].value ="";
+    }
+    let ab = document.querySelector("[data-galeri=dihapusoleh]");
+    ab.value = "tidak ada";
+    let ac = document.querySelector("[data-galeri=alasandihapus]");
+    ac.value = "tidak ada";
+
+    let eldiv = document.querySelector(".tambahmediagaleri");
+    
+    eldiv.className += " w3-hide";
+
+        
+     fetch(linktendik+"?action=simpanbarisketaburut",{
+        method:"post",
+        body:datakirim
+    }).then(m => m.json())
+    .then(r => {
+       //console.log(r);
+       alert("Berhasil diinput.")
+       let res = r.result;
+        let dtt = r.data;
+        let dt = r.data.filter(s => s.status !== "hapus");
+        jsongaleridihapus = dtt.filter(s=> s.status == "hapus");
+        jsongaleri = dtt.filter(s=> s.status !== "hapus");
+        
+        if(res > 1){
+            for(i = dt.length-1 ;  i>=0;i--){
+                let d = dt[i];
+                let hh = cekpreviewupload2(d.tipe,d.idfile);
+                html +=`<div class="w3-col l2" style="height: 270px;">
+                <div class="isigaleri">
+                    ${hh}
+                    <div class="overlaygaleri">
+                    Tgl ${tanggalfull(new Date(d.tglkejadian))}
+                        <div class="w3-text-white w3-margin">${d.keterangan}</div>
+                        <div class="w3-text-white w3-margin w3-tiny">Ditambahkan oleh: <br> ${d.oleh}</div>
+                        <div class="w3-white w3-margin w3-tiny">${d.tags}</div>
+                    <div class="textgaleri">
+                            <button onclick="window.open('https://drive.google.com/file/d/${d.idfile}/view?usp=drivesdk','', 'width=720,height=600')">Detail</button>
+                            <button onclick="hapusgaleri(${d.idbaris})">Hapus</button>
+                            
+                        </div>
+                      </div>
+                </div>
+            </div>`;
+            }
+            ttbody.innerHTML = html;
+        }
+        
+        clearInterval(stoploadingtopbar);
+               
+        divlod.style.width = "100%";
+        setTimeout(() => {
+            divlod.style.width = "1px"
+            divlod.className += " w3-hide";
+    
+        }, 3000);
+       
+        
+    })
+    .catch(er => console.log(er))
+    
+    
+
+};
+
+const btn_tambahmedia = ()=>{
+    let oleh = document.querySelector("[data-galeri=oleh");
+    oleh.value = namauser;
+    let status = document.querySelector("[data-galeri=status");
+    status.value = "dipublikasikan";
+    let eldiv = document.querySelector(".tambahmediagaleri");
+    let prv = document.querySelector(".previewgaleri");
+    prv.innerHTML ="";
+    eldiv.className = eldiv.className.replace("w3-hide","");
+}
+
+const gantispasi = (el) =>{
+    el.value = el.value.replace(/\s+/,"_");
+}
+
+const carimediagaleri = (el)=>{
+    let tbody,html = "",html2 = "";
+    let json = jsongaleri;;
+    tbody =  document.querySelector(".tempatgaleri");
+    
+    
+    if(json.length == 0){
+       
+        return;
+    }else{
+        let rec;
+        if(el.value ==""){
+            rec = json;
+        }else{
+            rec = json.filter(s => Object.entries(s).filter(([k,v]) =>{
+                let vv = v.toString().indexOf(el.value)//el.value.indexOf(v);
+                
+                if(vv>-1){
+                    return true
+                }else{
+                    return false
+                }
+            }).length!==0);
+        }
+        
+        if(rec.length == 0){
+            html = `<div class="w3-red w3-col l12 w3-center">Tidak ditemukan</div>`;
+            
+        }else{
+            let dt = rec;
+            for(i = dt.length-1 ;  i>=0;i--){
+                let d = dt[i];
+                let hh = cekpreviewupload2(d.tipe,d.idfile);
+                html +=`<div class="w3-col l2" style="height: 270px;">
+                <div class="isigaleri">
+                    ${hh}
+                    <div class="overlaygaleri">
+                    Tgl ${tanggalfull(new Date(d.tglkejadian))}
+                        <div class="w3-text-white w3-margin">${d.keterangan}</div>
+                        <div class="w3-text-white w3-margin w3-tiny">Ditambahkan oleh: <br> ${d.oleh}</div>
+                        <div class="w3-white w3-margin w3-tiny">${d.tags}</div>
+                    <div class="textgaleri">
+                            <button onclick="window.open('https://drive.google.com/file/d/${d.idfile}/view?usp=drivesdk','', 'width=720,height=600')">Detail</button>
+                            <button onclick="hapusgaleri(${d.idbaris})">Hapus</button>
+                    </div>
+                </div>
+                </div>
+                </div>`;
+            }
+            
+        
+        
+        
+            //////
+           
+            }
+            
+    }
+    
+    tbody.innerHTML = html;
+};
+const hapusgaleri = (id) =>{
+    let d = jsongaleri.filter(s=> s.idbaris == id)[0];
+
+    //console.log(d);
+    let konf = confirm("Anda yakin ingin menghapusnya? Jika iya, silakan berikan alasannya.")
+    if(konf){
+        let pr = prompt("Berikan Alasan dihapus","Contoh: Salah upload");
+        if(pr!== null){
+            let dt = atributgaleri();
+            let k = dt.key;
+            let val = [];
+            for(i = 0 ; i < k.length; i++){
+                val.push(d[k[i]])
+            }
+            val.splice(-4,3,"hapus",namauser,pr);
+            console.log(k);
+            console.log(val);
+            console.log(d);
+            let type=[3];
+            let tabel = JSON.stringify(val);
+            let keyy = JSON.stringify(k);
+            let tipe = JSON.stringify(type);
+            let datakirim = new FormData();
+        
+            datakirim.append("key",keyy);
+            datakirim.append("idbaris",id);
+            datakirim.append("tab","galeri");
+            datakirim.append("tabel",tabel);
+            datakirim.append("tipe",tipe);
+            let html = "";
+            let ttbody = document.querySelector(".tempatgaleri");
+            let divlod = document.querySelector(".loadingtopbar");
+            loadingtopbarin("loadingtopbar"); 
+            fetch(linktendik+"?action=simpanbarisketabidbaris",{
+                method:"post",
+                body:datakirim
+            }).then(m => m.json())
+            .then(r => {
+               //console.log(r);
+               alert("Berhasil dihapus");
+               
+               let res = r.result;
+                let dtt = r.data;
+                let dt = r.data.filter(s => s.status !== "hapus");
+                jsongaleridihapus = dtt.filter(s=> s.status == "hapus");
+                jsongaleri = dtt.filter(s=> s.status !== "hapus");
+                
+                if(res > 1){
+                    for(i = dt.length-1 ;  i>=0;i--){
+                        let d = dt[i];
+                        let hh = cekpreviewupload2(d.tipe,d.idfile);
+                        html +=`<div class="w3-col l2" style="height: 270px;">
+                        <div class="isigaleri">
+                            ${hh}
+                            <div class="overlaygaleri">
+                                Tgl ${tanggalfull(new Date(d.tglkejadian))}
+                                <div class="w3-text-white w3-margin">${d.keterangan}</div>
+                                <div class="w3-text-white w3-margin w3-tiny">Ditambahkan oleh: <br> ${d.oleh}</div>
+                                <div class="w3-white w3-margin w3-tiny">${d.tags}</div>
+                            <div class="textgaleri">
+                                    <button onclick="window.open('https://drive.google.com/file/d/${d.idfile}/view?usp=drivesdk','', 'width=720,height=600')">Detail</button>
+                                    <button onclick="hapusgaleri(${d.idbaris})">Hapus</button>
+                                    
+                                </div>
+                              </div>
+                        </div>
+                    </div>`;
+                    }
+                    ttbody.innerHTML = html;
+                }
+                
+                clearInterval(stoploadingtopbar);
+               
+                divlod.style.width = "100%";
+                setTimeout(() => {
+                    divlod.style.width = "1px"
+                    divlod.className += " w3-hide";
+            
+                }, 3000);
+            })
+            .catch(er => console.log(er))
+        }
+    }
+};
+
+const btn_historimedia = () =>{
+    let d = jsongaleridihapus;
+    let ttbody = document.querySelector(".tempatgaleri");
+    let html = `<button onclick="galery()" class="w3-btn warnaeka w3-border-bottom w3-border-black">Kembali</button>
+    <table class="w3-table-all garis">
+    <tr class="w3-pale-green">
+        <th>No.</th>
+        <th>Keterangan</th>
+        <th>Diunggah oleh</th>
+        <th>Dihapus Oleh</th>
+        <th>Alasan dihapus</th>
+        <th>link file</th>
+    </tr>`
+    for(i = 0 ; i < d.length; i++){
+        html +=`<tr>
+            <td>${i+1}</td>
+            <td>${d[i].keterangan}</td>
+            <td>${d[i].oleh}</td>
+            <td>${d[i].dihapusoleh}</td>
+            <td>${d[i].alasandihapus}</td>
+            
+            <td>
+                <button onclick="window.open('https://drive.google.com/file/d/${d[i].idfile}/view?usp=drivesdk','', 'width=720,height=600')">File</button>
+            </td>
+
+        </tr>`;
+    }
+    html +=`</table>`;
+    if(d.length ==0){
+        alert("Tidak ada file yang dihapus")
+    }else{
+        ttbody.innerHTML = html;
     }
 }

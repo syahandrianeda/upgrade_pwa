@@ -1,3 +1,41 @@
+18 Agustus
+
+
+
+
+7 Agustus - 9 Agustus
+
+* Gambar
+- arsipsurat.png
+- galeri.jpg
+- studio.png
+- icons >> 44png (upgrade)
+
+* css
+- /css/stylegurukelas.css
+
+* folder USER
+- /user/kepsek.html
+- /user/staff.html
+- /usr/siswa.html
+- /user/guru.html
+- /user/gmp.html
+
+* folder STATIS
+- /statis/staff.js
+- /statis/kepsek.js
+- /statis/update.json
+- /statis/siswa.js
+
+* folder main
+- /sw.js (asset ditambah)
+
+* Google Script
+- akreditasi Kepala Sekolah
+
+
+
+
 4 agustus - 7 Agustus
 skrip yang diubah besar-besaran:
 - /statis/gk.js
