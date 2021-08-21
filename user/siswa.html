@@ -122,7 +122,7 @@
     <link crossorigin='' href='//ajax.googleapis.com' rel='dns-prefetch' />
 
 
-    <!-- <link rel="manifest" href="/manifest.json"> -->
+    <link rel="manifest" href="/manifest.json">
     <!-- ios support-->
     <link rel="apple-touch-icon" href="/img/icons/pic96.png">
     <meta name="apple-mobile-web-app-status-bar" content="#ffffff">
@@ -274,6 +274,27 @@
                 <div class="klikmateri w3-container" style="overflow-x: auto; margin:0 auto">
                 </div>
             </div>
+            
+            <div class="pesankhususgurukelas  w3-card w3-white w3-margin-top w3-small w3-container w3-round-large w3-hide w3-center">
+                <h3>Google Meet Ananda</h3>
+                Di kelas Ananda akan melaksanakan Google Meet pada hari ini:<hr  class="w3-border-bottom"/>
+                <div class="w3-center divumuminmeet">
+                    <div class="w3-third w3-border w3-round w3-container">
+                        <h4>Pertemuan ke-1</h4>
+                        pada <span class="umuminmeet_waktumulai">WAKTU MULAI</span> sampai dengan <span class="umuminmeet_waktumulai">WAKTU AKHIR</span> dengan link: <br><br>
+                        <a href="javascript:void(0);" class="w3-btn warnaeka w3-border-black w3-border-bottom w3-round-larg umuminmeet_link">Link Google Meet</a>
+                        <br><br>
+
+                    </div>
+                    <div class="w3-third w3-border w3-round w3-container">
+                        <h4>Pertemuan ke-2</h4>
+                        pada <span class="umuminmeet_waktumulai">WAKTU MULAI</span> sampai dengan <span class="umuminmeet_waktumulai">WAKTU AKHIR</span> dengan link: <br><br>
+                        <a href="javascript:void(0);" class="w3-btn warnaeka w3-border-black w3-border-bottom w3-round-larg umuminmeet_link">Link Google Meet</a>
+                        <br><br>
+
+                    </div>
+                </div>
+            </div>
             <div class="pesankhususkepsek w3-card w3-white w3-margin-top w3-container w3-round-large">
                 <h3 class="w3-center">Segera Daftar Ulang</h3>
                 Dimohon untuk seluruh siswa, untuk mengisi melengkapi formulir <b>Ajuan Perubahan Data</b> untuk
@@ -290,11 +311,6 @@
                     <li>Kartu Keluarga</li>
                     <li>KIP/PKH/KIS (jika memiliki)</li>
                 </ul>
-            </div>
-            <div class="pesankhususgurukelas  w3-card w3-white w3-margin-top w3-container w3-round-large">
-                <p class="w3-center">
-
-                </p>
             </div>
             <br />
         </div>
@@ -600,7 +616,11 @@
 
                 </form>
                 <hr />
-
+                <div class="w3-tiny w3-center">Bagi perangkat HP yang tidak bisa menggunakan fitur ini (Keterangan setelah poto: <b><i>Tidak dapat menyelesaikan operasi sebelumnya, karena sisa memori tidak cukup</i></b> atau <i>kembali loading setelah mengirim poto</i>)
+                    <br/><br/>
+                    <button onclick="absencarabeda()" class="w3-btn warnaeka w3-border-bottom w3-border-black w3-round-large">Absen cara lain<sup class="w3-text-red">BETA</sup></button>
+                    <br/><br/>Jika menggunakan fitur ini, pastikan Ananda mengijinkan perangkat HP-nya untuk mengakses Kamera (Butuh ijin akses kamera HP)
+                </div>
                 <form name="bantukirim" id="bantukirim">
                     <div id="thankyou_messagekirim">
                     </div>
@@ -993,6 +1013,57 @@
 
         </div>
     </div>
+    <div class="w3-modal w3-light-gray" id="modalabsencarabeda"> 
+        <div class="w3-modal-content">
+            <div class="warnaeka w3-bottombar w3-border-black w3-text-black w3-center">
+                <button class="w3-red w3-btn w3-right" onclick="tutupmodalabsen()">&times;</button>
+                <h3>ABSEN SISWA <sup class="w3-text-red w3-tiny">(Beta)</sup></h3>
+            </div>
+            
+            <div class="prosesabsenbaru w3-center"></div>
+           
+            <div class="w3-container w3-center forkameraabsen">
+                <video poster="/img/192.png" id="prevkamerabsen" controls style="width:100%;max-height:500px;border:1px solid black">
+                    <source src="">
+                </video>
+                <button onclick="takepicture()" style="position:relative;margin:0 auto;" class="w3-btn warnaeka">Ambil Gambar</button> 
+                <br/>
+                <br/>
+                Pilih Kehadiran:<br>
+                <select class="w3-select w3-border w3-border w3-center" style="width:50%" data-absenbaru="kehadiran">
+                    <option value="Hadir" selected>Hadir</option>
+                    <option value="Ijin">Ijin</option>
+                    <option value="Sakit">Sakit</option>
+                </select>
+                <br>
+                <br>
+                <br>
+                <br>
+            </div> 
+            <div class="w3-container w3-center w3-hide">
+                <canvas id="canvasabsen"></canvas>
+                <br/>
+                Result Poto<br>
+                <img src="/img/192.png" id="resultkamerabsen" class="w3-image"/>
+                <br>
+
+                <input name="tokensiswa" data-absenbaru="tokensiswa"><br>
+                <input name="id" data-absenbaru="id"><br />
+                <input name="name" data-absenbaru="name"><br />
+                <!-- <input name="kehadiran" /><br /> -->
+                <input name="fileContent" data-absenbaru="fileContent" id="idbaru_fileContent"><br>
+                <input name="kelas" data-absenbaru="kelas"/>
+                
+            </div>
+            <div class="w3-container w3-center forkirimabsen">
+                <hr/>
+                <button class="w3-btn w3-round-large w3-teal w3-border-bottom w3-border-yellow" onclick="kirimserver_absenbaru()">Kirim Absen</button>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+    </div>
     <iframe id="iframeprint" name="iframeprint" style="display:none"></iframe>
     <footer class="w3-main w3-yellow" style="text-align:center">Telah dilisensikan untuk <a href="https://lamaso.online"
             target="_blank" rel="noopener">PT EKA CIPTA MULTITAMA</a>
@@ -1001,7 +1072,7 @@
     <script src="/timekbm.js"></script>
     <script src="/statis/siswa.js"></script>
 
-
+    <div id="tempattextarea" style="display: none;"></div>
 
 
 

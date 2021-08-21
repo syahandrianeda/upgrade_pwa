@@ -234,11 +234,33 @@
                 </select>
             </h5>
         </header>
-        <div class="w3-main w3-margin w3-animate-zoom w3-card-4 w3-padding" style="background-color:rgb(250, 234, 8)">
-            <div class="pesankhususkepsek w3-card w3-white w3-margin-top w3-container w3-round-large w3-hide">
-            </div>
-            <div class="pesankhusussiswa w3-card w3-white w3-margin-top w3-container w3-round-large w3-hide">
-                Mohon maaf, beberapa fitur Sedang Proses Upgrade Data.
+        <div class="w3-main w3-margin w3-small w3-animate-zoom w3-card-4 w3-padding" style="background-color:rgb(250, 234, 8)">
+            <div class="pesankhusussiswa w3-card w3-white w3-margin-top w3-container w3-round-large w3-small w3-hide"></div>
+            <div class="pesankhususkepsek w3-card w3-white w3-margin-top w3-small w3-container w3-round-large w3-hide w3-center">
+                <h3>Google Meet Anda</h3>
+                Di kelas Anda, Anda akan melaksanakan Google Meet pada hari ini:<hr  class="w3-border-bottom"/>
+                <div class="w3-center divumuminmeet">
+                    <div class="w3-third w3-border w3-round w3-container">
+                        <h4>Pertemuan ke-1</h4>
+                        pada <span class="umuminmeet_waktumulai">WAKTU MULAI</span> sampai dengan <span class="umuminmeet_waktumulai">WAKTU AKHIR</span> dengan link: <br><br>
+                        <a href="javascript:void(0);" class="w3-btn warnaeka w3-border-black w3-border-bottom w3-round-larg umuminmeet_link">Link Google Meet</a>
+                        <br><br>
+
+                    </div>
+                    <div class="w3-third w3-border w3-round w3-container">
+                        <h4>Pertemuan ke-2</h4>
+                        pada <span class="umuminmeet_waktumulai">WAKTU MULAI</span> sampai dengan <span class="umuminmeet_waktumulai">WAKTU AKHIR</span> dengan link: <br><br>
+                        <a href="javascript:void(0);" class="w3-btn warnaeka w3-border-black w3-border-bottom w3-round-larg umuminmeet_link">Link Google Meet</a>
+                        <br><br>
+
+                    </div>
+                </div>
+                Jika waktu pelaksanaan Google Meet sudah berlangsung dan link tombol di atas belum berfungsi juga, silakan klik<br> 
+                <button class="w3-btn warnaeka w3-round-large" onclick="window.location.reload(true)">Reload</button>
+                <div class="w3-clear"></div>
+                <br>
+                <br>
+                <br>
             </div>
         </div>
 
@@ -307,7 +329,7 @@
                     <h3>Frame</h3>
                 </div>
             </div>
-            <div class="w3-quarter "  style="cursor: pointer; margin:50px 0" onclick="alert('Masih dalam uji coba.')">
+            <div class="w3-quarter "  style="cursor: pointer; margin:50px 0" onclick="menugooglemeet()">
                 
                 <div class="w3-container n_zoom w3-center">
                     <div><img src="/img/googlemeet.png" style="height: 60px;" alt="lamaso"></div>
@@ -1038,16 +1060,17 @@
 
 
         </div>
-        <div clas="w3-container w3-padding" id="datakehadiranguru">
-            <h3>Data Kehadiran Piket</h3>
+        <div clas="w3-container w3-margin" id="datakehadiranguru">
+            <div style="margin:0 auto;width:90%">
+                <h3>Data Kehadiran Piket</h3>
             <div class="w3-container ">
 
                 <div class="w3-purple w3-panel">
 
                     <div class="w3-container w3-center">
                         <h3>Kehadiran/Piket<br><span id="namagurupiket">Saya</span></h3>
-                        <img class="w3-card-4 imgguruabsen w3-aqua" src="/img/lamaso.webp" alt="Avatar"
-                            style="width:40%">
+                        <img class="w3-card-4 imgguruabsen w3-aqua w3-image" src="/img/lamaso.webp" alt="Avatar"
+                            >
                         <div class="ketabsenkehadiranguru"><i class="fa fa-spin fa-spinner"></i> kehadiran saya ...
                         </div>
 
@@ -1102,8 +1125,8 @@
 
             </select>
             <hr>
-            <div class="w3-container" id="divmodalabsenkehadiranguru">
-                <table class="w3-table-all garis w3-tiny w3-centered">
+            <div id="divmodalabsenkehadiranguru">
+                <table class="tabelbiasa w3-tiny w3-centered">
                     <tr>
                         <th colspan="7">
                             Bulan : <span id="modalnamabulan">Silakan Pilih Bulannya terlebih dulu</span>
@@ -1190,7 +1213,7 @@
                 <div id="ketketliburkehadiranguru"></div>
 
             </div>
-
+            </div>
 
         </div>
         <div class="w3-container" id="dataraport">
@@ -2197,23 +2220,25 @@
                             Tanggal Kegiatan/kejadian:
                             <input type="date" class="w3-input w3-border" data-galeri="tglkejadian" />
                             <br/>
-                            Unggah File: <label for="unggahmediagaleri" class="warnaeka tangan w3-border-bottom w3-border-black w3-round"><i class="fa fa-upload"></i> Unggah</label>
+                            <label for="unggahmediagaleri" class="w3-btn warnaeka tangan w3-border-bottom w3-border-black w3-round"><i class="fa fa-upload"></i> Unggah</label>
+                            <br><sub>Anda bisa memilih lebih dari satu file</sub>
                             <br>
-                            <input type="file" id="unggahmediagaleri" onchange="inputfileunggahgaleri()" class="w3-hide"/>
+                            <input type="file" id="unggahmediagaleri" onchange="inputfileunggahgalerimultiple()" multiple class="w3-hide"/>
                             <div class="w3-tiny">
-                                Ukuran File: <span class="ukuranfilegaleri"></span><br/>
                                 Batas maksimal yang dapat dikirim adalah 50MB (Saran: Lebih baik mengirimkan file ukuran kurang dari 20 MB)
                             </div>
-                            <div class="previewgaleri">
-
+                            <div class="previewgaleriload"></div>
+                            <div class="previewgaleri"></div>
+                            
+                            <div class="w3-hide">
+                                <input type="text" data-galeri="idfile" ><br>
+                                <input type="text" data-galeri="tipe"  disabled><br>
+                                <input type="text" data-galeri="oleh"   disabled>
+                                <input type="text" data-galeri="status"  disabled>
+                                <input type="text" data-galeri="dihapusoleh" value="Tidak Ada" disabled>
+                                <input type="text" data-galeri="alasandihapus"  value="Tidak Ada" disabled>
                             </div>
 
-                            <input type="text" data-galeri="idfile" class="w3-hide" disabled><br>
-                            <input type="text" data-galeri="tipe" class="w3-hide" disabled><br>
-                            <input type="text" data-galeri="oleh"  class="w3-hide" disabled>
-                            <input type="text" data-galeri="status"  class="w3-hide" disabled>
-                            <input type="text" data-galeri="dihapusoleh" value="Tidak Ada" class="w3-hide" disabled>
-                            <input type="text" data-galeri="alasandihapus"  value="Tidak Ada" class="w3-hide" disabled>
                         </div>
                         <div class="w3-container w3-padding">
                             Tag:
@@ -2384,6 +2409,54 @@
                           </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="w3-container w3-small" id="divgooglemeet" style="display:none">
+            <h3>Google Meet</h3>
+            <div class="w3-container w3-padding w3-center w3-border w3-round w3-white tombolgooglemeet">
+                <button class="w3-btn warnaeka w3-bottombar w3-border-black w3-round-large" onclick="googlemeet()">Buat Link Google Meet</button>
+            </div>
+            Tabel Berikut adalah link google meet yang dipublikasikan di kelas Anda:
+            <div style="overflow-x:auto">
+                <table class="w3-table-all garis tabelgooglemeet">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Judul</th>
+                            <th>Moderator</th>
+                            <th>Tanggal Mulai</th>
+                            <th>Tanggal Berakhir</th>
+                            <th>Status</th>
+                            <th>Untuk kelas</th>
+                            <th>Link Google Meet</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Judul 50 Karakter</td>
+                            <td>Moderator cukup satu</td>
+                            <td>TGL Mulai</td>
+                            <td>TGL Akhir</td>
+                            <td>Aktif</td>
+                            <td>Kelas</td>
+                            <td>https://meet.google/sss-xxx-yyy</td>
+                            <td><button class="w3-btn w3-gray" onclick="alert('tes dihapus')">Hapus</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                Keterangan:
+                <ul>
+                    <li>Kolom Status akan berisi Aktif atau Dihapus</li>
+                    <li>
+                        Status <b>Aktif</b> adalah status dimana link google meet dapat diakses oleh siswa/guru jika HARI/TANGGAL sedang/akan berlangsung.
+                    </li>
+                    <li>
+                        Status <b>Dihapus</b> adalah status dimana link google meet tidak akan muncul di elamaso siswa/guru. Meski HARI/TANGGAL sedang/akan/belum berlangsung.
+                    </li>
+                    <li>Link Google meet akan muncul di HEADER E-lamaso pada HARI berlangsung. Tombol untuk mengakses Aplikasi Google  Meetnya akan muncul pada Waktu kegiatan berlangsung </li>
+                </ul>
             </div>
         </div>
         <div style="height:600px"></div>
@@ -2912,7 +2985,7 @@
         </div>
     </div>
 
-    <div id="tempattextarea"></div>
+    <div id="tempattextarea" style="display: none;"></div>
     <div id="txtareapetunjuk" style="display:none">
         <textarea id="ketpen1">_JUDUL_</textarea>
         <textarea id="ketpen2">_YOUTUBE_</textarea>
@@ -3217,6 +3290,63 @@ _OPSI-PG-C_1C #
                 <hr />
                 <button class="wa" id="tombol_addindikatorkompetensi">Simpan dan Keluar</button>
             </div>
+        </div>
+    </div>
+    <div class="w3-modal" id="modalmeet">
+        <div class="w3-modal-content" style="width:90%">
+            <div class="warnaeka w3-card">
+                <button class="w3-btn w3-red w3-right" onclick="modalmeet.style.display='none'">&times;</button>
+                <h4 class="w3-center">BUAT LINK GOOGLE MEET</h4>
+            </div>
+            <div class="w3-container datagooglemeet">
+                <h5>Silakan lengkapi terlebih dahulu isian berikut</h5>
+                <div class="w3-row w3-small">
+                    <div class="w3-half">
+                        <ul class="w3-ul">
+                            <li>
+                                Mulai Dilaksanakan (tanggal dan waktu): <input type="datetime-local" class="w3-input w3-border w3-border-blue" data-meet="waktumulai"/>
+                            </li>
+                            <li>Sampai dilaksanakan (tanggal dan waktu):<input type="datetime-local" class="w3-input w3-border w3-border-blue" data-meet="waktuakhir"/>
+                            </li>
+                            <li>Link Google Meet ini Untuk Kelas:
+                                <div class="generatekelasini">
+                                    <input type="checkbox" name="kelasmeet" class="w3-check" id="meet6A" data-meet="kelaskelas" value="6A">
+                                    <label for="meet6A">6A</label>
+                                    <input type="checkbox" name="kelasmeet" class="w3-check" id="meet6B" data-meet="kelaskelas" value="6B">
+                                    <label for="meet6B">6B</label><br/>
+                                </div>
+                            </li><li>
+                                Moderator: <input type="text" disabled class="w3-input w3-border w3-border-blue" data-meet="moderator">
+                            </li><li>
+                                Judul Meet:<input type="text"  class="w3-input w3-border w3-border-blue" data-meet="judul" oninput="maksimalkarakter(this)" placeholder="Berikan judul maksimal 50 karakter">
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="w3-half">
+                        
+                        Anda akan diarahkan ke formulir pembuatan google meet melalui akun Gmail yang sedang aktif di browser ini. Silakan lengkapi datanya, kemudian Salin link google meetnya di isian LINK GOOGLE MEET.
+                        <br>
+                        <br>
+                        <button onclick="windowlink()" class="w3-btn warnaeka w3-round-large w3-border-bottom w3-border-black">Buat Link Google Meet</button>&nbsp;
+                                        
+                        <br>
+                        <br>
+                        LINK GOOGLE MEET: <input type="text" class="w3-input w3-border w3-border-blue" data-meet="linkmeet" />
+                        <sub>yang disalin hanya link-nya saja, contoh:<b class="w3-text-blue">https://meet.google.com/abc-defg-hij</b></sub>
+                        <br><br>
+                        Status Publikasi (aktif/dihapus): <input type="text" value ="aktif" data-meet="status" disabled/>
+                    </div>
+                    <div class="w3-clear"></div>
+                    <div class="w3-main w3-center w3-border-top w3-padding w3-border-bottom">
+                        <button class="warnaeka w3-btn w3-round-large w3-border-bottom w3-border-black" onclick="publikasikanlinkmeet()">Publikasikan</button>
+                        <br><br>
+                    </div>
+                </div>
+            </div>
+            <div class="w3-container w3-center responkirimgooglemeet"></div>
+            <br>
+            <br>
+            <br>
         </div>
     </div>
 

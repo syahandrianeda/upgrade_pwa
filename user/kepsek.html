@@ -2589,23 +2589,25 @@
                             Tanggal Kegiatan/kejadian:
                             <input type="date" class="w3-input w3-border" data-galeri="tglkejadian" />
                             <br/>
-                            Unggah File: <label for="unggahmediagaleri" class="warnaeka tangan w3-border-bottom w3-border-black w3-round"><i class="fa fa-upload"></i> Unggah</label>
+                            <label for="unggahmediagaleri" class="w3-btn warnaeka tangan w3-border-bottom w3-border-black w3-round"><i class="fa fa-upload"></i> Unggah</label>
+                            <br><sub>Anda bisa memilih lebih dari satu file</sub>
                             <br>
-                            <input type="file" id="unggahmediagaleri" onchange="inputfileunggahgaleri()" class="w3-hide"/>
+                            <input type="file" id="unggahmediagaleri" onchange="inputfileunggahgalerimultiple()" multiple class="w3-hide"/>
                             <div class="w3-tiny">
-                                Ukuran File: <span class="ukuranfilegaleri"></span><br/>
                                 Batas maksimal yang dapat dikirim adalah 50MB (Saran: Lebih baik mengirimkan file ukuran kurang dari 20 MB)
                             </div>
-                            <div class="previewgaleri">
-
+                            <div class="previewgaleriload"></div>
+                            <div class="previewgaleri"></div>
+                            
+                            <div class="w3-hide">
+                                <input type="text" data-galeri="idfile" ><br>
+                                <input type="text" data-galeri="tipe"  disabled><br>
+                                <input type="text" data-galeri="oleh"   disabled>
+                                <input type="text" data-galeri="status"  disabled>
+                                <input type="text" data-galeri="dihapusoleh" value="Tidak Ada" disabled>
+                                <input type="text" data-galeri="alasandihapus"  value="Tidak Ada" disabled>
                             </div>
 
-                            <input type="text" data-galeri="idfile" class="w3-hide" disabled><br>
-                            <input type="text" data-galeri="tipe" class="w3-hide" disabled><br>
-                            <input type="text" data-galeri="oleh"  class="w3-hide" disabled>
-                            <input type="text" data-galeri="status"  class="w3-hide" disabled>
-                            <input type="text" data-galeri="dihapusoleh" value="Tidak Ada" class="w3-hide" disabled>
-                            <input type="text" data-galeri="alasandihapus"  value="Tidak Ada" class="w3-hide" disabled>
                         </div>
                         <div class="w3-container w3-padding">
                             Tag:

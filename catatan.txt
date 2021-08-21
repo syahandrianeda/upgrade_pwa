@@ -1,5 +1,19 @@
-18 Agustus
+20 Agustus
+- /img/image-icon.png
+- /img/pdf-icon.png
 
+- /statis/gk.js
+- /statis/gmp.js
+- /statis/guru.js
+- /statis/kepsek.js
+- /statis/staff.js
+- /statis/update.json
+
+- /user/gmp.html
+- /user/guru.html
+- /user/kepsek.html
+- /user/siswa.html
+- /user/staff.html
 
 
 

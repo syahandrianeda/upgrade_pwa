@@ -15,7 +15,8 @@ let obDataRekapKehadiran;
 jsonlocalstorage = JSON.parse(localStorage.getItem("inst_id"));
 let jsonabsenkelasperbulan = [];
 let idinterval;
-
+let namanamakelasdijenjangini=[];
+let allsiswaaktif;
 let buateditorkdaktif = [];
 let stoploadingtopbar;
 const loadingtopbarin = (el) => {
@@ -178,18 +179,27 @@ const fngmppilihrombel = async () => {
     constpreviewljk = jlo[ddurl];
     url_absensiswa = jlo['absen' + idJenjang];
 
-    await fetch(linkDataUserWithIdss + "&action=datasiswaaktif&kelas=" + ruangankelas)
+    // await fetch(linkDataUserWithIdss + "&action=datasiswaaktif&kelas=" + ruangankelas)
+    await fetch(linkDataUserWithIdss + "&action=datakelasaktifall")
         .then(m => m.json())
         .then(k => {
+            let arrsiswakelasini = k.datasiswa.filter(s=> s.nama_rombel == ruangankelas);
+            // jsondatasiswa = k.datasiswa;
+            allsiswaaktif = k;
+            namanamakelasdijenjangini = allsiswaaktif.datasiswa.filter(d=> d.jenjang == idJenjang).map(s=>s.nama_rombel).filter((s,i,a)=>a.indexOf(s)==i).sort()
 
-            jsondatasiswa = k.datasiswa;
-            localStorage.setItem("datasiswa_" + ruangankelas, JSON.stringify(k));
+            let ob = {"datasiswa": arrsiswakelasini} ;
+            jsondatasiswa =arrsiswakelasini; 
+            localStorage.setItem("datasiswa_" + ruangankelas, JSON.stringify(ob));
+
+            //jsondatasiswa = k.datasiswa;
+            //localStorage.setItem("datasiswa_" + ruangankelas, JSON.stringify(k));
             tabeldatakelassaya();
         }).catch(er => {
             console.log("muat ulang lagi: " + er);
         });;
 
-
+    await panggildatagooglemeet();   
 
     await buattabelrekapsemester();
     clearInterval(stoploadingtopbar);
@@ -776,6 +786,7 @@ function tampilinsublamangurukelas(fitur) {
         datanilaimapel.style.display = "none";
         datakehadiranguru.style.display = "none";
         dataframekreatif.style.display = "none";
+        divgooglemeet.style.display = "none";
         divgaleri.style.display = "none";
         window.scrollTo({ top: y, behavior: 'smooth' });
     } else if (fitur == "absen") {
@@ -786,8 +797,10 @@ function tampilinsublamangurukelas(fitur) {
         datanilaimapel.style.display = "none";
         datakehadiranguru.style.display = "none";
         dataframekreatif.style.display = "none";
+        divgooglemeet.style.display = "none";
         divgaleri.style.display = "none";
         window.scrollTo({ top: y, behavior: 'smooth' });
+        alert("ini")
 
     } else if (fitur == "pembelajaran") {
         datakelassaya.style.display = "none";
@@ -797,6 +810,7 @@ function tampilinsublamangurukelas(fitur) {
         datanilaimapel.style.display = "none";
         datakehadiranguru.style.display = "none";
         dataframekreatif.style.display = "none";
+        divgooglemeet.style.display = "none";
         upload_materi.style.display = "none";
         divgaleri.style.display = "none";
         window.scrollTo({ top: y, behavior: 'smooth' });
@@ -807,6 +821,7 @@ function tampilinsublamangurukelas(fitur) {
         datakurikulum.style.display = "block";
         datanilaimapel.style.display = "none";
         datakehadiranguru.style.display = "none";
+        divgooglemeet.style.display = "none";
         dataframekreatif.style.display = "none";
         divgaleri.style.display = "none";
         window.scrollTo({ top: y, behavior: 'smooth' });
@@ -818,6 +833,7 @@ function tampilinsublamangurukelas(fitur) {
         datanilaimapel.style.display = "block";
         datakehadiranguru.style.display = "none";
         dataframekreatif.style.display = "none";
+        divgooglemeet.style.display = "none";
         divgaleri.style.display = "none";
         window.scrollTo({ top: y, behavior: 'smooth' });
     } else if (fitur == "kehadiranguru") {
@@ -827,6 +843,7 @@ function tampilinsublamangurukelas(fitur) {
         datakurikulum.style.display = "none";
         datanilaimapel.style.display = "none";
         datakehadiranguru.style.display = "block";
+        divgooglemeet.style.display = "none";
         dataframekreatif.style.display = "none";
         divgaleri.style.display = "none";
         window.scrollTo({ top: y, behavior: 'smooth' });
@@ -837,7 +854,7 @@ function tampilinsublamangurukelas(fitur) {
         datakurikulum.style.display = "none";
         datanilaimapel.style.display = "none";
         datakehadiranguru.style.display = "none";
-        // dataraport.style.display = "none";
+        divgooglemeet.style.display = "none";
         dataframekreatif.style.display = "block";
         divgaleri.style.display = "none";
         window.scrollTo({ top: y, behavior: 'smooth' });
@@ -848,7 +865,7 @@ function tampilinsublamangurukelas(fitur) {
         datakurikulum.style.display = "none";
         datanilaimapel.style.display = "none";
         datakehadiranguru.style.display = "none";
-        // dataraport.style.display = "none";
+        divgooglemeet.style.display = "none";
         dataframekreatif.style.display = "none";
         divgaleri.style.display = "block";
         window.scrollTo({ top: y, behavior: 'smooth' });
@@ -859,10 +876,23 @@ function tampilinsublamangurukelas(fitur) {
         datakurikulum.style.display = "none";
         datanilaimapel.style.display = "none";
         datakehadiranguru.style.display = "none";
-        // dataraport.style.display = "none";
+        divgooglemeet.style.display = "none";
         dataframekreatif.style.display = "none";
         divgaleri.style.display = "none";
         window.scrollTo({ top: 43, behavior: 'smooth' });
+    }else if (fitur == "googlemeet") {
+        datakelassaya.style.display = "none";
+        dataabsensi.style.display = "none";
+        datapembelajaran.style.display = "none";
+        datakurikulum.style.display = "none";
+        datanilaimapel.style.display = "none";
+        datakehadiranguru.style.display = "none";
+        dataframekreatif.style.display = "none";
+        divgaleri.style.display = "none";
+        divgooglemeet.style.display = "block";
+        
+        window.scrollTo({ top: y, behavior: 'smooth' });
+
     }
 
     w3_close();

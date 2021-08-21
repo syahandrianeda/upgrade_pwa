@@ -17,6 +17,8 @@ let obDataRekapKehadiran;
 let idinterval
 let informasiusulandata = {};
 let buateditorkdaktif = [];
+let allsiswaaktif;
+let namanamakelasdijenjangini;
 jsonlocalstorage = JSON.parse(localStorage.getItem("inst_id"));
 let stoploadingtopbar;
 const loadingtopbarin = (el) => {
@@ -126,11 +128,18 @@ const loadingtopbarin = (el) => {
     // if (localStorage.hasOwnProperty("datasiswa_" + ruangankelas)) {
     //     jsondatasiswa = JSON.parse(localStorage.getItem("datasiswa_" + ruangankelas)).datasiswa;
     // } else {
-    await fetch(linkDataUserWithIdss + "&action=datasiswaaktif&kelas=" + ruangankelas)
+    // await fetch(linkDataUserWithIdss + "&action=datasiswaaktif&kelas=" + ruangankelas)
+    await fetch(linkDataUserWithIdss + "&action=datakelasaktifall")
         .then(m => m.json())
         .then(k => {
-            jsondatasiswa = k.datasiswa;
-            localStorage.setItem("datasiswa_" + ruangankelas, JSON.stringify(k));
+            let arrsiswakelasini = k.datasiswa.filter(s=> s.nama_rombel == ruangankelas);
+            // jsondatasiswa = k.datasiswa;
+            allsiswaaktif = k;
+            namanamakelasdijenjangini = allsiswaaktif.datasiswa.filter(d=> d.jenjang == idJenjang).map(s=>s.nama_rombel).filter((s,i,a)=>a.indexOf(s)==i).sort()
+
+            let ob = {"datasiswa": arrsiswakelasini} ;
+            jsondatasiswa =arrsiswakelasini; 
+            localStorage.setItem("datasiswa_" + ruangankelas, JSON.stringify(ob));
 
         }).catch(er => {
             console.log("muat ulang lagi: " + er);
@@ -161,24 +170,8 @@ const loadingtopbarin = (el) => {
 
             if (usulkelasinibelumdisetujui.length !== jsondatasiswa.length) {
                 document.querySelector(".pesankhusussiswa").className = document.querySelector(".pesankhusussiswa").className.replace(" w3-hide", "");
-                document.querySelector(".pesankhusussiswa").innerHTML = `Anda memiliki ${usulkelasinibelumdisetujui.length} usulan data perubahan data baru (Daftar Ulang) dari siswa Anda yang belum disetujui (diverifikasi). Segera Verifikasi data tersebut di menu Data Kelas Anda. (Tombol informasi berwarna merah menandakan siswa yang mengusulkan perbaruan data.)
-                <br/>
-                <br/>
-                <table class="w3-table-all w3-striped" style="width:50%;margin:0 auto">
-                <caption>Tabel Pengusulan Perubahan Data (Daftar Ulang)</caption>
-                    <tr>
-                        <td>Jumlah Siswa</td>
-                        <td>${jsondatasiswa.length}</td>
-                    </tr><tr>    
-                        <td>Usulan <b class="w3-text-red">Belum</b> Diverifikasi</td>
-                        <td>${usulkelasinibelumdisetujui.length}</td>
-                    </tr><tr>    
-                    <td>Usulan <b  class="w3-text-blue">Sudah</b> Diverifikasi</th>
-                        <td>${usulkelasinisudahdisetujui.length}</td>
-                    </tr>
-                </table>
-                <hr/>
-                `;
+                document.querySelector(".pesankhusussiswa").innerHTML = `<button class="toggleusulanperubahandata w3-btn w3-teal w3-right" onclick="toggleusulanbaru('perlebar')" title="klik ini untuk melihat detailnya">Detail</button>
+                Anda memiliki ${usulkelasinibelumdisetujui.length} usulan data perubahan data baru.`
 
             } else {
                 if (document.querySelector(".pesankhusussiswa").className.indexOf("w3-hide") == -1) {
@@ -1365,7 +1358,9 @@ function tampilinsublamangurukelas(fitur) {
         datanilaimapel.style.display = "none";
         datakehadiranguru.style.display = "none";
         dataraport.style.display = "none";
-        dataframekreatif.style.display = "none";divgaleri.style.display = "none";
+        dataframekreatif.style.display = "none";
+        divgaleri.style.display = "none";
+        divgooglemeet.style.display = "none";
         window.scrollTo({ top: 43, behavior: 'smooth' });
 
     } else if (fitur == "datakelas") {
@@ -1378,6 +1373,7 @@ function tampilinsublamangurukelas(fitur) {
         dataraport.style.display = "none";
         dataframekreatif.style.display = "none";
         divgaleri.style.display = "none";
+        divgooglemeet.style.display = "none";
         window.scrollTo({ top: y, behavior: 'smooth' });
     } else if (fitur == "absen") {
         datakelassaya.style.display = "none";
@@ -1389,6 +1385,7 @@ function tampilinsublamangurukelas(fitur) {
         dataraport.style.display = "none";
         dataframekreatif.style.display = "none";
         divgaleri.style.display = "none";
+        divgooglemeet.style.display = "none";
         window.scrollTo({ top: y, behavior: 'smooth' });
 
     } else if (fitur == "pembelajaran") {
@@ -1402,6 +1399,7 @@ function tampilinsublamangurukelas(fitur) {
         dataframekreatif.style.display = "none";
         upload_materi.style.display = "none";
         divgaleri.style.display = "none";
+        divgooglemeet.style.display = "none";
         window.scrollTo({ top: y, behavior: 'smooth' });
     } else if (fitur == "kurikulum") {
         datakelassaya.style.display = "none";
@@ -1413,6 +1411,7 @@ function tampilinsublamangurukelas(fitur) {
         dataraport.style.display = "none";
         dataframekreatif.style.display = "none";
         divgaleri.style.display = "none";
+        divgooglemeet.style.display = "none";
         window.scrollTo({ top: y, behavior: 'smooth' });
     } else if (fitur == "mapel") {
         datakelassaya.style.display = "none";
@@ -1424,6 +1423,7 @@ function tampilinsublamangurukelas(fitur) {
         dataraport.style.display = "none";
         dataframekreatif.style.display = "none";
         divgaleri.style.display = "none";
+        divgooglemeet.style.display = "none";
         window.scrollTo({ top: y, behavior: 'smooth' });
     } else if (fitur == "kehadiranguru") {
         datakelassaya.style.display = "none";
@@ -1435,6 +1435,7 @@ function tampilinsublamangurukelas(fitur) {
         dataraport.style.display = "none";
         dataframekreatif.style.display = "none";
         divgaleri.style.display = "none";
+        divgooglemeet.style.display = "none";
         window.scrollTo({ top: y, behavior: 'smooth' });
     } else if (fitur == "raport") {
         datakelassaya.style.display = "none";
@@ -1446,6 +1447,7 @@ function tampilinsublamangurukelas(fitur) {
         dataraport.style.display = "block";
         dataframekreatif.style.display = "none";
         divgaleri.style.display = "none";
+        divgooglemeet.style.display = "none";
         window.scrollTo({ top: y, behavior: 'smooth' });
     } else if (fitur == "meme") {
         datakelassaya.style.display = "none";
@@ -1457,6 +1459,7 @@ function tampilinsublamangurukelas(fitur) {
         dataraport.style.display = "none";
         dataframekreatif.style.display = "block";
         divgaleri.style.display = "none";
+        divgooglemeet.style.display = "none";
         window.scrollTo({ top: y, behavior: 'smooth' });
 
     } else if (fitur == "galery") {
@@ -1469,11 +1472,22 @@ function tampilinsublamangurukelas(fitur) {
         dataraport.style.display = "none";
         dataframekreatif.style.display = "none";
         divgaleri.style.display = "block";
+        divgooglemeet.style.display = "none";
         window.scrollTo({ top: y, behavior: 'smooth' });
 
+    } else if (fitur == "googlemeet") {
+        datakelassaya.style.display = "none";
+        dataabsensi.style.display = "none";
+        datapembelajaran.style.display = "none";
+        datakurikulum.style.display = "none";
+        datanilaimapel.style.display = "none";
+        datakehadiranguru.style.display = "none";
+        dataraport.style.display = "none";
+        dataframekreatif.style.display = "none";
+        divgaleri.style.display = "none";
+        divgooglemeet.style.display = "block";
+        window.scrollTo({ top: y, behavior: 'smooth' });
 
-
-       
     }
     w3_close();
 }
@@ -1796,7 +1810,7 @@ const htmldataprofil = () => {
         <tr>
             <td>Nomor Rekening Bank</td>
             <td>:</td>
-            <td class="hdp_dapo_namarekeningbank"></td>
+            <td class="hdp_dapo_nomorrekeningbank"></td>
         </tr>
         <tr>
             <td>Rekening Atas Nama</td>
@@ -3057,6 +3071,7 @@ const ajuanperubahandata = async (tokensiswa) => {
 
             datahtml = htmlformulirdatasiswa(tokensiswa);
             infoloadingljk.innerHTML = datahtml;
+            document.querySelector(".pengapprove").innerHTML = sumber[0].dieditoleh.toUpperCase();
             let obj = sumber[0];
             obj.action = "";
             let statussebelumnya = obj.usulanperubahandata
@@ -3148,6 +3163,7 @@ const ajuanperubahandataolehguru = async (tokensiswa) => {
             // console.log(sumber);
             datahtml = htmlformulirdatasiswa(tokensiswa);
             infoloadingljk.innerHTML = `<div class="bio_print">${datahtml}</div>`;
+            document.querySelector(".pengapprove").innerHTML = sumber[0].dieditoleh.toUpperCase();
             let obj = sumber[0];
             obj.action = "";
             obj.action = "";
@@ -15940,3 +15956,38 @@ function nilaimapel() {
     document.querySelector(".btnuh").click()
 }
 
+const toggleusulanbaru = (cond) =>{
+    let usulkelasinibelumdisetujui = informasiusulandata["usulanbaru"] ;  
+    let usulkelasinisudahdisetujui = informasiusulandata["usulandisetujui"] ;
+    let   usulkelasini = informasiusulandata["all"];
+    if(cond == "perlebar"){
+        document.querySelector(".pesankhusussiswa").className = document.querySelector(".pesankhusussiswa").className.replace(" w3-hide", "");
+        document.querySelector(".pesankhusussiswa").innerHTML = `<button class="toggleusulanperubahandata w3-btn w3-right w3-teal" onclick="toggleusulanbaru('persempit')" title="klik ini untuk menutup info ini">Tutup</button>Anda memiliki ${usulkelasinibelumdisetujui.length} usulan data perubahan data baru (Daftar Ulang) dari siswa Anda yang belum disetujui (diverifikasi). Segera Verifikasi data tersebut di menu Data Kelas Anda. (Tombol informasi berwarna merah menandakan siswa yang mengusulkan perbaruan data.)
+                <br/>
+                <br/>
+                <table class="w3-table-all w3-striped" style="width:50%;margin:0 auto">
+                <caption>Tabel Pengusulan Perubahan Data (Daftar Ulang)</caption>
+                    <tr>
+                        <td>Jumlah Siswa</td>
+                        <td>${jsondatasiswa.length}</td>
+                    </tr><tr>    
+                        <td>Usulan <b class="w3-text-red">Belum</b> Diverifikasi</td>
+                        <td>${usulkelasinibelumdisetujui.length}</td>
+                    </tr><tr>    
+                    <td>Usulan <b  class="w3-text-blue">Sudah</b> Diverifikasi</th>
+                        <td>${usulkelasinisudahdisetujui.length}</td>
+                    </tr>
+                </table>
+                <hr/>
+                `;
+    }else{
+       // <button class="toggleusulanperubahandata w3-btn" onclick="toggleusulanbaru('perlebar')" title="klik ini untuk melihat detailnya">Detail</button>`;
+       document.querySelector(".pesankhusussiswa").className = document.querySelector(".pesankhusussiswa").className.replace(" w3-hide", "");
+       document.querySelector(".pesankhusussiswa").innerHTML = `<button class="toggleusulanperubahandata w3-btn w3-teal w3-right" onclick="toggleusulanbaru('perlebar')" title="klik ini untuk melihat detailnya">Detail</button>
+       Anda memiliki ${usulkelasinibelumdisetujui.length} usulan data perubahan data baru.`
+
+
+    }
+}
+
+panggildatagooglemeet();

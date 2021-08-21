@@ -7972,7 +7972,7 @@ const htmldataprofil = () => {
         <tr>
             <td>Nomor Rekening Bank</td>
             <td>:</td>
-            <td class="hdp_dapo_namarekeningbank"></td>
+            <td class="hdp_dapo_nomorrekeningbank"></td>
         </tr>
         <tr>
             <td>Rekening Atas Nama</td>
@@ -9209,7 +9209,7 @@ const ajuanperubahandata = async (tokensiswa) => {
 
             datahtml = htmlformulirdatasiswa(tokensiswa);
             infoloadingljk.innerHTML = datahtml;
-            document.querySelector(".pengapprove").innerHTML = namauser.toUpperCase();
+            document.querySelector(".pengapprove").innerHTML = sumber[0].dieditoleh.toUpperCase();
             let obj = sumber[0];
             obj.action = "";
             let statussebelumnya = obj.usulanperubahandata
@@ -9301,7 +9301,7 @@ const ajuanperubahandataolehguru = async (tokensiswa) => {
             // console.log(sumber);
             datahtml = htmlformulirdatasiswa(tokensiswa);
             infoloadingljk.innerHTML = `<div class="bio_print">${datahtml}</div>`;
-            document.querySelector(".pengapprove").innerHTML = namauser.toUpperCase();
+            document.querySelector(".pengapprove").innerHTML = sumber[0].dieditoleh.toUpperCase();
             let obj = sumber[0];
            
             obj.action = "";
@@ -11030,7 +11030,7 @@ const galery = async() => {
 }
 const cekpreviewupload = (tipe,idfile) =>{
     let res;
-    let img = ["jpg","jpeg","JPG","JPEG","png","PNG","gif","GIF"]
+    let img = ["jpg","jpeg","JPG","JPEG","png","PNG","gif","GIF","webp"]
     let pdf = ["pdf","PDF"];
     let word = ["doc","docx","DOC","DOCX"];
     let ppt = ["ppt","pptx","pptm"]
@@ -11039,30 +11039,30 @@ const cekpreviewupload = (tipe,idfile) =>{
     let audio = ["mp3","wav"];
     let rar = ["rar","zip","7-zip"];
     if(img.indexOf(tipe)>-1){
-        res = `<img src="https://drive.google.com/uc?export=view&id=${idfile}" class="w3-third"/>`;
+        res = `<img src="/img/image-icon.png" title="Klik untuk melihat detail" onclick="window.open('https://drive.google.com/file/d/${idfile}/view?usp=drivesdk','', 'width=720,height=600')" class="w3-third tangan"/>`;
     }else if(pdf.indexOf(tipe)>-1){
-        res = `<iframe src="https://drive.google.com/uc?export=view&id=${idfile}" class="w3-third"></iframe>`;
+        res = `<img src="/img/pdf-icon.png"  title="Klik untuk melihat detail" onclick="window.open('https://drive.google.com/file/d/${idfile}/view?usp=drivesdk','', 'width=720,height=600')" class="w3-third tangan"/>`;
 
     }else if(word.indexOf(tipe) >-1){
-        res = `<img src="/img/word_icon.png"  class="w3-third"/>`;
+        res = `<img src="/img/word_icon.png" title="Klik untuk melihat detail" onclick="window.open('https://drive.google.com/file/d/${idfile}/view?usp=drivesdk','', 'width=720,height=600')" class="w3-third tangan"/>`;
         
     }else if(excel.indexOf(tipe) >-1){
-        res = `<img src="/img/excel_icon.png"  class="w3-third"/>`;
+        res = `<img src="/img/excel_icon.png" title="Klik untuk melihat detail" onclick="window.open('https://drive.google.com/file/d/${idfile}/view?usp=drivesdk','', 'width=720,height=600')" class="w3-third tangan"/>`;
         
     }else if(video.indexOf(tipe) >-1){
-        res = `<img src="/img/video_icon.png"  class="w3-third"/>`;
+        res = `<img src="/img/video_icon.png" title="Klik untuk melihat detail" onclick="window.open('https://drive.google.com/file/d/${idfile}/view?usp=drivesdk','', 'width=720,height=600')" class="w3-third tangan"/>`;
         
     }else if(audio.indexOf(tipe) >-1){
-        res = `<img src="/img/sound_icon.png"  class="w3-third"/>`;
+        res = `<img src="/img/sound_icon.png" title="Klik untuk melihat detail" onclick="window.open('https://drive.google.com/file/d/${idfile}/view?usp=drivesdk','', 'width=720,height=600')" class="w3-third tangan"/>`;
         
     }else if(rar.indexOf(tipe) >-1){
-        res = `<img src="/img/rar_icon.png"  class="w3-third"/>`;
+        res = `<img src="/img/rar_icon.png" title="Klik untuk melihat detail" onclick="window.open('https://drive.google.com/file/d/${idfile}/view?usp=drivesdk','', 'width=720,height=600')" class="w3-third tangan"/>`;
         
     }else if(ppt.indexOf(tipe) >-1){
-        res = `<img src="/img/ppt_icon.png"  class="w3-third"/>`;
+        res = `<img src="/img/ppt_icon.png" title="Klik untuk melihat detail" onclick="window.open('https://drive.google.com/file/d/${idfile}/view?usp=drivesdk','', 'width=720,height=600')" class="w3-third tangan"/>`;
         
     }else{
-        res = `<img src="/img/file_icon.png"  class="w3-third"/>`;
+        res = `<img src="/img/file_icon.png" title="Klik untuk melihat detail" onclick="window.open('https://drive.google.com/file/d/${idfile}/view?usp=drivesdk','', 'width=720,height=600')" class="w3-third tangan"/>`;
         
         
     }
@@ -11071,7 +11071,7 @@ const cekpreviewupload = (tipe,idfile) =>{
 }
 const cekpreviewupload2 = (tipe,idfile) =>{
     let res;
-    let img = ["jpg","jpeg","JPG","JPEG","png","PNG","gif","GIF"]
+    let img = ["jpg","jpeg","JPG","JPEG","png","PNG","gif","GIF","webp"]
     let pdf = ["pdf","PDF"];
     let word = ["doc","docx","DOC","DOCX"];
     let ppt = ["ppt","pptx","pptm"]
@@ -11110,91 +11110,181 @@ const cekpreviewupload2 = (tipe,idfile) =>{
     return res
 
 }
-const inputfileunggahgaleri = () =>{
-    let item = "";
-    item = document.getElementById("unggahmediagaleri").files[0];
-    
-    let elin = document.querySelector("[data-galeri=tipe]");
-    let elinn = document.querySelector(".ukuranfilegaleri");
+let objekfileunggahmultiple = {};
+const inputfileunggahgalerimultiple = async() => {
     let prv = document.querySelector(".previewgaleri");
-    prv.innerHTML = `<img src="/img/barloading.gif">`
-    let idfile = document.querySelector("[data-galeri=idfile]");
-    let namafile = item.name;
-    let namafolder = "000 GALERI"
-    elin.value = namafile.match(/(\.[^.]+)$/g)[0].replace(".","");
-    elinn.innerHTML = formatBytes(item.size,2);
-    
-    var reader = new FileReader();
-    reader.onload = function (e) {
-        //document.getElementById('uploadForm').submit();
-
-        let src = e.target.result;
-        let dataa = src.replace(/^.*,/, '');
-        let tipe = e.target.result.match(/^.*(?=;)/)[0];
-        //fn_upload_file(id_input, data, tipe);
-        // console.log(tipe);
-        // console.log(data);
-        
-    
-        let data = new FormData();
-      
-        data.append("fileContent", dataa);
-        data.append("mimeType", tipe);
-        data.append("filename", namafile);
-        data.append("kelas", namafolder);
-         // + "?action=uploaddulu";
-        fetch(linktendik+"?action=uploadfiledulu", {
-            method: 'post',
-            body: data
-        }).then(m => m.json())
-            .then(r => {
-                if (r.sukses == "Gagal") {
-                    setTimeout(() => {
-                        //el_label.innerHTML = `<i class="fa fa-upload warnaeka  w3-round-large w3-padding w3-border-black w3-border-bottom w3-center"> Unggah File</i>`;
-                        alert("gagal Unggah")
-                    }, 3000);
-                    //el_label.innerHTML = `Gagal Mengunggah`;
-                } else {
-                    idfile.value =r.idfile;
-                    prv.innerHTML= cekpreviewupload(elin.value,r.idfile);
-
-                }
-            })
-            .catch(er => {
-                console.log(er);
-                
-                alert("Maaf, terjadi kesalahan. Silakan ulangi sesi Anda sesaat lagi.")
-               })
+    let konf
+    if(prv.innerHTML !==""){
+        konf = confirm("File sebelumnya telah ditambahkan. Apakah ingin dihapus? Klik OK untuk MENGHAPUS, klik CANCEL untuk MENAMBAHKAN file lainnya (membiarkan file yang sudah ditambahkan).")
     }
-    reader.readAsDataURL(item);
+    let elin = document.querySelector("[data-galeri=tipe]");
+    let prvload = document.querySelector(".previewgaleriload");
+    let idfile = document.querySelector("[data-galeri=idfile]");
+    
+    let namafolder = "000 GALERI";
+    let arrtipe;
+    let arrnamafile;
+    let arridfile;
+    let arrukuran;
+    if(konf){
+        prv.innerHTML = "";
+        arrtipe = [];
+        arrnamafile = [];
+        arridfile = [];
+        arrukuran = [];
+    }else{
+        prv.innerHTML +="";
+        arrtipe =  (objekfileunggahmultiple.arrtipe === undefined)?[]:objekfileunggahmultiple.arrtipe ;
+        arrnamafile =(objekfileunggahmultiple.arrnamafile===undefined)?[]:objekfileunggahmultiple.arrnamafile;
+        arridfile = (objekfileunggahmultiple.arridfile===undefined)?[]:objekfileunggahmultiple.arridfile;
+        arrukuran = [];
+       
+    }
 
+    let item = "";
+    item = document.getElementById("unggahmediagaleri").files;
+    
+    let files = Array.from(item).map(file => {
+        let namafile = file.name;
+        let ukuran = formatBytes(file.size,2);
+        
+        let tipefile = namafile.match(/(\.[^.]+)$/g)[0].replace(".","");
+        
+        // Define a new file reader
+        let reader = new FileReader();
+
+        // Create a new promise
+        return new Promise(resolve => {
+            
+            // Resolve the promise after reading file
+            reader.onload = () => {
+                let obret = {}
+                let src = reader.result;
+                let dataa = src.replace(/^.*,/, '');
+                let tipe = src.match(/^.*(?=;)/)[0];
+                
+                let tipenyaaja = tipe.split("/")[1]
+                let realtipe;
+                if(tipenyaaja.indexOf("vnd")>-1){
+                    realtipe = tipefile;
+                }else{
+                    realtipe = tipenyaaja;
+                }
+                obret.data = dataa;
+                obret.tipe = tipe;
+                obret.ext = realtipe;
+                obret.size = ukuran;
+                obret.namafile = file.name;
+                resolve(obret);
+            }
+            // Read the file as a text
+            reader.readAsDataURL(file);
+
+        });
+
+    });
+
+    // At this point you'll have an array of results
+    let res = await Promise.all(files);
+    for (i = 0 ; i < res.length ; i++){
+        prvload.innerHTML = `<img src="/img/barloading.gif"/>`;
+        let data = new FormData();
+            let bin = res[i].data;
+            let mmtp = res[i].tipe;
+            let nfl= res[i].namafile
+            let ext = res[i].ext;
+                data.append("fileContent", bin);
+                data.append("mimeType", mmtp);
+                data.append("filename", nfl);
+                data.append("kelas", "000 GALERI");
+                
+                await fetch(linktendik+"?action=uploadfiledulu", {
+                    method: 'post',
+                    body: data
+                }).then(m => m.json())
+                    .then(r => {
+                        if (r.sukses == "Gagal") {
+                            alert("gagal Unggah "+ nfl)
+                            
+                            
+                        } else {
+                            arridfile.push(r.idfile);
+                            arrtipe.push(ext);
+                            prv.innerHTML += cekpreviewupload(ext,r.idfile);
+                            arrukuran.push(nfl);
+                            elin.value = arrtipe.join(",");
+                            idfile.value = arridfile.join(",")
+                        
+                        }
+                        prvload.innerHTML = "";
+                    })
+                    .catch(er => {
+                        console.log(er);
+                        prvload.innerHTML = "";
+                        
+                        alert("Maaf, terjadi kesalahan. Silakan ulangi sesi Anda sesaat lagi.")
+                    }) 
+    }
+    objekfileunggahmultiple.arrtipe = arrtipe;
+    objekfileunggahmultiple.arrnamafile = arrnamafile;
+    objekfileunggahmultiple.arridfile = arridfile;
 }
-
-const kirimmserver_mediagaleri = ()=>{
+const kirimmserver_mediagaleri = async()=>{
+    //console.log(objekfileunggahmultiple);
+    let divlod = document.querySelector(".loadingtopbar");
+    
+    
+    let b = objekfileunggahmultiple;
     let d = atributgaleri();
-    let val = d.val;
+    let idfiles = d.val[2].split(",");
+    let tipes = d.val[3].split(",");
     let key = d.key;
     let nol = d.nol;
-    
     if(nol.length !== 0){
         alert("Ada yang tidak diisi. Semua data harus terisi");
         return
     }
-    let divlod = document.querySelector(".loadingtopbar");
+    divlod.className= divlod.className.replace(/w3-hide/g,"");
     loadingtopbarin("loadingtopbar");
+    let eldiv = document.querySelector(".tambahmediagaleri");
+    
+    eldiv.className += " w3-hide";
+    let v = [];
+   
     let ttbody = document.querySelector(".tempatgaleri");
-    let type = [3];
-    let tabel = JSON.stringify(val);
-    let keyy = JSON.stringify(key);
-    let tipe = JSON.stringify(type);
-    let datakirim = new FormData();
-
-    datakirim.append("key",keyy);
-    datakirim.append("tab","galeri");
-    datakirim.append("tabel",tabel);
-    datakirim.append("tipe",tipe);
     let html = "";
-    //bersihkan inputannya;
+    for(i = 0 ; i < idfiles.length ; i++){
+        v = d.val;
+        v.splice(2,2,idfiles[i],tipes[i])
+       
+        let type = [3];
+        let tabel = JSON.stringify(v);
+        let keyy = JSON.stringify(key);
+        let tipe = JSON.stringify(type);
+    
+        let datakirim = new FormData();
+        datakirim.append("key",keyy);
+        datakirim.append("tab","galeri");
+        datakirim.append("tabel",tabel);
+        datakirim.append("tipe",tipe);
+        await fetch(linktendik+"?action=simpanbarisketaburut",{
+            method:"post",
+            body:datakirim
+        }).then(m => m.json())
+        .then(r => {
+            let res = r.result;
+            let dtt = r.data;
+            let dt = r.data.filter(s => s.status !== "hapus");
+            jsongaleridihapus = dtt.filter(s=> s.status == "hapus");
+            jsongaleri = dtt.filter(s=> s.status !== "hapus");
+            
+            
+           
+        })
+        .catch(er => console.log(er))
+
+        
+    }
     let datagaleri = document.querySelectorAll("[data-galeri]");
     for(i = 0 ; i < datagaleri.length; i++){
     
@@ -11206,65 +11296,21 @@ const kirimmserver_mediagaleri = ()=>{
     let ac = document.querySelector("[data-galeri=alasandihapus]");
     ac.value = "tidak ada";
 
-    let eldiv = document.querySelector(".tambahmediagaleri");
     
-    eldiv.className += " w3-hide";
 
-        
-     fetch(linktendik+"?action=simpanbarisketaburut",{
-        method:"post",
-        body:datakirim
-    }).then(m => m.json())
-    .then(r => {
-       //console.log(r);
-       alert("Berhasil diinput.")
-       let res = r.result;
-        let dtt = r.data;
-        let dt = r.data.filter(s => s.status !== "hapus");
-        jsongaleridihapus = dtt.filter(s=> s.status == "hapus");
-        jsongaleri = dtt.filter(s=> s.status !== "hapus");
-        
-        if(res > 1){
-            for(i = dt.length-1 ;  i>=0;i--){
-                let d = dt[i];
-                let hh = cekpreviewupload2(d.tipe,d.idfile);
-                html +=`<div class="w3-col l2" style="height: 270px;">
-                <div class="isigaleri">
-                    ${hh}
-                    <div class="overlaygaleri">
-                    Tgl ${tanggalfull(new Date(d.tglkejadian))}
-                        <div class="w3-text-white w3-margin">${d.keterangan}</div>
-                        <div class="w3-text-white w3-margin w3-tiny">Ditambahkan oleh: <br> ${d.oleh}</div>
-                        <div class="w3-white w3-margin w3-tiny">${d.tags}</div>
-                    <div class="textgaleri">
-                            <button onclick="window.open('https://drive.google.com/file/d/${d.idfile}/view?usp=drivesdk','', 'width=720,height=600')">Detail</button>
-                            <button onclick="hapusgaleri(${d.idbaris})">Hapus</button>
-                            
-                        </div>
-                      </div>
-                </div>
-            </div>`;
-            }
-            ttbody.innerHTML = html;
-        }
-        
-        clearInterval(stoploadingtopbar);
+    objekfileunggahmultiple = {};
+
+    clearInterval(stoploadingtopbar);
                
-        divlod.style.width = "100%";
-        setTimeout(() => {
-            divlod.style.width = "1px"
-            divlod.className += " w3-hide";
-    
-        }, 3000);
-       
-        
-    })
-    .catch(er => console.log(er))
-    
-    
+    divlod.style.width = "100%";
+    setTimeout(() => {
+        divlod.style.width = "1px"
+        divlod.className += " w3-hide";
+        galery();
 
-};
-
+    }, 3000);
+   
+}
 const btn_tambahmedia = ()=>{
     let oleh = document.querySelector("[data-galeri=oleh");
     oleh.value = namauser;

@@ -1,6 +1,6 @@
 
-const staticCacheName = "pwa2021_statis_v1.4.4.v2";// + new Date().getTime();
-const dynamicChace = "pwa2021_dinamis_v1.4.4.v2";// + new Date().getTime();
+const staticCacheName = "pwa2021_statis_v1.5.versi259";// + new Date().getTime();
+const dynamicChace = "pwa2021_dinamis_v1.5.versi174";// + new Date().getTime();
 
 const assets = [
     "/",
@@ -133,7 +133,7 @@ self.addEventListener('fetch', evt => {
                     return caches.open(dynamicChace).then(cache => {
                         cache.put(evt.request.url, fetchRes.clone());
                         // check cached items size
-                        limitCacheSize(dynamicChace, 10);
+                        limitCacheSize(dynamicChace, 5);
                         return fetchRes;
                     })
                 });

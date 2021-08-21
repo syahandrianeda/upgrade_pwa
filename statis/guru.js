@@ -7611,13 +7611,19 @@ function DaysInMonth2(Y, M) {
 
 /////////////////////// penggabungan UPLOADMATERI milik guru kelas dan guru mapel diputuskan pake punya guru mapel
 const kopipaste = (id) => {
+    try{
     var copyText = document.getElementById(id);
     copyText.select();
-    copyText.setSelectionRange(0, 99999)
-    document.execCommand("copy");
+    copyText.setSelectionRange(0, 99999);
+    //document.execCommand("copy");
+    navigator.clipboard.writeText(copyText.value);
     // alert("Copied the text: " + copyText.value);
     // alert("Berhasil Ngopi ... ^_^");
-    resultuploadpotomateri.innerHTML = "";
+    resultuploadpotomateri.innerHTML = "";;
+    alert("Berhasil Dicopy ... ^_^");
+    }catch(er){
+        alert("Link telah hilang karena aktivitas sebelumnya. Mohon reload lamannya.")
+    }
 }
 const pratinjaubuatmateri = () => {
     //prevhp.style.display = "block";
@@ -8816,6 +8822,7 @@ const daftarnilaikronologi = (id) => {
     let materi = datamaterilocal.idmapel.toUpperCase();
 
     let mtri = datamaterilocal.idmapel;
+    let barismatericode = datamaterilocal.idbaris;
     let tagih = datamaterilocal.jenistagihan;
     let ctok = datamaterilocal.crtToken;
 
@@ -8829,7 +8836,8 @@ const daftarnilaikronologi = (id) => {
         .then(m => m.json())
         .then(f => {
             let res = f.records;
-            nilairesponkronologi = res.filter(k => k.idmapel == mtri && k.jenistagihan == tagih & k.crtToken == ctok)
+            // nilairesponkronologi = res.filter(k => k.idmapel == mtri && k.jenistagihan == tagih & k.crtToken == ctok)
+            nilairesponkronologi = res.filter(k => k.matericode == barismatericode && k.jenistagihan == tagih & k.crtToken == ctok)
             forModalTabelkronologi(id)
         })
 }
@@ -12759,7 +12767,7 @@ document.addEventListener("click", function (e) {
         th.innerHTML = "Aksi"
         tr.appendChild(th)
         let tbody = tabel.createTBody()
-        for (let i = 0; i < kal.length; i++) {
+        for (let i = 0; i <kal.length; i++) {
             tr = tbody.insertRow(-1);
             let td = tr.insertCell(-1)
             td.innerHTML = i + 1;
@@ -13221,7 +13229,6 @@ const editkronologi = (par) => {
     }
 }
 
-
 const atributgaleri = () =>{
     let setdata = document.querySelectorAll("[data-galeri]");
     let atsetdata ;
@@ -13322,7 +13329,7 @@ const galery = async() => {
 }
 const cekpreviewupload = (tipe,idfile) =>{
     let res;
-    let img = ["jpg","jpeg","JPG","JPEG","png","PNG","gif","GIF"]
+    let img = ["jpg","jpeg","JPG","JPEG","png","PNG","gif","GIF","webp"]
     let pdf = ["pdf","PDF"];
     let word = ["doc","docx","DOC","DOCX"];
     let ppt = ["ppt","pptx","pptm"]
@@ -13331,30 +13338,30 @@ const cekpreviewupload = (tipe,idfile) =>{
     let audio = ["mp3","wav"];
     let rar = ["rar","zip","7-zip"];
     if(img.indexOf(tipe)>-1){
-        res = `<img src="https://drive.google.com/uc?export=view&id=${idfile}" class="w3-third"/>`;
+        res = `<img src="/img/image-icon.png" title="Klik untuk melihat detail" onclick="window.open('https://drive.google.com/file/d/${idfile}/view?usp=drivesdk','', 'width=720,height=600')" class="w3-third tangan"/>`;
     }else if(pdf.indexOf(tipe)>-1){
-        res = `<iframe src="https://drive.google.com/uc?export=view&id=${idfile}" class="w3-third"></iframe>`;
+        res = `<img src="/img/pdf-icon.png"  title="Klik untuk melihat detail" onclick="window.open('https://drive.google.com/file/d/${idfile}/view?usp=drivesdk','', 'width=720,height=600')" class="w3-third tangan"/>`;
 
     }else if(word.indexOf(tipe) >-1){
-        res = `<img src="/img/word_icon.png"  class="w3-third"/>`;
+        res = `<img src="/img/word_icon.png" title="Klik untuk melihat detail" onclick="window.open('https://drive.google.com/file/d/${idfile}/view?usp=drivesdk','', 'width=720,height=600')" class="w3-third tangan"/>`;
         
     }else if(excel.indexOf(tipe) >-1){
-        res = `<img src="/img/excel_icon.png"  class="w3-third"/>`;
+        res = `<img src="/img/excel_icon.png" title="Klik untuk melihat detail" onclick="window.open('https://drive.google.com/file/d/${idfile}/view?usp=drivesdk','', 'width=720,height=600')" class="w3-third tangan"/>`;
         
     }else if(video.indexOf(tipe) >-1){
-        res = `<img src="/img/video_icon.png"  class="w3-third"/>`;
+        res = `<img src="/img/video_icon.png" title="Klik untuk melihat detail" onclick="window.open('https://drive.google.com/file/d/${idfile}/view?usp=drivesdk','', 'width=720,height=600')" class="w3-third tangan"/>`;
         
     }else if(audio.indexOf(tipe) >-1){
-        res = `<img src="/img/sound_icon.png"  class="w3-third"/>`;
+        res = `<img src="/img/sound_icon.png" title="Klik untuk melihat detail" onclick="window.open('https://drive.google.com/file/d/${idfile}/view?usp=drivesdk','', 'width=720,height=600')" class="w3-third tangan"/>`;
         
     }else if(rar.indexOf(tipe) >-1){
-        res = `<img src="/img/rar_icon.png"  class="w3-third"/>`;
+        res = `<img src="/img/rar_icon.png" title="Klik untuk melihat detail" onclick="window.open('https://drive.google.com/file/d/${idfile}/view?usp=drivesdk','', 'width=720,height=600')" class="w3-third tangan"/>`;
         
     }else if(ppt.indexOf(tipe) >-1){
-        res = `<img src="/img/ppt_icon.png"  class="w3-third"/>`;
+        res = `<img src="/img/ppt_icon.png" title="Klik untuk melihat detail" onclick="window.open('https://drive.google.com/file/d/${idfile}/view?usp=drivesdk','', 'width=720,height=600')" class="w3-third tangan"/>`;
         
     }else{
-        res = `<img src="/img/file_icon.png"  class="w3-third"/>`;
+        res = `<img src="/img/file_icon.png" title="Klik untuk melihat detail" onclick="window.open('https://drive.google.com/file/d/${idfile}/view?usp=drivesdk','', 'width=720,height=600')" class="w3-third tangan"/>`;
         
         
     }
@@ -13363,7 +13370,7 @@ const cekpreviewupload = (tipe,idfile) =>{
 }
 const cekpreviewupload2 = (tipe,idfile) =>{
     let res;
-    let img = ["jpg","jpeg","JPG","JPEG","png","PNG","gif","GIF"]
+    let img = ["jpg","jpeg","JPG","JPEG","png","PNG","gif","GIF","webp"]
     let pdf = ["pdf","PDF"];
     let word = ["doc","docx","DOC","DOCX"];
     let ppt = ["ppt","pptx","pptm"]
@@ -13402,160 +13409,207 @@ const cekpreviewupload2 = (tipe,idfile) =>{
     return res
 
 }
-const inputfileunggahgaleri = () =>{
-    let item = "";
-    item = document.getElementById("unggahmediagaleri").files[0];
-    
-    let elin = document.querySelector("[data-galeri=tipe]");
-    let elinn = document.querySelector(".ukuranfilegaleri");
+let objekfileunggahmultiple = {};
+const inputfileunggahgalerimultiple = async() => {
     let prv = document.querySelector(".previewgaleri");
-    prv.innerHTML = `<img src="/img/barloading.gif">`
-    let idfile = document.querySelector("[data-galeri=idfile]");
-    let namafile = item.name;
-    let namafolder = "000 GALERI"
-    elin.value = namafile.match(/(\.[^.]+)$/g)[0].replace(".","");
-    elinn.innerHTML = formatBytes(item.size,2);
-    
-    var reader = new FileReader();
-    reader.onload = function (e) {
-        //document.getElementById('uploadForm').submit();
-
-        let src = e.target.result;
-        let dataa = src.replace(/^.*,/, '');
-        let tipe = e.target.result.match(/^.*(?=;)/)[0];
-        //fn_upload_file(id_input, data, tipe);
-        // console.log(tipe);
-        // console.log(data);
-        
-    
-        let data = new FormData();
-      
-        data.append("fileContent", dataa);
-        data.append("mimeType", tipe);
-        data.append("filename", namafile);
-        data.append("kelas", namafolder);
-         // + "?action=uploaddulu";
-        fetch(linktendik+"?action=uploadfiledulu", {
-            method: 'post',
-            body: data
-        }).then(m => m.json())
-            .then(r => {
-                if (r.sukses == "Gagal") {
-                    setTimeout(() => {
-                        //el_label.innerHTML = `<i class="fa fa-upload warnaeka  w3-round-large w3-padding w3-border-black w3-border-bottom w3-center"> Unggah File</i>`;
-                        alert("gagal Unggah")
-                    }, 3000);
-                    //el_label.innerHTML = `Gagal Mengunggah`;
-                } else {
-                    idfile.value =r.idfile;
-                    prv.innerHTML= cekpreviewupload(elin.value,r.idfile);
-
-                }
-            })
-            .catch(er => {
-                console.log(er);
-                
-                alert("Maaf, terjadi kesalahan. Silakan ulangi sesi Anda sesaat lagi.")
-               })
+    let konf
+    if(prv.innerHTML !==""){
+        konf = confirm("File sebelumnya telah ditambahkan. Apakah ingin dihapus? Klik OK untuk MENGHAPUS, klik CANCEL untuk MENAMBAHKAN file lainnya (membiarkan file yang sudah ditambahkan).")
     }
-    reader.readAsDataURL(item);
+    let elin = document.querySelector("[data-galeri=tipe]");
+    let prvload = document.querySelector(".previewgaleriload");
+    let idfile = document.querySelector("[data-galeri=idfile]");
+    
+    let namafolder = "000 GALERI";
+    let arrtipe;
+    let arrnamafile;
+    let arridfile;
+    let arrukuran;
+    if(konf){
+        prv.innerHTML = "";
+        arrtipe = [];
+        arrnamafile = [];
+        arridfile = [];
+        arrukuran = [];
+    }else{
+        prv.innerHTML +="";
+        arrtipe =  (objekfileunggahmultiple.arrtipe === undefined)?[]:objekfileunggahmultiple.arrtipe ;
+        arrnamafile =(objekfileunggahmultiple.arrnamafile===undefined)?[]:objekfileunggahmultiple.arrnamafile;
+        arridfile = (objekfileunggahmultiple.arridfile===undefined)?[]:objekfileunggahmultiple.arridfile;
+        arrukuran = [];
+       
+    }
 
+    let item = "";
+    item = document.getElementById("unggahmediagaleri").files;
+    
+    let files = Array.from(item).map(file => {
+        let namafile = file.name;
+        let ukuran = formatBytes(file.size,2);
+        
+        let tipefile = namafile.match(/(\.[^.]+)$/g)[0].replace(".","");
+        
+        // Define a new file reader
+        let reader = new FileReader();
+
+        // Create a new promise
+        return new Promise(resolve => {
+            
+            // Resolve the promise after reading file
+            reader.onload = () => {
+                let obret = {}
+                let src = reader.result;
+                let dataa = src.replace(/^.*,/, '');
+                let tipe = src.match(/^.*(?=;)/)[0];
+                
+                let tipenyaaja = tipe.split("/")[1]
+                let realtipe;
+                if(tipenyaaja.indexOf("vnd")>-1){
+                    realtipe = tipefile;
+                }else{
+                    realtipe = tipenyaaja;
+                }
+                obret.data = dataa;
+                obret.tipe = tipe;
+                obret.ext = realtipe;
+                obret.size = ukuran;
+                obret.namafile = file.name;
+                resolve(obret);
+            }
+            // Read the file as a text
+            reader.readAsDataURL(file);
+
+        });
+
+    });
+
+    // At this point you'll have an array of results
+    let res = await Promise.all(files);
+    for (i = 0 ; i < res.length ; i++){
+        prvload.innerHTML = `<img src="/img/barloading.gif"/>`;
+        let data = new FormData();
+            let bin = res[i].data;
+            let mmtp = res[i].tipe;
+            let nfl= res[i].namafile
+            let ext = res[i].ext;
+                data.append("fileContent", bin);
+                data.append("mimeType", mmtp);
+                data.append("filename", nfl);
+                data.append("kelas", "000 GALERI");
+                
+                await fetch(linktendik+"?action=uploadfiledulu", {
+                    method: 'post',
+                    body: data
+                }).then(m => m.json())
+                    .then(r => {
+                        if (r.sukses == "Gagal") {
+                            alert("gagal Unggah "+ nfl)
+                            
+                            
+                        } else {
+                            arridfile.push(r.idfile);
+                            arrtipe.push(ext);
+                            prv.innerHTML += cekpreviewupload(ext,r.idfile);
+                            arrukuran.push(nfl);
+                            elin.value = arrtipe.join(",");
+                            idfile.value = arridfile.join(",")
+                        
+                        }
+                        prvload.innerHTML = "";
+                    })
+                    .catch(er => {
+                        console.log(er);
+                        prvload.innerHTML = "";
+                        
+                        alert("Maaf, terjadi kesalahan. Silakan ulangi sesi Anda sesaat lagi.")
+                    }) 
+    }
+    objekfileunggahmultiple.arrtipe = arrtipe;
+    objekfileunggahmultiple.arrnamafile = arrnamafile;
+    objekfileunggahmultiple.arridfile = arridfile;
 }
-
-const kirimmserver_mediagaleri = ()=>{
+const kirimmserver_mediagaleri = async()=>{
+    //console.log(objekfileunggahmultiple);
+    let divlod = document.querySelector(".loadingtopbar");
+    
+    
+    let b = objekfileunggahmultiple;
     let d = atributgaleri();
-    let val = d.val;
+    let idfiles = d.val[2].split(",");
+    let tipes = d.val[3].split(",");
     let key = d.key;
     let nol = d.nol;
-    
     if(nol.length !== 0){
         alert("Ada yang tidak diisi. Semua data harus terisi");
         return
     }
-    let divlod = document.querySelector(".loadingtopbar");
+    divlod.className= divlod.className.replace(/w3-hide/g,"");
     loadingtopbarin("loadingtopbar");
+    let eldiv = document.querySelector(".tambahmediagaleri");
+    
+    eldiv.className += " w3-hide";
+    let v = [];
+   
     let ttbody = document.querySelector(".tempatgaleri");
-    let type = [3];
-    let tabel = JSON.stringify(val);
-    let keyy = JSON.stringify(key);
-    let tipe = JSON.stringify(type);
-    let datakirim = new FormData();
-
-    datakirim.append("key",keyy);
-    datakirim.append("tab","galeri");
-    datakirim.append("tabel",tabel);
-    datakirim.append("tipe",tipe);
     let html = "";
-    //bersihkan inputannya;
+    for(i = 0 ; i < idfiles.length ; i++){
+        v = d.val;
+        v.splice(2,2,idfiles[i],tipes[i])
+       
+        let type = [3];
+        let tabel = JSON.stringify(v);
+        let keyy = JSON.stringify(key);
+        let tipe = JSON.stringify(type);
+    
+        let datakirim = new FormData();
+        datakirim.append("key",keyy);
+        datakirim.append("tab","galeri");
+        datakirim.append("tabel",tabel);
+        datakirim.append("tipe",tipe);
+        await fetch(linktendik+"?action=simpanbarisketaburut",{
+            method:"post",
+            body:datakirim
+        }).then(m => m.json())
+        .then(r => {
+            let res = r.result;
+            let dtt = r.data;
+            let dt = r.data.filter(s => s.status !== "hapus");
+            jsongaleridihapus = dtt.filter(s=> s.status == "hapus");
+            jsongaleri = dtt.filter(s=> s.status !== "hapus");
+            
+            
+           
+        })
+        .catch(er => console.log(er))
+
+        
+    }
     let datagaleri = document.querySelectorAll("[data-galeri]");
     for(i = 0 ; i < datagaleri.length; i++){
     
         datagaleri[i].value ="";
     }
+    
     let ab = document.querySelector("[data-galeri=dihapusoleh]");
     ab.value = "tidak ada";
     let ac = document.querySelector("[data-galeri=alasandihapus]");
     ac.value = "tidak ada";
 
-    let eldiv = document.querySelector(".tambahmediagaleri");
     
-    eldiv.className += " w3-hide";
 
-        
-     fetch(linktendik+"?action=simpanbarisketaburut",{
-        method:"post",
-        body:datakirim
-    }).then(m => m.json())
-    .then(r => {
-       //console.log(r);
-       alert("Berhasil diinput.")
-       let res = r.result;
-        let dtt = r.data;
-        let dt = r.data.filter(s => s.status !== "hapus");
-        jsongaleridihapus = dtt.filter(s=> s.status == "hapus");
-        jsongaleri = dtt.filter(s=> s.status !== "hapus");
-        
-        if(res > 1){
-            for(i = dt.length-1 ;  i>=0;i--){
-                let d = dt[i];
-                let hh = cekpreviewupload2(d.tipe,d.idfile);
-                html +=`<div class="w3-col l2" style="height: 270px;">
-                <div class="isigaleri">
-                    ${hh}
-                    <div class="overlaygaleri">
-                    Tgl ${tanggalfull(new Date(d.tglkejadian))}
-                        <div class="w3-text-white w3-margin">${d.keterangan}</div>
-                        <div class="w3-text-white w3-margin w3-tiny">Ditambahkan oleh: <br> ${d.oleh}</div>
-                        <div class="w3-white w3-margin w3-tiny">${d.tags}</div>
-                    <div class="textgaleri">
-                            <button onclick="window.open('https://drive.google.com/file/d/${d.idfile}/view?usp=drivesdk','', 'width=720,height=600')">Detail</button>
-                            <button onclick="hapusgaleri(${d.idbaris})">Hapus</button>
-                            
-                        </div>
-                      </div>
-                </div>
-            </div>`;
-            }
-            ttbody.innerHTML = html;
-        }
-        
-        clearInterval(stoploadingtopbar);
+    objekfileunggahmultiple = {};
+
+    clearInterval(stoploadingtopbar);
                
-        divlod.style.width = "100%";
-        setTimeout(() => {
-            divlod.style.width = "1px"
-            divlod.className += " w3-hide";
-    
-        }, 3000);
-       
-        
-    })
-    .catch(er => console.log(er))
-    
-    
+    divlod.style.width = "100%";
+    setTimeout(() => {
+        divlod.style.width = "1px"
+        divlod.className += " w3-hide";
+        galery();
 
-};
-
+    }, 3000);
+   
+}
 const btn_tambahmedia = ()=>{
     let oleh = document.querySelector("[data-galeri=oleh");
     oleh.value = namauser;
@@ -13749,5 +13803,361 @@ const btn_historimedia = () =>{
         alert("Tidak ada file yang dihapus")
     }else{
         ttbody.innerHTML = html;
+    }
+}
+///googlemeet
+
+const googlemeet = () =>{
+    let kelasform = document.querySelector(".datagooglemeet");
+    let kelasrespon = document.querySelector(".responkirimgooglemeet");
+    kelasform.className= kelasform.className.replace(/w3-hide/g,"");
+    kelasrespon.innerHTML = "";
+    let modal = document.querySelector("#modalmeet");
+    modal.style.display="block";
+    let forkelas = document.querySelector(".generatekelasini");
+    let html = "";
+    let b = namanamakelasdijenjangini;
+    for(i=0; i<b.length; i++){
+        html +=`<input type="checkbox" name="kelasmeet" class="w3-check" data-meet="kelaskelas"  id="meet${b[i]}" value="${b[i]}">
+        <label for="meet${b[i]}"> Kelas ${b[i]}</label><br>`;
+    }
+    forkelas.innerHTML = html;
+    document.querySelector("[data-meet=moderator]").value = namauser;
+}
+const windowlink = () =>{
+    let d1 = document.querySelector("[data-meet=waktumulai]").value;
+    let d2 = document.querySelector("[data-meet=waktuakhir]").value;
+    // console.log(d1)
+    // console.log(d2)
+    let t1 = d1.replace(/[-.:]/g,"");
+    let t2 = d2.replace(/[-.:]/g,"");
+    
+    //https://calendar.google.com/calendar/render?action=TEMPLATE&dates=20210821T041500Z %2F 20210821T044500Z
+    if(d1 !== "" && d2 !==""){
+        let link = `https://calendar.google.com/calendar/render?action=TEMPLATE&dates=${t1}%2F${t2}`
+        window.open(link,'', 'width=900,height=700')
+     }else{
+        alert("Tentukan waktu mulai/akhir terlebih dahulu");
+    }
+}
+const publikasikanlinkmeet = () => {
+    let el = document.querySelectorAll("[data-meet");
+    let dt = {};
+    let kls = [];
+    let nol = [];
+    for(i=0;i<el.length ; i++){
+        let n = el[i].getAttribute("data-meet");
+        if(n == "kelaskelas"){
+            if(el[i].checked){
+                kls.push(el[i].value)
+            }
+        }else{
+            dt[n]=el[i].value ;
+        }
+        if(el[i].value ==""){
+            nol.push("nol")
+        }
+
+    }
+    dt["kelaskelas"] =kls.join(",");
+    let key = Object.keys(dt);
+    key.unshift("idbaris");
+    let v = Object.entries(dt).map(([k,v])=>v);
+    
+    if(nol.length !== 0){
+        alert("Pastikan semua link data terisi.");
+        return;
+    }
+        let kelasform = document.querySelector(".datagooglemeet");
+        let kelasrespon = document.querySelector(".responkirimgooglemeet");
+        if(kelasform.className.indexOf("w3-hide")==-1){
+            kelasform.className +=" w3-hide";
+        }
+        let type = [2,3];
+        let tabel = JSON.stringify(v);
+        let keyy = JSON.stringify(key);
+        let tipe = JSON.stringify(type);
+    
+        let datakirim = new FormData();
+        datakirim.append("key",keyy);
+        datakirim.append("tab","googlemeet");
+        datakirim.append("tabel",tabel);
+        datakirim.append("tipe",tipe); 
+        let url = jsonlocalstorage.url_dataabsen;
+        kelasrespon.innerHTML = `<img src="/img/barloading.gif"/>`;
+         fetch(url+"?action=simpanbarisketaburut",{
+            method:"post",
+            body:datakirim
+        }).then(m => m.json())
+        .then(r => {
+            //console.log(r);
+            kelasrespon.innerHTML = "Berhasil dipublikasikan.";
+            let tabell = document.querySelector(".tabelgooglemeet").getElementsByTagName("tbody")[0];
+            let d= r.data.filter(s=> s.status !== "Dihapus" && s.kelaskelas.indexOf(idNamaKelas)>-1);
+            jsongooglemeet = r.data.filter(s=> s.status !== "Dihapus" && s.kelaskelas.indexOf(idNamaKelas)>-1);
+            let html = "";
+            for(i = 0 ; i < d.length; i++){
+                html += `<tr>
+                    <td>(${(i+1)})</td>
+                    <td>${d[i].judul}</td>
+                    <td>${d[i].moderator}</td>
+                    <td>${tanggalfulllengkap(new Date(d[i].waktumulai))}</td>
+                    <td>${tanggalfulllengkap(new Date(d[i].waktuakhir))}</td>
+                    <td>${d[i].status}</td>
+                    <td>${d[i].kelaskelas}</td>
+                    <td>${d[i].linkmeet}</td>
+                    <td><button onclick="hapusgooglemeet(${parseInt(d[i].idbaris)})" class="w3-btn warnaeka">Hapus</button></td>
+                </tr>`;
+            }
+            if(d.length==0){
+                tabell.innerHTML = `<tr><td colspan="9" class="w3-center w3-red"> Tidak Ada Agenda Google Meet di Kelas Anda</tr>`;
+            }
+            tabell.innerHTML = html;
+            //hapus semua data yang lalu;
+            for(j=0;j<el.length ; j++){
+                let n = el[j].getAttribute("data-meet");
+                if(n == "kelaskelas"){
+                    if(el[j].checked){
+                        el[j].checked = false;
+                    }
+                }else{
+                    el[j].value ="";
+                }
+            }
+        })
+        .catch(er => {console.log(er);
+            kelasrespon.innerHTML = "Terjadi kesalahan. Ulangsi sesi Anda sesaat lagi...";
+        });
+
+
+
+}
+const menugooglemeet = () => {
+    if(idNamaKelas === undefined){
+        alert("Silakan Pilih Kelas terlebih dahulu.")
+        return
+    }
+    tampilinsublamangurukelas('googlemeet'); 
+    let tombol=document.querySelector(".tombolgooglemeet");
+    tombol.innerHTML = `<img src="/img/barloading.gif"/>`;
+    
+    let el = document.querySelectorAll("[data-meet");
+    let dt = {};
+    let kls = [];
+    for(i=0;i<el.length ; i++){
+        let n = el[i].getAttribute("data-meet");
+        if(n == "kelaskelas"){
+            if(el[i].checked){
+                kls.push(el[i].value)
+                //console.log(el[i].value);
+            }
+        }else{
+            dt[n]=el[i].value ;
+        }
+    }
+    dt["kelaskelas"] =kls.join(",");
+    //console.log(dt);
+
+    let key = Object.keys(dt);
+    key.unshift("idbaris");
+    let tab = "googlemeet"
+    let keyy = JSON.stringify(key);
+    let tabel = document.querySelector(".tabelgooglemeet").getElementsByTagName("tbody")[0];
+    let datakirim = new FormData();
+    datakirim.append("tab",tab);
+    datakirim.append("key",keyy);
+    let url = jsonlocalstorage.url_dataabsen;
+    fetch(url+"?action=getpostdatafromtab",{
+        method:"post",
+        body:datakirim
+    }).then(m => m.json())
+    .then(r => {
+       // console.log(r);
+        if(r.result > 1){
+            tombol.innerHTML =`<button class="w3-btn warnaeka w3-bottombar w3-border-black w3-round-large" onclick="googlemeet()">Buat Link Google Meet</button>
+            &nbsp;<button onclick="window.open('https://calendar.google.com/calendar','','width=900,height=700')"  class="w3-btn warnaeka w3-bottombar w3-border-black w3-round-large"  title="Kalender Google Anda"><i class="fa fa-calendar"></i> Kalender Google Anda</button>
+            `;
+            let d= r.data.filter(s=> s.status !== "Dihapus" && s.kelaskelas.indexOf(idNamaKelas)>-1);
+            jsongooglemeet = r.data.filter(s=> s.status !== "Dihapus" && s.kelaskelas.indexOf(idNamaKelas)>-1);
+            let html = "";
+            if(d.length !== 0 ){
+                for(i = 0 ; i < d.length; i++){
+                html += `<tr>
+                    <td>(${(i+1)})</td>
+                    
+                    <td>${d[i].judul}</td>
+                    <td>${d[i].moderator}</td>
+                    <td>${tanggalfulllengkap(new Date(d[i].waktumulai))}</td>
+                    <td>${tanggalfulllengkap(new Date(d[i].waktuakhir))}</td>
+                    <td>${d[i].status}</td>
+                    <td>${d[i].kelaskelas}</td>
+                    <td>${d[i].linkmeet}</td>
+                    <td><button onclick="hapusgooglemeet(${parseInt(d[i].idbaris)})" class="w3-btn warnaeka">Hapus</button></td>
+                </tr>`;
+                }
+            }else{
+                html = `<tr><td colspan="9" class="w3-center w3-red"> Tidak Ada Agenda Google Meet di Kelas Anda</tr>`;
+            }
+            tabel.innerHTML = html;
+        }else{
+            tombol.innerHTML =`<button class="w3-btn warnaeka w3-bottombar w3-border-black w3-round-large" onclick="googlemeet()">Buat Link Google Meet</button>
+            &nbsp;<button onclick="window.open('https://calendar.google.com/calendar','','width=900,height=700')"  class="w3-btn warnaeka w3-bottombar w3-border-black w3-round-large"  title="Kalender Google Anda"><i class="fa fa-calendar"></i> Kalender Google Anda</button>`;
+            
+        }
+    }).catch(er=> {console.log(er);
+    
+    })
+
+}
+const hapusgooglemeet = (id) =>{
+    //    alert (id);
+    let kon = confirm("Anda yakin ingin menghapus ini? Klik OK untuk menghapus, klik CANCEL untuk membatalkan.")
+    if(!kon){
+        return;
+    }
+    let d = jsongooglemeet.filter(s=> s.idbaris == id)[0];
+    let val = Object.entries(d).map(([k,v])=>(k.toString().indexOf("waktu")>1)?getlocalDateTimse(v):v);
+    val.splice(4,1,"Dihapus");
+    let k = Object.keys(d);
+    let tabel = document.querySelector(".tabelgooglemeet").getElementsByTagName("tbody")[0];
+    
+    tabel.innerHTML = `<tr><td colspan="7" class="w3-center"><img src="/img/barloading.gif"/></td></tr>`;
+    
+            let type=[2,3];
+            let tabell = JSON.stringify(val);
+            let keyy = JSON.stringify(k);
+            let tipe = JSON.stringify(type);
+            let datakirim = new FormData();
+        
+            datakirim.append("key",keyy);
+            datakirim.append("idbaris",parseInt(id));
+            datakirim.append("tab","googlemeet");
+            datakirim.append("tabel",tabell);
+            datakirim.append("tipe",tipe);
+          
+            let url = jsonlocalstorage.url_dataabsen
+            
+            fetch(url+"?action=simpanbarisketabidbaris",{
+                method:"post",
+                body:datakirim
+            }).then(m => m.json())
+            .then(r =>{
+                //console.log(r);
+                if(r.result >1){
+                    jsongooglemeet = r.data.filter(s=> s.status !== "Dihapus"&& s.kelaskelas.indexOf(idNamaKelas)>-1);
+                    let d = r.data.filter(s=> s.status !== "Dihapus" && s.kelaskelas.indexOf(idNamaKelas)>-1);
+                    let html = "";
+                    if(d.length !== 0 ){
+                        for(i = 0 ; i < d.length; i++){
+                        html += `<tr>
+                            <td>(${(i+1)})</td>
+                            <td>${d[i].judul}</td>
+                            <td>${d[i].moderator}</td>
+                            <td>${tanggalfulllengkap(new Date(d[i].waktumulai))}</td>
+                            <td>${tanggalfulllengkap(new Date(d[i].waktuakhir))}</td>
+                            <td>${d[i].status}</td>
+                            <td>${d[i].kelaskelas}</td>
+                            <td>${d[i].linkmeet}</td>
+                            <td><button onclick="hapusgooglemeet(${parseInt(d[i].idbaris)})" class="w3-btn warnaeka">Hapus</button></td>
+                        </tr>`;
+                        }
+                    }else{
+                        html = `<tr><td colspan="9" class="w3-center w3-red"> Tidak Ada Agenda Google Meet di Kelas Anda</tr>`;
+                    }
+                    tabel.innerHTML = html;
+                }
+            })
+            .catch(er =>{ console.log(er);
+                tabel.innerHTML = `<tr><td colspan="7" class="w3-center">Terjadi Kesalahan... Silakan coba lagi nanti.</td></tr>`
+            })
+}
+const atributegooglemeet = () =>{
+    let el = document.querySelectorAll("[data-meet");
+    let dt = {};
+    let kls = [];
+    for(i=0;i<el.length ; i++){
+        let n = el[i].getAttribute("data-meet");
+        if(n == "kelaskelas"){
+            if(el[i].checked){
+                kls.push(el[i].value)
+                //console.log(el[i].value);
+            }
+        }else{
+            dt[n]=el[i].value ;
+        }
+    }
+    dt["kelaskelas"] =kls.join(",");
+    return dt
+}
+const panggildatagooglemeet = () =>{
+    let divpesan = document.querySelector(".pesankhususkepsek");
+    let divpesancenter = document.querySelector(".divumuminmeet");
+    let dt = atributegooglemeet();
+    let key = Object.keys(dt);
+    key.unshift("idbaris");
+    let tab = "googlemeet"
+    let keyy = JSON.stringify(key);
+    
+    let datakirim = new FormData();
+    datakirim.append("tab",tab);
+    datakirim.append("key",keyy);
+    
+    let url = jlo.url_dataabsen;
+    fetch(url+"?action=getpostdatafromtab",{
+        method:"post",
+        body:datakirim
+    }).then(m => m.json())
+    .then(r => {
+       // console.log(r);
+        if(r.result > 1){
+            jsongooglemeet = r.data.filter(s=> s.status !== "Dihapus"&& s.kelaskelas.indexOf(idNamaKelas)>-1);
+            let d= r.data.filter(s=> s.status !== "Dihapus" && s.kelaskelas.indexOf(idNamaKelas)>-1 && tanggalfull(s.waktumulai)== tanggalfull(new Date()));
+            let html = "";
+            let htmll = "";
+            if(d.length == 0){
+                if(divpesan.className.indexOf("w3-hide")==-1){
+                    divpesan.className += " w3-hide";
+                }
+            }else{
+                divpesan.className = divpesan.className.replace(/w3-hide/g,"");
+            }
+                
+
+            for(i=0;i<d.length;i++){
+                html +=`<div class="w3-third w3-border w3-round w3-container">
+                <h5>${d[i].judul}</h5>
+                <div class="w3-tiny w3-border-bottom w3-border-top">
+                Waktu:<br>
+                <b class="umuminmeet_waktumulai w3-text-blue">${tanggalfulllengkap(d[i].waktumulai)}</b>
+                <br> sampai dengan <br>
+                <b class="w3-text-blue">${tanggalfulllengkap(d[i].waktuakhir)}</b>
+                <br><br>Moderator: ${d[i].moderator}<br>
+                </div><br>
+                <a href="${d[i].linkmeet}" target="_blank" class="w3-btn warnaeka w3-border-black w3-border-bottom w3-round-larg umuminmeet_link">Link Google Meet</a>
+                <br>atau<br>
+                <button onclick="kopipaste('linkmeet${i}')" class="w3-btn warnaeka w3-border-black w3-border-bottom w3-round-larg umuminmeet_link">Salin Link</button>
+                <br>
+                <br>
+                </div>`;
+                htmll += `<textarea id="linkmeet${i}">${d[i].linkmeet}</textarea>`;
+            }
+            divpesancenter.innerHTML = html;
+            document.getElementById("tempattextarea").innerHTML = htmll;
+        }else{
+            if(divpesan.className.indexOf("w3-hide")==-1){
+                divpesan.className += " w3-hide";
+            }
+        }
+    }).catch(er => console.log(er));
+
+}
+const maksimalkarakter = (t) =>{
+    let d = t.value;
+    if(d.length >=50){
+        alert("Maksimal 50 karakter");
+        t.value = t.value.slice(0,49);
+        
+    }else{
+        
     }
 }
