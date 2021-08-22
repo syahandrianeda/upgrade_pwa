@@ -1,5 +1,11 @@
 21 Agustus
 UJI COBA COPY exeCommand
+- /css/firstyle.css -- hapus style textarea
+- /statis/guru.js -- replace
+- /statis/siswa.js ---udah tadi
+
+- /user/guru.html -- pindahin div textarea
+- /user/gmp.html -- pindahin div textarea
 
 
 

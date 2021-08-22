@@ -6163,13 +6163,6 @@ const panggildatagooglemeet = () =>{
                 divpesan.className += " w3-hide";
             }
         }
-        // if(d.length == 0){
-        //     if(divpesan.className.indexOf("w3-hide")==-1){
-        //         divpesan.className += " w3-hide";
-        //     }
-        // }else{
-        //     divpesan.className = divpesan.className.replace(/w3-hide/g,"");
-        // }
     }).catch(er => console.log(er));
 
 };

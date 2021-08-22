@@ -9265,6 +9265,8 @@ const tombolaksikronologi = (currEssay, parNama, z, idhtmlmateri) => {
     //anggap aja ada essay dulu!
     let kodehtml = "";
     let cek = nilairesponkronologi.filter(k => k.tokensiswa == parNama);
+    //console.log(cek);
+    let matericode ;
 
     if (cek.length == 0) {
         //jika siswa belum mengerjakan, tolong bantu isi!
@@ -9277,19 +9279,19 @@ const tombolaksikronologi = (currEssay, parNama, z, idhtmlmateri) => {
         let indek = cek.length - 1;
         let indekk = indek + "<|>" + parNama
 
-
+        matericode = cek[indek].matericode;
         if (currEssay) {
             // jika ada essay, cek lagi. Nilai essaynya udah masuk apa belum
             // jika belum masuk, maka tampilkan tombol koreksi
             if (cek[indek].nilaiEssay == "") {
                 kodehtml = `<button class="w3-button w3-red" onclick="lihatljksaya('${cek[indek].html_jawaban}')">LJK</button><br>
           <button class="w3-button w3-green" onclick="gurumengoreksi('${indekk}')">Koreksi</button><br><br>
-          <button class="w3-button w3-black" onclick="hapusljk('${cek[indek].idbaris}')">Hapus</button><br>
+          <button class="w3-button w3-black" onclick="hapusljk('${cek[indek].idbaris}',${matericode})">Hapus</button><br>
           `
             } else {
                 kodehtml = `<button class="w3-button w3-blue" onclick="lihatljksaya('${cek[indek].html_jawaban}')">LJK</button><br>
           <button class="w3-button w3-green" onclick="gurumengoreksi('${indekk}')">Koreksi Ulang</button><br><br>
-          <button class="w3-button w3-black" onclick="hapusljk('${cek[indek].idbaris}')">Hapus</button><br>
+          <button class="w3-button w3-black" onclick="hapusljk('${cek[indek].idbaris}',${matericode})">Hapus</button><br>
           `
                 //<button class="w3-button w3-green" onclick="gurumengoreksi('${indek}')">Koreksi Ulang</button><br></br>
                 //
@@ -9297,7 +9299,7 @@ const tombolaksikronologi = (currEssay, parNama, z, idhtmlmateri) => {
 
         } else {
             kodehtml = `<button class="w3-button w3-blue" onclick = "lihatljksaya('${cek[indek].html_jawaban}')" > LJK</button ><br> <br> 
-        <button class="w3-button w3-black" onclick="hapusljk('${cek[indek].idbaris}')">Hapus</button><br>
+        <button class="w3-button w3-black" onclick="hapusljk('${cek[indek].idbaris}',${matericode})">Hapus</button><br>
         `
         }
     }
@@ -10549,93 +10551,6 @@ function pgskor(opsik, kuncijawaban) { // kebalik, hahahaha
     return benarsalah
 }
 
-// const hasilakhirelamasolamayangpggadipakelagi = (par) => {
-//     hasilakhirwaktu.innerHTML = tanggalfulllengkap(new Date());
-//     let koleksiceklis = []
-//     let datakuncikd = JSON.parse(kronologijson[parameterbantuisiljk].kuncikd); //JSON.parse(localStorage.getItem("kuncikd"))
-//     let keyarray = Object.keys(datakuncikd);
-//     let obj = {};
-//     for (l = 0; l < keyarray.length; l++) {
-//         let valu = datakuncikd[keyarray[l]]; // [1, 2, 3, 4, dst]
-//         let valulengt = valu.length; // [banyaknya array di atas]
-//         let coun = 0;
-//         for (z = 0; z < valu.length; z++) { // nomor soal pada kunciKD 
-//             for (m = 0; m < koleksiceklis.length; m++) { //jawaban siswa 1A, 2B
-
-//                 var skor = (PGBenar(arrkunci, koleksiceklis[m]) == "Benar") ? 1 : 0;
-//                 if (parseInt(valu[z]) == parseInt(koleksiceklis[m])) {
-//                     coun += skor
-//                 }
-
-//             }
-//         }
-//         let nilaikd = (coun / valulengt * 100).toFixed(2);
-
-//         obj[keyarray[l]] = nilaikd
-
-
-//     }
-
-//     nilaikd.value = JSON.stringify(obj)
-//     // tempatinputpilihanganda.innerHTML += "Nilai KD  <input type='text' name='nilaikd' value='" + JSON.stringify(obj) + "'/><br/>"
-
-
-
-//     // var resulthasilessay = "JAWABAN ESSAY:<br/>";;
-//     var resulthasilessay = (kronologijson[parameterbantuisiljk].jumlahessay == 0) ? "" : "JAWABAN ESSAY:<br/>";;
-
-//     //resulthasilessay += "<!-- ADD_PAGE -->";
-//     var elFilejawaban = document.getElementsByClassName("filejawaban");
-//     if (elFilejawaban.length > 0) { //mengantisipasi jika tidak ada filejawaban kosong ga perlu dieksekusi
-//         for (var c = 0; c < elFilejawaban.length; c++) {
-//             var innernya = elFilejawaban[c].tagName;
-//             var noessay = elFilejawaban[c].getAttribute("id").replace("filejawaban", "");
-//             //console.log(innernya)
-//             if (innernya == "TEXTAREA") {
-//                 resulthasilessay += "<ol style='list-style-type:decimal' start='" + noessay + "'><li><b style='color:blue'>Pertanyaan:</b>:<br/>";
-//                 resulthasilessay += document.getElementById("pertanyaanessay_" + noessay).innerHTML + "<hr style='border-top:1px solid black'/><b style='color:blue'>Jawaban:</b>:<br/>";
-//                 resulthasilessay += elFilejawaban[c].value.split("\n").join("<br/>");
-//                 resulthasilessay += "<div id='untuklj" + noessay + "' class='koleksilj' style='border:1px solid red;padding:5px;background-color:#eeeeff'>Nilai</div>";
-//                 resulthasilessay += "</li></ol>";
-//             } else {
-//                 resulthasilessay += "<ol style='list-style-type:decimal' start='" + noessay + "'><li><b style='color:blue'>Pertanyaan:</b>:<br/>";
-//                 resulthasilessay += document.getElementById("pertanyaanessay_" + noessay).innerHTML + "<hr style='border-top:1px solid black'/><b style='color:blue'>Jawaban:</b>:<br/>";
-
-//                 resulthasilessay += elFilejawaban[c].outerHTML;
-//                 resulthasilessay += "<div id='untuklj" + noessay + "' class='koleksilj' style='border:1px solid red;padding:5px;background-color:#eeeeff'>Nilai</div>";
-//                 resulthasilessay += "</li></ol>";
-
-//             }
-//         }
-
-//     }
-//     resumenilaiskhir.innerHTML = resulthasilessay;
-
-
-//     buathtmlbantu.textContent = window.btoa(unescape(encodeURIComponent(previewljkbantu.innerHTML)));
-//     let iddarimana = (koreksidarimana.innerHTML).split("_")[1];
-//     let idakseskoreksi = (koreksidarimana.innerHTML).split("_")[0];
-//     let namaform = document.getElementById("ljkbantu")
-//     let dataform = new FormData(namaform);
-//     fetch(constlinknilai + "?action=gurukirimnilai", {
-//         method: 'post',
-//         body: dataform
-//     })
-//         .then(u => u.json())
-//         .then(q => {
-//             document.getElementById("infoloadingljk").innerHTML = q.result;
-//             if (iddarimana == "hariini") {
-//                 getdaftarnilai(idakseskoreksi)
-//             } else (
-//                 daftarnilaikronologi(idakseskoreksi)
-
-//             )
-
-//         })
-//         .catch(er => console.log(er))
-//     document.getElementById("infoloadingljk").innerHTML = `<i class="fa fa-spin fa-refresh w3-xxlarge" style="margin:0 auto"></i> proses kirim ....`;
-// }
-
 function hasilakhirelamaso(id) {
     // let dlo = JSON.parse(localStorage.getItem("materi"))[id];
     // let sw = JSON.parse(localStorage.getItem("typeuser"))
@@ -11030,13 +10945,13 @@ const hasilakhirelamasopg = (par) => {
             document.getElementById("infoloadingljk").innerHTML = "terjadi kesalahan " + er;
         })
 }
-const hapusljk = (idbaris) => {
+const hapusljk = (idbaris,matericode) => {
     let konfirmasihapus = confirm("Anda yakin ingin menghapusnya? \n \n Klik Ok untuk menghapus. \n \n Klik CANCEL untuk membatalkan");
     if (!konfirmasihapus) {
         return
     }
 
-    let cekcrtToken = kronologijson.filter(k => k.idbaris = idbaris)
+    let cekcrtToken = kronologijson.filter(k => k.idbaris == matericode);
     alert("pengen hapus data baris ke-" + idbaris + " di SS jenjang kelas " + idJenjang + " dan ini crtTokennya " + cekcrtToken[0].crtToken)
     let idok = cekcrtToken[0].crtToken;
     let dataform = new FormData();
@@ -11047,6 +10962,7 @@ const hapusljk = (idbaris) => {
         body: dataform
     }).then(m => m.json())
         .then(f => {
+            //console.log(f);
             alert(f.result);
             refreshdatakdkd();
         })
@@ -11058,10 +10974,12 @@ const refreshdatakdkd = () => {
     let idakseskoreksi = (koreksidarimana.innerHTML).split("_")[0];
     if (iddarimana == "hariini") {
         getdaftarnilai(idakseskoreksi)
-    } else (
+       // console.log("getdaftarnilai")
+    } else {
         daftarnilaikronologi(idakseskoreksi)
+       // console.log("daftarnilaikronoli")
 
-    )
+    }
 }
 const buathtmlljklama = (adapg) => {
     let tekshtml = "";
@@ -14139,7 +14057,7 @@ const panggildatagooglemeet = () =>{
                 <br>
                 <br>
                 </div>`;
-                htmll += `<textarea id="linkmeet${i}">${d[i].linkmeet}</textarea>`;
+                htmll += `<textarea id="linkmeet${i}" cols="1" rows="1">${d[i].linkmeet}</textarea>`;
             }
             divpesancenter.innerHTML = html;
             document.getElementById("tempattextarea").innerHTML = htmll;
