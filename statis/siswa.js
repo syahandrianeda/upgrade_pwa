@@ -620,7 +620,7 @@ const loadingtopbarin = (el) => {
             // console.log(indekhari)
             let indek = arrayStringTglLibur.indexOf(StringTanggal(day));
 
-            if (indekhari == 0 || indekhari == 6 || indek > -1) {
+            if (indekhari == 6 || indekhari == 6 || indek > -1) {
                 //console.log("Libur atau Sabtu Minggu")
                 belajaraktif = false;
                 // tampilkan laman libur:
@@ -691,7 +691,7 @@ const loadingtopbarin = (el) => {
             // console.log(indekhari)
             let indek = arrayStringTglLibur.indexOf(StringTanggal(day));
 
-            if (indekhari == 0 || indekhari == 6 || indek > -1) {
+            if (indekhari == 6 || indekhari == 6 || indek > -1) {
                 //console.log("Libur atau Sabtu Minggu")
                 belajaraktif = false;
                 // tampilkan laman libur:
@@ -6154,7 +6154,7 @@ const panggildatagooglemeet = () =>{
                 <br>
                 <br>
                 </div>`;
-                htmll += `<textarea id="linkmeet${i}">${d[i].linkmeet}</textarea>`;
+                htmll += `<textarea id="linkmeet${i}" rows="1" cols="1">${d[i].linkmeet}</textarea>`;
             }
             divpesancenter.innerHTML = html;
             document.getElementById("tempattextarea").innerHTML = htmll;
@@ -6180,8 +6180,8 @@ const kopipaste = (id) => {
     var copyText = document.getElementById(id);
     copyText.select();
     copyText.setSelectionRange(0, 999)
-    //document.execCommand("copy");
-    navigator.clipboard.writeText(copyText.value);
+    document.execCommand("copy");
+    //navigator.clipboard.writeText(copyText.value);
     //alert("Copied the text: " + copyText.value);
     // alert("Berhasil Ngopi ... ^_^");
     //resultuploadpotomateri.innerHTML = "";;

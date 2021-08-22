@@ -7615,8 +7615,8 @@ const kopipaste = (id) => {
     var copyText = document.getElementById(id);
     copyText.select();
     copyText.setSelectionRange(0, 99999);
-    //document.execCommand("copy");
-    navigator.clipboard.writeText(copyText.value);
+    document.execCommand("copy");
+    //navigator.clipboard.writeText(copyText.value);
     // alert("Copied the text: " + copyText.value);
     // alert("Berhasil Ngopi ... ^_^");
     resultuploadpotomateri.innerHTML = "";;
