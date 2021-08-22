@@ -5410,7 +5410,162 @@ const nilaimapelpas = () => {
     let tagihan = "pas";
     let idelemen = "datatabelnilai" + tagihan;
     let mapelnya = y[x].value;
-    getnilaimapelgurukelas(tagihan, idelemen, mapelnya)
+    //getnilaimapelgurukelas(tagihan, idelemen, mapelnya)
+    ///////-----------------------------------------------------/////////////
+    let koleksiswa = koleksinamasiswaberdasarkanagama(y[x].value).map(k => k.pd_nama);
+    let koleksitokensiswa = koleksinamasiswaberdasarkanagama(y[x].value).map(k => k.id);
+    datatabelnilaipas.innerHTML = "<hr/><i class='fa fa-refresh fa-spin w3-xxlarge'></i> Proses loading..."
+    
+    fetch(constlinknilai + "?action=lihatnilairekap&tab=PAS&kelas=" + idNamaKelas)
+        .then(m => m.json())
+        .then(r => {
+            // console.log(r);
+            // pengenpengen = r.records;
+            // let darikronologijson = kronologijson;
+            let PH = fnkeyobjekmapel(y[x].value, r.banyakkd);
+            let cPH = Object.keys(PH.koleksiul);
+            let allcount = 0;
+            let arrallcount = [];
+            for (a = 0; a < cPH.length; a++) {
+                // allcount = allcount + PH.koleksiul[cPH[k]].datakey.length
+                allcount += PH.koleksiul[cPH[a]].datakey.length;
+                arrallcount.push(PH.koleksiul[cPH[a]].datakey.length);
+            }
+            // console.log(allcount)
+            // console.log(PH);
+            // console.log(cPH.length);
+            // console.log(cPH);
+
+
+            let tekshtml = "";
+            if (cPH.length > 0) {
+                let tabel = document.createElement("table");
+                tabel.setAttribute("class", "versi-table w3-small");
+                tabel.setAttribute("id", "nilaipas_" + y[x].value);
+                let thead = tabel.createTHead();
+                let tr = thead.insertRow(0);
+                let th = document.createElement("th");
+                th.setAttribute("rowspan", 3);
+                th.innerHTML = "No.";
+                tr.appendChild(th);
+                th = document.createElement("th");
+                th.setAttribute("rowspan", 3);
+                th.setAttribute("style", "position:sticky;position:-webkit-sticky;left:0px;box-shadow: inset 0 0 1px #000000");
+                th.innerHTML = "Nama Siswa";
+                tr.appendChild(th);
+
+
+                th = document.createElement("th");
+                th.setAttribute("colspan", allcount);// cPH.length);
+                th.innerHTML = `Rekap Penilaian Akhir Semester<br/><sub>${y[x].text}</sub>`;
+                tr.appendChild(th);
+
+                tr = thead.insertRow(1);
+                tr2 = thead.insertRow(2);
+                for (i = 0; i < cPH.length; i++) {
+                    let th = document.createElement("th");
+                    th.setAttribute("colspan", arrallcount[i]);
+                    th.innerHTML = inverstanggal(cPH[i].split("_")[2]) + `<button class="w3-blue w3-button" onclick="previewsoalnilairekap('${cPH[i].split("_")[0]}')"><i class="fa fa-eye"></i></button>`;
+                    tr.appendChild(th);
+
+                    for (c = 0; c < arrallcount[i]; c++) {
+                        th2 = document.createElement("th");
+                        th2.innerHTML = "KD " + PH.koleksiul[cPH[i]].datakey[c].split("_")[4];
+                        tr2.appendChild(th2);
+                    }
+                }
+                let trr = tabel.createTBody();
+                for (j = 0; j < koleksiswa.length; j++) {
+                    tr = trr.insertRow(-1);
+                    let td = tr.insertCell(-1);
+                    td.innerHTML = j + 1;
+                    td = tr.insertCell(-1);
+                    td.setAttribute("style", "position:sticky;position:-webkit-sticky;left:0px;box-shadow: inset 0 0 1px #000000");
+                    td.innerHTML = koleksiswa[j];//.toUpperCase();
+                    // let datanilai = r.records.filter(k => k.namasiswa == koleksiswa[j]);
+                    let datanilai = r.records.filter(k => k.tokensiswa == koleksitokensiswa[j]);
+                    // console.log(datanilai);// && k.indexOf(PH.koleksiul[cPH[k]].datakey[d]) > -1))
+                    for (k = 0; k < cPH.length; k++) {
+                        for (d = 0; d < arrallcount[k]; d++) {
+                            td = tr.insertCell(-1);
+                            td.setAttribute("contenteditable", true);
+                            let key = PH.koleksiul[cPH[k]].datakey[d];
+                            let isikan = (datanilai.length > 0) ? datanilai[datanilai.length - 1][key].replace(".", ",") : "0,00";
+                            td.innerHTML = isikan;// && k.indexOf(PH.koleksiul[cPH[k]].datakey[d]) > -1);//k.records.filter(k = k.)
+                        }
+                    }
+                }
+
+                datatabelnilaipas.innerHTML = `<hr/><button class="w3-button w3-dark-gray fa fa-print" onclick="printModalL('nilaipts_${y[x].value},DAFTAR NILAI PENILAIAN TENGAH SEMESTER <br>MATA PELAJARAN ${y[x].text.toUpperCase()}, Semester ${idSemester} Tahun Pelajaran ${idTeksTapel}, ${StringTanggal(new Date())}')"> Print</button>  <button class="w3-button w3-gray fa fa-file-excel-o" onclick="ExcelModalTabNilai('nilaipts_${y[x].value},DAFTAR NILAI PENILAIAN TENGAH SEMESTER MATA PELAJARAN ${y[x].text.replace(/\,/g, " ").toUpperCase()},DAFTAR NILAI PENILAIAN TENGAH SEMESTER MATA PELAJARAN ${y[x].text.replace(/\,/g, " ").toUpperCase()}, ${StringTanggal(new Date())}')"> Ms. Excel</button><hr/>`;
+                datatabelnilaipas.appendChild(tabel)
+            } else {
+
+                let tabel = document.createElement("table");
+                tabel.setAttribute("class", "versi-table w3-small");
+                tabel.setAttribute("id", "nilaipas_" + y[x].value);
+                let thead = tabel.createTHead();
+                let tr = thead.insertRow(0);
+                let th = document.createElement("th");
+                th.setAttribute("rowspan", 3);
+                th.innerHTML = "No.";
+                tr.appendChild(th);
+                th = document.createElement("th");
+                th.setAttribute("rowspan", 3);
+                th.setAttribute("style", "position:sticky;position:-webkit-sticky;left:0px;box-shadow: inset 0 0 1px #000000");
+                th.innerHTML = "Nama Siswa";
+                tr.appendChild(th);
+
+
+                th = document.createElement("th");
+                th.setAttribute("colspan", 2);// cPH.length);
+                th.innerHTML = `Rekap Penilaian Akhir Semester<br/><sub>${y[x].text}</sub>`;
+                tr.appendChild(th);
+
+                tr = thead.insertRow(1);
+                tr2 = thead.insertRow(2);
+                for (i = 0; i < 2; i++) {
+                    let th = document.createElement("th");
+                    th.setAttribute("colspan", 1);
+                    th.setAttribute("contenteditable", true);
+                    th.innerHTML = "Ketik Tanggal";//inverstanggal(cPH[i].split("_")[2]) + `<br/><button class="w3-blue w3-button" onclick=" previewsoalnilairekap('${cPH[i].split("_")[0]}')"><i class="fa fa-eye"></i> Lihat Materi</button>`;
+                    tr.appendChild(th);
+
+                    for (c = 0; c < 1; c++) {
+                        th2 = document.createElement("th");
+                        th2.setAttribute("contenteditable", true)
+                        th2.innerHTML = "KD ";//+ PH.koleksiul[cPH[i]].datakey[c].split("_")[4];
+                        tr2.appendChild(th2);
+                    }
+                }
+                let trr = tabel.createTBody();
+                for (j = 0; j < koleksiswa.length; j++) {
+                    tr = trr.insertRow(-1);
+                    let td = tr.insertCell(-1);
+                    td.innerHTML = j + 1;
+                    td = tr.insertCell(-1);
+                    td.setAttribute("style", "position:sticky;position:-webkit-sticky;left:0px;box-shadow: inset 0 0 1px #000000");
+                    td.innerHTML = koleksiswa[j];//.toUpperCase();
+
+                    // console.log(datanilai);// && k.indexOf(PH.koleksiul[cPH[k]].datakey[d]) > -1))
+                    for (k = 0; k < 2; k++) {
+                        for (d = 0; d < 1; d++) {
+                            td = tr.insertCell(-1);
+                            td.setAttribute("contenteditable", true);
+
+                            let isikan = "tidak ada data"
+                            td.innerHTML = isikan;// && k.indexOf(PH.koleksiul[cPH[k]].datakey[d]) > -1);//k.records.filter(k = k.)
+                        }
+                    }
+                }
+
+                datatabelnilaipas.innerHTML = `<hr/><button class="w3-button w3-dark-gray fa fa-print" onclick="printModalL('nilaipts_${y[x].value},DAFTAR NILAI PENILAIAN TENGAH SEMESTER <br>MATA PELAJARAN ${y[x].text.toUpperCase()}, Semester ${idSemester} Tahun Pelajaran ${idTeksTapel}, ${StringTanggal(new Date())}')"> Print</button>  <button class="w3-button w3-gray fa fa-file-excel-o" onclick="ExcelModalTabNilai('nilaipts_${y[x].value},DAFTAR NILAI PENILAIAN TENGAH SEMESTER MATA PELAJARAN ${y[x].text.replace(/\,/g, " ").toUpperCase()},DAFTAR NILAI PENILAIAN TENGAH SEMESTER MATA PELAJARAN ${y[x].text.replace(/\,/g, " ").toUpperCase()}, ${StringTanggal(new Date())}')"> Ms. Excel</button><hr/>`;
+                datatabelnilaipas.appendChild(tabel)
+                //datatabelnilaiulhar.innerHTML = `Tidak ada data`
+            }
+
+        })
+        .catch(er => alert(er))
+    ///////-----------------------------------------------------/////////////
 
 };
 const nilaimapelkpraktik = () => {
@@ -5426,7 +5581,162 @@ const nilaimapelkpraktik = () => {
     let tagihan = "kpraktik";
     let idelemen = "datatabelnilai" + tagihan;
     let mapelnya = y[x].value;
-    getnilaimapelgurukelas(tagihan, idelemen, mapelnya)
+    //getnilaimapelgurukelas(tagihan, idelemen, mapelnya);
+    ///////-----------------------------------------------------/////////////
+    let koleksiswa = koleksinamasiswaberdasarkanagama(y[x].value).map(k => k.pd_nama);
+    let koleksitokensiswa = koleksinamasiswaberdasarkanagama(y[x].value).map(k => k.id);
+    datatabelnilaikpraktik.innerHTML = "<hr/><i class='fa fa-refresh fa-spin w3-xxlarge'></i> Proses loading..."
+    
+    fetch(constlinknilai + "?action=lihatnilairekap&tab=kpraktik&kelas=" + idNamaKelas)
+        .then(m => m.json())
+        .then(r => {
+            // console.log(r);
+            // pengenpengen = r.records;
+            // let darikronologijson = kronologijson;
+            let PH = fnkeyobjekmapel(y[x].value, r.banyakkd);
+            let cPH = Object.keys(PH.koleksiul);
+            let allcount = 0;
+            let arrallcount = [];
+            for (a = 0; a < cPH.length; a++) {
+                // allcount = allcount + PH.koleksiul[cPH[k]].datakey.length
+                allcount += PH.koleksiul[cPH[a]].datakey.length;
+                arrallcount.push(PH.koleksiul[cPH[a]].datakey.length);
+            }
+            // console.log(allcount)
+            // console.log(PH);
+            // console.log(cPH.length);
+            // console.log(cPH);
+
+
+            let tekshtml = "";
+            if (cPH.length > 0) {
+                let tabel = document.createElement("table");
+                tabel.setAttribute("class", "versi-table w3-small");
+                tabel.setAttribute("id", "nilaikpraktik_" + y[x].value);
+                let thead = tabel.createTHead();
+                let tr = thead.insertRow(0);
+                let th = document.createElement("th");
+                th.setAttribute("rowspan", 3);
+                th.innerHTML = "No.";
+                tr.appendChild(th);
+                th = document.createElement("th");
+                th.setAttribute("rowspan", 3);
+                th.setAttribute("style", "position:sticky;position:-webkit-sticky;left:0px;box-shadow: inset 0 0 1px #000000");
+                th.innerHTML = "Nama Siswa";
+                tr.appendChild(th);
+
+
+                th = document.createElement("th");
+                th.setAttribute("colspan", allcount);// cPH.length);
+                th.innerHTML = `Rekap Nilai Praktik<br/><sub>${y[x].text}</sub>`;
+                tr.appendChild(th);
+
+                tr = thead.insertRow(1);
+                tr2 = thead.insertRow(2);
+                for (i = 0; i < cPH.length; i++) {
+                    let th = document.createElement("th");
+                    th.setAttribute("colspan", arrallcount[i]);
+                    th.innerHTML = inverstanggal(cPH[i].split("_")[2]) + `<button class="w3-blue w3-button" onclick="previewsoalnilairekap('${cPH[i].split("_")[0]}')"><i class="fa fa-eye"></i></button>`;
+                    tr.appendChild(th);
+
+                    for (c = 0; c < arrallcount[i]; c++) {
+                        th2 = document.createElement("th");
+                        th2.innerHTML = "KD " + PH.koleksiul[cPH[i]].datakey[c].split("_")[4];
+                        tr2.appendChild(th2);
+                    }
+                }
+                let trr = tabel.createTBody();
+                for (j = 0; j < koleksiswa.length; j++) {
+                    tr = trr.insertRow(-1);
+                    let td = tr.insertCell(-1);
+                    td.innerHTML = j + 1;
+                    td = tr.insertCell(-1);
+                    td.setAttribute("style", "position:sticky;position:-webkit-sticky;left:0px;box-shadow: inset 0 0 1px #000000");
+                    td.innerHTML = koleksiswa[j];//.toUpperCase();
+                    // let datanilai = r.records.filter(k => k.namasiswa == koleksiswa[j]);
+                    let datanilai = r.records.filter(k => k.tokensiswa == koleksitokensiswa[j]);
+                    // console.log(datanilai);// && k.indexOf(PH.koleksiul[cPH[k]].datakey[d]) > -1))
+                    for (k = 0; k < cPH.length; k++) {
+                        for (d = 0; d < arrallcount[k]; d++) {
+                            td = tr.insertCell(-1);
+                            td.setAttribute("contenteditable", true);
+                            let key = PH.koleksiul[cPH[k]].datakey[d];
+                            let isikan = (datanilai.length > 0) ? datanilai[datanilai.length - 1][key].replace(".", ",") : "0,00";
+                            td.innerHTML = isikan;// && k.indexOf(PH.koleksiul[cPH[k]].datakey[d]) > -1);//k.records.filter(k = k.)
+                        }
+                    }
+                }
+
+                datatabelnilaikpraktik.innerHTML = `<hr/><button class="w3-button w3-dark-gray fa fa-print" onclick="printModalL('nilaipts_${y[x].value},DAFTAR NILAI PENILAIAN TENGAH SEMESTER <br>MATA PELAJARAN ${y[x].text.toUpperCase()}, Semester ${idSemester} Tahun Pelajaran ${idTeksTapel}, ${StringTanggal(new Date())}')"> Print</button>  <button class="w3-button w3-gray fa fa-file-excel-o" onclick="ExcelModalTabNilai('nilaipts_${y[x].value},DAFTAR NILAI PENILAIAN TENGAH SEMESTER MATA PELAJARAN ${y[x].text.replace(/\,/g, " ").toUpperCase()},DAFTAR NILAI PENILAIAN TENGAH SEMESTER MATA PELAJARAN ${y[x].text.replace(/\,/g, " ").toUpperCase()}, ${StringTanggal(new Date())}')"> Ms. Excel</button><hr/>`;
+                datatabelnilaikpraktik.appendChild(tabel)
+            } else {
+
+                let tabel = document.createElement("table");
+                tabel.setAttribute("class", "versi-table w3-small");
+                tabel.setAttribute("id", "nilaikpraktik_" + y[x].value);
+                let thead = tabel.createTHead();
+                let tr = thead.insertRow(0);
+                let th = document.createElement("th");
+                th.setAttribute("rowspan", 3);
+                th.innerHTML = "No.";
+                tr.appendChild(th);
+                th = document.createElement("th");
+                th.setAttribute("rowspan", 3);
+                th.setAttribute("style", "position:sticky;position:-webkit-sticky;left:0px;box-shadow: inset 0 0 1px #000000");
+                th.innerHTML = "Nama Siswa";
+                tr.appendChild(th);
+
+
+                th = document.createElement("th");
+                th.setAttribute("colspan", 2);// cPH.length);
+                th.innerHTML = `Rekap Nilai Praktik<br/><sub>${y[x].text}</sub>`;
+                tr.appendChild(th);
+
+                tr = thead.insertRow(1);
+                tr2 = thead.insertRow(2);
+                for (i = 0; i < 2; i++) {
+                    let th = document.createElement("th");
+                    th.setAttribute("colspan", 1);
+                    th.setAttribute("contenteditable", true);
+                    th.innerHTML = "Ketik Tanggal";//inverstanggal(cPH[i].split("_")[2]) + `<br/><button class="w3-blue w3-button" onclick=" previewsoalnilairekap('${cPH[i].split("_")[0]}')"><i class="fa fa-eye"></i> Lihat Materi</button>`;
+                    tr.appendChild(th);
+
+                    for (c = 0; c < 1; c++) {
+                        th2 = document.createElement("th");
+                        th2.setAttribute("contenteditable", true)
+                        th2.innerHTML = "KD ";//+ PH.koleksiul[cPH[i]].datakey[c].split("_")[4];
+                        tr2.appendChild(th2);
+                    }
+                }
+                let trr = tabel.createTBody();
+                for (j = 0; j < koleksiswa.length; j++) {
+                    tr = trr.insertRow(-1);
+                    let td = tr.insertCell(-1);
+                    td.innerHTML = j + 1;
+                    td = tr.insertCell(-1);
+                    td.setAttribute("style", "position:sticky;position:-webkit-sticky;left:0px;box-shadow: inset 0 0 1px #000000");
+                    td.innerHTML = koleksiswa[j];//.toUpperCase();
+
+                    // console.log(datanilai);// && k.indexOf(PH.koleksiul[cPH[k]].datakey[d]) > -1))
+                    for (k = 0; k < 2; k++) {
+                        for (d = 0; d < 1; d++) {
+                            td = tr.insertCell(-1);
+                            td.setAttribute("contenteditable", true);
+
+                            let isikan = "tidak ada data"
+                            td.innerHTML = isikan;// && k.indexOf(PH.koleksiul[cPH[k]].datakey[d]) > -1);//k.records.filter(k = k.)
+                        }
+                    }
+                }
+
+                datatabelnilaikpraktik.innerHTML = `<hr/><button class="w3-button w3-dark-gray fa fa-print" onclick="printModalL('nilaipts_${y[x].value},DAFTAR NILAI PENILAIAN TENGAH SEMESTER <br>MATA PELAJARAN ${y[x].text.toUpperCase()}, Semester ${idSemester} Tahun Pelajaran ${idTeksTapel}, ${StringTanggal(new Date())}')"> Print</button>  <button class="w3-button w3-gray fa fa-file-excel-o" onclick="ExcelModalTabNilai('nilaipts_${y[x].value},DAFTAR NILAI PENILAIAN TENGAH SEMESTER MATA PELAJARAN ${y[x].text.replace(/\,/g, " ").toUpperCase()},DAFTAR NILAI PENILAIAN TENGAH SEMESTER MATA PELAJARAN ${y[x].text.replace(/\,/g, " ").toUpperCase()}, ${StringTanggal(new Date())}')"> Ms. Excel</button><hr/>`;
+                datatabelnilaikpraktik.appendChild(tabel)
+                //datatabelnilaiulhar.innerHTML = `Tidak ada data`
+            }
+
+        })
+        .catch(er => alert(er))
+    ///////-----------------------------------------------------/////////////
 
 };
 const nilaimapelkproduk = () => {
@@ -5441,7 +5751,161 @@ const nilaimapelkproduk = () => {
     let tagihan = "kproduk";
     let idelemen = "datatabelnilai" + tagihan;
     let mapelnya = y[x].value;
-    getnilaimapelgurukelas(tagihan, idelemen, mapelnya)
+    //getnilaimapelgurukelas(tagihan, idelemen, mapelnya);
+    let koleksiswa = koleksinamasiswaberdasarkanagama(y[x].value).map(k => k.pd_nama);
+    let koleksitokensiswa = koleksinamasiswaberdasarkanagama(y[x].value).map(k => k.id);
+    datatabelnilaikproduk.innerHTML = "<hr/><i class='fa fa-refresh fa-spin w3-xxlarge'></i> Proses loading..."
+    
+    fetch(constlinknilai + "?action=lihatnilairekap&tab=kproduk&kelas=" + idNamaKelas)
+        .then(m => m.json())
+        .then(r => {
+            // console.log(r);
+            // pengenpengen = r.records;
+            // let darikronologijson = kronologijson;
+            let PH = fnkeyobjekmapel(y[x].value, r.banyakkd);
+            let cPH = Object.keys(PH.koleksiul);
+            let allcount = 0;
+            let arrallcount = [];
+            for (a = 0; a < cPH.length; a++) {
+                // allcount = allcount + PH.koleksiul[cPH[k]].datakey.length
+                allcount += PH.koleksiul[cPH[a]].datakey.length;
+                arrallcount.push(PH.koleksiul[cPH[a]].datakey.length);
+            }
+            // console.log(allcount)
+            // console.log(PH);
+            // console.log(cPH.length);
+            // console.log(cPH);
+
+
+            let tekshtml = "";
+            if (cPH.length > 0) {
+                let tabel = document.createElement("table");
+                tabel.setAttribute("class", "versi-table w3-small");
+                tabel.setAttribute("id", "nilaikproduk_" + y[x].value);
+                let thead = tabel.createTHead();
+                let tr = thead.insertRow(0);
+                let th = document.createElement("th");
+                th.setAttribute("rowspan", 3);
+                th.innerHTML = "No.";
+                tr.appendChild(th);
+                th = document.createElement("th");
+                th.setAttribute("rowspan", 3);
+                th.setAttribute("style", "position:sticky;position:-webkit-sticky;left:0px;box-shadow: inset 0 0 1px #000000");
+                th.innerHTML = "Nama Siswa";
+                tr.appendChild(th);
+
+
+                th = document.createElement("th");
+                th.setAttribute("colspan", allcount);// cPH.length);
+                th.innerHTML = `Rekap Nilai Produk<br/><sub>${y[x].text}</sub>`;
+                tr.appendChild(th);
+
+                tr = thead.insertRow(1);
+                tr2 = thead.insertRow(2);
+                for (i = 0; i < cPH.length; i++) {
+                    let th = document.createElement("th");
+                    th.setAttribute("colspan", arrallcount[i]);
+                    th.innerHTML = inverstanggal(cPH[i].split("_")[2]) + `<button class="w3-blue w3-button" onclick="previewsoalnilairekap('${cPH[i].split("_")[0]}')"><i class="fa fa-eye"></i></button>`;
+                    tr.appendChild(th);
+
+                    for (c = 0; c < arrallcount[i]; c++) {
+                        th2 = document.createElement("th");
+                        th2.innerHTML = "KD " + PH.koleksiul[cPH[i]].datakey[c].split("_")[4];
+                        tr2.appendChild(th2);
+                    }
+                }
+                let trr = tabel.createTBody();
+                for (j = 0; j < koleksiswa.length; j++) {
+                    tr = trr.insertRow(-1);
+                    let td = tr.insertCell(-1);
+                    td.innerHTML = j + 1;
+                    td = tr.insertCell(-1);
+                    td.setAttribute("style", "position:sticky;position:-webkit-sticky;left:0px;box-shadow: inset 0 0 1px #000000");
+                    td.innerHTML = koleksiswa[j];//.toUpperCase();
+                    // let datanilai = r.records.filter(k => k.namasiswa == koleksiswa[j]);
+                    let datanilai = r.records.filter(k => k.tokensiswa == koleksitokensiswa[j]);
+                    // console.log(datanilai);// && k.indexOf(PH.koleksiul[cPH[k]].datakey[d]) > -1))
+                    for (k = 0; k < cPH.length; k++) {
+                        for (d = 0; d < arrallcount[k]; d++) {
+                            td = tr.insertCell(-1);
+                            td.setAttribute("contenteditable", true);
+                            let key = PH.koleksiul[cPH[k]].datakey[d];
+                            let isikan = (datanilai.length > 0) ? datanilai[datanilai.length - 1][key].replace(".", ",") : "0,00";
+                            td.innerHTML = isikan;// && k.indexOf(PH.koleksiul[cPH[k]].datakey[d]) > -1);//k.records.filter(k = k.)
+                        }
+                    }
+                }
+
+                datatabelnilaikproduk.innerHTML = `<hr/><button class="w3-button w3-dark-gray fa fa-print" onclick="printModalL('nilaipts_${y[x].value},DAFTAR NILAI PENILAIAN TENGAH SEMESTER <br>MATA PELAJARAN ${y[x].text.toUpperCase()}, Semester ${idSemester} Tahun Pelajaran ${idTeksTapel}, ${StringTanggal(new Date())}')"> Print</button>  <button class="w3-button w3-gray fa fa-file-excel-o" onclick="ExcelModalTabNilai('nilaipts_${y[x].value},DAFTAR NILAI PENILAIAN TENGAH SEMESTER MATA PELAJARAN ${y[x].text.replace(/\,/g, " ").toUpperCase()},DAFTAR NILAI PENILAIAN TENGAH SEMESTER MATA PELAJARAN ${y[x].text.replace(/\,/g, " ").toUpperCase()}, ${StringTanggal(new Date())}')"> Ms. Excel</button><hr/>`;
+                datatabelnilaikproduk.appendChild(tabel)
+            } else {
+
+                let tabel = document.createElement("table");
+                tabel.setAttribute("class", "versi-table w3-small");
+                tabel.setAttribute("id", "nilaikproduk_" + y[x].value);
+                let thead = tabel.createTHead();
+                let tr = thead.insertRow(0);
+                let th = document.createElement("th");
+                th.setAttribute("rowspan", 3);
+                th.innerHTML = "No.";
+                tr.appendChild(th);
+                th = document.createElement("th");
+                th.setAttribute("rowspan", 3);
+                th.setAttribute("style", "position:sticky;position:-webkit-sticky;left:0px;box-shadow: inset 0 0 1px #000000");
+                th.innerHTML = "Nama Siswa";
+                tr.appendChild(th);
+
+
+                th = document.createElement("th");
+                th.setAttribute("colspan", 2);// cPH.length);
+                th.innerHTML = `Rekap Nilai Produk<br/><sub>${y[x].text}</sub>`;
+                tr.appendChild(th);
+
+                tr = thead.insertRow(1);
+                tr2 = thead.insertRow(2);
+                for (i = 0; i < 2; i++) {
+                    let th = document.createElement("th");
+                    th.setAttribute("colspan", 1);
+                    th.setAttribute("contenteditable", true);
+                    th.innerHTML = "Ketik Tanggal";//inverstanggal(cPH[i].split("_")[2]) + `<br/><button class="w3-blue w3-button" onclick=" previewsoalnilairekap('${cPH[i].split("_")[0]}')"><i class="fa fa-eye"></i> Lihat Materi</button>`;
+                    tr.appendChild(th);
+
+                    for (c = 0; c < 1; c++) {
+                        th2 = document.createElement("th");
+                        th2.setAttribute("contenteditable", true)
+                        th2.innerHTML = "KD ";//+ PH.koleksiul[cPH[i]].datakey[c].split("_")[4];
+                        tr2.appendChild(th2);
+                    }
+                }
+                let trr = tabel.createTBody();
+                for (j = 0; j < koleksiswa.length; j++) {
+                    tr = trr.insertRow(-1);
+                    let td = tr.insertCell(-1);
+                    td.innerHTML = j + 1;
+                    td = tr.insertCell(-1);
+                    td.setAttribute("style", "position:sticky;position:-webkit-sticky;left:0px;box-shadow: inset 0 0 1px #000000");
+                    td.innerHTML = koleksiswa[j];//.toUpperCase();
+
+                    // console.log(datanilai);// && k.indexOf(PH.koleksiul[cPH[k]].datakey[d]) > -1))
+                    for (k = 0; k < 2; k++) {
+                        for (d = 0; d < 1; d++) {
+                            td = tr.insertCell(-1);
+                            td.setAttribute("contenteditable", true);
+
+                            let isikan = "tidak ada data"
+                            td.innerHTML = isikan;// && k.indexOf(PH.koleksiul[cPH[k]].datakey[d]) > -1);//k.records.filter(k = k.)
+                        }
+                    }
+                }
+
+                datatabelnilaikproduk.innerHTML = `<hr/><button class="w3-button w3-dark-gray fa fa-print" onclick="printModalL('nilaipts_${y[x].value},DAFTAR NILAI PENILAIAN TENGAH SEMESTER <br>MATA PELAJARAN ${y[x].text.toUpperCase()}, Semester ${idSemester} Tahun Pelajaran ${idTeksTapel}, ${StringTanggal(new Date())}')"> Print</button>  <button class="w3-button w3-gray fa fa-file-excel-o" onclick="ExcelModalTabNilai('nilaipts_${y[x].value},DAFTAR NILAI PENILAIAN TENGAH SEMESTER MATA PELAJARAN ${y[x].text.replace(/\,/g, " ").toUpperCase()},DAFTAR NILAI PENILAIAN TENGAH SEMESTER MATA PELAJARAN ${y[x].text.replace(/\,/g, " ").toUpperCase()}, ${StringTanggal(new Date())}')"> Ms. Excel</button><hr/>`;
+                datatabelnilaikproduk.appendChild(tabel)
+                //datatabelnilaiulhar.innerHTML = `Tidak ada data`
+            }
+
+        })
+        .catch(er => alert(er))
+    ///////-----------------------------------------------------/////////////
 
 };
 const nilaimapelkproyek = () => {
@@ -5456,7 +5920,162 @@ const nilaimapelkproyek = () => {
     let tagihan = "kproyek";
     let idelemen = "datatabelnilaikproyek";
     let mapelnya = y[x].value;
-    getnilaimapelgurukelas(tagihan, idelemen, mapelnya)
+    //getnilaimapelgurukelas(tagihan, idelemen, mapelnya);
+    let koleksiswa = koleksinamasiswaberdasarkanagama(y[x].value).map(k => k.pd_nama);
+    let koleksitokensiswa = koleksinamasiswaberdasarkanagama(y[x].value).map(k => k.id);
+    datatabelnilaikproyek.innerHTML = "<hr/><i class='fa fa-refresh fa-spin w3-xxlarge'></i> Proses loading..."
+    
+    fetch(constlinknilai + "?action=lihatnilairekap&tab=kproyek&kelas=" + idNamaKelas)
+        .then(m => m.json())
+        .then(r => {
+            // console.log(r);
+            // pengenpengen = r.records;
+            // let darikronologijson = kronologijson;
+            let PH = fnkeyobjekmapel(y[x].value, r.banyakkd);
+            let cPH = Object.keys(PH.koleksiul);
+            let allcount = 0;
+            let arrallcount = [];
+            for (a = 0; a < cPH.length; a++) {
+                // allcount = allcount + PH.koleksiul[cPH[k]].datakey.length
+                allcount += PH.koleksiul[cPH[a]].datakey.length;
+                arrallcount.push(PH.koleksiul[cPH[a]].datakey.length);
+            }
+            // console.log(allcount)
+            // console.log(PH);
+            // console.log(cPH.length);
+            // console.log(cPH);
+
+
+            let tekshtml = "";
+            if (cPH.length > 0) {
+                let tabel = document.createElement("table");
+                tabel.setAttribute("class", "versi-table w3-small");
+                tabel.setAttribute("id", "nilaikproyek_" + y[x].value);
+                let thead = tabel.createTHead();
+                let tr = thead.insertRow(0);
+                let th = document.createElement("th");
+                th.setAttribute("rowspan", 3);
+                th.innerHTML = "No.";
+                tr.appendChild(th);
+                th = document.createElement("th");
+                th.setAttribute("rowspan", 3);
+                th.setAttribute("style", "position:sticky;position:-webkit-sticky;left:0px;box-shadow: inset 0 0 1px #000000");
+                th.innerHTML = "Nama Siswa";
+                tr.appendChild(th);
+
+
+                th = document.createElement("th");
+                th.setAttribute("colspan", allcount);// cPH.length);
+                th.innerHTML = `Rekap Nilai Proyek<br/><sub>${y[x].text}</sub>`;
+                tr.appendChild(th);
+
+                tr = thead.insertRow(1);
+                tr2 = thead.insertRow(2);
+                for (i = 0; i < cPH.length; i++) {
+                    let th = document.createElement("th");
+                    th.setAttribute("colspan", arrallcount[i]);
+                    th.innerHTML = inverstanggal(cPH[i].split("_")[2]) + `<button class="w3-blue w3-button" onclick="previewsoalnilairekap('${cPH[i].split("_")[0]}')"><i class="fa fa-eye"></i></button>`;
+                    tr.appendChild(th);
+
+                    for (c = 0; c < arrallcount[i]; c++) {
+                        th2 = document.createElement("th");
+                        th2.innerHTML = "KD " + PH.koleksiul[cPH[i]].datakey[c].split("_")[4];
+                        tr2.appendChild(th2);
+                    }
+                }
+                let trr = tabel.createTBody();
+                for (j = 0; j < koleksiswa.length; j++) {
+                    tr = trr.insertRow(-1);
+                    let td = tr.insertCell(-1);
+                    td.innerHTML = j + 1;
+                    td = tr.insertCell(-1);
+                    td.setAttribute("style", "position:sticky;position:-webkit-sticky;left:0px;box-shadow: inset 0 0 1px #000000");
+                    td.innerHTML = koleksiswa[j];//.toUpperCase();
+                    // let datanilai = r.records.filter(k => k.namasiswa == koleksiswa[j]);
+                    let datanilai = r.records.filter(k => k.tokensiswa == koleksitokensiswa[j]);
+                    // console.log(datanilai);// && k.indexOf(PH.koleksiul[cPH[k]].datakey[d]) > -1))
+                    for (k = 0; k < cPH.length; k++) {
+                        for (d = 0; d < arrallcount[k]; d++) {
+                            td = tr.insertCell(-1);
+                            td.setAttribute("contenteditable", true);
+                            let key = PH.koleksiul[cPH[k]].datakey[d];
+                            let isikan = (datanilai.length > 0) ? datanilai[datanilai.length - 1][key].replace(".", ",") : "0,00";
+                            td.innerHTML = isikan;// && k.indexOf(PH.koleksiul[cPH[k]].datakey[d]) > -1);//k.records.filter(k = k.)
+                        }
+                    }
+                }
+
+                datatabelnilaikproyek.innerHTML = `<hr/><button class="w3-button w3-dark-gray fa fa-print" onclick="printModalL('nilaipts_${y[x].value},DAFTAR NILAI PENILAIAN TENGAH SEMESTER <br>MATA PELAJARAN ${y[x].text.toUpperCase()}, Semester ${idSemester} Tahun Pelajaran ${idTeksTapel}, ${StringTanggal(new Date())}')"> Print</button>  <button class="w3-button w3-gray fa fa-file-excel-o" onclick="ExcelModalTabNilai('nilaipts_${y[x].value},DAFTAR NILAI PENILAIAN TENGAH SEMESTER MATA PELAJARAN ${y[x].text.replace(/\,/g, " ").toUpperCase()},DAFTAR NILAI PENILAIAN TENGAH SEMESTER MATA PELAJARAN ${y[x].text.replace(/\,/g, " ").toUpperCase()}, ${StringTanggal(new Date())}')"> Ms. Excel</button><hr/>`;
+                datatabelnilaikproyek.appendChild(tabel)
+            } else {
+
+                let tabel = document.createElement("table");
+                tabel.setAttribute("class", "versi-table w3-small");
+                tabel.setAttribute("id", "nilaikproyek_" + y[x].value);
+                let thead = tabel.createTHead();
+                let tr = thead.insertRow(0);
+                let th = document.createElement("th");
+                th.setAttribute("rowspan", 3);
+                th.innerHTML = "No.";
+                tr.appendChild(th);
+                th = document.createElement("th");
+                th.setAttribute("rowspan", 3);
+                th.setAttribute("style", "position:sticky;position:-webkit-sticky;left:0px;box-shadow: inset 0 0 1px #000000");
+                th.innerHTML = "Nama Siswa";
+                tr.appendChild(th);
+
+
+                th = document.createElement("th");
+                th.setAttribute("colspan", 2);// cPH.length);
+                th.innerHTML = `Rekap Nilai Proyek<br/><sub>${y[x].text}</sub>`;
+                tr.appendChild(th);
+
+                tr = thead.insertRow(1);
+                tr2 = thead.insertRow(2);
+                for (i = 0; i < 2; i++) {
+                    let th = document.createElement("th");
+                    th.setAttribute("colspan", 1);
+                    th.setAttribute("contenteditable", true);
+                    th.innerHTML = "Ketik Tanggal";//inverstanggal(cPH[i].split("_")[2]) + `<br/><button class="w3-blue w3-button" onclick=" previewsoalnilairekap('${cPH[i].split("_")[0]}')"><i class="fa fa-eye"></i> Lihat Materi</button>`;
+                    tr.appendChild(th);
+
+                    for (c = 0; c < 1; c++) {
+                        th2 = document.createElement("th");
+                        th2.setAttribute("contenteditable", true)
+                        th2.innerHTML = "KD ";//+ PH.koleksiul[cPH[i]].datakey[c].split("_")[4];
+                        tr2.appendChild(th2);
+                    }
+                }
+                let trr = tabel.createTBody();
+                for (j = 0; j < koleksiswa.length; j++) {
+                    tr = trr.insertRow(-1);
+                    let td = tr.insertCell(-1);
+                    td.innerHTML = j + 1;
+                    td = tr.insertCell(-1);
+                    td.setAttribute("style", "position:sticky;position:-webkit-sticky;left:0px;box-shadow: inset 0 0 1px #000000");
+                    td.innerHTML = koleksiswa[j];//.toUpperCase();
+
+                    // console.log(datanilai);// && k.indexOf(PH.koleksiul[cPH[k]].datakey[d]) > -1))
+                    for (k = 0; k < 2; k++) {
+                        for (d = 0; d < 1; d++) {
+                            td = tr.insertCell(-1);
+                            td.setAttribute("contenteditable", true);
+
+                            let isikan = "tidak ada data"
+                            td.innerHTML = isikan;// && k.indexOf(PH.koleksiul[cPH[k]].datakey[d]) > -1);//k.records.filter(k = k.)
+                        }
+                    }
+                }
+
+                datatabelnilaikproyek.innerHTML = `<hr/><button class="w3-button w3-dark-gray fa fa-print" onclick="printModalL('nilaipts_${y[x].value},DAFTAR NILAI PENILAIAN TENGAH SEMESTER <br>MATA PELAJARAN ${y[x].text.toUpperCase()}, Semester ${idSemester} Tahun Pelajaran ${idTeksTapel}, ${StringTanggal(new Date())}')"> Print</button>  <button class="w3-button w3-gray fa fa-file-excel-o" onclick="ExcelModalTabNilai('nilaipts_${y[x].value},DAFTAR NILAI PENILAIAN TENGAH SEMESTER MATA PELAJARAN ${y[x].text.replace(/\,/g, " ").toUpperCase()},DAFTAR NILAI PENILAIAN TENGAH SEMESTER MATA PELAJARAN ${y[x].text.replace(/\,/g, " ").toUpperCase()}, ${StringTanggal(new Date())}')"> Ms. Excel</button><hr/>`;
+                datatabelnilaikproyek.appendChild(tabel)
+                //datatabelnilaiulhar.innerHTML = `Tidak ada data`
+            }
+
+        })
+        .catch(er => alert(er))
+    ///////-----------------------------------------------------/////////////
+    
 };
 
 const koleksinamasiswaberdasarkanagama = (idmapel) => {

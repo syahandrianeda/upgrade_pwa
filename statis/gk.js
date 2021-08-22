@@ -15831,22 +15831,22 @@ function nilaimapel() {
     let opsimapelagama = ""
 
     if (bolislam) {
-        opsimapelagama += `<option id='agama1' value='PAI'>Pendidikan Agama Islam dan Budi Pekerti</option>`;
+        opsimapelagama += `<option  value='PAI'>Pendidikan Agama Islam dan Budi Pekerti</option>`;
     }
     if (bolkristen) {
-        opsimapelagama += `<option id='agama2' value='PKRIS'>Pendidikan Agama Kristen dan Budi Pekerti</option>`;
+        opsimapelagama += `<option  value='PKRIS'>Pendidikan Agama Kristen dan Budi Pekerti</option>`;
     }
     if (bolkatolik) {
-        opsimapelagama += `<option id='agama3' value='PKATO'>Pendidikan Agama Katholik dan Budi Pekerti</option>`;
+        opsimapelagama += `<option  value='PKATO'>Pendidikan Agama Katholik dan Budi Pekerti</option>`;
     }
     if (bolbudha) {
-        opsimapelagama += `<option id='agama4' value='PBUDH'>Pendidikan Agama Budha dan Budi Pekerti</option>`;
+        opsimapelagama += `<option  value='PBUDH'>Pendidikan Agama Budha dan Budi Pekerti</option>`;
     }
     if (bolhindu) {
-        opsimapelagama += `<option id='agama5' value='PHIND'>Pendidikan Agama Hindu dan Budi Pekerti</option>`;
+        opsimapelagama += `<option  value='PHIND'>Pendidikan Agama Hindu dan Budi Pekerti</option>`;
     }
     if (bolkhonghucu) {
-        opsimapelagama += `<option id='agama6' value='PKONG'>Pendidikan Agama Khonghucu dan Budi Pekerti</option>`;
+        opsimapelagama += `<option  value='PKONG'>Pendidikan Agama Khonghucu dan Budi Pekerti</option>`;
     }
 
     let adaips = "";
@@ -15925,7 +15925,7 @@ function nilaimapel() {
     `;
     opsimapelkpraktik.innerHTML = htmlseleksiulhar;
 
-    htmlseleksiulhar = `<select class="w3-select w3-gray w3-hover-light-grey" id="selectnilaimapelkproduk" onchange="nilaimapelkproyek()">
+    htmlseleksiulhar = `<select class="w3-select w3-gray w3-hover-light-grey" id="selectnilaimapelkproduk" onchange="nilaimapelkproduk()">
     <option id="pilihnolkproduk" value="">Silakan Pilih Mata Pelajaran</option>
     ${opsimapelagama}
     <option id="selkproduk0" value="PKN">Pendidikan Kewarganegaraan (PKN)</option>
@@ -15939,7 +15939,7 @@ function nilaimapel() {
     `;
     opsimapelkproduk.innerHTML = htmlseleksiulhar;
 
-    htmlseleksiulhar = `<select class="w3-select w3-gray w3-hover-light-grey" id="selectnilaimapelkproyek" onchange="nilaimapelpaspak()">
+    htmlseleksiulhar = `<select class="w3-select w3-gray w3-hover-light-grey" id="selectnilaimapelkproyek" onchange="nilaimapelkproyek()">
     <option id="pilihnolkproyek" value="">Silakan Pilih Mata Pelajaran</option>
     ${opsimapelagama}
     <option id="selkproyek0" value="PKN">Pendidikan Kewarganegaraan (PKN)</option>
@@ -15949,7 +15949,7 @@ function nilaimapel() {
     <option id="selkproyek5" value="PJOK">Pendidikan Jasmani, Olahraga, dan Kesehatan (PJOK)</option>
     <option id="selkproyek6" value="SBDP">Seni Budaya dan Prakarya (SBDP)</option>
     <option id="selkproyek7" value="BSUND">Bahasa Sunda (BSUND)</option>
-    </select>
+    </select>   
     `;
     opsimapelkproyek.innerHTML = htmlseleksiulhar;
     // ulhar.style.display = "block"

@@ -1,6 +1,6 @@
 
-const staticCacheName = "pwa2021_statis_v1.5.versi284";// + new Date().getTime();
-const dynamicChace = "pwa2021_dinamis_v1.5.versi284";// + new Date().getTime();
+const staticCacheName = "pwa2021_statis_v1.5.versi286";// + new Date().getTime();
+const dynamicChace = "pwa2021_dinamis_v1.5.versi286";// + new Date().getTime();
 
 const assets = [
     "/",
