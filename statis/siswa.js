@@ -5311,7 +5311,7 @@ function tanggalfulllengkaphari(tgl) {
     var jam = d.getHours();
     var menit = d.getMinutes();
     var bulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-    var hari = ["Minggu", "Senin", "Selasa", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"]
+    var hari = ["Minggu", "Senin", "Selasa",  "Rabu", "Kamis", "Jumat", "Sabtu"]
     return hari[hr] + ", " + tgl + " " + bulan[bln] + " " + thn + " Pukul " + addZero(jam) + ":" + addZero(menit);
 }
 
