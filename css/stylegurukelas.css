@@ -173,7 +173,7 @@ img.gambarlamaso3 {
 .tab {
   overflow: hidden;
   border: 1px solid #ccc;
-  background-color: rgb(250, 234, 8)
+  background-color: rgb(110, 154, 250)
 }
 
 .tab button {
@@ -198,7 +198,8 @@ img.gambarlamaso3 {
   display: none;
   padding: 6px 12px;
   border: 1px solid #e6aeae;
-  border-top: none
+  border-top: none;
+  background-color: rgba(191, 250, 235, 0.514);
 }
 
 .tabawal {

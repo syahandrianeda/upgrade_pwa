@@ -22,6 +22,17 @@ let url_login_guru,
             namasekolah.innerHTML = k.namainstansi;
             document.querySelector(".class_awassekolahbeda").innerHTML = k.namainstansi;
             namakota.innerHTML = k.idkota + " " + k.kota;
+            var tapel_bulan_ini = new Date().getMonth();
+var tapel_bar, semester_bar;
+if (tapel_bulan_ini >= 6) {
+    tapel_bar = new Date().getFullYear() + "/" + (new Date().getFullYear() + 1);
+    semester_bar = 1
+} else {
+    tapel_bar = (new Date().getFullYear() - 1) + "/" + new Date().getFullYear();
+    semester_bar = 2;
+}
+document.getElementById("tapel").innerHTML = tapel_bar;
+document.getElementsByClassName("bar_tapel")[0].innerHTML = "Semester " + semester_bar;
 
         }).catch(er => {
             console.log(er);

@@ -4396,7 +4396,7 @@ function kurikulum() {
 
                 }
 
-                pisahpisah.innerHTML = k.unggah + `<hr/><button class='w3-button w3-round-large w3-blue' onclick="datacekliskd()">Simpan</button><button class='w3-button w3-round-large w3-red' onclick="hapuskkmkd()">Hapus KKM dan KD</button><hr/>` + teks + "</table></div>";
+                pisahpisah.innerHTML = k.unggah + `<hr/><button class='w3-button w3-round-large w3-blue' onclick="datacekliskd()">Simpan</button><button class='w3-button w3-round-large w3-red' onclick="hapuskkmkd()">Hapus KKM dan KD</button><button class="w3-button w3-round w3-yellow" onclick="exportkkmoffline()">Export Indikator </button><hr/>` + teks + "</table></div>";
 
             } else {
                 pisahpisah.innerHTML = k.unggah + `<br/>Jika Anda belum mengunggah file KKM dan KD di server dan
@@ -4582,7 +4582,8 @@ const uploadcsv = () => {
         }).then(m => m.json())
             .then(k => {
 
-                pisahpisah.innerHTML = k.result + `<hr/><button class='w3-button w3-round-large w3-blue' onclick="datacekliskd()">Simpan</button><button class='w3-button w3-round-large w3-red' onclick="hapuskkmkd()">Hapus KKM dan KD</button>`;
+                pisahpisah.innerHTML = k.result + `<hr/><button class='w3-button w3-round-large w3-blue' onclick="datacekliskd()">Simpan</button><button class='w3-button w3-round-large w3-red' onclick="hapuskkmkd()">Hapus KKM dan KD</button>
+                <button class="w3-button w3-round w3-yellow" onclick="exportkkmoffline()">Export Indikator </button>`;
 
                 let teks = "<hr/><div style='overflow-x:auto'><table class='versi-table w3-small tabelkkmkd'><tr><th>Mata Pelajaran</th><th>KD-3</th><th>Indikator KI-3 <br>(Pengetahuan)</th><th>KD-4</th><th>Indikator KI-4 <br>(Keterampilan)</th><th>KKM</th></tr>";
                 for (i = 1; i < k.arr.length; i++) {
@@ -5496,7 +5497,7 @@ const nilaimapelpas = () => {
                     }
                 }
 
-                datatabelnilaipas.innerHTML = `<hr/><button class="w3-button w3-dark-gray fa fa-print" onclick="printModalL('nilaipts_${y[x].value},DAFTAR NILAI PENILAIAN TENGAH SEMESTER <br>MATA PELAJARAN ${y[x].text.toUpperCase()}, Semester ${idSemester} Tahun Pelajaran ${idTeksTapel}, ${StringTanggal(new Date())}')"> Print</button>  <button class="w3-button w3-gray fa fa-file-excel-o" onclick="ExcelModalTabNilai('nilaipts_${y[x].value},DAFTAR NILAI PENILAIAN TENGAH SEMESTER MATA PELAJARAN ${y[x].text.replace(/\,/g, " ").toUpperCase()},DAFTAR NILAI PENILAIAN TENGAH SEMESTER MATA PELAJARAN ${y[x].text.replace(/\,/g, " ").toUpperCase()}, ${StringTanggal(new Date())}')"> Ms. Excel</button><hr/>`;
+                datatabelnilaipas.innerHTML = `<hr/><button class="w3-button w3-dark-gray fa fa-print" onclick="printModalL('nilaipas_${y[x].value},DAFTAR NILAI PENILAIAN AKHIR SEMESTER <br>MATA PELAJARAN ${y[x].text.toUpperCase()}, Semester ${idSemester} Tahun Pelajaran ${idTeksTapel}, ${StringTanggal(new Date())}')"> Print</button>  <button class="w3-button w3-gray fa fa-file-excel-o" onclick="ExcelModalTabNilai('nilaipas_${y[x].value},DAFTAR NILAI PENILAIAN AKHIR SEMESTER MATA PELAJARAN ${y[x].text.replace(/\,/g, " ").toUpperCase()},DAFTAR NILAI PENILAIAN AKHIR SEMESTER MATA PELAJARAN ${y[x].text.replace(/\,/g, " ").toUpperCase()}, ${StringTanggal(new Date())}')"> Ms. Excel</button><hr/>`;
                 datatabelnilaipas.appendChild(tabel)
             } else {
 
@@ -5558,7 +5559,8 @@ const nilaimapelpas = () => {
                     }
                 }
 
-                datatabelnilaipas.innerHTML = `<hr/><button class="w3-button w3-dark-gray fa fa-print" onclick="printModalL('nilaipts_${y[x].value},DAFTAR NILAI PENILAIAN TENGAH SEMESTER <br>MATA PELAJARAN ${y[x].text.toUpperCase()}, Semester ${idSemester} Tahun Pelajaran ${idTeksTapel}, ${StringTanggal(new Date())}')"> Print</button>  <button class="w3-button w3-gray fa fa-file-excel-o" onclick="ExcelModalTabNilai('nilaipts_${y[x].value},DAFTAR NILAI PENILAIAN TENGAH SEMESTER MATA PELAJARAN ${y[x].text.replace(/\,/g, " ").toUpperCase()},DAFTAR NILAI PENILAIAN TENGAH SEMESTER MATA PELAJARAN ${y[x].text.replace(/\,/g, " ").toUpperCase()}, ${StringTanggal(new Date())}')"> Ms. Excel</button><hr/>`;
+                //datatabelnilaipas.innerHTML = `<hr/><button class="w3-button w3-dark-gray fa fa-print" onclick="printModalL('nilaipts_${y[x].value},DAFTAR NILAI PENILAIAN TENGAH SEMESTER <br>MATA PELAJARAN ${y[x].text.toUpperCase()}, Semester ${idSemester} Tahun Pelajaran ${idTeksTapel}, ${StringTanggal(new Date())}')"> Print</button>  <button class="w3-button w3-gray fa fa-file-excel-o" onclick="ExcelModalTabNilai('nilaipts_${y[x].value},DAFTAR NILAI PENILAIAN TENGAH SEMESTER MATA PELAJARAN ${y[x].text.replace(/\,/g, " ").toUpperCase()},DAFTAR NILAI PENILAIAN TENGAH SEMESTER MATA PELAJARAN ${y[x].text.replace(/\,/g, " ").toUpperCase()}, ${StringTanggal(new Date())}')"> Ms. Excel</button><hr/>`;
+                datatabelnilaipas.innerHTML = `<hr/><button class="w3-button w3-dark-gray fa fa-print" onclick="printModalL('nilaipas_${y[x].value},DAFTAR NILAI PENILAIAN AKHIR SEMESTER <br>MATA PELAJARAN ${y[x].text.toUpperCase()}, Semester ${idSemester} Tahun Pelajaran ${idTeksTapel}, ${StringTanggal(new Date())}')"> Print</button>  <button class="w3-button w3-gray fa fa-file-excel-o" onclick="ExcelModalTabNilai('nilaipas_${y[x].value},DAFTAR NILAI PENILAIAN AKHIR SEMESTER MATA PELAJARAN ${y[x].text.replace(/\,/g, " ").toUpperCase()},DAFTAR NILAI PENILAIAN AKHIR SEMESTER MATA PELAJARAN ${y[x].text.replace(/\,/g, " ").toUpperCase()}, ${StringTanggal(new Date())}')"> Ms. Excel</button><hr/>`;
                 datatabelnilaipas.appendChild(tabel)
                 //datatabelnilaiulhar.innerHTML = `Tidak ada data`
             }
@@ -5667,7 +5669,7 @@ const nilaimapelkpraktik = () => {
                     }
                 }
 
-                datatabelnilaikpraktik.innerHTML = `<hr/><button class="w3-button w3-dark-gray fa fa-print" onclick="printModalL('nilaipts_${y[x].value},DAFTAR NILAI PENILAIAN TENGAH SEMESTER <br>MATA PELAJARAN ${y[x].text.toUpperCase()}, Semester ${idSemester} Tahun Pelajaran ${idTeksTapel}, ${StringTanggal(new Date())}')"> Print</button>  <button class="w3-button w3-gray fa fa-file-excel-o" onclick="ExcelModalTabNilai('nilaipts_${y[x].value},DAFTAR NILAI PENILAIAN TENGAH SEMESTER MATA PELAJARAN ${y[x].text.replace(/\,/g, " ").toUpperCase()},DAFTAR NILAI PENILAIAN TENGAH SEMESTER MATA PELAJARAN ${y[x].text.replace(/\,/g, " ").toUpperCase()}, ${StringTanggal(new Date())}')"> Ms. Excel</button><hr/>`;
+                datatabelnilaikpraktik.innerHTML = `<hr/><button class="w3-button w3-dark-gray fa fa-print" onclick="printModalL('nilaikpraktik_${y[x].value},DAFTAR NILAI PENILAIAN PRAKTEK SEMESTER <br>MATA PELAJARAN ${y[x].text.toUpperCase()}, Semester ${idSemester} Tahun Pelajaran ${idTeksTapel}, ${StringTanggal(new Date())}')"> Print</button>  <button class="w3-button w3-gray fa fa-file-excel-o" onclick="ExcelModalTabNilai('nilaikpraktik_${y[x].value},DAFTAR NILAI PRAKTEK SEMESTER MATA PELAJARAN ${y[x].text.replace(/\,/g, " ").toUpperCase()},DAFTAR NILAI PENILAIAN TENGAH SEMESTER MATA PELAJARAN ${y[x].text.replace(/\,/g, " ").toUpperCase()}, ${StringTanggal(new Date())}')"> Ms. Excel</button><hr/>`;
                 datatabelnilaikpraktik.appendChild(tabel)
             } else {
 
@@ -5729,7 +5731,8 @@ const nilaimapelkpraktik = () => {
                     }
                 }
 
-                datatabelnilaikpraktik.innerHTML = `<hr/><button class="w3-button w3-dark-gray fa fa-print" onclick="printModalL('nilaipts_${y[x].value},DAFTAR NILAI PENILAIAN TENGAH SEMESTER <br>MATA PELAJARAN ${y[x].text.toUpperCase()}, Semester ${idSemester} Tahun Pelajaran ${idTeksTapel}, ${StringTanggal(new Date())}')"> Print</button>  <button class="w3-button w3-gray fa fa-file-excel-o" onclick="ExcelModalTabNilai('nilaipts_${y[x].value},DAFTAR NILAI PENILAIAN TENGAH SEMESTER MATA PELAJARAN ${y[x].text.replace(/\,/g, " ").toUpperCase()},DAFTAR NILAI PENILAIAN TENGAH SEMESTER MATA PELAJARAN ${y[x].text.replace(/\,/g, " ").toUpperCase()}, ${StringTanggal(new Date())}')"> Ms. Excel</button><hr/>`;
+                //datatabelnilaikpraktik.innerHTML = `<hr/><button class="w3-button w3-dark-gray fa fa-print" onclick="printModalL('nilaipts_${y[x].value},DAFTAR NILAI PENILAIAN TENGAH SEMESTER <br>MATA PELAJARAN ${y[x].text.toUpperCase()}, Semester ${idSemester} Tahun Pelajaran ${idTeksTapel}, ${StringTanggal(new Date())}')"> Print</button>  <button class="w3-button w3-gray fa fa-file-excel-o" onclick="ExcelModalTabNilai('nilaipts_${y[x].value},DAFTAR NILAI PENILAIAN TENGAH SEMESTER MATA PELAJARAN ${y[x].text.replace(/\,/g, " ").toUpperCase()},DAFTAR NILAI PENILAIAN TENGAH SEMESTER MATA PELAJARAN ${y[x].text.replace(/\,/g, " ").toUpperCase()}, ${StringTanggal(new Date())}')"> Ms. Excel</button><hr/>`;
+                datatabelnilaikpraktik.innerHTML = `<hr/><button class="w3-button w3-dark-gray fa fa-print" onclick="printModalL('nilaikpraktik_${y[x].value},DAFTAR NILAI PENILAIAN PRAKTEK SEMESTER <br>MATA PELAJARAN ${y[x].text.toUpperCase()}, Semester ${idSemester} Tahun Pelajaran ${idTeksTapel}, ${StringTanggal(new Date())}')"> Print</button>  <button class="w3-button w3-gray fa fa-file-excel-o" onclick="ExcelModalTabNilai('nilaikpraktik_${y[x].value},DAFTAR NILAI PRAKTEK SEMESTER MATA PELAJARAN ${y[x].text.replace(/\,/g, " ").toUpperCase()},DAFTAR NILAI PENILAIAN TENGAH SEMESTER MATA PELAJARAN ${y[x].text.replace(/\,/g, " ").toUpperCase()}, ${StringTanggal(new Date())}')"> Ms. Excel</button><hr/>`;
                 datatabelnilaikpraktik.appendChild(tabel)
                 //datatabelnilaiulhar.innerHTML = `Tidak ada data`
             }
@@ -8002,7 +8005,7 @@ const SemesterBerapaSekarang = () => { // mengembalikan string/integer berupa an
         return 1
 
     } else {
-        return 2
+        return 1
     }
 }
 angkasemester = SemesterBerapaSekarang();
@@ -14698,3 +14701,60 @@ const maksimalkarakter = (t) =>{
         
     }
 }
+ const exportkkmoffline = ()  =>{
+    var datasiswadiv = document.getElementById("datasiswaprint");
+    datasiswadiv.innerHTML = "";
+    var namatabel = document.getElementsByClassName("tabelkkmkd")[0];//getElementById("myTable");
+    //var head = namatabel.getElementsByTagName("thead")[0];
+    var bodyy = namatabel.getElementsByTagName("tbody")[0];
+
+    let html = `<table id="myTableCopy" class="versi-table">
+    <tr>
+        <td colspan="6"> ${idNamaSekolah.toUpperCase()}</td>
+    </tr>
+    <tr>
+        <td colspan="6"> KKM Kelas ${idJenjang}</td>
+    </tr>
+    <tr>
+        <td colspan="6"> SEMESTER ${idSemester} TAHUN PELAJARAN ${idTeksTapel}</td>
+    </tr>
+    <tr><td colspan="6"></td></tr>
+    <tr><td colspan="6"></td></tr>
+    
+    `;//${head.outerHTML}
+    let lr = bodyy.rows;
+    //console.log(lr.length);
+    // console.log(lr);
+    let htmll = "";
+    let isii, bersihspasi, bersihenter;
+    for (let i = 0; i < lr.length; i++) {
+        htmll += `<tr>`;
+        let sel = lr[i].cells;
+        for (let j = 0; j < sel.length; j++) {
+           
+            isii = sel[j].innerHTML
+            bersihspasi = isii.replace(/3./g, "");
+            bersihenter = bersihspasi.replace(/4./g, "");
+            htmll += `<td>${bersihenter}</td>`;
+        }
+        htmll += `</tr>`;
+
+    }
+
+    //console.log(htmll);
+    html += `${htmll}</table>`;
+    datasiswadiv.innerHTML = html;
+
+    $("#myTableCopy").table2excel({
+        name: " SDN Ratujaya 1",
+        filename: "Indikator K3 k4 " + ruangankelas + " Tapel " + idTeksTapel.replace("/", " ") + " dicetak pada " + new Date(),
+        fileext: ".xls",
+        exclude_img: true,
+        exclude_links: true,
+        exclude_inputs: true,
+        preserveColors: true,
+        jumlahheader: 2,
+        barisatas: 3
+    });
+    datasiswadiv.innerHTML = "";
+};

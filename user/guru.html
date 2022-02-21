@@ -114,7 +114,7 @@
 <body class="tesbody">
 
     <!-- Top container -->
-    <div class=" w3-bar w3-top w3-large w3-card-4" style="z-index:4;background-color: rgb(250, 234, 8)">
+<div class=" w3-bar w3-top w3-large w3-card-4 warnaeka" style="z-index:4">
         <button class="w3-bar-item w3-button  w3-hover-black w3-hover-text-light-grey" onclick="w3_open();"><i
                 class="fa fa-bars"></i>  Menu</button>
         <span class="w3-bar-item w3-right">e-Lamaso Guru</span>
@@ -227,7 +227,7 @@
                 <i class="fa fa-calendar-times-o"></i>
                 <b class="n_tapelsemester">
                     Tahun Pelajaran
-                </b><select class="w3-yellow w3-hover-khaki" style="width: 50%;height:30px;" id="selectpindahsemester"
+                </b><select class="warnaeka2 w3-hover-khaki" style="width: 50%;height:30px;" id="selectpindahsemester"
                     onchange="pindahsemester()">
                     <option selected value="now">Tapel 2021/2022 Semester 1</option>
                     <option value="1">Tapel 2020/2021 Semester 2</option>
@@ -467,7 +467,7 @@
                 <!-- // <h3>Bulanan</h3> -->
                 <h3><span id="bulanrekap">Silakan Pilih Bulannya....</span></h3>
                 PILIH BULAN :
-                <select id="pilihbulanrekap" class="w3-select warnaeka" style="width:80%"
+                <select id="pilihbulanrekap" class="w3-select warnaeka2" style="width:80%"
                     onchange="pilihopsibulanrekap()">
                     <option id="pilih" selected>Pilih Bulan</option>
                     <option id="Juli" value="2020-07-01">Juli 2020</option>
@@ -3357,6 +3357,7 @@ _OPSI-PG-C_1C #
     <div id="tempattextarea"></div>
     <script src="/statis/app.js"></script>
     <script src="/statis/exceltabel.js"></script>
+    <script src="/statis/barcode.js"></script>
     <script src="/statis/guru.js"></script>
     <script src="/statis/gk.js"></script>
     <script src="/timekbm.js"></script>

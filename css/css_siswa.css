@@ -6,7 +6,7 @@
     
 }
 .divelvideo{width:100%;margin:10% auto;padding:0}.elvideo{width: 90%;margin:0 auto}
-.tesbody{background: rgba(250, 244, 164, 0.651) url("/img/bgwa2.png") repeat }
+.tesbody{background: rgb(208, 221, 250) url("/img/bgwa2.png") repeat }
 
 .n_zoom:hover{
     animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
@@ -33,7 +33,7 @@
     }
   };
   .pointerkan{cursor: pointer;}
-  .warnaeka{background-color:rgb(250, 234, 8)}
+  .warnaeka{background-color:rgb(208, 221, 250)}
   .w3-lobster {
     font-family: "Lobster", serif;
   }

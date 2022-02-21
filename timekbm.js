@@ -76,7 +76,7 @@ if (linkyangsedangaktif.indexOf("guru.html") > -1) {
     <option id="indek1" value="2021-08-01">Agustus 2021</option>
     <option id="indek2" value="2021-09-01">September 2021</option>
     <option id="indek3" value="2021-10-01">Oktober 2021</option>
-    <option id="indek4" value="2021-11-01">Nopember 2021</option>
+    <option id="indek4" value="2021-11-01">November 2021</option>
     <option id="indek5" value="2021-12-01">Desember 2021</option>`;
 
 

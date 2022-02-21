@@ -88,7 +88,7 @@ const loadingtopbarin = (el) => {
     idNipKepsek = jsonlocalstoragetypeuser.nip_kepsek;
     idJenisGuru = jsonlocalstoragetypeuser.akses;
     idNoWa = jsonlocalstoragetypeuser.no_wa;
-    idSemester = jsonlocalstoragetypeuser.idsemester;
+    idSemester = 1;//jsonlocalstoragetypeuser.idsemester;
     idTeksTapel = jsonlocalstoragetypeuser.tekstapel;
     idJenjang = jsonlocalstoragetypeuser.jenjang;
     jsonlocalstorage = JSON.parse(localStorage.getItem("inst_id"));
@@ -3590,111 +3590,6 @@ function print(x) {
     window.frames["iframeprint"].print();
 }
 
-function exceldatasiswa() {
-    var datasiswadiv = document.getElementById("datasiswaprint");
-    var tabeleditt = document.getElementById("myTable");//.getElementsByTagName("tbody")[0];
-    datasiswadiv.innerHTML = "";
-    var tabelhasil = document.createElement("table");
-    tabelhasil.setAttribute("class", "versi-table");
-    tabelhasil.setAttribute("id", "myTableCopy");
-    var cln = tabeleditt.cloneNode(true);
-    tabelhasil.appendChild(cln);
-    datasiswadiv.appendChild(tabelhasil);
-    var tabeledithead = document.getElementById("myTableCopy").getElementsByTagName("thead")[0];
-    tabeledithead.rows[0].deleteCell(1);
-    var tabeledit = document.getElementById("myTableCopy").getElementsByTagName("tbody")[0];
-    for (i = 0; i < tabeledit.rows.length; i++) {
-        for (j = 0; j < 4; j++) {
-            if (j == 1) {
-                tabeledit.rows[i].deleteCell(j)
-            }
-        };
-    }
-
-    let countcol = tabeledithead.rows[0].cells.length;
-    let brs = tabeledithead.insertRow(0)
-    let sel = brs.insertCell(-1)
-    sel.setAttribute("colspan", countcol);
-    sel.setAttribute("style", "text-align:center");
-    sel.innerHTML = idNamaSekolah.toUpperCase()
-    brs = tabeledithead.insertRow(1)
-    sel = brs.insertCell(-1)
-    sel.setAttribute("colspan", countcol)
-    sel.innerHTML = "DAFTAR SISWA KELAS " + idNamaKelas.toUpperCase();
-    brs = tabeledithead.insertRow(2)
-    sel = brs.insertCell(-1)
-    sel.setAttribute("colspan", countcol);
-    sel.innerHTML = "Semester " + idSemester + " Tahun Pelajaran " + idTeksTapel
-    brs = tabeledithead.insertRow(3)
-    sel = brs.insertCell(-1)
-    sel.setAttribute("colspan", countcol)
-    let rowcount = tabeledit.rows.length;
-    let colcount = tabeledit.rows[0].cells.length;
-    countcol = tabeledit.rows[0].cells.length;
-    if (colcount >= 5) {
-        brs = tabeledit.insertRow(rowcount)
-        sel = brs.insertCell(-1)
-        sel = brs.insertCell(-1) /// colom kedua ttd kepsek
-        sel.innerHTML = "NIP. " + idNipKepsek;
-        for (let a = 0; a < colcount - 4; a++) {
-            sel = brs.insertCell(-1) /// colom kedua ttd kepsek
-        }
-        sel = brs.insertCell(-1) /// colom ketiga titimangsa guru kelas
-        sel.innerHTML = "NIP. " + idNipGuruKelas;
-        sel = brs.insertCell(-1) /// colom ketiga titimangsa guru kelas
-
-        brs = tabeledit.insertRow(rowcount)
-        sel = brs.insertCell(-1)
-        sel = brs.insertCell(-1) /// colom kedua ttd kepsek
-        sel.innerHTML = "<b><u>" + idNamaKepsek + "</u></b>"
-        for (let a = 0; a < colcount - 4; a++) {
-            sel = brs.insertCell(-1) /// colom kedua ttd kepsek
-        }
-        sel = brs.insertCell(-1) /// colom ketiga titimangsa guru kelas
-        sel.innerHTML = "<b><u>" + namauser + "</u></b>"
-        sel = brs.insertCell(-1) /// colom ketiga titimangsa guru kelas
-
-        brs = tabeledit.insertRow(rowcount)
-        brs = tabeledit.insertRow(rowcount)
-        brs = tabeledit.insertRow(rowcount)
-
-        brs = tabeledit.insertRow(rowcount)
-        sel = brs.insertCell(-1);
-        sel = brs.insertCell(-1) /// colom kedua ttd kepsek
-        sel.innerHTML = "Kepala " + idNamaSekolah;
-        for (let a = 0; a < colcount - 4; a++) {
-            sel = brs.insertCell(-1) /// colom kedua ttd kepsek
-        }
-        sel = brs.insertCell(-1) /// colom ketiga titimangsa guru kelas
-        sel.innerHTML = idJenisGuru + " " + idNamaKelas
-        sel = brs.insertCell(-1) /// colom ketiga titimangsa guru kelas
-
-        brs = tabeledit.insertRow(rowcount)
-        sel = brs.insertCell(-1)
-        sel = brs.insertCell(-1) /// colom kedua ttd kepsek
-        sel.innerHTML = "Mengetahui,";
-        for (let a = 0; a < colcount - 4; a++) {
-            sel = brs.insertCell(-1) /// colom kedua ttd kepsek
-        }
-        sel = brs.insertCell(-1) /// colom ketiga titimangsa guru kelas
-        sel.innerHTML = jlo.kota + ", " + tanggalfull(new Date())
-        sel = brs.insertCell(-1) /// colom ketiga titimangsa guru kelas
-        brs = tabeledit.insertRow(rowcount)
-        brs = tabeledit.insertRow(rowcount)
-    }
-
-    $("#myTableCopy").table2excel({
-        name: " SDN Ratujaya 1",
-        filename: "Data Siswa Kelas " + ruangankelas + " ID FILE " + new Date().getTime(),
-        fileext: ".xls",
-        exclude_img: true,
-        exclude_judul: true,
-        exclude_links: true,
-        exclude_inputs: true,
-        preserveColors: true
-    });
-    datasiswadiv.innerHTML = "";
-}
 
 
 
@@ -3844,14 +3739,15 @@ function exceldatasiswa() {
                 htmll += `<td>${jsondatasiswa[i].id}</td>`;
             } else if (j == 2 || j == 3 || j == 12) {
                 isii = sel[j].innerHTML
-                bersihspasi = isii.replace(/\s+/g, "");
-                bersihenter = bersihspasi.replace(/\n/g, "");
+                //bersihspasi = isii.replace(/\s+/g, "");
+                bersihspasi = isii;
+                bersihenter = bersihspasi.replace(/\n/g, " ");
                 htmll += (sel[j].innerHTML == "") ? `<td></td>` : `<td>'${bersihenter}</td>`;
             }
             else {
                 isii = sel[j].innerHTML
-                bersihspasi = isii.replace(/\s+/g, "");
-                bersihenter = bersihspasi.replace(/\n/g, "");
+                bersihspasi = isii;//.replace(/\s+/g, "");
+                bersihenter = bersihspasi;//.replace(/\n/g, "");
                 htmll += `<td>${bersihenter}</td>`;
             }
         }
@@ -9366,7 +9262,7 @@ tr_halamannilai.addEventListener("click", function () {
 })
 
 const pilihlistnamaraport = () => {
-    try {
+    //try {
         let el = document.getElementById("listnamaraport");
         let y = el.selectedIndex;
         let x = el.options;
@@ -10038,13 +9934,13 @@ const pilihlistnamaraport = () => {
             document.getElementById("ttdgurukelas").innerHTML = "<br/><br/>";
             document.getElementById("ttdkepsek").innerHTML = "<br/><br/>";
         }
-    } catch (err) {
-        alert("Maaf, Raport untuk siswa ini tidak bisa ditampilkan. Pastikan data nilai KI-3 dan KI-4 minimal ada 2 KD yang memiliki nilai. \n\n Tips: jika memang tidak ada data nilai, beri nilai nol (tidak boleh dikosongkan) untuk Rekap KI-3 atau KI-4.)");
-        console.log(err.message)
-        let divto = document.getElementById("halamanraport");
-        divto.innerHTML = "Ada yang salah ... Periksa seluruh rekapitulasi nilai. <br/><br/> Periksa apakah ada nilai yang tidak diisi (wajib diisi, jika memang nilai kosong anggap nilainya adalah nol), Periksa juga apakah Data Siswa benar-benar telah diisi dengan lengkap (terutama data agama siswa)"
+    // } catch (err) {
+    //     alert("Maaf, Raport untuk siswa ini tidak bisa ditampilkan. Pastikan data nilai KI-3 dan KI-4 minimal ada 2 KD yang memiliki nilai. \n\n Tips: jika memang tidak ada data nilai, beri nilai nol (tidak boleh dikosongkan) untuk Rekap KI-3 atau KI-4.)");
+    //     console.log(err.message)
+    //     let divto = document.getElementById("halamanraport");
+    //     divto.innerHTML = "Ada yang salah ... Periksa seluruh rekapitulasi nilai. <br/><br/> Periksa apakah ada nilai yang tidak diisi (wajib diisi, jika memang nilai kosong anggap nilainya adalah nol), Periksa juga apakah Data Siswa benar-benar telah diisi dengan lengkap (terutama data agama siswa)"
 
-    }
+    // }
 }
 
 const algoritmakurtilas = (xx) => {
@@ -11969,7 +11865,7 @@ const titimangsaraport = () => {
     if (st > -1) {
         ok = tanggalfull(tt[st]["start_tgl"])
     } else {
-        ok = "25 Juni 2021"
+        ok = "23 Desember 2021"
     }
     return ok
 }
@@ -15391,7 +15287,8 @@ const importdataKeTable = (kelas) => {
                 //For Browsers other than IE.
                 if (reader.readAsBinaryString) {
                     reader.onload = function (e) {
-                        ProcessExcel(e.target.result, kelas);
+                        ProcessExcel
+                        (e.target.result, kelas);
                     };
                     reader.readAsBinaryString(fileUpload.files[0]);
                 } else {
