@@ -8005,7 +8005,7 @@ const SemesterBerapaSekarang = () => { // mengembalikan string/integer berupa an
         return 1
 
     } else {
-        return 1
+        return 2
     }
 }
 angkasemester = SemesterBerapaSekarang();
@@ -12572,7 +12572,7 @@ const lihatrekapkelas = async (datee) => {
 
             } else {
 
-                var linksplitt = "1BZwicOBix4eILY0IQrJs4H825w2k4g-3";
+                var linksplitt = idlogo;
             }
 
 
@@ -12696,7 +12696,7 @@ const updateLocaleRekapkelas = async (datee) => {
                 var linksplitt = linksplit.replace("/view?usp=drivesdk", "");
 
             } else {
-                linksplitt = "1BZwicOBix4eILY0IQrJs4H825w2k4g-3"
+                linksplitt = idlogo;
             }
 
             var cekdiv = document.getElementById(kodetd);
@@ -12837,7 +12837,18 @@ function tombolbantukirim() {
             document.getElementById("thankyou_messagekirim").innerHTML = JSON.parse(xhr.responseText);
             document.getElementById("tombolbantusimpan").style.display = "block"; //????
             document.getElementById("loginclosebantu").innerHTML = "Selesai dan Keluar";
-            refreshAbsenHariIni();
+            //refreshAbsenHariIni();
+            let cb = document.querySelector("#aagk_checkbox_harian");
+            let lcb = document.querySelector("#aagk_label_harian");
+            if (cb.checked){
+                //lcb.innerHTML = "Absen Moda Tatap Muka";
+                
+                absenharianptmt()
+            }else{
+               // lcb.innerHTML = "Absen Moda PJJ";
+                refreshAbsenHariIni();
+            };
+
             updateLocaleRekapkelas(stringdate);
         }
     };

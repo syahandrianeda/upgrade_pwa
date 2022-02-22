@@ -1,42 +1,3 @@
-//KUMPULAN VARIABLE ARRAY
-// const idlogo = "1BZwicOBix4eILY0IQrJs4H825w2k4g-3";
-//..... versi lama .....
-let    jsondatamurid = [],  // sekali klik
-    jsonabsen = [], // jika ada perubahan, mungkin diberi setInterval
-    jsondatapendaftar = [],  //jika ada pendaftar guru baru
-    arraysiswatidakaktif = []; // jika ada pendaftar siswa baru;
-
-
-// KUMPULAN VARIABLE STRING
-let jumlahseluruhsiswadisekolah = "",
-    tekstapel = "",
-    awalmasuksekolah = "",
-    angkasemester = "";
-
-
-//KUMPULAN VARIABLE INTEGER
-//let idguru = "", idgurubaru ="";
-
-// VARIABEL URL GS include idSS DAN PENGGANTINYA; 
-let url_login_guru; // pengganti script_url untuk memanggil data_user!
-let url_login_siswa;
-let url_absenkaldik;
-let url_data_siswa; //pengganti script_url untuk memanggil tab "datasiswa"!
-let url_data_absen; // pengganti data absen, include kelas. Kriteria bulan, perhari ada di aksi
-let url_data_pembelajaran;
-let url_data_nilai;
-let url_data_kurikulum;
-
-// variabel nilai-nilai
-let nilairespon = [];
-let nilairesponkronologi = [];
-let kronologijson = [];
-
-
-const anjangsanaguru = () => {
-    alert("Maaf, fitur belum tersedia")
-}
-
 
 
 const setCookie = (cname, cvalue) => {
@@ -645,15 +606,16 @@ const klikpotosiswa = (el) => {
             let indekhari = day.getDay()
             // console.log(indekhari)
             let indek = arrayStringTglLibur.indexOf(StringTanggal(day));
+            console.log(indek)
 
-            if (indekhari == 1 || indekhari == 1 || indek > -1) {
+            if (indekhari == 6 || indekhari == 6 || indek == -1) {
                 //console.log("Libur atau Sabtu Minggu")
                 belajaraktif = false;
                 // tampilkan laman libur:
                 let thariini = NamaHariIniLengkap();
                 tekslibur1.innerHTML = `hari <b> ${thariini}</b>`;
                 document.querySelector(".ketabsensiswa").innerHTML = `hari <b> ${thariini}</b> ini libur ya ...,`;
-                if (indek > -1) {
+                if (indek == -1) {
                     tekslibur1.innerHTML += ` dan bertepatan dengan <b> ${arrayKetLibur[indek]} </b>`;
                     document.querySelector(".ketabsensiswa").innerHTML += ` dan bertepatan dengan <b> ${arrayKetLibur[indek]} </b>`;
                 } else {
@@ -677,7 +639,7 @@ const klikpotosiswa = (el) => {
             let pkl = getCookie("ketpukul");
 
             document.querySelector(".avatarsiswa").setAttribute("src", srcimg)
-            document.querySelector(".ketabsensiswa").innerHTML = ket + " " + pkl;
+            document.querySelector(".ketabsensiswa").innerHTML = ket + "<br>" + pkl;
             // stop loading
             loadingmodal.style.display = "none";
             //tampiin halaman belumabsen;
@@ -688,7 +650,7 @@ const klikpotosiswa = (el) => {
             let pkl = getCookie("ketpukul");
 
             document.querySelector(".avatarsiswa").setAttribute("src", srcimg)
-            document.querySelector(".ketabsensiswa").innerHTML = ket + " " + pkl;
+            document.querySelector(".ketabsensiswa").innerHTML = ket + "<br>" + pkl;
             // stop loading
             loadingmodal.style.display = "none";
             tampilinsublamansiswa(cek)
@@ -717,14 +679,15 @@ const klikpotosiswa = (el) => {
             let indekhari = day.getDay()
             // console.log(indekhari)
             let indek = arrayStringTglLibur.indexOf(StringTanggal(day));
+            console.log(indek)
 
-            if (indekhari == 1 || indekhari == 1 || indek > -1) {
+            if (indekhari == 6 || indekhari == 6 || indek == -1) {
                 //console.log("Libur atau Sabtu Minggu")
                 belajaraktif = false;
                 // tampilkan laman libur:
                 let thariini = NamaHariIniLengkap();
                 tekslibur1.innerHTML = `hari <b> ${thariini}</b>`
-                if (indek > -1) {
+                if (indek == -1) {
                     tekslibur1.innerHTML += ` dan bertepatan dengan <b> ${arrayKetLibur[indek]} </b>`
                 } else {
                     //tekslibur1.innerHTML += ` dan bertepatan dengan <b> ${arrayKetLibur[3]} </b>`
@@ -742,10 +705,10 @@ const klikpotosiswa = (el) => {
                 //console.log("Ga Libur")
                 belajaraktif = true;
                 absennya(true)
-                //kuki belajaraktif                
-                //document.querySelector(".ketabsensiswa").innerHTML = "Ananda Belum Absen"             
-                //setCookie("lamankode", 1)   
-                //tampilinsublamansiswa("aktifbelumabsen")
+                // //kuki belajaraktif                
+                // //document.querySelector(".ketabsensiswa").innerHTML = "Ananda Belum Absen"             
+                // //setCookie("lamankode", 1)   
+                // //tampilinsublamansiswa("aktifbelumabsen")
             }
         }).catch(er => {
             console.log(er)

@@ -2,7 +2,7 @@
 <html lang="id">
 
 <head>
-    <title>e-LAMASO GURU</title>
+    <title>Edura GURU</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/img/lamaso.webp" rel="shortcut icon" type="image/x-icon" />
@@ -12,12 +12,12 @@
     <!-- meta tag sosial media     -->
     <meta property="og:url" content="https://sdnratujaya1-elamaso.net/user/guru.html" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="e-LAMASO Guru" />
+    <meta property="og:title" content="Edura Guru" />
     <meta property="og:description" content="Sebuah Web Aplikasi Pembelajaran Jarak Jauh dari Lamaso Mediatama" />
     <meta property="og:image" content="/img/lamaso.webp" />
 
     <meta name='twitter:card' content='summary' />
-    <meta property='twitter:title' content='e-LAMASO Guru' />
+    <meta property='twitter:title' content='Edura Guru' />
     <meta property='twitter:url' content='https://sdnratujaya1-elamaso.net/user/guru.html' />
     <meta property='twitter:description' content="Sebuah Web Aplikasi Pembelajaran Jarak Jauh dari Lamaso Mediatama" />
     <meta property="twitter:image" content="/img/lamaso.webp" />
@@ -115,11 +115,12 @@
 
     <!-- Top container -->
 <div class=" w3-bar w3-top w3-large w3-card-4 warnaeka" style="z-index:4">
-        <button class="w3-bar-item w3-button  w3-hover-black w3-hover-text-light-grey" onclick="w3_open();"><i
+    <button class="w3-bar-item  w3-button  w3-hover-black w3-hover-text-light-grey" onclick="w3_open();"><i
                 class="fa fa-bars"></i>  Menu</button>
-        <span class="w3-bar-item w3-right">e-Lamaso Guru</span>
-    </div>
-
+    <!-- <span class="w3-bar-item  w3-right">Edura</span> -->
+    <span class="w3-bar-item  w3-small w3-right">Tapel <b class="bar_tapel"></b> Semester <b class="bar_semester"></b></span>
+</div>
+            
     <div class="w3-bar w3-top w3-tiny">
         <div class="w3-teal loadingtopbar w3-hide" style="width:1px;margin-top:45px;height: 5px;transition: width 2s">
             &nbsp;
@@ -141,7 +142,7 @@
             <div class="w3-col s8 w3-bar">
                 <!-- Bar nama sekolah -->
                 <strong id="namasekolah">
-                    SEKOLAH e-LAMASO
+                    SEKOLAH Edura
                 </strong>
                 <br />
                 <!-- Bar 'namakota', diisi untuk mengisi identitas NAMA, JABATAN, dan Kelas yang diampu user (guru) yang login -->
@@ -162,8 +163,8 @@
 
         <hr>
         <div class="w3-container">
-            <h5>Menu e-Lamaso
-                <sup>(versi=PWA_1)</sup>
+            <h5>Menu Edura
+                
             </h5>
         </div>
         <!-- B.2 Bar Guru Kelas, Ketika User sebagai guru kelas -->
@@ -459,7 +460,23 @@
             <div id="absenhariini" class="tabcontent tabawal">
                 <h3 id="htmlhariini">Kehadiran Hari Ini</h3>
                 <!-- <button onclick="createtableabsenhariini()">Refresh Absen</button><br> -->
-                <button onclick="refreshAbsenHariIni()">Refresh Absen</button><br><br>
+                <button class="w3-button w3-amber fa fa-refresh w3-round-medium" onclick="refreshAbsenHariIni()">  Refresh Absen</button>
+                
+                
+                <label class="switch">
+                    <input type="checkbox" id="aagk_checkbox_harian" onchange="ubah_aagk_harian()" checked>
+                    <span class="slider round"></span>
+                </label> <span id="aagk_label_harian">
+                    Absen Moda PJJ
+                </span>
+                <div style="border-radius:1px dotted;padding:15px;font-size:8px;background-color: #d6d8f7;">
+                    Keterangan:<br><br>
+                <b>Absen Moda PJJ</b> adalah absen yang membutuhkan poto kehadiran siswa yang telah dikirimkan oleh siswa melalui Edura Siswa. <br><br>
+                <b>Absen Moda Tatap Muka</b> adalah absen yang dikerjakan oleh guru tanpa harus memotret satu-satu siswanya ke dalam daftar absen. <br>
+                Guru hanya perlu memasukkan data siswa yang tidak hadir saja untuk pengisiannya.
+                </div>
+
+                <br><br>
                 <div id="tabelabsenhariini" style="overflow-x: auto;">tabeldatakelassaya</div>
             </div>
 
@@ -506,6 +523,13 @@
             <div id="absenrekap" class="tabcontent">
                 <h3>Rekapitulasi Absensi</h3>
                 (Untuk melihat data rekap, silakan cek di Rekap Bulanan)
+                <label class="switch">
+                    <input type="checkbox" id="aagk_checkbox_rekapabsen" onchange="ubah_aagk_rekapabsen()" checked>
+                    <span class="slider round"></span>
+                </label> <span id="aagk_label_rekapabsen">
+                    Rekap Absen Moda PJJ
+                </span>
+
                 <div id="scrolltabelabsenrekap"
                     style="border: none 0px red;overflow-x: scroll;position:sticky;position:-webkit-sticky;top:33px;">
                     <div id="isiscrolltabelabsenrekap" style="width:100px;height:10px"></div>
@@ -586,14 +610,14 @@
                                 <i class="fa fa-wifi w3-right"> </i> &nbsp;
                                 <div style="border-top:1px solid white">
                                     <span class="w3-left"><i class="fa fa-bars"></i> MENU</span>
-                                    <span class="w3-right"> e-LAMASO SISWA</span>
+                                    <span class="w3-right"> Edura SISWA</span>
                                 </div>
                             </div>
                             <div id="previewhp">
                                 <div class="imgcontainer" id="previewlogohp">
                                     <img src="/img/lamaso.webp" class="w3-circle"
                                         style="width:60px;border:2px dotted red" /><br />
-                                    e-Lamaso Siswa
+                                    Edura Siswa
                                 </div>
                                 <div id="materiimport"
                                     style="width:310px;height:440px;overflow-y:auto;display:blodk;padding:15px;text-align:justify;font-size:12px">
@@ -2455,7 +2479,7 @@
                     <li>
                         Status <b>Dihapus</b> adalah status dimana link google meet tidak akan muncul di elamaso siswa/guru. Meski HARI/TANGGAL sedang/akan/belum berlangsung.
                     </li>
-                    <li>Link Google meet akan muncul di HEADER E-lamaso pada HARI berlangsung. Tombol untuk mengakses Aplikasi Google  Meetnya akan muncul pada Waktu kegiatan berlangsung </li>
+                    <li>Link Google meet akan muncul di HEADER Edura pada HARI berlangsung. Tombol untuk mengakses Aplikasi Google  Meetnya akan muncul pada Waktu kegiatan berlangsung </li>
                 </ul>
             </div>
         </div>
@@ -2780,10 +2804,9 @@
                     <select id="pilih_kehadiran" name="pilih_kehadiran" onchange="gantikehadiranbantu()"
                         style="height:30px;width:100%">
                         <option value="Hadir" selected>Hadir</option>
-                        <option value="Ijin">Ijin
-                        </option>
-                        <option value="Sakit">Sakit
-                        </option>
+                        <option value="Ijin">Ijin</option>
+                        <option value="Sakit">Sakit</option>
+                        <option value="Alpa">Alpa</option>
                     </select>
                     <br /><br />
                     Ambil Gambar:<br />

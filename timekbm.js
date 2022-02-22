@@ -17,21 +17,21 @@ const nolxx = (i) => {
 if (linkyangsedangaktif.indexOf("guru.html") > -1) {
     document.getElementById("pilihbulanrekap").innerHTML = `
     <option id="indeka" value="${yyyyxmmxdd(new Date())}">Pilih Bulan</option>
-    <option id="indek0" value="2021-07-01">Juli 2021</option>
-    <option id="indek1" value="2021-08-01">Agustus 2021</option>
-    <option id="indek2" value="2021-09-01">September 2021</option>
-    <option id="indek3" value="2021-10-01">Oktober 2021</option>
-    <option id="indek4" value="2021-11-01">Nopember 2021</option>
-    <option id="indek5" value="2021-12-01">Desember 2021</option>`;
+    <option id="indek0" value="2022-01-01">Januari 2022</option>
+    <option id="indek1" value="2022-02-01">Februari 2022</option>
+    <option id="indek2" value="2022-03-01">Maret 2022</option>
+    <option id="indek3" value="2022-04-01">April 2022</option>
+    <option id="indek4" value="2022-05-01">Mei 2022</option>
+    <option id="indek5" value="2022-06-01">Juni 2022</option>`;
 
     document.getElementById("daftarpilihbulankehadiranguru").innerHTML = `
     <option id="indeka" value="${yyyyxmmxdd(new Date())}">Pilih Bulan</option>
-    <option id="indek0" value="2021-07-01">Juli 2021</option>
-    <option id="indek1" value="2021-08-01">Agustus 2021</option>
-    <option id="indek2" value="2021-09-01">September 2021</option>
-    <option id="indek3" value="2021-10-01">Oktober 2021</option>
-    <option id="indek4" value="2021-11-01">Nopember 2021</option>
-    <option id="indek5" value="2021-12-01">Desember 2021</option>`;
+    <option id="indek10" value="2022-01-01">Januari 2022</option>
+    <option id="indek11" value="2022-02-01">Februari 2022</option>
+    <option id="indek12" value="2022-03-01">Maret 2022</option>
+    <option id="indek13" value="2022-04-01">April 2022</option>
+    <option id="indek14" value="2022-05-01">Mei 2022</option>
+    <option id="indek15" value="2022-06-01">Juni 2022</option>`;
 
     let kodebarismateriyangdikerjakan = "belumdisi";
     let parameterbantuisiljk = "belumdisi";
@@ -72,32 +72,32 @@ if (linkyangsedangaktif.indexOf("guru.html") > -1) {
 
     document.getElementById("siswapilihbulan").innerHTML = `
     <option id="indeka" value="${yyyyxmmxdd(new Date())}">Pilih Bulan</option>
-    <option id="indek0" value="2021-07-01">Juli 2021</option>
-    <option id="indek1" value="2021-08-01">Agustus 2021</option>
-    <option id="indek2" value="2021-09-01">September 2021</option>
-    <option id="indek3" value="2021-10-01">Oktober 2021</option>
-    <option id="indek4" value="2021-11-01">November 2021</option>
-    <option id="indek5" value="2021-12-01">Desember 2021</option>`;
+    <option id="indek0" value="2022-01-01">Januari 2022</option>
+    <option id="indek1" value="2022-02-01">Februari 2022</option>
+    <option id="indek2" value="2022-03-01">Maret 2022</option>
+    <option id="indek3" value="2022-04-01">April 2022</option>
+    <option id="indek4" value="2022-05-01">Mei 2022</option>
+    <option id="indek5" value="2022-06-01">Juni 2022</option>`;
 
 
 } else if (linkyangsedangaktif.indexOf("gmp.html") > -1) {
     document.getElementById("pilihbulanrekap").innerHTML = `
     <option id="indeka" value="${yyyyxmmxdd(new Date())}">Pilih Bulan</option>
-    <option id="indek0" value="2021-07-01">Juli 2021</option>
-    <option id="indek1" value="2021-08-01">Agustus 2021</option>
-    <option id="indek2" value="2021-09-01">September 2021</option>
-    <option id="indek3" value="2021-10-01">Oktober 2021</option>
-    <option id="indek4" value="2021-11-01">Nopember 2021</option>
-    <option id="indek5" value="2021-12-01">Desember 2021</option>`;
+    <option id="indek0" value="2022-01-01">Januari 2022</option>
+    <option id="indek1" value="2022-02-01">Februari 2022</option>
+    <option id="indek2" value="2022-03-01">Maret 2022</option>
+    <option id="indek3" value="2022-04-01">April 2022</option>
+    <option id="indek4" value="2022-05-01">Mei 2022</option>
+    <option id="indek5" value="2022-06-01">Juni 2022</option>`;
 
     document.getElementById("daftarpilihbulankehadiranguru").innerHTML = `
     <option id="indeka" value="${yyyyxmmxdd(new Date())}">Pilih Bulan</option>
-    <option id="indek0" value="2021-07-01">Juli 2021</option>
-    <option id="indek1" value="2021-08-01">Agustus 2021</option>
-    <option id="indek2" value="2021-09-01">September 2021</option>
-    <option id="indek3" value="2021-10-01">Oktober 2021</option>
-    <option id="indek4" value="2021-11-01">Nopember 2021</option>
-    <option id="indek5" value="2021-12-01">Desember 2021</option>`;
+    <option id="indek10" value="2022-01-01">Januari 2022</option>
+    <option id="indek11" value="2022-02-01">Februari 2022</option>
+    <option id="indek12" value="2022-03-01">Maret 2022</option>
+    <option id="indek13" value="2022-04-01">April 2022</option>
+    <option id="indek14" value="2022-05-01">Mei 2022</option>
+    <option id="indek15" value="2022-06-01">Juni 2022</option>`;
 
     let kodebarismateriyangdikerjakan = "belumdisi";
     let parameterbantuisiljk = "belumdisi";
@@ -112,32 +112,32 @@ if (linkyangsedangaktif.indexOf("guru.html") > -1) {
 
     document.getElementById("daftarpilihbulankehadiranguru").innerHTML = `
     <option id="indeka" value="${yyyyxmmxdd(new Date())}">Pilih Bulan</option>
-    <option id="indek0" value="2021-07-01">Juli 2021</option>
-    <option id="indek1" value="2021-08-01">Agustus 2021</option>
-    <option id="indek2" value="2021-09-01">September 2021</option>
-    <option id="indek3" value="2021-10-01">Oktober 2021</option>
-    <option id="indek4" value="2021-11-01">Nopember 2021</option>
-    <option id="indek5" value="2021-12-01">Desember 2021</option>`;
+    <option id="indek0" value="2022-01-01">Januari 2022</option>
+    <option id="indek1" value="2022-02-01">Februari 2022</option>
+    <option id="indek2" value="2022-03-01">Maret 2022</option>
+    <option id="indek3" value="2022-04-01">April 2022</option>
+    <option id="indek4" value="2022-05-01">Mei 2022</option>
+    <option id="indek5" value="2022-06-01">Juni 2022</option>`;
 
 } else if (linkyangsedangaktif.indexOf("staff.html") > -1) {
 
     document.getElementById("daftarpilihbulankehadiranguru").innerHTML = `
     <option id="indeka" value="${yyyyxmmxdd(new Date())}">Pilih Bulan</option>
-    <option id="indek0" value="2021-07-01">Juli 2021</option>
-    <option id="indek1" value="2021-08-01">Agustus 2021</option>
-    <option id="indek2" value="2021-09-01">September 2021</option>
-    <option id="indek3" value="2021-10-01">Oktober 2021</option>
-    <option id="indek4" value="2021-11-01">Nopember 2021</option>
-    <option id="indek5" value="2021-12-01">Desember 2021</option>`;
+    <option id="indek0" value="2022-01-01">Januari 2022</option>
+    <option id="indek1" value="2022-02-01">Februari 2022</option>
+    <option id="indek2" value="2022-03-01">Maret 2022</option>
+    <option id="indek3" value="2022-04-01">April 2022</option>
+    <option id="indek4" value="2022-05-01">Mei 2022</option>
+    <option id="indek5" value="2022-06-01">Juni 2022</option>`;
     
     document.getElementById("daftarpilihbulankehadirangurupribadi").innerHTML = `
-    <option id="indeka" value="${yyyyxmmxdd(new Date())}">Pilih Bulan</option>
-    <option id="indek0" value="2021-07-01">Juli 2021</option>
-    <option id="indek1" value="2021-08-01">Agustus 2021</option>
-    <option id="indek2" value="2021-09-01">September 2021</option>
-    <option id="indek3" value="2021-10-01">Oktober 2021</option>
-    <option id="indek4" value="2021-11-01">Nopember 2021</option>
-    <option id="indek5" value="2021-12-01">Desember 2021</option>`;
+    <option id="indekab" value="${yyyyxmmxdd(new Date())}">Pilih Bulan</option>
+    <option id="indek10" value="2022-01-01">Januari 2022</option>
+    <option id="indek11" value="2022-02-01">Februari 2022</option>
+    <option id="indek21" value="2022-03-01">Maret 2022</option>
+    <option id="indek31" value="2022-04-01">April 2022</option>
+    <option id="indek41" value="2022-05-01">Mei 2022</option>
+    <option id="indek51" value="2022-06-01">Juni 2022</option>`;
 
 }
 
@@ -151,6 +151,8 @@ if (tapel_bulan_ini >= 6) {
     semester_bar = 2;
 }
 document.getElementById("tapel").innerHTML = tapel_bar
+document.querySelectorAll(".bar_tapel").forEach(k => k.innerHTML = tapel_bar);
+document.querySelectorAll(".bar_semester").forEach(k => k.innerHTML = semester_bar);
 
 const timekbm_arraybulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
 

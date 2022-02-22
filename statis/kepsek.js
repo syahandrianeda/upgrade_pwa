@@ -4901,7 +4901,7 @@ const profilsekolah = async () => {
         tdpeg.rows[1].cells[7].innerHTML =tptk.filter(s => (s.tugasjabatan == "Operator Sekolah" || s.tugasjabatan == "OPS")&& s.pnsnonpns == "PPPK").length;
         tdpeg.rows[1].cells[8].innerHTML =tptk.filter(s => s.pnsnonpns == "PPPK").length;;
 
-       
+    
         tdpeg.rows[2].cells[1].innerHTML =tptk.filter(s => s.jabatan == "Guru Kelas" && (s.pnsnonpns == "HONOR" || s.pnsnonpns =="HONORER" || s.pnsnonpns =="HNR"|| s.pnsnonpns == "Honor" || s.pnsnonpns == "Honorer")).length;
         tdpeg.rows[2].cells[2].innerHTML =tptk.filter(s => (s.jabatan == "Guru PAI" || s.jabatan == "Guru PKRIS" || s.jabatan == "Guru PKATO" || s.jabatan == "Guru PHIND" || s.jabatan == "Guru PBUDH" ||  s.jabatan == "Guru PKONG" )&& (s.pnsnonpns == "HONOR" || s.pnsnonpns =="HONORER" || s.pnsnonpns =="HNR"|| s.pnsnonpns == "Honor" || s.pnsnonpns == "Honorer")).length;
         tdpeg.rows[2].cells[3].innerHTML =tptk.filter(s => s.jabatan == "Guru PJOK"&& (s.pnsnonpns !== "PNS" || s.pnsnonpns !== "PPPK")).length;
