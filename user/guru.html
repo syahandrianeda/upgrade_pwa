@@ -283,6 +283,13 @@
                     <h3>Absen Siswa</h3>
                 </div>
             </div>
+            <div class="w3-quarter" style="cursor: pointer; margin:50px 0" onclick="admguru()">
+                <div class="w3-container n_zoom w3-center ">
+                    <div><img src="/img/arsipsurat.jpg" style="width:66px;height: 67px;"></div>
+
+                    <h3>Administrasi Guru</h3>
+                </div>
+            </div>
             <div class="w3-quarter elabsen" style="cursor: pointer; margin:50px 0" onclick="pembelajaran()">
                 <div class="w3-container n_zoom w3-center ">
                     <div><img src="/img/lg_pembelajaran.png"></div>
@@ -312,15 +319,29 @@
                     <h3>Raport</h3>
                 </div>
             </div>
-            <div class="w3-quarter w3-center" style="cursor: pointer; margin:50px 0" >
-                <div class="w3-container n_zoom w3-center w3-left" onclick="kehadiranguru()">
-                    <div><img src="/img/lg_kehadiran.webp" style="height: 70px;"></div>
+            <!-- <div class="w3-quarter w3-center" style="cursor: pointer; margin:50px 0" ></div> -->
 
-                    <h4>Kehadiran Guru</h4>
+                <div class="w3-quarter  n_zoom w3-center " style="cursor: pointer; margin:50px 0" onclick="kehadiranguru()">
+                    <div class="w3-container">
+                        <div><img src="/img/lg_kehadiran.webp" style="height: 70px;"></div>
+                        
+                        <h4>Kehadiran Guru</h4>
+                        
+                                            </div>
                 </div>
-                <div class="w3-container n_zoom w3-center w3-right" onclick="galery()">
-                    <div><img src="/img/galeri.jpg" style="height: 70px;" alt="lamaso"></div>
-                    <h4>Galeri</h4>
+                <div class="w3-quarter  n_zoom w3-center " style="cursor: pointer; margin:50px 0" onclick="galery()">
+                    <div class="w3-container">
+                        <div><img src="/img/galeri.jpg" style="height: 70px;" alt="lamaso"></div>
+                        <h4>Galeri</h4>
+                    </div>
+                </div>
+            
+            
+            <div class="w3-quarter "  style="cursor: pointer; margin:50px 0" onclick="menugooglemeet()">
+                
+                <div class="w3-container n_zoom w3-center">
+                    <div><img src="/img/googlemeet.png" style="height: 60px;" alt="lamaso"></div>
+                    <h3>Google Meet</h3>
                 </div>
             </div>
             <div class="w3-quarter w3-hide" style="cursor: pointer; margin:50px 0" onclick="alert('diable fitur')">
@@ -330,14 +351,6 @@
                     <h3>Frame</h3>
                 </div>
             </div>
-            <div class="w3-quarter "  style="cursor: pointer; margin:50px 0" onclick="menugooglemeet()">
-                
-                <div class="w3-container n_zoom w3-center">
-                    <div><img src="/img/googlemeet.png" style="height: 60px;" alt="lamaso"></div>
-                    <h3>Google Meet</h3>
-                </div>
-            </div>
-
 
         </div>
         <div id="batasaksesguru" class="w3-bottombar w3-card"></div>
@@ -2483,8 +2496,299 @@
                 </ul>
             </div>
         </div>
-        <div style="height:600px"></div>
+        <div class="w3-container" id="id_admguru" style="display: none;">
+            <h3>Administrasi Guru</h3>
+            
+                <div class="tab">
+                    <button class="tablinks" onclick="openCity(event, 'buat_rpp')">Desain RPP</button>
+                    <button class="tablinks" onclick="openCity(event, 'buat_eval')">Desain Evaluasi</button>
+                    <button class="tablinks" onclick="openCity(event, 'laporan_adm')">Supervisi</button>
+                </div>
+                <div class="tabcontent" id="buat_rpp">
+                    <div class="w3-small">
+
+                        <h3>Desain RPP</h3>
+                        Disini Anda akan diarahkan untuk membuat RPP Satu Lembar.
+                        
+                        
+                            <h4>Identitas RPP (Judul RPP)</h4>
+                        <input type="text" class="w3-input" data-keyrpp="rpp_judul"/>
+                        <br>
+                        <h4>Tema</h4>
+                        <input type="text" class="w3-input" data-keyrpp="rpp_tema"/>
+                        <br>
+                        <h5>Semester</h5>
+                        <label for="rpp_semester">Semester Saat Ini : <input type="checkbox" class="w3-check" checked id="rpp_semester" value="2" data-keyrpp="rpp_semester">
+                    </label>
+                    <br>
+                    <br>
+                        <h5>Tematik / Non-Tematik:</h5>
+                        <select id="rpp_jenistema" class="w3-select" data-keyrpp="rpp_jenistematik">
+                            <option value="Tematik">Tematik</option>
+                            <option value="Non Tematik">Non-Tematik</option>
+                        </select>
+                        <br>
+                        <br>
+                        <h5 >Pilih Mapel</h5>
+                        <label  class="w3-padding w3-margin-left w3-margin-top"  for ="id_PAI">PAI
+                            <input type="checkbox" class="w3-check" value="PAI" id="rpp_PAI" title="PENDIDIKAN AGAMA ISLAM" data-keyrpp="rpp_PAI">
+                        </label> 
+                        <label  class="w3-padding w3-margin-left w3-margin-top"  for ="id_PKRIS">PKRIS
+                            <input type="checkbox" class="w3-check" value="Kristen" id="rpp_PKRIS" title="PENDIDIKAN AGAMA KRISTEN" data-keyrpp="rpp_PKRIS">
+                        </label>
+                        
+                        <label class="w3-padding w3-margin-left w3-margin-top" for ="id_KATHO">PKRIS
+                            <input type="checkbox" class="w3-check" value="Katholik" id="rpp_PKATHO" title="PENDIDIKAN AGAMA KATHOLIK" data-keyrpp="rpp_PKATHO">
+                        </label>
+                        
+                        <label  class="w3-padding w3-margin-left w3-margin-top"  for ="id_PKN">PKN
+                            <input type="checkbox" class="w3-check" value="PKN" id="rpp_PKN" title="PKN"  data-keyrpp="rpp_PKN">
+                        </label>
+                        <label class="w3-padding w3-margin-left w3-margin-top"  for ="id_BINDO">BINDO
+                            <input type="checkbox" class="w3-check" value="Bahasa Indonesia" id="rpp_BINDO" title="Bahasa Indonesia" data-keyrpp="rpp_BINDO">
+                        </label>
+                        <label  class="w3-padding w3-margin-left w3-margin-top"  for ="id_MTK">MTK
+                            <input type="checkbox" class="w3-check" value="Matematika" id="rpp_MTK" title="Matematika" data-keyrpp="rpp_MTK">
+                        </label>
+                        <label class="w3-padding w3-margin-left w3-margin-top"  for ="id_IPA">IPA
+                            <input type="checkbox" class="w3-check" value="IPA" id="rpp_IPA" title="IPA"  data-keyrpp="rpp_IPA">
+                        </label>
+                        <label  class="w3-padding w3-margin-left w3-margin-top"  for ="id_IPS">IPS
+                            <input type="checkbox" class="w3-check" value="IPS" id="rpp_IPS"  title="IPS" data-keyrpp="rpp_IPS">
+                        </label>
+                        <label  class="w3-padding w3-margin-left w3-margin-top"  for ="id_SBDP">SBdP
+                            <input type="checkbox" class="w3-check" value="SBDP" id="rpp_SBDP"  title="SBdP" data-keyrpp="rpp_SBDP">
+                        </label>
+                        <label  class="w3-padding w3-margin-left w3-margin-top"  for ="id_PJOK">PJOK
+                        <input type="checkbox" class="w3-check" value="PJOK" id="rpp_PJOK"  title="PJOK"  data-keyrpp="rpp_PJOK">
+                        </label>
+                        <label  class="w3-padding w3-margin-left w3-margin-top"  for ="id_BSUND">BSUND
+                            <input type="checkbox" class="w3-check" value="Bahasa Sunda" id="rpp_BSUND"  title="Bahasa Sunda" data-keyrpp="rpp_BSUND">
+                        </label>
+                        <br>
+                        <br>
+                        <h5>Priode Pelaksanaan:</h5>
+                        
+                        <div class="w3-row w3-border w3-round-large">
+                        <div class="w3-col l4">Waktu Pelaksanaan:
+                            <input type="date" class="w3-input" data-keyrpp="rpp_tglawal">
+                            </div>
+                            <div class="w3-col l4 w3-padding"> 
+                                <label for="rpp_tglsampai" class="w3-tiny">
+                                <input type="checkbox" id="rpp_tglsampai" unchecked class="w3-check" onchange="chg_rppsampai()"  data-keyrpp="rpp_adabatastanggal">
+                                    Terapkan Sampai Waktu Pelaksanaan</label>
+                            </div>
+                            <div class="w3-col l4 w3-hide" id="dv_tglsampai">
+                                Sampai waktu: 
+                                <input type="date" class="w3-input"  data-keyrpp="rpp_tglakhir">
+                        </div>
+                        </div>
+                        <br>
+                        <h5>Tujuan Pembelajaran</h5>
+                        <button><i class="fa fa-question"></i> Sugesti Tujuan Pembelajaran</button><br>
+                        <textarea class="w3-input"  data-keyrpp="rpp_tujuanpembelajaran"></textarea>
+                        <br>
+                        <h5>Langkah-langkah Pembelajaran</h5>
+                        <button><i class="fa fa-question"></i> Sugesti Langkah Kegiatan</button><br>
+                        <textarea class="w3-input"  data-keyrpp="rpp_langkahpembelajaran"></textarea>
+                        <br>
+                        <h5>Evaluasi/Penilaian</h5>
+                        <button><i class="fa fa-question"></i> Sugesti Evaluasi</button><br>
+                        <textarea class="w3-input"  data-keyrpp="rpp_penilaian"></textarea>
+                        <div class="w3-sand w3-center w3-padding">
+                            <button class="w3-btn w3-blue w3-round-large w3-margin" onclick="previewrpp()"><i class="fa fa-eye"></i> Cek Preview</button>
+                            <button class="w3-btn w3-blue w3-round-large w3-margin"><i class="fa fa-print"></i> Cetak</button>
+                            <button class="w3-btn w3-blue w3-round-large w3-margin"><i class="fa fa-save"></i> Simpan Server</button>
+                            <hr/><sup>
+                                File dokumen yang terkirim di server dapat Anda lihat di tabel pada menu Supervisi
+                            </sup>
+                        </div>
+                
+                        
+                    </div>
+                </div>
+                <div class="tabcontent" id="buat_eval">
+                    <h3>Desain Evaluasi</h3>
+                    Disini Anda akan diarahkan untuk membuat Evaluasi berdasarkan Kompetensi Dasar yang ditatpkan
+                </div>
+                <div class="tabcontent" id="laporan_adm">
+                    <h3>Supervisi</h3>
+                    Data Laporan Supervisi
+                    <div style="overflow-x: auto;">
+                        <table class="w3-table-all garis w3-small">
+                            <tr>
+                                <th>No.</th>
+                                <th>Perangkat Administrasi</th>
+                                <th>Keterangan</th>
+                                <th>Eviden</th>
+                                <th>Aksi</th>
+                            </tr>
+                            <tr>
+                                <td>1.</td>
+                                <td>Silabus</td>
+                                <td>Silabus Mapel PKN</td>
+                                <td><button class="w3-btn w3-tiny" onclick="alert('Eviden 1')"><i class="fa fa-book"></i></button></td>
+                                <td>
+                                    <button class="w3-btn w3-tiny w3-yellow" onclick="alert('Unggah Dokumen')"><i class="fa fa-plus"></i> Tambah</button>
+                                    <button class="w3-btn w3-tiny w3-yellow" onclick="alert('Hapus Dokumen')"><i class="fa fa-trash"></i> Hapus</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2.</td>
+                                <td>RPP</td>
+                                <td>RPP Tema 6 Subtema 1 Pembelajaran 1</td>
+                                <td><button class="w3-btn w3-tiny" onclick="alert('Eviden 2')"><i class="fa fa-book"></i></button></td>
+                                <td>
+                                    <button class="w3-btn w3-tiny w3-yellow" onclick="alert('Unggah Dokumen')"><i class="fa fa-plus"></i> Tambah</button>
+                                    <button class="w3-btn w3-tiny w3-yellow" onclick="alert('Hapus Dokumen')"><i class="fa fa-trash"></i> Hapus</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3.</td>
+                            <td>Kisi-kisi Soal PTS</td>
+                            <td>Kisi-kisi PTS Tema 6 </td>
+                            <td><button class="w3-btn w3-tiny" onclick="alert('Eviden 3')"><i class="fa fa-book"></i></button></td>
+                            <td>
+                                <button class="w3-btn w3-tiny w3-yellow" onclick="alert('Unggah Dokumen')"><i class="fa fa-plus"></i> Tambah</button>
+                                <button class="w3-btn w3-tiny w3-yellow" onclick="alert('Hapus Dokumen')"><i class="fa fa-trash"></i> Hapus</button>
+                            </td>
+                        </tr> 
+                        <tr>
+                            <td>3.</td>
+                            <td>Kisi-kisi Soal PTS</td>
+                            <td>Kisi-kisi PTS Tema 6 </td>
+                            <td><button class="w3-btn w3-tiny" onclick="alert('Eviden 3')"><i class="fa fa-book"></i></button></td>
+                            <td>
+                                <button class="w3-btn w3-tiny w3-yellow" onclick="alert('Unggah Dokumen')"><i class="fa fa-plus"></i> Tambah</button>
+                                <button class="w3-btn w3-tiny w3-yellow" onclick="alert('Hapus Dokumen')"><i class="fa fa-trash"></i> Hapus</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                    
+                    
+                </div>
+                
+            </div>
+            <div style="height:600px"></div>
+        </div>
+
+        <button onclick="document.getElementById('prev_rpp').style.display = 'block';">TES RPP</button>
+        <div class="w3-modal  w3-card-4" id="prev_rpp">
+            <div class="w3-modal-content w3-card-4 w3-padding w3-tiny" >
+            <span class="w3-red w3-hover-black w3-button w3-right" onclick="document.getElementById('prev_rpp').style.display='none'" title="Tutup">&times;</span>
+            <div class="w3-row printarea_rpp">
+                <div class="w3-col l3 w3-sand w3-center" >
+                    <div id="flag" class="w3-blue">Identitas RPP</div>
+                    <h6>Mata Pelajaran</h6>
+                    <div id="prt_mapel">Tematik: </div>
+                    <hr>
+                    <h6>Kelas/Semester</h6>
+                    <div id="prt_kelas">6/1</div>
+                    <hr>
+                    <h6>Tema:</h6>
+                    <div id="prt_tema">Sekolah Digital</div>
+                    <hr>
+                    <h6>Priode Pelaksanaan</h6>
+                    <div id="prt_tgl">26 Februari 2022 </div>
+                </div>
+                
+                <div class="w3-col l8">
+                    <h4 class="w3-center" style="font-weight: bold;">RENCANA PELAKSANAAN PEMBELAJARAN</h4>
+                    <h5 class="w3-center" id="prt_judul" style="font-weight: bold;">Judul RPP</h5>
+                    <hr>
+                    <h5 style="font-weight: bold;">TUJUAN PEMBELAJARAN</h5>
+                    <div class="w3-justify" id="prt_tujuanpembelajaran">
+                        <ol>
+                            <li>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta in ad eum molestias, eligendi, provident quidem repellat maxime debitis iure quod eos doloribus error placeat nostrum maiores, porro amet corrupti!
+                        </li><li>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta in ad eum molestias, eligendi, provident quidem repellat maxime debitis iure quod eos doloribus error placeat nostrum maiores, porro amet corrupti!
+                        </li><li>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta in ad eum molestias, eligendi, provident quidem repellat maxime debitis iure quod eos doloribus error placeat nostrum maiores, porro amet corrupti!
+                        </li>
+
+                        </ol>
+                    </div>
+                    <hr>
+                    <h5 style="font-weight: bold;">LANGKAH PEMBELAJARAN</h5>
+                    <div class="w3-justify" id="prt_langkahpembelajaran">
+                        <ol>
+                            <li>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta in ad eum molestias, eligendi, provident quidem repellat maxime debitis iure quod eos doloribus error placeat nostrum maiores, porro amet corrupti!
+                        </li><li>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta in ad eum molestias, eligendi, provident quidem repellat maxime debitis iure quod eos doloribus error placeat nostrum maiores, porro amet corrupti!
+                        </li>
+                        <li>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta in ad eum molestias, eligendi, provident quidem repellat maxime debitis iure quod eos doloribus error placeat nostrum maiores, porro amet corrupti!
+                        </li><li>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta in ad eum molestias, eligendi, provident quidem repellat maxime debitis iure quod eos doloribus error placeat nostrum maiores, porro amet corrupti!
+                        </li><li>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta in ad eum molestias, eligendi, provident quidem repellat maxime debitis iure quod eos doloribus error placeat nostrum maiores, porro amet corrupti!
+                        </li><li>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta in ad eum molestias, eligendi, provident quidem repellat maxime debitis iure quod eos doloribus error placeat nostrum maiores, porro amet corrupti!
+                        </li><li>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta in ad eum molestias, eligendi, provident quidem repellat maxime debitis iure quod eos doloribus error placeat nostrum maiores, porro amet corrupti!
+                        </li>
+
+                        </ol>
+                    </div><hr>
+                    <h5 style="font-weight: bold;">PENILAIAN</h5>
+                    <div class="w3-justify" id="prt_penilaian">
+                        <ol>
+                            <li>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta in ad eum molestias, eligendi, provident quidem repellat maxime debitis iure quod eos doloribus error placeat nostrum maiores, porro amet corrupti!
+                        </li><li>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta in ad eum molestias, eligendi, provident quidem repellat maxime debitis iure quod eos doloribus error placeat nostrum maiores, porro amet corrupti!
+                        </li>
+                        <li>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta in ad eum molestias, eligendi, provident quidem repellat maxime debitis iure quod eos doloribus error placeat nostrum maiores, porro amet corrupti!
+                        </li>
+
+                        </ol>
+                    </div><br>
+                    <br>
+                    <br>
+                    <div class="w3-row">
+                        <div class="w3-col l6 w3-center">
+                            Mengetahui,
+                            <br>
+                            Kepala <span id="prt_sekolah">SDN Ratujaya 1</span>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <u><b id="prt_namakepsek">Supriyanto, M.Pd</b></u>
+                            <br>
+                            NIP. <span id="prt_nipguru">19870710 201403 1 002</span>
+                        </div>
+                        <div class="w3-col l6 w3-center">
+                            <span id="prt_kota">Depok</span>, <span id="prt_tglawal">26 Februari 2021</span>
+                            <br>
+                            <span id="jenisguru">Guru Kelas</span> <span id="prt_kelasini">6A</span>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <u><b id="prt_namaguru">Ade Andriansyah</b></u>
+                            <br>
+                            NIP. <span id="prt_nipguru">19870710 201403 1 002</span>
+                        </div>
+                    </div>
+
+                    
+                </div>
+            </div>
+            <div class="w3-center w3-sepia w3-padding">
+                <button class="w3-btn w3-blue w3-round-large">print</button>
+            </div>
+            
+        </div>
     </div>
+    
+    
 
     <div class="w3-modal" id="modalbuatsebarankd">
         <div class="w3-modal-content" style="width:90%">
@@ -3372,6 +3676,7 @@ _OPSI-PG-C_1C #
             <br>
         </div>
     </div>
+   
 
     <div id="datasiswaprint" style="display:hide;overflow-x:auto"></div>
     <input type="file" id="fileImportExcel" class="w3-hide" />
@@ -3384,6 +3689,7 @@ _OPSI-PG-C_1C #
     <script src="/statis/guru.js"></script>
     <script src="/statis/gk.js"></script>
     <script src="/timekbm.js"></script>
+    <script src="/statis/rpp.js"></script>
 
 
 </body>

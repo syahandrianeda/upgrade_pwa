@@ -1361,6 +1361,7 @@ function tampilinsublamangurukelas(fitur) {
         dataframekreatif.style.display = "none";
         divgaleri.style.display = "none";
         divgooglemeet.style.display = "none";
+        id_admguru.style.display = "none";
         window.scrollTo({ top: 43, behavior: 'smooth' });
 
     } else if (fitur == "datakelas") {
@@ -1374,6 +1375,7 @@ function tampilinsublamangurukelas(fitur) {
         dataframekreatif.style.display = "none";
         divgaleri.style.display = "none";
         divgooglemeet.style.display = "none";
+        id_admguru.style.display = "none";
         window.scrollTo({ top: y, behavior: 'smooth' });
     } else if (fitur == "absen") {
         datakelassaya.style.display = "none";
@@ -1386,6 +1388,7 @@ function tampilinsublamangurukelas(fitur) {
         dataframekreatif.style.display = "none";
         divgaleri.style.display = "none";
         divgooglemeet.style.display = "none";
+        id_admguru.style.display = "none";
         window.scrollTo({ top: y, behavior: 'smooth' });
 
     } else if (fitur == "pembelajaran") {
@@ -1400,6 +1403,7 @@ function tampilinsublamangurukelas(fitur) {
         upload_materi.style.display = "none";
         divgaleri.style.display = "none";
         divgooglemeet.style.display = "none";
+        id_admguru.style.display = "none";
         window.scrollTo({ top: y, behavior: 'smooth' });
     } else if (fitur == "kurikulum") {
         datakelassaya.style.display = "none";
@@ -1412,6 +1416,7 @@ function tampilinsublamangurukelas(fitur) {
         dataframekreatif.style.display = "none";
         divgaleri.style.display = "none";
         divgooglemeet.style.display = "none";
+        id_admguru.style.display = "none";
         window.scrollTo({ top: y, behavior: 'smooth' });
     } else if (fitur == "mapel") {
         datakelassaya.style.display = "none";
@@ -1424,6 +1429,7 @@ function tampilinsublamangurukelas(fitur) {
         dataframekreatif.style.display = "none";
         divgaleri.style.display = "none";
         divgooglemeet.style.display = "none";
+        id_admguru.style.display = "none";
         window.scrollTo({ top: y, behavior: 'smooth' });
     } else if (fitur == "kehadiranguru") {
         datakelassaya.style.display = "none";
@@ -1436,6 +1442,7 @@ function tampilinsublamangurukelas(fitur) {
         dataframekreatif.style.display = "none";
         divgaleri.style.display = "none";
         divgooglemeet.style.display = "none";
+        id_admguru.style.display = "none";
         window.scrollTo({ top: y, behavior: 'smooth' });
     } else if (fitur == "raport") {
         datakelassaya.style.display = "none";
@@ -1448,6 +1455,7 @@ function tampilinsublamangurukelas(fitur) {
         dataframekreatif.style.display = "none";
         divgaleri.style.display = "none";
         divgooglemeet.style.display = "none";
+        id_admguru.style.display = "none";
         window.scrollTo({ top: y, behavior: 'smooth' });
     } else if (fitur == "meme") {
         datakelassaya.style.display = "none";
@@ -1460,6 +1468,7 @@ function tampilinsublamangurukelas(fitur) {
         dataframekreatif.style.display = "block";
         divgaleri.style.display = "none";
         divgooglemeet.style.display = "none";
+        id_admguru.style.display = "none";
         window.scrollTo({ top: y, behavior: 'smooth' });
 
     } else if (fitur == "galery") {
@@ -1473,6 +1482,7 @@ function tampilinsublamangurukelas(fitur) {
         dataframekreatif.style.display = "none";
         divgaleri.style.display = "block";
         divgooglemeet.style.display = "none";
+        id_admguru.style.display = "none";
         window.scrollTo({ top: y, behavior: 'smooth' });
 
     } else if (fitur == "googlemeet") {
@@ -1486,6 +1496,21 @@ function tampilinsublamangurukelas(fitur) {
         dataframekreatif.style.display = "none";
         divgaleri.style.display = "none";
         divgooglemeet.style.display = "block";
+        id_admguru.style.display = "none";
+        window.scrollTo({ top: y, behavior: 'smooth' });
+
+    } else if (fitur == "administrasiguru") {
+        datakelassaya.style.display = "none";
+        dataabsensi.style.display = "none";
+        datapembelajaran.style.display = "none";
+        datakurikulum.style.display = "none";
+        datanilaimapel.style.display = "none";
+        datakehadiranguru.style.display = "none";
+        dataraport.style.display = "none";
+        dataframekreatif.style.display = "none";
+        divgaleri.style.display = "none";
+        divgooglemeet.style.display = "none";
+        id_admguru.style.display = "block";
         window.scrollTo({ top: y, behavior: 'smooth' });
 
     }
