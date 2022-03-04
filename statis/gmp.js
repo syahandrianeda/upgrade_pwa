@@ -2406,7 +2406,7 @@ const previewriwayat = (par) => {
     let keyy = "kbmtoday" + tglStringZero()
 
     let datamateri = JSON.parse(localStorage.getItem(keyy))
-
+    let versi = datamateri[par].versi
     //bikin judul h4
     var judul = document.createElement("h4")
     judul.setAttribute("class", "w3-center");
@@ -2579,7 +2579,7 @@ const previewriwayat = (par) => {
 
         }
 
-
+        if(versi==""){
         var elEssay = document.getElementsByClassName("soalessay")
         if (elEssay.length !== 0) {
             for (i = 0; i < elEssay.length; i++) {
@@ -2601,7 +2601,7 @@ const previewriwayat = (par) => {
 
             }
         }
-
+    }
         let tombol = document.createElement("button");
         tombol.setAttribute("class", "w3-button w3-dark-grey w3-display-bottommiddle w3-margin-bottom");
         tombol.setAttribute("onclick", `printPortrait('idpracetak,,,${StringTanggal(new Date())}')`);
@@ -4495,6 +4495,7 @@ function gantiapaaja(teks, cariapa, gantiawal, gantiakhir) {
 }
 
 function tambahtombolisijawaban() {
+    //if(versi == "")
     var elEssay = document.getElementsByClassName("soalessay")
     if (elEssay.length !== 0) {
         for (i = 0; i < elEssay.length; i++) {
@@ -4528,7 +4529,8 @@ const previewkronologi = (par) => {
 
     //let datamateri = JSON.parse(localStorage.getItem(keyy))
     let datamateri = kronologijson;
-
+    let versi = datamateri[par].versi;
+    console.log(versi);
 
     //bikin judul h4
     var judul = document.createElement("h4")
@@ -4703,7 +4705,7 @@ const previewkronologi = (par) => {
 
         }
 
-
+        if(versi == ""){
         var elEssay = document.getElementsByClassName("soalessay")
         if (elEssay.length !== 0) {
             for (i = 0; i < elEssay.length; i++) {
@@ -4725,7 +4727,7 @@ const previewkronologi = (par) => {
 
             }
         }
-
+        }
         let tombol = document.createElement("button");
         tombol.setAttribute("class", "w3-button w3-dark-grey w3-display-bottommiddle w3-margin-bottom");
         tombol.setAttribute("onclick", `printPortrait('idpracetak,,,${StringTanggal(new Date())}')`);

@@ -5404,11 +5404,12 @@ const previewriwayat = (par) => {
     resumenilaiskhir.style.display = "none";
     //pastikan hasilskor dihiden:
     hasilakhir.style.display = "none";
-
+    
     indekmaterionline.innerHTML = par;
     tescekelement.innerHTML = "";
     let datamateri = JSON.parse(localStorage.getItem("materi"));
     kodebarismateriyangdikerjakan = datamateri[par].idbaris;
+    let versi = datamateri[par].versi;//
 
     loadingmodal.style.display = "block";
 
@@ -5545,7 +5546,7 @@ const previewriwayat = (par) => {
         .then(json => {
             loadingmodal.style.display = "none";
             document.querySelector(".kontenmateri").innerHTML += brkline(json);
-
+            if(versi == ""){
             var elEssay = document.getElementsByClassName("soalessay")
             if (elEssay.length !== 0) {
                 for (i = 0; i < elEssay.length; i++) {
@@ -5567,7 +5568,7 @@ const previewriwayat = (par) => {
 
                 }
             }
-
+        }
 
             tampilinsublamansiswa(4);
 

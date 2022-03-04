@@ -3,7 +3,7 @@ let msb_obje = {};
 let valueeditormateri = {};
 let jsonmateridihapus = "";
 let jsonmaterisekolahlain = "";
-let btnfn7cekpreview = document.querySelector(".fn7cekpreview");
+// let btnfn7cekpreview = document.querySelector(".fn7cekpreview");
 let eidmateri = document.querySelector("#idmateri");
 let hteks = {}; //{} id: 0, data: eidmateri.value };
 let flag = 0;
@@ -42,1426 +42,7 @@ const anjangsanaguru = () => {
 const linktendik = jlo.ss_datanilai;
 
 ///////////////// source aafnbaruv7.js//////////////////////////////////////////////
-const pgeditnosoal = () => {
-    let val = inputnosoalpg.value;
-    let txar = document.getElementById("ketpen4");
-    document.getElementById("contohsoalke-1").innerHTML = val;
-    txar.textContent = `_PG_${val} #
-_OPSI-PG_${val}A #
-_OPSI-PG_${val}B #
-_OPSI-PG_${val}C #
-_OPSI-PG_${val}D #
-`
-};
-const pgeditnosoalC = () => {
-    let val = inputnosoalpgC.value;
-    let txar = document.getElementById("ketpen27");
-    document.getElementById("contohsoalke-1C").innerHTML = val;
-    txar.textContent = `_PG_${val} # ....
-_OPSI-PG-C_${val}A #
-_OPSI-PG-C_${val}B #
-_OPSI-PG-C_${val}C #
 
-`
-};
-const pgeditnosoaltabel = () => {
-    let val = inputnosoalpgtabel.value;
-    let txar = document.getElementById("ketpen5");
-    document.getElementById("contohsoaltabelke1").innerHTML = val;
-    txar.textContent = `
-_PG_${val} #
-_START-TABEL-OPSI_
-Opsi <|HEADER|>	Header	<|HEADER|>	Contoh
-_OPSI-SEL_${val}A	<|>	#	<|>	#
-_OPSI-SEL_${val}B 	<|>	#	<|>	#
-_OPSI-SEL_${val}C 	<|>	#	<|>	#
-_OPSI-SEL_${val}D 	<|>	#	<|>	#`
-};
-const editnosoalessay = () => {
-    let val = inputnosoalessay.value;
-    let txar = document.getElementById("ketpen6");
-    document.getElementById("contohsoalessay").innerHTML = val;
-    txar.textContent = `_ESSAY-NO_${val} #`
-};
-const tombolketikjawaban = (id) => {
-    alert("Siswa mengetik jawaban essay nomor " + id)
-};
-const tomboluploadjawaban = (id) => {
-    alert("Siswa mengupload jawaban essay nomor " + id)
-};
-const klikpotosiswa = (el) => {
-
-    document.getElementById("img01").src = el.src;
-    document.getElementById("previewpotoabsen").style.display = "block";
-
-};
-const fnv7hapusmateri = (ids) => {
-    let konfirmasihapus = confirm("Anda yakin ingin menghapus konten materi ini? \n \n Jika Anda menghapusnya, maka seluruh jenjang kelas Anda tidak bisa mengakses konten materi ini lagi. Baik oleh guru sejawat Anda maupun siswa. Pastikan Anda yakin dan telah mengkonfirmasi bersama guru sejawat Anda di sekolah untuk tidak menggunakan konten materi ini. \n \n Jika tetap ingin menghapus, klik OK. / Untuk membatalkan klik CANCEL");
-    if (!konfirmasihapus) {
-        return
-    }
-    let brs = kronologijson[ids].idbaris;
-    let data = new FormData();
-    data.append("idbaris", brs);
-
-    fetch(linkmateri + "&action=hapusmateridaridaftar", {
-        method: 'post',
-        body: data
-    }).then(m => m.json())
-        .then(k => {
-            alert(k.result);
-            pembelajaran();
-        }).catch(er => console.log(er))
-};
-const fnv7perbaikikonten = (ids) => {
-    let id = kronologijson[ids].idtgl;
-    let brs = kronologijson[ids].idbaris;
-    let teksidok = addZero(new Date(id).getDate()) + "" + addZero(new Date(id).getMonth() + 1) + "" + new Date(id).getFullYear();
-    let data = new FormData();
-    data.append("dibuatoleh", namauser);
-    data.append("crtToken", teksidok);
-    data.append("idbaris", brs);
-    fetch(linkmateri + "&action=aktifkancrtToken", {
-        method: 'post',
-        body: data
-    }).then(m => m.json())
-        .then(k => {
-            alert(k.result);
-            pembelajaran();
-        }).catch(er => console.log(er))
-};
-const fnv7kotenmateridihapus = (ids) => {
-    //alert('ids = ' + ids);
-    timelinekbm.innerHTML = "<i class='fa fa-spin fa-spinner w3-xxlarge'></i>";
-    fetch(linkmateri + "&action=kronologhapus&idtoken=" + idJenjang)
-        .then(m => m.json())
-        .then(k => {
-            // console.log(k);
-            jsonmateridihapus = k.result;
-            let temp = `<div style="overflow-x:auto"><table class='versi-table w3-tiny'><thead>
-            <tr>
-                <th> Baris Database</th>
-                <th> Judul Materi</th>
-                <th> Jenis KBM </th>
-                <th> Waktu Pelaksanaan</th>
-                <th> Preview</th>
-                <th> Aksi </th>
-            </tr>
-            </thead>
-            <tbody>
-        `
-            let kk = k.result;
-
-            if (kk.length > 0) {
-                for (a = 0; a < kk.length; a++) {
-                    temp += `
-            <tr><td>${kk[a].idbaris}</td>
-                <td> ${kk[a].idmapel.toUpperCase()}</td>
-                <td> ${(kk[a].idaksessiswa == 'sekali') ? 'ULANGAN<br>Menerima Tugas Siswa' : 'LATIHAN<br>Tidak Menerima Tugas'}</td>
-                <td> ${tanggalfulllengkap(kk[a].idtgl)} <br>s/d<br> ${tanggalfulllengkap(kk[a].idtglend)}</td>
-                <td><button onclick="fn7preview('${a}')" class="w3-button w3-green w3-hover-red">PREVIEW</button></td>
-                <td class='fn7tombolaksi${a}'> <button onclick="fn7kembalikankonten('${a}')" class="w3-button w3-blue w3-hover-green">Kembalikan</button><br><br>
-                <button onclick="fn7jadikankontenbaru('${a}')" class="w3-button w3-khaki w3-hover-green">Simpan Draft</button>
-                </td>
-            </tr>
-            `
-                }
-            } else {
-                temp += `
-            <tr>
-                <td>Tidak Ditemukan materi</td>
-                <td>Tidak Ditemukan materi</td>
-                <td>Tidak Ditemukan materi</td>
-                <td>Tidak Ditemukan materi</td>
-                <td>Tidak Ditemukan materi</td>
-                <td>Tidak Ditemukan materi</td>
-            </tr>
-            `
-            }
-            temp += `</tbody></table></div>`;
-            timelinekbm.innerHTML = `<button class="w3-button w3-red w3-hover-blue w3-round-large" onclick="pembelajaran()"> Kembali ke Kronologi</button><hr><h4>Materi di Jenjang Kelas Anda yang telah dihapus:</h4>` + temp;
-
-        })
-        .catch(er => console.log(er));
-};
-const fn7preview = (par) => {
-    pranalamateri.style.display = 'block';
-
-    document.querySelector(".classReviewMateri").innerHTML = "";
-    let tes = document.querySelector(".classReviewMateri");
-    //let keyy = "kbmtoday" + tglStringZero()
-
-    //let datamateri = JSON.parse(localStorage.getItem(keyy))
-    let datamateri = jsonmateridihapus;
-
-
-    //bikin judul h4
-    var judul = document.createElement("h4");
-    judul.setAttribute("class", "w3-center");
-    judul.innerHTML = "Identitas e-Lamaso";
-    tes.innerHTML = "";
-    tes.appendChild(judul);
-
-    //-- Bikin Tabel identitas:
-    var tabelidentitas = document.createElement("table");
-    tabelidentitas.setAttribute("class", "versi-table tabel_idreview");
-    tabelidentitas.setAttribute("style", "margin:auto");
-    var tr = tabelidentitas.insertRow(-1);
-
-    var tr = tabelidentitas.insertRow(-1);
-    var td = tr.insertCell(-1);
-    td.innerHTML = "Sekolah";
-    var td = tr.insertCell(-1);
-    td.innerHTML = datamateri[par].idSekolah;
-    var tr = tabelidentitas.insertRow(-1);
-    var td = tr.insertCell(-1);
-    td.innerHTML = "Dibuat/Diedit Oleh";
-    var td = tr.insertCell(-1);
-    td.innerHTML = datamateri[par].dibuatoleh;
-    var tr = tabelidentitas.insertRow(-1);
-    var td = tr.insertCell(-1);
-    td.innerHTML = "Kelas";
-    var td = tr.insertCell(-1);
-    td.innerHTML = idNamaKelas;
-    var tr = tabelidentitas.insertRow(-1);
-    var td = tr.insertCell(-1);
-    td.innerHTML = "Identitas Pembelajaran";
-    var td = tr.insertCell(-1);
-    td.innerHTML = datamateri[par].idmapel;
-    var tr = tabelidentitas.insertRow(-1);
-    var td = tr.insertCell(-1);
-    td.innerHTML = "Frekuensi Akses";
-    var td = tr.insertCell(-1);
-    var keteranganakses;
-    if (datamateri[par].idaksessiswa == "sekali") {
-        keteranganakses = "TEST <br>(Menerima Jawaban/Tugas Siswa)";
-    } else {
-        keteranganakses = "LATIHAN <br>(Tidak menerima jawaban/tugas)";
-    }
-    td.innerHTML = keteranganakses;
-    var tr = tabelidentitas.insertRow(-1);
-    var td = tr.insertCell(-1);
-    td.innerHTML = "Tanggal Publikasi";
-    var td = tr.insertCell(-1);
-    td.innerHTML = tanggalfulllengkap(datamateri[par].idtgl);
-
-    var tr = tabelidentitas.insertRow(-1);
-    var td = tr.insertCell(-1);
-    td.innerHTML = "Kompetensi KD<br><sub class='w3-text-red'>Tidak akan muncul di siswa</sub>";
-    var td = tr.insertCell(-1);
-    td.setAttribute("id", "forKD")
-    td.innerHTML = `<i class="fa fa-spin fa-spinner"></i>`;
-    var tr = tabelidentitas.insertRow(-1);
-    var td = tr.insertCell(-1);
-    td.innerHTML = "Kunci Jawaban<br><sub class='w3-text-red'>Tidak akan muncul di siswa</sub>";
-    var td = tr.insertCell(-1);
-    td.setAttribute("id", "forkuncijawaban");
-    td.innerHTML = `<i class="fa fa-spin fa-spinner"></i>`;
-    var tr = tabelidentitas.insertRow(-1);
-    var td = tr.insertCell(-1);
-    td.innerHTML = "Baris Database Materi";
-    var td = tr.insertCell(-1);
-    td.innerHTML = `${datamateri[par].idbaris}`;
-
-
-
-    tes.appendChild(tabelidentitas);
-    var brek = document.createElement("div");
-
-    brek.setAttribute("style", "break-after:page");
-    brek.innerHTML = "<h4 class='w3-center'>PREVIEW MATERI DI ELAMASO SISWA</h4>"
-    tes.appendChild(brek);
-
-    //var idm = encodeURIComponent(datamateri[par].idmateri);
-    var idm = datamateri[par].idmateri;
-    //
-    $('.classReviewMateri').nextAll('button').remove();
-    $.getJSON(linkmateri + "&idmateri=" + idm + "&action=previewriwayat", function (json) {
-
-        tes.innerHTML += brkline(json).teks;
-        let inhtml = "<table class='versi-table w3-tiny'><tr><td>Mapel</td><td>KD</td><td>No Soal</td></tr>";
-        let xx = brkline(json).kd.split("<br>");
-        for (a = 0; a < xx.length; a++) {
-            inhtml += `<tr><td> ${xx[a].split("_")[0]}</td><td> ${xx[a].split("_")[1].split(":")[0]}</td><td>${xx[a].split("_")[1].split(":")[1]}</td></tr>`
-        }
-        inhtml += `</table>`;
-
-        forKD.innerHTML = inhtml;
-
-
-        let tekskunci = brkline(json).kunci;
-
-        if (tekskunci == "" || tekskunci == "undefined" || tekskunci == null) {
-            forkuncijawaban.innerHTML = "Tidak Ada PG";
-        } else {
-            forkuncijawaban.innerHTML = window.atob(tekskunci).split(",").join("<br>");
-
-        }
-
-
-        var elEssay = document.getElementsByClassName("soalessay")
-        if (elEssay.length !== 0) {
-            for (i = 0; i < elEssay.length; i++) {
-                var idEl = elEssay[i].getAttribute("id");
-                var inidEl = idEl.replace("essay", "");
-                var tempattombol = document.getElementById("tomboljawaban" + inidEl);
-                var tombolsatu = document.createElement("button");
-                tombolsatu.setAttribute("onclick", "tombolketikjawaban('" + inidEl + "')");
-                var tekstombolsatu = document.createTextNode("Ketik Jawaban No " + inidEl);
-                tombolsatu.appendChild(tekstombolsatu);
-                tempattombol.appendChild(tombolsatu);
-                tempattombol.innerHTML += "<br/><sub>atau</sub></br/> ";
-                var tomboldua = document.createElement("button");
-                tomboldua.setAttribute("onclick", "tomboluploadjawaban('" + inidEl + "')");
-                var tekstomboldua = document.createTextNode("Upload Media No " + inidEl);
-                tomboldua.appendChild(tekstomboldua);
-                tempattombol.appendChild(tomboldua);
-                tempattombol.innerHTML += "<br/><sub>Pilih Salah satu cara Kalian menjawab soal ini</sub>";
-
-            }
-        }
-
-    })
-    // ;
-};
-const fn7kembalikankonten = (id) => {
-    let konfirmasihapus = confirm("Anda yakin ingin mengembalikan materi ini di Time Line Anda? \n \n Jika tetap ingin mengembalikan, klik OK. / Untuk membatalkan klik CANCEL");
-    if (!konfirmasihapus) {
-        return;
-    }
-    let brs = jsonmateridihapus[id].idbaris;
-    let data = new FormData();
-    data.append("idbaris", brs);
-    data.append("idtoken", idJenjang);
-
-    fetch(linkmateri + "&action=kembalikanmateridaridaftar", {
-        method: 'post',
-        body: data
-    }).then(m => m.json())
-        .then(k => {
-
-            alert(k.result);
-            pembelajaran();
-        }).catch(er => console.log(er))
-};
-const fn7jadikankontenbaru = (id) => {
-    let konfirmasihapus = confirm("Anda yakin ingin menyimpan Konten Materi ini menjadi draft Anda? \n \n Simpanan Draft sebelumnya akan hilang dan digantikan dengan draft ini. \n\n Jika tetap ingin menyimpan draf, klik OK.  / Untuk membatalkan klik CANCEL");
-    if (!konfirmasihapus) {
-        return;
-    }
-    let ids = id;
-    let tdtombol = document.querySelector(".fn7tombolaksi" + ids);
-    tdtombol.innerHTML = `<button onclick="fn7kembalikankonten('${ids}')" class="w3-button w3-blue w3-hover-green">Kembalikan</button><br><br>
-    <i class='fa fa-refresh fa-spin w3-xxlarge'></i>`
-    let idmapel = jsonmateridihapus[id].idmapel;
-    let iddurasi = jsonmateridihapus[id].iddurasi;
-    let idaksessiswa = jsonmateridihapus[id].idaksessiswa;
-    let jenistagihan = jsonmateridihapus[id].jenistagihan;
-    let idtgl = new Date()
-    let idtglend = new Date();
-    $.getJSON(linkmateri + "&idmateri=" + jsonmateridihapus[id].idmateri + "&action=previewriwayat", function (json) {
-        let kontenmateri = json;
-        let botakin = window.btoa(unescape(encodeURIComponent(kontenmateri)));
-        //let botakin = window.btoa(unescape(kontenmateri));
-        let obj = {};
-        obj.idmapel = idmapel;
-        obj.iddurasi = iddurasi;
-        obj.jenistagihan = jenistagihan;
-        obj.idaksessiswa = idaksessiswa;
-        obj.idtgl = idtgl;
-        obj.idtglend = idtglend;
-        obj.botakin = botakin;
-
-        window.localStorage.setItem("drafmateri", JSON.stringify(obj));
-        tdtombol.innerHTML = `<button onclick="fn7kembalikankonten('${ids}')" class="w3-button w3-blue w3-hover-green">Kembalikan</button><br><br>
-        <button onclick="fn7jadikankontenbaru('${ids}')" class="w3-button w3-khaki w3-hover-green">Simpan Draft</button>`;
-
-        let ingindownload = confirm("Draft berhasil disimpan, apakah Anda ingin mendownload materi ini juga?");
-        if (ingindownload) {
-            downloadfiledraft(json, idmapel);
-        } else {
-            alert('Draft berhasil disimpan, silakan menuju menu UPLOAD MATERI lalu klik TARUH DRAFT');
-        }
-    })
-
-
-};
-
-const fn8editakses_simpandraft = (id) => {
-    let konfirmasihapus = confirm("Anda yakin ingin menyimpan Konten Materi ini menjadi draft Anda? \n \n Simpanan Draft sebelumnya akan hilang dan digantikan dengan draft ini. \n\n Jika tetap ingin menyimpan draf, klik OK.  / Untuk membatalkan klik CANCEL");
-    if (!konfirmasihapus) {
-        return;
-    }
-    let ids = id;
-    let tdtombol = document.querySelector(".fn8editakses_tombolaksi");
-    tdtombol.innerHTML = `<i class='fa fa-refresh fa-spin w3-xxlarge'></i>`
-    let idmapel = kronologijson[id].idmapel;
-    let iddurasi = kronologijson[id].iddurasi;
-    let idaksessiswa = kronologijson[id].idaksessiswa;
-    let jenistagihan = kronologijson[id].jenistagihan;
-    let idtgl = new Date()
-    let idtglend = new Date();
-    $.getJSON(linkmateri + "&idmateri=" + kronologijson[id].idmateri + "&action=previewriwayat", function (json) {
-        let kontenmateri = json;
-        let botakin = window.btoa(unescape(encodeURIComponent(kontenmateri)));
-        //let botakin = window.btoa(unescape(kontenmateri));
-        let obj = {};
-        obj.idmapel = idmapel;
-        obj.iddurasi = iddurasi;
-        obj.jenistagihan = jenistagihan;
-        obj.idaksessiswa = idaksessiswa;
-        obj.idtgl = idtgl;
-        obj.idtglend = idtglend;
-        obj.botakin = botakin;
-
-        window.localStorage.setItem("drafmateri", JSON.stringify(obj));
-        tdtombol.innerHTML = `KLIK`;
-
-        let ingindownload = confirm("Draft berhasil disimpan, apakah Anda ingin mendownload materi ini juga?");
-        if (ingindownload) {
-            downloadfiledraft(json, idmapel);
-        } else {
-            alert('Draft berhasil disimpan, silakan menuju menu UPLOAD MATERI lalu klik TARUH DRAFT');
-        }
-    })
-
-
-};
-const downloadfiledraft = (json, namafile) => {
-    var blob = new Blob([json], {
-        type: "text/plain"
-    });
-    window.URL = window.URL || window.webkitURL;
-    link = window.URL.createObjectURL(blob);
-    a = document.createElement("a");
-    a.download = namafile + " id=" + new Date().getTime();
-    a.href = link;
-
-    document.body.appendChild(a);
-
-    a.click();
-
-    document.body.removeChild(a);
-};
-const berandaguru = () => {
-    tampilinsublamangurukelas("beranda")
-};
-const fn7selectreposistory = () => {
-    let x = document.getElementById("pilihanrepositorysekolahlain").selectedIndex;
-    let y = document.getElementById("pilihanrepositorysekolahlain").options;
-    //alert("Index: " + y[x].index + " is " + y[x].text + " dan value = " + y[x].value);  
-    let xx = y[x].value;
-    if (y[x].index !== 0) {
-        tempatrepositorysekolahlain.innerHTML = "<i class='fa fa-refresh fa-spin w3-xxlarge'></i>";
-
-        fetch(urlmaterisekolahlain[xx] + "&action=kronolog&idtoken=" + idJenjang)
-            .then(m => m.json())
-            .then(k => {
-                // console.log(k);
-                jsonmaterisekolahlain = k.result; //.filter(k => k.idpendaftar !== "tolak");
-
-                let temp = `<div style="overflow-x:auto"><table class='versi-table w3-tiny'><thead>
-            <tr>
-            <th> Judul Materi</th>
-                <th> Mapel dan KD</th>
-                <th> Jenis KBM </th>
-                <th> Waktu Pelaksanaan</th>
-                <th> Dibuat oleh</th>
-                <th> Preview</th>
-                <th> Aksi </th>
-            </tr>
-            </thead>
-            <tbody>
-        `
-                let kk = k.result; //.filter(k => k.idpendaftar !== "tolak");
-
-                let objekgagal = {
-                    'MAPELTIDAKDIISI_3.1': ['1', '2']
-                };
-                if (kk.length > 0) {
-                    for (a = 0; a < kk.length; a++) {
-                        // console.log(a);
-                        // console.log("________");
-                        // console.log(kk[a].idbaris);
-                        // console.log("________");
-                        // console.log(kk[a].kuncikd);
-                        let ab;
-                        if (kk[a].kuncikd == "undefined") {
-                            ab = objekgagal;
-
-                        } else {
-                            ab = JSON.parse(kk[a].kuncikd)
-                        };
-
-                        temp += `
-                        <tr>
-                        <td>${kk[a].idmapel.toUpperCase()}</td>
-                        <td>`
-                        let obab = Object.keys(ab);
-
-                        let untukKD = `<table class='versi-table w3-tiny'>
-                        <tr>
-                            <th> Mapel</th>
-                            <th> KD </th>
-                            <th> No. Soal </th>
-                        </tr>
-                        `
-                        for (b = 0; b < obab.length; b++) {
-                            let key = obab[b];
-
-                            let arrsplit = ab[key].join("<br/>");
-
-                            untukKD += `
-                                <tr>
-                                    <td>${obab[b].split("_")[0]}</td>
-                                    <td>${obab[b].split("_")[1]}</td>
-                                    <td>${(ab[obab[b]] == "undefined") ? "Tidak terdeteksi" : arrsplit}</td>
-                                </tr>
-                            `
-                        }
-                        untukKD += `</table>`;
-                        temp += untukKD;
-                        temp += `
-                        </td>
-                        <td> ${(kk[a].idaksessiswa == 'sekali') ? 'ULANGAN<br>Menerima Tugas Siswa' : 'LATIHAN<br>Tidak Menerima Tugas'}</td>
-                        <td> ${tanggalfulllengkap(kk[a].idtgl)} <br>s/d<br> ${tanggalfulllengkap(kk[a].idtglend)}</td>
-                        
-                        <td>${kk[a].dibuatoleh}</td>
-                        <td><button onclick="fn7previewsekolahlain(${a},${xx})" class="w3-button w3-green w3-hover-red">PREVIEW</button></td>
-                        <td class="fn7tombolaksisekolahlain${a}"><button onclick="fn7jadikankontenbarudarisekolahlain(${a},${xx})" class="w3-button w3-khaki w3-hover-green">Jadikan Materi Saya</button></td>
-                        
-                    </tr>
-            `
-                    }
-                } else {
-                    temp += `  <tr>
-                <td>Tidak Ditemukan materi</td>
-                <td>Tidak Ditemukan materi</td>
-                <td>Tidak Ditemukan materi</td>
-                <td>Tidak Ditemukan materi</td>
-                <td>Tidak Ditemukan materi</td>
-                <td>Tidak Ditemukan materi</td>
-                <td>Tidak Ditemukan materi</td>
-            </tr>
-            `
-                }
-                temp += `</tbody></table></br>`;
-                tempatrepositorysekolahlain.innerHTML = "Berikut ini Konten Materi di Jenjang Kelas " + idJenjang + " yang telah dipublikasikan di " + y[x].text;
-                tempatrepositorysekolahlain.innerHTML += temp;
-
-            })
-
-    } else {
-        tempatrepositorysekolahlain.innerHTML = "Silakan pilih sekolah untuk melihat Konten Materi yang telah dipublikasikan di Sekolah yang terdaftar di Elamaso";
-
-    }
-};
-const fn7previewsekolahlain = (indektabel, indeksekolah) => {
-    //alert("Indek materi " + indektabel + "\n\n Indek sekolah: " + indeksekolah);
-    pranalamateri.style.display = 'block';
-
-    document.querySelector(".classReviewMateri").innerHTML = "";
-    let tes = document.querySelector(".classReviewMateri");
-    //let keyy = "kbmtoday" + tglStringZero()
-
-    //let datamateri = JSON.parse(localStorage.getItem(keyy))
-    // let datamateri = jsonmateridihapus;
-    let par = indektabel;
-    let datamateri = jsonmaterisekolahlain;
-
-
-    //bikin judul h4
-    var judul = document.createElement("h4");
-    judul.setAttribute("class", "w3-center");
-    judul.innerHTML = "Identitas e-Lamaso";
-    tes.innerHTML = "";
-    tes.appendChild(judul);
-
-    //-- Bikin Tabel identitas:
-    var tabelidentitas = document.createElement("table");
-    tabelidentitas.setAttribute("class", "versi-table tabel_idreview");
-    tabelidentitas.setAttribute("style", "margin:auto");
-    var tr = tabelidentitas.insertRow(-1);
-
-    var tr = tabelidentitas.insertRow(-1);
-    var td = tr.insertCell(-1);
-    td.innerHTML = "Sekolah";
-    var td = tr.insertCell(-1);
-    td.innerHTML = datamateri[par].idSekolah;
-    var tr = tabelidentitas.insertRow(-1);
-    var td = tr.insertCell(-1);
-    td.innerHTML = "Dibuat/Diedit Oleh";
-    var td = tr.insertCell(-1);
-    td.innerHTML = datamateri[par].dibuatoleh;
-    var tr = tabelidentitas.insertRow(-1);
-    var td = tr.insertCell(-1);
-    td.innerHTML = "Kelas";
-    var td = tr.insertCell(-1);
-    td.innerHTML = idNamaKelas;
-    var tr = tabelidentitas.insertRow(-1);
-    var td = tr.insertCell(-1);
-    td.innerHTML = "Identitas Pembelajaran";
-    var td = tr.insertCell(-1);
-    td.innerHTML = datamateri[par].idmapel;
-    var tr = tabelidentitas.insertRow(-1);
-    var td = tr.insertCell(-1);
-    td.innerHTML = "Frekuensi Akses";
-    var td = tr.insertCell(-1);
-    var keteranganakses;
-    if (datamateri[par].idaksessiswa == "sekali") {
-        keteranganakses = "TEST <br>(Menerima Jawaban/Tugas Siswa)";
-    } else {
-        keteranganakses = "LATIHAN <br>(Tidak menerima jawaban/tugas)";
-    }
-    td.innerHTML = keteranganakses;
-    var tr = tabelidentitas.insertRow(-1);
-    var td = tr.insertCell(-1);
-    td.innerHTML = "Tanggal Publikasi";
-    var td = tr.insertCell(-1);
-    td.innerHTML = tanggalfulllengkap(datamateri[par].idtgl);
-
-    var tr = tabelidentitas.insertRow(-1);
-    var td = tr.insertCell(-1);
-    td.innerHTML = "Kompetensi KD<br><sub class='w3-text-red'>Tidak akan muncul di siswa</sub>";
-    var td = tr.insertCell(-1);
-    td.setAttribute("id", "forKD")
-    td.innerHTML = `<i class="fa fa-spin fa-spinner"></i>`;
-    var tr = tabelidentitas.insertRow(-1);
-    var td = tr.insertCell(-1);
-    td.innerHTML = "Kunci Jawaban<br><sub class='w3-text-red'>Tidak akan muncul di siswa</sub>";
-    var td = tr.insertCell(-1);
-    td.setAttribute("id", "forkuncijawaban");
-    td.innerHTML = `<i class="fa fa-spin fa-spinner"></i>`;
-    var tr = tabelidentitas.insertRow(-1);
-    var td = tr.insertCell(-1);
-    td.innerHTML = "Baris Database Materi";
-    var td = tr.insertCell(-1);
-    td.innerHTML = `${datamateri[par].idbaris}`;
-
-
-
-    tes.appendChild(tabelidentitas);
-    var brek = document.createElement("div");
-
-    brek.setAttribute("style", "break-after:page");
-    brek.innerHTML = "<h4 class='w3-center'>PREVIEW MATERI DI ELAMASO SISWA</h4>"
-    tes.appendChild(brek);
-
-    //var idm = encodeURIComponent(datamateri[par].idmateri);
-    var idm = datamateri[par].idmateri;
-    //
-    $('.classReviewMateri').nextAll('button').remove();
-    $.getJSON(urlmaterisekolahlain[indeksekolah] + "&idmateri=" + idm + "&action=previewriwayat", function (json) {
-
-        tes.innerHTML += brkline(json).teks;
-        let inhtml = "<table class='versi-table w3-tiny'><tr><td>Mapel</td><td>KD</td><td>No Soal</td></tr>";
-        let xx = brkline(json).kd.split("<br>");
-        for (a = 0; a < xx.length; a++) {
-            inhtml += `<tr><td> ${xx[a].split("_")[0]}</td><td> ${xx[a].split("_")[1].split(":")[0]}</td><td>${xx[a].split("_")[1].split(":")[1]}</td></tr>`
-        }
-        inhtml += `</table>`;
-
-        forKD.innerHTML = inhtml;
-
-        let tekskunci = brkline(json).kunci;
-
-        if (tekskunci == "" || tekskunci == "undefined" || tekskunci == null) {
-            forkuncijawaban.innerHTML = "Tidak Ada PG";
-        } else {
-            forkuncijawaban.innerHTML = window.atob(tekskunci).split(",").join("<br>");
-
-        }
-
-
-        var elEssay = document.getElementsByClassName("soalessay")
-        if (elEssay.length !== 0) {
-            for (i = 0; i < elEssay.length; i++) {
-                var idEl = elEssay[i].getAttribute("id");
-                var inidEl = idEl.replace("essay", "");
-                var tempattombol = document.getElementById("tomboljawaban" + inidEl);
-                var tombolsatu = document.createElement("button");
-                tombolsatu.setAttribute("onclick", "tombolketikjawaban('" + inidEl + "')");
-                var tekstombolsatu = document.createTextNode("Ketik Jawaban No " + inidEl);
-                tombolsatu.appendChild(tekstombolsatu);
-                tempattombol.appendChild(tombolsatu);
-                tempattombol.innerHTML += "<br/><sub>atau</sub></br/> ";
-                var tomboldua = document.createElement("button");
-                tomboldua.setAttribute("onclick", "tomboluploadjawaban('" + inidEl + "')");
-                var tekstomboldua = document.createTextNode("Upload Media No " + inidEl);
-                tomboldua.appendChild(tekstomboldua);
-                tempattombol.appendChild(tomboldua);
-                tempattombol.innerHTML += "<br/><sub>Pilih Salah satu cara Kalian menjawab soal ini</sub>";
-
-            }
-        }
-
-    })
-};
-const fn7jadikankontenbarudarisekolahlain = (id, indeksekolah) => {
-    //alert("Indek materi " + id + "\n\n Indek sekolah: " + indeksekolah);
-    let konfirmasihapus = confirm("Anda yakin ingin menyimpan Konten Materi ini menjadi draft Anda? \n \n Simpanan Draft sebelumnya akan hilang dan digantikan dengan draft ini. \n\n Jika tetap ingin menyimpan draf, klik OK.  / Untuk membatalkan klik CANCEL");
-    if (!konfirmasihapus) {
-        return;
-    }
-    let ids = id;
-    let tdtombol = document.querySelector(".fn7tombolaksisekolahlain" + ids);
-    tdtombol.innerHTML = `<i class='fa fa-refresh fa-spin w3-xxlarge'></i>`
-    let idmapel = jsonmaterisekolahlain[id].idmapel;
-    let iddurasi = jsonmaterisekolahlain[id].iddurasi;
-    let idaksessiswa = jsonmaterisekolahlain[id].idaksessiswa;
-    let jenistagihan = jsonmaterisekolahlain[id].jenistagihan;
-    let idtgl = new Date()
-    let idtglend = new Date();
-    $.getJSON(urlmaterisekolahlain[indeksekolah] + "&idmateri=" + jsonmaterisekolahlain[id].idmateri + "&action=previewriwayat", function (json) {
-        let kontenmateri = json;
-        let botakin = window.btoa(unescape(encodeURIComponent(kontenmateri)));
-        //let botakin = window.btoa(unescape(kontenmateri));
-        let obj = {};
-        obj.idmapel = idmapel;
-        obj.iddurasi = iddurasi;
-        obj.jenistagihan = jenistagihan;
-        obj.idaksessiswa = idaksessiswa;
-        obj.idtgl = idtgl;
-        obj.idtglend = idtglend;
-        obj.botakin = botakin;
-
-        window.localStorage.setItem("drafmateri", JSON.stringify(obj));
-        tdtombol.innerHTML = `<button onclick="fn7jadikankontenbarudarisekolahlain(${id},${indeksekolah})" class="w3-button w3-khaki w3-hover-green">Jadikan Materi Saya</button>`;
-
-        let ingindownload = confirm("Draft berhasil disimpan, apakah Anda ingin mendownload materi ini juga?");
-        if (ingindownload) {
-            downloadfiledraft(json, idmapel);
-        } else {
-            alert('Draft berhasil disimpan, silakan menuju menu UPLOAD MATERI lalu klik TARUH DRAFT');
-        }
-    })
-
-
-};
-
-btnfn7cekpreview.addEventListener("click", function () {
-    //pratinjaubuatmateri();
-    let div = document.getElementById("prev_dragable")
-    div.style.display = "block";
-    let y = div.offsetTop - 45;
-    window.scrollTo({ top: y, behavior: 'smooth' });
-    pratinjaubuatmateri();
-    let val = document.formuploadmateri.idmateri.value
-    barufindkuncipgkd(val)
-
-
-});
-dragElement(document.getElementById("prev_dragable"));
-let btnfn7petunjukuploadmateri = document.querySelector(".fn7petunjukuploadmateri");
-btnfn7petunjukuploadmateri.addEventListener("click", function () {
-    petunjukuploadmateri();
-});
-let btnfn7gambar = document.querySelector(".fn7gambar");
-btnfn7gambar.addEventListener("click", function () {
-    daftarGambar();
-});
-let btnfn7simpandraft = document.querySelector(".fn7simpandraft");
-btnfn7simpandraft.addEventListener("click", function () {
-    simpancatatansementara();
-});
-let btnfn7taruhdraft = document.querySelector(".fn7taruhdraft");
-btnfn7taruhdraft.addEventListener("click", function () {
-    taruhcatatansementara();
-});
-
-const ubahijinpublik = (id) => {
-    //alert("id = " + id);
-    let data = kronologijson[id];
-    let idbaris = data.idbaris;
-    let kirimdata = new FormData();
-    kirimdata.append("idbaris", idbaris);
-    fetch(linkmateri + "&action=berbagikontenmateri", {
-        method: 'post',
-        body: kirimdata
-    }).then(m => m.json())
-        .then(k => {
-            alert(k.result);
-            pembelajaran();
-        })
-        .catch(er => alert(er))
-};
-const fnv7kotenmateridihapusmapel = (ids) => {
-    //alert('ids = ' + ids);
-    timelinekbm.innerHTML = "<i class='fa fa-spin fa-spinner w3-xxlarge'></i>";
-    fetch(linkmateri + "&action=kronologhapus&idtoken=" + idJenjang)
-        .then(m => m.json())
-        .then(k => {
-            // console.log(k);
-            jsonmateridihapus = k.result.filter(k => k.kuncikd.indexOf(idgurumapelmapel) > -1);
-            let temp = `<div style="overflow-x:auto"><table class='versi-table w3-tiny'><thead>
-            <tr>
-                <th> Baris Database</th>
-                <th> Judul Materi</th>
-                <th> Jenis KBM </th>
-                <th> Waktu Pelaksanaan</th>
-                <th> Preview</th>
-                <th> Aksi </th>
-            </tr>
-            </thead>
-            <tbody>
-        `
-            let kk = k.result.filter(k => k.kuncikd.indexOf(idgurumapelmapel) > -1);;
-
-            if (kk.length > 0) {
-                for (a = 0; a < kk.length; a++) {
-                    temp += `
-            <tr><td>${kk[a].idbaris}</td>
-                <td> ${kk[a].idmapel.toUpperCase()}</td>
-                <td> ${(kk[a].idaksessiswa == 'sekali') ? 'ULANGAN<br>Menerima Tugas Siswa' : 'LATIHAN<br>Tidak Menerima Tugas'}</td>
-                <td> ${tanggalfulllengkap(kk[a].idtgl)} <br>s/d<br> ${tanggalfulllengkap(kk[a].idtglend)}</td>
-                <td><button onclick="fn7preview('${a}')" class="w3-button w3-green w3-hover-red">PREVIEW</button></td>
-                <td class='fn7tombolaksi${a}'> <button onclick="fn7kembalikankonten('${a}')" class="w3-button w3-blue w3-hover-green">Kembalikan</button><br><br>
-                <button onclick="fn7jadikankontenbaru('${a}')" class="w3-button w3-khaki w3-hover-green">Simpan Draft</button>
-                </td>
-            </tr>
-            `
-                }
-            } else {
-                temp += `
-            <tr>
-                <td>Tidak Ditemukan materi</td>
-                <td>Tidak Ditemukan materi</td>
-                <td>Tidak Ditemukan materi</td>
-                <td>Tidak Ditemukan materi</td>
-                <td>Tidak Ditemukan materi</td>
-                <td>Tidak Ditemukan materi</td>
-            </tr>
-            `
-            }
-            temp += `</tbody></table></div>`;
-            timelinekbm.innerHTML = `<button class="w3-button w3-red w3-hover-blue w3-round-large" onclick="pembelajaran()"> Kembali ke Kronologi</button><hr><h4>Materi di Jenjang Kelas Anda yang telah dihapus:</h4>` + temp;
-
-        })
-        .catch(er => console.log(er));
-};
-const fn7selectreposistorymapel = () => {
-    let x = document.getElementById("pilihanrepositorysekolahlain").selectedIndex;
-    let y = document.getElementById("pilihanrepositorysekolahlain").options;
-    //alert("Index: " + y[x].index + " is " + y[x].text + " dan value = " + y[x].value);  
-    let xx = y[x].value;
-    if (y[x].index !== 0) {
-        tempatrepositorysekolahlain.innerHTML = "<i class='fa fa-refresh fa-spin w3-xxlarge'></i>";
-
-        fetch(urlmaterisekolahlain[xx] + "&action=kronolog&idtoken=" + idJenjang)
-            .then(m => m.json())
-            .then(k => {
-                // console.log(k);
-                jsonmaterisekolahlain = k.result.filter(k => k.kuncikd.indexOf(idgurumapelmapel) > -1);
-
-                let temp = `<div style="overflow-x:auto"><table class='versi-table w3-tiny'><thead>
-            <tr>
-            <th> Judul Materi</th>
-                <th> Mapel dan KD</th>
-                <th> Jenis KBM </th>
-                <th> Waktu Pelaksanaan</th>
-                <th> Dibuat oleh</th>
-                <th> Preview</th>
-                <th> Aksi </th>
-            </tr>
-            </thead>
-            <tbody>
-        `
-                let kk = k.result.filter(k => k.kuncikd.indexOf(idgurumapelmapel) > -1);
-
-                let objekgagal = {
-                    'MAPELTIDAKDIISI_3.1': ['1', '2']
-                };
-                if (kk.length > 0) {
-                    for (a = 0; a < kk.length; a++) {
-
-                        let ab;
-                        if (kk[a].kuncikd == "undefined") {
-                            ab = objekgagal;
-
-                        } else {
-                            ab = JSON.parse(kk[a].kuncikd)
-                        };
-
-                        temp += `
-                        <tr>
-                        <td>${kk[a].idmapel.toUpperCase()}</td>
-                        <td>`
-                        let obab = Object.keys(ab);
-
-                        let untukKD = `<table class='versi-table w3-tiny'>
-                        <tr>
-                            <th> Mapel</th>
-                            <th> KD </th>
-                            <th> No. Soal </th>
-                        </tr>
-                        `
-                        for (b = 0; b < obab.length; b++) {
-                            let key = obab[b];
-
-                            let arrsplit = ab[key].join("<br/>");
-
-                            untukKD += `
-                                <tr>
-                                    <td>${obab[b].split("_")[0]}</td>
-                                    <td>${obab[b].split("_")[1]}</td>
-                                    <td>${(ab[obab[b]] == "undefined") ? "Tidak terdeteksi" : arrsplit}</td>
-                                </tr>
-                            `
-                        }
-                        untukKD += `</table>`;
-                        temp += untukKD;
-                        temp += `
-                        </td>
-                        <td> ${(kk[a].idaksessiswa == 'sekali') ? 'ULANGAN<br>Menerima Tugas Siswa' : 'LATIHAN<br>Tidak Menerima Tugas'}</td>
-                        <td> ${tanggalfulllengkap(kk[a].idtgl)} <br>s/d<br> ${tanggalfulllengkap(kk[a].idtglend)}</td>
-                        
-                        <td>${kk[a].dibuatoleh}</td>
-                        <td><button onclick="fn7previewsekolahlain(${a},${xx})" class="w3-button w3-green w3-hover-red">PREVIEW</button></td>
-                        <td class="fn7tombolaksisekolahlain${a}"><button onclick="fn7jadikankontenbarudarisekolahlain(${a},${xx})" class="w3-button w3-khaki w3-hover-green">Jadikan Materi Saya</button></td>
-                        
-                    </tr>
-            `
-                    }
-                } else {
-                    temp += `  <tr>
-                <td>Tidak Ditemukan materi</td>
-                <td>Tidak Ditemukan materi</td>
-                <td>Tidak Ditemukan materi</td>
-                <td>Tidak Ditemukan materi</td>
-                <td>Tidak Ditemukan materi</td>
-                <td>Tidak Ditemukan materi</td>
-                <td>Tidak Ditemukan materi</td>
-            </tr>
-            `
-                }
-                temp += `</tbody></table></div>`;
-                tempatrepositorysekolahlain.innerHTML = "Berikut ini Konten Materi di Jenjang Kelas " + idJenjang + " yang telah dipublikasikan di " + y[x].text;
-                tempatrepositorysekolahlain.innerHTML += temp;
-
-            })
-
-    } else {
-        tempatrepositorysekolahlain.innerHTML = "Silakan pilih sekolah untuk melihat Konten Materi yang telah dipublikasikan di Sekolah yang terdaftar di Elamaso";
-
-    }
-};
-eidmateri.addEventListener("blur", function (e) {
-
-
-    //hteks.id = new Date().getTime();
-    let teks = e.target.value;
-
-    // ahteks.push(hteks)
-    ahteks += teks + "<<|>>"
-    flag++
-
-})
-let btnundo = document.querySelector(".fn7undo");
-btnundo.addEventListener("click", function () {
-
-    if (flag > 0) {
-        flag--;
-    }
-
-
-    let ar = ahteks.split("<<|>>");
-
-    let x = parseInt(flag);
-    let textarea = document.querySelector("#idmateri");
-    textarea.value = ar[x];
-});
-let btnredo = document.querySelector(".fn7redo");
-btnredo.addEventListener("click", function () {
-
-    let ar = ahteks.split("<<|>>");
-    let mak = ar.length - 1;
-    if (flag < mak) {
-        flag++;
-    }
-
-    let x = parseInt(flag);
-    let textarea = document.querySelector("#idmateri");
-    textarea.value = ar[x];
-
-});
-let btnfn7video = document.querySelector(".fn7video");
-btnfn7video.addEventListener("click", function () {
-    daftarvideo();
-});
-function barufindkuncipgkd(teks) {
-    // let findPG = teks.match(/^_PG_\d{1,2}\s|^_OPSI-PG_\d{1,2}[A-D]\s|^_OPSI-PG-C_\d+[A-D]\s|^_OPSI-SEL_\d{1,2}[A-D]\s|^_ESSAY-NO_\d{1,2}\s/gm);
-    let findPG = teks.match(/^_PG_\d+\s|^_OPSI-PG_\d+[A-D]\s|^_OPSI-PG-C_\d+[A-D]\s|^_OPSI-SEL_\d+[A-D]\s|^_ESSAY-NO_\d+\s|^_KUNCI-KD_/gm);
-    let textarea = document.getElementById("idmateri");
-    // <div id="divbantu_kuncijawaban"></div>
-    // <div id="divbantu_sebarankd"></div>
-    let div = document.querySelector(".tekeditorpg");
-    let divekd = document.querySelector(".tekesebarankd");
-    let divradiopg = document.getElementById("divbantu_kuncijawaban");
-    let seljt = document.getElementById("jenistagihan");
-    let valjt = seljt.options[seljt.selectedIndex].value;
-    let jtKD4 = ["kpraktik", "kproduk", "kproyek", "uspraktek"];
-    divradiopg.innerHTML = "";
-
-    if (findPG !== null) {
-        let cekcariopsi = teks.match(/^_OPSI-PG_\d+[A-D]\s|^_OPSI-PG-C_\d+[A-D]\s|^_OPSI-SEL_\d+[A-D]\s/gm);
-
-
-        let tanpaspasi = findPG.map(s => s.replace(/\s|\t/g, ""));
-        let opsinya = (cekcariopsi == null) ? [] : cekcariopsi.map(s => s.replace(/\s|\t/g, ""));
-
-
-
-        valueeditormateri = {};
-        let cekduplikat = tanpaspasi.filter((x, i, a) => a.indexOf(x) !== i)
-        valueeditormateri["elemenduplikat"] = cekduplikat;
-
-
-
-        let koleksiEl_PG = tanpaspasi.filter(s => s.indexOf("_PG_") > -1); //.map(m=> m.replace("_PG_"));
-        let koleksino_PG = tanpaspasi.filter(s => s.indexOf("_PG_") > -1).map(m => parseInt(m.replace("_PG_", "")));
-        // let koleksiopsi_PG = opsinya.map(s => s.replace("_OPSI-PG_", "") || s.replace("_OPSI-PG-C_", "") || s.replace("_OPSI-SEL_", "")); //.map(m => m.match(/\d[A-D]/g)[0]);
-        let koleksiopsi_PG = opsinya.map(s => s.match(/\d+[A-D]/)[0])
-
-        valueeditormateri["koleksi_el_pg"] = koleksiEl_PG; // "_SEMUA KODE_"
-        valueeditormateri["koleksi_no_pg"] = koleksino_PG; // 
-        valueeditormateri["koleksi_opsi_pg"] = koleksiopsi_PG;
-        let pg_duplikat = koleksiopsi_PG.filter((x, i, a) => a.indexOf(x) !== i);
-        valueeditormateri["koleksi_opsi_pg_duplikat"] = pg_duplikat;
-        valueeditormateri["koleksi_all_elemen"] = tanpaspasi;
-
-        // valueeditormateri["koleksino_opsi"] = opsinya.map(m => m.replace(/_/, ""));
-        let PG = [];
-        for (i = 0; i < koleksino_PG.length; i++) {
-            let cocokkan = koleksino_PG[i];
-            let pattern = cocokkan;
-
-            let nopg = koleksiopsi_PG.filter(s => (s == cocokkan + "A" || s == cocokkan + "B" || s == cocokkan + "C" || s == cocokkan + "D"));
-            let obj = {};
-            obj["nosoal"] = koleksino_PG[i];
-            obj["arrayopsi"] = nopg;
-
-            PG.push(obj);
-        }
-        // valueeditormateri["PG"] = PG;
-        let filteressay = tanpaspasi.filter(s => s.indexOf("_ESSAY-NO_") > -1);;
-        let filter_no_essay = tanpaspasi.filter(s => s.indexOf("_ESSAY-NO_") > -1).map(m => parseInt(m.replace("_ESSAY-NO_", "")));
-
-        let koleksi_all_nosoal = koleksino_PG.concat(filter_no_essay);
-        let koleksi_nosoal_duplikat = koleksi_all_nosoal.filter((x, i, a) => a.indexOf(x) !== i);
-
-
-
-        valueeditormateri["koleksi_el_essay"] = filteressay;
-        valueeditormateri["koleksi_no_essay"] = filter_no_essay;
-        valueeditormateri["koleksi_all_nosoal"] = koleksi_all_nosoal;
-        valueeditormateri["koleksi_nosoal_duplikat"] = koleksi_nosoal_duplikat;
-        valueeditormateri["NOSOAL"] = PG;
-
-
-        let html = "";
-        let ketesay = "";
-
-        let oke = "Kode Soal PG dan Opsinya yang terdeteksi:";
-        let el_input = "";
-
-        // GA BOLEH ADA DUPLIKAT, harusnol;
-        let nolelemen = cekduplikat.length;
-        let nolnomorsoal = koleksi_nosoal_duplikat.length;
-        let nolopsipg = pg_duplikat.length;
-
-        if (nolelemen > 0 || nolnomorsoal > 0 || nolopsipg > 0) {
-            html = "Maaf, Ada kode/tag yang salah:"
-            if (nolelemen > 0) {
-                html += "<br/><br/>Terdapat Kode ELemen yang dupplikat yaitu ";
-                for (i = 0; i < cekduplikat.length; i++) {
-                    html += "<b>" + cekduplikat[i] + "</b>, ";
-                }
-                html += "<br/><br/>";
-            }
-            if (nolnomorsoal > 0) {
-                html += "<br/><br/>Terdapat Kode Nomor Soal yang sama. yaitu ";
-                for (i = 0; i < koleksi_nosoal_duplikat.length; i++) {
-                    html += "<b>" + koleksi_nosoal_duplikat[i] + "</b>, ";
-                }
-                html += "<br/>";
-                html += "<br/>Jika nomor soal yang sama tersebut adalah PG dan Essay, utamakan penomoran soal essay melanjutkan dari nomor soal PG sebelumnya";
-            }
-            if (nolopsipg > 0) {
-                html += "<br/><br/>Terdapat opsi PG yang sama. yaitu ";
-                for (i = 0; i < pg_duplikat.length; i++) {
-                    html += "<b>" + pg_duplikat[i] + "</b>, ";
-                }
-
-            }
-
-        } else {
-            let objekdatasoal = valueeditormateri.NOSOAL;
-            let soalessay = valueeditormateri["koleksi_no_essay"];
-            ketesay = "<hr/>";
-            // console.log(objekdatasoal)
-            if (objekdatasoal.length == 0) {
-                html = `TIDAK TERDETEKSI ADANYA SOAL PILIHAN GANDA`
-            } else {
-                html = "Silakan Pilih tiap-tiap Opsi Pilihan Ganda tiap nomor soal berikut sebagai kunci jawabannya."
-                html += `<table class="w3-table-all w3-tiny garis w3-centered"><tr>
-                <th>No Soal</th>
-                <th colspan="4">Opsi Jawaban<br/><sub>(Klik hurufny, huruf yang menyala adalah kunci jawaban pilihan Anda</sub></th>
-                </tr>`
-                for (let a = 0; a < objekdatasoal.length; a++) {
-                    html += `<tr><td class="warnaeka">${objekdatasoal[a].nosoal}</td>`;
-                    let arrayopsi = objekdatasoal[a].arrayopsi;
-                    //console.log(arrayopsi);
-                    for (let b = 0; b < arrayopsi.length; b++) {
-                        html += `<td class="tdpg_pgeditor_${arrayopsi[b]} tdnosoal_editor_${objekdatasoal[a].nosoal} td_ke${b}" style="cursor:pointer">
-                        <label for="tomboleditor_bantuopsi${arrayopsi[b]}" class="lbl_pgeditor_${arrayopsi[b]}">${arrayopsi[b].match(/\D/)[0]}</label>
-                        </td>`;
-                        el_input += `<br/><input type="radio" id="tomboleditor_bantuopsi${arrayopsi[b]}" name="rdsoal_${objekdatasoal[a].nosoal}" class="pg_buatkuncikd" value="${arrayopsi[b]}" onchange="checked_buatkunci(this)"/>${arrayopsi[b]}`;
-
-                    }
-
-                    html += `</tr>`
-                }
-                html += `</table>`;
-
-
-            }
-            if (soalessay.length == 0) {
-                ketesay += "TIDAK TERDETEKSI ADANYA SOAL ESSAY"
-            } else {
-                ketesay += "SOAL ESSAY TERDETEKSI:<br/>"
-                ketesay += `Nomor-nomor soal Essay<br/><br/>`;
-                soalessay.forEach(element => {
-                    ketesay += `<span class="w3-badge warnaeka w3-border-bottom w3-border-black w3-margin w3-text-black">${element}</span>`
-                });
-
-            }
-
-
-        }
-        div.innerHTML = html + ketesay;
-        divradiopg.innerHTML = el_input;
-        //console.log(buateditorkdaktif)
-        let cekkunci = teks.match(/^_KUNCI-PG_/gm);
-        let cekkd = teks.match(/^_KUNCI-KD_/gm);
-        let val = textarea.value;
-        let n = val.length;
-
-        if (cekkd !== null) {
-            let awalkd = val.indexOf("_KUNCI-KD_");
-            let batasawalkd = val.substring(awalkd, n)
-
-            let str_kd_kunci = batasawalkd.split("\n")[0];
-
-
-            if (cekkd.length > 1) {
-                alert("Anda membuat kode sebaran KD lebih dari 1. Kode pada baris tersebut akan dihapus.");
-                textarea.value = textarea.value.replace(str_kd_kunci, "");
-            } else {
-                let arr0 = str_kd_kunci.replace("_KUNCI-KD_", "");
-                let arr1 = arr0.replace(/\s+/gm, "")
-                let grup = arr1.split("<||>");
-
-                let htmlsebaran = ""
-                if (valjt == "") {
-                    htmlsebaran = `Anda Akan membuat konten materi jenis tagihan tanpa menerima respon jawaban siswa namun sebaran KD sifatnya wajib. Untuk membantu menggenerate sebaran KD, klik tombol <label for="modal_generate_sebarankd" class="w3-button warnaeka w3-border-bottom w3-border-black w3-round-large">Generate Sebaran KD</label>.(Jika belum Berubah, ketikan sesuatu di teks area materi)`;
-                } else {
-
-                }
-
-                let indekjt = jtKD4.indexOf(valjt);
-                // console.log(indekjt);
-                // console.log(valjt);
-
-                let stKD3apaKD4 = ""
-                if (indekjt == -1) {
-                    stKD3apaKD4 = " Kompetensi Pengetahuan (KD-3) "
-                } else {
-                    stKD3apaKD4 = " Kompetensi Keterampilan (KD-4) "
-
-                }
-
-                htmlsebaran = "SEBARAN KD TERDETEKSI<br/>"
-                htmlsebaran += `Anda memilih jenis Tagihan <span class="w3-card-4 w3-margin-bottom warnaeka"> ${stKD3apaKD4}</span>.<br/><br/>
-                    Atau Jika Anda perlu membuat sebaran KD dari fitur elamaso, silakan klik <label for="modal_generate_sebarankd" class="w3-button warnaeka w3-border-bottom w3-border-black w3-round-large">Generate Sebaran KD</label>
-                    <br/><br/>
-                    Berikut hasil tabel Sebran KD pada konten materi Anda yang terbaca oleh sistem:
-                    <table class="w3-table-all w3-bordered"><tr>
-                    <th>Mata Pelajaran (Kode)</th>
-                    <th>No KD</th>
-                    <th>Nomor Soal</th>
-                    </tr>`;
-                for (let g = 0; g < grup.length; g++) {
-                    let grupmapel = grup[g].split(":");
-                    htmlsebaran += `<tr>
-                        <td>${grupmapel[0].split("_")[0]}</td>
-                        <td>${grupmapel[0].split("_")[1]}</td>
-                        <td>${grupmapel[1]}</td>
-                        <td></td></tr>`
-                }
-                htmlsebaran += `</table><hr/> Berdasarkan Urutan Soal
-                   <div class="w3-card-4">
-                    `;
-                //mengurutkan soal;
-                let mod_str = JSON.parse(objekKD(str_kd_kunci));
-                let mod_obj = ubahjsonkuncikd(mod_str);
-
-                let oo = Object.keys(mod_obj);
-
-                for (h = 0; h < oo.length; h++) {
-                    htmlsebaran += `<div class="w3-left w3-margin warnaeka w3-border-bottom w3-border-black w3-padding w3-round w3-text-black">
-                        <span class="w3-badge w3-margin-right w3-white">${oo[h]}</span> ${mod_obj[oo[h]].split("_")[0]} KD ${mod_obj[oo[h]].split("_")[1]}
-                        </div>`
-
-                }
-
-
-                // console.log(mod_str);
-                // console.log(mod_obj);
-                htmlsebaran += `</div>`
-
-
-
-                divekd.innerHTML = htmlsebaran;
-            }
-
-
-        } else {
-            let html2 = `SEBARAN KD TIDAK TERDETEKSI (Sebaran KD Wajib diisi) Silakan gunakan fitur ini: <label for="modal_generate_sebarankd" class="w3-button warnaeka w3-border-bottom w3-border-black w3-round-large">Generate Sebaran KD</label>*`;
-
-            divekd.innerHTML = html2;
-        }
-
-        if (cekkunci !== null) {
-            // console.log(cekkunci);
-
-            let awal = val.indexOf("_KUNCI-PG_");
-            let batasawal = val.substring(awal, n)
-
-            let str_pg_kunci = batasawal.split("\n")[0];
-            if (cekkunci.length > 1) {
-                alert("Anda membuat kode kunci jawaban PG lebih dari 1. Kode pada baris tersebut akan dihapus.");
-                textarea.value = textarea.value.replace(str_pg_kunci, "");
-            } else {
-                let cekunci = str_pg_kunci.match(/\d+[A-D]/gm);
-                //console.log(str_pg_kunci);
-                for (let a = 0; a < cekunci.length; a++) {
-                    let tdel = document.querySelector(".tdpg_pgeditor_" + cekunci[a]);
-                    tdel.className += " w3-light-blue";
-                    document.getElementById("tomboleditor_bantuopsi" + cekunci[a]).checked = true;
-                }
-
-            }
-
-        }
-
-
-
-    } else {
-        let html = ` PENGATURAN KUNCI JAWABAN
-        <br /><br />
-        Saat ini belum terdeteksi adanya nomor soal Pilihan Ganda atau ESSAY diketikan Anda. Nomor soal dan
-        pilihan opsi jawabannya akan muncul otomatis. Anda tinggal memilih Opsi Jawaban di
-        tiap-tiap opsi yang terdeteksi sebagai KUNCI JAWABAN soal PG Anda.
-        <br /><br />Abaikan pesan ini jika Anda akan memmbuat konten materi tanpa adanya tagihan
-        <br/><br/>
-        <table class="w3-table-all tabelpilihkuncipg">
-           
-        </table>`;
-        let html2 = `SEBARAN KD TIDAK TERDETEKSI (Sebaran KD Wajib diisi) Silakan gunakan fitur ini: <label for="modal_generate_sebarankd" class="w3-button warnaeka w3-border-bottom w3-border-black w3-round-large">Generate Sebaran KD</label>*
-        `
-        div.innerHTML = html;
-        divekd.innerHTML = html2;
-    }
-    // let cariopsi =(cekcariopsi !== null)?[]:cekcariopsi; 
-
-
-}
-eidmateri.addEventListener("keyup", function (e) {
-    let teks = e.target.value;
-
-
-
-    // let teks = e.target.value;
-    if (teks !== "") {
-        barufindkuncipgkd(teks);
-
-    }
-    pratinjaubuatmateri();
-    e.preventDefault();
-    e.stopPropagation();
-
-});
-function generaterasebarankd() {
-    // alert("modal generate sebaran KD");
-    modalbuatsebarankd.style.display = "block";
-    let datakd = buateditorkdaktif
-    let seljt = document.getElementById("jenistagihan");
-    let valjt = seljt.options[seljt.selectedIndex].value;
-    let jtKD4 = ["kpraktik", "kproduk", "kproyek", "uspraktek"];
-    let indekjt = jtKD4.indexOf(valjt);
-    let indekkd = "";
-    let colkd = "kd3";
-    // console.log(indekjt);
-    // console.log(valjt);
-
-    let stKD3apaKD4 = ""
-    if (indekjt == -1) {
-        stKD3apaKD4 = " Kompetensi Pengetahuan (KD-3) ";
-        indekkd = "cekliskd3";
-        colkd = "kd3"
-    } else {
-        stKD3apaKD4 = " Kompetensi Keterampilan (KD-4) ";
-        indekkd = "cekliskd4";
-        colkd = "kd4";
-    };
-    msb_obje = {}
-    let datakdaktif = datakd.filter(s => s[indekkd] === true);
-    //datakd.filter(s => Object.keys(s).filter(d => datakd[indekkd] == true)); //Object.entries(datakd).filter(([k, v]) => k === indekkd && v === true)
-    //console.table(datakdaktif);
-    let datamapelaktiff = [];
-
-    if (window.location.href.indexOf("gmp.html") > -1) {
-        msb_obje["datamapel"] = idgurumapelmapel;
-        datamapelaktiff = [idgurumapelmapel];
-
-    } else {
-        datamapelaktiff = datakdaktif.map(s => s["mapel"]).filter((x, i, a) => a.indexOf(x) == i);
-        msb_obje["datamapel"] = datamapelaktiff;
-
-    };
-    //mengkoleksi KD yang terceklis untuk setiap mapel
-    datamapelaktiff.forEach(s => {
-        msb_obje[s] = datakdaktif.filter(d => d["mapel"] == s).map(m => m[colkd]);
-    })
-    let datamapelaktif = datamapelaktiff;
-    //console.log(datamapelaktif)
-    //console.log(msb_obje) //
-    let tabel = document.querySelector(".mbs_tabelbantusebarankd").getElementsByTagName("tbody")[0];
-    let isihtml = "";
-    let opsihtmlmapel = `<option value="" selected>PILIH MAPEL</option>`;
-    let opsihtmlkd = "";
-    //deteksi sebaranKD di textarea
-    let teksarea = document.getElementById("idmateri");
-    let val = teksarea.value;
-    let n = val.length;
-    let ada = val.indexOf("_KUNCI-KD_");
-    ///let awal = val.indexOf("_KUNCI-PG_");
-    let batasawal = val.substring(ada, n)
-
-    let str_pg_d = batasawal.split("\n")[0];
-
-    if (ada == -1) {
-        for (let i = 0; i < datamapelaktif.length; i++) {
-            if (i == 0) {
-                opsihtmlmapel += `<option value="${datamapelaktif[i]}">${datamapelaktif[i]}</option>`;
-            } else {
-                opsihtmlmapel += `<option value="${datamapelaktif[i]}">${datamapelaktif[i]}</option>`;
-            }
-        };
-        let selectmap = datamapelaktif[0];
-        let kdmapelpertama = msb_obje[selectmap];
-        for (i = 0; i < kdmapelpertama.length; i++) {
-            opsihtmlkd += `<option value="${selectmap}_${kdmapelpertama[i]}">${kdmapelpertama[i]}<option>`;
-        }
-        document.querySelector(".brsmapel_0").innerHTML = opsihtmlmapel;
-        document.querySelector(".brskd_0").innerHTML = opsihtmlkd;
-    } else {
-        let arr0 = str_pg_d.replace("_KUNCI-KD_", "");
-        let arr1 = arr0.replace(/\s+/gm, "")
-        let mgrup = arr1.split("<||>");
-        // console.log(mgrup);
-        let mapelsesuai = [];
-        let mapeltidaksesuai = [];
-        let nosoalngaco;
-
-        let tr, td;
-        let rr = mgrup.length - tabel.rows.length;
-        let htmlrow = ""
-        //update dulu tabel formatnya ...)
-        for (let g = 0; g < mgrup.length; g++) {
-            let r = g
-            htmlrow += `<tr>
-                <td>
-                    <select class="w3-select mbs_selectmapel brsmapel_${r}" onchange="fn_mbs_selectmapel(this)">
-                        <option value="" selected>PILIH MAPEL</option>
-                    </select>
-                </td>
-                <td>
-                    <select class="w3-select mbs_selectkd brskd_${r}" onchange="fn_mbs_selectkd(this)">
-                        <option value="" selected>PILIH KD</option>
-                    </select>
-                </td>
-                <td>
-                    <input class="w3-input w3-border w3-border-teal mbs_textarea brsnosoal_${r}" placeholder="Contoh pengisian: 1,2,3 (di akhir nomor jangan diberi koma)"/>
-                </td></tr>`;
-        }
-
-        tabel.innerHTML = htmlrow;
-
-        //ambil data sebaran kd dari teks area
-        for (g = 0; g < mgrup.length; g++) {
-            let grup = mgrup[g].split(":");
-            opsihtmlmapel = `<option value="" selected>PILIH MAPEL</option>`;
-            opsihtmlkd = "";
-            let nmp = grup[0].split("_")[0];
-            let nkd = grup[0].split("_")[1];
-            let valnosoal = grup[1]
-
-            nosoalngaco = nkd.match(/(\d+[A-Za-z.])/);
-            if (datamapelaktif.indexOf(nmp) > -1) {
-
-                for (let i = 0; i < datamapelaktif.length; i++) {
-                    opsihtmlmapel += `<option value="${datamapelaktif[i]}">${datamapelaktif[i]}</option>`;
-                };
-                let selectmap = nmp;
-                let kdmapelpertama = msb_obje[selectmap];
-                for (i = 0; i < kdmapelpertama.length; i++) {
-                    opsihtmlkd += `<option value="${selectmap}_${kdmapelpertama[i]}">${kdmapelpertama[i]}</option>`;
-                }
-
-                if (kdmapelpertama.indexOf(nkd) == -1) {
-                    tabel.rows[g].cells[1].style.backgroundColor = "red";
-                }
-                document.querySelector(".brsmapel_" + g).innerHTML = opsihtmlmapel;
-                document.querySelector(".brskd_" + g).innerHTML = opsihtmlkd;
-                //
-                document.querySelector(".brsmapel_" + g).value = nmp;
-                document.querySelector(".brskd_" + g).value = nmp + "_" + nkd;
-
-                document.querySelector(".brsnosoal_" + g).value = valnosoal.replace(/[azAZ.]/gm, ",");
-
-
-
-            } else {
-                //mapeltidaksesuai.push(nmp);
-                for (let i = 0; i < datamapelaktif.length; i++) {
-                    if (i == 0) {
-                        opsihtmlmapel += `<option value="${datamapelaktif[i]}">${datamapelaktif[i]}</option>`;
-                    } else {
-                        opsihtmlmapel += `<option value="${datamapelaktif[i]}">${datamapelaktif[i]}</option>`;
-                    }
-                };
-                let selectmap = datamapelaktif[0];
-                let kdmapelpertama = msb_obje[selectmap];
-
-                for (i = 0; i < kdmapelpertama.length; i++) {
-                    opsihtmlkd += `<option value="${selectmap}_${kdmapelpertama[i]}">${kdmapelpertama[i]}</option>`;
-
-                }
-                tabel.rows[g].cells[0].style.backgroundColor = "red";
-                document.querySelector(".brsmapel_" + g).innerHTML = opsihtmlmapel;
-
-                document.querySelector(".brskd_" + g).innerHTML = opsihtmlkd;
-
-                document.querySelector(".brsmapel_" + g).value = nmp;
-                document.querySelector(".brskd_" + g).value = nmp + "_" + nkd;
-
-                document.querySelector(".brsnosoal_" + g).value = valnosoal.replace(/[azAZ.]/gm, ",");
-            }
-        }
-    }
-
-};
 function fn_mbs_tambahbaris() {
     let tabel = document.querySelector(".mbs_tabelbantusebarankd").getElementsByTagName("tbody")[0];
     let lr = tabel.rows.length;
@@ -1520,36 +101,6 @@ function fn_mbs_selectkd(el) {
 
 };
 
-function fn_mbs_simpansebarankd() {
-    let teksarea = document.getElementById("idmateri");
-    let val = teksarea.value;
-    let n = val.length;
-    let awal = val.indexOf("_KUNCI-KD_");
-    let batasawal = val.substring(awal, n)
-    let cari = batasawal.split("\n")[0];
-    let arr = "_KUNCI-KD_"
-    let elkd = document.querySelectorAll(".mbs_selectkd");
-    //brsnosoal_${r}
-    let ar = [];
-    for (i = 0; i < elkd.length; i++) {
-        let elinput = elkd[i].value + ":";
-        let attr = elkd[i].className; //.indexOf("brsmapel_");
-        let baris = attr.match(/(\d+)/gm)[1];
-        let nomorinput = document.querySelector(".brsnosoal_" + baris);
-        let valno = nomorinput.value
-        elinput += valno;
-        ar.push(elinput);
-    }
-    arr += ar.join("<||>")
-    if (awal == -1) {
-        teksarea.value += "\n\n" + arr;
-    } else {
-        teksarea.value = teksarea.value.replace(cari, arr);
-    }
-    alert("Sebaran KD Berhasil Tersimpan.")
-    pratinjaubuatmateri();
-    barufindkuncipgkd(val);
-};
 
 function fn_mbs_hapusbaris() {
     let tabel = document.querySelector(".mbs_tabelbantusebarankd").getElementsByTagName("tbody")[0];
@@ -1561,74 +112,6 @@ function fn_mbs_hapusbaris() {
     let row = tabel.rows;
 
     tabel.deleteRow(-1);
-
-};
-function tanpasebarankd() {
-    let teksarea = document.getElementById("idmateri");
-    let arr;
-    if (window.location.href.indexOf("gmp.html") > -1) {
-        arr = `_KUNCI-KD_${idgurumapelmapel}_5.1:1`;
-    } else {
-        arr = "_KUNCI-KD_NONKD_5.1:1";
-
-    }
-    let val = teksarea.value;
-    let n = val.length;
-    let awal = val.indexOf("_KUNCI-KD_");
-    let batasawal = val.substring(awal, n)
-    let cari = batasawal.split("\n")[0];
-
-    if (awal == -1) {
-        teksarea.value += "\n\n" + arr;
-    } else {
-        teksarea.value = teksarea.value.replace(cari, arr);
-    }
-    pratinjaubuatmateri();
-    barufindkuncipgkd(val);
-};
-const checked_buatkunci = (el) => {
-    let opsilengkap = el.value; //1A
-    let no = el.value.match(/\d+/); //1A
-    let ele = document.querySelectorAll(".tdnosoal_editor_" + no);
-    let elaktif = document.querySelector(".tdpg_pgeditor_" + opsilengkap);
-    //hapus dulu bg warannya;
-    for (i = 0; i < ele.length; i++) {
-        ele[i].className = ele[i].className.replace("w3-light-blue", "");
-    };
-    elaktif.className += " w3-light-blue";
-
-    let textarea = document.getElementById("idmateri");
-    let val = textarea.value;
-    let n = val.length;
-    let awal = val.indexOf("_KUNCI-PG_");
-    let batasawal = val.substring(awal, n)
-
-    let str_pg_kunci = batasawal.split("\n")[0];
-
-    let ceklis = document.querySelectorAll(".pg_buatkuncikd");
-    let arrceklis = []
-    for (j = 0; j < ceklis.length; j++) {
-        let n = ceklis[j].value;
-        if (ceklis[j].checked) {
-            arrceklis.push(n)
-
-        }
-
-    }
-    // console.log(arrceklis)
-    let teksnya = "_KUNCI-PG_" + arrceklis.join(",")
-    // console.log(str_pg_kunci)
-    // console.log(teksnya);
-    // textarea.value = textarea.value.substring(0, awal) + teksnya + textarea.value.substring(end, len);
-    let teksganti = str_pg_kunci;
-    // console.log(awal)
-    if (awal == -1) {
-        textarea.value = textarea.value + "\n\n" + teksnya; //+ textarea.value.substring(end, len);
-    } else {
-        textarea.value = textarea.value.replace(str_pg_kunci, teksnya);
-
-    }
-
 
 };
 async function kurikulumdiamdiam() {
@@ -1684,930 +167,6 @@ async function kurikulumdiamdiam() {
 
 //     }
 // };
-
-let btneditor = document.querySelector(".bukatekseditor");
-let btneditor2 = document.querySelector(".bukatekseditor2");
-let btneditor3 = document.querySelector(".bukatekseditor3");
-btneditor.addEventListener("click", function () {
-    let x = document.querySelector(".divtekseditor");
-    if (x.className.indexOf("w3-show") == -1) {
-        x.className = x.className.replace("w3-hide", "w3-show");
-        btneditor.innerHTML = `<i class="fa fa-angle-double-up w3-medium"></i>`;
-        btneditor2.innerHTML = `<i class="fa fa-angle-double-down w3-medium"></i>`;
-        btneditor3.innerHTML = `<i class="fa fa-angle-double-down w3-medium"></i>`;
-    } else {
-        x.className = x.className.replace("w3-show", "w3-hide");
-        btneditor.innerHTML = `<i class="fa fa-angle-double-down w3-medium"></i>`;
-
-    }
-    let y = document.querySelector(".divtekseditor2");
-    y.className = y.className.replace("w3-show", "w3-hide");
-    let z = document.querySelector(".divtekseditor3");
-    z.className = z.className.replace("w3-show", "w3-hide");
-});
-
-btneditor2.addEventListener("click", function () {
-    let x = document.querySelector(".divtekseditor2");
-    if (x.className.indexOf("w3-show") == -1) {
-        x.className = x.className.replace("w3-hide", "w3-show");
-        btneditor2.innerHTML = `<i class="fa fa-angle-double-up w3-medium"></i>`;
-        btneditor.innerHTML = `<i class="fa fa-angle-double-down w3-medium"></i>`;
-        btneditor3.innerHTML = `<i class="fa fa-angle-double-down w3-medium"></i>`;
-
-
-    } else {
-        x.className = x.className.replace("w3-show", "w3-hide");
-        btneditor2.innerHTML = `<i class="fa fa-angle-double-down w3-medium"></i>`;
-    }
-    let y = document.querySelector(".divtekseditor");
-    y.className = y.className.replace("w3-show", "w3-hide");
-    let z = document.querySelector(".divtekseditor3");
-    z.className = z.className.replace("w3-show", "w3-hide");
-});
-
-btneditor3.addEventListener("click", function () {
-    let x = document.querySelector(".divtekseditor3");
-    if (x.className.indexOf("w3-show") == -1) {
-        x.className = x.className.replace("w3-hide", "w3-show");
-        btneditor3.innerHTML = `<i class="fa fa-angle-double-up w3-medium"></i>`;
-        btneditor2.innerHTML = `<i class="fa fa-angle-double-down w3-medium"></i>`;
-        btneditor.innerHTML = `<i class="fa fa-angle-double-down w3-medium"></i>`;
-
-
-    } else {
-        x.className = x.className.replace("w3-show", "w3-hide");
-        btneditor3.innerHTML = `<i class="fa fa-angle-double-down w3-medium"></i>`;
-    }
-    let y = document.querySelector(".divtekseditor");
-    y.className = y.className.replace("w3-show", "w3-hide");
-    let z = document.querySelector(".divtekseditor2");
-    z.className = z.className.replace("w3-show", "w3-hide");
-});
-
-let tombol1 = document.querySelector(".ed_ratatengah");
-tombol1.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-
-    let replace = "";
-    let adabaris = sel.split("\n");
-    for (i = 0; i < adabaris.length; i++) {
-        if (adabaris[i].length > 0) {
-            replace += "<p class='w3-center'>" + adabaris[i] + "</p>\n";
-        }
-    }
-
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-
-});
-
-let tombol2 = document.querySelector(".ed_ratapinggir");
-tombol2.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-
-    let replace = "";
-    let adabaris = sel.split("\n");
-    for (i = 0; i < adabaris.length; i++) {
-        if (adabaris[i].length > 0) {
-            replace += "<p class='w3-justify'>" + adabaris[i] + "</p>\n";
-        }
-    }
-
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-
-});
-
-let tombol3 = document.querySelector(".ed_ratakanan");
-tombol3.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-
-    let replace = "";
-    let adabaris = sel.split("\n");
-    for (i = 0; i < adabaris.length; i++) {
-        if (adabaris[i].length > 0) {
-            replace += "<p class='w3-right-align'>" + adabaris[i] + "</p>\n";
-        }
-    }
-
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-
-});
-let tombol4 = document.querySelector(".ed_ratakiri");
-tombol4.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-
-    let replace = "";
-    let adabaris = sel.split("\n");
-    for (i = 0; i < adabaris.length; i++) {
-        if (adabaris[i].length > 0) {
-            replace += "<p class='w3-left-align'>" + adabaris[i] + "</p>\n";
-        }
-    }
-
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-
-});
-
-let tombol5 = document.querySelector(".ed_tebalkan");
-tombol5.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-
-    let replace = "";
-    let adabaris = sel.split("\n");
-    for (i = 0; i < adabaris.length; i++) {
-        if (adabaris[i].length > 0) {
-            replace += "<b>" + adabaris[i] + "</b>";
-        }
-    }
-
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-
-});
-let tombol6 = document.querySelector(".ed_miringkan");
-tombol6.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-
-    let replace = "";
-    let adabaris = sel.split("\n");
-    for (i = 0; i < adabaris.length; i++) {
-        if (adabaris[i].length > 0) {
-            replace += "<i>" + adabaris[i] + "</i>";
-        }
-    }
-
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-
-});
-let tombol7 = document.querySelector(".ed_garisbawah");
-tombol7.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-
-    let replace = "";
-    let adabaris = sel.split("\n");
-    for (i = 0; i < adabaris.length; i++) {
-        if (adabaris[i].length > 0) {
-            replace += "<u>" + adabaris[i] + "</u>";
-        }
-    }
-
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-
-});
-let tombol8 = document.querySelector(".ed_semuakapital");
-tombol8.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-
-    let replace = "";
-    let adabaris = sel.split("\n");
-    for (i = 0; i < adabaris.length; i++) {
-        if (adabaris[i].length > 0) {
-            replace += "<span style='text-transform:uppercase'>" + adabaris[i] + "</span>";
-        }
-    }
-
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-
-});
-
-let tombol9 = document.querySelector(".ed_semuahurufkecil");
-tombol9.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-
-    let replace = "";
-    let adabaris = sel.split("\n");
-    for (i = 0; i < adabaris.length; i++) {
-        if (adabaris[i].length > 0) {
-            replace += "<span style='text-transform:lowercase'>" + adabaris[i] + "</span>";
-        }
-    }
-
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-
-});
-
-let tombol10 = document.querySelector(".ed_tiapawalkatakapital");
-tombol10.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-
-    let replace = "";
-    let adabaris = sel.split("\n");
-    for (i = 0; i < adabaris.length; i++) {
-        if (adabaris[i].length > 0) {
-            replace += "<span style='text-transform:capitalize'>" + adabaris[i] + "</span>";
-        }
-    }
-
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-
-});
-
-let tombol11 = document.querySelector(".ed_pangkat");
-tombol11.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-
-    let replace = "";
-    let adabaris = sel.split("\n");
-    for (i = 0; i < adabaris.length; i++) {
-        if (adabaris[i].length > 0) {
-            replace += "<sup>" + adabaris[i] + "</sup>";
-        }
-    }
-
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-
-});
-
-let tombol12 = document.querySelector(".ed_subtitle");
-tombol12.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-
-    let replace = "";
-    let adabaris = sel.split("\n");
-    for (i = 0; i < adabaris.length; i++) {
-        if (adabaris[i].length > 0) {
-            replace += "<sub>" + adabaris[i] + "</sub>";
-        }
-    }
-
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-
-});
-
-let tombol13 = document.querySelector(".ed_listnomor");
-tombol13.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-
-    let replace = "<ol style='list-style-type:decimal;margin-left:-15px'>\n";
-    let adabaris = sel.split("\n");
-    for (i = 0; i < adabaris.length; i++) {
-        if (adabaris[i].length > 0) {
-            replace += "<li>" + adabaris[i] + "\n</li>";
-        }
-    }
-    replace += "</ol>\n"
-
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-
-});
-
-let tombol14 = document.querySelector(".ed_listabjadkapital");
-tombol14.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-
-    let replace = "<ol style='list-style-type:upper-alpha;margin-left:-15px'>\n";
-    let adabaris = sel.split("\n");
-    for (i = 0; i < adabaris.length; i++) {
-        if (adabaris[i].length > 0) {
-            replace += "<li>" + adabaris[i] + "\n</li>";
-        }
-    }
-    replace += "</ol>\n"
-
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-
-});
-let tombol15 = document.querySelector(".ed_listabjadnonkapital");
-tombol15.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-
-    let replace = "<ol style='list-style-type:lower-alpha;margin-left:-15px'>\n";
-    let adabaris = sel.split("\n");
-    for (i = 0; i < adabaris.length; i++) {
-        if (adabaris[i].length > 0) {
-            replace += "<li>" + adabaris[i] + "\n</li>";
-        }
-    }
-    replace += "</ol>\n"
-
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-
-})
-let tombolbul = document.querySelector(".ed_listbulet");
-tombolbul.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-
-    let replace = "<ul style='list-style-type:circle;margin-left:-15px'>\n";
-    let adabaris = sel.split("\n");
-    for (i = 0; i < adabaris.length; i++) {
-        if (adabaris[i].length > 0) {
-            replace += "<li>" + adabaris[i] + "\n</li>";
-        }
-    }
-    replace += "</ul>\n"
-
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-
-});
-let tombolcustom = document.querySelector(".ed_listcustom");
-tombolcustom.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-
-    let replace = "<ul style='list-style-type:none;margin-left:-15px'>\n";
-    let adabaris = sel.split("\n");
-    for (i = 0; i < adabaris.length; i++) {
-        if (adabaris[i].length > 0) {
-            replace += "<li>" + adabaris[i] + "\n</li>";
-        }
-    }
-    replace += "</ul>\n"
-
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-
-});
-
-let btn_mtk = document.querySelector(".ed_pecahanbiasa");
-btn_mtk.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-
-    let adabaris = sel.split("/");
-
-    if (adabaris.length !== 2) {
-        alert("tanda garis miring harus satu yang diblok");
-        return
-    }
-    let replace = " _PECAHAN-BIASA_" + adabaris[0].replace(/\s+/g, "") + "/" + adabaris[1].replace(/\s+/g, "") + " ";
-
-
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-
-});
-let btn_mtk2 = document.querySelector(".ed_pecahancampuran");
-btn_mtk2.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-
-    let adabaris = sel.split("/");
-
-    if (adabaris.length !== 3) {
-        alert("tanda garis miring harus dua yang diblok: misal 2/3/4");
-        return
-    }
-    let replace = " _PECAHAN-CAMPURAN_" + adabaris[0].replace(/\s+/g, "") + "/" + adabaris[1].replace(/\s+/g, "") + "/" + adabaris[2].replace(/\s+/g, "") + " ";
-
-
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-
-})
-let btn_mtk3 = document.querySelector(".ed_pangkatn");
-btn_mtk3.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-
-    let adabaris = sel.split("/");
-
-    if (adabaris.length !== 2) {
-        alert("tanda garis miring harus dua yang diblok: misal 2/3");
-        return
-    }
-    let replace = " _PANGKAT_" + adabaris[0].replace(/\s+/g, "") + "/" + adabaris[1].replace(/\s+/g, "") + " ";
-
-
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-
-});
-
-let btn_mtk4 = document.querySelector(".ed_akarkuadrat");
-btn_mtk4.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-
-    let replace = " _AKAR-KUADRAT_" + sel.replace(/\s+/g, "") + " ";
-
-
-
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-
-});
-let btn_mtk5 = document.querySelector(".ed_akarpangkattiga");
-btn_mtk5.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-
-    let replace = " _AKAR-TIGA_" + sel.replace(/\s+/g, "") + " ";
-
-
-
-
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-
-});
-let btn_mtk6 = document.querySelector(".ed_kali");
-btn_mtk6.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-
-    let replace = " &times; " + sel + " ";
-
-
-
-
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-
-});
-let btn_mtk7 = document.querySelector(".ed_bagi");
-btn_mtk7.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-
-    let replace = " &div; " + sel + " ";
-
-
-
-
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-
-});
-
-let btn_mtk8 = document.querySelector(".ed_sudut");
-btn_mtk8.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-
-    let replace = " &ang; " + sel + " ";
-
-
-
-
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-
-});
-let btn_mtk9 = document.querySelector(".ed_lebihkecilsamadengan");
-btn_mtk9.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-
-    let replace = " &le; " + sel + " ";
-
-
-
-
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-
-});
-let btn_mtk10 = document.querySelector(".ed_lebihbesarsamadengan");
-btn_mtk10.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-
-    let replace = " &ge; " + sel + " ";
-
-
-
-
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-
-});
-let btn_mtk11 = document.querySelector(".ed_plusminus");
-btn_mtk11.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-
-    let replace = " &PlusMinus; " + sel + " ";
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-
-});
-let btn_mtk12 = document.querySelector(".ed_derajatsuhu");
-btn_mtk12.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-
-    let replace = "&#176; " + sel + " ";
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-});
-let btn_mtk13 = document.querySelector(".ed_ceklis");
-btn_mtk13.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-
-    let replace = "&checkmark; " + sel + " ";
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-});
-let btn_mtk14 = document.querySelector(".ed_pi");
-btn_mtk14.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-
-    let replace = " &#8508; " + sel + " ";
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-});
-let btn_mtk15 = document.querySelector(".ed_panahkiri");
-btn_mtk15.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-
-    let replace = " &larr; " + sel + " ";
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-});
-let btn_mtk16 = document.querySelector(".ed_panahkanan");
-btn_mtk16.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-
-    let replace = " &rarr; " + sel + " ";
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-});
-let btn_mtk17 = document.querySelector(".ed_panahkiridobel");
-btn_mtk17.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-
-    let replace = " &DoubleLongLeftArrow; " + sel + " ";
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-});
-let btn_mtk18 = document.querySelector(".ed_panahkanandobel");
-btn_mtk18.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-
-    let replace = " &DoubleLongRightArrow; " + sel + " ";
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-});
-
-let btn_elamaso = document.querySelector(".ed_pgd");
-btn_elamaso.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-    var x = document.querySelector(".in_pgd").value;
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-    let adabaris = sel.split("\n");
-    let abjadopsi = ["", "A", "B", "C", "D"]
-    if (adabaris.length !== 5) {
-        alert("Maaf, area yang diblok harus 5 baris. Jika Soal/Opsi Anda lebih satu paragraf, gunakan fitur PETUNJUK");
-        return
-    }
-    let replace = "";
-    for (i = 0; i < adabaris.length; i++) {
-        if (adabaris[i].length > 0) {
-            if (i == 0) {
-                let tekssoal = adabaris[i].slice(adabaris[i].indexOf(".") + 1, adabaris[i].length).replace(/\t/g, "");
-                replace += "_PG_" + x + " " + tekssoal + "\n";
-            } else {
-                replace += "_OPSI-PG_" + x + abjadopsi[i] + " " + adabaris[i].slice(2, adabaris[i].length).replace(/\t/g, "") + "\n";
-            }
-
-        }
-    }
-    // replace += "</ol>\n"
-
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-});
-let btn_elamaso2 = document.querySelector(".ed_pgc");
-btn_elamaso2.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-    var x = document.querySelector(".in_pgc").value;
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-    let adabaris = sel.split("\n");
-    let abjadopsi = ["", "A", "B", "C", ""]
-    if (adabaris.length !== 4) {
-        alert("Maaf, area yang diblok harus 4 baris. Jika Soal/Opsi Anda lebih satu paragraf, gunakan fitur PETUNJUK");
-        return
-    }
-    let replace = "";
-    for (i = 0; i < adabaris.length; i++) {
-        if (adabaris[i].length > 0) {
-            if (i == 0) {
-                let tekssoal = adabaris[i].slice(adabaris[i].indexOf(".") + 1, adabaris[i].length).replace(/\t/g, "");
-                replace += "_PG_" + x + " " + tekssoal + "\n";
-            } else {
-                replace += "_OPSI-PG-C_" + x + abjadopsi[i] + " " + adabaris[i].slice(2, adabaris[i].length).replace(/\t/g, "") + "\n";
-            }
-
-        }
-    }
-    // replace += "</ol>\n"
-
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-});
-let btn_elamaso3 = document.querySelector(".ed_pgtabel");
-btn_elamaso3.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-    var x = document.querySelector(".in_pgtabel").value;
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-    let adabaris = sel.split("\n");
-    let abjadopsi = ["", "", "A", "B", "C", "D"]
-    if (adabaris.length !== 6) {
-        alert("Maaf, area yang diblok harus 6 baris (termasuk harus ada header opsi PG). Jika Soal/Opsi Anda lebih satu paragraf, gunakan fitur PETUNJUK \n \n Keterangan lebih lanjut, lihat Repository");
-        return
-    }
-    let replace = "";
-    for (i = 0; i < adabaris.length; i++) {
-        if (adabaris[i].length > 0) {
-            if (i == 0) {
-                let tekssoal = adabaris[i].slice(adabaris[i].indexOf(".") + 1, adabaris[i].length).replace(/\t/g, "");
-                replace += "_PG_" + x + " " + tekssoal + "\n";
-            } else if (i == 1) {
-                replace += "_START-TABEL-OPSI_\n";
-                replace += adabaris[i].slice(0, adabaris[i].length).replace(/\t/g, " <|HEADER|> ") + "\n";
-            } else {
-                replace += "_OPSI-SEL_" + x + abjadopsi[i] + " <|> " + adabaris[i].slice(2, adabaris[i].length).replace(/\t/g, " <|> ") + "\n";
-            }
-        }
-    }
-
-    replace += "_SELESAI-TABEL-OPSI_\n";
-
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-});
-let btn_elamaso4 = document.querySelector(".ed_essay");
-btn_elamaso4.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-    var x = document.querySelector(".in_essay").value;
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-    var replace = "_ESSAY-NO_" + x + " " + sel.slice(sel.indexOf(".") + 1, sel.length).replace(/\t/g, "").replace(/\n/g, " <br> ");
-
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-});
-let btn_elamaso5 = document.querySelector(".ed_satubariskan");
-btn_elamaso5.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-    var replace = sel.slice(0, sel.length).replace(/\n/g, " <br> ");
-
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-});
-
-let btn_edborder = document.querySelector(".ed_borderteks");
-btn_edborder.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-    var replace = `<div class="w3-card-4 w3-container">${sel}</div>`;
-    //sel.slice(0, sel.length).replace(/\n/g, " <br> ");
-
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-});
-
-let btn_elamaso6 = document.querySelector(".ed_tabel");
-btn_elamaso6.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-    var x = document.getElementById("ed_headertabel");
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-    let adabaris = sel.split("\n");
-
-    let replace = "\n_START-TABEL_\n";
-    if (x.checked) {
-        for (i = 0; i < adabaris.length; i++) {
-            if (i == 0) {
-                replace += adabaris[i].slice(0, adabaris[i].length).replace(/\t/g, " <|HEADER|> ") + "\n";
-            } else {
-                replace += adabaris[i].slice(0, adabaris[i].length).replace(/\t/g, " <|> ") + "\n";
-
-            }
-        }
-
-    } else {
-        for (i = 0; i < adabaris.length; i++) {
-            replace += adabaris[i].slice(0, adabaris[i].length).replace(/\t/g, " <|> ") + "\n";
-        }
-
-    }
-
-    replace += "_SELESAI-TABEL_\n";
-
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-});
-let btn_elamaso7 = document.querySelector(".ed_youtube");
-btn_elamaso7.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-
-
-    let replace = "\n_YOUTUBE_" + sel;
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-});
-let btn_elamaso8 = document.querySelector(".ed_pemisahkunci");
-btn_elamaso8.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-
-
-    let replace = " <||> " + sel;
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-});
-
-let btn_elamasosbk = document.querySelector(".ed_sebarankddaritabel");
-btn_elamasosbk.addEventListener("click", function () {
-    var textarea = document.getElementById("idmateri");
-
-
-    var len = textarea.value.length;
-    var start = textarea.selectionStart;
-    var end = textarea.selectionEnd;
-    var sel = textarea.value.substring(start, end);
-    let adabaris = sel.split("\n");
-
-    let replace = "\n_KUNCI-KD_";
-
-    for (i = 0; i < adabaris.length; i++) {
-        if (i !== 0) {
-            //replace += adabaris[i].slice(0, adabaris[i].length).replace(/\t/g, " <||> ");//+ "\n";
-            replace += adabaris[i].split("\t")[0] + "_" + adabaris[i].split("\t")[1] + ":" + adabaris[i].split("\t")[2];//+ "<||>";
-            if (i !== adabaris.length - 1) {
-                replace += "<||>"
-            }
-        }
-
-    }
-
-
-
-    // replace += "_SELESAI-TABEL_\n";
-
-    textarea.value = textarea.value.substring(0, start) + replace + textarea.value.substring(end, len);
-});
 
 /////////////////////////////// source GURUPROFILDANKEHADIRAN.jS ////////////////////////
 
@@ -5195,7 +2754,7 @@ const previewsoalnilairekap = (par) => {
     //bikin judul h4
     var judul = document.createElement("h4")
     judul.setAttribute("class", "w3-center");
-    judul.innerHTML = "Identitas e-Lamaso";
+    judul.innerHTML = "Identitas E-DURASA";
     tes.innerHTML = ""
     tes.appendChild(judul);
 
@@ -5342,7 +2901,7 @@ const previewsoalnilairekap = (par) => {
     $.getJSON(linkmateri + "&idmateri=" + idm + "&action=previewriwayat", function (json) {
         //  loadingmodal.style.display="none";
         //$("#output").html(brkline(json))
-        // document.getElementById("judulpetunjuk").innerHTML = "Preview e-Lamaso";
+        // document.getElementById("judulpetunjuk").innerHTML = "Preview E-DURASA";
         //        document.getElementById("isipetunjuk").innerHTML = brkline(json);
         //   document.querySelector(".kontenmateri").innerHTML += brkline(json);
         tes.innerHTML += brkline(json).teks;
@@ -6982,7 +4541,7 @@ const printraportpts = () => {
     let head = doc.head;
     let body = doc.body;
     //isikan HEAD dengan title, style, link, dll.
-    head.innerHTML = `<title>E-LAMASO DATA RAPORT PTS</title>`;
+    head.innerHTML = `<title>E-DURASA DATA RAPORT PTS</title>`;
     head.innerHTML += `<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">`;
     head.innerHTML += `<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">`;
     head.innerHTML += `<link href="https://fonts.googleapis.com/css?family=Raleway">`;
@@ -7127,7 +4686,7 @@ const previewraportpts = (id) => {
     document.querySelector(".classReviewMateri").innerHTML = "";
     let tes = document.querySelector(".classReviewMateri");
     tes.innerHTML = "<i class='fa fa-spin fa-spinner'></i>"
-    let tekshtml = "<h5>Data Raport PTS di e-Lamaso Siswa</h5>"
+    let tekshtml = "<h5>Data Raport PTS di E-DURASA Siswa</h5>"
     $('.classReviewMateri').nextAll('button').remove();
     fetch(linkmateri + "&idmateri=" + id + "&action=previewriwayat")
         .then(m => m.json())
@@ -7816,7 +5375,7 @@ async function handleStop(e) {
 }
 const uplvideomateri = async () => {
     let ketval = document.formuploadmateri.idmapel.value
-    let val = (ketval == "") ? "e-lamaso" : ketval;
+    let val = (ketval == "") ? "E-DURASA" : ketval;
     let gmbrdata, gmbrfilename, gmbrmimeType;
     gmbrdata = document.getElementById("videodata");
     gmbrfilename = document.getElementById("videofilename");
@@ -7875,7 +5434,7 @@ const uplvideomateri = async () => {
 }
 const uplvideomateri2 = async () => {
     let ketval = document.formuploadmateri.idmapel.value
-    let val = (ketval == "") ? "e-lamaso" : ketval;
+    let val = (ketval == "") ? "E-DURASA" : ketval;
     let gmbrdata, gmbrfilename, gmbrmimeType;
     gmbrdata = document.getElementById("videodata");
     gmbrfilename = document.getElementById("videofilename");
@@ -7940,7 +5499,7 @@ const uplvideomateri2 = async () => {
 }
 const uplvideomateriyt = () => {
     let ketval = document.formuploadmateri.idmapel.value
-    let val = (ketval == "") ? "e-lamaso" : ketval;
+    let val = (ketval == "") ? "E-DURASA" : ketval;
     let gmbrdata, gmbrfilename, gmbrmimeType;
     gmbrdata = document.getElementById("videodata");
     gmbrfilename = document.getElementById("videofilename");
@@ -8242,7 +5801,7 @@ const kopipaste = (id) => {
     // alert("Copied the text: " + copyText.value);
     // alert("Berhasil Ngopi ... ^_^");
     resultuploadpotomateri.innerHTML = "";;
-    alert("Berhasil Dicopy ... ^_^");
+    alert("Berhasil Dicopy ... ^_^, untuk moda input terbaru, pastekan dalam kondisi Tampilan HTML terceklis");
     }catch(er){
         alert("Link telah hilang karena aktivitas sebelumnya. Mohon reload lamannya.")
     }
@@ -8511,7 +6070,7 @@ const uploadgambarmateri = () => {
 }
 const uplgmbrmateri = async () => {
     let ketval = document.formuploadmateri.idmapel.value
-    let val = (ketval == "") ? "e-lamaso" : ketval;
+    let val = (ketval == "") ? "E-DURASA" : ketval;
 
     let frmdata = new FormData();
     frmdata.append("gmbrdata", gmbrdata.value);
@@ -9396,44 +6955,6 @@ const petunjukuploadmateri = () => {
     petunjukcarabuatmateri.style.display = "block"
     txtareapetunjuk.style.display = "block";
 }
-const publikasikanmateribaru = () => {
-    document.getElementById("materiimport").innerHTML = "";
-    let tglkosong = document.formuploadmateri.idtgl.value;
-    let boltgl = (tglkosong == "") ? alert('Waktu Mulai tidak boleh kosong') : true;
-    let mapel = document.formuploadmateri.idmapel.value;
-    let bolmapel = (mapel == "") ? alert('Identitas pembelajaran tidak boleh kosong') : true;
-
-    let kuncikosong = document.formuploadmateri.kuncikd.value;
-    let bolkd = (kuncikosong == "") ? alert("Anda belum membuat sebaran KD") : true;
-    if (bolmapel && boltgl && bolkd) {
-        let dom = document.getElementById("formuploadmateri");
-        let data = new FormData(dom);
-        pranalamateri.style.display = "block";
-        dom.reset();
-        dom.idmateri.value = "";
-        idpracetak.innerHTML = `<i class="fa fa-spin fa-spinner w3-xxxlarge"></i> On Proess kirim`
-        let url = linkmateri + "&action=materibaru"
-        fetch(url, {
-            method: 'post',
-            body: data
-        })
-            .then(m => m.json())
-            .then(f => {
-                idpracetak.innerHTML = f.result;
-                loadketkunci.innerHTML = "";
-
-                loadketKD.innerHTML = "";
-                //console.log(f)
-                pembelajaran();
-                updatematerikan();
-                localStorage.removeItem("draftmateri")
-
-            })
-            .catch(er => idpracetak.innerHTML = "Maaf, terjadi kesalahan: <br> Error Code" + er)
-
-    }
-
-}
 const daftarnilaikronologi = (id) => {
 
     idtabaktif.innerHTML = id;
@@ -9936,7 +7457,7 @@ const lihatljksaya = (html_jawaban) => {
 
         //loadingljk.style.display  = "none";
         //$("#output").html(brkline(json))
-        // document.getElementById("judulpetunjuk").innerHTML = "Preview e-Lamaso";
+        // document.getElementById("judulpetunjuk").innerHTML = "Preview E-DURASA";
         //        document.getElementById("isipetunjuk").innerHTML = brkline(json);
         infoloadingljk.innerHTML = brkline(json).teks + "<br><br><br>";
 
@@ -9976,7 +7497,7 @@ const gurumengoreksi2 = (bid) => {
 
         //loadingljk.style.display  = "none";
         //$("#output").html(brkline(json))
-        // document.getElementById("judulpetunjuk").innerHTML = "Preview e-Lamaso";
+        // document.getElementById("judulpetunjuk").innerHTML = "Preview E-DURASA";
         //        document.getElementById("isipetunjuk").innerHTML = brkline(json);
         infoloadingljk.innerHTML = brkline(json).teks + "<br><br><br>";
         var elEssay = document.getElementsByClassName("koleksilj")
@@ -10565,7 +8086,7 @@ const siapkirimnilai = () => {
 //     //console.log(datamateri)
 //     var judul = document.createElement("h4")
 //     judul.setAttribute("class", "w3-center");
-//     judul.innerHTML = "Identitas e-Lamaso";
+//     judul.innerHTML = "Identitas E-DURASA";
 
 //     let tes = document.getElementById("infoloadingljk");
 //     // tes.innerHTML = `<i class="fa fa-spin fa-refresh w3-xxxlarge"></i> On Process ...`
@@ -10917,6 +8438,7 @@ const bantusiswaisiljk = (param) => {
     //bikin judul h4
     let datamateri = kronologijson;
     kodebarismateriyangdikerjakan = datamateri[par].idbaris;
+    let versi = datamateri[par].versi;
     let adapg = (datamateri[par].jumlahpg == 0) ? false : true;
 
     let jumlahsoal = (datamateri[par].jumlahpg * 1) + (datamateri[par].jumlahessay * 1);
@@ -10924,7 +8446,7 @@ const bantusiswaisiljk = (param) => {
     //console.log(datamateri)
     var judul = document.createElement("h4")
     judul.setAttribute("class", "w3-center");
-    judul.innerHTML = "Identitas e-Lamaso";
+    judul.innerHTML = "Identitas E-DURASA";
 
     let tes = document.getElementById("infoloadingljk");
     // tes.innerHTML = `<i class="fa fa-spin fa-refresh w3-xxxlarge"></i> On Process ...`
@@ -11065,7 +8587,8 @@ const bantusiswaisiljk = (param) => {
 
     $.getJSON(constpreviewljk + "?idmateri=" + datamateri[par].idmateri + "&action=previewriwayat", function (json) {
         document.getElementById("loadi").remove();
-        document.querySelector("#infoloadingljk").innerHTML += brkline(json).teks;
+        let teks = (versi == "baru"?brkline(json).teks : brkline2(json).teks); 
+        document.querySelector("#infoloadingljk").innerHTML += teks;//brkline(json).teks;
 
 
         //console.log(kuncijawabanku)
@@ -11075,17 +8598,22 @@ const bantusiswaisiljk = (param) => {
                 var idEl = elEssay[i].getAttribute("id");
                 var inidEl = idEl.replace("essay", "");
                 var tempattombol = document.getElementById("tomboljawaban" + inidEl);
-                var tombolsatu = document.createElement("button");
-                tombolsatu.setAttribute("onclick", "tombolketikjawaban2('" + inidEl + "_" + idsw + "')");
-                var tekstombolsatu = document.createTextNode("Ketik Jawaban No " + inidEl);
-                tombolsatu.appendChild(tekstombolsatu);
-                tempattombol.appendChild(tombolsatu);
-                tempattombol.innerHTML += "<br/><sub>atau</sub></br/> "
-                var tomboldua = document.createElement("button");
-                tomboldua.setAttribute("onclick", "tomboluploadjawaban2('" + inidEl + "_" + idsw + "')");
-                var tekstomboldua = document.createTextNode("Upload Media No " + inidEl);
-                tomboldua.appendChild(tekstomboldua);
-                tempattombol.appendChild(tomboldua);
+                // var tombolsatu = document.createElement("button");
+                // tombolsatu.setAttribute("onclick", "tombolketikjawaban2('" + inidEl + "_" + idsw + "')");
+                // var tekstombolsatu = document.createTextNode("Ketik Jawaban No " + inidEl);
+                // tombolsatu.appendChild(tekstombolsatu);
+                
+                // tempattombol.appendChild(tombolsatu);
+                tempattombol.innerHTML = `<hr><button onclick="tombolketikjawaban2('${inidEl}_${idsw}')">Ketik Jawaban No ${inidEl}</button>`
+                
+                tempattombol.innerHTML += "<br/><br/><sub>atau</sub></br/></br/> "
+                // var tomboldua = document.createElement("button");
+                // tomboldua.setAttribute("onclick", "tomboluploadjawaban2('" + inidEl + "_" + idsw + "')");
+                // var tekstomboldua = document.createTextNode("Upload Media No " + inidEl);
+                // tomboldua.appendChild(tekstomboldua);
+                // tempattombol.appendChild(tomboldua);
+                tempattombol.innerHTML += `<button onclick="tomboluploadjawaban2('${inidEl}_${idsw}')">Upload Media No ${inidEl}</button>`
+
                 tempattombol.innerHTML += "<br/><sub>Pilih Salah satu cara Kalian menjawab soal ini</sub>"
 
             }
@@ -11690,7 +9218,7 @@ const buathtmlljk = (adapg) => {
     <div class="w3-row-padding ">
         <div class="w3-col l8 s12 ">
             <img src="/img/L_vT86_100px.png" class=" w3-left" style="width:45px;" />
-            <h3 class="w3-xlarge w3-lobster"> Hasil Belajar E-Lamaso</h3>
+            <h3 class="w3-xlarge w3-lobster"> Hasil Belajar E-DURASA</h3>
             <div class='w3-center warnaeka w3-card-4 w3-round-large w3-border-bottom w3-border-black'>
                 <h3 id="hasilakhirnamasekolah">${idNamaSekolah}</h3>
                 <h5 id="hasilakhirsemestertapel"></h5>
@@ -11910,128 +9438,6 @@ const getlocalDateTime = (dd) => {
     return result;
 }
 
-const editfilemateri = (id) => {
-    let file = kronologijson[id]; //.idmateri;
-    let idbaris = file.idbaris;
-    let time = new Date(file.idtgl).getTime()
-    let now = new Date().getTime()
-    if (now > time) {
-        alert("Perhatian! Materi ini sedang/Sudah/Telah lewat dipublikasikan saat ini. Mungkin saja siswa Anda sudah mengirimkan pekejaannya dari materi ini. Jika mengedit alokasi waktu awal Anda akan kehilangan data REKAP PENILAIAN yang berlangsung, dan Materi akan diganti dengan materi yang Anda Edit (overwrite). Hindari mengubah Alokasi Waktu Awal jika Alokasi awal sudah berlangsung karena Rekap Penilaian Anda tidak sinkron.");
-        // return
-    }
-    // document.getElementsByClassName("tablinks")[2].click();
-    //openCity(event, 'upload_materi')
-    // lainnya tutup
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-    }
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-    document.getElementById("upload_materi").style.display = "block";
-
-    let idmapel = document.formuploadmateri.idmapel;
-    let iddurasi = document.formuploadmateri.iddurasi;
-    let idaksessiswa = document.formuploadmateri.idaksessiswa;
-    let jenistagihan = document.formuploadmateri.jenistagihan;
-    let idtgl = document.formuploadmateri.idtgl;
-    let idtglend = document.formuploadmateri.idtglend;
-
-    let isiteks = document.formuploadmateri.idmateri;
-
-    idmapel.value = file.idmapel;
-    iddurasi.value = file.iddurasi;
-    idaksessiswa.value = file.idaksessiswa;
-    jenistagihan.value = file.jenistagihan;
-    idtgl.value = stringForDateTimeLocal(file.idtgl);//file.idtgl;
-    idtglend.value = stringForDateTimeLocal(file.idtglend);//file.idtglend;
-    let botakin = file.idmateri;
-    let idm = encodeURIComponent(botakin)
-
-    //generatetoken datamateri[par].crtToken
-    document.formuploadmateri.crtToken.value = file.crtToken;
-
-
-
-
-    tombolpublikasikan.setAttribute("onclick", `editfilematerikeserver('${idbaris}')`)
-    tombolpublikasikan.removeAttribute("class"); //.wa w3-deep-purple w3-hover-aqua);
-    tombolpublikasikan.setAttribute("class", "wa w3-red w3-hover-aqua");
-    tombolpublikasikan.innerHTML = "EDIT KONTEN MATERI"
-
-    // $.getJSON(linkmateri + "&idmateri=" + idm + "&action=previewriwayat", function (json) { })
-    fetch(linkmateri + "&action=previewriwayat&idmateri=" + idm).then(m => m.json())
-        .then(k => {
-
-            //isiteks.textContent = k;
-            isiteks.value = k;
-
-            let ingindownload = confirm("Apakah Anda ingin mendownload materi ini juga?");
-            if (ingindownload) {
-                downloadfiledraft(k, idmapel.value);
-            }
-            pratinjaubuatmateri();
-        }).catch(er => {
-            isiteks.textContent = er
-        })
-    //alert("Anda membuka link upload materi")
-
-
-
-
-}
-const editfilematerikeserver = (id) => {
-    document.getElementById("materiimport").innerHTML = "";
-    let tglkosong = document.formuploadmateri.idtgl.value;
-    let boltgl = (tglkosong == "") ? alert('Waktu Mulai tidak boleh kosong') : true;
-    let mapel = document.formuploadmateri.idmapel.value;
-    let bolmapel = (mapel == "") ? alert('Identitas pembelajaran tidak boleh kosong') : true;
-
-    let kuncikosong = document.formuploadmateri.kuncikd.value;
-    let bolkd = (kuncikosong == "") ? alert("Anda belum membuat sebaran KD") : true;
-    if (bolmapel && boltgl && bolkd) {
-        let dom = document.getElementById("formuploadmateri");
-        let data = new FormData(dom);
-        data.append("idbaris", id)
-        pranalamateri.style.display = "block";
-        dom.reset();
-        dom.idmateri.value = "";
-        idpracetak.innerHTML = `<i class="fa fa-spin fa-spinner w3-xxxlarge"></i> On Proess kirim`
-        let url = linkmateri + "&action=materiedit"
-        fetch(url, {
-            method: 'post',
-            body: data
-        })
-            .then(m => m.json())
-            .then(f => {
-                idpracetak.innerHTML = f.result;
-                loadketkunci.innerHTML = "";
-
-                loadketKD.innerHTML = "";
-                //console.log(f)
-                pembelajaran();
-                updatematerikan();
-                localStorage.removeItem("draftmateri");
-                tombolpublikasikan.setAttribute("onclick", "publikasikanmateribaru()")
-                tombolpublikasikan.removeAttribute("class"); //.wa w3-deep-purple w3-hover-aqua);
-                tombolpublikasikan.setAttribute("class", "wa w3-deep-purple w3-hover-aqua");
-                tombolpublikasikan.innerHTML = "PUBLIKASIKAN";
-
-
-
-
-            })
-            .catch(er => idpracetak.innerHTML = "Maaf, terjadi kesalahan: <br> Error Code" + er)
-
-    }
-    // localStorage.removeItem("draftmateri")
-    // tombolpublikasikan.setAttribute("onclick", "publikasikanmateribaru()")
-    // tombolpublikasikan.removeAttribute("class"); //.wa w3-deep-purple w3-hover-aqua);
-    // tombolpublikasikan.setAttribute("class", "wa w3-deep-purple w3-hover-aqua");
-    // tombolpublikasikan.innerHTML = "PUBLIKASIKAN";
-}
 function uploadpotoessay(idpar) {
     //console.log(idpar)
     let id = idpar.split("_")[0];
@@ -13407,7 +10813,8 @@ document.addEventListener("click", function (e) {
             let konfirm = confirm("Anda dalam posisi ingin mengedit materi. Apakah Anda akan melanjutkan edit? \n \n Klik OK untuk kembali mengedit. \n \n Klik CANCEL untuk Membuat Materi Baru.")
             if (!konfirm) {
                 document.formuploadmateri.reset();
-                document.formuploadmateri.idmateri.value = "";
+                //document.formuploadmateri.idmateri.value = "";
+                doc.body.innerHTML = "";
                 tombolpublikasikan.setAttribute("onclick", "publikasikanmateribaru()")
                 tombolpublikasikan.removeAttribute("class"); //.wa w3-deep-purple w3-hover-aqua);
                 tombolpublikasikan.setAttribute("class", "wa w3-deep-purple w3-hover-aqua");
@@ -13439,7 +10846,10 @@ document.addEventListener("click", function (e) {
             // generaterasebarankd();
 
         }
-
+        document.formuploadmateri.idkelas.value = idNamaKelas;
+        document.formuploadmateri.idtoken.value = idJenjang;
+        document.formuploadmateri.idSekolah.value = idNamaSekolah;
+        document.formuploadmateri.dibuatoleh.value = namauser;
 
     }
     //return
@@ -14770,3 +12180,838 @@ const maksimalkarakter = (t) =>{
     datasiswadiv.innerHTML = "";
 };
 
+//// balikin yang dihapus
+
+const fnv7hapusmateri = (ids) => {
+    let konfirmasihapus = confirm("Anda yakin ingin menghapus konten materi ini? \n \n Jika Anda menghapusnya, maka seluruh jenjang kelas Anda tidak bisa mengakses konten materi ini lagi. Baik oleh guru sejawat Anda maupun siswa. Pastikan Anda yakin dan telah mengkonfirmasi bersama guru sejawat Anda di sekolah untuk tidak menggunakan konten materi ini. \n \n Jika tetap ingin menghapus, klik OK. / Untuk membatalkan klik CANCEL");
+    if (!konfirmasihapus) {
+        return
+    }
+    let brs = kronologijson[ids].idbaris;
+    let data = new FormData();
+    data.append("idbaris", brs);
+
+    fetch(linkmateri + "&action=hapusmateridaridaftar", {
+        method: 'post',
+        body: data
+    }).then(m => m.json())
+        .then(k => {
+            alert(k.result);
+            pembelajaran();
+        }).catch(er => console.log(er))
+};
+
+const fn7kembalikankonten = (id) => {
+    let konfirmasihapus = confirm("Anda yakin ingin mengembalikan materi ini di Time Line Anda? \n \n Jika tetap ingin mengembalikan, klik OK. / Untuk membatalkan klik CANCEL");
+    if (!konfirmasihapus) {
+        return;
+    }
+    let brs = jsonmateridihapus[id].idbaris;
+    let data = new FormData();
+    data.append("idbaris", brs);
+    data.append("idtoken", idJenjang);
+
+    fetch(linkmateri + "&action=kembalikanmateridaridaftar", {
+        method: 'post',
+        body: data
+    }).then(m => m.json())
+        .then(k => {
+
+            alert(k.result);
+            pembelajaran();
+        }).catch(er => console.log(er))
+};
+const fn7jadikankontenbaru = (id) => {
+    let konfirmasihapus = confirm("Anda yakin ingin menyimpan Konten Materi ini menjadi draft Anda? \n \n Simpanan Draft sebelumnya akan hilang dan digantikan dengan draft ini. \n\n Jika tetap ingin menyimpan draf, klik OK.  / Untuk membatalkan klik CANCEL");
+    if (!konfirmasihapus) {
+        return;
+    }
+    let ids = id;
+    let tdtombol = document.querySelector(".fn7tombolaksi" + ids);
+    tdtombol.innerHTML = `<button onclick="fn7kembalikankonten('${ids}')" class="w3-button w3-blue w3-hover-green">Kembalikan</button><br><br>
+    <i class='fa fa-refresh fa-spin w3-xxlarge'></i>`
+    let idmapel = jsonmateridihapus[id].idmapel;
+    let iddurasi = jsonmateridihapus[id].iddurasi;
+    let idaksessiswa = jsonmateridihapus[id].idaksessiswa;
+    let jenistagihan = jsonmateridihapus[id].jenistagihan;
+    let idtgl = new Date()
+    let idtglend = new Date();
+    $.getJSON(linkmateri + "&idmateri=" + jsonmateridihapus[id].idmateri + "&action=previewriwayat", function (json) {
+        let kontenmateri = json;
+        let botakin = window.btoa(unescape(encodeURIComponent(kontenmateri)));
+        //let botakin = window.btoa(unescape(kontenmateri));
+        let obj = {};
+        obj.idmapel = idmapel;
+        obj.iddurasi = iddurasi;
+        obj.jenistagihan = jenistagihan;
+        obj.idaksessiswa = idaksessiswa;
+        obj.idtgl = idtgl;
+        obj.idtglend = idtglend;
+        obj.botakin = botakin;
+
+        window.localStorage.setItem("drafmateri", JSON.stringify(obj));
+        tdtombol.innerHTML = `<button onclick="fn7kembalikankonten('${ids}')" class="w3-button w3-blue w3-hover-green">Kembalikan</button><br><br>
+        <button onclick="fn7jadikankontenbaru('${ids}')" class="w3-button w3-khaki w3-hover-green">Simpan Draft</button>`;
+
+        let ingindownload = confirm("Draft berhasil disimpan, apakah Anda ingin mendownload materi ini juga?");
+        if (ingindownload) {
+            downloadfiledraft(json, idmapel);
+        } else {
+            alert('Draft berhasil disimpan, silakan menuju menu UPLOAD MATERI lalu klik TARUH DRAFT');
+        }
+    })
+
+
+};
+
+const fn8editakses_simpandraft = (id) => {
+    let konfirmasihapus = confirm("Anda yakin ingin menyimpan Konten Materi ini menjadi draft Anda? \n \n Simpanan Draft sebelumnya akan hilang dan digantikan dengan draft ini. \n\n Jika tetap ingin menyimpan draf, klik OK.  / Untuk membatalkan klik CANCEL");
+    if (!konfirmasihapus) {
+        return;
+    }
+    let ids = id;
+    let tdtombol = document.querySelector(".fn8editakses_tombolaksi");
+    tdtombol.innerHTML = `<i class='fa fa-refresh fa-spin w3-xxlarge'></i>`
+    let idmapel = kronologijson[id].idmapel;
+    let iddurasi = kronologijson[id].iddurasi;
+    let idaksessiswa = kronologijson[id].idaksessiswa;
+    let jenistagihan = kronologijson[id].jenistagihan;
+    let idtgl = new Date()
+    let idtglend = new Date();
+    $.getJSON(linkmateri + "&idmateri=" + kronologijson[id].idmateri + "&action=previewriwayat", function (json) {
+        let kontenmateri = json;
+        let botakin = window.btoa(unescape(encodeURIComponent(kontenmateri)));
+        //let botakin = window.btoa(unescape(kontenmateri));
+        let obj = {};
+        obj.idmapel = idmapel;
+        obj.iddurasi = iddurasi;
+        obj.jenistagihan = jenistagihan;
+        obj.idaksessiswa = idaksessiswa;
+        obj.idtgl = idtgl;
+        obj.idtglend = idtglend;
+        obj.botakin = botakin;
+
+        window.localStorage.setItem("drafmateri", JSON.stringify(obj));
+        tdtombol.innerHTML = `KLIK`;
+
+        let ingindownload = confirm("Draft berhasil disimpan, apakah Anda ingin mendownload materi ini juga?");
+        if (ingindownload) {
+            downloadfiledraft(json, idmapel);
+        } else {
+            alert('Draft berhasil disimpan, silakan menuju menu UPLOAD MATERI lalu klik TARUH DRAFT');
+        }
+    })
+
+
+};
+const downloadfiledraft = (json, namafile) => {
+    var blob = new Blob([json], {
+        type: "text/plain"
+    });
+    window.URL = window.URL || window.webkitURL;
+    link = window.URL.createObjectURL(blob);
+    a = document.createElement("a");
+    a.download = namafile + " id=" + new Date().getTime();
+    a.href = link;
+
+    document.body.appendChild(a);
+
+    a.click();
+
+    document.body.removeChild(a);
+};
+const berandaguru = () => {
+    tampilinsublamangurukelas("beranda")
+};
+const fn7selectreposistory = () => {
+    let x = document.getElementById("pilihanrepositorysekolahlain").selectedIndex;
+    let y = document.getElementById("pilihanrepositorysekolahlain").options;
+    //alert("Index: " + y[x].index + " is " + y[x].text + " dan value = " + y[x].value);  
+    let xx = y[x].value;
+    if (y[x].index !== 0) {
+        tempatrepositorysekolahlain.innerHTML = "<i class='fa fa-refresh fa-spin w3-xxlarge'></i>";
+
+        fetch(urlmaterisekolahlain[xx] + "&action=kronolog&idtoken=" + idJenjang)
+            .then(m => m.json())
+            .then(k => {
+                // console.log(k);
+                jsonmaterisekolahlain = k.result; //.filter(k => k.idpendaftar !== "tolak");
+
+                let temp = `<div style="overflow-x:auto"><table class='versi-table w3-tiny'><thead>
+            <tr>
+            <th> Judul Materi</th>
+                <th> Mapel dan KD</th>
+                <th> Jenis KBM </th>
+                <th> Waktu Pelaksanaan</th>
+                <th> Dibuat oleh</th>
+                <th> Preview</th>
+                <th> Aksi </th>
+            </tr>
+            </thead>
+            <tbody>
+        `
+                let kk = k.result; //.filter(k => k.idpendaftar !== "tolak");
+
+                let objekgagal = {
+                    'MAPELTIDAKDIISI_3.1': ['1', '2']
+                };
+                if (kk.length > 0) {
+                    for (a = 0; a < kk.length; a++) {
+                        // console.log(a);
+                        // console.log("________");
+                        // console.log(kk[a].idbaris);
+                        // console.log("________");
+                        // console.log(kk[a].kuncikd);
+                        let ab;
+                        if (kk[a].kuncikd == "undefined") {
+                            ab = objekgagal;
+
+                        } else {
+                            ab = JSON.parse(kk[a].kuncikd)
+                        };
+
+                        temp += `
+                        <tr>
+                        <td>${kk[a].idmapel.toUpperCase()}</td>
+                        <td>`
+                        let obab = Object.keys(ab);
+
+                        let untukKD = `<table class='versi-table w3-tiny'>
+                        <tr>
+                            <th> Mapel</th>
+                            <th> KD </th>
+                            <th> No. Soal </th>
+                        </tr>
+                        `
+                        for (b = 0; b < obab.length; b++) {
+                            let key = obab[b];
+
+                            let arrsplit = ab[key].join("<br/>");
+
+                            untukKD += `
+                                <tr>
+                                    <td>${obab[b].split("_")[0]}</td>
+                                    <td>${obab[b].split("_")[1]}</td>
+                                    <td>${(ab[obab[b]] == "undefined") ? "Tidak terdeteksi" : arrsplit}</td>
+                                </tr>
+                            `
+                        }
+                        untukKD += `</table>`;
+                        temp += untukKD;
+                        temp += `
+                        </td>
+                        <td> ${(kk[a].idaksessiswa == 'sekali') ? 'ULANGAN<br>Menerima Tugas Siswa' : 'LATIHAN<br>Tidak Menerima Tugas'}</td>
+                        <td> ${tanggalfulllengkap(kk[a].idtgl)} <br>s/d<br> ${tanggalfulllengkap(kk[a].idtglend)}</td>
+                        
+                        <td>${kk[a].dibuatoleh}</td>
+                        <td><button onclick="fn7previewsekolahlain(${a},${xx})" class="w3-button w3-green w3-hover-red">PREVIEW</button></td>
+                        <td class="fn7tombolaksisekolahlain${a}"><button onclick="fn7jadikankontenbarudarisekolahlain(${a},${xx})" class="w3-button w3-khaki w3-hover-green">Jadikan Materi Saya</button></td>
+                        
+                    </tr>
+            `
+                    }
+                } else {
+                    temp += `  <tr>
+                <td>Tidak Ditemukan materi</td>
+                <td>Tidak Ditemukan materi</td>
+                <td>Tidak Ditemukan materi</td>
+                <td>Tidak Ditemukan materi</td>
+                <td>Tidak Ditemukan materi</td>
+                <td>Tidak Ditemukan materi</td>
+                <td>Tidak Ditemukan materi</td>
+            </tr>
+            `
+                }
+                temp += `</tbody></table></br>`;
+                tempatrepositorysekolahlain.innerHTML = "Berikut ini Konten Materi di Jenjang Kelas " + idJenjang + " yang telah dipublikasikan di " + y[x].text;
+                tempatrepositorysekolahlain.innerHTML += temp;
+
+            })
+
+    } else {
+        tempatrepositorysekolahlain.innerHTML = "Silakan pilih sekolah untuk melihat Konten Materi yang telah dipublikasikan di Sekolah yang terdaftar di Elamaso";
+
+    }
+};
+const fn7previewsekolahlain = (indektabel, indeksekolah) => {
+    //alert("Indek materi " + indektabel + "\n\n Indek sekolah: " + indeksekolah);
+    pranalamateri.style.display = 'block';
+
+    document.querySelector(".classReviewMateri").innerHTML = "";
+    let tes = document.querySelector(".classReviewMateri");
+    //let keyy = "kbmtoday" + tglStringZero()
+
+    //let datamateri = JSON.parse(localStorage.getItem(keyy))
+    // let datamateri = jsonmateridihapus;
+    let par = indektabel;
+    let datamateri = jsonmaterisekolahlain;
+
+
+    //bikin judul h4
+    var judul = document.createElement("h4");
+    judul.setAttribute("class", "w3-center");
+    judul.innerHTML = "Identitas E-DURASA";
+    tes.innerHTML = "";
+    tes.appendChild(judul);
+
+    //-- Bikin Tabel identitas:
+    var tabelidentitas = document.createElement("table");
+    tabelidentitas.setAttribute("class", "versi-table tabel_idreview");
+    tabelidentitas.setAttribute("style", "margin:auto");
+    var tr = tabelidentitas.insertRow(-1);
+
+    var tr = tabelidentitas.insertRow(-1);
+    var td = tr.insertCell(-1);
+    td.innerHTML = "Sekolah";
+    var td = tr.insertCell(-1);
+    td.innerHTML = datamateri[par].idSekolah;
+    var tr = tabelidentitas.insertRow(-1);
+    var td = tr.insertCell(-1);
+    td.innerHTML = "Dibuat/Diedit Oleh";
+    var td = tr.insertCell(-1);
+    td.innerHTML = datamateri[par].dibuatoleh;
+    var tr = tabelidentitas.insertRow(-1);
+    var td = tr.insertCell(-1);
+    td.innerHTML = "Kelas";
+    var td = tr.insertCell(-1);
+    td.innerHTML = idNamaKelas;
+    var tr = tabelidentitas.insertRow(-1);
+    var td = tr.insertCell(-1);
+    td.innerHTML = "Identitas Pembelajaran";
+    var td = tr.insertCell(-1);
+    td.innerHTML = datamateri[par].idmapel;
+    var tr = tabelidentitas.insertRow(-1);
+    var td = tr.insertCell(-1);
+    td.innerHTML = "Frekuensi Akses";
+    var td = tr.insertCell(-1);
+    var keteranganakses;
+    if (datamateri[par].idaksessiswa == "sekali") {
+        keteranganakses = "TEST <br>(Menerima Jawaban/Tugas Siswa)";
+    } else {
+        keteranganakses = "LATIHAN <br>(Tidak menerima jawaban/tugas)";
+    }
+    td.innerHTML = keteranganakses;
+    var tr = tabelidentitas.insertRow(-1);
+    var td = tr.insertCell(-1);
+    td.innerHTML = "Tanggal Publikasi";
+    var td = tr.insertCell(-1);
+    td.innerHTML = tanggalfulllengkap(datamateri[par].idtgl);
+
+    var tr = tabelidentitas.insertRow(-1);
+    var td = tr.insertCell(-1);
+    td.innerHTML = "Kompetensi KD<br><sub class='w3-text-red'>Tidak akan muncul di siswa</sub>";
+    var td = tr.insertCell(-1);
+    td.setAttribute("id", "forKD")
+    td.innerHTML = `<i class="fa fa-spin fa-spinner"></i>`;
+    var tr = tabelidentitas.insertRow(-1);
+    var td = tr.insertCell(-1);
+    td.innerHTML = "Kunci Jawaban<br><sub class='w3-text-red'>Tidak akan muncul di siswa</sub>";
+    var td = tr.insertCell(-1);
+    td.setAttribute("id", "forkuncijawaban");
+    td.innerHTML = `<i class="fa fa-spin fa-spinner"></i>`;
+    var tr = tabelidentitas.insertRow(-1);
+    var td = tr.insertCell(-1);
+    td.innerHTML = "Baris Database Materi";
+    var td = tr.insertCell(-1);
+    td.innerHTML = `${datamateri[par].idbaris}`;
+
+
+
+    tes.appendChild(tabelidentitas);
+    var brek = document.createElement("div");
+
+    brek.setAttribute("style", "break-after:page");
+    brek.innerHTML = "<h4 class='w3-center'>PREVIEW MATERI DI ELAMASO SISWA</h4>"
+    tes.appendChild(brek);
+
+    //var idm = encodeURIComponent(datamateri[par].idmateri);
+    var idm = datamateri[par].idmateri;
+    //
+    $('.classReviewMateri').nextAll('button').remove();
+    $.getJSON(urlmaterisekolahlain[indeksekolah] + "&idmateri=" + idm + "&action=previewriwayat", function (json) {
+
+        tes.innerHTML += brkline(json).teks;
+        let inhtml = "<table class='versi-table w3-tiny'><tr><td>Mapel</td><td>KD</td><td>No Soal</td></tr>";
+        let xx = brkline(json).kd.split("<br>");
+        for (a = 0; a < xx.length; a++) {
+            inhtml += `<tr><td> ${xx[a].split("_")[0]}</td><td> ${xx[a].split("_")[1].split(":")[0]}</td><td>${xx[a].split("_")[1].split(":")[1]}</td></tr>`
+        }
+        inhtml += `</table>`;
+
+        forKD.innerHTML = inhtml;
+
+        let tekskunci = brkline(json).kunci;
+
+        if (tekskunci == "" || tekskunci == "undefined" || tekskunci == null) {
+            forkuncijawaban.innerHTML = "Tidak Ada PG";
+        } else {
+            forkuncijawaban.innerHTML = window.atob(tekskunci).split(",").join("<br>");
+
+        }
+
+
+        var elEssay = document.getElementsByClassName("soalessay")
+        if (elEssay.length !== 0) {
+            for (i = 0; i < elEssay.length; i++) {
+                var idEl = elEssay[i].getAttribute("id");
+                var inidEl = idEl.replace("essay", "");
+                var tempattombol = document.getElementById("tomboljawaban" + inidEl);
+                var tombolsatu = document.createElement("button");
+                tombolsatu.setAttribute("onclick", "tombolketikjawaban('" + inidEl + "')");
+                var tekstombolsatu = document.createTextNode("Ketik Jawaban No " + inidEl);
+                tombolsatu.appendChild(tekstombolsatu);
+                tempattombol.appendChild(tombolsatu);
+                tempattombol.innerHTML += "<br/><sub>atau</sub></br/> ";
+                var tomboldua = document.createElement("button");
+                tomboldua.setAttribute("onclick", "tomboluploadjawaban('" + inidEl + "')");
+                var tekstomboldua = document.createTextNode("Upload Media No " + inidEl);
+                tomboldua.appendChild(tekstomboldua);
+                tempattombol.appendChild(tomboldua);
+                tempattombol.innerHTML += "<br/><sub>Pilih Salah satu cara Kalian menjawab soal ini</sub>";
+
+            }
+        }
+
+    })
+};
+const fn7jadikankontenbarudarisekolahlain = (id, indeksekolah) => {
+    //alert("Indek materi " + id + "\n\n Indek sekolah: " + indeksekolah);
+    let konfirmasihapus = confirm("Anda yakin ingin menyimpan Konten Materi ini menjadi draft Anda? \n \n Simpanan Draft sebelumnya akan hilang dan digantikan dengan draft ini. \n\n Jika tetap ingin menyimpan draf, klik OK.  / Untuk membatalkan klik CANCEL");
+    if (!konfirmasihapus) {
+        return;
+    }
+    let ids = id;
+    let tdtombol = document.querySelector(".fn7tombolaksisekolahlain" + ids);
+    tdtombol.innerHTML = `<i class='fa fa-refresh fa-spin w3-xxlarge'></i>`
+    let idmapel = jsonmaterisekolahlain[id].idmapel;
+    let iddurasi = jsonmaterisekolahlain[id].iddurasi;
+    let idaksessiswa = jsonmaterisekolahlain[id].idaksessiswa;
+    let jenistagihan = jsonmaterisekolahlain[id].jenistagihan;
+    let idtgl = new Date()
+    let idtglend = new Date();
+    $.getJSON(urlmaterisekolahlain[indeksekolah] + "&idmateri=" + jsonmaterisekolahlain[id].idmateri + "&action=previewriwayat", function (json) {
+        let kontenmateri = json;
+        let botakin = window.btoa(unescape(encodeURIComponent(kontenmateri)));
+        //let botakin = window.btoa(unescape(kontenmateri));
+        let obj = {};
+        obj.idmapel = idmapel;
+        obj.iddurasi = iddurasi;
+        obj.jenistagihan = jenistagihan;
+        obj.idaksessiswa = idaksessiswa;
+        obj.idtgl = idtgl;
+        obj.idtglend = idtglend;
+        obj.botakin = botakin;
+
+        window.localStorage.setItem("drafmateri", JSON.stringify(obj));
+        tdtombol.innerHTML = `<button onclick="fn7jadikankontenbarudarisekolahlain(${id},${indeksekolah})" class="w3-button w3-khaki w3-hover-green">Jadikan Materi Saya</button>`;
+
+        let ingindownload = confirm("Draft berhasil disimpan, apakah Anda ingin mendownload materi ini juga?");
+        if (ingindownload) {
+            downloadfiledraft(json, idmapel);
+        } else {
+            alert('Draft berhasil disimpan, silakan menuju menu UPLOAD MATERI lalu klik TARUH DRAFT');
+        }
+    })
+
+
+};
+
+const klikpotosiswa = (el) => {
+
+    document.getElementById("img01").src = el.src;
+    document.getElementById("previewpotoabsen").style.display = "block";
+
+};
+const fnv7perbaikikonten = (ids) => {
+    let id = kronologijson[ids].idtgl;
+    let brs = kronologijson[ids].idbaris;
+    let teksidok = addZero(new Date(id).getDate()) + "" + addZero(new Date(id).getMonth() + 1) + "" + new Date(id).getFullYear();
+    let data = new FormData();
+    data.append("dibuatoleh", namauser);
+    data.append("crtToken", teksidok);
+    data.append("idbaris", brs);
+    fetch(linkmateri + "&action=aktifkancrtToken", {
+        method: 'post',
+        body: data
+    }).then(m => m.json())
+        .then(k => {
+            alert(k.result);
+            pembelajaran();
+        }).catch(er => console.log(er))
+};
+const fnv7kotenmateridihapus = (ids) => {
+    //alert('ids = ' + ids);
+    timelinekbm.innerHTML = "<i class='fa fa-spin fa-spinner w3-xxlarge'></i>";
+    fetch(linkmateri + "&action=kronologhapus&idtoken=" + idJenjang)
+        .then(m => m.json())
+        .then(k => {
+            // console.log(k);
+            jsonmateridihapus = k.result;
+            let temp = `<div style="overflow-x:auto"><table class='versi-table w3-tiny'><thead>
+            <tr>
+                <th> Baris Database</th>
+                <th> Judul Materi</th>
+                <th> Jenis KBM </th>
+                <th> Waktu Pelaksanaan</th>
+                <th> Preview</th>
+                <th> Aksi </th>
+            </tr>
+            </thead>
+            <tbody>
+        `
+            let kk = k.result;
+
+            if (kk.length > 0) {
+                for (a = 0; a < kk.length; a++) {
+                    temp += `
+            <tr><td>${kk[a].idbaris}</td>
+                <td> ${kk[a].idmapel.toUpperCase()}</td>
+                <td> ${(kk[a].idaksessiswa == 'sekali') ? 'ULANGAN<br>Menerima Tugas Siswa' : 'LATIHAN<br>Tidak Menerima Tugas'}</td>
+                <td> ${tanggalfulllengkap(kk[a].idtgl)} <br>s/d<br> ${tanggalfulllengkap(kk[a].idtglend)}</td>
+                <td><button onclick="fn7preview('${a}')" class="w3-button w3-green w3-hover-red">PREVIEW</button></td>
+                <td class='fn7tombolaksi${a}'> <button onclick="fn7kembalikankonten('${a}')" class="w3-button w3-blue w3-hover-green">Kembalikan</button><br><br>
+                <button onclick="fn7jadikankontenbaru('${a}')" class="w3-button w3-khaki w3-hover-green">Simpan Draft</button>
+                </td>
+            </tr>
+            `
+                }
+            } else {
+                temp += `
+            <tr>
+                <td>Tidak Ditemukan materi</td>
+                <td>Tidak Ditemukan materi</td>
+                <td>Tidak Ditemukan materi</td>
+                <td>Tidak Ditemukan materi</td>
+                <td>Tidak Ditemukan materi</td>
+                <td>Tidak Ditemukan materi</td>
+            </tr>
+            `
+            }
+            temp += `</tbody></table></div>`;
+            timelinekbm.innerHTML = `<button class="w3-button w3-red w3-hover-blue w3-round-large" onclick="pembelajaran()"> Kembali ke Kronologi</button><hr><h4>Materi di Jenjang Kelas Anda yang telah dihapus:</h4>` + temp;
+
+        })
+        .catch(er => console.log(er));
+};
+const fn7preview = (par) => {
+    pranalamateri.style.display = 'block';
+
+    document.querySelector(".classReviewMateri").innerHTML = "";
+    let tes = document.querySelector(".classReviewMateri");
+    //let keyy = "kbmtoday" + tglStringZero()
+
+    //let datamateri = JSON.parse(localStorage.getItem(keyy))
+    let datamateri = jsonmateridihapus;
+
+
+    //bikin judul h4
+    var judul = document.createElement("h4");
+    judul.setAttribute("class", "w3-center");
+    judul.innerHTML = "Identitas E-DURASA";
+    tes.innerHTML = "";
+    tes.appendChild(judul);
+
+    //-- Bikin Tabel identitas:
+    var tabelidentitas = document.createElement("table");
+    tabelidentitas.setAttribute("class", "versi-table tabel_idreview");
+    tabelidentitas.setAttribute("style", "margin:auto");
+    var tr = tabelidentitas.insertRow(-1);
+
+    var tr = tabelidentitas.insertRow(-1);
+    var td = tr.insertCell(-1);
+    td.innerHTML = "Sekolah";
+    var td = tr.insertCell(-1);
+    td.innerHTML = datamateri[par].idSekolah;
+    var tr = tabelidentitas.insertRow(-1);
+    var td = tr.insertCell(-1);
+    td.innerHTML = "Dibuat/Diedit Oleh";
+    var td = tr.insertCell(-1);
+    td.innerHTML = datamateri[par].dibuatoleh;
+    var tr = tabelidentitas.insertRow(-1);
+    var td = tr.insertCell(-1);
+    td.innerHTML = "Kelas";
+    var td = tr.insertCell(-1);
+    td.innerHTML = idNamaKelas;
+    var tr = tabelidentitas.insertRow(-1);
+    var td = tr.insertCell(-1);
+    td.innerHTML = "Identitas Pembelajaran";
+    var td = tr.insertCell(-1);
+    td.innerHTML = datamateri[par].idmapel;
+    var tr = tabelidentitas.insertRow(-1);
+    var td = tr.insertCell(-1);
+    td.innerHTML = "Frekuensi Akses";
+    var td = tr.insertCell(-1);
+    var keteranganakses;
+    if (datamateri[par].idaksessiswa == "sekali") {
+        keteranganakses = "TEST <br>(Menerima Jawaban/Tugas Siswa)";
+    } else {
+        keteranganakses = "LATIHAN <br>(Tidak menerima jawaban/tugas)";
+    }
+    td.innerHTML = keteranganakses;
+    var tr = tabelidentitas.insertRow(-1);
+    var td = tr.insertCell(-1);
+    td.innerHTML = "Tanggal Publikasi";
+    var td = tr.insertCell(-1);
+    td.innerHTML = tanggalfulllengkap(datamateri[par].idtgl);
+
+    var tr = tabelidentitas.insertRow(-1);
+    var td = tr.insertCell(-1);
+    td.innerHTML = "Kompetensi KD<br><sub class='w3-text-red'>Tidak akan muncul di siswa</sub>";
+    var td = tr.insertCell(-1);
+    td.setAttribute("id", "forKD")
+    td.innerHTML = `<i class="fa fa-spin fa-spinner"></i>`;
+    var tr = tabelidentitas.insertRow(-1);
+    var td = tr.insertCell(-1);
+    td.innerHTML = "Kunci Jawaban<br><sub class='w3-text-red'>Tidak akan muncul di siswa</sub>";
+    var td = tr.insertCell(-1);
+    td.setAttribute("id", "forkuncijawaban");
+    td.innerHTML = `<i class="fa fa-spin fa-spinner"></i>`;
+    var tr = tabelidentitas.insertRow(-1);
+    var td = tr.insertCell(-1);
+    td.innerHTML = "Baris Database Materi";
+    var td = tr.insertCell(-1);
+    td.innerHTML = `${datamateri[par].idbaris}`;
+
+
+
+    tes.appendChild(tabelidentitas);
+    var brek = document.createElement("div");
+
+    brek.setAttribute("style", "break-after:page");
+    brek.innerHTML = "<h4 class='w3-center'>PREVIEW MATERI DI ELAMASO SISWA</h4>"
+    tes.appendChild(brek);
+
+    //var idm = encodeURIComponent(datamateri[par].idmateri);
+    var idm = datamateri[par].idmateri;
+    //
+    $('.classReviewMateri').nextAll('button').remove();
+    $.getJSON(linkmateri + "&idmateri=" + idm + "&action=previewriwayat", function (json) {
+
+        tes.innerHTML += brkline(json).teks;
+        let inhtml = "<table class='versi-table w3-tiny'><tr><td>Mapel</td><td>KD</td><td>No Soal</td></tr>";
+        let xx = brkline(json).kd.replace("<br>","").split("<br>");
+        for (a = 0; a < xx.length; a++) {
+            inhtml += `<tr><td> ${xx[a].split("_")[0]}</td><td> ${xx[a].split("_")[1].split(":")[0]}</td><td>${xx[a].split("_")[1].split(":")[1]}</td></tr>`
+        }
+        inhtml += `</table>`;
+
+        forKD.innerHTML = inhtml;
+
+
+        let tekskunci = brkline(json).kunci;
+
+        if (tekskunci == "" || tekskunci == "undefined" || tekskunci == null) {
+            forkuncijawaban.innerHTML = "Tidak Ada PG";
+        } else {
+            forkuncijawaban.innerHTML = window.atob(tekskunci).split(",").join("<br>");
+
+        }
+
+
+        var elEssay = document.getElementsByClassName("soalessay")
+        if (elEssay.length !== 0) {
+            for (i = 0; i < elEssay.length; i++) {
+                var idEl = elEssay[i].getAttribute("id");
+                var inidEl = idEl.replace("essay", "");
+                var tempattombol = document.getElementById("tomboljawaban" + inidEl);
+                var tombolsatu = document.createElement("button");
+                tombolsatu.setAttribute("onclick", "tombolketikjawaban('" + inidEl + "')");
+                var tekstombolsatu = document.createTextNode("Ketik Jawaban No " + inidEl);
+                tombolsatu.appendChild(tekstombolsatu);
+                tempattombol.appendChild(tombolsatu);
+                tempattombol.innerHTML += "<br/><sub>atau</sub></br/> ";
+                var tomboldua = document.createElement("button");
+                tomboldua.setAttribute("onclick", "tomboluploadjawaban('" + inidEl + "')");
+                var tekstomboldua = document.createTextNode("Upload Media No " + inidEl);
+                tomboldua.appendChild(tekstomboldua);
+                tempattombol.appendChild(tomboldua);
+                tempattombol.innerHTML += "<br/><sub>Pilih Salah satu cara Kalian menjawab soal ini</sub>";
+
+            }
+        }
+
+    })
+    // ;
+};
+
+// let btnfn7taruhdraft = document.querySelector(".fn7taruhdraft");
+// btnfn7taruhdraft.addEventListener("click", function () {
+//     taruhcatatansementara();
+// });
+
+const ubahijinpublik = (id) => {
+    //alert("id = " + id);
+    let data = kronologijson[id];
+    let idbaris = data.idbaris;
+    let kirimdata = new FormData();
+    kirimdata.append("idbaris", idbaris);
+    fetch(linkmateri + "&action=berbagikontenmateri", {
+        method: 'post',
+        body: kirimdata
+    }).then(m => m.json())
+        .then(k => {
+            alert(k.result);
+            pembelajaran();
+        })
+        .catch(er => alert(er))
+};
+const fnv7kotenmateridihapusmapel = (ids) => {
+    //alert('ids = ' + ids);
+    timelinekbm.innerHTML = "<i class='fa fa-spin fa-spinner w3-xxlarge'></i>";
+    fetch(linkmateri + "&action=kronologhapus&idtoken=" + idJenjang)
+        .then(m => m.json())
+        .then(k => {
+            // console.log(k);
+            jsonmateridihapus = k.result.filter(k => k.kuncikd.indexOf(idgurumapelmapel) > -1);
+            let temp = `<div style="overflow-x:auto"><table class='versi-table w3-tiny'><thead>
+            <tr>
+                <th> Baris Database</th>
+                <th> Judul Materi</th>
+                <th> Jenis KBM </th>
+                <th> Waktu Pelaksanaan</th>
+                <th> Preview</th>
+                <th> Aksi </th>
+            </tr>
+            </thead>
+            <tbody>
+        `
+            let kk = k.result.filter(k => k.kuncikd.indexOf(idgurumapelmapel) > -1);;
+
+            if (kk.length > 0) {
+                for (a = 0; a < kk.length; a++) {
+                    temp += `
+            <tr><td>${kk[a].idbaris}</td>
+                <td> ${kk[a].idmapel.toUpperCase()}</td>
+                <td> ${(kk[a].idaksessiswa == 'sekali') ? 'ULANGAN<br>Menerima Tugas Siswa' : 'LATIHAN<br>Tidak Menerima Tugas'}</td>
+                <td> ${tanggalfulllengkap(kk[a].idtgl)} <br>s/d<br> ${tanggalfulllengkap(kk[a].idtglend)}</td>
+                <td><button onclick="fn7preview('${a}')" class="w3-button w3-green w3-hover-red">PREVIEW</button></td>
+                <td class='fn7tombolaksi${a}'> <button onclick="fn7kembalikankonten('${a}')" class="w3-button w3-blue w3-hover-green">Kembalikan</button><br><br>
+                <button onclick="fn7jadikankontenbaru('${a}')" class="w3-button w3-khaki w3-hover-green">Simpan Draft</button>
+                </td>
+            </tr>
+            `
+                }
+            } else {
+                temp += `
+            <tr>
+                <td>Tidak Ditemukan materi</td>
+                <td>Tidak Ditemukan materi</td>
+                <td>Tidak Ditemukan materi</td>
+                <td>Tidak Ditemukan materi</td>
+                <td>Tidak Ditemukan materi</td>
+                <td>Tidak Ditemukan materi</td>
+            </tr>
+            `
+            }
+            temp += `</tbody></table></div>`;
+            timelinekbm.innerHTML = `<button class="w3-button w3-red w3-hover-blue w3-round-large" onclick="pembelajaran()"> Kembali ke Kronologi</button><hr><h4>Materi di Jenjang Kelas Anda yang telah dihapus:</h4>` + temp;
+
+        })
+        .catch(er => console.log(er));
+};
+const fn7selectreposistorymapel = () => {
+    let x = document.getElementById("pilihanrepositorysekolahlain").selectedIndex;
+    let y = document.getElementById("pilihanrepositorysekolahlain").options;
+    //alert("Index: " + y[x].index + " is " + y[x].text + " dan value = " + y[x].value);  
+    let xx = y[x].value;
+    if (y[x].index !== 0) {
+        tempatrepositorysekolahlain.innerHTML = "<i class='fa fa-refresh fa-spin w3-xxlarge'></i>";
+
+        fetch(urlmaterisekolahlain[xx] + "&action=kronolog&idtoken=" + idJenjang)
+            .then(m => m.json())
+            .then(k => {
+                // console.log(k);
+                jsonmaterisekolahlain = k.result.filter(k => k.kuncikd.indexOf(idgurumapelmapel) > -1);
+
+                let temp = `<div style="overflow-x:auto"><table class='versi-table w3-tiny'><thead>
+            <tr>
+            <th> Judul Materi</th>
+                <th> Mapel dan KD</th>
+                <th> Jenis KBM </th>
+                <th> Waktu Pelaksanaan</th>
+                <th> Dibuat oleh</th>
+                <th> Preview</th>
+                <th> Aksi </th>
+            </tr>
+            </thead>
+            <tbody>
+        `
+                let kk = k.result.filter(k => k.kuncikd.indexOf(idgurumapelmapel) > -1);
+
+                let objekgagal = {
+                    'MAPELTIDAKDIISI_3.1': ['1', '2']
+                };
+                if (kk.length > 0) {
+                    for (a = 0; a < kk.length; a++) {
+
+                        let ab;
+                        if (kk[a].kuncikd == "undefined") {
+                            ab = objekgagal;
+
+                        } else {
+                            ab = JSON.parse(kk[a].kuncikd)
+                        };
+
+                        temp += `
+                        <tr>
+                        <td>${kk[a].idmapel.toUpperCase()}</td>
+                        <td>`
+                        let obab = Object.keys(ab);
+
+                        let untukKD = `<table class='versi-table w3-tiny'>
+                        <tr>
+                            <th> Mapel</th>
+                            <th> KD </th>
+                            <th> No. Soal </th>
+                        </tr>
+                        `
+                        for (b = 0; b < obab.length; b++) {
+                            let key = obab[b];
+
+                            let arrsplit = ab[key].join("<br/>");
+
+                            untukKD += `
+                                <tr>
+                                    <td>${obab[b].split("_")[0]}</td>
+                                    <td>${obab[b].split("_")[1]}</td>
+                                    <td>${(ab[obab[b]] == "undefined") ? "Tidak terdeteksi" : arrsplit}</td>
+                                </tr>
+                            `
+                        }
+                        untukKD += `</table>`;
+                        temp += untukKD;
+                        temp += `
+                        </td>
+                        <td> ${(kk[a].idaksessiswa == 'sekali') ? 'ULANGAN<br>Menerima Tugas Siswa' : 'LATIHAN<br>Tidak Menerima Tugas'}</td>
+                        <td> ${tanggalfulllengkap(kk[a].idtgl)} <br>s/d<br> ${tanggalfulllengkap(kk[a].idtglend)}</td>
+                        
+                        <td>${kk[a].dibuatoleh}</td>
+                        <td><button onclick="fn7previewsekolahlain(${a},${xx})" class="w3-button w3-green w3-hover-red">PREVIEW</button></td>
+                        <td class="fn7tombolaksisekolahlain${a}"><button onclick="fn7jadikankontenbarudarisekolahlain(${a},${xx})" class="w3-button w3-khaki w3-hover-green">Jadikan Materi Saya</button></td>
+                        
+                    </tr>
+            `
+                    }
+                } else {
+                    temp += `  <tr>
+                <td>Tidak Ditemukan materi</td>
+                <td>Tidak Ditemukan materi</td>
+                <td>Tidak Ditemukan materi</td>
+                <td>Tidak Ditemukan materi</td>
+                <td>Tidak Ditemukan materi</td>
+                <td>Tidak Ditemukan materi</td>
+                <td>Tidak Ditemukan materi</td>
+            </tr>
+            `
+                }
+                temp += `</tbody></table></div>`;
+                tempatrepositorysekolahlain.innerHTML = "Berikut ini Konten Materi di Jenjang Kelas " + idJenjang + " yang telah dipublikasikan di " + y[x].text;
+                tempatrepositorysekolahlain.innerHTML += temp;
+
+            })
+
+    } else {
+        tempatrepositorysekolahlain.innerHTML = "Silakan pilih sekolah untuk melihat Konten Materi yang telah dipublikasikan di Sekolah yang terdaftar di Elamaso";
+
+    }
+};

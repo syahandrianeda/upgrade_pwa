@@ -1148,7 +1148,7 @@ function templatekronologi(jsonmateri) {
                             </tr>
                             <tr>
                                 <td>
-                                   Status di e-Lamaso Siswa:
+                                   Status di E-DURASA Siswa:
                                 </td>
                                 <td>    
                                     ${statuscrtToken}
@@ -1273,7 +1273,7 @@ function templatekronologi(jsonmateri) {
                         </tr>
                             <tr>
                                 <td>
-                                   Status di e-Lamaso Siswa:
+                                   Status di E-DURASA Siswa:
                                 </td>
                                 <td>    
                                     ${statuscrtToken}
@@ -2941,7 +2941,7 @@ const printModalinfoljk = (title, ele) => {
     let head = doc.head;
     let body = doc.body;
     //isikan HEAD dengan title, style, link, dll.
-    head.innerHTML = `<title>E-LAMASO ${title}</title>`;
+    head.innerHTML = `<title>E-DURASA ${title}</title>`;
     head.innerHTML += `<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">`;
     head.innerHTML += `<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">`;
     head.innerHTML += `<link href="https://fonts.googleapis.com/css?family=Raleway">`;
@@ -3572,7 +3572,7 @@ function print(x) {
         headnya.removeChild(headnya.firstChild);
     }
     var titlee = document.createElement("title");
-    var teksjudul = document.createTextNode("e-Lamaso")
+    var teksjudul = document.createTextNode("E-DURASA")
     titlee.appendChild(teksjudul)
     headnya.appendChild(titlee);
     headnya.innerHTML += '<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">';
@@ -3821,7 +3821,7 @@ function exceldatasiswa() {
     datasiswadiv.innerHTML = "";
 };
 const exportdatasiswa = () => {
-    alert("Mengekspor Data Siswa Kelas Anda adalah mengekspor data berdasarkan database yang telah disimpan dan format sesuai dengan Database E-Lamaso (isi sesuai Dapodik). Jika Anda baru saja mengedit di laman tabel data siswa dan belum menyimpannya ke server, sebaiknya Anda simpan terlebih dahulu. File ini bisa digunakan untuk mengekspor ke Tabel (jika diperlukan)");
+    alert("Mengekspor Data Siswa Kelas Anda adalah mengekspor data berdasarkan database yang telah disimpan dan format sesuai dengan Database E-DURASA (isi sesuai Dapodik). Jika Anda baru saja mengedit di laman tabel data siswa dan belum menyimpannya ke server, sebaiknya Anda simpan terlebih dahulu. File ini bisa digunakan untuk mengekspor ke Tabel (jika diperlukan)");
     let datasiswadiv = document.getElementById("datasiswaprint");
     datasiswadiv.innerHTML = "";
     let html = `<table class="versi-table" id="myTableCopy"><tr>`;
@@ -4927,7 +4927,7 @@ const previewriwayat = (par) => {
     //bikin judul h4
     var judul = document.createElement("h4")
     judul.setAttribute("class", "w3-center");
-    judul.innerHTML = "Identitas e-Lamaso";
+    judul.innerHTML = "Identitas E-DURASA";
     tes.innerHTML = ""
     tes.appendChild(judul);
 
@@ -5073,7 +5073,7 @@ const previewriwayat = (par) => {
     $.getJSON(linkmateri + "&idmateri=" + idm + "&action=previewriwayat", function (json) {
         //  loadingmodal.style.display="none";
         //$("#output").html(brkline(json))
-        // document.getElementById("judulpetunjuk").innerHTML = "Preview e-Lamaso";
+        // document.getElementById("judulpetunjuk").innerHTML = "Preview E-DURASA";
         //        document.getElementById("isipetunjuk").innerHTML = brkline(json);
         //   document.querySelector(".kontenmateri").innerHTML += brkline(json);
         tes.innerHTML += brkline(json).teks;
@@ -6230,7 +6230,7 @@ function printPortrait(x) {
 
     var titlee = document.createElement("title");
     // var	teksjudul = document.createTextNode("width:950px;height:400px;border:1px solid blue;border-radius:15px")
-    var teksjudul = document.createTextNode("e-lamaso")
+    var teksjudul = document.createTextNode("E-DURASA")
     titlee.appendChild(teksjudul)
     headnya.appendChild(titlee);
     headnya.innerHTML += '<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">';
@@ -6303,7 +6303,7 @@ function printLandscape(x) {
 
     var titlee = document.createElement("title");
     // var	teksjudul = document.createTextNode("width:950px;height:400px;border:1px solid blue;border-radius:15px")
-    var teksjudul = document.createTextNode("e-lamaso")
+    var teksjudul = document.createTextNode("E-DURASA")
     titlee.appendChild(teksjudul)
     headnya.appendChild(titlee);
     headnya.innerHTML += '<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">';
@@ -6484,9 +6484,9 @@ function brkline(teks) { //coba
 
             if (abjad === "A") {
                 opsipg += "<hr style='border-top:1px solid olive'/>";
-                opsipg += "<ol style='list-style-type:upper-alpha;margin:5px 5px 0px 20px;padding:0' ><li><input class='calc' type='radio' style='display:none' name='soal" + nosoal + "' id='" + idopsi + "'/><label class='opsi' for='" + idopsi + "'>"; // Khusus opsi A, ada elemen OL lalu dilanjut teksnya
+                opsipg += "<ol style='list-style-type:upper-alpha;margin:5px 5px 0px 20px;padding:0' ><li><input class='calc' type='radio' name='soal" + nosoal + "' id='" + idopsi + "'/><label class='opsi' for='" + idopsi + "'>"; // Khusus opsi A, ada elemen OL lalu dilanjut teksnya
             } else {
-                opsipg += "<li><input class='calc' type='radio' style='display:none' name='soal" + nosoal + "' id='" + idopsi + "'/><label class='opsi' for='" + idopsi + "'>"; // selain opsi A, dilanjut.  Tapi tanpa element OL
+                opsipg += "<li><input class='calc' type='radio' name='soal" + nosoal + "' id='" + idopsi + "'/><label class='opsi' for='" + idopsi + "'>"; // selain opsi A, dilanjut.  Tapi tanpa element OL
             }
             var katakonversi;
             for (tt in arpg) { //hasilnya: 0=1A 1=teks 2=pertanyaan ... dst.
@@ -6519,9 +6519,9 @@ function brkline(teks) { //coba
 
             if (abjad === "A") {
                 opsipg += "<hr style='border-top:1px solid olive'/>";
-                opsipg += "<ol style='list-style-type:upper-alpha;margin:5px 5px 0px 20px;padding:0' ><li><input class='calc' type='radio' style='display:none' name='soal" + nosoal + "' id='" + idopsi + "'/><label class='opsi' for='" + idopsi + "'>"; // Khusus opsi A, ada elemen OL lalu dilanjut teksnya
+                opsipg += "<ol style='list-style-type:upper-alpha;margin:5px 5px 0px 20px;padding:0' ><li><input class='calc' type='radio' name='soal" + nosoal + "' id='" + idopsi + "'/><label class='opsi' for='" + idopsi + "'>"; // Khusus opsi A, ada elemen OL lalu dilanjut teksnya
             } else {
-                opsipg += "<li><input class='calc' type='radio' style='display:none' name='soal" + nosoal + "' id='" + idopsi + "'/><label class='opsi' for='" + idopsi + "'>"; // selain opsi A, dilanjut.  Tapi tanpa element OL
+                opsipg += "<li><input class='calc' type='radio' name='soal" + nosoal + "' id='" + idopsi + "'/><label class='opsi' for='" + idopsi + "'>"; // selain opsi A, dilanjut.  Tapi tanpa element OL
             }
             var katakonversi;
             for (tt in arpg) { //hasilnya: 0=1A 1=teks 2=pertanyaan ... dst.
@@ -6688,7 +6688,7 @@ function katajadireplace(asal) {
 
             var abjad = (id.length == 2) ? id.slice(1, 2) : id.slice(2, 3); //B
             var nosoal = id.match(/(\d+)/)[0];// id.slice(0, 1); //nosoal 4
-            var innteks = "<input class='calc' type='radio' style='display:none' name='soal" + nosoal + "' id='" + id + "'/><label class='opsi' for='" + id + "'>" + abjad + "</label>"
+            var innteks = "<input class='calc' type='radio' name='soal" + nosoal + "' id='" + id + "'/><label class='opsi' for='" + id + "'>" + abjad + "</label>"
 
             katajadi += innteks;
         } else if (splitTeks[i].indexOf("_PHI_") > -1) {
@@ -6775,12 +6775,12 @@ const previewkronologi = (par) => {
 
     //let datamateri = JSON.parse(localStorage.getItem(keyy))
     let datamateri = kronologijson;
-
+    let versi = datamateri[par].versi;
 
     //bikin judul h4
     var judul = document.createElement("h4")
     judul.setAttribute("class", "w3-center");
-    judul.innerHTML = "Identitas e-Lamaso";
+    judul.innerHTML = "Identitas E-DURASA";
     tes.innerHTML = ""
     tes.appendChild(judul);
 
@@ -6914,6 +6914,7 @@ const previewkronologi = (par) => {
     cel1.appendChild(cddetik);
     cel1.innerHTML += "<br/><sub>Waktu hanya berjalan di laman siswa</sub>";
 
+    tes.appendChild(tabelidentitas)
 
     tes.appendChild(tabelidentitas)
     var brek = document.createElement("div")
@@ -6927,18 +6928,22 @@ const previewkronologi = (par) => {
     $.getJSON(linkmateri + "&idmateri=" + idm + "&action=previewriwayat", function (json) {
         //  loadingmodal.style.display="none";
         //$("#output").html(brkline(json))
-        // document.getElementById("judulpetunjuk").innerHTML = "Preview e-Lamaso";
+        // document.getElementById("judulpetunjuk").innerHTML = "Preview E-DURASA";
         //        document.getElementById("isipetunjuk").innerHTML = brkline(json);
         //   document.querySelector(".kontenmateri").innerHTML += brkline(json);
-        tes.innerHTML += brkline(json).teks;
-        let inhtml = "<table class='versi-table w3-tiny'><tr><td>Mapel</td><td>KD</td><td>No Soal</td></tr>";
-        let xx = brkline(json).kd.split("<br>");
+        let vV = versi == ""? brkline2(json).teks:brkline(json).teks
+        tes.innerHTML += vV;//brkline(json).teks;
+        // console.log(xx)
+        // let inhtml = " KD belum dideteksi "; 
+         let inhtml = "<table class='versi-table w3-tiny'><tr><td>Mapel</td><td>KD</td><td>No Soal</td></tr>";
+        let Sx = brkline(json).kd.replace("<br>","");
+         let xx = Sx.split("<br>");
         for (a = 0; a < xx.length; a++) {
             inhtml += `<tr><td> ${xx[a].split("_")[0]}</td><td> ${xx[a].split("_")[1].split(":")[0]}</td><td>${xx[a].split("_")[1].split(":")[1]}</td></tr>`
         }
         inhtml += `</table>`;
 
-        forKD.innerHTML = inhtml;
+        forKD.innerHTML = inhtml;//brkline(json).kd;
         // forkuncijawaban.innerHTML = window.atob(brkline(json).kunci).split(",").join("<br>");
         let tekskunci = brkline(json).kunci;
         //console.log(tekskunci);
@@ -6950,27 +6955,27 @@ const previewkronologi = (par) => {
         }
 
 
-        var elEssay = document.getElementsByClassName("soalessay")
-        if (elEssay.length !== 0) {
-            for (i = 0; i < elEssay.length; i++) {
-                var idEl = elEssay[i].getAttribute("id");
-                var inidEl = idEl.replace("essay", "");
-                var tempattombol = document.getElementById("tomboljawaban" + inidEl);
-                var tombolsatu = document.createElement("button");
-                tombolsatu.setAttribute("onclick", "tombolketikjawaban('" + inidEl + "')");
-                var tekstombolsatu = document.createTextNode("Ketik Jawaban No " + inidEl);
-                tombolsatu.appendChild(tekstombolsatu);
-                tempattombol.appendChild(tombolsatu);
-                tempattombol.innerHTML += "<br/><sub>atau</sub></br/> "
-                var tomboldua = document.createElement("button");
-                tomboldua.setAttribute("onclick", "tomboluploadjawaban('" + inidEl + "')");
-                var tekstomboldua = document.createTextNode("Upload Media No " + inidEl);
-                tomboldua.appendChild(tekstomboldua);
-                tempattombol.appendChild(tomboldua);
-                tempattombol.innerHTML += "<br/><sub>Pilih Salah satu cara Kalian menjawab soal ini</sub>"
+        // var elEssay = document.getElementsByClassName("soalessay")
+        // if (elEssay.length !== 0) {
+        //     for (i = 0; i < elEssay.length; i++) {
+        //         var idEl = elEssay[i].getAttribute("id");
+        //         var inidEl = idEl.replace("essay", "");
+        //         var tempattombol = document.getElementById("tomboljawaban" + inidEl);
+        //         var tombolsatu = document.createElement("button");
+        //         tombolsatu.setAttribute("onclick", "tombolketikjawaban('" + inidEl + "')");
+        //         var tekstombolsatu = document.createTextNode("Ketik Jawaban No " + inidEl);
+        //         tombolsatu.appendChild(tekstombolsatu);
+        //         tempattombol.appendChild(tombolsatu);
+        //         tempattombol.innerHTML += "<br/><sub>atau</sub></br/> "
+        //         var tomboldua = document.createElement("button");
+        //         tomboldua.setAttribute("onclick", "tomboluploadjawaban('" + inidEl + "')");
+        //         var tekstomboldua = document.createTextNode("Upload Media No " + inidEl);
+        //         tomboldua.appendChild(tekstomboldua);
+        //         tempattombol.appendChild(tomboldua);
+        //         tempattombol.innerHTML += "<br/><sub>Pilih Salah satu cara Kalian menjawab soal ini</sub>"
 
-            }
-        }
+        //     }
+        // }
 
         let tombol = document.createElement("button");
         tombol.setAttribute("class", "w3-button w3-dark-grey w3-display-bottommiddle w3-margin-bottom");
@@ -6980,6 +6985,7 @@ const previewkronologi = (par) => {
         tes.after(tombol)
     })
     // ;
+
 
 
 }
@@ -9070,7 +9076,7 @@ const printdatakd3 = () => {
     let head = doc.head;
     let body = doc.body;
     //isikan HEAD dengan title, style, link, dll.
-    head.innerHTML = `<title>E-LAMASO DATA REKAP NILAI KETERAMPILAN</title>`;
+    head.innerHTML = `<title>E-DURASA DATA REKAP NILAI KETERAMPILAN</title>`;
     head.innerHTML += `<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">`;
     head.innerHTML += `<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">`;
     head.innerHTML += `<link href="https://fonts.googleapis.com/css?family=Raleway">`;
@@ -11045,7 +11051,7 @@ const printdatakd4 = () => {
     let head = doc.head;
     let body = doc.body;
     //isikan HEAD dengan title, style, link, dll.
-    head.innerHTML = `<title>E-LAMASO DATA NILAI KETERAMPILAN</title>`;
+    head.innerHTML = `<title>E-DURASA DATA NILAI KETERAMPILAN</title>`;
     head.innerHTML += `<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">`;
     head.innerHTML += `<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">`;
     head.innerHTML += `<link href="https://fonts.googleapis.com/css?family=Raleway">`;
@@ -11670,7 +11676,7 @@ prtRekapLain.addEventListener("click", function () {
     let head = doc.head;
     let body = doc.body;
     //isikan HEAD dengan title, style, link, dll.
-    head.innerHTML = `<title>E-LAMASO REKAP DATA PERKEMBANGAN SISWA</title>`;
+    head.innerHTML = `<title>E-DURASA REKAP DATA PERKEMBANGAN SISWA</title>`;
     head.innerHTML += `<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">`;
     head.innerHTML += `<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">`;
     head.innerHTML += `<link href="https://fonts.googleapis.com/css?family=Raleway">`;
@@ -11955,7 +11961,7 @@ const cetakraportsiswaini = () => {
     let head = doc.head;
     let body = doc.body;
     //isikan HEAD dengan title, style, link, dll.
-    head.innerHTML = `<title>Raport E-LAMASO</title>`;
+    head.innerHTML = `<title>Raport E-DURASA</title>`;
     head.innerHTML += `<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">`;
     head.innerHTML += `<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">`;
     head.innerHTML += `<link href="https://fonts.googleapis.com/css?family=Raleway">`;
@@ -12576,36 +12582,36 @@ const printolahijazah = (classtabel) => {
     // let isibody = document.getElementById("tabeldatanilaiki3").innerHTML;
     let judul, subjudul, titel, mediaprint;
     if (classtabel == "tabelolahraportus") {
-        titel = "E-Lamaso Data Raport";
+        titel = "E-DURASA Data Raport";
         judul = "<h3 class='w3-center'>Data Nilai Raport Kelas 4 s/d Kelas 6</h3>";
         subjudul = `<h3 class='w3-center'>Kelas ${idNamaKelas} Tahun Pelajaran ${idTeksTapel}</h3>`;
         mediaprint = "landscape";
     } else if (classtabel == "tabelrekapraportus") {
-        titel = "E-Lamaso Rekap Raport US";
+        titel = "E-DURASA Rekap Raport US";
         judul = "<h3 class='w3-center'>Rekapitulasi Nilai Raport </h3>";
         subjudul = `<h3 class='w3-center'>Kelas ${idNamaKelas} Tahun Pelajaran ${idTeksTapel}</h3>`;
         mediaprint = "portrait";
 
     } else if (classtabel == "tabelolahus") {
-        titel = "E-Lamaso Pengolahan Nilai US";
+        titel = "E-DURASA Pengolahan Nilai US";
         judul = "<h3 class='w3-center'>Data Pengolahan Nilai US (Tertulis & Praktek) </h3>";
         subjudul = `<h3 class='w3-center'>Kelas ${idNamaKelas} Tahun Pelajaran ${idTeksTapel}</h3>`;
         mediaprint = "portrait";
 
     } else if (classtabel == "tabelrekapus") {
-        titel = "E-Lamaso Rekap Nilai US";
+        titel = "E-DURASA Rekap Nilai US";
         judul = "<h3 class='w3-center'>Rekapitulasi Nilai US (Tertulis & Praktek) </h3>";
         subjudul = `<h3 class='w3-center'>Kelas ${idNamaKelas} Tahun Pelajaran ${idTeksTapel}</h3>`;
         mediaprint = "portrait";
 
     } else if (classtabel == "tabelolahijazah") {
-        titel = "E-Lamaso Pengolahan Nilai Ijazah";
+        titel = "E-DURASA Pengolahan Nilai Ijazah";
         judul = "<h3 class='w3-center'>Data Pengolahan Nilai Ijazah </h3>";
         subjudul = `<h3 class='w3-center'>Kelas ${idNamaKelas} Tahun Pelajaran ${idTeksTapel}</h3>`;
         mediaprint = "portrait";
 
     } else if (classtabel == "tabelnilaiijazahfix") {
-        titel = "E-Lamaso Daftar Nilai Ijazah";
+        titel = "E-DURASA Daftar Nilai Ijazah";
         judul = "<h3 class='w3-center'>Data  Nilai Ijazah </h3>";
         subjudul = `<h3 class='w3-center'>Kelas ${idNamaKelas} Tahun Pelajaran ${idTeksTapel}</h3>`;
         mediaprint = "portrait";
@@ -15053,7 +15059,7 @@ const printleger = (kelas) => {
     let head = doc.head;
     let body = doc.body;
     //isikan HEAD dengan title, style, link, dll.
-    head.innerHTML = `<title>E-LAMASO LEGER</title>`;
+    head.innerHTML = `<title>E-DURASA LEGER</title>`;
     head.innerHTML += `<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">`;
     head.innerHTML += `<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">`;
     head.innerHTML += `<link href="https://fonts.googleapis.com/css?family=Raleway">`;
@@ -15095,7 +15101,7 @@ const print_print_bantusiswa = () => {
     let head = doc.head;
     let body = doc.body;
     //isikan HEAD dengan title, style, link, dll.
-    head.innerHTML = `<title>E-LAMASO</title>`;
+    head.innerHTML = `<title>E-DURASA</title>`;
     head.innerHTML += `<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">`;
     head.innerHTML += `<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">`;
     head.innerHTML += `<link href="https://fonts.googleapis.com/css?family=Raleway">`;
@@ -16130,13 +16136,6 @@ const ubah_aagk_rekapabsen =() => {
         lcb.innerHTML = "Rekap Absen Moda PJJ";
         //refreshAbsenHariIni();
     };
-    // clearInterval(stoploadingtopbar);
-    // let divlod = document.querySelector(".loadingtopbar");
-    // divlod.style.width = "100%";
-    // setTimeout(() => {
-    //     divlod.style.width = "1px"
-    //     divlod.className += " w3-hide";
-
-    // }, 3000);
+  
     
 }

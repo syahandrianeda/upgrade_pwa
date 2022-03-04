@@ -33,6 +33,7 @@
   border-radius: 5px
 }
 
+input.calc{display: none;}
 /* 
 input[type=radio]+label.opsi {
   color: #000;
@@ -46,24 +47,7 @@ input[type=radio]:checked+label.opsi::before {
 input[type=radio]:checked+label.opsi {
   color: #00f;
   background-color: #ff0
-}  */
-input.calc{
-  display:none;
-}
-input[class=calc]+label.opsi {
-  color: #000;
-  cursor: pointer
-}
-
-input[class=calc]:checked+label.opsi::before {
-  content: " \2705"
-}
-
-input[class=calc]:checked+label.opsi {
-  color: #00f;
-  background-color: #ff0
-}
-
+/* } */
 .modal input[name=contoh1]+label.opsik {
   color: #000;
   cursor: pointer
