@@ -620,7 +620,7 @@ const loadingtopbarin = (el) => {
             // console.log(indekhari)
             let indek = arrayStringTglLibur.indexOf(StringTanggal(day));
 
-            if (indekhari == 6 || indekhari == 6 || indek > -1) {
+            if (indekhari == 0 || indekhari == 6 || indek > -1) {
                 //console.log("Libur atau Sabtu Minggu")
                 belajaraktif = false;
                 // tampilkan laman libur:
@@ -691,7 +691,7 @@ const loadingtopbarin = (el) => {
             // console.log(indekhari)
             let indek = arrayStringTglLibur.indexOf(StringTanggal(day));
 
-            if (indekhari == 6 || indekhari == 6 || indek > -1) {
+            if (indekhari == 0 || indekhari == 6 || indek > -1) {
                 //console.log("Libur atau Sabtu Minggu")
                 belajaraktif = false;
                 // tampilkan laman libur:
