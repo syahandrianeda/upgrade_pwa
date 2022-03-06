@@ -10851,6 +10851,12 @@ document.addEventListener("click", function (e) {
         document.formuploadmateri.idSekolah.value = idNamaSekolah;
         document.formuploadmateri.dibuatoleh.value = namauser;
 
+    }else{
+        //console.log(el.nodeName);
+        if(el.nodeName !== "TD"){
+            document.querySelector("#tooltiptabel").style.display='none';
+
+        }
     }
     //return
 

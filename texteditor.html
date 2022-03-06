@@ -316,12 +316,14 @@
                     });
                 }
                 //enableImageResizeInDiv('edt');
-         
+         function ons(){
+            if(validateMode()){this.myDoc.value=oDoc.innerHTML;return true;}return false;
+         }
         </script>
                 </head>
 
-                <body onload="initDoc();">
-                    <form name="compForm" method="post" action="sample.php" onsubmit="if(validateMode()){this.myDoc.value=oDoc.innerHTML;return true;}return false;">
+                <body onload="initDoc()">
+                    <form name="compForm" method="post" action="sample.php" onsubmit="ons()">
                     <input type="text" name="myDoc">
                     <div id="toolBar1">
                     <select onchange="formatDoc('formatblock',this[this.selectedIndex].value);this.selectedIndex=0;">

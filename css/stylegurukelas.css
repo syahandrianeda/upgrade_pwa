@@ -570,3 +570,42 @@ div.numer {
 div.denom {
   border-top: 1px solid black;
 }
+
+.isiadm {display:none}
+
+#tooltiptabel {
+  position: absolute;
+  display: none;
+  width: 150px;
+  height: 230px;
+  font-size: 8px;
+  /* top:0;
+  left:0; */
+  border:1px solid black;
+  padding: 2px;
+  color:rgb(255, 255, 255);
+  background-color: rgb(75, 75, 75);
+  z-index: 2;
+  /* cursor: pointer; */
+}
+#tooltiptabel:after {
+  content: "";
+  position:absolute;
+  
+  /* position tooltip correctly */
+  left:0;
+  margin-left:-20px;
+ 
+  /* vertically center */
+  top:10px;
+  transform:translateY(-50%);
+ 
+  /* the arrow */
+  border:10px solid #000;
+  border-color: transparent black transparent transparent;
+  
+  display:block;
+}
+/* #tooltiptabel:hover:before, #tooltiptabel:hover:after {
+  display:block;
+} */

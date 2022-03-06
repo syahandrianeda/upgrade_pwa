@@ -1,6 +1,6 @@
 
-const staticCacheName = "36";// + new Date().getTime();
-const dynamicChace = "36";// + new Date().getTime();
+const staticCacheName = "43";// + new Date().getTime();
+const dynamicChace = "43";// + new Date().getTime();
 
 const assets = [
     "/",
@@ -68,6 +68,11 @@ const assets = [
     "/timekbm.js",
     "/statis/update.json",
     "/statis/dataakreditasi.json",
+    "/statis/wsyg_ade.js",
+    "/statis/newhome.js",
+    "/statis/quill-upload-image.js",
+    "/statis/image-resize.min.js",
+    "/statis/rpp.js",
 
 
     "/user/gmp.html",

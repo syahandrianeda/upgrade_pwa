@@ -1,4 +1,51 @@
 <!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+#overlay {
+  position: fixed;
+  display: none;
+  width: 10%;
+  height: 10%;
+  
+  background-color: rgba(0,0,0,0.5);
+  z-index: 2;
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+
+<div id="overlay" onclick="off()"></div>
+<button onclick="on(event)">Turn on overlay effect</button>
+<div style="padding:20px">
+  <h2>Overlay</h2>
+  <p>Add an overlay effect to the page content (100% width and height with a black background color with 50% opacity).</p>
+  <button onclick="on(event)">Turn on overlay effect</button>
+</div>
+
+<script>
+function on(event) {
+	let ttop = event.target.offsetTop;
+    let lleft = event.target.offsetWidth ;
+  document.getElementById("overlay").style.display = "block";
+  document.getElementById("overlay").style.left = lleft +"px";
+  document.getElementById("overlay").style.top = ttop +"px";
+  document.getElementById("overlay").innerHTML = lleft + " " + ttop
+}
+
+function off() {
+  document.getElementById("overlay").style.display = "none";
+}
+</script>
+
+</body>
+</html>
+
+<!-- 
+
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -118,7 +165,7 @@ div.denom {
              </span>
           </iv>
         </div> -->
-      </div>
+      <!-- </div>
       
     </div>
     <div class="w3-content">
@@ -163,7 +210,7 @@ div.denom {
   </div>
 </body>
 </html>
-
+ -->
 
 
 <!-- <!doctype html>
@@ -528,4 +575,4 @@ img.intLink { border: 0; }
     </div>
     
 </body>
-</html> -->
+</html> --> --> -->

@@ -18,7 +18,7 @@ const previewrpp = () =>{
     document.getElementById("prev_rpp").style.display = "block";
     let dataisian = obj_isianrpp();
     let datarpp =dataisian.objek[0];
-    console.log(datarpp)
+    //console.log(datarpp)
     document.querySelector("#prt_mapel").innerHTML = datarpp.rpp_jenistematik + ": "+ JSON.stringify(datarpp.mapel_dipilih).replace(/["']/g, " ") ;
 
     document.querySelector("#prt_kelas").innerHTML = idNamaKelas + " / "+ datarpp.rpp_semester;
@@ -406,4 +406,18 @@ const changehtml = (id) =>{
 // );
 
     //quill.clipboard.dangerouslyPasteHTML(teks);
+}
+
+function tabA(evt, cityName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("isiadm");//("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("btnadm");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" w3-green", "");
+    }
+    document.getElementById(cityName).style.display = "block";
+    evt.currentTarget.className += " w3-green";
 }
