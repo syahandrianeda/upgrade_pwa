@@ -816,7 +816,7 @@
                                         <div class="w3-border w3-tiny w3-col l6">Refrensi:<div class="w3-bar">    <div class="w3-btn w3-round w3-dark-gray refrensi_soal">Bank Soal</div>    <div class="w3-btn w3-round w3-dark-gray refrensi_simpandraft">Simpan Draft</div>    <div class="w3-btn w3-round w3-dark-gray refrensi_taruhdraft">Taruh Draft</div></div> 
                                         </div>
                                     </div>
-    
+                                    <br>
                                 </div>
                             </div>
                             <div class="w3-col coltextarea l9" >
@@ -2212,6 +2212,9 @@
                     </div>
             </div>
             <h4 class="w3-center kriteriagaleri">Semua Galeri:</h4>
+            <div class="paginationgalery w3-padding w3-center" style="max-width: 600px;margin:5px auto; border:1px dotted blue">
+                <button class="tombl_first" onclick="halamanawal()">Awal</button><button class="tombl_prev" onclick="halamansebelumnya()">&lt;&lt;</button><span class="spangal_pages">1 dari 3 Halaman</span><button class="tombl_next" onclick="halamanberikutnya()">&gt;&gt;</button><button class="tombl_last" onclick="halamanakhir()">Akhir</button>
+            </div>
             <div class="tempatgaleri w3-row w3-margin-top">
                 <div class="w3-col l2 w3-border" style="height: 270px;">
                     <div class="isigaleri">
@@ -2370,7 +2373,7 @@
                     </div>
                 </div>
             </div>
-            <div class="paginationgalery" style="max-width: 600px;margin:5px auto; border:1px dotted blue"></div>
+            
         </div>
         <div class="w3-container w3-small" id="divgooglemeet" style="display:none">
             <h3>Google Meet</h3>
@@ -4175,6 +4178,72 @@ _OPSI-PG-C_1C #
             <br>
             <br>
             <br>
+        </div>
+    </div>
+    <div class="w3-modal" id="modalbanksoal">
+        <div class="w3-modal-content" style="max-width: 900px">
+            <span class="w3-button w3-right w3-red w3-small" onclick="document.getElementById('modalbanksoal').style.display='none'">&times;</span>
+            <div class="w3-container">
+                Di sini akan muncul soal-soal yang pernah Anda buat dari menu Desain Evaluasi
+                <br>
+                <div class="w3-border w3-round w3-padding w3-tiny">
+                    Kriteria Soal:
+                    <div class="w3-border-bottom">
+                        Mata Pelajaran: 
+                        <label for="cbx_banksoal_editor_PAI">PAI
+                            <input type="checkbox" value="PAI" class="w3-check" id="cbx_banksoal_editor_PAI">
+                        </label>
+                        <label for="cbx_banksoal_editor_PKRIS">Pend. Agama Kristen
+                            <input type="checkbox" value="PKRIS" class="w3-check" id="cbx_banksoal_editor_PKRIS">
+                        </label>
+                        <label for="cbx_banksoal_editor_PKN">PKN
+                            <input type="checkbox" value="PKN" class="w3-check" id="cbx_banksoal_editor_PKN">
+                        </label>
+                        <label for="cbx_banksoal_editor_BINDO">Bahasa Indonesia
+                            <input type="checkbox" value="BINDO" class="w3-check" id="cbx_banksoal_editor_BINDO">
+                        </label>
+                        <label for="cbx_banksoal_editor_MTK">Matematika
+                            <input type="checkbox" value="MTK" class="w3-check" id="cbx_banksoal_editor_MTK">
+                        </label>
+                        <label for="cbx_banksoal_editor_IPA">IPA
+                            <input type="checkbox" value="IPA" class="w3-check" id="cbx_banksoal_editor_IPA">
+                        </label>
+                        <label for="cbx_banksoal_editor_IPS">IPS
+                            <input type="checkbox" value="IPS" class="w3-check" id="cbx_banksoal_editor_IPS">
+                        </label>
+                        <div class="w3-clear"></div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="w3-container">
+                Tampilan Soal:
+                <div class="w3-border w3-padding">
+                    1. Ini contoh Soal yang akan tampil dari tampilan server yang telah Anda buat.<br>
+                    A. opsi jawaban A<br>
+                    B. opsi Jawban B<br>
+                    C. opsi Jawaban C<br>
+                    D. opsi Jawaban D<br>
+                </div>
+                
+                <div class="w3-border w3-padding w3-tiny">
+                    Properti soal:<br>
+                    <table class="w3-table garis">
+                        <tr>
+                            <td>Mata Pelajaran</td><td>:</td><td>PKN</td>
+                        </tr><tr>    <td>KD</td><td>:</td><td>3.1</td>
+                        </tr><tr><td>Teks KD</td><td>:</td><td>Bunyi KD yang dimaksud</td>
+                        </tr><tr><td>Indikator Soal</td><td>:</td><td>Melalui fitur bank soal, guru dapat membuat soal lebih mudah berdasarkan pemanfaatan bank soal yang telah dibuat sebelumnya</td>
+                        </tr><tr><td>Jawaban/Pembahasan soal</td><td>:</td><td>Jawabannya adalah .....</td>
+                        </tr><tr><td>Kriteria penilaian</td><td>:</td><td>Jika benar mendapatkan skor 100</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="w3-border w3-round w3-center">
+                    <button onclick="alert('fitur dalam tahap desain')">Jadikan Konten</button>
+                    
+                </div>
+            </div>
         </div>
     </div>
     

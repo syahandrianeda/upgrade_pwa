@@ -3372,3 +3372,87 @@ const detectSemesterBerdasarkan = (kriteria, namatema)=>{
     return teks
 
 }
+const simpandraftedurasa = document.querySelector(".refrensi_simpandraft");
+simpandraftedurasa.addEventListener("click", ()=>{
+    let isiteks = sebelumkirimmateri();//document.formuploadmateri.idmateri.value
+    console.log(isiteks)
+    if (isiteks == "") {
+        alert("Maaf, Draft Anda kosong .... :(");
+        return
+    }
+    let idmapel = document.formuploadmateri.idmapel.value;
+    let iddurasi = document.formuploadmateri.iddurasi.value;
+    let idaksessiswa = document.formuploadmateri.idaksessiswa.value;
+    let jenistagihan = document.formuploadmateri.jenistagihan.value;
+    let idtgl = document.formuploadmateri.idtgl.value;
+    let idtglend = document.formuploadmateri.idtglend.value;
+    let botakin = window.btoa(unescape(encodeURIComponent(isiteks)));
+    let obj = {};
+    obj.idmapel = idmapel;
+    obj.iddurasi = iddurasi;
+    obj.jenistagihan = jenistagihan;
+    obj.idaksessiswa = idaksessiswa;
+    obj.idtgl = idtgl;
+    obj.idtglend = idtglend;
+    obj.botakin = botakin;
+
+
+
+    window.localStorage.setItem("drafmateri", JSON.stringify(obj));
+    let ingindownload = confirm("Apakah Anda ingin mendownload materi ini juga?");
+    if (ingindownload) {
+        downloadfiledraft(isiteks, idmapel);
+
+        alert("Draf, berhasil disimpan dan File telah Anda unduh");
+    } else {
+        alert("Draf, berhasil disimpan dan File tidak Anda unduh");
+
+    }
+});
+
+const edurasataruhdraft = document.querySelector(".refrensi_taruhdraft");
+edurasataruhdraft.addEventListener("click",()=>{
+    let idmapel = document.formuploadmateri.idmapel;
+    let iddurasi = document.formuploadmateri.iddurasi;
+    let idaksessiswa = document.formuploadmateri.idaksessiswa;
+    let jenistagihan = document.formuploadmateri.jenistagihan;
+    let idtgl = document.formuploadmateri.idtgl;
+    let idtglend = document.formuploadmateri.idtglend;
+    let br = document.formuploadmateri.crtToken;
+
+    let html = "";//doc.body;//document.formuploadmateri.idmateri
+
+    if (localStorage.hasOwnProperty("drafmateri")) {
+        let teks = JSON.parse(localStorage.getItem("drafmateri"))
+        idmapel.value = teks.idmapel;
+        iddurasi.value = teks.iddurasi;
+        idaksessiswa.value = teks.idaksessiswa;
+        jenistagihan.value = teks.jenistagihan;
+
+
+        idtgl.value = getlocalDateTime(teks.idtgl);
+        idtglend.value = getlocalDateTime(teks.idtglend);
+        br.value = tglStringZeroparam(idtgl.value);
+        let botakin = teks.botakin;
+        //console.log(botakin);
+        html = window.atob(unescape(encodeURIComponent(botakin)));
+        //isiteks.textContent = window.atob(botakin);
+        let ch = document.querySelector("#html_edt");
+        if(!ch.checked){
+            ch.checked = true;
+            doc.execCommand("insertHTML",false,html);
+            ch.checked = false
+        }else{
+            doc.execCommand("insertText",false,html);
+        }
+
+        alert("Anda mempunyai Draft")
+    } else {
+        alert("Maaf, Anda tidak memiliki Draft.")
+    }
+    //pratinjaubuatmateri();
+});
+const ref_editorsoal = document.querySelector(".refrensi_soal");
+ref_editorsoal.addEventListener("click",()=>{
+    document.querySelector("#modalbanksoal").style.display = "block";
+})

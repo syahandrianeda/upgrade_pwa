@@ -1348,8 +1348,10 @@ const cekDiskLocalStorage = async () => {
 
 function tampilinsublamangurukelas(fitur) {
     let div = document.getElementById("batasaksesguru")
+    let gal = document.querySelector(".kriteriagaleri");
+    let y_gal = gal.offsetTop;
     let y = div.offsetTop - 45;
-
+    
     if (fitur == "beranda") {
         datakelassaya.style.display = "none";
         dataabsensi.style.display = "none";

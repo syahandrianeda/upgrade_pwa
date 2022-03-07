@@ -1,6 +1,6 @@
 
-const staticCacheName = "43";// + new Date().getTime();
-const dynamicChace = "43";// + new Date().getTime();
+const staticCacheName = "t44";// + new Date().getTime();
+const dynamicChace = "t44";// + new Date().getTime();
 
 const assets = [
     "/",
