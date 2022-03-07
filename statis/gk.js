@@ -6610,7 +6610,7 @@ function brkline(teks) { //coba
     data.teks = inn;
     data.kunci = kunci;
     data.kd = kdkd;
-
+    //console.log(data);
     // return inn
     return data
 }
@@ -6936,7 +6936,7 @@ const previewkronologi = (par) => {
         // console.log(xx)
         // let inhtml = " KD belum dideteksi "; 
          let inhtml = "<table class='versi-table w3-tiny'><tr><td>Mapel</td><td>KD</td><td>No Soal</td></tr>";
-        let Sx = brkline(json).kd.replace("<br>","");
+        let Sx = brkline(json).kd;//.replace("<br>","");
          let xx = Sx.split("<br>");
         for (a = 0; a < xx.length; a++) {
             inhtml += `<tr><td> ${xx[a].split("_")[0]}</td><td> ${xx[a].split("_")[1].split(":")[0]}</td><td>${xx[a].split("_")[1].split(":")[1]}</td></tr>`

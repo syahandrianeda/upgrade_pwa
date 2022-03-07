@@ -10,6 +10,9 @@ const doc = editore.contentDocument || editore.contentWindow.document;
         doc.body.setAttribute("spellcheck","false");
         doc.body.setAttribute("contenteditable","true");
         doc.body.setAttribute("id","edt");
+        // let divdulu = doc.createElement("div");
+        // divdulu.innerHTML = " ";
+        // doc.body.appendChild(divdulu);
         // let divbayangan = doc.createElement("div");
         // doc.body.appendChild(divbayangan);
         
@@ -24,6 +27,22 @@ const doc = editore.contentDocument || editore.contentWindow.document;
 doc.addEventListener("input",(e)=>{
     
     let v = e.target;//.innerHTML;
+    // console.log(v)
+    //console.log(v.children.length)
+    //console.log(v.childNodes[0].nodeName)
+    //console.log(v.innerHTML);
+    let v0 = v.innerHTML;
+    if(v.childNodes[0].nodeName == "#text"){
+        //alert("Tekan enter dulu")
+        //console.log("true")
+        //return;//
+        //e.preventDefault()
+        doc.body.innerHTML = "<div>"+v.innerHTML+"</div>";
+        
+    }else{
+       // console.log("false")
+
+    }
     // let sel = doc.getSelection();
     // let selrange = sel.getRangeAt(0);
     // let selectiondom = selrange.cloneContents();
@@ -79,8 +98,8 @@ kelastambahan = "w3-light-blue"
 
     }
 
-    div.innerHTML = html;
-    divradiopg.innerHTML = el_input;
+    // div.innerHTML = html;
+    // divradiopg.innerHTML = el_input;
     //jika sudah membuat ceklis jawaban, ketika ada PG baru jangan dihapus lagi
     for(n = 0 ; n < cekkunci.length ; n++){
         let mm = document.getElementById("tomboleditor_bantuopsi"+cekkunci[n]);
@@ -111,7 +130,124 @@ kelastambahan = "w3-light-blue"
     // })
     deteksiAllsoal();
     
+    //console.log(v);
+    let tt = v.querySelectorAll("div")
+    //console.log(tt);
+    let inteks, teksSebaran,str_kd_kunci;;
 
+    for(j = 0 ; j < tt.length; j++){
+        inteks = tt[j].innerHTML
+        //val_jt +=inteks;
+        if(inteks.indexOf("_KUNCI-KD_")>-1){
+            str_kd_kunci = inteks.replace(/&lt;\|\|&gt;/g," <||> ");;//.replace("_KUNCI-KD_",""); 
+            teksSebaran = inteks.replace("_KUNCI-KD_","").split("&lt;||&gt;");
+            break;
+
+        }
+    }
+    //console.log(teksSebaran);
+                    //mengurutkan soal;
+        let jtKD4 = ["kpraktik", "kproduk", "kproyek", "uspraktek"];
+        let seljt = document.getElementById("jenistagihan");
+        let valjt = seljt.options[seljt.selectedIndex].value;
+
+        let htmlsebaran ="Belum terdeksi";
+        if(teksSebaran !== undefined ){
+        // if(str_kd_kunci !== undefined || str_kd_kunci !== null){
+             let arr0 = str_kd_kunci.replace("_KUNCI-KD_", "");
+                 let arr1 = arr0.replace(/\s+/gm, "")
+                let grup = arr1.split("<||>");//split(/&lt;\|\|&gt;/);//
+                //console.log(grup)
+                //let htmlsebaran = ""
+                if (valjt == "") {
+                    htmlsebaran = `Anda Akan membuat konten materi jenis tagihan tanpa menerima respon jawaban siswa namun sebaran KD sifatnya wajib. Untuk membantu menggenerate sebaran KD, klik tombol <label for="modal_generate_sebarankd" class="w3-button warnaeka w3-border-bottom w3-border-black w3-round-large">Generate Sebaran KD</label>.(Jika belum Berubah, ketikan sesuatu di teks area materi)`;
+                } else {
+
+                }
+
+                let indekjt = jtKD4.indexOf(valjt);
+                // console.log(indekjt);
+                // console.log(valjt);
+
+                let stKD3apaKD4 = ""
+                if (indekjt == -1) {
+                    stKD3apaKD4 = " Kompetensi Pengetahuan (KD-3) "
+                } else {
+                    stKD3apaKD4 = " Kompetensi Keterampilan (KD-4) "
+
+                }
+
+                htmlsebaran = "SEBARAN KD TERDETEKSI<br/>"
+                htmlsebaran += `Anda memilih jenis Tagihan <span class="w3-card-4 w3-margin-bottom warnaeka"> ${stKD3apaKD4}</span>.<br/><br/>
+                    Atau Jika Anda perlu membuat sebaran KD dari fitur elamaso, silakan klik <label for="modal_generate_sebarankd" class="w3-button warnaeka w3-border-bottom w3-border-black w3-round-large">Generate Sebaran KD</label>
+                    <br/><br/>
+                    Berikut hasil tabel Sebran KD pada konten materi Anda yang terbaca oleh sistem:
+                    <table class="w3-table-all w3-bordered"><tr>
+                    <th>Mata Pelajaran (Kode)</th>
+                    <th>No KD</th>
+                    <th>Nomor Soal</th>
+                    </tr>`;
+                for (let g = 0; g < grup.length; g++) {
+                    let grupmapel = grup[g].split(":");
+                    htmlsebaran += `<tr>
+                        <td>${grupmapel[0].split("_")[0]}</td>
+                        <td>${grupmapel[0].split("_")[1]}</td>
+                        <td>${grupmapel[1]}</td>
+                        <td></td></tr>`
+                }
+                htmlsebaran += `</table><hr/> Berdasarkan Urutan Soal
+                   <div class="w3-card-4">
+                    `;
+                //mengurutkan soal;
+                let mod_str = JSON.parse(objekKD(str_kd_kunci));
+                let mod_obj = ubahjsonkuncikd(mod_str);
+
+                let oo = Object.keys(mod_obj);
+
+                for (h = 0; h < oo.length; h++) {
+                    htmlsebaran += `<div class="w3-left w3-margin warnaeka w3-border-bottom w3-border-black w3-padding w3-round w3-text-black">
+                        <span class="w3-badge w3-margin-right w3-white">${oo[h]}</span> ${mod_obj[oo[h]].split("_")[0]} KD ${mod_obj[oo[h]].split("_")[1]}
+                        </div>`
+
+                }
+
+
+                // console.log(mod_str);
+                // console.log(mod_obj);
+                htmlsebaran += `</div>`
+
+        }else{
+            htmlsebaran = `Anda Akan membuat konten materi jenis tagihan tanpa menerima respon jawaban siswa namun sebaran KD sifatnya wajib. Untuk membantu menggenerate sebaran KD, klik tombol <label for="modal_generate_sebarankd" class="w3-button warnaeka w3-border-bottom w3-border-black w3-round-large">Generate Sebaran KD</label>.(Jika belum Berubah, ketikan sesuatu di teks area materi)`;
+        }
+        document.querySelector(".tekesebarankd").innerHTML = htmlsebaran
+
+    let ketesay ="<hr>";
+    if (arrsoalessay.length == 0) {
+            ketesay += "TIDAK TERDETEKSI ADANYA SOAL ESSAY"
+        } else {
+            ketesay += "SOAL ESSAY TERDETEKSI:<br/>"
+            ketesay += `Nomor-nomor soal Essay<br/><br/>`;
+            arrsoalessay.forEach(element => {
+                ketesay += `<span class="w3-badge warnaeka w3-border-bottom w3-border-black w3-margin w3-text-black">${element}</span>`
+            });
+
+        }   
+        div.innerHTML = html + ketesay;
+        divradiopg.innerHTML = el_input; 
+    //mendeteksi KD yang teredetksi
+    // let adakd = v.indexOf("_KUNCI-KD_");
+    // let htmlsebaran ="";
+    // let jtKD4 = ["kpraktik", "kproduk", "kproyek", "uspraktek"];
+    // if(adakd == -1){
+    //     htmlsebaran = `Anda Akan membuat konten materi jenis tagihan tanpa menerima respon jawaban siswa namun sebaran KD sifatnya wajib. Untuk membantu menggenerate sebaran KD, klik tombol <label for="modal_generate_sebarankd" class="w3-button warnaeka w3-border-bottom w3-border-black w3-round-large">Generate Sebaran KD</label>.(Jika belum Berubah, ketikan sesuatu di teks area materi)`
+
+    // }else{
+    //     //tentukan KD-KD-nya: dari _KUNCI-KD_ IPA_3.1:1, 2, 3 <||> IPS_3.2:4,5, jadi : IPA_3.1 :
+
+    //     //jika Ada, cek apakah KD3 apa KD4
+
+    // }
+    
  })
  
 
@@ -1722,11 +1858,11 @@ const sebelumkirimmateri = () =>{
         //console.log(teks);
         let m = teks.match(/<div>(.*)<\/div>/)[1];
         //console.log(m);
-        let tekmatch = m;//teks.replace("<div>","").replace("</div>","") ;//
+        let tekmatch = m.replace(/&lt;\|\|&gt;/g,"<||>");;//teks.replace("<div>","").replace("</div>","") ;//
         div += tekmatch +"\r\n";
     }
-    tes = div;
-  
+    tes = div
+   // console.log(tes);
     return tes
     
 }
@@ -1888,9 +2024,11 @@ const editfilemateri = (id) => {
             //console.log(k);
             let katob = versi == "baru"?brkline(k).kunci:brkline2(k).kunci;
             let kunci =window.atob(katob)
-            let kd = versi == "baru"? brkline(k).kd:brkline2(k).kd;
+            let kdd = versi == "baru"? brkline(k).kd :brkline2(k).kd;
+            let kd = kdd.split("<br>").join("<||>");
             // isiteks.innerHTML = brkline(k).teks + "" + kunci +  kd
             //doc.focus();
+            //console.log(kd);
             let crd = doc.createElement("div");
             crd.innerHTML =  versi == "baru"?brkline(k).teks:brkline2(k).teks;
             doc.body.appendChild(crd);

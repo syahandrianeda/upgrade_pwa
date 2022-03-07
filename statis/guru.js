@@ -51,7 +51,7 @@ function fn_mbs_tambahbaris() {
         opsimapel = [idgurumapelmapel];
     } else {
         opsimapel = msb_obje["datamapel"];
-        console.log(opsimapel)
+        //console.log(opsimapel)
 
     }
     // console.log(opsimapel) fn_mbs_selectkd(this)
@@ -703,7 +703,13 @@ function pindahsemester() {
     if (val == "1") {
         let confirmm = confirm(`Anda yakin ingin melanjutkan ke WebbApp elamaso ${teks}? Klik OK untuk melanjutkan atau CANCEL untuk membatalkan.`);
         if (confirmm) {
-            window.location.replace(web2021semester1)
+            window.location.replace(web2122semester1)
+
+        }
+    }else if(val == "2"){
+        let confirmm = confirm(`Anda yakin ingin melanjutkan ke WebbApp elamaso ${teks}? Klik OK untuk melanjutkan atau CANCEL untuk membatalkan.`);
+        if (confirmm) {
+            window.location.replace(web2021semester2)
 
         }
     }
@@ -11219,15 +11225,15 @@ const atributgaleri = () =>{
     ret.nol = nol;
     return ret;
 }
+
+let pageini, jumlahperpage=12;
+let objGaleri;
 const galery = async() => {
     
     loadingtopbarin("loadingtopbar");
     let js = atributgaleri();
     let keyy = js.key;
-    
-    //////////////
     let tab = "galeri";
-    
     let html = "";
     let ttbody = document.querySelector(".tempatgaleri");
     
@@ -11241,18 +11247,16 @@ const galery = async() => {
         body:datakirim
     }).then(m => m.json())
     .then(r => {
-        
         let res = r.result;
         let dtt = r.data;
         let dt = r.data.filter(s => s.status !== "hapus");
         jsongaleridihapus = dtt.filter(s=> s.status == "hapus");
         jsongaleri = dtt.filter(s=> s.status !== "hapus");
-        
         if(res > 1){
             for(i = dt.length-1 ;  i>=0;i--){
                 let d = dt[i];
                 let hh = cekpreviewupload2(d.tipe,d.idfile);
-                html +=`<div class="w3-col l2" style="height: 270px;">
+                html +=`<div class="w3-col l2" style="max-height: 270px;">
                 <div class="isigaleri">
                     ${hh}
                     <div class="overlaygaleri">
@@ -11263,23 +11267,18 @@ const galery = async() => {
                     <div class="textgaleri">
                             <button onclick="window.open('https://drive.google.com/file/d/${d.idfile}/view?usp=drivesdk','', 'width=720,height=600')">Detail</button>
                             <button onclick="hapusgaleri(${d.idbaris})">Hapus</button>
-                            
                         </div>
-                      </div>
+                    </div>
                 </div>
             </div>`;
             }
             ttbody.innerHTML = html;
         }
-        
-        
-        
         tampilinsublamangurukelas("galery");
     }).catch(er => {
         console.log(er);
         alert("Terjadi kesalahan. Silakan ulangi sesi Anda sesaat lagi.")
     })
-
     clearInterval(stoploadingtopbar);
     let divlod = document.querySelector(".loadingtopbar");
     divlod.style.width = "100%";
@@ -11288,12 +11287,24 @@ const galery = async() => {
         divlod.className += " w3-hide";
 
     }, 3000);
-
-    //////////////
-    
-
+}
+function ubahhalaman(){
 
 }
+function halamanberikutnya(){
+
+}
+function halamansebelumnya(){
+
+}
+function halamanawal(){
+
+}
+function halamanakhir(){
+
+}
+
+
 const cekpreviewupload = (tipe,idfile) =>{
     let res;
     let img = ["jpg","jpeg","JPG","JPEG","png","PNG","gif","GIF","webp"]
@@ -13021,3 +13032,4 @@ const fn7selectreposistorymapel = () => {
 
     }
 };
+
