@@ -11260,7 +11260,7 @@ const galery = async() => {
         let dt = r.data.filter(s => s.status !== "hapus");
         jsongaleridihapus = dtt.filter(s=> s.status == "hapus");
         jsongaleri = dtt.filter(s=> s.status !== "hapus");
-        objGaleri = jsongaleri;
+        objGaleri = jsongaleri.reverse();
         if(res > 1){
             document.querySelector(".paginationgalery").style.display = "block";
             ubahhalaman(1);
@@ -11312,16 +11312,22 @@ function ubahhalaman(hal){
     }
     // let loopStart = (hal-1)*jumlahperpage;
     // let loopEnd = ((hal*jumlahperpage)<objGaleri.length?(hal*jumlahperpage)-1:objGaleri.length-1)
-   let halakhir = allhalamangaleri();
-    let loopStart = ((halakhir-hal)*jumlahperpage < objGaleri.length?(halakhir-hal)*jumlahperpage:0);
-   let ceil = Math.ceil(objGaleri.length / (hal * jumlahperpage));
-    let loopEnd = ((ceil*jumlahperpage)<objGaleri.length?(ceil*jumlahperpage)-1:objGaleri.length-1);
+//    let halakhir = allhalamangaleri();
+//     let loopStart = ((halakhir-hal)*jumlahperpage < objGaleri.length?(halakhir-hal)*jumlahperpage:0);
+//    let ceil = Math.ceil(objGaleri.length / (hal * jumlahperpage));
+//     let loopEnd = ((ceil*jumlahperpage)<objGaleri.length?(ceil*jumlahperpage)-1:objGaleri.length-1);
 
-    //console.log(loopStart)
-    //console.log(loopEnd)
+//     console.log(loopStart)
+//     console.log(loopEnd)
     let html = "";
-    for(i = loopEnd; i >= loopStart ; i--){
+    //let reverse = objGaleri;//.reverse();
+    //console.log(reverse);
+    // for(i = loopEnd; i >= loopStart ; i--){
+        //(var i = (page-1) * records_per_page; i < (page * records_per_page) && i < objJson.length; i++)
+    for(var i = (hal-1) * jumlahperpage; i < (hal * jumlahperpage) && i < objGaleri.length; i++){        
         let d = objGaleri[i];
+        //console.log(i)
+        //console.log(i + " = " + objGaleri[i].idbaris)
         let hh = cekpreviewupload2(d.tipe,d.idfile);
         html +=`<div class="w3-col l2" style="max-height: 270px;">
             <div class="isigaleri">
@@ -11750,7 +11756,7 @@ const carimediagaleri = (el)=>{
         }else{
             let dt = rec;
             document.querySelector(".paginationgalery").style.display = "block";
-            objGaleri = dt;
+            objGaleri = dt.reverse();
             ubahhalaman(1);
             // //asal
             // for(i = dt.length-1 ;  i>=0;i--){
@@ -11831,7 +11837,7 @@ const hapusgaleri = (id) =>{
                 jsongaleridihapus = dtt.filter(s=> s.status == "hapus");
                 jsongaleri = dtt.filter(s=> s.status !== "hapus");
                 
-                objGaleri = jsongaleri;
+                objGaleri = jsongaleri.reverse();
                 if(res > 1){
                     document.querySelector(".paginationgalery").style.display = "block";
                     ubahhalaman(1);
@@ -13156,3 +13162,13 @@ const fn7selectreposistorymapel = () => {
     }
 };
 
+const objHal = ()=>{
+    let lr = jsongaleri;
+    let darikecil = lr.sort();//(a,b)=> a-b);
+    let daribesar = lr.reverse();//(a,b)=> b-a)
+    let data={};
+    data.darikecil = darikecil
+    data.daribesar = daribesar
+    return data
+
+}

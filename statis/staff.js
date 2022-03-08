@@ -10991,7 +10991,7 @@ const galery = async() => {
         let dt = r.data.filter(s => s.status !== "hapus");
         jsongaleridihapus = dtt.filter(s=> s.status == "hapus");
         jsongaleri = dtt.filter(s=> s.status !== "hapus");
-        objGaleri = jsongaleri;
+        objGaleri = jsongaleri.reverse();
         if(res > 1){
             document.querySelector(".paginationgalery").style.display = "block";
             ubahhalaman(1);
@@ -11369,7 +11369,7 @@ const carimediagaleri = (el)=>{
             
         }else{
             let dt = rec;
-            objGaleri = dt;
+            objGaleri = dt.reverse();
             document.querySelector(".paginationgalery").style.display = "block";
             ubahhalaman(1);
             // for(i = dt.length-1 ;  i>=0;i--){
@@ -11451,6 +11451,7 @@ const hapusgaleri = (id) =>{
                 jsongaleri = dtt.filter(s=> s.status !== "hapus");
                 
                 if(res > 1){
+                    objGaleri = jsongaleri.reverse();
                     document.querySelector(".paginationgalery").style.display = "block";
                     ubahhalaman(1);
                     // for(i = dt.length-1 ;  i>=0;i--){
@@ -11546,7 +11547,7 @@ function ubahhalaman(hal){
     //console.log(loopStart)
     //console.log(loopEnd)
     let html = "";
-    for(i = loopEnd; i >= loopStart ; i--){
+    for(var i = (hal-1) * jumlahperpage; i < (hal * jumlahperpage) && i < objGaleri.length; i++){        
         let d = objGaleri[i];
         let hh = cekpreviewupload2(d.tipe,d.idfile);
         html +=`<div class="w3-col l2" style="max-height: 270px;">

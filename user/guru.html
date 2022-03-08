@@ -2215,7 +2215,7 @@
             <div class="paginationgalery w3-padding w3-center" style="max-width: 600px;margin:5px auto; border:1px dotted blue">
                 <button class="tombl_first" onclick="halamanawal()">Awal</button><button class="tombl_prev" onclick="halamansebelumnya()">&lt;&lt;</button><span class="spangal_pages">1 dari 3 Halaman</span><button class="tombl_next" onclick="halamanberikutnya()">&gt;&gt;</button><button class="tombl_last" onclick="halamanakhir()">Akhir</button>
             </div>
-            <div class="tempatgaleri w3-row w3-margin-top">
+            <div class="tempatgaleri w3-row w3-margin-top w3-border-bottom">
                 <div class="w3-col l2 w3-border" style="height: 270px;">
                     <div class="isigaleri">
                         <img src="/img/pngegg (1).png" />
@@ -4247,7 +4247,7 @@ _OPSI-PG-C_1C #
         </div>
     </div>
     
-
+    <button onclick="btn_tdall()">Tess</button>
     <div id="datasiswaprint" style="display:hide;overflow-x:auto"></div>
     <input type="file" id="fileImportExcel" class="w3-hide" />
     <input type="file" id="inputimportdatasiswa" class="w3-hide" />
@@ -4269,6 +4269,25 @@ _OPSI-PG-C_1C #
        <button class="btntooltip3 w3-btn w3-round-large w3-light-gray">Teks digenerate JS</button><br><br>
        <button class="btntooltip4 w3-btn w3-round-large w3-light-gray">Hapus Baris Ini</button><br><br>
        <button class="btntooltip5 w3-btn w3-round-large w3-light-gray">Tambah Baris Setelah Ini</button>
+    </div>
+    <div id="tooltiptabelall">
+        <span class="w3-button w3-right w3-red" onclick="document.querySelector('#tooltiptabelall').style.display='none'">&times;</span>
+        Beri Tanda:<br>
+        <div class="w3-row-padding">
+
+            <button class="btntooltipall1 w3-btn w3-col l3 s2 w3-light-gray w3-margin-left w3-margin-top">hijau</button>
+            <button class="btntooltipall2 w3-btn  w3-col l3 s2 w3-light-gray w3-margin-left w3-margin-top">merah</button>
+            <button class="btntooltipall3 w3-btn  w3-col l3 s2 w3-light-gray w3-margin-left w3-margin-top">biru</button>
+            <button class="btntooltipall4 w3-btn  w3-col l3 s2 w3-light-gray w3-margin-left w3-margin-top">kuning</button> 
+            <button class="btntooltipall5 w3-btn  w3-col l3 s2 w3-light-gray w3-margin-left w3-margin-top">ceklis</button> 
+            <button class="btntooltipall6 w3-btn  w3-col l3 s2 w3-light-gray w3-margin-left w3-margin-top">Edit</button> 
+            <button class="btntooltipall7 w3-btn  w3-col l6 s6 w3-light-gray w3-margin-left w3-margin-top">&plus; Baris </button> 
+            <button class="btntooltipall8 w3-btn  w3-col l6 s6 w3-light-gray w3-margin-left w3-margin-top"><i class="fa fa-trash"></i> baris</button>
+            <label for="btntooltiptgl" class="w3-col l6 s6">
+                Tanggal: <input type="date" id="btntooltiptgl" class="btntooltipall6 w3-light-gray"/>
+
+            </label>
+        </div>
     </div>
 
 </body>

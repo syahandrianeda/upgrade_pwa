@@ -3455,4 +3455,15 @@ edurasataruhdraft.addEventListener("click",()=>{
 const ref_editorsoal = document.querySelector(".refrensi_soal");
 ref_editorsoal.addEventListener("click",()=>{
     document.querySelector("#modalbanksoal").style.display = "block";
-})
+});
+
+const btn_tdall =() =>{
+    let modal = document.querySelector("#tooltiptabelall");
+    let tgl = document.querySelector("#btntooltiptgl");
+    var d = new Date().toLocaleDateString().split('/');
+    var today = d[2]+"-"+("0"+d[0]).slice(-2)+"-"+("0"+d[1]).slice(-2);
+    tgl.value = today;
+    modal.style.display="block";
+
+}
+

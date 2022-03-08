@@ -572,13 +572,22 @@ div.denom {
 }
 
 .isiadm {display:none}
-
-#tooltiptabel {
+#tooltiptabel{
+  height: 230px;
+  width: 150px;
+  font-size: 8px;
+}
+#tooltiptabelall{
+  height: 200px;
+  width: 280px;
+  font-size: 10px;
+}
+#tooltiptabel, #tooltiptabelall {
   position: absolute;
   display: none;
-  width: 150px;
-  height: 230px;
-  font-size: 8px;
+  /* width: 150px; */
+  /* height: 230px; */
+  /* font-size: 8px; */
   /* top:0;
   left:0; */
   border:1px solid black;
@@ -588,7 +597,7 @@ div.denom {
   z-index: 2;
   /* cursor: pointer; */
 }
-#tooltiptabel:after {
+#tooltiptabel:after, #tooltiptabelall:after {
   content: "";
   position:absolute;
   
