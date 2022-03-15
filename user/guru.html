@@ -825,8 +825,8 @@
 
      
 
-                            <div class="w3-col l3 w3-right w3-card-4 w3-container w3-round-large tekeditorpg w3-margin-top w3-light-grey"
-                                style="position: sticky;position:-webkit-sticky;top:47px;z-index: 1;">
+                            <div class="w3-col l3 w3-right w3-card-4 w3-container w3-round-large tekeditorpg w3-margin-top w3-light-grey">
+                                <!-- style="position: sticky;position:-webkit-sticky;top:47px;z-index: 1;"> -->
                                 PENGATURAN KUNCI JAWABAN
                                 <br /><br />
                                 Saat ini belum terdeteksi adanya nomor soal Pilihan Ganda diketikan Anda. Nomor soal dan
@@ -2426,13 +2426,19 @@
         <div class="w3-container" id="id_admguru" style="display: none;">
             <h3>Administrasi Guru</h3>
             <span class ="w3-red w3-large">Masih Proses Desain ya ...</span>
+            <div class="w3-tiny">
+                Tahap 1:<br>
+                <span class="w3-green w3-badge">&checkmark;</span> Program Tahunan
+                <span class="w3-green w3-badge">&checkmark;</span> Program semester
+                <span class="w3-green w3-badge">&checkmark;</span> Sebaran KD (Pemetaan KD)
+            </div>
             
                 <div class="tab">
                     <button class="tablinks tabrpp" onclick="openCityy(event, 'buat_rpp')">Desain RPP</button>
                     <button class="tablinks" onclick="openCityy(event, 'laporan_adm')">Supervisi</button>
                     <button class="tablinks" onclick="openCityy(event, 'buat_prota')">Program Tahunan</button>
                     <button class="tablinks" onclick="openCityy(event, 'buat_prosem')">Program Semester</button>
-                    <button class="tablinks" onclick="openCityy(event, 'buat_pemetaankd')">Pemetaan KD</button>
+                    <button class="tablinks serverkd_on" onclick="openCityy(event, 'buat_pemetaankd')">Pemetaan KD</button>
                     <button class="tablinks" onclick="openCityy(event, 'buat_kkm')">KKM</button>
                     <button class="tablinks" onclick="openCityy(event, 'buat_perbaikan')">Perbaikan/Pengayaan</button>
                     <button class="tablinks" onclick="openCityy(event, 'buat_psikoedukatif')">Psikoedukatif</button>
@@ -2474,7 +2480,7 @@
                                 </label>
                                 
                                 <label class="w3-padding w3-margin-left w3-margin-top" for ="id_KATHO">PKRIS
-                                    <input type="checkbox" class="w3-check" value="Katholik" id="rpp_PKATHO" title="PENDIDIKAN AGAMA KATHOLIK" data-keyrpp="rpp_PKATHO">
+                                    <input type="checkbox" class="w3-check" value="Katholik" id="rpp_PKATO" title="PENDIDIKAN AGAMA KATHOLIK" data-keyrpp="rpp_PKATO">
                                 </label>
                                 
                                 <label  class="w3-padding w3-margin-left w3-margin-top"  for ="id_PKN">PKN
@@ -2663,7 +2669,7 @@
                             <option selected value="default">Pilih Mata Pelajaran</option>
                             <option value="PAI">Pendidikan Agama Islam</option>
                             <option value="PKRIS">Pendidikan Agama Kristen</option>
-                            <option value="PKATHO">Pendidikan Agama Katholik</option>
+                            <option value="PKATO">Pendidikan Agama Katholik</option>
                             <option value="PKN">PKN</option>
                             <option value="BINDO">BAHASA INDONESIA</option>
                             <option value="MTK">MATEMATIKA</option>
@@ -2860,9 +2866,9 @@
                                 </tr>
                             </tbody></table><br><br>
                             <div style="overflow-x: auto;">
-                                <table class="w3-table garis" style="font-size:6px">
+                                <table class="w3-table garis tabel_prosem_tematik" style="font-size:6px">
                                     <thead>
-                                        <tr class="w3-centered">
+                                        <tr class="w3-centered w3-light-gray">
                                             <th rowspan="3">No</th>
                                             <th rowspan="3">Tema</th>
                                             <th rowspan="3">SubtemaTema</th>
@@ -2871,15 +2877,15 @@
                                             <th colspan="30">Bulan</th>
                                             <th rowspan="3">Keterangan</th>
                                         </tr>
-                                        <tr>
+                                        <tr class=" w3-light-gray">
                                             <th colspan="5">JANUARI</th>
                                             <th colspan="5">FEBRUARI</th>
                                             <th colspan="5">MARET</th>
                                             <th colspan="5">APRIL</th>
                                             <th colspan="5">MEI</th>
                                             <th colspan="5">JUNI</th>
-                                        </tr>
-                                        <tr><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+                                        </trclass>
+                                        <tr class=" w3-light-gray"><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -3043,7 +3049,7 @@
                                     </tbody>
                                     
                                 </table>
-                            </div>
+                            </div><br><br>
                             <div class="w3-row-padding">
                                 <div class="w3-col l6 s6 m6 w3-center">
                                     Mengetahui, <br>
@@ -3060,7 +3066,12 @@
                                     <span class="spanprosemtematik_nipguru">NIP GURU</span>
                                 </div>
                             </div>
+                           
 
+                        </div>
+                        <div class="w3-border w3-center">
+                            <button onclick="printadm('prt_prosem_tematik',false)" class=" w3-button w3-blue w3-hover-green w3-round-large" title="Cetak Prota"><i class="fa fa-print"></i></button>
+                            <button onclick="alert('Silakan pilih dulu Tema yang akan disimpan.')" class="btnserver_prosemtematik w3-button w3-blue w3-hover-green w3-round-large" title="Simpan Server"><i class="fa fa-save"></i></button>
                         </div>
                     </div>
                     <div class="isiadm" id="prosemversi_simpan">Versi Yang Telah Anda Simpan:
@@ -3077,7 +3088,7 @@
                             .... Administrasi yang Anda telah disimpan di server akan tampil di sini!
                         </div>
                         <div class="w3-border w3-center">
-                            <button onclick="printadm('resultprosemsimpananguru')" class=" w3-button w3-blue w3-hover-green w3-round-large" title="Cetak Prota"><i class="fa fa-print"></i></button>
+                            <button onclick="printadm('resultprosemsimpananguru',false)" class=" w3-button w3-blue w3-hover-green w3-round-large" title="Cetak Program Semester"><i class="fa fa-print"></i></button>
                             <button onclick="alert('Administrasi untuk laporan supervisi harusnya berupa file yang telah ditandatangani baik dalam bentuk poto atau dokumen yang diunggah')" class=" w3-button w3-blue w3-hover-green w3-round-large" title="Jadikan Bahan Supervisi"><i class="fa fa-database"></i></button>
                         </div>
                     </div>
@@ -3088,7 +3099,7 @@
                                 <option selected value="default">Pilih Mata Pelajaran</option>
                                 <option value="PAI">Pendidikan Agama Islam</option>
                                 <option value="PKRIS">Pendidikan Agama Kristen</option>
-                                <option value="PKATHO">Pendidikan Agama Katholik</option>
+                                <option value="PKATO">Pendidikan Agama Katholik</option>
                                 <option value="PKN">PKN</option>
                                 <option value="BINDO">BAHASA INDONESIA</option>
                                 <option value="MTK">MATEMATIKA</option>
@@ -3151,13 +3162,475 @@
                                 </div>
                             </div>
                             <div class="w3-border w3-center">
-                                <button onclick="printadm('prt_prosem_mapel',false)" class="w3-button w3-blue w3-hover-green w3-round-large" title="Cetak Prota"><i class="fa fa-print"></i></button>
+                                <button onclick="printadm('prt_prosem_mapel',false)" class="w3-button w3-blue w3-hover-green w3-round-large" title="Cetak Program Semester"><i class="fa fa-print"></i></button>
                                 <button onclick="alert('prt_prosem_mapel')" class="btnserver_prosemmapel w3-button w3-blue w3-hover-green w3-round-large" title="Simpan Server"><i class="fa fa-save"></i></button>
                             </div>
                     </div>
                 </div>
                 <div class="tabcontent" id="buat_pemetaankd">
                     <h3>Pemetaan KD</h3>
+                    <div class="w3-border w3-padding">
+                        Pilih Mode Template:
+                        <div class="w3-button btnadm w3-rounded w3-small" onclick="tabA(event,'petakd_distribusi')">Distribusi KD</div>
+                        <div class="w3-button btnadm  w3-rounded w3-small" onclick="tabA(event,'petakd_versi1')">Per Tema</div>
+                        <div class="w3-button btnadm  w3-rounded w3-small" onclick="tabA(event,'petakd_versi2')">Per Semester</div>
+                        <div class="w3-button btnadm  w3-rounded w3-small" onclick="tabA(event,'petakd_versi3')">Versi 3</div>
+                        <div class="w3-button btnadm  w3-rounded w3-small" onclick="tabA(event,'petakd_versisimpan')">Versi Anda Simpan</div>
+                        <div class="w3-button btnadm  w3-rounded w3-small" onclick="tabA(event,'petakd_supervisi')">Versi Bahan Supervisi</div>
+                    </div>
+                    <div class="isiadm first_isiadm" id="petakd_distribusi">
+                        <div class="w3-row">
+                            <div class="w3-col l6 s12 w3-border w3-round-large w3-padding">
+                                Semester:<br>
+                                <label for="petakd_rd1">
+                                    <input type="radio" id="petakd_rd1" name="petakd_rd_semester" onchange="rdpetakd_semester(this)" value="1" > Semester 1
+                                </label><br>
+                                <label for="petakd_rd2">
+                                    <input type="radio" id="petakd_rd2" name="petakd_rd_semester" onchange="rdpetakd_semester(this)" value="2"> Semester 2
+                                </label>
+                            </div>
+                            <div class="w3-col l6 s12 w3-border w3-round-large w3-padding">
+                                Pilih Tipe Pemetaan:<br>
+                                <label for="petakd_rd3">
+                                    <input type="radio" id="petakd_rd3" onchange="rdpetakd_temamapel(this)" name="petakd_rd_tipesebaran" value="Tematik"/> Tematik
+                                </label><br>
+                                <label for="petakd_rd4">
+                                    <input type="radio" id="petakd_rd4" onchange="rdpetakd_temamapel(this)" name="petakd_rd_tipesebaran" value="Mata Pelajaran"/> Mata Pelajaran / Mulok
+                                </label>
+                            </div>
+                            
+                            <div class="w3-col l12 s12 w3-border w3-round-large w3-tiny w3-padding">
+                                Data ini merupakan database pemetaan KD. Anda dapat mengatur pemetaan KD berdasarkan Tema di setiap mata pelajarannya. 
+                                Bantu kami dalam menentukan pemetaan ini agar dapat menggenerate seluruh prosees penyebaran KD. <br>
+                                Dalam pengaturannya, kami anggap KD Pengetahuan (KD-3) memiliki kesamaan dalam pemetaan. Jadi, kami menginisiasi pengaturan dengan KD Pengetahuan (KD-3).
+                                <br>
+                                Anda dapat mencetak untuk KD 3 maupun KD 4 di masing-masing menu cetak untuk KD 3 atau KD 4.
+                            </div>
+                        </div>
+                        <div class="w3-small w3-hide divselectpetakd_mapelmulok w3-card-2 w3-padding w3-green w3-opacity style="max-width:1000px;margin:15px auto">
+                            <select class="w3-select" id="petakd_mapelormulok">
+                                <option selected value="default">Pilih Mata Pelajaran</option>
+                                <option value="PAI">PENDIDIKAN AGAMA ISLAM</option>
+                                <option value="PKRIS">PENDIDIKAN AGAMA KRISTEN</option>
+                                <option value="PKATO">PENDIDIKAN AGAMA KATHOLIK</option>
+                                <option value="MTK">MATEMATIKA</option>
+                                <option value="PJOK">PJOK</option>
+                                <option value="BSUND">BAHASA SUNDA</option>
+                            </select><hr>
+                            <label class="switch">
+                                <input type="checkbox" id="switchpetakd_mapel" onchange="switchpetakd_mapel(this)" checked>
+                                <span class="slider round"></span>
+                            </label><span id="ketswitchpetakd_mapel">Kompetensi Pengetahuan (KD-3)</span>
+                        </div>
+
+                        <div class="w3-small prt_petakd_distribusi w3-card-2 w3-padding w3-white" style="max-width:1000px;margin:15px auto">
+                            <h3 class="w3-center h_petakd1">DISTRIBUSI KOMPETENSI DASAR</h3>
+                            <h4 class="w3-center h_petakd2">SEMESTER (CEKLIS SEMESTER) TAHUN PELAJARAN 2021/2022</h4>
+                            <br><br>
+                            <div style="overflow-x: auto;">
+                            
+                            <table class="w3-table garis tbl_distribusi_kd" id="dist_replacekd">
+                                <thead>
+                                    <tr class="w3-light-gray">
+                                        <th rowspan="2">TEMA</th>
+                                        <th colspan="20">MATA PELAJARAN</th>
+                                    </tr>
+                                    <tr class="w3-light-gray"><th colspan="4">PKN</th>
+                                        <th colspan="4">Bahasa Indonesia</th>
+                                        <th colspan="4">IPA</th>
+                                        <th colspan="4">IPS</th>
+                                        <th colspan="4">SBDP</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>TEMA 6</td>
+                                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>TEMA 7</td>
+                                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>TEMA 8</td>
+                                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>TEMA 9</td>
+                                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                            </div><br><br>
+                            
+                            <div class="w3-row-padding">
+                                <div class="w3-col l6 s6 m6 w3-center">
+                                    Mengetahui, <br>
+                                    Kepala <span class="spanpetakd_namasekolah">SEKOLAH EDURASA</span>
+                                    <br><br><br><br><br>
+                                    <u><b class="spanpetakd_namakepsek">NAMA KEPSEK</b></u><br>
+                                    <span class="spanpetakd_nipkepsek">NIP KEPSEK</span>
+                                </div>
+                                <div class="w3-col l6 s6 m6 w3-center">
+                                    Depok, <span class="spanpetakd_titimangsa" contenteditable="true">EDIT TANGGAL</span> <br>
+                                    <span class="spanpetakd_gmpkelas"></span> <span class="spanpetakd_kelasnya"></span>
+                                    <br><br><br><br><br>
+                                    <u><b class="spanpetakd_namaguru">NAMA GURU</b></u><br>
+                                    <span class="spanpetakd_nipguru">NIP GURU</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="w3-border w3-center">
+                            <div id="Ubahkddistribusi">
+
+                                Tampilkan sebagai KD:<br>
+                                <label for="petakd_rd5">
+                                    <input type="radio" id="petakd_rd5" onchange="tampilkandistribusidalam_tipekd(this)" name="petakd_rd_tipekd" value="3"/> Ubah KD Pengetahuan (KD-3)
+                                </label> 
+                                <label for="petakd_rd6">
+                                    <input type="radio" id="petakd_rd6" onchange="tampilkandistribusidalam_tipekd(this)" name="petakd_rd_tipekd" value="4"/> KD Keterampilan (KD-4)
+                                </label>
+                            </div>
+                            
+                            <hr>
+                            <button onclick="printadm('prt_petakd_distribusi')" class=" w3-button w3-blue w3-hover-green w3-round-large" title="Cetak Pemetaan KD"><i class="fa fa-print"></i> Print</button>
+                            <button onclick="alert('Silakan pilih dulu Tema yang akan disimpan.')" class="btnserver_petakd_distribusi w3-button w3-blue w3-hover-green w3-round-large" title="Simpan Server"><i class="fa fa-save"></i> Simpan Server</button>
+                        </div>
+
+
+                    </div>
+                    <div class="isiadm" id="petakd_versi1">
+                        Sebaran KD masing-masing Tema (Subtema dan Pembelajaran)<hr>
+                        <div class="w3-row-padding w3-border w3-round-large">
+                            <div class="w3-col l6 s12">
+                                <select class="w3-select select_sebarankdpertema">
+                                    <option value="default" selected>Pilih Tema</option>
+                                    <option value="TEMA 1">TEMA 1</option>
+                                    <option value="TEMA 2">TEMA 2</option>
+                                    <option value="TEMA 3">TEMA 3</option>
+                                    <option value="TEMA 4">TEMA 4</option>
+                                    <option value="TEMA 5">TEMA 5</option>
+                                    <option value="TEMA 6">TEMA 6</option>
+                                    <option value="TEMA 7">TEMA 7</option>
+                                    <option value="TEMA 8">TEMA 8</option>
+                                    <option value="TEMA 9">TEMA 9</option>
+                                </select>
+                                
+                                <label class="switch w3-margin-top">
+                                    <input type="checkbox" id="checkboxkd_sebarankdpertema" onchange="ubahkd_sebarankdpertema(this)" checked>
+                                    <span class="slider round"></span>
+                                </label><span class="checkboxkd_sebarankdpertema">Kompetensi Pengetahuan (KD-3)</span>
+                            </div>
+                            <div class="w3-col l6 s12 w3-tiny">
+                                Info:<br>
+                                <ol class="w3-ul">
+                                    <li>Data pada kolom KD adalah data yang telah Anda isi pada Pemetaan KD</li>
+                                    <li>Jika Anda ingin menambahkan/mengurangi KD yang dimaksud Anda tinggal mengatur ulang di Pemetaan KD.</li>
+                                    <li>Anda hanya diminta untuk memberikan tanda <strong>&checkmark;</strong> pada sel yang tersedia</li>
+                                    <li>Anda tinggal mengeklik pada kolom untuk memberikan tanda atau menghapusnya tanda ceklis (&checkmark;)</li>
+                                    <li>Tampilan default (bawaan) dari sebaran KD ini adalah Kompetensi Pengetahuan KD-3. Anda dapat mengubah menjadi Kompetensi Keterampilan, Anda tinggal mengaktifkan pilihan Kompetensi pada menu cekmark yang tersedia</li>
+                                </ol>
+                            </div>
+                        </div>
+                        <div class="w3-small prt_petakd_sebarankdpertema w3-card-2 w3-padding w3-white" style="max-width:1000px;margin:15px auto">
+                            <h4 class="w3-center h1_sebarankdpertema">PEMETAAN KOMPETENSI DASAR PENGETAHUAN ( KI-3) PER SUBTEMA DAN PER PEMBELAJARAN</h4>
+                            <h5 class="w3-center h2_sebarankdpertema">TEMA 6 : ....</h5><br>
+                            <div class="w3-row w3-margin-top">
+                                <div class="w3-col l6 s6">
+                                    <table>
+                                        <tr><td>Sekolah</td><td>:</td><td class="namasekolah_sebarankdpertema">SDN RATUJAYA 1</td></tr>
+                                        <tr><td>Kelas</td><td>:</td><td class="namakelas_sebarankdpertema">Kelas 6A</td></tr>
+                                        <tr><td>Tahun Pelajaran</td><td>:</td><td class="tapel_sebarankdpertema">2021/2022</td></tr>
+                                        <tr><td>Semester</td><td>:</td><td class="semester_sebarankdpertema">1</td></tr>
+                                        <tr><td>Kurikulum</td><td>:</td><td class="kurikulum_sebarankdpertema" contenteditable="true" title="Silakan edit manual">Kurikulum Darurat</td></tr>
+                                    </table>
+                                </div>
+                                <div class="w3-col l6 s6 w3-small">
+                                    Keterangan:
+                                    <table>
+                                        <tr><td>SUBTEMA 1</td><td>:</td><td class="subtema1_sebarankdpertema">Lorem ipsum</td></tr>
+                                        <tr><td>SUBTEMA 2</td><td>:</td><td class="subtema2_sebarankdpertema">Lorem ipsum</td></tr>
+                                        <tr><td>SUBTEMA 3</td><td>:</td><td class="subtema3_sebarankdpertema">Lorem ipsum</td></tr>
+                                        <tr class="kelastinggirendah_sebarankdpertema"><td>SUBTEMA 4</td><td>:</td><td class="subtema4_sebarankdpertema">Lorem ipsum</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="w3-margin-top" style="overflow-x:auto">
+                                    <table class="w3-table garis tabelsebaran_sebarankdpertema w3-tiny">
+                                        <thead>
+                                            <tr class="w3-light-gray">
+                                                <th rowspan="3" valign="Center" class="w3-centered">NO</th>
+                                                <th rowspan="3" valign="Center" class="w3-centered">MATA PELAJARAN</th>
+                                                <th rowspan="3" valign="Center" class="w3-centered">KOMPETENSI DASAR</th>
+                                                <th colspan="6">SUBTEMA 1</th>
+                                                <th colspan="6">SUBTEMA 2</th>
+                                                <th colspan="6">SUBTEMA 3</th>
+                                                <th colspan="6" class="kelastinggirendah_sebarankdpertema">SUBTEMA 4</th>
+                                                <th rowspan="3" valign="Center" class="w3-centered">Jumlah KD</th>
+                                            </tr>
+                                            <tr class="w3-light-gray">
+                                                <th colspan="6">Pembelajaran ke-</th>
+                                                <th colspan="6">Pembelajaran ke-</th>
+                                                <th colspan="6">Pembelajaran ke-</th>
+                                                <th colspan="6" class="kelastinggirendah_sebarankdpertema">Pembelajaran ke-</th>
+                                            </tr>
+                                            <tr class="w3-light-gray">
+                                                <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th>
+                                                <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th>
+                                                <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th>
+                                                <th class="kelastinggirendah_sebarankdpertema">1</th>
+                                                <th class="kelastinggirendah_sebarankdpertema">2</th>
+                                                <th class="kelastinggirendah_sebarankdpertema">3</th>
+                                                <th class="kelastinggirendah_sebarankdpertema">4</th>
+                                                <th class="kelastinggirendah_sebarankdpertema">5</th>
+                                                <th class="kelastinggirendah_sebarankdpertema">6</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>PKN</td>
+                                                <td>3.1 lorem opsum</td>
+                                                <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                                                <td class="kelastinggirendah_sebarankdpertema"></td>
+                                                <td class="kelastinggirendah_sebarankdpertema"></td>
+                                                <td class="kelastinggirendah_sebarankdpertema"></td>
+                                                <td class="kelastinggirendah_sebarankdpertema"></td>
+                                                <td class="kelastinggirendah_sebarankdpertema"></td>
+                                                <td class="kelastinggirendah_sebarankdpertema"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td>PKN</td>
+                                                <td>3.3 lorem opsum</td>
+                                                <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                                                <td class="kelastinggirendah_sebarankdpertema"></td>
+                                                <td class="kelastinggirendah_sebarankdpertema"></td>
+                                                <td class="kelastinggirendah_sebarankdpertema"></td>
+                                                <td class="kelastinggirendah_sebarankdpertema"></td>
+                                                <td class="kelastinggirendah_sebarankdpertema"></td>
+                                                <td class="kelastinggirendah_sebarankdpertema"></td>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody>
+                                            <tr class="w3-light-gray">
+                                                <th rowspan="2" valign="center" colspan="2" class="jumlahkdditemaini_sebarankdpertema w3-centered">Jumlah KD di Tema ini</th>
+                                                <th>Jumlah KD tiap Pembelajaran pada masing-masing hari</th>
+                                                <th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th>
+                                                <th class="kelastinggirendah_sebarankdpertema"></th>
+                                                <th class="kelastinggirendah_sebarankdpertema"></th>
+                                                <th class="kelastinggirendah_sebarankdpertema"></th>
+                                                <th class="kelastinggirendah_sebarankdpertema"></th>
+                                                <th class="kelastinggirendah_sebarankdpertema"></th>
+                                                <th class="kelastinggirendah_sebarankdpertema"></th>
+                                                <th></th>
+                                            </tr>
+                                            <tr class="w3-light-gray">
+                                                <th>Jumlah KD pada masing-masing Subtema </th>
+                                                <th colspan="6"></td>
+                                                <th colspan="6"></td>
+                                                <th colspan="6"></td>
+                                                <th colspan="6" class="kelastinggirendah_sebarankdpertema"></th>
+                                                <th></th>
+                                            </tr>
+                                        </tbody>
+
+                                    </table>
+                            </div>
+                            <div class="w3-row-padding w3-margin-top">
+                                <div class="w3-col l6 s6 m6 w3-center">
+                                    Mengetahui, <br>
+                                    Kepala <span class="ttdnamasekolah_sebarankdpertema">SEKOLAH EDURASA</span>
+                                    <br><br><br><br><br>
+                                    <u><b class="ttdnamakepsek_sebarankdpertema">NAMA KEPSEK</b></u><br>
+                                    <span class="nipkepsek_sebarankdpertema">NIP KEPSEK</span>
+                                </div>
+                                <div class="w3-col l6 s6 m6 w3-center">
+                                    Depok, <span class="titimangsa_sebarankdpertema" contenteditable="true">EDIT TANGGAL</span> <br>
+                                    <span class="gmpkelas_sebarankdpertema"></span> <span class="kelasnya_sebarankdpertema"></span>
+                                    <br><br><br><br><br>
+                                    <u><b class="namaguru_sebarankdpertema">NAMA GURU</b></u><br>
+                                    <span class="nipguru_sebarankdpertema">NIP GURU</span>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="w3-center">
+                            <button onclick="printadm('prt_petakd_sebarankdpertema',false)" class="w3-button w3-blue w3-hover-green w3-round-large" title="Cetak Sebaran KD"><i class="fa fa-print"></i> Print</button>
+                            <button onclick="alert('Silakan pilih dulu Tema yang akan disimpan.')" class="btnserver_sebarankdpertama w3-button w3-blue w3-hover-green w3-round-large" title="Simpan Server"><i class="fa fa-save"></i> Simpan Server</button>
+                        </div>
+                    </div>
+                    <div class="isiadm" id="petakd_versi2">
+                        Sebaran KD masing-masing Semester (Tema dan Subtema) dalam satu semester<hr>
+                        <div class="w3-row-padding">
+                            <div class="w3-col l6 s12 w3-hide-small w3-tiny">
+                                Info:
+                                <ol class="w3-ul">
+                                    <li>Sebaran KD per semester ini adalah sebaran KD yang telah Anda buat setelah tahapan pengisian Pemetaan KD dan Pemetaan per Tema.</li>
+                                    <li>Anda tinggal memilih rekapitulasi Sebaran KD per semester ini pada menu Pilihan Semester</li>
+                                    <li>Jika Anda ingin mengeditnya, silakan ulangi pada tahapan-tahapan pengisian sebelumnya</li>
+                                </ol>
+                            </div>
+                            <div class="w3-col l6 s12 w3-padding w3-card-4 w3-round-large">
+                                Pilih semester:<hr>
+                                <label for="sebkdpersms_radiosemester1">
+                                    <input type="radio" name="sebkdpersms_radiosemester" class="w3-radio" id="sebkdpersms_radiosemester1" onchange="sebkdpersms_radiosemester(this)" value="1">Semester 1
+                                </label>
+                                <label for="sebkdpersms_radiosemester2">
+                                    <input type="radio" name="sebkdpersms_radiosemester" class="w3-radio" id="sebkdpersms_radiosemester2" onchange="sebkdpersms_radiosemester(this)" value="2">Semester 2
+                                </label><hr>
+                                <label class="switch">
+                                    <input type="checkbox" class="checkbox_ubahkdpersemester" onchange="ubahkd_sebarankdpersemester(this)" checked>
+                                    <span class="slider round"></span>
+                                </label><span class="keterangankd34_sebarankdpersemester">Kompetensi Pengetahuan (KD-3)</span>
+                            </div>
+                        </div>
+                        <!-- Mulai dari SINI -->
+                        <div class="w3-small prt_petakd_sebarankdpersemester w3-card-2 w3-padding w3-white" style="max-width:1000px;margin:15px auto">
+                            <h4 class="w3-center h1_sebarankdpersemester">PEMETAAN KOMPETENSI DASAR PENGETAHUAN ( KI-3)<br> SEMESTER 2 </h4>
+                            <br>
+                            <div class="w3-row w3-margin-top">
+                                <div class="w3-col l6 s6">
+                                    <table>
+                                        <tr><td>Sekolah</td><td>:</td><td class="namasekolah_sebarankdpersemester">SDN RATUJAYA 1</td></tr>
+                                        <tr><td>Kelas</td><td>:</td><td class="namakelas_sebarankdpersemester">Kelas 6A</td></tr>
+                                        <tr><td>Kurikulum</td><td>:</td><td class="kurikulum_sebarankdpersemester" contenteditable="true" title="Silakan edit manual">Kurikulum Darurat</td></tr>
+                                    </table>
+                                </div>
+                                <div class="w3-col l6 s6 w3-small">
+                                    Keterangan:
+                                    <table class="tabelkoleksitema_sebarankdpersemester">
+                                        <tr><td>TEMA 1</td><td>:</td><td class="subtema1_sebarankdpersemester">Lorem ipsum</td></tr>
+                                        <tr><td>TEMA 2</td><td>:</td><td class="subtema2_sebarankdpersemester">Lorem ipsum</td></tr>
+                                        <tr><td>TEMA 3</td><td>:</td><td class="subtema3_sebarankdpersemester">Lorem ipsum</td></tr>
+                                        <tr class="kelastinggirendah_sebarankdpersemester"><td>SUBTEMA 4</td><td>:</td><td class="subtema4_sebarankdpersemester">Lorem ipsum</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="w3-margin-top" style="overflow-x:auto">
+                                    <table class="w3-table garis tabelsebaran_sebarankdpersemester w3-tiny">
+                                        <thead>
+                                            <tr class="w3-light-gray">
+                                                <th rowspan="3" valign="center" class="w3-center">No</th>
+                                                <th rowspan="3" valign="center" class="w3-center">MATA PELAJARAN</th>
+                                                <th rowspan="3" valign="center" class="w3-center">KOMPETENSI DASAR</th>
+                                                <th colspan="3" class="w3-center">TEMA 1</th>
+                                                <th colspan="3" class="w3-center">TEMA 2</th>
+                                                <th colspan="3" class="w3-center">TEMA 3</th>
+                                                <th colspan="3" class="w3-center">TEMA 4</th>
+                                                <th colspan="3" class="w3-center">TEMA 5</th>
+                                                <th rowspan="3" valign="center">Jumlah </th>
+                                            </tr>
+                                            <tr class="w3-light-gray">
+                                                <th colspan="3" class="w3-center">SUBTEMA</th>
+                                                <th colspan="3" class="w3-center">SUBTEMA</th>
+                                                <th colspan="3" class="w3-center">SUBTEMA</th>
+                                                <th colspan="3" class="w3-center">SUBTEMA</th>
+                                                <th colspan="3" class="w3-center">SUBTEMA</th>
+                                            </tr>
+                                            <tr class="w3-light-gray">
+                                                <th>1</th><th>2</th><th>3</th>
+                                                <th>1</th><th>2</th><th>3</th>
+                                                <th>1</th><th>2</th><th>3</th>
+                                                <th>1</th><th>2</th><th>3</th>
+                                                <th>1</th><th>2</th><th>3</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>Mapel</td>
+                                                <td>3.1 lorem opsum</td>
+                                                <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td>Mapel</td>
+                                                <td>3.2 lorem opsum</td>
+                                                <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody>
+                                            <tr class="w3-light-gray">
+                                                <th rowspan="2" valign="center" colspan="2" class="jumlahkdditemaini_sebarankdpersemester w3-centered">Jumlah KD di Tema ini</th>
+                                                <th>Jumlah KD tiap Pembelajaran pada masing-masing hari</th>
+                                                <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                                                <th></th>
+                                            </tr>
+                                            <tr class="w3-light-gray">
+                                                <th>Jumlah KD pada masing-masing Subtema </th>
+                                                <th colspan="3"></td>
+                                                <th colspan="3"></td>
+                                                <th colspan="3"></td>
+                                                <th colspan="3"></td>
+                                                <th colspan="3"></td>
+                                                <th></th>
+                                            </tr>
+                                        </tbody>
+
+                                    </table>
+                            </div>
+                            <div class="w3-row-padding w3-margin-top">
+                                <div class="w3-col l6 s6 m6 w3-center">
+                                    Mengetahui, <br>
+                                    Kepala <span class="ttdnamasekolah_sebarankdpersemester">SEKOLAH EDURASA</span>
+                                    <br><br><br><br><br>
+                                    <u><b class="ttdnamakepsek_sebarankdpersemester">NAMA KEPSEK</b></u><br>
+                                    <span class="nipkepsek_sebarankdpersemester">NIP KEPSEK</span>
+                                </div>
+                                <div class="w3-col l6 s6 m6 w3-center">
+                                    Depok, <span class="titimangsa_sebarankdpersemester" contenteditable="true">EDIT TANGGAL</span> <br>
+                                    <span class="gmpkelas_sebarankdpersemester"></span> <span class="kelasnya_sebarankdpersemester"></span>
+                                    <br><br><br><br><br>
+                                    <u><b class="namaguru_sebarankdpersemester">NAMA GURU</b></u><br>
+                                    <span class="nipguru_sebarankdpersemester">NIP GURU</span>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="w3-center">
+                            <button onclick="printadm('prt_petakd_sebarankdpersemester',false)" class="w3-button w3-blue w3-hover-green w3-round-large" title="Cetak Sebaran KD"><i class="fa fa-print"></i> Print</button>
+                            <button onclick="alert('Silakan pilih dulu Tema yang akan disimpan.')" class="btnserver_sebarankdpersemester w3-button w3-blue w3-hover-green w3-round-large" title="Simpan Server"><i class="fa fa-save"></i> Simpan Server</button>
+                        </div>
+                        
+                        <!-- sampai di sini -->
+
+                    </div>
+                    <div class="isiadm" id="petakd_versi3">
+                        Versi 3
+                    </div>
+                    <div class="isiadm" id="petakd_versisimpan">
+                        <h4>Pemetaan KD yang telah Anda  Simpan:
+                        <div class="w3-row-padding">
+                            <div class="w3-col l2 s12 m12">
+                                <button class="warnaeka w3-btn w3-round-large kliklihatsimpanpetakd w3-tiny" onclick="dataadmsimpananguru('petakd','page_petakdsimpan')">Periksa</button>
+                            </div>
+                            <div class="w3-col l7 s12 m12 w3-tiny">
+                                <div class="w3-border ket_resultpetakdsimpananguru result_hapus"></div>
+                                <div class="w3-bar page_petakdsimpan w3-center  w3-tiny result_hapus"></div>
+                            </div>
+                        </div>
+                        <div class="resultpetakdsimpananguru w3-card-2 w3-padding result_hapus w3-white" style="max-width:1000px;margin:15px auto">
+                            .... Administrasi yang Anda telah disimpan di server akan tampil di sini!
+                        </div>
+                        <div class="w3-border w3-center">
+                            <button onclick="printadm('resultpetakdsimpananguru',false)" class=" w3-button w3-blue w3-hover-green w3-round-large" title="Cetak Program Semester"><i class="fa fa-print"></i></button>
+                            <button onclick="alert('Administrasi untuk laporan supervisi harusnya berupa file yang telah ditandatangani baik dalam bentuk poto atau dokumen yang diunggah')" class=" w3-button w3-blue w3-hover-green w3-round-large" title="Jadikan Bahan Supervisi"><i class="fa fa-database"></i></button>
+                        </div>
+                    </div>
+                    <div class="isiadm" id="petakd_supervisi">
+                        Versi Supervisi
+                        <div class="w3-center">
+                            <button onclick="printadm('resultprosemsimpananguru',false)" class=" w3-button w3-blue w3-hover-green w3-round-large" title="Cetak Program Semester"><i class="fa fa-print"></i></button>
+                            <button onclick="alert('Administrasi untuk laporan supervisi harusnya berupa file yang telah ditandatangani baik dalam bentuk poto atau dokumen yang diunggah')" class=" w3-button w3-blue w3-hover-green w3-round-large" title="Jadikan Bahan Supervisi"><i class="fa fa-database"></i></button>
+                        </div>
+                    </div>
                 </div>
                 <div class="tabcontent" id="buat_psikoedukatif">
                     <h3>Psikoedukatif</h3>
@@ -3174,7 +3647,7 @@
                 <div class="tabcontent" id="buat_notularapat">
                     <h3>Notula Rapat</h3>
                 </div>
-            </div>
+        </div>
             <div style="height:300px"></div>
     </div>
 
@@ -4247,7 +4720,10 @@ _OPSI-PG-C_1C #
         </div>
     </div>
     
-    <button onclick="btn_tdall()">Tess</button>
+    <!-- <button onclick="document.getElementById('tooltipkdmapel').style.display='block'">Tess</button>
+    <button onclick="cekApiSebaranKD()">Cek API</button>
+    <button onclick="htmldistribusikd_tematik()">Cek ArrObj</button>
+    <button onclick="gabungdataserverkd()">Gabung OBjek KD</button> -->
     <div id="datasiswaprint" style="display:hide;overflow-x:auto"></div>
     <input type="file" id="fileImportExcel" class="w3-hide" />
     <input type="file" id="inputimportdatasiswa" class="w3-hide" />
@@ -4271,10 +4747,11 @@ _OPSI-PG-C_1C #
        <button class="btntooltip5 w3-btn w3-round-large w3-light-gray">Tambah Baris Setelah Ini</button>
     </div>
     <div id="tooltiptabelall">
+        <div id="tooltiptabelheader" class="warnaeka">GESER DI SINI</div>
         <span class="w3-button w3-right w3-red" onclick="document.querySelector('#tooltiptabelall').style.display='none'">&times;</span>
         Beri Tanda:<br>
         <div class="w3-row-padding">
-
+            
             <button class="btntooltipall1 w3-btn w3-col l3 s2 w3-light-gray w3-margin-left w3-margin-top">hijau</button>
             <button class="btntooltipall2 w3-btn  w3-col l3 s2 w3-light-gray w3-margin-left w3-margin-top">merah</button>
             <button class="btntooltipall3 w3-btn  w3-col l3 s2 w3-light-gray w3-margin-left w3-margin-top">biru</button>
@@ -4283,13 +4760,82 @@ _OPSI-PG-C_1C #
             <button class="btntooltipall6 w3-btn  w3-col l3 s2 w3-light-gray w3-margin-left w3-margin-top">Edit</button> 
             <button class="btntooltipall7 w3-btn  w3-col l6 s6 w3-light-gray w3-margin-left w3-margin-top">&plus; Baris </button> 
             <button class="btntooltipall8 w3-btn  w3-col l6 s6 w3-light-gray w3-margin-left w3-margin-top"><i class="fa fa-trash"></i> baris</button>
+            <div class="w3-clear"></div>
             <label for="btntooltiptgl" class="w3-col l6 s6">
                 Tanggal: <input type="date" id="btntooltiptgl" class="btntooltipall6 w3-light-gray"/>
-
             </label>
+            <lable for="tooltiptgllengkap" class="w3-tiny">
+                <input type="radio" class="w3-radio w3-tiny" data-tooltiptgl="lengkap" name="formattgltooltip" id="tooltiptgllengkap">
+                Format = 3 Maret 2022
+            </lable>
+            <lable for="tooltiptglringkas" class="w3-tiny">
+                <input type="radio" class="w3-radio w3-tiny" data-tooltiptgl="garismiring" name="formattgltooltip" id="tooltiptglringkas" >
+                
+                Format = 3/03/2022
+            </lable>  
         </div>
     </div>
-
+    <div id="tooltipkd1">
+        <div id="toltipkd1header" class="w3-blue">GESER</div>
+        <span onclick="document.getElementById('tooltipkd1').style.display='none'" class="w3-right w3-red w3-btn">&times;</span>
+        <div id="tempatkd" class="w3-padding">
+            <div class="w3-badge w3-green badge_kd" style="cursor:pointer">1</div>
+            <div class="w3-badge w3-green badge_kd" style="cursor:pointer">2</div>
+            <div class="w3-badge w3-green badge_kd" style="cursor:pointer">3</div>
+            <div class="w3-badge w3-green badge_kd" style="cursor:pointer">4</div>
+            <div class="w3-badge w3-green badge_kd" style="cursor:pointer">5</div>
+            <div class="w3-badge w3-green badge_kd" style="cursor:pointer">6</div>
+            <div class="w3-badge w3-green badge_kd" style="cursor:pointer">7</div>
+            <div class="w3-badge w3-green badge_kd" style="cursor:pointer">8</div>
+            <div class="w3-badge w3-green badge_kd" style="cursor:pointer">9</div>
+            <div class="w3-badge w3-green badge_kd" style="cursor:pointer">10</div>
+            <div class="w3-badge w3-green badge_kd" style="cursor:pointer">11</div>
+            <div class="w3-badge w3-green badge_kd" style="cursor:pointer">12</div>
+            <div class="w3-badge w3-green badge_kd" style="cursor:pointer">13</div>
+            <div class="w3-badge w3-green badge_kd" style="cursor:pointer">14</div>
+            <div class="w3-badge w3-green badge_kd" style="cursor:pointer">15</div>
+            <div class="w3-badge w3-green badge_kd" style="cursor:pointer">16</div>
+            <div class="w3-badge w3-green badge_kd" style="cursor:pointer">17</div>
+            <div class="w3-badge w3-green badge_kd" style="cursor:pointer">18</div>
+            <div class="w3-badge w3-green badge_kd" style="cursor:pointer">19</div>
+            <div class="w3-badge w3-green badge_kd" style="cursor:pointer">20</div>
+            <div class="w3-badge w3-green badge_kd" style="cursor:pointer">21</div>
+        </div>
+        <div class="w3-border-top w3-border-red w3-padding w3-center w3-margin-top">
+            <button class="w3-border-large w3-red w3-tiny hapus_tooltipkd1"><i class="fa fa-trash"></i> Hapus</button>
+            
+        </div>
+    </div>
+    <div id="tooltipkdmapel">
+        <div class="tooltiparahkanan"></div>
+        <div class="tooltiparahatas"></div>
+        <div class="tooltiparahkiri"></div>
+        <div id="tooltipkdmapelheader" class="w3-green">GESER
+            <span class="w3-btn w3-red w3-right" onclick="document.getElementById('tooltipkdmapel').style.display='none'">&times;</span>
+            <br><span id="loadingtooltipmapel"><i class="fa fa-spin fa-spinner"></i></span>
+        </div>
+        <div class="w3-container tempattooltipbtnkd w3-border-bottom w3-border-blue w3-small">
+            Pengisian Kolom KD:<br>
+            <button class="w3-badge badge_mapel w3-sand">1</button><button class="w3-badge badge_mapel w3-sand">2</button><button class="w3-badge badge_mapel w3-sand">3</button><button class="w3-badge badge_mapel w3-sand">4</button><button class="w3-badge badge_mapel w3-sand">5</button><button class="w3-badge badge_mapel w3-sand">6</button><button class="w3-badge badge_mapel w3-sand">7</button><button class="w3-badge badge_mapel w3-sand">8</button><button class="w3-badge badge_mapel w3-sand">9</button><button class="w3-badge badge_mapel w3-sand">10</button><button class="w3-badge badge_mapel w3-sand">10</button><button class="w3-badge badge_mapel w3-sand">11</button><button class="w3-badge badge_mapel w3-sand">12</button><button class="w3-badge badge_mapel w3-sand">13</button><button class="w3-badge badge_mapel w3-sand">14</button><button class="w3-badge badge_mapel w3-sand">15</button><button class="w3-badge badge_mapel w3-sand">16</button><button class="w3-badge badge_mapel w3-sand">17</button><button class="w3-badge badge_mapel w3-sand">18</button><button class="w3-badge badge_mapel w3-sand">19</button><button class="w3-badge badge_mapel w3-sand">20</button><button class="w3-badge badge_mapel w3-sand">21</button>
+            <div class="w3-clear"></div>
+        </div>
+        <div class="w3-container w3-margin-bottom tempattooltipeditor w3-margin-top">
+            Pengisian Kolom Materi atau Indikator:<br><sub>Pastikan kolom KD tidak kosong!</sub>
+            <div id="tooltipeditor" contenteditable="true" class="w3-white w3-small w3-input" spellcheck="false">Ketik Indikator/materi di sini!</div>
+            <div class="w3-btn kirimtooltipeditor w3-round w3-tiny">Simpan</div>
+        </div>
+        <div class="w3-container tempattooltipjp w3-margin-top w3-border-top w3-padding">
+            Input Jam Pelajaran:
+            <input type="number" min="1" max="999" id="inputjp" class="w3-border"/>
+            <div class="w3-btn w3-round kirimtooltipjam w3-tiny">Simpan</div>
+        </div>
+        <div class="w3-border-top w3-border-red w3-center w3-padding w3-margin-top">
+            <button class="tooltiphapuskolom w3-button w3-red w3-round-large w3-tiny" title="Hapus Kolom ini"><i class="fa fa-trash"></i> Kolom</button>
+            <button class="tooltiptambahkolom w3-button w3-green w3-round-large w3-tiny" title="Tambah Kolom ini"><i class="fa fa-plus"></i> Kolom</button>
+            <button class="tooltiphapusruanglingkup w3-button w3-round-large w3-amber w3-tiny" title="Hapus Ruang Lingkup"><i class="fa fa-trash"></i> Ruang Lingkup</button>
+        </div>
+    </div>
+    <button class="w3-button" style="position: fixed;bottom:5px;right:0;z-index:3" onclick="window.scrollTo({ top: 43, behavior: 'smooth' })"><i class="fa fa-arrow-up"></i></button>
 </body>
 
 </html>

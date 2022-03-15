@@ -19,6 +19,7 @@ let informasiusulandata = {};
 let buateditorkdaktif = [];
 let allsiswaaktif;
 let namanamakelasdijenjangini;
+let tagkdserver;
 jsonlocalstorage = JSON.parse(localStorage.getItem("inst_id"));
 let stoploadingtopbar;
 const loadingtopbarin = (el) => {
@@ -204,7 +205,7 @@ const loadingtopbarin = (el) => {
                 })
 
         });
-
+        
     if (navigator.storage && navigator.storage.estimate) {
         const quota = await navigator.storage.estimate();
         const percentageUsed = (quota.usage / quota.quota) * 100;

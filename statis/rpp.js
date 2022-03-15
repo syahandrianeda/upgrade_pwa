@@ -10,8 +10,10 @@ const chg_rppsampai = ()=>{
         dv.classList.add("w3-hide")
     }
 }
-const admguru = ()=>{
+const admguru = async()=>{
     tampilinsublamangurukelas("administrasiguru");
+    cekApiSebaranKD()
+    await kurikulumdiamdiam()
     document.querySelector(".tabrpp").click();
 }
 const previewrpp = () =>{

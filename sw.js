@@ -1,6 +1,6 @@
 
-const staticCacheName = "t44";// + new Date().getTime();
-const dynamicChace = "t44";// + new Date().getTime();
+const staticCacheName = "st385";// + new Date().getTime();
+const dynamicChace = "din385";// + new Date().getTime();
 
 const assets = [
     "/",
@@ -50,6 +50,7 @@ const assets = [
     "/img/galeri.jpg",
     "/img/studio.png",
     "/img/googlemeet.png",
+    "/img/hero-bg.png","/img/arsipsurat.jpg",
 
 
     "/statis/app.js",
@@ -72,7 +73,7 @@ const assets = [
     "/statis/newhome.js",
     "/statis/quill-upload-image.js",
     "/statis/image-resize.min.js",
-    "/statis/rpp.js",
+    "/statis/rpp.js","/statis/barcode.js",
 
 
     "/user/gmp.html",
@@ -145,7 +146,7 @@ self.addEventListener('fetch', evt => {
             }).catch((er) => {
                 console.log(er)
                 if (evt.request.url.indexOf('.html') > -1) {
-                    return caches.match('/user/elamaso_offline.html');
+                    return caches.match('/user/offline.html');
                 }
             })
         );

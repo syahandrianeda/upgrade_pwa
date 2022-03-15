@@ -562,7 +562,7 @@ div.frac {
   margin: 0 5px;
   display: inline-block;
   text-align: center;
-  float: left;
+  /* float: left; */
 }
 div.numer {
   border-bottom: 1px solid black;
@@ -577,12 +577,25 @@ div.denom {
   width: 150px;
   font-size: 8px;
 }
-#tooltiptabelall{
-  height: 200px;
-  width: 280px;
+#tooltipkdmapel{
+  height: auto;
+  width: 350px;
+}
+#tooltipkd1{
+  height: 250px;
+  width: 350px;
+}
+#tooltipkd1 .badge_kd, #tooltipkdmapel .badge_mapel{
+  margin:3px;
+  padding:3px;
+  cursor:pointer;
+}
+#tooltiptabelall {
+  height: 250px;
+  width: 350px;
   font-size: 10px;
 }
-#tooltiptabel, #tooltiptabelall {
+#tooltiptabel, #tooltiptabelall, #tooltipkd1,#tooltipkdmapel {
   position: absolute;
   display: none;
   /* width: 150px; */
@@ -597,7 +610,73 @@ div.denom {
   z-index: 2;
   /* cursor: pointer; */
 }
-#tooltiptabel:after, #tooltiptabelall:after {
+.tooltiparahkiri{
+  content: "";
+  position:absolute;
+  
+  /* position tooltip correctly */
+  left:0;
+  margin-left:-20px;
+ 
+  /* vertically center */
+  top:10px;
+  transform:translateY(-50%);
+ 
+  /* the arrow */
+  width: 0;
+      height: 0;
+      border-top: 10px solid transparent;
+      border-right: 20px solid red;
+      border-bottom: 10px solid transparent;
+  
+  display:block;
+}
+.tooltiparahatas{
+  content: "";
+  position:absolute;
+  
+  /* position tooltip correctly */
+  /* left:0;
+  margin-left:-20px; */
+  margin-left: 0;
+ 
+  /* vertically center */
+  top:-10px;
+  transform:translateY(-50%);
+ 
+  /* the arrow */
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 20px solid red;
+  
+  display:block;
+}
+.tooltiparahkanan{
+  content: "";
+  position:absolute;
+  
+  /* position tooltip correctly */
+  right:0;
+  margin-right:-20px;
+ 
+  /* vertically center */
+  top:10px;
+  transform:translateY(-50%);
+ 
+  /* the arrow */
+  /* border:10px solid rgb(255, 0, 0);
+  border-color:transparent transparent red transparent ; */
+  width: 0;
+      height: 0;
+      border-top: 10px solid transparent;
+      border-left: 20px solid red;
+      border-bottom: 10px solid transparent;
+  
+  display:block;
+}
+#tooltiptabel:after, #tooltiptabelall:after, #tooltipkd1:after {
   content: "";
   position:absolute;
   
@@ -614,6 +693,19 @@ div.denom {
   border-color: transparent black transparent transparent;
   
   display:block;
+}
+#tooltiptabelheader,#tooltipkdmapelheader{
+  cursor:move;
+}
+#tooltipkdmapelheader{
+  padding:0px 0 15px;
+  text-align: center;
+}
+div#tooltipkd1header {
+  cursor: move;
+}
+.kirimtooltipeditor, .kirimtooltipjam{
+  background-color: #6495ed;
 }
 /* #tooltiptabel:hover:before, #tooltiptabel:hover:after {
   display:block;

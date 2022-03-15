@@ -34,6 +34,8 @@ let url_data_kurikulum;
 let nilairespon = [];
 let nilairesponkronologi = [];
 let kronologijson = [];
+let tagkd34;
+
 
 const anjangsanaguru = () => {
     alert("Maaf, fitur belum tersedia")
@@ -10691,6 +10693,8 @@ document.addEventListener("click", function (e) {
 
     let clsx = el.classList.contains('kbmtoday')
     let upmat = el.classList.contains('klikuploadmateri')
+    let onserverkd = el.classList.contains('serverkd_on');
+
 
     let a = new Date();
     let b = a.getDate();
@@ -10857,14 +10861,19 @@ document.addEventListener("click", function (e) {
         document.formuploadmateri.idSekolah.value = idNamaSekolah;
         document.formuploadmateri.dibuatoleh.value = namauser;
 
+    }else if(onserverkd){
+        if(tagkdserver == undefined){
+            cekApiSebaranKD();
+        }
     }else{
         //console.log(el.nodeName);
-        if(el.nodeName !== "TD"){
-            document.querySelector("#tooltiptabel").style.display='none';
-
-        }
+        //document.querySelector("#tooltiptabelall").style.display='none';
     }
-    //return
+    //return;
+
+    // if(tagkdserver !== undefined){
+    //     cekApiSebaranKD()
+    // }
 
 });
 

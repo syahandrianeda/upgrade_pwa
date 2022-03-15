@@ -1,7 +1,7 @@
 let urladm = jlo.ss_datanilai;
-
-const arrTagAdm = ["0","prota","prosem","silabus","rpp","kisi-kisi","sebarankd","soal","ph","pts","pak","pat","perbaikan","pengayaan","kkm","notularapat"];
-const arrVersi = ["0","Mata Pelajaran","Tematik","Subtema","Pembelajaran"]
+let petakd_semster="";
+const arrTagAdm = ["0","prota","prosem","silabus","rpp","kisi-kisi","petakd","sebarankd","soal","ph","pts","pak","pat","perbaikan","pengayaan","kkm","notularapat"];
+const arrVersi = ["0","Mata Pelajaran","Tematik","Subtema","Pembelajaran","sebaran KD per tema","sebaran KD per semester"]
 
 
 let editore = document.querySelector("#editor_ade");
@@ -18,8 +18,7 @@ const doc = editore.contentDocument || editore.contentWindow.document;
         
     // tambahkan style edurasa;
     var root = window.location.origin;
-    doc.head.innerHTML = `<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    doc.head.innerHTML = `<link rel="stylesheet" href="${root}/css/w3.css">
     <link href="https://fonts.googleapis.com/css?family=Raleway">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
     <link rel="stylesheet" href="${root}/css/cssiframe_stylegurukelas.css">`;
@@ -2416,6 +2415,11 @@ function openCityy(evt, cityName) {
     //if(cityName == "buat_prota"){
         tab[0].classList.add("w3-green")
         tab[4].classList.add("w3-green")
+        tab[8].classList.add("w3-green");
+        document.getElementById("tooltipkd1").style.display = 'none';
+        document.getElementById("tooltipkdmapel").style.display = 'none';
+        document.getElementById("tooltiptabelall").style.display = 'none';
+        document.getElementById("tooltiptabel").style.display = 'none';
     
 }
 
@@ -2538,7 +2542,90 @@ select_prosem.addEventListener("change",async()=>{
         tbody.innerHTML = crtd;
     };
 
-    configTooltip()
+    //configTooltip()
+    let classN = "tabel_prosem_mapel";
+    tooltiplengkap(classN,true);
+
+})
+
+const select_prosemtematik  = document.querySelector(".select_prosemtematik");
+select_prosemtematik.addEventListener("change",async()=>{
+    let opsi = select_prosemtematik.options;
+    let select = opsi.selectedIndex;
+    let val_opsi = opsi[select].value;
+    let teks_opsi = opsi[select].text;
+    //alert(val_opsi);
+    // isikan identitas dulu;
+    //jaga-jaga jika udah buka simpan server adm
+    let dup = document.querySelectorAll(".result_hapus");
+    dup.forEach(hp => hp.innerHTML="");
+
+    document.querySelector(".tdprosemtematik_sekolah").innerHTML = idNamaSekolah;
+    document.querySelector(".tdprosemtematik_kelasmapel").innerHTML = idJenjang +" / " + detectSemesterBerdasarkan("tema",teks_opsi);
+    document.querySelector(".tdprosemtematik_tapel").innerHTML = idTeksTapel;
+    // document.querySelector(".tdprosem_semester").innerHTML = 
+    document.querySelector(".spanprosemtematik_namasekolah").innerHTML = idNamaSekolah;
+    document.querySelector(".spanprosemtematik_namakepsek").innerHTML = idNamaKepsek;
+    document.querySelector(".spanprosemtematik_nipkepsek").innerHTML = "NIP. " + idNipKepsek;
+    document.querySelector(".spanprosemtematik_titimangsa").innerHTML = "14 Juli 2021";
+    document.querySelector(".spanprosemtematik_gmpkelas").innerHTML = idJenisGuru +" " + idgurumapelmapel;
+    document.querySelector(".spanprosemtematik_namaguru").innerHTML = namauser;
+    document.querySelector(".spanprosemtematik_nipguru").innerHTML = "NIP. " + idNipGuruKelas;
+    
+    /// INI MENGAMBIL DATA YANG BELUM PERNAH DIBUAT
+    let btnserver = document.querySelector(".btnserver_prosemtematik");
+    let judulserver = "PROGRAM SEMESTER  "+ teks_opsi.toUpperCase();
+    btnserver.setAttribute("onclick",`serveradm('prt_prosem_tematik','${judulserver}',2,2)`);
+
+    //sumber data KD;
+    if(buateditorkdaktif.length === 0){
+        loadingtopbarin("loadingtopbar");
+        await kurikulumdiamdiam();
+        clearInterval(stoploadingtopbar);
+            let divlod = document.querySelector(".loadingtopbar");
+            divlod.style.width = "100%";
+            setTimeout(() => {
+                divlod.style.width = "1px"
+                divlod.className += " w3-hide";
+
+            }, 3000);
+    };
+    //konfig data:
+    let dataKD3 = buateditorkdaktif.filter(s => s["indikatorkd3"] !== "" && s["mapel"] === val_opsi);
+    //let dataKD4 = buateditorkdaktif.filter(s => s["mapel"] === val_opsi);
+    //tolak untuk default;
+    let tabel = document.querySelector(".tabel_prosem_tematik");//
+    let tbody = tabel.getElementsByTagName("tbody")[0];
+    let crtd = "";
+    let no = 1;
+    let data = DataKDKurtilas["kelas"+idJenjang];
+    if(val_opsi !=="default"){
+        // for(i=0 ; i < dataKD3.length ; i++){
+        //     //crtd +=`<tr><td>${no}</td><td>${dataKD3[i].kd3} ${dataKD3[i].indikatorkd3}</td><td contenteditable="true" class="w3-center"></td></tr><tr><td>${(no + 1)}</td><td>${dataKD3[i].kd4} ${dataKD3[i].indikatorkd4}</td><td contenteditable="true" class="w3-center"></td></tr>`;
+        //     crtd +=`<tr><td>${no}</td><td>${dataKD3[i].kd3} ${dataKD3[i].indikatorkd3}<hr class="w3-border-bottom">${dataKD3[i].kd4} ${dataKD3[i].indikatorkd4}</td><td>Materi Pokok ${no}</td><td>...JP</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>`
+        //     no = no + 1;
+        // }
+        // let b = col + 1;
+        // let c = col - 1
+        let teks = data.filter(s => s[val_opsi])[0];
+        tabel.rows[3].cells[1].innerHTML= val_opsi +"<br>" + teks[val_opsi];
+        tabel.rows[3].cells[2].innerHTML= "Subtema 1 <br>" + teks["Subtema 1"];
+        tabel.rows[10].cells[0].innerHTML= "Subtema 2 <br>" + teks["Subtema 2"];
+        tabel.rows[17].cells[0].innerHTML= "Subtema 3 <br>" + teks["Subtema 3"];
+        if(idJenjang>3){
+            tabel.rows[24].cells[0].innerHTML= "Pembiasaan / Literasi / Proyek" ;//+ teks["Subtema 4"];
+            
+        }else{
+            tabel.rows[24].cells[0].innerHTML= "Subtema 4 <br>" + teks["Subtema 4"]; ;//+ teks["Subtema 4"];
+
+        }
+        //tabel.rows[].cells[].innerHTML= data[]
+        //tbody.innerHTML = crtd;
+    };
+
+    //configTooltip()
+    let classN = "tabel_prosem_tematik";
+    tooltiplengkap(classN,true);
 
 })
 
@@ -2751,11 +2838,12 @@ const configTooltip = () =>{
 
 
 const dataadmsimpananguru = async (tag,output) =>{
+    
+    // let hps = document.querySelectorAll(".result_hapus");
+    // hps.forEach(el=>el.innerHTML="")
     loadingtopbarin("loadingtopbar");
     //alert("tag = " +tag +"\r\n output class= "+output);
     let div = document.querySelector("."+output);
-    let hps = document.querySelectorAll(".result_hapus");
-    hps.forEach(el=>el.innerHTML="")
     //let divv = document.querySelector(".ket_"+output);
     div.innerHTML = "<i class='fa fa-spin fa-spinner w3-large'></i>";
     let tab = "simpanAdm"
@@ -2789,6 +2877,7 @@ const dataadmsimpananguru = async (tag,output) =>{
         .then(r => {
            // console.log(r);
             let dt = r.data;
+            div = document.querySelector("."+output);
             let filter = dt.filter(s => s.tag == tag && s.idguru == idguru && s.status !== "hapus");
             if(filter.length>0){
                 let tt = "result"+tag+"simpananguru" ;//resultprotasimpanangur
@@ -2823,9 +2912,17 @@ const printadm = (c,portr=true) =>{
         var root = window.location.origin;
         
         let el = document.getElementById("iframeprint");
-        let doc = el.contentDocument;
+        let doc = el.contentDocument || el.contentWindow.document;;
         let head = doc.head;
         let body = doc.body;
+        //
+        // var isi = el.contentDocument || editore.contentWindow.document;;
+        // var headnya = isi.head;
+        while (head.hasChildNodes()) {
+            head.removeChild(head.firstChild);
+        }
+    
+        //
        
         //isikan HEAD dengan title, style, link, dll.
         head.innerHTML = "<title>E-DURASA ADMINISTRASI</title>";
@@ -3304,8 +3401,7 @@ const configTooltipAlltable = (classN,batas,hapus=true ) =>{
             };
         }
     }
-}
-
+};
 const select_protatematik = document.querySelector(".selectprotaversi_tematik");
 select_protatematik.addEventListener("change",()=>{
     //.tabel_prota_tematik;
@@ -3331,7 +3427,8 @@ select_protatematik.addEventListener("change",()=>{
     document.querySelector(".spanprotatematik_gmpkelas").innerHTML = idJenisGuru +" " + idgurumapelmapel;
     document.querySelector(".spanprotatematik_namaguru").innerHTML = namauser;
     document.querySelector(".spanprotatematik_nipguru").innerHTML = "NIP. " + idNipGuruKelas;
-    configTooltipAlltable('tabel_prota_tematik',8,false);
+    //configTooltipAlltable('tabel_prota_tematik',8,false);
+    configTooltip("tabel_prota_tematik",true)
     /// Untuk parameter Tombol Simpan Server ;
     //onclick="serveradm('prt_prota_mapel',1,2)" class="btnserver_protatematik
     let btnserver = document.querySelector(".btnserver_protatematik");
@@ -3342,6 +3439,8 @@ select_protatematik.addEventListener("change",()=>{
     let tabelnya = document.querySelector(".tabel_prota_tematik");//.getElementsByClassName("tbody")[0];
     if(val_opsi !== "default"){
         let teks = data.filter(s => s[val_opsi])[0];
+        // let b = col + 1;
+        // let c = col - 1
         tabelnya.rows[1].cells[0].innerHTML= val_opsi +"<br>" + teks[val_opsi];
         tabelnya.rows[1].cells[1].innerHTML= "Subtema 1 <br>" + teks["Subtema 1"];
         tabelnya.rows[7].cells[0].innerHTML= "Subtema 2 <br>" + teks["Subtema 2"];
@@ -3375,7 +3474,7 @@ const detectSemesterBerdasarkan = (kriteria, namatema)=>{
 const simpandraftedurasa = document.querySelector(".refrensi_simpandraft");
 simpandraftedurasa.addEventListener("click", ()=>{
     let isiteks = sebelumkirimmateri();//document.formuploadmateri.idmateri.value
-    console.log(isiteks)
+    //console.log(isiteks)
     if (isiteks == "") {
         alert("Maaf, Draft Anda kosong .... :(");
         return
@@ -3467,3 +3566,2476 @@ const btn_tdall =() =>{
 
 }
 
+
+const tooltiplengkap = (classN,hapus) =>{
+    let tabler = document.querySelector("."+ classN);//.getElementsByTagName("tbody")[0];
+    let tbody = tabler.getElementsByTagName("tbody")[0];
+    let tgl = document.querySelector("#btntooltiptgl");
+    var d = new Date().toLocaleDateString().split('/');
+    var today = d[2]+"-"+("0"+d[0]).slice(-2)+"-"+("0"+d[1]).slice(-2);
+    tgl.value = today;
+
+    let rIndex; 
+    let cIndex,parenta,kolo, brs
+            // table rows
+    for(var i = 1; i < tabler.rows.length; i++){
+        // row cells
+        for(var j = 0; j < tabler.rows[i].cells.length; j++){
+            
+            tabler.rows[i].cells[j].onmouseover = function(){
+            //let baris = this.parentElement.nodeName;
+            brs = this.parentElement.rowIndex - 1;
+            kolo = this.cellIndex +1;
+            let tekstitle = "Klik baris " + brs +" kolom "+ kolo;
+            this.setAttribute("title",tekstitle);
+            };
+            
+            tabler.rows[i].cells[j].onmouseout = function(){
+            this.removeAttribute("title")
+            //console.log("onmouseout")
+            // document.querySelector("#tooltiptabel").style.display="none"
+            };
+        
+            tabler.rows[i].cells[j].onclick = function(){      
+                parenta = this.parentElement.nodeName;
+                rIndex = this.parentElement.rowIndex;
+                cIndex = this.cellIndex;//+1;
+    
+                //tampilkan tooltip
+                let tdfokus = this;
+    
+                let tagclass = this.hasAttribute("class");
+                let ttop = (tabler.offsetTop + this.offsetTop  ) +"px";//this.offsetTop +"px";
+                let lleft =  (tabler.offsetLeft+ this.offsetLeft + this.offsetWidth +10) +"px";
+                document.querySelector("#tooltiptabelall").style.top=ttop;
+                document.querySelector("#tooltiptabelall").style.left=lleft;
+                document.querySelector("#tooltiptabelall").style.display="block";
+                
+                let tomboltd1 = document.querySelector(".btntooltipall1");//hijau
+                let tomboltd2 = document.querySelector(".btntooltipall2");//merah
+                let tomboltd3 = document.querySelector(".btntooltipall3");//biru
+                let tomboltd4 = document.querySelector(".btntooltipall4");//kuning
+
+                let tdtombol5 = document.querySelector(".btntooltipall5");//ceklis
+                let tdtombol6 = document.querySelector(".btntooltipall6");//edit
+                let tdtombol7 = document.querySelector(".btntooltipall7");//tambah baris
+                let tdtombol8 = document.querySelector(".btntooltipall8");//hapusbaris baris
+                let tdtombol9 = document.querySelector(".btntooltiptgl");//tanggal baris
+                if(hapus){
+                    tdtombol7.style.display = "block";
+                    tdtombol8.style.display = "block";
+                }else{
+                    tdtombol7.style.display = "none";
+                    tdtombol8.style.display = "none";
+                }
+
+                let cekHijau = false; /// anggap semuanya tidak punya class hijau
+                let cekMerah = false;
+                let cekBiru = false;
+                let cekKuning = false;
+
+                let dataclassname = this.className;
+                if(this.hasAttribute("class")){
+                    let dataclassnamee = this.className;
+                    if(dataclassnamee.indexOf("w3-green")== -1){
+                        cekHijau = true;
+                    }else{
+                        cekHijau = false;
+                    }
+                    
+                    if(dataclassnamee.indexOf("w3-red")== -1){
+                        cekMerah = true;
+                    }else{
+                        cekMerah = false
+                    }
+                    if(dataclassnamee.indexOf("w3-blue")== -1){
+                        cekBiru = true;
+                    }else{
+                        cekBiru = false
+                    }
+                    if(dataclassnamee.indexOf("w3-yellow")== -1){
+                        cekKuning = true;
+                    }else{
+                        cekKuning = false;
+                    }
+                }else{
+                    cekHijau = true;
+                    cekMerah = true;
+                    cekBiru = true;
+                    cekKuning = true;
+                }
+
+                if(cekHijau){
+                    document.querySelector(".btntooltipall1").innerHTML = "Hijau"
+                    document.querySelector(".btntooltipall1").className = document.querySelector(".btntooltipall1").className.replace("w3-light-gray","w3-green");
+                }else{
+                    document.querySelector(".btntooltipall1").innerHTML = "Hapus"
+                    document.querySelector(".btntooltipall1").className = document.querySelector(".btntooltipall1").className.replace("w3-green","w3-light-gray");
+                }
+                
+                tomboltd1.onclick=function(){
+                    if(tagclass === false && tdfokus.className ==="" && dataclassname.indexOf("w3-green")==-1){
+                        tdfokus.setAttribute("class","w3-green");
+                        tomboltd1.innerHTML ="Hapus";
+                        tomboltd1.className = tomboltd1.className.replace("w3-green","w3-light-gray");
+                        tdfokus.click();
+                    }else if(tagclass === true && tdfokus.className !=="" && dataclassname.indexOf("w3-green")>-1 ){
+                        tdfokus.removeAttribute("class");
+                        tomboltd1.innerHTML ="Hijau";
+                        tomboltd1.className = tomboltd1.className.replace("w3-green","w3-green");
+                        tdfokus.click();
+                    }else if(tagclass == true && tdfokus.className =="" && dataclassname.indexOf("w3-green")==-1){
+                        tdfokus.removeAttribute("class");
+                        tdfokus.classList.add("w3-green");
+                        tomboltd1.innerHTML ="Hijau";
+                        tomboltd1.className = tomboltd1.className.replace("w3-light-gray","w3-green");
+                        tdfokus.click();
+                    }else if(tagclass === true && tdfokus.className !=="" && dataclassname.indexOf("w3-green")== -1){
+                        tdfokus.className = tdfokus.className.replace("w3-red","w3-green").replace("w3-blue","w3-green").replace("w3-yellow","w3-green");
+                        tomboltd1.innerHTML ="Hapus";
+                        tomboltd1.className = tomboltd1.className.replace("w3-green","w3-light-gray");
+                        tdfokus.click();
+                    }else{
+                        tdfokus.removeAttribute("class");
+                        tdfokus.classList.add("w3-green");
+                        tdfokus.click();
+                    }
+                }
+
+
+                if(cekMerah){
+                    tomboltd2.innerHTML = "Merah";
+                    tomboltd2.className = tomboltd2.className.replace("w3-light-gray","w3-red");
+                }else{
+                    tomboltd2.innerHTML = "Hapus";
+                    tomboltd2.className = tomboltd2.className.replace("w3-red","w3-light-gray");
+                }
+
+
+
+                tomboltd2.onclick = function (){
+                    if(tagclass === false && tdfokus.className ==="" && dataclassname.indexOf("w3-red")==-1){
+                        tdfokus.setAttribute("class","w3-red");
+                        tomboltd2.innerHTML ="Merah";
+                        tomboltd2.className = tomboltd2.className.replace("w3-red","w3-light-gray");
+                        tdfokus.click();
+                    }else if(tagclass === true && tdfokus.className !=="" && dataclassname.indexOf("w3-red")>-1 ){
+                        tdfokus.removeAttribute("class");
+                        tomboltd2.innerHTML ="Merah";
+                        tomboltd2.className = tomboltd2.className.replace("w3-light-gray","w3-red");
+                        tdfokus.click();
+                    }else if(tagclass == true && tdfokus.className =="" && dataclassname.indexOf("w3-red")==-1){
+                        tdfokus.removeAttribute("class");
+                        tdfokus.classList.add("w3-red");
+                        tomboltd2.innerHTML ="Merah";
+                        tomboltd2.className = tomboltd2.className.replace("w3-light-gray","w3-red");
+                        tdfokus.click();
+                    }else if(tagclass === true && tdfokus.className !=="" && dataclassname.indexOf("w3-red")> -1){
+                        tdfokus.className = tdfokus.className.replace("w3-green","w3-red").replace("w3-blue","w3-red").replace("w3-yellow","w3-red");
+                        tomboltd2.innerHTML ="Hapus";
+                        tomboltd2.className = tomboltd2.className.replace("w3-red","w3-light-gray");
+                        tdfokus.click();
+                    }else{
+                        tdfokus.removeAttribute("class");
+                        tdfokus.classList.add("w3-red");
+                        tdfokus.click();
+                    }
+                }
+                //biru
+                if(cekBiru){
+                    tomboltd3.innerHTML = "Biru";
+                    tomboltd3.className = tomboltd3.className.replace("w3-light-gray","w3-blue");
+                }else{
+                    tomboltd3.innerHTML = "Hapus";
+                    tomboltd3.className = tomboltd3.className.replace("w3-blue","w3-light-gray");
+                }
+
+
+
+                tomboltd3.onclick = function (){
+                    if(tagclass === false && tdfokus.className ==="" && dataclassname.indexOf("w3-blue")==-1){
+                        tdfokus.setAttribute("class","w3-blue");
+                        tomboltd3.innerHTML ="Hapus";
+                        tomboltd3.className = tomboltd3.className.replace("w3-blue","w3-light-gray");
+                        tdfokus.click();
+                    }else if(tagclass === true && tdfokus.className !=="" && dataclassname.indexOf("w3-blue")>-1 ){
+                        tdfokus.removeAttribute("class");
+                        tomboltd3.innerHTML ="Biru";
+                        tomboltd3.className = tomboltd3.className.replace("w3-light-gray","w3-blue");
+                        tdfokus.click();
+                    }else if(tagclass == true && tdfokus.className =="" && dataclassname.indexOf("w3-blue")==-1){
+                        tdfokus.removeAttribute("class");
+                        tdfokus.classList.add("w3-blue");
+                        tomboltd3.innerHTML ="Biru";
+                        tomboltd3.className = tomboltd3.className.replace("w3-light-gray","w3-blue");
+                        tdfokus.click();
+                    }else if(tagclass === true && tdfokus.className !=="" && dataclassname.indexOf("w3-blue")> -1){
+                        tdfokus.className = tdfokus.className.replace("w3-green","w3-blue").replace("w3-red","w3-blue").replace("w3-yellow","w3-blue");
+                        tomboltd3.innerHTML ="Hapus";
+                        tomboltd3.className = tomboltd3.className.replace("w3-blue","w3-light-gray");
+                        tdfokus.click();
+                    }else{
+                        
+                        tdfokus.removeAttribute("class");
+                        tdfokus.classList.add("w3-blue");
+                        tdfokus.click();
+                    }
+                }
+                // //yellow
+                if(cekKuning){
+                    tomboltd4.innerHTML = "Kuning";
+                    tomboltd4.className = tomboltd4.className.replace("w3-light-gray","w3-yellow");
+                }else{
+                    tomboltd4.innerHTML = "Hapus";
+                    tomboltd4.className = tomboltd4.className.replace("w3-yellow","w3-light-gray");
+                }
+
+
+
+                tomboltd4.onclick = function (){
+                    if(tagclass === false && tdfokus.className ==="" && dataclassname.indexOf("w3-yellow")==-1){
+                        tdfokus.setAttribute("class","w3-yellow");
+                        tomboltd4.innerHTML ="Hapus";
+                        tomboltd4.className = tomboltd4.className.replace("w3-yellow","w3-light-gray");
+                        tdfokus.click();
+                    }else if(tagclass === true && tdfokus.className !=="" && dataclassname.indexOf("w3-yellow")>-1 ){
+                        tdfokus.removeAttribute("class");
+                        tomboltd4.innerHTML ="Warna";
+                        tomboltd4.className = tomboltd4.className.replace("w3-light-gray","w3-yellow");
+                        tdfokus.click();
+                    }else if(tagclass == true && tdfokus.className =="" && dataclassname.indexOf("w3-yellow")==-1){
+                        tdfokus.removeAttribute("class");
+                        tdfokus.classList.add("w3-yellow");
+                        tomboltd4.innerHTML ="Kuning";
+                        tomboltd4.className = tomboltd4.className.replace("w3-light-gray","w3-yellow");
+                        tdfokus.click();
+                    }else if(tagclass === true && tdfokus.className !=="" && dataclassname.indexOf("w3-yellow")> -1){
+                        tdfokus.className = tdfokus.className.replace("w3-green","w3-yellow").replace("w3-red","w3-yellow").replace("w3-blue","w3-yellow");
+                        tomboltd4.innerHTML ="Hapus";
+                        tomboltd4.className = tomboltd4.className.replace("w3-yellow","w3-light-gray");
+                        tdfokus.click();
+                    }else{
+                        
+                        tdfokus.removeAttribute("class");
+                        tdfokus.classList.add("w3-yellow");
+                        tdfokus.click();
+                    }
+                }
+                // //yellow
+
+                
+                
+                        if(this.innerHTML == ""){
+                            tdtombol5.innerHTML = "&checkmark;"
+                        }else{
+                            tdtombol5.innerHTML = "Hapus";
+                        }
+
+                        tdtombol5.onclick = function(){
+                            if(tdfokus.innerHTML ==""){
+                                tdfokus.innerHTML = "&checkmark;"
+                                tdtombol5.innerHTML = "Hapus";
+                            }else{
+                                tdfokus.innerHTML = "";
+                                tdtombol5.innerHTML = "&checkmark;";
+                                
+                            }
+                        }
+                if(this.hasAttribute("contenteditable")){
+                    tdtombol6.innerHTML ="Kunci Edit";
+                }else{
+                    tdtombol6.innerHTML ="Buka Edit";
+                }
+                tdtombol6.onclick= function (){
+                     //console.log(tdfokus);
+                    if(tdfokus.hasAttribute("contenteditable")){
+                        tdfokus.removeAttribute("contenteditable");
+                        tdtombol6.innerHTML ="Buka Edit";
+                    }else{
+                        tdfokus.setAttribute("contenteditable","true");
+                        tdtombol6.innerHTML ="Kunci Edit";
+                    }
+                }
+                
+                tbody = tabler.getElementsByTagName("tbody")[0];
+                //hapus
+                let nlr;
+                tdtombol8.onclick = function(){
+                    let indekbaris = brs - 1
+                    let conf = confirm("Anda yakin akan menghapus baris ke-" + brs +"?")
+                    if(conf){
+                        tbody.deleteRow(indekbaris);//
+                        //perbaiki nourut
+                        tabler = document.querySelector("."+ classN)
+                        tbody = tabler.getElementsByTagName("tbody")[0];
+                        
+                        for(a=0;a<tbody.rows.length;a++){
+                            tbody.rows[a].cells[0].innerHTML = (a+1);
+                        }
+                       
+                    } 
+                    tooltiplengkap(classN,hapus);
+                }
+                tdtombol7.onclick = function(){
+                    let indekbaris = brs - 1
+                    let conf = confirm("Anda yakin akan ingin menambahkan baris lagi setelah bari ini?")
+                    let nlr;
+                    if(conf){
+                         nlr = tbody.insertRow(brs);
+                    
+
+                        let ntable = document.querySelector("."+ classN)
+                        let ntbody = ntable.getElementsByTagName("tbody")[0];
+                        for(a=0;a<ntbody.rows[0].cells.length;a++){
+                            let tdd = nlr.insertCell(a);
+                            tdd.innerHTML="";
+                        }
+                        for(b = 0 ; b < ntbody.rows.length ; b++){
+                            tbody.rows[b].cells[0].innerHTML = (b+1);
+                        }
+                        tooltiplengkap(classN,hapus);
+                    }
+                }
+                tgl.onchange=function(){
+                    let rd = document.querySelectorAll("input[name=formattgltooltip]");
+                    let bol = "";
+                    
+                    for(i=0;i<rd.length;i++){
+
+                        if(rd[i].checked){
+                            bol = rd[i].getAttribute("data-tooltiptgl");
+
+                        }
+                    }
+                    
+                    if(bol == "lengkap"){
+                        tdfokus.innerHTML = tanggalfull(tgl.value);
+                    }else{
+                        let t = new Date(tgl.value);
+                        let d = addZero(t.getDate());
+                        let m = addZero(t.getMonth()+1);
+                        let y = t.getFullYear();
+                        // let vak = "<sup>" + d +"</sup>/<sub>"+ m + "</sub><span class='w3-tiny'>" + y +"</span>";
+                        let vak = d +"/"+m+"/"+y;
+                        tdfokus.innerHTML = vak;
+                    }
+                }
+                //tabler = document.querySelector("."+ classN))
+            };
+        }
+    }
+    dragElement(document.getElementById("tooltiptabelall"));
+};
+
+const HeaderserverKD = () =>{
+
+   var arrserverKD = [[["row"],["kelas"],["mapel"],["kd"],["koleksitema"],["semester"],["indikator3"],["indikator4"],["materi3"],["materi4"],["jp3"],["jp4"],["t1_st1_pb1"],["t1_st1_pb2"],["t1_st1_pb3"],["t1_st1_pb4"],["t1_st1_pb5"],["t1_st1_pb6"],["t1_st2_pb1"],["t1_st2_pb2"],["t1_st2_pb3"],["t1_st2_pb4"],["t1_st2_pb5"],["t1_st2_pb6"],["t1_st3_pb1"],["t1_st3_pb2"],["t1_st3_pb3"],["t1_st3_pb4"],["t1_st3_pb5"],["t1_st3_pb6"],["t1_st4_pb1"],["t1_st4_pb2"],["t1_st4_pb3"],["t1_st4_pb4"],["t1_st4_pb5"],["t1_st4_pb6"],["t2_st1_pb1"],["t2_st1_pb2"],["t2_st1_pb3"],["t2_st1_pb4"],["t2_st1_pb5"],["t2_st1_pb6"],["t2_st2_pb1"],["t2_st2_pb2"],["t2_st2_pb3"],["t2_st2_pb4"],["t2_st2_pb5"],["t2_st2_pb6"],["t2_st3_pb1"],["t2_st3_pb2"],["t2_st3_pb3"],["t2_st3_pb4"],["t2_st3_pb5"],["t2_st3_pb6"],["t2_st4_pb1"],["t2_st4_pb2"],["t2_st4_pb3"],["t2_st4_pb4"],["t2_st4_pb5"],["t2_st4_pb6"],["t3_st1_pb1"],["t3_st1_pb2"],["t3_st1_pb3"],["t3_st1_pb4"],["t3_st1_pb5"],["t3_st1_pb6"],["t3_st2_pb1"],["t3_st2_pb2"],["t3_st2_pb3"],["t3_st2_pb4"],["t3_st2_pb5"],["t3_st2_pb6"],
+   ["t3_st3_pb1"],["t3_st3_pb2"],["t3_st3_pb3"],["t3_st3_pb4"],["t3_st3_pb5"],["t3_st3_pb6"],["t3_st4_pb1"],["t3_st4_pb2"],["t3_st4_pb3"],["t3_st4_pb4"],["t3_st4_pb5"],["t3_st4_pb6"],["t4_st1_pb1"],["t4_st1_pb2"],["t4_st1_pb3"],["t4_st1_pb4"],["t4_st1_pb5"],["t4_st1_pb6"],["t4_st2_pb1"],["t4_st2_pb2"],["t4_st2_pb3"],["t4_st2_pb4"],["t4_st2_pb5"],["t4_st2_pb6"],["t4_st3_pb1"],["t4_st3_pb2"],["t4_st3_pb3"],["t4_st3_pb4"],["t4_st3_pb5"],["t4_st3_pb6"],["t4_st4_pb1"],["t4_st4_pb2"],["t4_st4_pb3"],["t4_st4_pb4"],["t4_st4_pb5"],["t4_st4_pb6"],["t5_st1_pb1"],["t5_st1_pb2"],["t5_st1_pb3"],["t5_st1_pb4"],["t5_st1_pb5"],["t5_st1_pb6"],["t5_st2_pb1"],["t5_st2_pb2"],["t5_st2_pb3"],["t5_st2_pb4"],["t5_st2_pb5"],["t5_st2_pb6"],["t5_st3_pb1"],["t5_st3_pb2"],["t5_st3_pb3"],["t5_st3_pb4"],["t5_st3_pb5"],["t5_st3_pb6"],["t5_st4_pb1"],["t5_st4_pb2"],["t5_st4_pb3"],["t5_st4_pb4"],["t5_st4_pb5"],["t5_st4_pb6"],["t6_st1_pb1"],["t6_st1_pb2"],["t6_st1_pb3"],["t6_st1_pb4"],["t6_st1_pb5"],["t6_st1_pb6"],["t6_st2_pb1"],["t6_st2_pb2"],["t6_st2_pb3"],["t6_st2_pb4"],["t6_st2_pb5"],["t6_st2_pb6"],["t6_st3_pb1"],["t6_st3_pb2"],["t6_st3_pb3"],["t6_st3_pb4"],["t6_st3_pb5"],["t6_st3_pb6"],["t6_st4_pb1"],["t6_st4_pb2"],["t6_st4_pb3"],["t6_st4_pb4"],["t6_st4_pb5"],["t6_st4_pb6"],["t7_st1_pb1"],["t7_st1_pb2"],["t7_st1_pb3"],["t7_st1_pb4"],["t7_st1_pb5"],["t7_st1_pb6"],["t7_st2_pb1"],["t7_st2_pb2"],["t7_st2_pb3"],["t7_st2_pb4"],["t7_st2_pb5"],["t7_st2_pb6"],["t7_st3_pb1"],["t7_st3_pb2"],["t7_st3_pb3"],["t7_st3_pb4"],["t7_st3_pb5"],["t7_st3_pb6"],["t7_st4_pb1"],["t7_st4_pb2"],["t7_st4_pb3"],["t7_st4_pb4"],["t7_st4_pb5"],["t7_st4_pb6"],["t8_st1_pb1"],["t8_st1_pb2"],["t8_st1_pb3"],["t8_st1_pb4"],["t8_st1_pb5"],["t8_st1_pb6"],["t8_st2_pb1"],["t8_st2_pb2"],["t8_st2_pb3"],["t8_st2_pb4"],["t8_st2_pb5"],["t8_st2_pb6"],["t8_st3_pb1"],["t8_st3_pb2"],["t8_st3_pb3"],["t8_st3_pb4"],["t8_st3_pb5"],["t8_st3_pb6"],["t8_st4_pb1"],["t8_st4_pb2"],["t8_st4_pb3"],["t8_st4_pb4"],["t8_st4_pb5"],["t8_st4_pb6"],["t9_st1_pb1"],["t9_st1_pb2"],["t9_st1_pb3"],["t9_st1_pb4"],["t9_st1_pb5"],["t9_st1_pb6"],["t9_st2_pb1"],["t9_st2_pb2"],["t9_st2_pb3"],["t9_st2_pb4"],["t9_st2_pb5"],["t9_st2_pb6"],["t9_st3_pb1"],["t9_st3_pb2"],["t9_st3_pb3"],["t9_st3_pb4"],["t9_st3_pb5"],["t9_st3_pb6"],["t9_st4_pb1"],["t9_st4_pb2"],["t9_st4_pb3"],["t9_st4_pb4"],["t9_st4_pb5"],["t9_st4_pb6"]]];
+   return arrserverKD
+} 
+
+const rd_kdsemester = document.querySelectorAll("input[name=petakd_rd_semester]");
+const rd_tipesebaran = document.querySelectorAll("input[name=petakd_rd_tipesebaran]");
+const rd_tipekd = document.querySelectorAll("input[name=petakd_rd_tipekd]");
+
+
+const cekApiSebaranKD = () =>{
+    loadingtopbarin("loadingtopbar");
+    
+    let tab = "serverkd";
+        let tabel = HeaderserverKD();//[[["barisini"],["tag"],["html"],["oleh"],["judul"],["idguru"],["versi"]]];
+        let head = tabel[0];
+        let key = JSON.stringify(head);
+        let datakirim = new FormData();
+        
+        datakirim.append("tab",tab);
+        datakirim.append("key",key);
+    fetch(urladm+"?action=getpostdatafromtab",{
+        method:"post",
+        body:datakirim
+    }).then(m => m.json())
+    .then(r => {
+       //console.log(r);
+       let dd = r.data;
+       let fil_kelas = dd.filter(s => s.kelas == idJenjang);
+       tagkdserver = fil_kelas;
+       let filt_mapelkd = fil_kelas.filter(s => s.mapel=="MTK");
+    //    console.log(fil_kelas);
+    //    console.log(filt_mapelkd);
+       
+        clearInterval(stoploadingtopbar);
+            let divlod = document.querySelector(".loadingtopbar");
+            divlod.style.width = "100%";
+            setTimeout(() => {
+                divlod.style.width = "1px"
+                divlod.className += " w3-hide";
+
+            }, 3000);
+    }).catch(er=>console.log(er));
+
+};
+
+function rdpetakd_semester (x){
+    if(tagkdserver == undefined){
+        alert("... sedang menggenerate, silakan coba lagi.")
+        return
+    }
+    let v;
+    let kd34;
+        v = x.value;
+        let tipe
+        for(i = 0 ; i < rd_tipesebaran.length; i++){
+            let rad = rd_tipesebaran[i];
+            if(rad.checked){
+                tipe = rad.value;
+            }
+        }
+        if(tipe === undefined){
+            let uncek = document.querySelector("#petakd_rd3")
+            uncek.checked = true;
+            tipe = uncek.value;
+        }
+        
+        //console.log(tipe);
+        
+        let dd1 = document.querySelector(".h_petakd1");
+        let dd2 = document.querySelector(".h_petakd2");
+        let tabel = document.querySelector(".tbl_distribusi_kd");
+        let tbody = tabel.getElementsByTagName("tbody")[0];
+        let thead = tabel.getElementsByTagName("thead")[0];
+
+        let ttd_sekolah = document.querySelector(".spanpetakd_namasekolah");
+        let ttd_namakepsek = document.querySelector(".spanpetakd_namakepsek");
+        let ttd_nipkepsek = document.querySelector(".spanpetakd_nipkepsek");
+        let ttd_titimangsa = document.querySelector(".spanpetakd_titimangsa");
+        let ttd_ketguru = document.querySelector(".spanpetakd_gmpkelas");
+        let ttd_ketampukelas = document.querySelector(".spanpetakd_kelasnya");
+        let ttd_namaguru = document.querySelector(".spanpetakd_namaguru");
+        let ttd_nipguru = document.querySelector(".spanpetakd_nipguru");
+        dd1.innerHTML = "DISTRIBUSI KOMPETENSI PENGETAHUAN (KD-3)" ;//+ (v==1?"PENGETAHUAN":"KETERAMPILAN");
+        dd2.innerHTML = "SEMESTER " + v + " TAHUN PELAJARAN " + idTeksTapel;
+        ttd_sekolah.innerHTML = idNamaSekolah;
+        ttd_namakepsek.innerHTML = idNamaKepsek;
+        ttd_nipkepsek.innerHTML = "NIP. "+ idNipKepsek;
+        ttd_titimangsa.innerHTML = tanggalfull(new Date());
+        ttd_ketguru.innerHTML = idJenisGuru +" "+ idgurumapelmapel;
+        ttd_namaguru.innerHTML = namauser;
+        ttd_nipguru.innerHTML = "NIP. " + idNipGuruKelas;
+
+        let html = "";
+        let tbh = "";
+        if(idJenjang > 3){
+            if(tipe == "Tematik"){
+                
+                tbh=`<tr class="w3-light-gray"><th rowspan="2">TEMA</th><th colspan="20">MATA PELAJARAN</th></tr><tr class="w3-light-gray"><th colspan="4">PKN</th><th colspan="4">Bahasa Indonesia</th><th colspan="4">IPA</th><th colspan="4">IPS</th><th colspan="4">SBDP</th></tr>`;
+                html = htmldistribusikd_tematik(v,"tinggi")
+                
+            }else{
+                tbh =`<tr class="w3-light-gray"><th>Ruang Lingkup</th><th>Materi Pokok</th><th>Kompetensi Dasar</th><th>Indikator</th><th>Alokasi Waktu</th></tr>`;
+                html +=`<tr><td colspan="5">Pilih Mata Pelajaran terlebih dahulu</d></tr>`;
+            
+            }
+        }else{
+            if(tipe == "Tematik"){
+                ;
+                tbh=`<tr class="w3-light-gray"><th rowspan="2">TEMA</th><th colspan="20">MATA PELAJARAN</th></tr><tr class="w3-light-gray"><th colspan="4">PKN</th><th colspan="4">Bahasa Indonesia</th><th colspan="4">MATEMATIKA</th><th colspan="4">SBDP</th><th colspan="4">PJOK</th></tr>`;
+                html = htmldistribusikd_tematik(v, "rendah")
+            }else{
+                tbh =`<tr class="w3-light-gray"><th>Ruang Lingkup</th><th>Materi Pokok</th><th>Kompetensi Dasar</th><th>Indikator</th><th>Alokasi Waktu</th></tr>`;
+                html +=`<tr><td colspan="5">Pilih Mata Pelajaran terlebih dahulu</d></tr>`;
+            
+            
+            }
+        }
+        thead.innerHTML = tbh;
+        tbody.innerHTML = html;
+        if(tipe=="Tematik"){
+            tooltipkd_config("tbl_distribusi_kd",v)
+        }
+
+}
+function rdpetakd_temamapel  (x){
+    let v;
+    let tipe;
+    let kd34;
+    let divsel = document.querySelector(".divselectpetakd_mapelmulok");
+    let pengubahkd = document.getElementById("Ubahkddistribusi")
+    let divselClass = divsel.classList;
+        tipe = x.value;
+        for(i = 0 ; i < rd_kdsemester.length; i++){
+            let rad = rd_kdsemester[i];
+            if(rad.checked){
+                v = rad.value;
+            }
+        }
+        
+        if(v === undefined){
+            let uncek = document.querySelector("#petakd_rd2")
+            uncek.checked = true;
+            v = uncek.value;
+        }
+        
+
+        let dd1 = document.querySelector(".h_petakd1");
+        let dd2 = document.querySelector(".h_petakd2");
+        let tabel = document.querySelector(".tbl_distribusi_kd");
+        let tbody = tabel.getElementsByTagName("tbody")[0];
+        let thead = tabel.getElementsByTagName("thead")[0];
+
+        let ttd_sekolah = document.querySelector(".spanpetakd_namasekolah");
+        let ttd_namakepsek = document.querySelector(".spanpetakd_namakepsek");
+        let ttd_nipkepsek = document.querySelector(".spanpetakd_nipkepsek");
+        let ttd_titimangsa = document.querySelector(".spanpetakd_titimangsa");
+        let ttd_ketguru = document.querySelector(".spanpetakd_gmpkelas");
+        let ttd_ketampukelas = document.querySelector(".spanpetakd_kelasnya");
+        let ttd_namaguru = document.querySelector(".spanpetakd_namaguru");
+        let ttd_nipguru = document.querySelector(".spanpetakd_nipguru");
+        dd1.innerHTML = "DISTRIBUSI KOMPETENSI PENGETAHUAN (KD-3)" ;//+ (v==1?"PENGETAHUAN":"KETERAMPILAN");
+        dd2.innerHTML = "SEMESTER " + v + " TAHUN PELAJARAN " + idTeksTapel;
+        ttd_sekolah.innerHTML = idNamaSekolah;
+        ttd_namakepsek.innerHTML = idNamaKepsek;
+        ttd_nipkepsek.innerHTML = "NIP. " + idNipKepsek;
+        ttd_titimangsa.innerHTML = tanggalfull(new Date());
+        ttd_ketguru.innerHTML = idJenisGuru +" "+ idgurumapelmapel;
+        ttd_namaguru.innerHTML = namauser;
+        ttd_nipguru.innerHTML = "NIP. " + idNipGuruKelas;
+
+        let html = "";
+        let tbh = "";
+        if(idJenjang > 3){
+            if(tipe == "Tematik"){
+                
+                if(divsel.className.indexOf("w3-hide") == -1 ){
+                    divsel.classList.add("w3-hide");
+                }
+                pengubahkd.style.display ="block"
+                tbh=`<tr class="w3-light-gray"><th rowspan="2">TEMA</th><th colspan="20">MATA PELAJARAN</th></tr><tr class="w3-light-gray"><th colspan="4">PKN</th><th colspan="4">Bahasa Indonesia</th><th colspan="4">IPA</th><th colspan="4">IPS</th><th colspan="4">SBDP</th></tr>`;
+                html = htmldistribusikd_tematik(v,"tinggi")
+            }else{
+                if(divsel.className.indexOf("w3-hide") > -1 ){
+                    divsel.classList.remove("w3-hide");
+                }
+                pengubahkd.style.display ="none"
+                tbh =`<tr class="w3-light-gray"><th>Ruang Lingkup</th><th>Materi Pokok</th><th>Kompetensi Dasar</th><th>Indikator</th><th>Alokasi Waktu</th></tr>`;
+                html +=`<tr><td colspan="5">Pilih Mata Pelajaran terlebih dahulu</td></tr>`;
+            }
+        }else{
+            if(tipe == "Tematik"){
+                pengubahkd.style.display ="block"
+                if(divsel.className.indexOf("w3-hide") == -1 ){
+                    divsel.classList.add("w3-hide");
+
+                }
+                tbh=`<tr class="w3-light-gray"><th rowspan="2">TEMA</th><th colspan="20">MATA PELAJARAN</th></tr><tr class="w3-light-gray"><th colspan="4">PKN</th><th colspan="4">Bahasa Indonesia</th><th colspan="4">MATEMATIKA</th><th colspan="4">SBDP</th><th colspan="4">PJOK</th></tr>`;
+                html = htmldistribusikd_tematik(v,"tinggi")
+            }else{
+                pengubahkd.style.display ="none"
+                if(divsel.className.indexOf("w3-hide") > -1 ){
+                    divsel.classList.remove("w3-hide");
+                }
+                tbh =`<tr class="w3-light-gray"><th>Ruang Lingkup</th><th>Materi Pokok</th><th>Kompetensi Dasar</th><th>Indikator</th><th>Alokasi Waktu</th></tr>`;
+                html +=`<tr><td colspan="5">Pilih Mata Pelajaran terlebih dahulu</d></tr>`;
+            
+            }
+        }
+        thead.innerHTML = tbh;
+        tbody.innerHTML = html;
+        if(tipe=="Tematik"){
+            tooltipkd_config("tbl_distribusi_kd",v)
+        }
+        
+
+};
+const tooltipkd_config = (kelas,semester) =>{
+    let brs,kolo;
+    let tabler = document.querySelector("."+ kelas);
+    
+    
+    for(var i = 1; i < tabler.rows.length; i++){
+        // row cells
+        for(var j = 0; j < tabler.rows[i].cells.length; j++){
+            
+            tabler.rows[i].cells[j].onmouseover = function(){
+            //let baris = this.parentElement.nodeName;
+            brs = this.parentElement.rowIndex - 1;
+            kolo = this.cellIndex +1;
+            let tekstitle = "Klik baris " + brs +" kolom "+ kolo;
+            this.setAttribute("title",tekstitle);
+            };
+            
+            tabler.rows[i].cells[j].onmouseout = function(){
+            this.removeAttribute("title")
+            //console.log("onmouseout")
+            // document.querySelector("#tooltiptabel").style.display="none"
+            };
+            tabler.rows[i].cells[j].onclick = function(){     
+                let parenta = this.parentElement.nodeName;
+                let rIndex = this.parentElement.rowIndex;
+                let cIndex = this.cellIndex;//+1;
+
+                let arrCodeMap = ["PKN","BINDO","MTK","IPA","IPS","SBDP","PJOK"];//tagkdserver;;
+                let arrket = ["PKN","Bahasa Indonesia","MATEMATIKA","IPA","IPS","SBDP","PJOK"];//tagkdserver;;
+                let o,p,q;
+                let arrKDmapel
+
+                if(kolo >= 2 && kolo <= 5){
+                    // arrMapelKD = tagkdserver.filter(f => f.mapel == )
+                    o = tabler.rows[1].cells[0].innerHTML;
+                    p=arrket.indexOf(o);
+                    q = arrCodeMap[p];
+                    arrKDmapel = tagkdserver.filter(s => s.mapel == q)
+                
+                    
+                    
+                }else if(kolo >= 6 && kolo <= 9){
+                    o = tabler.rows[1].cells[1].innerHTML;
+                    p=arrket.indexOf(o);
+                    q = arrCodeMap[p];
+                    arrKDmapel = tagkdserver.filter(s => s.mapel == q)
+                    
+                    
+                }else if(kolo >= 10 && kolo <= 13){
+                    o = tabler.rows[1].cells[2].innerHTML;
+                    p=arrket.indexOf(o);
+                    q = arrCodeMap[p];
+                    arrKDmapel = tagkdserver.filter(s => s.mapel == q)
+                    
+                    
+                }else if(kolo >=14 && kolo <= 17){
+                    o = tabler.rows[1].cells[3].innerHTML;
+                    p=arrket.indexOf(o);
+                    q = arrCodeMap[p];
+                    arrKDmapel = tagkdserver.filter(s => s.mapel == q)
+                    
+                    
+                }else if(kolo >=18 && kolo <= 21){
+                    o = tabler.rows[1].cells[4].innerHTML;
+                    p=arrket.indexOf(o);
+                    q = arrCodeMap[p];
+                    arrKDmapel = tagkdserver.filter(s => s.mapel == q)
+                    
+                }else{
+                    
+                    q = [];
+                    
+                    arrKDmapel = tagkdserver.filter(s => s.mapel == q)
+                }
+                //console.log(arrKDmapel);
+        
+                //tampilkan tooltip
+                let tdfokus = this;
+                
+                let tagclass = this.hasAttribute("class");
+                let ttop = (tabler.offsetTop + this.offsetTop  ) +"px";//this.offsetTop +"px";
+                let lleft =  (tabler.offsetLeft+ this.offsetLeft + this.offsetWidth +10) +"px";
+                document.querySelector("#tooltipkd1").style.top=ttop;
+                document.querySelector("#tooltipkd1").style.left=lleft;
+                document.querySelector("#tooltipkd1").style.display="block";
+                let btn = document.querySelectorAll(".badge_kd");
+                let hapus_tooltipkd1 =  document.querySelector(".hapus_tooltipkd1");
+                //console.log(tagkd34);
+                
+                for(a = 0 ; a < btn.length ; a++){
+                    //console.log(arrKDmapel)
+                    let btnklik = btn[a];
+                    let barisserver
+                    btnklik.style.display ="none";
+                    if(a < arrKDmapel.length){
+                        btnklik.style.display ="inline-block";
+                        btnklik.innerHTML =arrKDmapel[a].kd;//tagkd34 +"."+(a+1);
+                        barisserver = arrKDmapel[a].row;
+                    }
+                    btnklik.onclick = function(){
+                        let cek = btnklik.innerHTML;
+                        if(tdfokus.innerHTML !==""){
+                            alert("Ager tidak duplikasi, Sebaiknya Anda hapus KD ini terlebih dahulu!")
+                            return
+                        }
+                        tdfokus.innerHTML = cek;
+                        let namatema = tabler.rows[rIndex].cells[0].innerHTML
+                        simpandistribusi_koleksitema(barisserver,namatema,semester);
+                        document.querySelector("#tooltipkd1").style.display="none";
+                        // let serverkdupdate = arrKDmapel.filter(up => up.row == barisserver)[0];
+                        // console.log(serverkdupdate);
+                        
+                        //console.log(brs +" / "+ kolo);
+                    }
+                }
+                hapus_tooltipkd1.onclick = function(){
+                    if(tdfokus.innerHTML ==""){
+                        return;
+                    }
+                    let namatema = tabler.rows[rIndex].cells[0].innerHTML
+                    let cekTeks = tdfokus.innerHTML;
+                    if(cekTeks.indexOf("4.") > -1){
+                        cekTeks.replace("4.","3.")
+                    }
+                    barisserver = arrKDmapel.filter(s=> s.kd == cekTeks)[0].row;
+                    hapusdistribusi_koleksitema(barisserver,namatema,semester);
+                    tdfokus.innerHTML = "";
+                    document.querySelector("#tooltipkd1").style.display="none";
+                }
+            }
+            
+        }
+    }
+    dragElement(document.getElementById("tooltipkd1"));
+    let btnserver = document.querySelector(".btnserver_petakd_distribusi");
+        let judulserver = "PEMETAAN KD SEMESTER "+ semester;
+        btnserver.setAttribute("onclick",`serveradm('prt_petakd_distribusi','${judulserver}',6,2)`);
+};
+const simpandistribusi_koleksitema = (row, val,semester)=>{
+    loadingtopbarin("loadingtopbar");
+    let objekserverkdsebelumnya = tagkdserver.filter(s => s.row == row)[0];
+    let arrkoleksitema = objekserverkdsebelumnya.koleksitema;
+    let arrsemester = objekserverkdsebelumnya.semester;
+    //console.log(objekserverkdsebelumnya);
+    let arrAsal = [];
+    let arrBaru =[]
+    if(arrkoleksitema !== ""){
+        arrAsal = JSON.parse(arrkoleksitema);
+        arrBaru = arrAsal;
+        if(arrAsal.indexOf(val)== -1){
+            arrBaru.push(val)
+        }
+    }else{
+        arrBaru.push(val)
+    };
+    let smsAsal = [];
+    let smsBaru = [];
+    if(arrsemester !== ""){
+        smsAsal = JSON.parse(arrsemester);
+        smsBaru = smsAsal;
+        if(smsAsal.indexOf(semester) == -1){
+            smsBaru.push(semester)
+        }
+        
+    }else{
+        smsBaru.push(semester)
+    }
+
+    let objekjadikirim = Object.assign(objekserverkdsebelumnya,{"koleksitema":JSON.stringify(arrBaru),"semester":JSON.stringify(smsBaru)});
+    let keyy = JSON.stringify(Object.keys(objekjadikirim));
+    ///idbaris = row;
+    let tabel= JSON.stringify(Object.values(objekjadikirim))
+    
+    let datakirim = new FormData();
+    datakirim.append("key",keyy);
+    datakirim.append("idbaris",row);
+    datakirim.append("tab","serverkd");
+    datakirim.append("tabel",tabel);
+    //datakirim.append("tipe",tipe);
+    fetch(urladm+"?action=simpanbarisketabidbaris",{
+        method:"post",
+        body:datakirim
+    }).then(m=>m.json())
+    .then(r => {
+        let result = r.data;
+        tagkdserver = result.filter(s => s.kelas == idJenjang);
+        if(idJenjang>3){
+            htmldistribusikd_tematik(semester, "tinggi");
+            console.log("htmldistritematik tinggi")
+        }else{
+            console.log("htmldistritematik rendah")
+            htmldistribusikd_tematik(semester, "rendah")
+        }
+
+        clearInterval(stoploadingtopbar);
+        let divlod = document.querySelector(".loadingtopbar");
+        divlod.style.width = "100%";
+        setTimeout(() => {
+            divlod.style.width = "1px"
+            divlod.className += " w3-hide";
+
+        }, 3000);
+       
+    })
+    .catch(er => console.log(er))
+    
+};
+const hapusdistribusi_koleksitema = (row, val,semester)=>{
+    loadingtopbarin("loadingtopbar");
+    let objekserverkdsebelumnya = tagkdserver.filter(s => s.row == row)[0];
+    let arrkoleksitema = objekserverkdsebelumnya.koleksitema;
+    let arrsemester = objekserverkdsebelumnya.semester;
+    //console.log(objekserverkdsebelumnya);
+    let arrAsal = [];
+    let resultakhir;
+    let arrBaru =[]
+    let prseKoleksitema = JSON.parse(arrkoleksitema);
+    let posisivalue = prseKoleksitema.indexOf(val);
+    if(prseKoleksitema.length == 1 && posisivalue == -1){
+        resultakhir = arrkoleksitema;
+    }else if(prseKoleksitema.length == 1 && posisivalue > -1){
+        resultakhir = "";
+    }else{
+        prseKoleksitema.splice(posisivalue,1);
+        resultakhir = JSON.stringify(prseKoleksitema)
+    }
+    // 
+    // if(arrkoleksitema !== ""){
+    //     arrAsal = JSON.parse(arrkoleksitema);
+    //     arrBaru = arrAsal;
+    //     if(arrAsal.indexOf(val)== -1){
+    //         arrBaru.push(val)
+    //     }
+    // }else{
+    //     arrBaru.push(val)
+    // // };
+    // let smsAsal = [];
+    // let smsBaru = [];
+    // if(arrsemester !== ""){
+    //     smsAsal = JSON.parse(arrsemester);
+    //     smsBaru = smsAsal;
+    //     if(smsAsal.indexOf(semester) == -1){
+    //         arrBaru.push(semester)
+    //     }
+        
+    // }else{
+    //     smsBaru.push(semester)
+    // }
+
+    let objekjadikirim = Object.assign(objekserverkdsebelumnya,{"koleksitema":resultakhir});
+    let keyy = JSON.stringify(Object.keys(objekjadikirim));
+    ///idbaris = row;
+    let tabel= JSON.stringify(Object.values(objekjadikirim))
+    
+    let datakirim = new FormData();
+    datakirim.append("key",keyy);
+    datakirim.append("idbaris",row);
+    datakirim.append("tab","serverkd");
+    datakirim.append("tabel",tabel);
+    //datakirim.append("tipe",tipe);
+    fetch(urladm+"?action=simpanbarisketabidbaris",{
+        method:"post",
+        body:datakirim
+    }).then(m=>m.json())
+    .then(r => {
+        let result = r.data;
+        tagkdserver = result.filter(s => s.kelas == idJenjang);
+        clearInterval(stoploadingtopbar);
+        let divlod = document.querySelector(".loadingtopbar");
+        divlod.style.width = "100%";
+        setTimeout(() => {
+            divlod.style.width = "1px"
+            divlod.className += " w3-hide";
+
+        }, 3000);
+    })
+    .catch(er => console.log(er))
+    
+};
+
+function htmldistribusikd_tematik (semester, jjg){
+    
+    let arrTemaRendahGanjil = ["TEMA 1","TEMA 2","TEMA 3","TEMA 4"];
+    let arrTemaRendahGenap = ["TEMA 5","TEMA 6","TEMA 7","TEMA 8"];
+    let arrTemaTinggiGanjil = ["TEMA 1","TEMA 2","TEMA 3","TEMA 4","TEMA 5"];
+    let arrTemaTinggiGenap = ["TEMA 6","TEMA 7","TEMA 8","TEMA 9"];
+    let arrCodeMapelRendah = ["PKN","BINDO","MTK","SBDP","PJOK"];
+    let arrCodeMapelTinggi = ["PKN","BINDO","IPA","IPS","SBDP"];
+    let arrHeaderTinggi = ["PKN","Bahasa Indonesia","IPA","IPS","SBDP"]
+    let arrHeaderRendah = ["PKN","Bahasa Indonesia","MATEMATIKA","SBDP","PJOK"];
+    let longtd = 12;
+    let fl;
+    let html = "";
+
+    let konftema;
+    let konfmapel;
+    let konfheader;
+    if(semester == 1 && jjg == "tinggi"){
+        konftema = arrTemaTinggiGanjil;
+        konfmapel = arrCodeMapelTinggi;
+        konfheader = arrHeaderTinggi
+    }else if(semester == 2 && jjg == "tinggi"){
+        konftema = arrTemaTinggiGenap;
+        konfmapel = arrCodeMapelTinggi;
+        konfheader = arrHeaderTinggi
+    }else if(semester == 1 && jjg == "rendah"){
+        konftema = arrTemaRendahGanjil
+        konfmapel = arrCodeMapelRendah;
+        konfheader = arrHeaderRendah
+    }else if(semester == 2 && jjg == "rendah"){
+        konftema = arrTemaRendahGenap
+        konfmapel = arrCodeMapelRendah;
+        konfheader = arrHeaderRendah
+    }
+    //loop per baris dulu
+    let looptema, loopmapel, loopkd, tdgruplong;
+    for(a=0 ; a < konftema.length ; a++){
+        looptema = konftema[a];
+            html +=`<tr><td>${looptema}</td>`;
+            
+            loopkd = tagkdserver.filter(s => s.mapel == konfmapel[0] && s["koleksitema"].indexOf(looptema)>-1).map(m => m.kd);
+            if(loopkd.length>0){
+                tdgruplong = 4
+                for(b = 0 ; b < loopkd.length ; b++){
+                    html +=`<td>${loopkd[b]}</td>`;
+            
+                    tdgruplong--;
+                }
+                if(tdgruplong !== 0){
+                    for(c = 0 ; c < tdgruplong ; c++){
+                        html +=`<td></td>`
+                    }
+                }
+
+            
+            }else{
+                html +=`<td></td><td></td><td></td><td></td>`
+            }   
+            
+            loopkd = tagkdserver.filter(s => s.mapel == konfmapel[1] && s["koleksitema"].indexOf(looptema)>-1).map(m => m.kd);
+            if(loopkd.length>0){
+                tdgruplong = 4
+                for(b = 0 ; b < loopkd.length ; b++){
+                    html +=`<td>${loopkd[b]}</td>`;
+            
+                    tdgruplong--;
+                }
+                if(tdgruplong !== 0){
+                    for(c = 0 ; c < tdgruplong ; c++){
+                        html +=`<td></td>`
+                    }
+                }
+
+            
+            }else{
+                html +=`<td></td><td></td><td></td><td></td>`
+            }
+            
+            loopkd = tagkdserver.filter(s => s.mapel == konfmapel[2] && s["koleksitema"].indexOf(looptema)>-1).map(m => m.kd);
+            if(loopkd.length>0){
+                tdgruplong = 4
+                for(b = 0 ; b < loopkd.length ; b++){
+                    html +=`<td>${loopkd[b]}</td>`;
+            
+                    tdgruplong--;
+                }
+                if(tdgruplong !== 0){
+                    for(c = 0 ; c < tdgruplong ; c++){
+                        html +=`<td></td>`
+                    }
+                }
+
+            
+            }else{
+                html +=`<td></td><td></td><td></td><td></td>`
+            }   
+
+            loopkd = tagkdserver.filter(s => s.mapel == konfmapel[3] && s["koleksitema"].indexOf(looptema)>-1).map(m => m.kd);
+            if(loopkd.length>0){
+                tdgruplong = 4
+                for(b = 0 ; b < loopkd.length ; b++){
+                    html +=`<td>${loopkd[b]}</td>`;
+            
+                    tdgruplong--;
+                }
+                if(tdgruplong !== 0){
+                    for(c = 0 ; c < tdgruplong ; c++){
+                        html +=`<td></td>`
+                    }
+                }
+
+            
+            }else{
+                html +=`<td></td><td></td><td></td><td></td>`
+            }   
+
+            loopkd = tagkdserver.filter(s => s.mapel == konfmapel[4] && s["koleksitema"].indexOf(looptema)>-1).map(m => m.kd);
+            if(loopkd.length>0){
+                tdgruplong = 4
+                for(b = 0 ; b < loopkd.length ; b++){
+                    html +=`<td>${loopkd[b]}</td>`;
+            
+                    tdgruplong--;
+                }
+                if(tdgruplong !== 0){
+                    for(c = 0 ; c < tdgruplong ; c++){
+                        html +=`<td></td>`
+                    }
+                }
+
+            
+            }else{
+                html +=`<td></td><td></td><td></td><td></td>`
+            }   
+
+            html +=`</tr>`;
+            
+    }
+    
+    return html;
+}
+const tampilkandistribusidalam_tipekd = (ele) =>{
+    let namatabel = document.getElementById("dist_replacekd");
+    let bodytabel = namatabel.getElementsByTagName("tbody")[0];
+    let divjudul = document.querySelector(".h_petakd1");//.innerHTML;
+    let tipeKompetensi = (ele.value == "3" ? "PENGETAHUAN (KD-3)":"KETERAMPILAN (KD-4)");
+    divjudul.innerHTML = "DISTRIBUSI KOMPETENSI "+tipeKompetensi;
+    if(divjudul.innerHTML.indexOf("PADA")==-1){
+        for(r = 0 ; r < bodytabel.rows.length ; r++){
+            let lr = bodytabel.rows[r];
+            for(c = 0 ; c < lr.cells.length ; c++){
+                if(ele.value  == 4){
+                    lr.cells[c].innerHTML = lr.cells[c].innerHTML.replace(/^(3\.)/g,"4.")
+                    
+                }else{
+                    lr.cells[c].innerHTML = lr.cells[c].innerHTML.replace(/^(4\.)/g,"3.")
+                    
+                }
+            }
+        }
+    }
+}
+const gabungdataserverkd =()=>{
+    
+    let newObjek = tagkdserver.map((item,i)=>Object.assign({},item,buateditorkdaktif[i]))
+    //console.log(newObjek);
+    return newObjek
+}
+
+//cek semester yang dipilih saat peta kd mapel berlangsung
+const petakd_mapelormulok = document.getElementById("petakd_mapelormulok");
+petakd_mapelormulok.addEventListener("change",()=>{
+    //cek semester
+    let dom = document.querySelectorAll("input[name=petakd_rd_semester]");
+    let yy
+    for(z = 0 ; z < dom.length ; z++){
+        if(dom[z].checked){
+            yy = dom[z].value;
+        }
+    }
+    let dup = document.querySelectorAll(".result_hapus");
+    dup.forEach(hp => hp.innerHTML="");
+    
+    let dbkd = gabungdataserverkd();
+    let op = petakd_mapelormulok.options;
+    let sel = op.selectedIndex;
+    let v = op[sel].value
+    let t = op[sel].text;
+    let j = idJenjang;
+    let x = document.querySelector("#switchpetakd_mapel").checked;
+    
+    if(v === "default"){
+        return
+    }
+    if(j > 3){
+        
+    }else{
+        if(v == "MTK"){
+            alert("Mata pelajaran Matematika sudah ada di TEMA. Anda tidak bisa memilihnya.")
+            return
+        }else if(v == "PJOK"){
+            alert("Mata pelajaran PJOK sudah ada di TEMA. Anda tidak bisa memilihnya.")
+            return
+        }
+    }
+    
+    htmlpetakd_generate("tbl_distribusi_kd", v,x)
+    //
+    dragElement(document.getElementById("tooltipkdmapel"))
+});
+const switchpetakd_mapel = (el) =>{
+    let dom = document.querySelectorAll("input[name=petakd_rd_semester]");
+    let dup = document.querySelectorAll(".result_hapus");
+    dup.forEach(hp => hp.innerHTML="");
+    
+    let x = el.checked;
+    let dbkd = gabungdataserverkd();
+    let op = petakd_mapelormulok.options;
+    let sel = op.selectedIndex;
+    let v = op[sel].value
+    let t = op[sel].text;
+    let j = idJenjang;
+    if(v === "default"){
+        return
+    }
+    if(j > 3){
+        
+    }else{
+        if(v == "MTK"){
+            alert("Mata pelajaran Matematika sudah ada di TEMA. Anda tidak bisa memilihnya.")
+            return
+        }else if(v == "PJOK"){
+            alert("Mata pelajaran PJOK sudah ada di TEMA. Anda tidak bisa memilihnya.")
+            return
+        }
+    }
+    htmlpetakd_generate("tbl_distribusi_kd", v,x);
+    
+    dragElement(document.getElementById("tooltipkdmapel"))
+}
+
+let acuanRowServer
+const tooltip_petakdmapel = (cl, mapel,bol) =>{
+    let brs,kolo;
+    let tabler = document.querySelector("."+ cl);
+    let sumberdata = gabungdataserverkd();
+    let key_nokd = bol?"kd3":"kd4";
+    let key_tekskd = bol?"indikatorkd3":"indikatorkd4";
+    let key_materi = bol?"materi3":"materi4";
+    let key_indikator = bol?"indikator3":"indikator4";
+    let key_jp = bol?"jp3":"jp4"
+    // let key_materikd= bol?
+    let tooltipspin = document.getElementById("loadingtooltipmapel")
+    tooltipspin.style.display = "none";
+    
+    for(var i = 1; i < tabler.rows.length; i++){
+        // row cells
+        for(var j = 0; j < tabler.rows[i].cells.length; j++){
+            let tmbl_kd = document.querySelector(".tempattooltipbtnkd");
+            let tmbl_editor = document.querySelector(".tempattooltipeditor")
+            let tmbl_jp = document.querySelector(".tempattooltipjp");
+            
+            
+            tabler.rows[i].cells[j].onmouseover = function(){
+            //let baris = this.parentElement.nodeName;
+            brs = this.parentElement.rowIndex - 1;
+            kolo = this.cellIndex +1;
+            let tekstitle = "Klik baris " + brs +" kolom "+ kolo;
+            this.setAttribute("title",tekstitle);
+            };
+            
+            tabler.rows[i].cells[j].onmouseout = function(){
+            this.removeAttribute("title")
+            //console.log("onmouseout")
+            // document.querySelector("#tooltiptabel").style.display="none"
+            };
+            tabler.rows[i].cells[j].onclick = function(){
+                let tdfokus = this;
+                let diklik = tdfokus.getAttribute("data-fokus");
+                let ttop ;
+                let lleft ;
+                let llright;
+                
+                if(diklik == 0 ){
+                    tmbl_kd.style.display = "none";
+                    tmbl_editor.style.display = "none";
+                    tmbl_jp.style.display = "none";
+                    
+                    ttop = (tabler.offsetTop + this.offsetTop  ) +"px";//this.offsetTop +"px";
+                    lleft =  (tabler.offsetLeft+ this.offsetLeft + this.offsetWidth +10) +"px";
+                    document.querySelector("#tooltipkdmapel").style.top=ttop;
+                    document.querySelector("#tooltipkdmapel").style.left=lleft;
+                    document.querySelector(".tooltiparahatas").style.display = "none";
+                    document.querySelector(".tooltiparahkanan").style.display = "none";
+                    document.querySelector(".tooltiparahkiri").style.display = "block";
+                }else if(diklik == 1){
+                    tmbl_kd.style.display = "none";
+                    tmbl_editor.style.display = "block";
+                    tmbl_jp.style.display = "none";
+
+                    ttop = (tabler.offsetTop + this.offsetTop  ) +"px";//this.offsetTop +"px";
+                    lleft =  (tabler.offsetLeft+ this.offsetLeft + this.offsetWidth +10) +"px";
+                    document.querySelector("#tooltipkdmapel").style.top=ttop;
+                    document.querySelector("#tooltipkdmapel").style.left=lleft;
+                    document.querySelector(".tooltiparahatas").style.display = "none";
+                    document.querySelector(".tooltiparahkanan").style.display = "none";
+                    document.querySelector(".tooltiparahkiri").style.display = "block";
+                }else if(diklik == 2){
+                    tmbl_kd.style.display = "block";
+                    tmbl_editor.style.display = "none";
+                    tmbl_jp.style.display = "none";
+                    ttop = (tabler.offsetTop + this.offsetTop+ 30) +"px";//this.offsetTop +"px";
+                    lleft =  (tabler.offsetLeft+ this.offsetLeft + 10) +"px";
+                    document.querySelector("#tooltipkdmapel").style.top=ttop;
+                    document.querySelector("#tooltipkdmapel").style.left=lleft;
+                    document.querySelector(".tooltiparahatas").style.display = "block";
+                    document.querySelector(".tooltiparahkanan").style.display = "none";
+                    document.querySelector(".tooltiparahkiri").style.display = "none";
+                }else if(diklik == 3){
+                    tmbl_kd.style.display = "none";
+                    tmbl_editor.style.display = "block";
+                    tmbl_jp.style.display = "none";
+                    ttop = (tabler.offsetTop + this.offsetTop) +"px";//this.offsetTop +"px";
+                    lleft =  (tabler.offsetLeft+ this.offsetLeft - 360) +"px";
+                    document.querySelector("#tooltipkdmapel").style.top=ttop;
+                    document.querySelector("#tooltipkdmapel").style.left=lleft;
+
+                    document.querySelector(".tooltiparahkanan").style.display = "block";
+                    document.querySelector(".tooltiparahatas").style.display = "none";
+                    document.querySelector(".tooltiparahkiri").style.display = "none";
+                }else{
+                    tmbl_kd.style.display = "none";
+                    tmbl_editor.style.display = "none";
+                    tmbl_jp.style.display = "block";
+                    ttop = (tabler.offsetTop + this.offsetTop) +"px";//this.offsetTop +"px";
+                    lleft =  (tabler.offsetLeft+ this.offsetLeft - 360) +"px";
+                    document.querySelector("#tooltipkdmapel").style.top=ttop;
+                    document.querySelector("#tooltipkdmapel").style.left =lleft;
+                    document.querySelector(".tooltiparahkanan").style.display = "block";
+                    document.querySelector(".tooltiparahatas").style.display = "none";
+                    document.querySelector(".tooltiparahkiri").style.display = "none";    
+                }
+                let rIndex = this.parentElement.rowIndex;
+                let cIndex = this.cellIndex;//+1;
+                let arrKDmapel = sumberdata.filter(s=>s.mapel == mapel && s[key_tekskd] !== "");//tagkdserver.filter(s => s.mapel==mapel);
+                //tampilkan tooltip
+                document.querySelector("#tooltipkdmapel").style.display="block";
+                let fokuskolom = tdfokus.getAttribute("data-fokus")
+                let fokuslm = tdfokus.getAttribute("data-col");
+                let teksKolomLM = document.querySelectorAll("[data-col='"+ fokuslm +"']");
+                let fokusbaris;
+                let tooltiphapuskolom =document.querySelector(".tooltiphapuskolom");
+                let tooltiptambahkolom =document.querySelector(".tooltiptambahkolom");
+                let kirimtooltipeditor = document.querySelector(".kirimtooltipeditor");
+                let kirimtooltipjam = document.querySelector(".kirimtooltipjam");
+                let tooltiphapusruanglingkup = document.querySelector(".tooltiphapusruanglingkup")
+                let inputjp = document.querySelector("#inputjp");
+                let inputmateri = document.querySelector("#tooltipeditor");
+                let val;
+                let btn = document.querySelectorAll(".badge_mapel");
+                //console.log(tagkd34);
+                
+                let barisserver;
+                for(a = 0 ; a < btn.length ; a++){
+                    //console.log(arrKDmapel)
+                    let btnklik = btn[a];
+                    btnklik.style.display ="none";
+                    let info; let dataconsole
+                    if(a < arrKDmapel.length){
+                        btnklik.style.display ="inline-block";
+                        if(arrKDmapel[a].koleksitema !== ""){
+                            btnklik.className = btnklik.className.replace("w3-sand","w3-red")
+                            info = "Sudah dikelompokkan ke Lingkup Materi " + JSON.parse(arrKDmapel[a].koleksitema)[0];
+                            btnklik.innerHTML = "<s>" + arrKDmapel[a][key_nokd]+"</s>";
+                            btnklik.disabled = true;
+                        }else{
+                            btnklik.className = btnklik.className.replace("w3-red","w3-sand")
+                            btnklik.disabled = false;
+                            btnklik.innerHTML =arrKDmapel[a][key_nokd];
+                            info = arrKDmapel[a][key_tekskd];
+                        }
+                        //barisserver = arrKDmapel[a].row;
+                        dataconsole = arrKDmapel[a];
+                    }
+                    btnklik.onmouseover = function(){
+                            this.setAttribute("title",info);
+                    }
+                    btnklik.onmouseout = function(){
+                        this.removeAttribute("title")
+                    }
+                    btnklik.onclick = function(){
+                        //let fokuskolom = tdfokus.getAttribute("data-fokus")
+                        if(fokuskolom==2){
+                            if(tdfokus.innerHTML!==""){
+                                alert("Fitur ini hanya berfungsi ketika Kolom Kompetensi Dasar belum terisi (kosong). Jika Anda tidak membutuhkan KD ini, sebaiknya Anda hapus kolom.\n\n Tambah kolom untuk membuat KD baru di Lingkup Materi ini.");
+                                return
+                            }
+                            tdfokus.innerHTML = dataconsole[key_nokd]+" "+dataconsole[key_tekskd];
+                            val = teksKolomLM[0].innerHTML;
+                            barisserver = dataconsole.row;
+                            update_dataserverpetakdmapel(cl, mapel,bol, barisserver, val,fokuskolom,0)
+                        }else{
+                            alert("KD hanya untuk kolom KD");
+                        }
+                    }
+
+                }
+                tooltiphapuskolom.onclick = function (){
+                    if(fokuskolom==0){
+                        alert("Maaf, untuk menghapus Lingkup Materi, gunakan tombol Lingkup Materi.")
+                    }else{
+                        let konf;// = confirm("Anda yakin ingin menghapus kolom ini?");
+                        let datayangdihapus = tdfokus.innerHTML;
+                        let indeknol= tdfokus.getAttribute("data-indek");
+                        
+                        
+                        if(fokuskolom == 1 || fokuskolom == 2){
+                            konf = confirm("Anda yakin ingin menghapus kolom ini? Semua data yang sudah tersimpan baik KD3 maupun KD4 untuk Lingkup Materi ini akan terhapus semua dari server.");
+                            if(!konf){
+                                return
+                            }
+                            // dihapus semua LM di KD ini;
+                        }else if(fokuskolom == 3||fokuskolom == 4){
+                            konf = confirm("Anda yakin ingin menghapus kolom ini? Anda masih bisa mengedit ini dengan menu pilihan tooltip yang telah disediakan.");
+                            if(!konf){
+                                return
+                            }
+                            
+                        }
+                        let cekcol = tdfokus.getAttribute("data-col");
+                        let cekbaris = tdfokus.getAttribute("data-baris")
+                        let cekparam =  `[data-col="${cekcol}"][data-fokus="2"][data-baris="${cekbaris}"]`;
+                        let cekarrind =  `[data-col="${cekcol}"][data-fokus="${fokuskolom}"][data-baris="${cekbaris}"][data-indek]`;
+                        let cektunggal = document.querySelector(cekparam);
+                        let cekIndik = document.querySelectorAll(cekarrind);
+                        let prs = cektunggal.innerHTML;
+                        if(prs == ""){
+                            alert("Isikan terlebih dahulu KD-nya");
+                            return
+                        }
+                        let mprs = prs.match(/^([34]\.\d+)/g);
+                        let barisserver = arrKDmapel.filter(s=> s[key_nokd] == mprs)[0].row;
+                        console.log("barisserver")
+                        console.log(barisserver)
+                        let pushindik=[];
+                        for(k = 0 ; k < cekIndik.length ; k++){
+                            let dt = cekIndik[k].innerHTML;
+                            if(fokuskolom==4){
+                                let psJP = dt.replace(" JP.","");
+                                pushindik.push(psJP);
+
+                            }else{
+                                pushindik.push(dt);
+                            }
+
+                        }
+                        console.log("sebelum datayangdihapus");
+                        console.log(pushindik);
+                        console.log("indek html yang terhapus:")
+                        let posisidihapus = pushindik.indexOf(datayangdihapus);
+                        console.log(posisidihapus);
+                        if(indeknol == 0){
+                            pushindik.splice(posisidihapus, 1,"");
+                            tdfokus.innerHTML="";
+                        }else{
+                            pushindik.splice(posisidihapus, 1);
+                            
+                        }
+                        console.log("setelah datayangdihapus")
+                        console.log(pushindik);
+                        console.log("stringifynya");
+                        console.log(JSON.stringify(pushindik));
+                        val = JSON.stringify(pushindik);
+                        let idx = posisidihapus;
+                        update_hapusdataserver(cl, mapel,bol, barisserver, val,fokuskolom,idx)
+                       // tooltip_petakdmapel(cl, mapel,bol);
+                    }
+                    document.getElementById('tooltipkdmapel').style.display='none';
+                }
+                tooltiptambahkolom.onclick = function (){
+                    if(fokuskolom == 0){ // ketika mengeklik kolom Lingkup Materi
+                        alert("Maaf, Anda tidak bisa menambahkan satu baris lagi. Anda hanya bisa menghapusnya satu baris ini.")
+                    }else if(fokuskolom == 1 || fokuskolom ==2 ){//KD atau materi
+                        //menentukan indexRow berdasarkan rIndex dan jumlah Span;
+                        let fbrs = new Date().getMilliseconds()+1;//tdfokus.getAttribute("data-baris")
+                        let rws,x
+                        if(tdfokus.hasAttribute("rowspan")){
+                            rws = tdfokus.getAttribute("rowspan")
+                        }else{
+                            rws = 1
+                        }
+                        x = (parseInt(rws) + parseInt(rIndex));//
+                        //kedua, carikan element dengan data-col=fokuslm yang index-nya pertama
+                        let tdrowspan = document.querySelectorAll(`[data-col="${fokuslm}"]`);
+                        let llm = tdrowspan[0].innerHTML;
+                        let rwsBefore 
+                        if(tdrowspan[0].hasAttribute("rowspan")){
+                            rwsBefore = tdrowspan[0].getAttribute("rowspan");
+                        }else{
+                            rwsBefore = 1
+                        }
+                        let z = (parseInt(rwsBefore) + 1)
+                        tdrowspan[0].setAttribute("rowspan",z);
+                        let findex = new Date().getMilliseconds()+2;
+                        let g = tabler.insertRow(x);//rIndex
+                        let h = g.insertCell(-1);
+                        h.setAttribute("data-col",fokuslm);
+                        h.setAttribute("data-fokus","1");
+                        h.setAttribute("data-baris",fbrs);
+                        h = g.insertCell(-1);
+                        h.setAttribute("data-col",fokuslm);
+                        h.setAttribute("data-fokus","2");
+                        h.setAttribute("data-baris",fbrs);
+                        h = g.insertCell(-1);
+                        h.setAttribute("data-col",fokuslm);
+                        h.setAttribute("data-fokus","3");
+                        h.setAttribute("data-baris",fbrs);
+                        h.setAttribute("data-indek",findex);
+                        h = g.insertCell(-1);
+                        h.setAttribute("data-col",fokuslm);
+                        h.setAttribute("data-fokus","4");
+                        h.setAttribute("data-baris",fbrs);
+                        h.setAttribute("data-indek",findex);
+                    }else if(fokuskolom == 3 || fokuskolom == 4){
+                        let tdrowspan = document.querySelectorAll(`[data-col="${fokuslm}"]`);
+                        let llm = tdrowspan[0].innerHTML;
+                        let rwsBefore 
+                        if(tdrowspan[0].hasAttribute("rowspan")){
+                            rwsBefore = tdrowspan[0].getAttribute("rowspan");
+                        }else{
+                            rwsBefore = 1
+                        }
+                        let z = (parseInt(rwsBefore) + 1)
+                        tdrowspan[0].setAttribute("rowspan",z);
+                        //
+                        let rowspankdmateri;
+                        let eldomtd=[]; 
+                        
+                        let kodebaris = tdfokus.getAttribute("data-baris");
+                        let param = `[data-baris="${kodebaris}"]`;
+                        tdrowspan = document.querySelectorAll(`[data-col="${fokuslm}"]${param}`);
+                        for(l = 0 ; l < tdrowspan.length; l++){
+                            if(tdrowspan[l].hasAttribute("rowspan")){
+                                    rowspankdmateri = tdrowspan[l].getAttribute("rowspan");
+                                    let c = parseInt(rowspankdmateri)+1
+                                    if(!tdrowspan[l].hasAttribute("data-indek")){
+                                        tdrowspan[l].setAttribute("rowspan",c)
+                                    }else{
+                                        let d = l-1;
+                                        
+
+                                        eldomtd.push(d);
+                                    }
+                            }else{
+                                    if(!tdrowspan[l].hasAttribute("data-indek")){
+                                        tdrowspan[l].setAttribute("rowspan",2)
+                                    }else{
+                                        let d = l-1;
+                                        
+                                        eldomtd.push(d);
+                                    }   
+                                    
+                            }
+                        }
+                        let tx = eldomtd.length/2
+                        let xyz = parseInt(rIndex)+1
+                        let g = tabler.insertRow(xyz);//rIndex
+                        let h = g.insertCell(-1);
+                        let dtbrs = tdfokus.getAttribute("data-baris");
+                        h.setAttribute("data-col",fokuslm);
+                        h.setAttribute("data-fokus","3");
+                        h.setAttribute("data-baris",dtbrs);
+                        h.setAttribute("data-indek",tx);
+                        h = g.insertCell(-1);
+                        
+                        h.setAttribute("data-col",fokuslm);
+                        h.setAttribute("data-fokus","4");
+                        h.setAttribute("data-baris",dtbrs);
+                        h.setAttribute("data-indek",tx);
+                        /// format dibuatkan dulu untuk menentukan urutan arraynya, kemudian kirim ke server sebagai data array;
+                        //cek barisserver dulu:
+                        // let cekcol = tdfokus.getAttribute("data-col");
+                        // let cekbaris = tdfokus.getAttribute("data-baris")
+                        
+                       
+
+                   // update_dataserverpetakdmapel(cl, mapel,bol, barisserver, "",fokuskolom,idx)
+                        // selesai tes
+                    }
+                    tooltip_petakdmapel(cl, mapel,bol);
+                    document.getElementById('tooltipkdmapel').style.display='none';
+                }
+                kirimtooltipeditor.onclick = function (){
+                    let cekcol = tdfokus.getAttribute("data-col");
+                    let cekbaris = tdfokus.getAttribute("data-baris")
+                    let cekparam =  `[data-col="${cekcol}"][data-fokus="2"][data-baris="${cekbaris}"]`;
+                    let cektunggal = document.querySelector(cekparam);
+                    let prs = cektunggal.innerHTML;
+                    if(prs == ""){
+                        alert("Isikan terlebih dahulu KD-nya");
+                        return
+                    }
+                    let mprs = prs.match(/^([34]\.\d+)/g);
+                    let barisserver = arrKDmapel.filter(s=> s[key_nokd] == mprs)[0].row;
+                    let idx;
+                    tdfokus.innerHTML = inputmateri.innerHTML;
+                    let indekfokus;
+                    if(fokuskolom == 1){
+                        idx = 0
+                        val = inputmateri.innerHTML;
+                    } else{
+                        idx= tdfokus.getAttribute("data-index");
+                        let ps = [];
+                        let elcari = document.querySelectorAll(`[data-col="${cekcol}"][data-fokus="3"][data-baris="${cekbaris}"][data-indek]`);
+                        for(r = 0 ; r < elcari.length ; r++){
+                            if(elcari[r].innerHTML == tdfokus.innerHTML){
+                                indekfokus = r;
+                            }
+                            ps.push(elcari[r].innerHTML)
+                        }
+                        val = JSON.stringify(ps);
+                    }
+                    
+                    update_dataserverpetakdmapel(cl, mapel,bol, barisserver, val,fokuskolom,indekfokus)
+
+                }
+                kirimtooltipjam.onclick = function (){
+                    tdfokus.innerHTML = inputjp.value +" JP.";
+                    
+                    let cekcol = tdfokus.getAttribute("data-col");
+                    let cekbaris = tdfokus.getAttribute("data-baris")
+                    let cekparam =  `[data-col="${cekcol}"][data-fokus="2"][data-baris="${cekbaris}"]`;
+                    let cektunggal = document.querySelector(cekparam);
+                    let prs = cektunggal.innerHTML;
+                    if(prs == ""){
+                        alert("Isikan terlebih dahulu KD-nya");
+                        return
+                    }
+                    let mprs = prs.match(/^([34]\.\d+)/g);
+                    let barisserver = arrKDmapel.filter(s=> s[key_nokd] == mprs)[0].row;
+                    let ps = [];
+                    let indekfokus
+                        let elcari = document.querySelectorAll(`[data-col="${cekcol}"][data-fokus="4"][data-baris="${cekbaris}"][data-indek]`);
+                        for(r = 0 ; r < elcari.length ; r++){
+                            ps.push(elcari[r].innerHTML.replace(" JP.",""))
+                            if(elcari[r].innerHTML == tdfokus.innerHTML){
+                                indekfokus = r;
+                            }
+                        }
+                        val = JSON.stringify(ps);
+                        update_dataserverpetakdmapel(cl, mapel,bol, barisserver, val,fokuskolom,indekfokus);
+                       
+                }
+                tooltiphapusruanglingkup.onclick = function (){
+                    alert("Anda tidak dapat menghapus Ruang Lingkup Materi. Lingkup materi ini disesuaikan untuk keperluan penyusunan Test Blue Print Ujian sekolah.")
+                }
+            }
+        }
+    }
+    // document.getElementById('tooltipkdmapel').style.display='none';
+};
+const update_dataserverpetakdmapel = (cl, mapel,bol,row, val,fokus,indek)=>{
+    let tooltipspin = document.getElementById("loadingtooltipmapel")
+    tooltipspin.style.display ="block";
+    let dom = document.querySelectorAll("input[name=petakd_rd_semester]");
+    let smstr
+    for(z = 0 ; z < dom.length ; z++){
+        if(dom[z].checked){
+            smstr= dom[z].value;
+        }
+    }
+    let dbAsal = tagkdserver.filter(s=>s.mapel == mapel && s.row == row)[0];//object
+    let key_fokus=[0,1,2,3,4];
+    let key_keyHeader = bol?["koleksitema","indikator3","materi3","jp3"]:["koleksitema","indikator4","materi4","jp4"];
+    let key_keyHeader2 = bol?["koleksitema","indikator4","materi4","jp4"]:["koleksitema","indikator3","materi3","jp3"];
+
+    let objKirim = {};
+    let pushkoleksitema=[];
+    let pushsemester=[];
+    let pushindikator3 = [];
+    let pushindikator4 = [];
+    let pushmateri3 = [];
+    let pushmateri4 = [];
+    let pushjp3 = [];
+    let pushjp4 = [];
+    /* 
+    0 => fokus untuk Lingkup Materi, biasanya gigunakan untuk menghapus seluruh info KD yang diisi di baris server ini
+    1 => fokus untuk mengisi/mengedit Materi
+    2 => fokus untuk mengisi KD
+    3 => fokus untuk mengisi array indikator
+    4 => fokus untuk mengisi array Jam tayang
+    */
+    // console.log(cl)
+    // console.log(mapel)
+    // console.log(bol)
+      console.log(row)
+     console.log(dbAsal)
+    // console.log(val)
+    // console.log(fokus)
+    // console.log("dbAsal:")
+    
+    //variable untuk mengecek isian array
+    let dif_indikator3 ;
+    let dif_indikator4 ;
+    let dif_materi3;
+    let dif_materi4;
+    let dif_jp3;
+    let dif_jp4;
+    
+    
+    // console.log(dbAsal)
+    if(fokus == 1){
+        let dif_materi = val;
+        //console.log(dif_materi);
+        objKirim[key_keyHeader[2]] = dif_materi;
+        
+
+    }else if(fokus == 2){
+        /// jika ingin mengisi/mengubah KD, maka pada baris ini akan hilang!
+        pushkoleksitema.push(val);
+        pushsemester.push(smstr);
+        objKirim.semester = JSON.stringify(pushsemester);
+        objKirim.koleksitema = JSON.stringify(pushkoleksitema);
+        objKirim.materi3 = "";
+        objKirim.materi4 = "";
+        objKirim.indikator3 = JSON.stringify([""]);
+        objKirim.indikator4 = JSON.stringify([""]);
+        objKirim.jp3 = JSON.stringify([""]);
+        objKirim.jp4 = JSON.stringify([""]);
+    }else if(fokus == 3){
+        objKirim[key_keyHeader[1]]=val;
+        let jpsebelumnya =dbAsal[key_keyHeader[3]];
+        console.log("jpsebelumnya")
+        console.log(jpsebelumnya)
+        console.log("indek");
+        console.log(indek);
+        let prsf = JSON.parse(val);
+        let ajp = []
+        let prs = JSON.parse(jpsebelumnya);
+        console.log("prs");
+        console.log(prs);
+        if(prsf.length == prs.length){
+            ajp = prs;
+            
+        }else{
+            prs.splice(indek,0,"");
+            ajp = prs
+
+        }
+        console.log(ajp);
+        objKirim[key_keyHeader[3]] = JSON.stringify(ajp);
+        //cek kd JP
+        // let inversindik = dbAsal[key_keyHeader[3]];
+        // let lawan
+        // // nyari lawan KD ternyata ga pengaruh
+        // // if(inversindik == ""){
+        // //     let des = JSON.parse(val);
+        // //     let arinv = []
+        // //     for(i = 0 ; i < des.length;i++){
+        // //         arinv.push("")
+        // //     }
+        // //     lawan = JSON.stringify(arinv)
+        // // }else{
+        // //     lawan = inversindik;
+        // // }
+        // objKirim[key_keyHeader[3]]=lawan;
+        // //objKirim[key_keyHeader[1]]=val;
+    }else {
+        objKirim[key_keyHeader[3]] = val;
+        let jpsebelumnya =dbAsal[key_keyHeader[1]];
+        console.log("jpsebelumnya")
+        console.log(jpsebelumnya)
+        console.log("indek");
+        console.log(indek);
+        let prsf = JSON.parse(val);
+        let ajp = []
+        let prs = JSON.parse(jpsebelumnya);
+        console.log("prs");
+        console.log(prs);
+        if(prsf.length == prs.length){
+            ajp = prs;
+            
+        }else{
+            prs.splice(indek,0,"");
+            ajp = prs
+
+        }
+        console.log(ajp);
+        objKirim[key_keyHeader[1]] = JSON.stringify(ajp);
+
+        // let inversindik = dbAsal[key_keyHeader2[3]];
+        // let lawan
+        // if(inversindik == ""){
+        //     let des = JSON.parse(val);
+        //     let arinv = []
+        //     for(i = 0 ; i < des.length;i++){
+        //         arinv.push("")
+        //     }
+        //     lawan = JSON.stringify(arinv)
+        // }else{
+        //     lawan = inversindik;
+        // }
+        // objKirim[key_keyHeader2[3]] = lawan;
+    }
+    //console.log(objKirim);
+     let objekjadikirim = Object.assign(dbAsal,objKirim);
+     //console.log(objekjadikirim);
+    let keyy = JSON.stringify(Object.keys(objekjadikirim));
+    ///idbaris = row;
+    let tabel= JSON.stringify(Object.values(objekjadikirim))
+    
+    let datakirim = new FormData();
+    datakirim.append("key",keyy);
+    datakirim.append("idbaris",row);
+    datakirim.append("tab","serverkd");
+    datakirim.append("tabel",tabel);
+    //datakirim.append("tipe",tipe);
+    fetch(urladm+"?action=simpanbarisketabidbaris",{
+        method:"post",
+        body:datakirim
+    }).then(m=>m.json())
+    .then(r => {
+        let result = r.data;
+        tagkdserver = result.filter(s => s.kelas == idJenjang);
+        console.log("distribusi  kd berhasil tersimpan");
+        tooltipspin.style.display = "none";
+        
+        htmlpetakd_generate(cl, mapel,bol,row);
+        document.getElementById('tooltipkdmapel').style.display='none';
+        //tooltip_petakdmapel(cl, mapel,bol,row)
+    })
+    .catch(er => console.log(er))
+
+};
+const update_hapusdataserver = (cl, mapel,bol,row, val,fokus,indek) =>{
+    let tooltipspin = document.getElementById("loadingtooltipmapel")
+    tooltipspin.style.display ="block";
+    let dom = document.querySelectorAll("input[name=petakd_rd_semester]");
+    let smstr
+    for(z = 0 ; z < dom.length ; z++){
+        if(dom[z].checked){
+            smstr= dom[z].value;
+        }
+    }
+    let dbAsal = tagkdserver.filter(s=>s.mapel == mapel && s.row == row)[0];//object
+    let key_fokus=[0,1,2,3,4];
+    let key_keyHeader = bol?["koleksitema","indikator3","materi3","jp3"]:["koleksitema","indikator4","materi4","jp4"];
+    let key_keyHeader2 = bol?["koleksitema","indikator4","materi4","jp4"]:["koleksitema","indikator3","materi3","jp3"];
+
+    let objKirim = {};
+    let pushkoleksitema=[];
+    let pushsemester=[];
+    let pushindikator3 = [];
+    let pushindikator4 = [];
+    let pushmateri3 = [];
+    let pushmateri4 = [];
+    let pushjp3 = [];
+    let pushjp4 = [];
+    /* 
+    0 => fokus untuk Lingkup Materi, biasanya gigunakan untuk menghapus seluruh info KD yang diisi di baris server ini
+    1 => fokus untuk mengisi/mengedit Materi
+    2 => fokus untuk mengisi KD
+    3 => fokus untuk mengisi array indikator
+    4 => fokus untuk mengisi array Jam tayang
+    */
+    // console.log(cl)
+    // console.log(mapel)
+    // console.log(bol)
+      console.log(row)
+     console.log(dbAsal)
+    // console.log(val)
+    // console.log(fokus)
+    // console.log("dbAsal:")
+    
+    //variable untuk mengecek isian array
+    let dif_indikator3 ;
+    let dif_indikator4 ;
+    let dif_materi3;
+    let dif_materi4;
+    let dif_jp3;
+    let dif_jp4;
+    
+    
+    // console.log(dbAsal)
+    if(fokus == 1|| fokus == 2){
+        /// jika ingin mengisi/mengubah KD, maka pada baris ini akan hilang!
+        // pushkoleksitema.push(val);
+        // pushsemester.push(smstr);
+        objKirim.semester = "";//JSON.stringify(pushsemester);
+        objKirim.koleksitema = "";//JSON.stringify(pushkoleksitema);
+        objKirim.materi3 = "";
+        objKirim.materi4 = "";
+        objKirim.indikator3 = "";//JSON.stringify([""]);
+        objKirim.indikator4 = "";//JSON.stringify([""]);
+        objKirim.jp3 = "";//JSON.stringify([""]);
+        objKirim.jp4 = "";//JSON.stringify([""]);
+    }else if(fokus == 3|| fokus==4){
+        objKirim[key_keyHeader[1]]=val;
+        //cek kd sebaliknya:
+        let inversindik = dbAsal[key_keyHeader2[1]];
+        let lawan
+        if(inversindik == ""){
+            let des = JSON.parse(val);
+            let arinv = []
+            for(i = 0 ; i < des.length;i++){
+                arinv.push("")
+            }
+            lawan = JSON.stringify(arinv)
+        }else{
+            lawan = inversindik;
+        }
+        objKirim[key_keyHeader2[1]]=lawan;
+        objKirim[key_keyHeader[1]]=val;
+    }else {
+        alert("Anda menghapus Lingkup Materi");
+        tooltipspin.style.display = "none";
+        return
+    }
+    console.log(objKirim);
+     let objekjadikirim = Object.assign(dbAsal,objKirim);
+     console.log(objekjadikirim);
+    let keyy = JSON.stringify(Object.keys(objekjadikirim));
+    //idbaris = row;
+    let tabel= JSON.stringify(Object.values(objekjadikirim))
+    
+    let datakirim = new FormData();
+    datakirim.append("key",keyy);
+    datakirim.append("idbaris",row);
+    datakirim.append("tab","serverkd");
+    datakirim.append("tabel",tabel);
+    ////datakirim.append("tipe",tipe);
+    fetch(urladm+"?action=simpanbarisketabidbaris",{
+        method:"post",
+        body:datakirim
+    }).then(m=>m.json())
+    .then(r => {
+        let result = r.data;
+        tagkdserver = result.filter(s => s.kelas == idJenjang);
+        console.log("distribusi  kd berhasil tersimpan");
+        tooltipspin.style.display = "none";
+        
+        htmlpetakd_generate(cl, mapel,bol,row);
+        document.getElementById('tooltipkdmapel').style.display='none';
+        
+    })
+    .catch(er => console.log(er))
+}
+const htmlpetakd_generate = (cl, mapel,bol,row) =>{
+    let dom = document.querySelectorAll("input[name=petakd_rd_semester]");
+    let yy
+    for(z = 0 ; z < dom.length ; z++){
+        if(dom[z].checked){
+            yy = dom[z].value;
+        }
+    }
+    
+    let domm = document.querySelector("#switchpetakd_mapel")
+    let x = domm.checked; ///true untuk KD3
+    for(y = 0 ; y <dom.length ; y++){
+        if(dom[y].checked){
+            yy = dom[y].value;
+        }
+    }
+    let key_indikator = x?"indikator3":"indikator4";
+    let key_indikatorkd = x?"indikatorkd3":"indikatorkd4";
+    let key_jp = x?"jp3":"jp4";
+    let key_materi = x?"materi3":"materi4";
+    let key_kd =x?"kd3":"kd4";
+
+    let dbkd = gabungdataserverkd();
+    let op = petakd_mapelormulok.options;
+    let sel = op.selectedIndex;
+    let v = op[sel].value
+    let t = op[sel].text;
+    let j = idJenjang;
+    let tbl = document.getElementById("dist_replacekd")
+    let tbdy = tbl.getElementsByTagName("tbody")[0];
+    
+    let dbMP = dbkd.filter(s=> s.mapel == v && s["semester"].indexOf(yy)>-1);
+    //console.log(dbMP);
+    let dbLM = LingkupMateri[v];
+    let html="";
+    let LM;
+
+        document.querySelector(".h_petakd1").innerHTML = x?"DISTRIBUSI KOMPETENSI PENGETAHUAN (KD-3)<br>MATA PELAJARAN " + t.toUpperCase():"DISTRIBUSI KOMPETENSI KETERAMPILAN (KD-4)<br>MATA PELAJARAN " + t.toUpperCase();;
+        document.querySelector("#ketswitchpetakd_mapel").innerHTML = x?"Kompetensi Pengetahuan (KD-3)": "Kompetensi Pengetahuan (KD-3)";
+
+        for(a = 0  ; a < dbLM.length; a++){
+            LM = dbLM[a];
+            // console.log("LM");
+            // console.log(LM);
+            
+            
+            let dbKT = dbMP.filter(s => s.koleksitema.indexOf(LM)>-1)
+            if(dbKT.length > 0){
+                
+                let brs = dbKT.map(m => JSON.parse(m[key_indikator])).reduce((a,b)=>a.concat(b));//
+                
+                
+                let brsTotal = brs.length;//integer
+                let brsperKD = dbKT.map(m => JSON.parse(m[key_indikator]).length);//array [1,2]
+                    // console.log("brsperKD")
+                    // console.log(brsperKD);
+                let indik = dbKT.map(m => JSON.parse(m[key_indikator]));
+                let jp = dbKT.map(m=>JSON.parse(m[key_jp]))
+               
+                for(b = 0 ; b < dbKT.length ; b++){
+                    // console.log("brsperKD[b]")
+                    // console.log(brsperKD[b]);
+
+                    if(b == 0 && brsperKD.length==1){
+                        html +=`<tr><td data-col="${a}" data-fokus="0">${LM}</td>`;
+                    }else if(b == 0 && brsperKD.length>1){
+                        html +=`<tr><td rowspan="${brsTotal}" data-col="${a}" data-fokus="0">${LM}</td>`;
+                    }
+                    if(brsperKD[b]==1){
+                        
+                        html +=`<td  data-col="${a}" data-fokus="1" data-baris="${b}">${dbKT[b][key_materi]}</td>`;//materi
+                        html +=`<td data-col="${a}" data-fokus="2" data-baris="${b}">${dbKT[b][key_kd]} ${dbKT[b][key_indikatorkd]}</td>`;//kd
+                        
+                        html +=`<td  data-col="${a}" data-fokus="3" data-baris="${b}" data-indek="0">${indik[b][0]}</td>`;//materi
+                        let gara2jp2 = jp[b][0] == ""?"":jp[b][0] +" JP.";
+                        html +=`<td  data-col="${a}" data-fokus="4" data-baris="${b}" data-indek="0">${gara2jp2}</td></tr>`;//materi
+                        
+                        
+                        
+                    }else{
+                        html +=`<td rowspan="${brsperKD[b]}" data-col="${a}" data-fokus="1" data-baris="${b}">${dbKT[b][key_materi]}</td>`;//materi
+                        html +=`<td rowspan="${brsperKD[b]}" data-col="${a}" data-fokus="2" data-baris="${b}">${dbKT[b][key_kd]} ${dbKT[b][key_indikatorkd]}</td>`;//kd
+                        for(c=0 ; c < indik[b].length ; c++){
+                            if(c==0){
+                                html +=`<td  data-col="${a}" data-fokus="3" data-baris="${b}" data-indek="0">${indik[b][0]}</td>`;
+                                let gara2jp = jp[b][0] == ""?"":jp[b][0] +" JP.";
+                                html +=`<td  data-col="${a}" data-fokus="4" data-baris="${b}" data-indek="0">${gara2jp}</td></tr>`;
+                            }else{
+                                
+                                html +=`<tr><td  data-col="${a}" data-fokus="3" data-baris="${b}" data-indek="${c}">${indik[b][c]}</td>`;
+                                let garagarajp = jp[b][c] == ""?"":jp[b][c] +" JP.";
+                                html +=`<td  data-col="${a}" data-fokus="4" data-baris="${b}" data-indek="${c}">${garagarajp}</td></tr>`;
+                            }
+                        }
+                    }
+                    //
+                }
+            }else{
+                html +=`<tr><td data-col="${a}" data-fokus="0">${LM}</td><td data-col="${a}" data-fokus="1" data-baris="0"></td><td data-col="${a}" data-fokus="2" data-baris="0"></td><td data-col="${a}" data-fokus="3" data-baris="0" data-indek="0"></td><td data-col="${a}" data-fokus="4" data-baris="0" data-indek="0"></td></tr>`;
+            }
+        }
+        tbdy.innerHTML = html;
+        tooltip_petakdmapel(cl, mapel,bol,row);
+        let btnserver = document.querySelector(".btnserver_petakd_distribusi");
+        let judulserver = "PEMETAAN KD MAPEL "+ mapel;
+        btnserver.setAttribute("onclick",`serveradm('prt_petakd_distribusi','${judulserver}',6,1)`);
+}
+const select_sebarankdpertema = document.querySelector(".select_sebarankdpertema");
+const ckbox_sebarankdpertema = document.querySelector("#checkboxkd_sebarankdpertema");
+select_sebarankdpertema.addEventListener("change",()=>{
+    let opsi = select_sebarankdpertema.options;
+    let indSel = opsi.selectedIndex;
+    let v = opsi[indSel].value;
+    let t = opsi[indSel].text;
+    let u = indSel - 1;
+    if(v =="default"){
+        return
+    }
+    let w = v.match(/(\d+)/)[0];
+    let x = "Tema "+w;
+    let j = idJenjang;
+    let bolkd = ckbox_sebarankdpertema.checked; 
+    let tcaps_kd = bolkd?"PENGETAHUAN (KD-3)":"KETERAMPILAN (KD-4)";
+    let sms = bolkd?2:1;
+    let TinggiTemaRendahGanjil = ["TEMA 1","TEMA 2","TEMA 3","TEMA 4"];
+    let TinggiTemaRendahGenap = ["TEMA 5","TEMA 6","TEMA 7","TEMA 8"];
+    let arrTemaTinggiGanjil = ["TEMA 1","TEMA 2","TEMA 3","TEMA 4","TEMA 5"];
+    let arrTemaTinggiGenap = ["TEMA 6","TEMA 7","TEMA 8","TEMA 9"];
+    let arrCodeMapelRendah = ["PKN","BINDO","MTK","SBDP","PJOK"];
+    let arrCodeMapelTinggi = ["PKN","BINDO","IPA","IPS","SBDP"];
+    let arrHeaderTinggi = ["PKN","Bahasa Indonesia","IPA","IPS","SBDP"]
+    let arrHeaderRendah = ["PKN","Bahasa Indonesia","MATEMATIKA","SBDP","PJOK"];
+    let koleksiTema, koleksiCodeMP, koleksiHeader
+    let idTema = DataKDKurtilas["kelas"+j];
+    let dB = gabungdataserverkd();
+    
+
+    //DOM
+    let sembunyikan = document.querySelectorAll(".kelastinggirendah_sebarankdpertema");
+    let h1_sebarankdpertema = document.querySelector(".h1_sebarankdpertema");
+    let h2_sebarankdpertema = document.querySelector(".h2_sebarankdpertema");
+    let namasekolah_sebarankdpertema = document.querySelector(".namasekolah_sebarankdpertema");
+    let namakelas_sebarankdpertema = document.querySelector(".namakelas_sebarankdpertema");
+    let tapel_sebarankdpertema = document.querySelector(".tapel_sebarankdpertema");
+    let semester_sebarankdpertema = document.querySelector(".semester_sebarankdpertema");
+    let kurikulum_sebarankdpertema = document.querySelector(".kurikulum_sebarankdpertema");
+    let subtema1_sebarankdpertema = document.querySelector(".subtema1_sebarankdpertema");
+    let subtema2_sebarankdpertema = document.querySelector(".subtema2_sebarankdpertema");
+    let subtema3_sebarankdpertema = document.querySelector(".subtema3_sebarankdpertema");
+    let subtema4_sebarankdpertema = document.querySelector(".subtema4_sebarankdpertema");
+    
+    let ttdnamasekolah_sebarankdpertema = document.querySelector(".ttdnamasekolah_sebarankdpertema");
+    let ttdnamakepsek_sebarankdpertema = document.querySelector(".ttdnamakepsek_sebarankdpertema");
+    let ttdnipkepsek_sebarankdpertema = document.querySelector(".nipkepsek_sebarankdpertema");
+    let titimangsa_sebarankdpertema = document.querySelector(".titimangsa_sebarankdpertema");
+    let gmpkelas_sebarankdpertema = document.querySelector(".gmpkelas_sebarankdpertema");
+    let kelasnya_sebarankdpertema = document.querySelector(".kelasnya_sebarankdpertema");
+    let namaguru_sebarankdpertema = document.querySelector(".namaguru_sebarankdpertema");
+    let nipguru_sebarankdpertema = document.querySelector(".nipguru_sebarankdpertema");
+    
+    if(idJenjang > 3){
+        sembunyikan.forEach(el => el.style.display="none");
+        // koleksiCodeMP = arrCodeMapelTinggi;
+        // koleksiHeader = arrHeaderTinggi;
+    }else{
+        subtema4_sebarankdpertema.innerHTML = idTema[u]["Subtema 4"];
+        // koleksiCodeMP = arrCodeMapelRendah;
+        // koleksiHeader = arrHeaderRendah;
+    }
+    let ttdTersimpan =document.querySelectorAll(".result_hapus");
+    ttdTersimpan.forEach(ed => ed.innerHTML = "");
+
+    h1_sebarankdpertema.innerHTML = "PEMETAAN KOMPETENSI DASAR "+tcaps_kd+" PER SUBTEMA DAN PER PEMBELAJARAN";
+    h2_sebarankdpertema.innerHTML = t +": " + idTema[u][x].toUpperCase();
+    namasekolah_sebarankdpertema.innerHTML = idNamaSekolah.toUpperCase();
+    namakelas_sebarankdpertema.innerHTML = idgurumapelmapel;
+    tapel_sebarankdpertema.innerHTML = idTeksTapel;
+    semester_sebarankdpertema.innerHTML = detectSemesterBerdasarkan("tema",x);
+    subtema1_sebarankdpertema.innerHTML = idTema[u]["Subtema 1"];
+    subtema2_sebarankdpertema.innerHTML = idTema[u]["Subtema 2"];
+    subtema3_sebarankdpertema.innerHTML = idTema[u]["Subtema 3"];
+    ttdnamasekolah_sebarankdpertema.innerHTML = idNamaSekolah;
+    ttdnamakepsek_sebarankdpertema.innerHTML = idNamaKepsek;
+    ttdnipkepsek_sebarankdpertema.innerHTML = "NIP. "+idNipKepsek;
+    titimangsa_sebarankdpertema.innerHTML = tanggalfull(new Date());
+    gmpkelas_sebarankdpertema.innerHTML = idJenisGuru +" " + idgurumapelmapel;
+    namaguru_sebarankdpertema.innerHTML = namauser;
+    nipguru_sebarankdpertema.innerHTML = "NIP. " + idNipGuruKelas;
+    ttdnipkepsek_sebarankdpertema.innerHTML = "NIP. "+idNipKepsek;
+
+    htmlpetakd_sebaranpertema(v,bolkd);
+    
+
+
+});
+const ubahkd_sebarankdpertema = (el)=>{
+    let bol = el.checked;
+    let codeKD = bol?"kd3":"kd4";
+    document.querySelector(".checkboxkd_sebarankdpertema").innerHTML = bol?" KOMPETENSI PENGETAHUAN (KD-3)":" KOMPETENSI KETERAMPILAN (KD-4)"
+    let opsi = select_sebarankdpertema.options;
+    let indSel = opsi.selectedIndex;
+    let v = opsi[indSel].value;
+    let t = opsi[indSel].text;
+    if(v !== "default"){
+        htmlpetakd_sebaranpertema(v, bol);
+    }
+}
+const htmlpetakd_sebaranpertema = (T,bol)=>{
+    let tabel = document.querySelector(".tabelsebaran_sebarankdpertema");
+    let no_t = T.match(/(\d+)/)[0];
+    let tbody = tabel.getElementsByTagName("tbody")[0];
+    let tfoot = tabel.getElementsByTagName("tbody")[1];
+    let dBS = gabungdataserverkd();
+    let dB = dBS.filter(s => s["koleksitema"].indexOf(T)>-1);
+    let arrCodeMapelRendah = ["PKN","BINDO","MTK","SBDP","PJOK"];
+    let arrCodeMapelTinggi = ["PKN","BINDO","IPA","IPS","SBDP"];
+    let arrHeaderTinggi = ["PKN","Bahasa Indonesia","IPA","IPS","SBDP"]
+    let arrHeaderRendah = ["PKN","Bahasa Indonesia","MATEMATIKA","SBDP","PJOK"];
+    let krt_tekskd = bol?"indikatorkd3":"indikatorkd4";
+    let krt_nokd = bol?"kd3":"kd4";
+
+    let koleksiCodeMP, koleksiHeader, ltd
+    if(idJenjang > 3){
+        koleksiCodeMP = arrCodeMapelTinggi;
+        koleksiHeader = arrHeaderTinggi;
+        ltd = 3;
+    }else{
+        koleksiCodeMP = arrCodeMapelRendah;
+        koleksiHeader = arrHeaderRendah;
+        ltd = 4;
+    }
+    let html = "";
+    let arrResult = [];
+    let countKol; 
+    let idkd;
+    let arrJumlahperkolom = [];
+    let c_perbaris = 0;
+    let tc_perbaris = "";
+    for(a = 0 ; a < koleksiCodeMP.length ; a++){
+        let MP = koleksiCodeMP[a];
+        let dt = dB.filter(s => s.mapel == MP);
+        let objekKolom = {}, keyOK ;
+        //let attRowspan = dt.length==1?"":"rowspan="+dt.length;
+        let bolRowspan = dt.length ==1? false: true;
+        for(b = 0 ; b < dt.length ; b++){
+            if(bolRowspan){
+                if(b == 0){
+                    html +=`<tr><td rowspan="${dt.length}">${a+1}</td><td rowspan="${dt.length}">${koleksiHeader[a]}</td><td>${dt[b][krt_nokd]} ${dt[b][krt_tekskd]}</td>`;
+                }else{
+                    html +=`<tr><td>${dt[b][krt_nokd]} ${dt[b][krt_tekskd]}</td>`;
+                }
+            }else{
+                html +=`<tr><td>${a+1}</td><td>${koleksiHeader[a]}</td><td>${dt[b][krt_nokd]} ${dt[b][krt_tekskd]}</td>`;
+            }
+            
+            c_perbaris = 0;
+            for(c = 0 ; c <ltd ; c++){
+                for(d = 0 ; d < 6 ; d++){
+                    let key_v = `t${no_t}_st${c+1}_pb${d+1}`;
+                    let ceklis = dt[b][key_v];
+                    if(ceklis == ""){
+                        html +=`<td data-skrow="${dt[b].row}" data-keyskrow="t${no_t}_st${c+1}_pb${d+1}">${ceklis}</td>`
+                    }else{
+                        html +=`<td data-skrow="${dt[b].row}" data-keyskrow="t${no_t}_st${c+1}_pb${d+1}" class="w3-light-green w3-large">${ceklis}</td>`
+                        c_perbaris++
+                    }
+                }
+            }
+            tc_perbaris = c_perbaris==0?"":c_perbaris;
+            html +=`<td>${tc_perbaris}</td></tr>`
+            
+        }
+        
+        
+
+    }
+    
+    tbody.innerHTML = html;
+    let countBottomH = document.querySelector(".jumlahkdditemaini_sebarankdpertema");
+    countBottomH.innerHTML ="Jumlah KD di " + T + " ini ada " + dB.length;
+    
+   
+
+    let tdf = tfoot.rows[0].cells[2];
+    let lasttdf = tfoot.rows[0].cells.length
+    let tdff = tfoot.rows[1].cells[1];
+    let lasttdft = tfoot.rows[1].cells.length;
+    let m = 0;
+    let total = 0;
+    for(f = 1 ; f <= ltd ; f++){
+        for(g = 1 ; g <= 6 ; g++){
+            let namakey =  "kolom_" + no_t + "_" + f + "_" + g;
+            let key_nama = "t"+no_t +"_st"+f+"_pb"+g;
+            // let con = arrJumlahperkolom.filter(s => s[namakey] == "&checkmark;"|| s[namakey] == "✓");
+            let con = dB.filter(s => s[key_nama] == "&checkmark;"|| s[key_nama] == "✓")
+            let teks = con.length == 0?"": con.length;
+            m += con.length;
+            tdf.innerHTML = teks;
+            tdf = tdf.nextSibling;
+
+
+            let conTotal = dB.filter(s => s[key_nama] == "&checkmark;"|| s[key_nama] == "✓");
+            total += conTotal.length;
+        }
+        tdff.innerHTML = m==0?"":m;
+        tdff = tdff.nextSibling;
+        m=0;
+    }
+    tfoot.rows[0].cells[lasttdf-1].innerHTML = total;
+    tfoot.rows[1].cells[lasttdft-1].innerHTML = total;
+    klikconfigceklis(T,bol);
+    let btnserversimpan = document.querySelector(".btnserver_sebarankdpertama");
+    btnserversimpan.setAttribute("onclick",`serveradm('prt_petakd_sebarankdpertema','SEBARAN KD ${T}',6,5)`)
+
+
+
+
+}
+const klikconfigceklis = (T,bol) =>{
+    let table = document.querySelector(".tabelsebaran_sebarankdpertema");
+    let tbody = table.getElementsByTagName("tbody")[0];
+    let lrb = tbody.rows;
+    for(i = 0 ; i <lrb.length; i ++){
+        lrc = lrb[i].cells;
+        for(j = 0 ; j < lrc.length ; j++){
+            lrc[j].onmouseover = function (){
+                let indRow = this.parentElement.rowIndex
+                let indCol = this.cellIndex;
+                let teks = "Index baris " + indRow +" kolom " + indCol;
+                this.setAttribute("title", teks);
+
+            }
+            lrc[j].onmouseout = function (){
+                this.removeAttribute("title")
+            }
+            lrc[j].onclick = function (){
+                let rr = this.parentElement.rowIndex
+                let cc = this.cellIndex;
+                let tdfokus = this;
+                if(tdfokus.hasAttribute("data-skrow")){
+
+                    if(tdfokus.innerHTML == "" ){
+                        tdfokus.setAttribute("class","w3-light-green w3-large");
+                        tdfokus.innerHTML = "&checkmark;"
+                        // this.break;
+                    }else{
+                        tdfokus.removeAttribute("class");
+                        tdfokus.innerHTML = "";
+                    };
+                    let row = tdfokus.getAttribute("data-skrow");
+                    let key = tdfokus.getAttribute("data-keyskrow");
+                    let val = tdfokus.innerHTML;
+                    kirimceklissebarankd(row,val,key,T,bol)
+                }else{
+                    alert("Kolom ini tidak bisa Anda klik")
+                }
+            }
+        }
+    }
+};
+const kirimceklissebarankd = (r, v,k,T,bol)=>{
+    loadingtopbarin("loadingtopbar");
+    let dbAsal = tagkdserver.filter(s => s.row == r)[0];
+    
+    let obj = {}
+    obj[k] = v;
+    
+    let objekjadikirim = Object.assign(dbAsal,obj);
+    
+    let keyy = JSON.stringify(Object.keys(objekjadikirim));
+    ///idbaris = row;
+    let tabel= JSON.stringify(Object.values(objekjadikirim))
+    
+    let datakirim = new FormData();
+    datakirim.append("key",keyy);
+    datakirim.append("idbaris",r);
+    datakirim.append("tab","serverkd");
+    datakirim.append("tabel",tabel);
+    //datakirim.append("tipe",tipe);
+    fetch(urladm+"?action=simpanbarisketabidbaris",{
+        method:"post",
+        body:datakirim
+    }).then(m=>m.json())
+    .then(r => {
+        let result = r.data;
+        tagkdserver = result.filter(s => s.kelas == idJenjang);
+        htmlpetakd_sebaranpertema(T, bol);
+
+        clearInterval(stoploadingtopbar);
+        let divlod = document.querySelector(".loadingtopbar");
+        divlod.style.width = "100%";
+        setTimeout(() => {
+            divlod.style.width = "1px"
+            divlod.className += " w3-hide";
+
+        }, 3000);
+    })
+    .catch(er => console.log(er))
+}
+const sebkdpersms_radiosemester =  (el)=>{
+    
+    let v = 1;
+    if(el.checked){
+        v = el.value;
+    }
+    let checkbox_ubahkdpersemester = document.querySelector(".checkbox_ubahkdpersemester");
+    let x 
+    if(checkbox_ubahkdpersemester.checked){
+        x = true
+    }else{
+        x = false;
+    }
+    
+    htmlsebaransemester(v,x)
+    
+}
+const htmlsebaransemester = (semester,booleankd) =>{
+    let tabel = document.querySelector(".tabelsebaran_sebarankdpersemester");
+    let tbody = tabel.getElementsByTagName("tbody")[0];
+    let thead = tabel.getElementsByTagName("thead")[0];
+    let tfoot = tabel.getElementsByTagName("tbody")[1];
+    
+    let jjg;
+    if(idJenjang > 3){
+        jjg ="tinggi";
+    }else{
+        jjg = "rendah";
+    }
+    let arrTemaRendahGanjil = ["TEMA 1","TEMA 2","TEMA 3","TEMA 4"];
+    let arrTemaRendahGenap = ["TEMA 5","TEMA 6","TEMA 7","TEMA 8"];
+    let arrTemaTinggiGanjil = ["TEMA 1","TEMA 2","TEMA 3","TEMA 4","TEMA 5"];
+    let arrTemaTinggiGenap = ["TEMA 6","TEMA 7","TEMA 8","TEMA 9"];
+    let arrCodeMapelRendah = ["PKN","BINDO","MTK","SBDP","PJOK"];
+    let arrCodeMapelTinggi = ["PKN","BINDO","IPA","IPS","SBDP"];
+    let arrHeaderTinggi = ["PKN","Bahasa Indonesia","IPA","IPS","SBDP"]
+    let arrHeaderRendah = ["PKN","Bahasa Indonesia","MATEMATIKA","SBDP","PJOK"];
+    let ltd;
+    let fl;
+    
+    let konftema;
+    let konfmapel;
+    let konfheader;
+    if(semester == 1 && jjg == "tinggi"){
+        konftema = arrTemaTinggiGanjil;
+        konfmapel = arrCodeMapelTinggi;
+        konfheader = arrHeaderTinggi;
+        ltd = 3
+    }else if(semester == 2 && jjg == "tinggi"){
+        konftema = arrTemaTinggiGenap;
+        konfmapel = arrCodeMapelTinggi;
+        konfheader = arrHeaderTinggi
+        ltd = 3
+    }else if(semester == 1 && jjg == "rendah"){
+        ltd = 4
+        konftema = arrTemaRendahGanjil
+        konfmapel = arrCodeMapelRendah;
+        konfheader = arrHeaderRendah
+    }else if(semester == 2 && jjg == "rendah"){
+        ltd = 4
+        konftema = arrTemaRendahGenap
+        konfmapel = arrCodeMapelRendah;
+        konfheader = arrHeaderRendah
+    }
+    //Bekerja dengan Keterangan identitas:
+    let h1_sebarankdpersemester = document.querySelector(".h1_sebarankdpersemester");
+    let ttdnamasekolah_sebarankdpersemester = document.querySelector(".ttdnamasekolah_sebarankdpersemester");
+    let ttdnamakepsek_sebarankdpersemester = document.querySelector(".ttdnamakepsek_sebarankdpersemester");
+    let nipkepsek_sebarankdpersemester = document.querySelector(".nipkepsek_sebarankdpersemester");
+    let titimangsa_sebarankdpersemester = document.querySelector(".titimangsa_sebarankdpersemester");
+    let gmpkelas_sebarankdpersemester = document.querySelector(".gmpkelas_sebarankdpersemester");
+    let namaguru_sebarankdpersemester = document.querySelector(".namaguru_sebarankdpersemester");
+    let nipguru_sebarankdpersemester = document.querySelector(".nipguru_sebarankdpersemester");
+    if(booleankd){
+        h1_sebarankdpersemester = "PEMETAAN KOMPETENSI DASAR PENGETAHUAN ( KI-3)<br> SEMESTER " + semester +" TAHUN PELAJARAN " + idTeksTapel;
+    }else{
+        h1_sebarankdpersemester = "PEMETAAN KOMPETENSI DASAR KETERAMPILAN ( KI-3)<br> SEMESTER " + semester +" TAHUN PELAJARAN " + idTeksTapel;
+    }
+    ttdnamasekolah_sebarankdpersemester.innerHTML = idNamaSekolah;
+    ttdnamakepsek_sebarankdpersemester.innerHTML = idNamaKepsek;
+    nipkepsek_sebarankdpersemester.innerHTML = "NIP. "+idNipKepsek;
+    titimangsa_sebarankdpersemester.innerHTML = tanggalfull(new Date());
+    gmpkelas_sebarankdpersemester.innerHTML = idJenisGuru +" " + idgurumapelmapel;
+    namaguru_sebarankdpersemester.innerHTML = namauser;
+    nipguru_sebarankdpersemester.innerHTML = "NIP. " + idNipGuruKelas;
+    let htmlT = "";
+    let htmlB = "";
+    let htmlFt = "";
+    let loopThead;
+    let loopPb;
+    let loopTbody;
+    //Bekerja dengan tabel identitas:
+    let tabel_identitas = document.querySelector(".tabelkoleksitema_sebarankdpersemester");
+    let html_tabelID = "";
+    let identitas_kd = DataKDKurtilas["kelas"+idJenjang];
+    for(a = 0 ; a < konftema.length ; a++){
+        let tsss = konftema[a].replace("TEMA","Tema")
+        
+        let tekskdkd = identitas_kd.filter(m => m[tsss])[0][tsss];
+        html_tabelID +=`<tr><td>${konftema[a]}</td><td>:</td><td>${tekskdkd}</td></tr>`;
+    }
+    tabel_identitas.innerHTML = html_tabelID;
+    //Thead dulu;
+    htmlT +=`<tr class="w3-light-gray"><th valign="center" class="w3-center" rowspan="3">No</th><th valign="center" class="w3-center" rowspan="3">MATA PELAJARAN</th><th valign="center" class="w3-center" rowspan="3">KOMPETENSI DASAR</th>`;
+    htmlFt +=`<tr class="w3-light-grey"><th rowspan="2" colspan="2">JUMLAH KD DI TEMA INI ADA</th><th>Jumlah KD tiap Subtema</th>`;
+    loopThead = "";
+    loopPb = "";
+    let loopFt = "";
+    let loopTft = "";
+    for(h = 0 ; h <konftema.length; h++){
+        htmlT +=`<th colspan="${ltd}">${konftema[h]}</th>`
+        loopThead +=`<th colspan="${ltd}">SUBTEMA</th>`;
+        loopTft +=`<th colspan="${ltd}"></th>`;
+        
+        for(i = 0 ; i < ltd ; i++){
+            loopPb += `<th>${i+1}</th>`;
+            loopFt += `<th></th>`;
+        }
+    }
+    htmlT +=`<th rowspan="${ltd}" valign="center" class="w3-center">JUMLAH</th></tr>
+    <tr class="w3-light-gray">${loopThead}</tr><tr class="w3-light-gray">${loopPb}</tr>`;
+    htmlFt +=`${loopFt}<th></th></tr><tr class="w3-light-grey"><th>Jumlah KD pada masing-masing Tema</th>
+    ${loopTft}<th></th></tr>`;
+    let dbAsal = gabungdataserverkd();
+    let dbCeklis = dbAsal.filter(s=> s.semester.indexOf(semester)>-1 && konfmapel.indexOf(s.mapel)>-1);
+    let no_kd = booleankd?"kd3":"kd4";
+    let teks_kd = booleankd?"indikatorkd3":"indikatorkd4";
+    let arro = [];
+    let count_n;
+    let tagcekrow = 0;
+    let mapelawal = dbCeklis[0].mapel == undefined? "PKN":dbCeklis[0].mapel;
+    let frek = dbCeklis.map(m => m.mapel).reduce((cnt, cur) => (cnt[cur] = cnt[cur] + 1 || 1, cnt), {});
+    let ccFrek = frek[mapelawal];
+    let nourut= 1;
+    for(j=0; j < dbCeklis.length ; j++){
+        let mapelini = dbCeklis[j].mapel;
+        let posisiM = konfmapel.indexOf(mapelini);
+        let convertmapel = konfheader[posisiM];
+        if(tagcekrow == 0 ){
+            if(ccFrek == 1){
+                htmlB += `<tr><td>${nourut}</td><td>${convertmapel}</td>`;
+                htmlB += `<td>${dbCeklis[j][no_kd]} ${dbCeklis[j][teks_kd]}</td>`;
+            }else{
+                htmlB += `<tr><td rowspan="${ccFrek}">${nourut}</td><td rowspan="${ccFrek}">${convertmapel}</td>`;
+                htmlB += `<td>${dbCeklis[j][no_kd]} ${dbCeklis[j][teks_kd]}</td>`;
+            }
+                tagcekrow++;
+                nourut++
+        }else{
+            if(tagcekrow == ccFrek){
+                ccFrek = frek[mapelini];
+                htmlB += `<tr><td rowspan="${ccFrek}">${nourut}</td><td rowspan="${ccFrek}">${convertmapel}</td>`;
+                htmlB += `<td>${dbCeklis[j][no_kd]} ${dbCeklis[j][teks_kd]}</td>`;
+                tagcekrow = 1;
+                nourut++
+            }else{
+                
+                htmlB += `<tr><td>${dbCeklis[j][no_kd]} ${dbCeklis[j][teks_kd]}</td>`;
+                tagcekrow++;
+            }
+        }
+        let bolwarna; let o; 
+        o = 0;
+        count_n = 0
+        let objSTini={};
+        let q = 0;
+        for(k=0;k< konftema.length ; k++){
+            let notema = konftema[k].match(/(\d+)/)[0];
+            bolwarna = false;
+            for(l=0;l< ltd ; l++){
+                let st = l+1;
+                let ky = "";
+                let keyperst = "t"+notema+"_st"+st;
+                let n=0;
+                bolwarna = false;
+                //objSTini = {}
+                for (m=1 ; m <= 6 ; m++){
+                    ky = "t"+notema+"_st"+st+"_pb"+m;
+                    let cekcelis = dbCeklis[j][ky];
+                    if(cekcelis !== ""){
+                        n++;
+                        o++;
+                        bolwarna = true;
+                    }else{
+                    }
+                }
+                
+                let isinya = n==0?"":n;
+                if(bolwarna){
+                    htmlB +=`<td class="w3-green">${isinya}</td>`;
+                    q++;
+                }else{
+                    htmlB +=`<td>${isinya}</td>`;
+                }
+                objSTini[keyperst]= n;
+            }
+        }
+        let isiq = q == 0 ? "" : q+" ST";
+        let isio = o == 0?"":o+" Pb";
+        htmlB +=`<td>${isiq}<br>${isio}</td></tr>`;
+        arro.push(objSTini);
+    }
+    indra = arro;
+    thead.innerHTML = htmlT;
+    tbody.innerHTML = htmlB;
+    tfoot.innerHTML = htmlFt;
+
+    let tabelx = document.querySelector(".tabelsebaran_sebarankdpersemester");
+    let tfootx = tabelx.getElementsByTagName("tbody")[1];
+    
+    tfootx.rows[0].cells[0].innerHTML = "JUMLAH KD DI SEMESTER " + semester +" INI SEBANYAK "+ dbCeklis.length;
+    let td = tfootx.rows[0].cells[2];
+    let td2 = tfootx.rows[1].cells[1];
+    let count_tema
+    for(x = 0 ; x < konftema.length ; x++){
+        count_tema = 0; let count_pb = 0
+        let no = konftema[x].match(/(\d+)/)[0]
+        for(y = 1 ; y <= ltd ; y++){
+            let keysubtema = "t"+no+"_st"+y;
+            let n_kolom = arro.map(s=> s[keysubtema]).reduce((a,b)=> a+b);
+            let n_kolomm = arro.map(s=> s[keysubtema]).map(m => m==0?0:1).reduce((a,b)=>a+b);
+            let isi_n = n_kolomm == 0?"":"<span class='w3-tiny'>"+n_kolomm +" KD</span>"
+            let isi_m = n_kolom == 0?"":"<span class='w3-tiny'>"+n_kolom +" Pb</span>";
+            let isi_nm= isi_n +"<br>"+ isi_m;
+            td.innerHTML = isi_nm;
+            td = td.nextSibling;
+            count_tema = count_tema + n_kolom;
+            count_pb = count_pb + n_kolomm;
+        }
+        let ctb = count_pb == 0 ? "": count_pb + " KD";
+        let ctbb = count_tema == 0? "" : count_tema+" Pb";
+        td2.innerHTML = ctb+"<br>"+ctbb;
+        td2 = td2.nextSibling;
+    }
+    
+    let lastcol = tfootx.rows[0].cells.length;
+    let last2col = tfootx.rows[1].cells.length;
+    let nA = arro.map(m => Object.values(m)).map(mm => mm.reduce((a,b)=>a+b)).reduce((c,d)=> c+d);
+    let nB = arro.map(m => Object.values(m)).map(mm => mm.reduce((a,b)=>a+b)).map(n=>n==0?0:1).reduce((c,d)=> c+d);
+    let nAA = nA == 0?"":nA + " Pb";
+    let nBB = nB == 0?"":nB+ " KD";
+    tfootx.rows[0].cells[lastcol-1].innerHTML = nAA+"<br>"+nBB;
+    tfootx.rows[1].cells[last2col-1].innerHTML = nAA+"<br>"+nBB;
+    
+    let btnserversimpan = document.querySelector(".btnserver_sebarankdpersemester");
+    btnserversimpan.setAttribute("onclick",`serveradm('prt_petakd_sebarankdpersemester','SEBARAN KD SEMESTER ${semester}',6,6)`);
+}
+const ubahkd_sebarankdpersemester =  (el) =>{
+    let ket = document.querySelector(".keterangankd34_sebarankdpersemester");
+    let x = false;
+    if(el.checked){
+        ket.innerHTML = "Kompetensi Pengetahuan (KD-3)";
+        x = el.checked;
+    }else{
+        ket.innerHTML = "Kompetensi Keterampilan (KD-4)";
+        x = false;
+    }
+    let v = 1
+    let dom = document.querySelectorAll("input[name=sebkdpersms_radiosemester]");
+    for(i = 0 ; i < dom.length; i++){
+        if(dom[i].checked){
+            v = dom[i].value
+        }
+    }
+    htmlsebaransemester(v,x)
+
+}

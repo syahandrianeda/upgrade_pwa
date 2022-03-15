@@ -241,7 +241,7 @@ htmll2=`<div class="w3-panel w3-center w3-leftbar w3-sand">
         
 const edurapilihlogin = ()=>{
     document.querySelector("#pilihlogin").style.display = "block";
-    console.log("tes")
+    //console.log("tes")
 }
 
 // Toggle .header-scrolled class to #header when page is scrolled

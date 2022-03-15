@@ -445,4 +445,18 @@ const DataKDKurtilas ={
     ]
 
 }
+const LingkupMateri = {
+    "PAI":["Al-Quran dan Hadits","Akidah","Akhlak","Fiqih","Sejarah peradaban Islam"],
+    "PKRIS":["Allah tritunggal dan karyanya","Nilai-nilai Kristiani"],
+    "PKATO":["Pribadi Siswa","Yesus Kristus","Gereja","Masyarakat"],
+    "PKN":["Persatuan","HAM","Pancasila"],
+    "BINDO":["Membaca nonsastra", "Membaca Sastra","Menulis terbatas","Menyunting kata/istilah, frase, kalimat, paragraf, ejaan, dan tanda baca"],
+    "MTK":["Bilangan","Geometri dan Pengukuran","Statistika Penyajian Data"],
+    "IPA":["Makhluk hidup dan lingkungannya","Struktur dan fungsi makhluk hidup","Benda dan sifatnya","Energi dan Perubahannya","Bumi dan Alam Semesta"],
+    "IPS":["Geografi","Ekonomi","Sosiologi","Sejarah"],
+    "SBDP":["Seni rupa","Seni musik","Seni Tari","Seni Drama", "Keterampilan"],
+    "PJOK":["Aktivitas permainan bola besar dan bola kecil","Aktivitas Atletik","Aktivitas Beladiri","Aktivitas Pengembangan Kebugaran Jasmani","Aktivitas Senam","Aktivitas gerak berirama","Aktivitas Air dan Keselamatan Diri","Keshetan"],
+    "BSUND":["Membaca nonsastra", "Membaca Sastra","Menulis terbatas","Menyunting kata/istilah, frase, kalimat, paragraf, ejaan, dan tanda baca"]
+
+}
 
