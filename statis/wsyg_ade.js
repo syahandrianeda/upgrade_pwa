@@ -5738,6 +5738,7 @@ const kirimceklissebarankd = (r, v,k,T,bol)=>{
     let dbAsal = tagkdserver.filter(s => s.row == r)[0];
     
     let obj = {}
+    
     obj[k] = v;
     
     let objekjadikirim = Object.assign(dbAsal,obj);
@@ -5790,13 +5791,15 @@ const sebkdpersms_radiosemester =  (el)=>{
     
 }
 const htmlsebaransemester = (semester,booleankd) =>{
-    let tabel = document.querySelector(".tabelsebaran_sebarankdpersemester");
-    let tbody = tabel.getElementsByTagName("tbody")[0];
-    let thead = tabel.getElementsByTagName("thead")[0];
-    let tfoot = tabel.getElementsByTagName("tbody")[1];
-    
-    let jjg;
-    if(idJenjang > 3){
+    try{
+
+        let tabel = document.querySelector(".tabelsebaran_sebarankdpersemester");
+        let tbody = tabel.getElementsByTagName("tbody")[0];
+        let thead = tabel.getElementsByTagName("thead")[0];
+        let tfoot = tabel.getElementsByTagName("tbody")[1];
+        
+        let jjg;
+        if(idJenjang > 3){
         jjg ="tinggi";
     }else{
         jjg = "rendah";
@@ -5978,7 +5981,7 @@ const htmlsebaransemester = (semester,booleankd) =>{
     thead.innerHTML = htmlT;
     tbody.innerHTML = htmlB;
     tfoot.innerHTML = htmlFt;
-
+    
     let tabelx = document.querySelector(".tabelsebaran_sebarankdpersemester");
     let tfootx = tabelx.getElementsByTagName("tbody")[1];
     
@@ -6018,6 +6021,9 @@ const htmlsebaransemester = (semester,booleankd) =>{
     
     let btnserversimpan = document.querySelector(".btnserver_sebarankdpersemester");
     btnserversimpan.setAttribute("onclick",`serveradm('prt_petakd_sebarankdpersemester','SEBARAN KD SEMESTER ${semester}',6,6)`);
+    }catch(er){
+        alert("Pengaturan KD untuk semester ini biasanya belum pernah diisi. Silakan cek di Menu Distribusi KD!")
+    }
 }
 const ubahkd_sebarankdpersemester =  (el) =>{
     let ket = document.querySelector(".keterangankd34_sebarankdpersemester");

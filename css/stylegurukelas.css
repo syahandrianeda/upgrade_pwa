@@ -175,8 +175,9 @@ img.gambarlamaso3 {
 
 .tab {
   overflow: hidden;
-  border: 1px solid #ccc;
-  background-color: rgb(110, 154, 250)
+  border: .5pt solid #ccc;
+  
+  background-color: rgb(72, 91, 100)
 }
 
 .tab button {
@@ -185,16 +186,23 @@ img.gambarlamaso3 {
   border: none;
   outline: outset;
   cursor: pointer;
-  padding: 7px 8px;
-  transition: .3s
+  color:white;
+  /* padding: 7px 8px; */
+  padding: 3px 4px;
+  margin:3px 3px;
+  border-radius: 50px;
+  /* batas */
+  transition: .3s;
 }
 
 .tab button:hover {
-  background-color: #ddd
+  background-color: #ddd;
+  color:red;
 }
 
 .tab button.active {
-  background-color: #ccc
+  background-color: rgb(14, 243, 117);
+  color: black;
 }
 
 .tabcontent {
