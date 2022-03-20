@@ -603,20 +603,16 @@ div.denom {
   width: 350px;
   font-size: 10px;
 }
-#tooltiptabel, #tooltiptabelall, #tooltipkd1,#tooltipkdmapel {
+#tooltiptabel, #tooltiptabelall, #tooltipkd1,#tooltipkdmapel,#tooltipkaldik0, #tooltipkaldik1, 
+#tooltipkaldik2, #tooltipkaldik3, #tooltipkaldik4, #tooltipHBE,
+#tooltipkaldik5{
   position: absolute;
   display: none;
-  /* width: 150px; */
-  /* height: 230px; */
-  /* font-size: 8px; */
-  /* top:0;
-  left:0; */
   border:1px solid black;
   padding: 2px;
   color:rgb(255, 255, 255);
   background-color: rgb(75, 75, 75);
   z-index: 2;
-  /* cursor: pointer; */
 }
 .tooltiparahkiri{
   content: "";
@@ -684,7 +680,7 @@ div.denom {
   
   display:block;
 }
-#tooltiptabel:after, #tooltiptabelall:after, #tooltipkd1:after {
+#tooltiptabel:after, #tooltiptabelall:after, #tooltipkd1:after{
   content: "";
   position:absolute;
   
@@ -702,7 +698,14 @@ div.denom {
   
   display:block;
 }
-#tooltiptabelheader,#tooltipkdmapelheader{
+#tooltiptabelheader,#tooltipkdmapelheader,
+#tooltipkaldikheader0,
+#tooltipkaldikheader1,
+#tooltipkaldikheader2,
+#tooltipkaldikheader3,
+#tooltipkaldikheader4, #tooltipHBEheader,
+#tooltipkaldikheader5
+{
   cursor:move;
 }
 #tooltipkdmapelheader{
@@ -718,3 +721,79 @@ div#tooltipkd1header {
 /* #tooltiptabel:hover:before, #tooltiptabel:hover:after {
   display:block;
 } */
+#tooltipHBE{
+  width: 200px;
+}
+
+#tooltipkaldik0,#tooltipkaldik1,#tooltipkaldik2,#tooltipkaldik3,#tooltipkaldik4,
+#tooltipkaldik5{
+  width: 350px;
+}
+.tooltiparahkiri0,.tooltiparahkiri1,.tooltiparahkiri2,.tooltiparahkiri3,.tooltiparahkiri4,
+.tooltiparahkiri5{
+  content: "";
+  position:absolute;
+  
+  /* position tooltip correctly */
+  left:0;
+  margin-left:-20px;
+ 
+  /* vertically center */
+  top:10px;
+  transform:translateY(-50%);
+ 
+  /* the arrow */
+  width: 0;
+      height: 0;
+      border-top: 10px solid transparent;
+      border-right: 20px solid rgb(0, 0, 0);
+      border-bottom: 10px solid transparent;
+  
+  display:block;
+}
+.tooltiparahkanan0,.tooltiparahkanan1,.tooltiparahkanan2,.tooltiparahkanan3,.tooltiparahkanan4,
+.tooltiparahkanan5{
+  content: "";
+  position:absolute;
+  
+  /* position tooltip correctly */
+  right:0;
+  margin-right:-20px;
+ 
+  /* vertically center */
+  top:10px;
+  transform:translateY(-50%);
+ 
+  /* the arrow */
+  /* border:10px solid rgb(255, 0, 0);
+  border-color:transparent transparent red transparent ; */
+  width: 0;
+      height: 0;
+      border-top: 10px solid transparent;
+      border-left: 20px solid rgb(0, 0, 0);
+      border-bottom: 10px solid transparent;
+  
+  display:block;
+}
+#tooltipHBE:after{
+  content: "";
+  position:absolute;
+  
+  /* position tooltip correctly */
+  /* left:0;
+  margin-left:-20px; */
+  margin: auto 30%;
+ 
+  /* vertically center */
+  top:-11px;
+  transform:translateY(-50%);
+ 
+  /* the arrow */
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 20px solid rgb(71, 71, 71);
+  
+  display:block;
+}

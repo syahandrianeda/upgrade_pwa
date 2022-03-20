@@ -1172,3 +1172,404 @@ const htmlpetakd_sebaranpertema = (T,bol)=>{
 
 
 }
+
+const html_admkaldikHEB_pilihSemester = (semester)=>{
+    let v = semester;
+    let th = idTeksTapel.split("/");
+        let thfokus = th[v-1];
+        let indekbulan1 = [0,1,2,3,4,5];
+        let indekbulan0 = [6,7,8,9,10,11];
+        let arrIndeks = v ==1 ?indekbulan0:indekbulan1;
+    document.querySelector(".h2_admHBE").innerHTML = "TAHUN PELAJARAN " + idTeksTapel + " SEMESTER " + semester;
+    document.querySelector(".h3_admHBE").innerHTML = "KELAS " + idNamaKelas;
+    document.querySelector(".namasekolah_admHBE").innerHTML = idNamaSekolah;
+    document.querySelector(".namakepsek_admHBE").innerHTML = idNamaKepsek;
+    document.querySelector(".nipkesek_admHBE").innerHTML = idNipKepsek;
+    document.querySelector(".titimangsa_admHBE").innerHTML = tanggalfull(new Date());
+    document.querySelector(".jenisguru_admHBE").innerHTML = idJenisGuru + " " + idgurumapelmapel;
+    document.querySelector(".namaguru_admHBE").innerHTML = namauser;
+    document.querySelector(".nipguru_admHBE").innerHTML = idNipGuruKelas;
+
+
+
+    let tabel1 = document.querySelector(".tabelhari_admHBE");
+    let tabel2 = document.querySelector(".tabelhari_admJBE");
+    let tbody1 = tabel1.getElementsByTagName("tbody")[0];
+    let tfoot1 = tabel1.getElementsByTagName("tbody")[1];
+    let tbody2 = tabel2.getElementsByTagName("tbody")[0];
+    let tfoot2 = tabel2.getElementsByTagName("tbody")[1];
+    
+    let jjg;
+    if(idJenjang > 3){
+        jjg ="tinggi";
+    }else{
+        jjg = "rendah";
+    }
+    let arrTemaRendahGanjil = ["TEMA 1","TEMA 2","TEMA 3","TEMA 4"];
+    let arrTemaRendahGenap = ["TEMA 5","TEMA 6","TEMA 7","TEMA 8"];
+    let arrTemaTinggiGanjil = ["TEMA 1","TEMA 2","TEMA 3","TEMA 4","TEMA 5"];
+    let arrTemaTinggiGenap = ["TEMA 6","TEMA 7","TEMA 8","TEMA 9"];
+    let arrCodeMapelRendah = ["PKN","BINDO","MTK","SBDP","PJOK"];
+    let arrCodeMapelTinggi = ["PKN","BINDO","IPA","IPS","SBDP"];
+    let arrHeaderTinggi = ["PKN","Bahasa Indonesia","IPA","IPS","SBDP"]
+    let arrHeaderRendah = ["PKN","Bahasa Indonesia","MATEMATIKA","SBDP","PJOK"];
+    let ltd;
+    let fl;
+    
+    let konftema;
+    let konfmapel;
+    let konfheader;
+    if(semester == 1 && jjg == "tinggi"){
+        konftema = arrTemaTinggiGanjil;
+        konfmapel = arrCodeMapelTinggi;
+        konfheader = arrHeaderTinggi;
+        // ltd = 3
+    }else if(semester == 2 && jjg == "tinggi"){
+        konftema = arrTemaTinggiGenap;
+        konfmapel = arrCodeMapelTinggi;
+        konfheader = arrHeaderTinggi
+        // ltd = 3
+    }else if(semester == 1 && jjg == "rendah"){
+        // ltd = 4
+        konftema = arrTemaRendahGanjil
+        konfmapel = arrCodeMapelRendah;
+        konfheader = arrHeaderRendah
+    }else if(semester == 2 && jjg == "rendah"){
+        // ltd = 4
+        konftema = arrTemaRendahGenap
+        konfmapel = arrCodeMapelRendah;
+        konfheader = arrHeaderRendah
+    }
+    let objHEB = {};
+    let bulan = [];
+    let r = 0;
+    let col_sn = 0;
+    let col_sl = 0;
+    let col_rb = 0;
+    let col_km = 0;
+    let col_jm = 0;
+    let col_total = 0
+    for(a = 0 ; a < arrIndeks.length ; a++){ //array semester = tabel
+        let indekbulan = arrIndeks[a];
+        let bln = parseInt(indekbulan+1);
+        let namaBulan = NamaBulandariIndex(indekbulan);
+        //isikan ke tabel';
+        tbody1.rows[r].cells[0].innerHTML = namaBulan + " " + thfokus;
+        let lr = daysInMonth(bln, thfokus);
+        let sn = 0, sl=0, rb=0,km=0,jm=0;
+        let tot = 0;
+        for(b = 0 ; b < lr; b++){ // tgl dalam bulan
+            let dt = new Date(thfokus, indekbulan, (b+1));
+            let d = dt.getDay();
+            if(d == 1 && cocoklibur(dt)== false){
+                sn++;
+                tot++;
+            }
+            if(d == 2 && cocoklibur(dt) == false){
+                sl++;
+                tot++;
+            }
+            
+            if(d == 3 && cocoklibur(dt)==false){
+                rb++;
+                tot++;
+            }
+            
+            if(d == 4 && cocoklibur(dt)==false){
+                km++;
+                tot++;
+            }
+            
+            if(d == 5 && cocoklibur(dt)==false){
+                jm++;
+                tot++;
+            }
+            
+            
+        }
+        tbody1.rows[r].cells[1].innerHTML = sn;
+        tbody1.rows[r].cells[2].innerHTML = sl;
+        tbody1.rows[r].cells[3].innerHTML = rb;
+        tbody1.rows[r].cells[4].innerHTML = km;
+        tbody1.rows[r].cells[5].innerHTML = jm;
+        tbody1.rows[r].cells[6].innerHTML = tot +" hari.";
+        // isiuntuk kolom baris akhir;
+        let hari = {};
+        hari.sn = sn;
+        hari.sl = sl;
+        hari.rb = rb;
+        hari.km = km;
+        hari.jm = jm;
+        hari.total = tot;
+
+        // isikan kolom
+        col_sn += sn;
+        col_sl += sl;
+        col_rb += rb;
+        col_km += km;
+        col_jm += jm;
+        col_total += tot;
+        // isikan untuk objek 
+        //bulan.push(hari);
+        objHEB[namaBulan]=hari;
+        r++;
+    }
+    tfoot1.rows[0].cells[1].innerHTML = col_sn +" hari.";
+    tfoot1.rows[0].cells[2].innerHTML = col_sl +" hari.";
+    tfoot1.rows[0].cells[3].innerHTML = col_rb +" hari.";
+    tfoot1.rows[0].cells[4].innerHTML = col_km +" hari.";
+    tfoot1.rows[0].cells[5].innerHTML = col_jm +" hari.";
+    tfoot1.rows[0].cells[6].innerHTML = col_total +" hari.";
+
+    tfoot1.rows[1].cells[1].innerHTML = (col_sn * 7) +" JP.";
+    tfoot1.rows[1].cells[2].innerHTML = (col_sl * 7) +" JP.";
+    tfoot1.rows[1].cells[3].innerHTML = (col_rb * 7) +" JP.";
+    tfoot1.rows[1].cells[4].innerHTML = (col_km * 7) +" JP.";
+    tfoot1.rows[1].cells[5].innerHTML = (col_jm * 7) +" JP.";
+    tfoot1.rows[1].cells[6].innerHTML = (col_total * 7) +" JP.";
+    let objTotal = {};
+    objTotal.sn = col_sn;
+    objTotal.sl = col_sl;
+    objTotal.rb = col_rb;
+    objTotal.km = col_km;
+    objTotal.jm = col_jm;
+    objTotal.total = col_total;
+    // console.log(objHEB);
+    // console.log(objTotal);
+    
+    //asumsikan data server di sini belum ada:
+    //tabel kedua
+    let html = "";
+    // pelajaran agama:
+    let jumlahPAI = tagkdserver.filter(s => s.mapel == "PAI" && s.koleksitema !== "").length;
+    if(idgurumapelmapel == "PAI"){
+        html += `<tr class="w3-yellow"><td>PA Islam</td><td>${jumlahPAI}</td><td> semester </td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+        <td></td></tr>`;
+    }else{
+    html += `<tr><td>PA Islam</td><td>${jumlahPAI}</td><td> semester </td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+        <td></td></tr>`;
+    }
+    let jumlahPKRIS = tagkdserver.filter(s => s.mapel == "PKRIS" && s.koleksitema !== "").length;
+    html += `<tr><td>PA Kristen</td><td>${jumlahPKRIS}</td><td> semester </td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+    <td></td></tr>`;
+    let jumlahPKATO = tagkdserver.filter(s => s.mapel == "PKATO" && s.koleksitema !== "").length;
+    html += `<tr><td>PA Kristen</td><td>${jumlahPKATO}</td><td> semester </td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+    <td></td></tr>`;
+    //tambahkan tema:
+    for(c = 0 ; c < konftema.length ; c++ ){
+        let jumlahKD = tagkdserver.filter(s => s.koleksitema.indexOf(konftema[c])>-1).length;
+        let iBulan = arrIndeks[c];
+        let bulanTema = NamaBulandariIndex(iBulan);
+
+    html +=`<tr><td>${konftema[c]}</td><td>${jumlahKD}</td><td>${bulanTema}</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+    <td></td></tr>`;
+    };
+
+
+    if(jjg == "tinggi"){
+            //MTK;PJOK;BSUND
+            let kdMTK = tagkdserver.filter(s => s.koleksiTema !== "" && s.mapel == "MTK" && s.semester.indexOf(semester)>-1).length;
+            html +=`<tr><td>Matematika</td><td>${kdMTK}</td><td>semester</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            <td></td></tr>`;
+
+            let kdPJOK = tagkdserver.filter(s => s.koleksiTema !== "" && s.mapel == "PJOK" && s.semester.indexOf(semester)>-1).length;
+            if(idgurumapelmapel == "PJOK"){
+                html +=`<tr class="w3-yellow"><td>PJOK</td><td>${kdPJOK}</td><td>semester</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                <td></td></tr>`;
+            }else{
+                html +=`<tr><td>PJOK</td><td>${kdPJOK}</td><td>semester</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                <td></td></tr>`;
+            }
+
+            let kdBSUND = tagkdserver.filter(s => s.koleksiTema !== "" && s.mapel == "BSUND" && s.semester.indexOf(semester)>-1).length;
+            html +=`<tr><td>Bahasa Sunda</td><td>${kdBSUND}</td><td>semester</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            <td></td></tr>`;
+
+    }else{
+        let kdBSUND = tagkdserver.filter(s => s.koleksiTema !== "" && s.mapel == "BSUND" && s.semester.indexOf(semester)>-1).length;
+        html +=`<tr><td>Bahasa Sunda</td><td>${kdBSUND}</td><td>semester</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+        <td></td></tr>`;
+    }
+
+    
+    tbody2.innerHTML = html;
+    
+    config_tabelhari_admJBE()
+}
+
+        // for(a = 0 ; a < arCodeBulan.length ; a++){ //arCodeBulan.length
+        //     //fokus indekhari pertama tiap bulan
+        //     //fokus tema pertama
+        //     let f_tema = konftema[ac_tema];
+        //     //buatkan tabel awal::
+        //     html += `<table class="w3-table garis w3-tiny w3-centered">
+        //     <tr class="w3-light-gray"><th colspan="7">${f_tema}<br>${NamaBulandariIndex(arCodeBulan[a])} ${thfokus}</th></tr>
+        //     <tr class="w3-light-gray"><th>Mg</th><th>Sn</th><th>Sl</th><th>Rb</th><th>Km</th><th>Jm</th><th>Sb</th></tr>`;
+            
+        //     html +=`<tr>`;
+
+        //     // let tSbln = daysInMonth((arCodeBulan[a]+1),thfokus);//daysInMonth((ind+1), thfokus))
+        //     //contoh untuk satu bulan dulu
+        //     let tSbln = daysInMonth((arCodeBulan[0]+1),thfokus);//daysInMonth((ind+1), thfokus))
+        //     for(b = 0 ; b < tSbln ; b++){
+        //         let tgl = new Date(thfokus, arCodeBulan[a], (b+1) );
+        //         let day = tgl.getDay();
+        //         let date = tgl.getDate();
+        //         if(b==0){
+        //             if(day>0){
+        //                 //let htmlColawal = ""
+        //                 for(c = 0 ; c < (day-1) ; c++){
+        //                     html +=`<td></td>`
+        //                 }
+        //             }
+        //             html+=`<td>${date}</td>`
+                    
+        //         }
+        //         else{
+                    
+        //             html+=`<td>${date}</td>`
+        //         }
+                
+        //         if(day % 7 == 0){
+        //             html+=`</tr><tr>`
+        //             console.log(day);
+        //             console.log(tgl);
+        //         }
+        //         if(b == (tSbln -1)){
+        //             let colAkhir = (6 - day);
+        //             if(colAkhir == 0 ){
+        //                 html+=`</tr></table></div>`
+        //             }else{
+        //                 for(c=0; c<colAkhir; c++){
+        //                     html+=`<td></td>`
+        //                 }
+        //                 html+=`</tr></table></div>`
+        //             }
+        //         }
+        //     }
+        // }
+
+
+let desainrpp =`<div class="w3-small w3-card-2 w3-padding" style="max-width:1000px;margin:15px auto">
+
+        <h3>Desain RPP</h3>
+        Disini Anda akan diarahkan untuk membuat RPP Satu Lembar.
+        
+        
+            <h4>Identitas RPP (Judul RPP)</h4>
+        <input type="text" class="w3-input" data-keyrpp="rpp_judul"/>
+        <br>
+        <h4>Tema</h4>
+        <input type="text" class="w3-input" data-keyrpp="rpp_tema"/>
+        <br>
+        <h5>Semester</h5>
+        <label for="rpp_semester">Semester Saat Ini : <input type="checkbox" class="w3-check" checked id="rpp_semester" value="2" data-keyrpp="rpp_semester">
+    </label>
+    <br>
+    <br>
+        <h5>Tematik / Non-Tematik:</h5>
+        <select id="rpp_jenistema" class="w3-select" data-keyrpp="rpp_jenistematik">
+            <option value="Tematik" selected>Tematik</option>
+            <option value="Non Tematik">Non-Tematik</option>
+        </select>
+        <br>
+        <br>
+        <h5 >Pilih Mapel</h5>
+                <label  class="w3-padding w3-margin-left w3-margin-top"  for ="id_PAI">PAI
+                    <input type="checkbox" class="w3-check" value="PAI" id="rpp_PAI" title="PENDIDIKAN AGAMA ISLAM" data-keyrpp="rpp_PAI">
+                </label> 
+                <label  class="w3-padding w3-margin-left w3-margin-top"  for ="id_PKRIS">PKRIS
+                    <input type="checkbox" class="w3-check" value="Kristen" id="rpp_PKRIS" title="PENDIDIKAN AGAMA KRISTEN" data-keyrpp="rpp_PKRIS">
+                </label>
+                
+                <label class="w3-padding w3-margin-left w3-margin-top" for ="id_KATHO">PKRIS
+                    <input type="checkbox" class="w3-check" value="Katholik" id="rpp_PKATO" title="PENDIDIKAN AGAMA KATHOLIK" data-keyrpp="rpp_PKATO">
+                </label>
+                
+                <label  class="w3-padding w3-margin-left w3-margin-top"  for ="id_PKN">PKN
+                    <input type="checkbox" class="w3-check" value="PKN" id="rpp_PKN" title="PKN"  data-keyrpp="rpp_PKN">
+                </label>
+          
+                <label class="w3-padding w3-margin-left w3-margin-top"  for ="id_BINDO">BINDO
+                    <input type="checkbox" class="w3-check" value="Bahasa Indonesia" id="rpp_BINDO" title="Bahasa Indonesia" data-keyrpp="rpp_BINDO">
+                </label>
+                <label  class="w3-padding w3-margin-left w3-margin-top"  for ="id_MTK">MTK
+                    <input type="checkbox" class="w3-check" value="Matematika" id="rpp_MTK" title="Matematika" data-keyrpp="rpp_MTK">
+                </label>
+                <label class="w3-padding w3-margin-left w3-margin-top"  for ="id_IPA">IPA
+                    <input type="checkbox" class="w3-check" value="IPA" id="rpp_IPA" title="IPA"  data-keyrpp="rpp_IPA">
+                </label>
+                <label  class="w3-padding w3-margin-left w3-margin-top"  for ="id_IPS">IPS
+                    <input type="checkbox" class="w3-check" value="IPS" id="rpp_IPS"  title="IPS" data-keyrpp="rpp_IPS">
+                </label>
+             <label  class="w3-padding w3-margin-left w3-margin-top"  for ="id_SBDP">SBdP
+                    <input type="checkbox" class="w3-check" value="SBDP" id="rpp_SBDP"  title="SBdP" data-keyrpp="rpp_SBDP">
+                </label>
+                <label  class="w3-padding w3-margin-left w3-margin-top"  for ="id_PJOK">PJOK
+                    <input type="checkbox" class="w3-check" value="PJOK" id="rpp_PJOK"  title="PJOK"  data-keyrpp="rpp_PJOK">
+                </label>
+                <label  class="w3-padding w3-margin-left w3-margin-top"  for ="id_BSUND">BSUND
+                    <input type="checkbox" class="w3-check" value="Bahasa Sunda" id="rpp_BSUND"  title="Bahasa Sunda" data-keyrpp="rpp_BSUND">
+                </label>
+      <br>
+        <br>
+        <h5>Priode Pelaksanaan:</h5>
+        <div class="w3-row w3-border w3-round-large">
+        <div class="w3-col l4">Waktu Pelaksanaan:
+            <input type="date" class="w3-input" data-keyrpp="rpp_tglawal">
+            </div>
+            <div class="w3-col l4 w3-padding"> 
+                <label for="rpp_tglsampai" class="w3-tiny">
+                <input type="checkbox" id="rpp_tglsampai" unchecked class="w3-check" onchange="chg_rppsampai()"  data-keyrpp="rpp_adabatastanggal">
+                    Terapkan Sampai Waktu Pelaksanaan</label>
+            </div>
+            <div class="w3-col l4 w3-hide" id="dv_tglsampai">
+                Sampai waktu: 
+                <input type="date" class="w3-input"  data-keyrpp="rpp_tglakhir">
+        </div>
+        </div>
+        <br>
+        <h5>Tujuan Pembelajaran</h5>
+        <button onclick="editerupgrade()"><i class="fa fa-question"></i> Sugesti Tujuan Pembelajaran</button><br>
+        <button onclick="imageHandler()">TESS</button><button onclick="changehtml('editor')">HTML</button>
+        <div id="editor" class="w3-white" spellcheck="false" data-keyrpp="rpp_tujuanpembelajaran"></div>
+        <!-- <textarea class="w3-input"  data-keyrpp="rpp_tujuanpembelajaran"></textarea> -->
+       
+<input
+type="checkbox"
+class="optionmath w3-hide" id="optionmath"
+data-name="operators"
+data-value='[["\\pm","\\pm"],["\\sqrt{x}","\\sqrt"],["\\sqrt[3]{x}","\\sqrt[3]{}"],["\\sqrt[n]{x}","\\nthroot"],
+      ["\\frac{x}{y}","\\frac"],["\\sum^{s}_{x}{d}", "\\sum"],["\\prod^{s}_{x}{d}", "\\prod"],
+      ["\\coprod^{s}_{x}{d}", "\\coprod"],["\\int^{s}_{x}{d}", "\\int"],["\\binom{n}{k}", "\\binom"]]'
+     checked>
+</label>
+
+<label>
+<input
+type="checkbox"
+class="optionmath w3-hide"
+data-name="displayHistory"
+data-value="true">
+</label>
+
+        <br>
+        <h5>Langkah-langkah Pembelajaran</h5>
+        <button><i class="fa fa-question"></i> Sugesti Langkah Kegiatan</button><br>
+        
+        <div id="editor1" class="w3-white" data-keyrpp="rpp_langkahpembelajaran"></div>
+        <!-- <textarea class="w3-input"  data-keyrpp="rpp_langkahpembelajaran"></textarea> -->
+        <br>
+        <h5>Evaluasi/Penilaian</h5>
+        <button><i class="fa fa-question" ></i> Sugesti Evaluasi</button><br>
+       <div class="w3-sand w3-center w3-padding">
+            <button class="w3-btn w3-blue w3-round-large w3-margin" onclick="previewrpp()"><i class="fa fa-eye"></i> Cek Preview</button>
+            <button class="w3-btn w3-blue w3-round-large w3-margin"><i class="fa fa-print"></i> Cetak</button>
+            <button class="w3-btn w3-blue w3-round-large w3-margin"><i class="fa fa-save"></i> Simpan Server</button>
+            <hr/><sup>
+                File dokumen yang terkirim di server dapat Anda lihat di tabel pada menu Supervisi
+            </sup>
+        </div>
+        
+        
+    </div>`

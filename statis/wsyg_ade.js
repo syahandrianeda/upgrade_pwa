@@ -1,7 +1,7 @@
 let urladm = jlo.ss_datanilai;
 let petakd_semster="";
-const arrTagAdm = ["0","prota","prosem","silabus","rpp","kisi-kisi","petakd","sebarankd","soal","ph","pts","pak","pat","perbaikan","pengayaan","kkm","notularapat"];
-const arrVersi = ["0","Mata Pelajaran","Tematik","Subtema","Pembelajaran","sebaran KD per tema","sebaran KD per semester"]
+const arrTagAdm = ["0","prota","prosem","silabus","rpp","kisi-kisi","petakd","sebarankd","soal","ph","pts","pak","pat","perbaikan","pengayaan","kkm","notularapat","kaldik"];
+const arrVersi = ["0","Mata Pelajaran","Tematik","Subtema","Pembelajaran","sebaran KD per tema","sebaran KD per semester","kaldik","HBE"]
 
 
 let editore = document.querySelector("#editor_ade");
@@ -2414,12 +2414,18 @@ function openCityy(evt, cityName) {
     tab.forEach(el => {el.classList.remove("w3-green")})
     //if(cityName == "buat_prota"){
         tab[0].classList.add("w3-green")
-        tab[4].classList.add("w3-green")
+        // tab[].classList.add("w3-green")
+        tab[4].classList.add("w3-green");
         tab[8].classList.add("w3-green");
+        tab[12].classList.add("w3-green");
         document.getElementById("tooltipkd1").style.display = 'none';
         document.getElementById("tooltipkdmapel").style.display = 'none';
         document.getElementById("tooltiptabelall").style.display = 'none';
         document.getElementById("tooltiptabel").style.display = 'none';
+        let tooltipkaldik =document.querySelectorAll(".tooltipkaldik");
+        tooltipkaldik.forEach(el => el.style.display = "none");
+        let tooltipHBE = document.getElementById("tooltipHBE");
+        tooltipHBE.style.display="none";
     
 }
 
@@ -2926,9 +2932,9 @@ const printadm = (c,portr=true) =>{
        
         //isikan HEAD dengan title, style, link, dll.
         head.innerHTML = "<title>E-DURASA ADMINISTRASI</title>";
-        head.innerHTML += '<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">';
+        head.innerHTML += '<link rel="stylesheet" href="https://edurasa.com/css/w3.css">';
     
-        //head.innerHTML += `<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">`;
+        //head.innerHTML += `<link rel="stylesheet" href="https://edurasa.com/css/w3.css">`;
         head.innerHTML += '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">';
     
         head.innerHTML += '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">';
@@ -4382,20 +4388,28 @@ const hapusdistribusi_koleksitema = (row, val,semester)=>{
     // }else{
     //     arrBaru.push(val)
     // // };
-    // let smsAsal = [];
-    // let smsBaru = [];
-    // if(arrsemester !== ""){
-    //     smsAsal = JSON.parse(arrsemester);
-    //     smsBaru = smsAsal;
-    //     if(smsAsal.indexOf(semester) == -1){
-    //         arrBaru.push(semester)
-    //     }
+    let smsAsal = [];
+    let smsBaru = [];
+    let resultSemester;
+    if(arrsemester !== ""){
+        smsAsal = JSON.parse(arrsemester);
+        let posisiAda = smsAsal.indexOf(semester)
+        // di array semester hanya ada 1, dan satunya itu bukan semester yang saat ini dipilih, maka:
+        if(smsAsal.length == 1 && posisiAda == -1){
+            resultSemester = smsAsal;
+        }else if(smsAsal.length == 1 && posisiAda > -1){
+            //jika isi satu-satunya dari array ini sama dengan semester yang saat ini dipilih, maka:
+            resultSemester = ""
+        }else{
+            smsAsal.splice(posisiAda,1);
+            resultSemester = JSON.stringify(smsAsal);
+        }
         
-    // }else{
-    //     smsBaru.push(semester)
-    // }
+    }else{
+        smsBaru.push(semester)
+    }
 
-    let objekjadikirim = Object.assign(objekserverkdsebelumnya,{"koleksitema":resultakhir});
+    let objekjadikirim = Object.assign(objekserverkdsebelumnya,{"koleksitema":resultakhir,"semester":resultSemester});
     let keyy = JSON.stringify(Object.keys(objekjadikirim));
     ///idbaris = row;
     let tabel= JSON.stringify(Object.values(objekjadikirim))
@@ -4868,8 +4882,7 @@ const tooltip_petakdmapel = (cl, mapel,bol) =>{
                         }
                         let mprs = prs.match(/^([34]\.\d+)/g);
                         let barisserver = arrKDmapel.filter(s=> s[key_nokd] == mprs)[0].row;
-                        console.log("barisserver")
-                        console.log(barisserver)
+                        
                         let pushindik=[];
                         for(k = 0 ; k < cekIndik.length ; k++){
                             let dt = cekIndik[k].innerHTML;
@@ -4882,9 +4895,7 @@ const tooltip_petakdmapel = (cl, mapel,bol) =>{
                             }
 
                         }
-                        console.log("sebelum datayangdihapus");
-                        console.log(pushindik);
-                        console.log("indek html yang terhapus:")
+                        
                         let posisidihapus = pushindik.indexOf(datayangdihapus);
                         console.log(posisidihapus);
                         if(indeknol == 0){
@@ -4894,10 +4905,7 @@ const tooltip_petakdmapel = (cl, mapel,bol) =>{
                             pushindik.splice(posisidihapus, 1);
                             
                         }
-                        console.log("setelah datayangdihapus")
-                        console.log(pushindik);
-                        console.log("stringifynya");
-                        console.log(JSON.stringify(pushindik));
+                        
                         val = JSON.stringify(pushindik);
                         let idx = posisidihapus;
                         update_hapusdataserver(cl, mapel,bol, barisserver, val,fokuskolom,idx)
@@ -5121,8 +5129,8 @@ const update_dataserverpetakdmapel = (cl, mapel,bol,row, val,fokus,indek)=>{
     // console.log(cl)
     // console.log(mapel)
     // console.log(bol)
-      console.log(row)
-     console.log(dbAsal)
+    //   console.log(row)
+    //  console.log(dbAsal)
     // console.log(val)
     // console.log(fokus)
     // console.log("dbAsal:")
@@ -5158,15 +5166,15 @@ const update_dataserverpetakdmapel = (cl, mapel,bol,row, val,fokus,indek)=>{
     }else if(fokus == 3){
         objKirim[key_keyHeader[1]]=val;
         let jpsebelumnya =dbAsal[key_keyHeader[3]];
-        console.log("jpsebelumnya")
-        console.log(jpsebelumnya)
-        console.log("indek");
-        console.log(indek);
+        // console.log("jpsebelumnya")
+        // console.log(jpsebelumnya)
+        // console.log("indek");
+        // console.log(indek);
         let prsf = JSON.parse(val);
         let ajp = []
         let prs = JSON.parse(jpsebelumnya);
-        console.log("prs");
-        console.log(prs);
+        // console.log("prs");
+        // console.log(prs);
         if(prsf.length == prs.length){
             ajp = prs;
             
@@ -5175,7 +5183,7 @@ const update_dataserverpetakdmapel = (cl, mapel,bol,row, val,fokus,indek)=>{
             ajp = prs
 
         }
-        console.log(ajp);
+        // console.log(ajp);
         objKirim[key_keyHeader[3]] = JSON.stringify(ajp);
         //cek kd JP
         // let inversindik = dbAsal[key_keyHeader[3]];
@@ -5196,15 +5204,15 @@ const update_dataserverpetakdmapel = (cl, mapel,bol,row, val,fokus,indek)=>{
     }else {
         objKirim[key_keyHeader[3]] = val;
         let jpsebelumnya =dbAsal[key_keyHeader[1]];
-        console.log("jpsebelumnya")
-        console.log(jpsebelumnya)
-        console.log("indek");
-        console.log(indek);
+        // console.log("jpsebelumnya")
+        // console.log(jpsebelumnya)
+        // console.log("indek");
+        // console.log(indek);
         let prsf = JSON.parse(val);
         let ajp = []
         let prs = JSON.parse(jpsebelumnya);
-        console.log("prs");
-        console.log(prs);
+        // console.log("prs");
+        // console.log(prs);
         if(prsf.length == prs.length){
             ajp = prs;
             
@@ -5213,7 +5221,7 @@ const update_dataserverpetakdmapel = (cl, mapel,bol,row, val,fokus,indek)=>{
             ajp = prs
 
         }
-        console.log(ajp);
+        // console.log(ajp);
         objKirim[key_keyHeader[1]] = JSON.stringify(ajp);
 
         // let inversindik = dbAsal[key_keyHeader2[3]];
@@ -5250,7 +5258,7 @@ const update_dataserverpetakdmapel = (cl, mapel,bol,row, val,fokus,indek)=>{
     .then(r => {
         let result = r.data;
         tagkdserver = result.filter(s => s.kelas == idJenjang);
-        console.log("distribusi  kd berhasil tersimpan");
+        // console.log("distribusi  kd berhasil tersimpan");
         tooltipspin.style.display = "none";
         
         htmlpetakd_generate(cl, mapel,bol,row);
@@ -5294,8 +5302,8 @@ const update_hapusdataserver = (cl, mapel,bol,row, val,fokus,indek) =>{
     // console.log(cl)
     // console.log(mapel)
     // console.log(bol)
-      console.log(row)
-     console.log(dbAsal)
+    //   console.log(row)
+    //  console.log(dbAsal)
     // console.log(val)
     // console.log(fokus)
     // console.log("dbAsal:")
@@ -5344,9 +5352,9 @@ const update_hapusdataserver = (cl, mapel,bol,row, val,fokus,indek) =>{
         tooltipspin.style.display = "none";
         return
     }
-    console.log(objKirim);
+    // console.log(objKirim);
      let objekjadikirim = Object.assign(dbAsal,objKirim);
-     console.log(objekjadikirim);
+    //  console.log(objekjadikirim);
     let keyy = JSON.stringify(Object.keys(objekjadikirim));
     //idbaris = row;
     let tabel= JSON.stringify(Object.values(objekjadikirim))
@@ -5364,7 +5372,7 @@ const update_hapusdataserver = (cl, mapel,bol,row, val,fokus,indek) =>{
     .then(r => {
         let result = r.data;
         tagkdserver = result.filter(s => s.kelas == idJenjang);
-        console.log("distribusi  kd berhasil tersimpan");
+        // console.log("distribusi  kd berhasil tersimpan");
         tooltipspin.style.display = "none";
         
         htmlpetakd_generate(cl, mapel,bol,row);
@@ -6044,4 +6052,2178 @@ const ubahkd_sebarankdpersemester =  (el) =>{
     }
     htmlsebaransemester(v,x)
 
+}
+
+
+const printadmKaldik = (c,portr=true) =>{
+    //jaga-jaga untuk element class yang duplikat?
+    let dom = document.querySelector("."+c);
+    let indom = dom.innerHTML;//.textContent;
+    
+    let noSpace =indom.replace(/(\r\n|\n|\r)/gm, "").replace(/\s\s/g,"");
+    let isirep = noSpace.replace(/\ss12\s/gm," s3 ")
+    
+    var root = window.location.origin;
+    
+    let el = document.getElementById("iframeprint");
+    let doc = el.contentDocument || el.contentWindow.document;;
+    let head = doc.head;
+    let body = doc.body;
+    //
+    // var isi = el.contentDocument || editore.contentWindow.document;;
+    // var headnya = isi.head;
+    while (head.hasChildNodes()) {
+        head.removeChild(head.firstChild);
+    }
+
+    //
+   
+    //isikan HEAD dengan title, style, link, dll.
+    head.innerHTML = "<title>E-DURASA ADMINISTRASI</title>";
+    head.innerHTML += '<link rel="stylesheet" href="https://edurasa.com/css/w3.css">';
+
+    //head.innerHTML += `<link rel="stylesheet" href="https://edurasa.com/css/w3.css">`;
+    head.innerHTML += '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">';
+
+    head.innerHTML += '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">';
+    head.innerHTML += '<link  rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">'
+
+    head.innerHTML +='<link rel="stylesheet" href="https://syahandrianeda.github.io/syahandrianeda/css/stylegurukelas.css">'
+    //head.innerHTML += `<style type="text/css"> .versii-table{width:950px;max-width:100%;border-collapse:collapse}.versi-table{width:auto;max-width:100%;border-collapse:collapse}.versi-table td,.versi-table th,.versi-table tr,.versii-table td,.versii-table th,.versii-table tr{border:1px solid #000;color:#000;padding:5px 10px 5px 10px}.versi-table th,.versii-table th{background-color:#eee;color:#00f;vertical-align:middle;text-align:center}.versi-table tr:nth-of-type(even) td,.versii-table tr:nth-of-type(even) td{border:0;background-color:#fff;border:1px solid #000}.versi-table tr:nth-of-type(odd) td,.versii-table tr:nth-of-type(odd) td{border:0;background-color:#eef;border:1px solid #000} .garis td,.garis th,.garis tr{border:0.5px solid rgb(119, 116, 116)} .garis th{border:1px solid #000;text-align:center;vertical-align:middle} </style>`;
+
+    if(portr){
+        head.innerHTML += `<style type="text/css" media="print">
+        @media print {
+            html,body{height:100%;width:100%;margin:0;padding:0}
+            
+             @page {
+                size: A4 portrait;
+               
+                
+                }
+        }
+        </style>`;
+    }else{
+        head.innerHTML += `<style type="text/css" media="print">
+        @media print {
+            html,body{margin:0;padding:0}
+            
+             @page {
+                size: A4 landscape;
+                
+                
+                }
+        }
+        </style>`;
+    }
+    
+    
+
+    body.innerHTML = isirep;//noSpace;
+    // body.innerHTML += `<div class="w3-row w3-margin-top"><div class="w3-col l6 s6 w3-center">Mengetahui,<br>Kepala ${idNamaSekolah}<br><br><br><br><u><b>${idNamaKepsek}</b></u><br>NIP. ${idNipKepsek}</div><div class="w3-col l6 s6 w3-center">Depok, ${tanggalfull(new Date())}<br>${idJenisGuru} ${idgurumapelmapel}<br><br><br><br><u><b>${namauser}</b></u><br>NIP. ${idNipGuruKelas}</div>`;
+
+    window.frames["iframeprint"].focus();
+    window.frames["iframeprint"].print();
+}
+
+const admkaldik_pilihSemester = document.querySelectorAll("input[name=admkaldik_pilihSemester]");
+const admkaldik_keterangan = document.querySelector(".admkaldik_keterangan");
+const kelaswarnalibur = (tgl)=>{
+        let datalibur = JSON.parse(localStorage.getItem("Kaldik"));
+        let cekini = keteranganlibur(tgl);
+        let filter = datalibur.filter(s => s.keterangan == cekini)[0].warna;
+        return filter;
+    
+}
+const cekbariskaldik = (tgl)=>{
+    let datalibur = JSON.parse(localStorage.getItem("Kaldik"));
+        let cekini = keteranganlibur(tgl);
+        let filter = datalibur.filter(s => s.keterangan == cekini)[0].idbaris;
+        return filter;
+}
+admkaldik_pilihSemester.forEach(el=>{
+    el.addEventListener("click", function(){
+        let v = el.value;
+        let th = idTeksTapel.split("/");
+        let thfokus = th[v-1];
+        let indekbulan1 = [0,1,2,3,4,5];
+        let indekbulan0 = [6,7,8,9,10,11];
+        let arrIndeks = v==1 ?indekbulan0:indekbulan1;
+        let tabel = document.querySelectorAll(".admtabel_kaldik");
+        let h3_admkaldik = document.querySelector(".h3_admkaldik");
+        let h4_admkaldik = document.querySelector(".h4_admkaldik");
+        let div_ttd = document.querySelector(".ttd_admkaldik")
+        div_ttd.innerHTML = `<div class="w3-row w3-margin-top"><div class="w3-col l6 s6 w3-center">Mengetahui,<br>Kepala ${idNamaSekolah}<br><br><br><br><u><b>${idNamaKepsek}</b></u><br>NIP. ${idNipKepsek}</div><div class="w3-col l6 s6 w3-center">Depok, ${tanggalfull(new Date())}<br>${idJenisGuru} ${idgurumapelmapel}<br><br><br><br><u><b>${namauser}</b></u><br>NIP. ${idNipGuruKelas}</div>`;
+        h3_admkaldik.innerHTML = "KALENDER PENDIDIKAN "+idNamaSekolah.toUpperCase();
+        h4_admkaldik.innerHTML = "TAHUN PELAJARAN "+idTeksTapel+" SEMESTER " + v;
+
+
+        let bulan;
+        for(i =0 ; i < tabel.length ; i++){
+            //kasih id :
+            let idtabel = "tabelkaldikindex-" + i;
+            //tabel[i].classList.add(idtabel);
+            
+            let thead = tabel[i].getElementsByTagName("thead")[0];
+            let tbody = tabel[i].getElementsByTagName("tbody")[0];
+            
+            
+            tbody.innerHTML = "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>";
+            
+            let ind = arrIndeks[i]
+            bulan = NamaBulandariIndex(ind)
+            thead.rows[0].cells[0].innerHTML = bulan + " " + thfokus;
+            let tgl0 = new Date(thfokus,ind,1);
+            let tglLast = daysInMonth((ind+1), thfokus)
+            let r0 = 0;
+            let c0;
+            let d;
+            let dd;
+            let lr ="";
+            let x;
+            let y;
+            let str_d;
+            for(j = 0 ; j < tglLast ; j++){
+                d = new Date(thfokus, ind, (j+1));
+                str_d = StringTanggal(d);
+                //tandai ini tanggalnya:
+                
+                c0= d.getDay();
+                dd = d.getDate();
+                if(cocoklibur(d)){
+                    tbody.rows[r0].cells[c0].innerHTML = dd;
+                    let clr = kelaswarnalibur(d);
+                    if(clr !==""){
+                        tbody.rows[r0].cells[c0].setAttribute("class",clr);
+                    }else{
+                        tbody.rows[r0].cells[c0].setAttribute("class","w3-red");
+                    }
+                    x = cekbariskaldik(d);
+                    y = keteranganlibur(d)
+                    tbody.rows[r0].cells[c0].setAttribute("data-bariskalidk",x);
+                    tbody.rows[r0].cells[c0].setAttribute("data-keterangankaldik",y);
+                }else{
+                    tbody.rows[r0].cells[c0].innerHTML = dd;
+                    if(tbody.rows[r0].cells[c0].hasAttribute("class")){
+                        tbody.rows[r0].cells[c0].removeAttribute("class");
+                    }
+                }
+                tbody.rows[r0].cells[c0].setAttribute("data-stringTgl", str_d);
+
+                if(c0 == 0 || c0 == 6){
+                    tbody.rows[r0].cells[c0].setAttribute("class","w3-red");
+                }
+                if(c0 == 6){
+                    r0++
+                }
+                lr = r0;
+            }
+            let cellakkhir =  tbody.rows[5].cells[0];
+            if(cellakkhir.innerHTML ==""){
+                tbody.deleteRow(-1);
+            }
+        }
+        
+        let datalibur = localStorage.getItem("Kaldik");
+        let arrLibur = JSON.parse(datalibur);
+        let dat = arrLibur.filter(s => arrIndeks.indexOf(new Date(s.start_tgl).getMonth()) > -1 && new Date(s.start_tgl).getFullYear() == thfokus);
+        let kelompok = Math.ceil(dat.length/2);
+        let html = `<table class="w3-table-all w3-tiny"><tr class="w3-cyan"><td colspan="2">Tanggal</td><td>Keterangan</td></tr>`;
+        //tabel pertama: 
+        for(l=0 ; l < (kelompok-1);l++){
+            if(dat[l].lama == 1){
+                html+=`<tr><td>${tanggalfull(dat[l].start_tgl)}</td><td>:</td><td>${dat[l].keterangan}</td></tr>`
+            }else{
+                html+=`<tr><td>${tanggalfull(dat[l].start_tgl)} - ${tanggalfull(dat[l].end_tgl)}</td><td>:</td><td>${dat[l].keterangan}</td></tr>`
+            }
+            
+        }
+        html +=`</table>`;
+        let html0 = `<table class="w3-table-all w3-tiny"><tr class="w3-cyan"><td colspan="2">Tanggal</td><td>Keterangan</td></tr>`;
+        for(m= kelompok; m < dat.length ; m++){
+            if(dat[m].lama == 1){
+                html0+=`<tr><td>${tanggalfull(dat[m].start_tgl)}</td><td>:</td><td>${dat[m].keterangan}</td></tr>`
+            }else{
+                html0+=`<tr><td>${tanggalfull(dat[m].start_tgl)} - ${tanggalfull(dat[m].end_tgl)}</td><td>:</td><td>${dat[m].keterangan}</td></tr>`
+            }
+        }
+        html0 +=`</table>`;
+        
+        document.querySelectorAll(".admkaldik_keterangan")[0].innerHTML = "Keterangan:<br>" + html;
+        document.querySelectorAll(".admkaldik_keterangan")[1].innerHTML =  "<br>"+html0;
+        tabel =  document.querySelectorAll(".admtabel_kaldik");
+        for(u = 0 ; u < tabel.length ; u++){
+            
+            tooltipkaldik_config(u,v)    
+
+        }
+        
+    })
+});
+const KalendarPerSemester = (v)=>{
+        let th = idTeksTapel.split("/");
+        let thfokus = th[v-1];
+        let indekbulan1 = [0,1,2,3,4,5];
+        let indekbulan0 = [6,7,8,9,10,11];
+        let arrIndeks = v==1 ?indekbulan0:indekbulan1;
+        let tabel = document.querySelectorAll(".admtabel_kaldik");
+        let h3_admkaldik = document.querySelector(".h3_admkaldik");
+        let h4_admkaldik = document.querySelector(".h4_admkaldik");
+        h3_admkaldik.innerHTML = "KALENDER PENDIDIKAN "+idNamaSekolah.toUpperCase();
+        h4_admkaldik.innerHTML = "TAHUN PELAJARAN "+idTeksTapel+" SEMESTER " + v;
+        let div_ttd = document.querySelector(".ttd_admkaldik")
+        div_ttd.innerHTML = `<div class="w3-row w3-margin-top"><div class="w3-col l6 s6 w3-center">Mengetahui,<br>Kepala ${idNamaSekolah}<br><br><br><br><u><b>${idNamaKepsek}</b></u><br>NIP. ${idNipKepsek}</div><div class="w3-col l6 s6 w3-center">Depok, ${tanggalfull(new Date())}<br>${idJenisGuru} ${idgurumapelmapel}<br><br><br><br><u><b>${namauser}</b></u><br>NIP. ${idNipGuruKelas}</div>`;
+
+        let bulan;
+        for(i =0 ; i < tabel.length ; i++){
+            //kasih id :
+            let idtabel = "tabelkaldikindex-" + i;
+            //tabel[i].classList.add(idtabel);
+            
+            let thead = tabel[i].getElementsByTagName("thead")[0];
+            let tbody = tabel[i].getElementsByTagName("tbody")[0];
+            
+            
+            tbody.innerHTML = "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>";
+            
+            let ind = arrIndeks[i]
+            bulan = NamaBulandariIndex(ind)
+            thead.rows[0].cells[0].innerHTML = bulan + " " + thfokus;
+            let tgl0 = new Date(thfokus,ind,1);
+            let tglLast = daysInMonth((ind+1), thfokus)
+            let r0 = 0;
+            let c0;
+            let d;
+            let dd;
+            let lr ="";
+            let x;
+            let y;
+            let str_d;
+            for(j = 0 ; j < tglLast ; j++){
+                d = new Date(thfokus, ind, (j+1));
+                str_d = StringTanggal(d);
+                //tandai ini tanggalnya:
+                
+                c0= d.getDay();
+                dd = d.getDate();
+                if(cocoklibur(d)){
+                    tbody.rows[r0].cells[c0].innerHTML = dd;
+                    let clr = kelaswarnalibur(d);
+                    if(clr !==""){
+                        tbody.rows[r0].cells[c0].setAttribute("class",clr);
+                    }else{
+                        tbody.rows[r0].cells[c0].setAttribute("class","w3-red");
+                    }
+                    x = cekbariskaldik(d);
+                    y = keteranganlibur(d)
+                    tbody.rows[r0].cells[c0].setAttribute("data-bariskalidk",x);
+                    tbody.rows[r0].cells[c0].setAttribute("data-keterangankaldik",y);
+                }else{
+                    tbody.rows[r0].cells[c0].innerHTML = dd;
+                    if(tbody.rows[r0].cells[c0].hasAttribute("class")){
+                        tbody.rows[r0].cells[c0].removeAttribute("class");
+                    }
+                }
+                tbody.rows[r0].cells[c0].setAttribute("data-stringTgl", str_d);
+
+                if(c0 == 0 || c0 == 6){
+                    tbody.rows[r0].cells[c0].setAttribute("class","w3-red");
+                }
+                if(c0 == 6){
+                    r0++
+                }
+                lr = r0;
+            }
+            let cellakkhir =  tbody.rows[5].cells[0];
+            if(cellakkhir.innerHTML ==""){
+                tbody.deleteRow(-1);
+            }
+        }
+        
+        let datalibur = localStorage.getItem("Kaldik");
+        let arrLibur = JSON.parse(datalibur);
+        let dat = arrLibur.filter(s => arrIndeks.indexOf(new Date(s.start_tgl).getMonth()) > -1 && new Date(s.start_tgl).getFullYear() == thfokus);
+        let kelompok = Math.ceil(dat.length/2);
+        let html = `<table class="w3-table-all w3-tiny"><tr class="w3-cyan"><td colspan="2">Tanggal</td><td>Keterangan</td></tr>`;
+        //tabel pertama: 
+        for(l=0 ; l < (kelompok-1);l++){
+            if(dat[l].lama == 1){
+                html+=`<tr><td>${tanggalfull(dat[l].start_tgl)}</td><td>:</td><td>${dat[l].keterangan}</td></tr>`
+            }else{
+                html+=`<tr><td>${tanggalfull(dat[l].start_tgl)} - ${tanggalfull(dat[l].end_tgl)}</td><td>:</td><td>${dat[l].keterangan}</td></tr>`
+            }
+            
+        }
+        html +=`</table>`;
+        let html0 = `<table class="w3-table-all w3-tiny"><tr class="w3-cyan"><td colspan="2">Tanggal</td><td>Keterangan</td></tr>`;
+        for(m= kelompok; m < dat.length ; m++){
+            if(dat[m].lama == 1){
+                html0+=`<tr><td>${tanggalfull(dat[m].start_tgl)}</td><td>:</td><td>${dat[m].keterangan}</td></tr>`
+            }else{
+                html0+=`<tr><td>${tanggalfull(dat[m].start_tgl)} - ${tanggalfull(dat[m].end_tgl)}</td><td>:</td><td>${dat[m].keterangan}</td></tr>`
+            }
+        }
+        html0 +=`</table>`;
+        
+        document.querySelectorAll(".admkaldik_keterangan")[0].innerHTML = "Keterangan:<br>" + html;
+        document.querySelectorAll(".admkaldik_keterangan")[1].innerHTML =  "<br>"+html0;
+        tabel =  document.querySelectorAll(".admtabel_kaldik");
+        for(u = 0 ; u < tabel.length ; u++){
+            
+            tooltipkaldik_config(u,v)    
+
+        }
+        
+    
+}
+
+const tooltipkaldik_config = (inek,semester) =>{
+    let db = JSON.parse(localStorage.getItem("Kaldik"));
+    let cls ="tabelkaldikindex" + inek;
+    let idd = ".tooltipkaldik_tempattgl"+inek;
+    let clEdt = ".kirimedit_tooltipkaldik"+inek;
+    let clTmbh = ".kirimtambah_tooltipkaldik"+inek;
+    let clHps = ".tooltipkaldik_hapus"+inek;
+    
+    let divtool = document.getElementById("tooltipkaldik"+inek);
+    let divkanan = document.querySelector(".tooltiparahkanan"+inek);
+    let divkiri = document.querySelector(".tooltiparahkiri"+inek);
+    //posisi sembunyikan formdata untuk mengedit kalendar;
+    //definisikan terlebih dahulu untuk tombol tambah dan edit kalendar\
+    let div_datakirim0 = document.querySelector(idd);
+    // let div_kirimedit = document.querySelector(clEdt);
+    // let div_kirimtambah = document.querySelector(clTmbh);
+    // let div_kirimhapus = document.querySelector(clHps);
+    
+    div_datakirim0.style.display = "none";
+    
+    let tabel = document.getElementById(cls);
+    //console.log(tabel);
+    let tbody = tabel.getElementsByTagName("tbody")[0];
+    let lr = tbody.rows;
+    for(i = 0 ; i < lr.length ; i++){
+        let lc = lr[i].cells;
+        for(j=0 ; j < lc.length ; j++){
+            let td = lc[j];
+            
+            let rowIndek, cellIndek, tekstitle
+            let keterangan;
+            td.onmouseover = function (){
+                rowIndek = this.parentElement.rowIndex;
+                cellIndek = this.cellIndex;
+                if(this.hasAttribute("data-keterangankaldik")){
+                    keterangan = this.getAttribute("data-keterangankaldik");
+                }else{
+                    keterangan = "Tgl " + this.innerHTML;
+                }
+                this.setAttribute("title", keterangan);
+            }
+            td.onmouseout = function (){
+                this.removeAttribute("title")
+            }
+            td.onclick = function (){
+                let tooltipkaldik =document.querySelectorAll(".tooltipkaldik");
+                    tooltipkaldik.forEach(el => el.style.display = "none");
+
+                let ttop = (tabel.offsetTop + this.offsetTop  ) +"px";//this.offsetTop +"px";
+                let lleft =  (tabel.offsetLeft+ this.offsetLeft + this.offsetWidth +20) +"px";
+                let lleftt =  (tabel.offsetLeft+ this.offsetLeft + this.offsetWidth +20) ;
+                let lebarwindow = document.querySelector(".tesbody").offsetWidth;
+                let bataskanan = lebarwindow * 0.5 ;//- (tabel.offsetLeft+ this.offsetLeft + this.offsetWidth +10);
+                //console.log("left="+lleft +" lebar ="+lebarwindow+" batas ke kanan="+bataskanan);
+                
+                let div_datakirim = document.querySelector(idd);
+                let div_kirimedit = document.querySelector(clEdt);
+                let div_kirimtambah = document.querySelector(clTmbh);
+                let div_kirimhapus = document.querySelector(clHps);
+    
+                div_datakirim.style.display = "none";
+                div_kirimedit.style.display = "none";
+                div_kirimtambah.style.display = "none";
+
+                if(lleftt > bataskanan){
+                    divtool.style.top=ttop;
+                    divtool.style.left= (tabel.offsetLeft+ this.offsetLeft - 360)+"px" ;
+                    divkanan.style.display="block";
+                    divkiri.style.display="none";
+                }else{
+                    
+                    divtool.style.top=ttop;
+                    divtool.style.left= lleft;
+                    divkanan.style.display="none";
+                    divkiri.style.display="block";
+                }
+                let tdfokus = this;
+                if(tdfokus.innerHTML==""){
+                    alert("Maaf, Anda tidak bisa mengedit kalendar kosong!");
+                    return
+                }
+                divtool.style.display = "block";
+                let isisel = tdfokus.innerHTML;
+                let celedit = tdfokus.hasAttribute("class");
+                let btn_merah = document.querySelector(".tooltipkaldik_merah"+inek);
+                let btn_biru = document.querySelector(".tooltipkaldik_biru"+inek);
+                let btn_hijau = document.querySelector(".tooltipkaldik_hijau"+inek);
+                let btn_kuning = document.querySelector(".tooltipkaldik_kuning"+inek);
+                let ketedit = document.querySelector("#ket_tooltipkaldik"+inek);
+                //let tgledit = document.querySelector("#date_tooltipkaldik"+inek);
+                let spanubahtambah = document.querySelector(".ubahtambah_tooltipkaldik"+inek);
+                
+                btn_merah.onclick =async function (){
+                        let ttgl = tdfokus.getAttribute("data-stringTgl");
+                        div_datakirim.style.display = "block";
+                        if(celedit && tdfokus.hasAttribute("data-bariskalidk")){
+                            let r = tdfokus.getAttribute("data-bariskalidk");
+                            // ... console.log("Anda mengedit tanggal ini dgn idbaris= "+r);
+                            div_kirimedit.style.display = "block";
+                            div_kirimtambah.style.display = "none";
+                            spanubahtambah.innerHTML ="Anda akan mengedit Kaldik ini";
+                            let dbS = db.filter(s=> s.idbaris == r)[0];
+                            //let lama = dbS.lama;
+                            let dbTglAwal = StringTanggal2(new Date(dbS.start_tgl));
+                            let dbTglAkhir = StringTanggal2(new Date(dbS.end_tgl));
+
+                            let ketBefore = dbS.keterangan;
+                            ketedit.value = ketBefore;
+                            
+                            
+                            div_kirimedit.onclick=  function(){
+                                let kolor = "w3-red";
+                                let valueKet  = ketedit.value;
+                                let TglAwal = dbTglAwal;
+                                let TglAkhir = dbTglAkhir;
+                                serveredit_tooltipkaldik(r, valueKet, TglAwal, TglAkhir,kolor,semester);
+                                divtool.style.display = "none";
+                            }
+                        }else{
+                            //... console.log("Anda akan menambahkan kaldik di tanggal ini tgl " + ttgl);
+
+                            div_kirimedit.style.display = "none";
+                            div_kirimtambah.style.display = "block";
+                            spanubahtambah.innerHTML ="Anda akan menambahkan Keterangan Kaldik ini"
+                            div_kirimtambah.onclick = function (){
+                                let d = StringTanggal2(new Date(ttgl))
+                                // var d = new Date(ttgl).toLocaleDateString().split('/');
+                                // var showTgl = d[2]+"-"+("0"+d[0]).slice(-2)+"-"+("0"+d[1]).slice(-2);
+                                // tgledit.value = showTgl;
+                                
+                                
+                                    let kolor = "w3-red";
+                                    let valueKet  = ketedit.value;
+                                    let valueTgl = d;
+                                    servertambah_tooltipkaldik("", valueKet, valueTgl,kolor,semester);
+                                    divtool.style.display = "none";
+                                
+                            }
+                        }   
+                        tdfokus.setAttribute("class","w3-red");
+                        
+                }
+                btn_biru.onclick = function (){
+                    let ttgl = tdfokus.getAttribute("data-stringTgl");
+                    div_datakirim.style.display = "block";
+                    if(celedit && tdfokus.hasAttribute("data-bariskalidk")){
+                        let r = tdfokus.getAttribute("data-bariskalidk");
+                        // ... console.log("Anda mengedit tanggal ini dgn idbaris= "+r);
+                        div_kirimedit.style.display = "block";
+                        div_kirimtambah.style.display = "none";
+                        spanubahtambah.innerHTML ="Anda akan mengedit Kaldik ini";
+                        let dbS = db.filter(s=> s.idbaris == r)[0];
+                        //let lama = dbS.lama;
+                        let dbTglAwal = StringTanggal2(new Date(dbS.start_tgl));
+                        let dbTglAkhir = StringTanggal2(new Date(dbS.end_tgl));
+
+                        let ketBefore = dbS.keterangan;
+                        ketedit.value = ketBefore;
+                        
+                        
+                        div_kirimedit.onclick=  function(){
+                            let kolor = "w3-blue";
+                            let valueKet  = ketedit.value;
+                            let TglAwal = dbTglAwal;
+                            let TglAkhir = dbTglAkhir;
+                            serveredit_tooltipkaldik(r, valueKet, TglAwal, TglAkhir,kolor,semester);
+                            divtool.style.display = "none";
+                        }
+                    }else{
+                        //... console.log("Anda akan menambahkan kaldik di tanggal ini tgl " + ttgl);
+                        div_kirimedit.style.display = "none";
+                        div_kirimtambah.style.display = "block";
+                        spanubahtambah.innerHTML ="Anda akan menambahkan Keterangan Kaldik ini"
+                        div_kirimtambah.onclick = function (){
+                            
+                            let d = StringTanggal2(new Date(ttgl))
+                            // var d = new Date(ttgl).toLocaleDateString().split('/');
+                            // var showTgl = d[2]+"-"+("0"+d[0]).slice(-2)+"-"+("0"+d[1]).slice(-2);
+                            // tgledit.value = showTgl;
+                            
+                            
+                                let kolor = "w3-blue";
+                                let valueKet  = ketedit.value;
+                                let valueTgl = d;
+                                servertambah_tooltipkaldik("", valueKet, valueTgl,kolor,semester);
+                                divtool.style.display = "none";
+                            
+                        }
+                    }   
+                    tdfokus.setAttribute("class","w3-blue");    
+                }
+                btn_hijau.onclick = function (){
+                    let ttgl = tdfokus.getAttribute("data-stringTgl");
+                    div_datakirim.style.display = "block";
+                    if(celedit && tdfokus.hasAttribute("data-bariskalidk")){
+                        let r = tdfokus.getAttribute("data-bariskalidk");
+                        // ... console.log("Anda mengedit tanggal ini dgn idbaris= "+r);
+                        div_kirimedit.style.display = "block";
+                        div_kirimtambah.style.display = "none";
+                        spanubahtambah.innerHTML ="Anda akan mengedit Kaldik ini";
+                        let dbS = db.filter(s=> s.idbaris == r)[0];
+                        //let lama = dbS.lama;
+                        let dbTglAwal = StringTanggal2(new Date(dbS.start_tgl));
+                        let dbTglAkhir = StringTanggal2(new Date(dbS.end_tgl));
+
+                        let ketBefore = dbS.keterangan;
+                        ketedit.value = ketBefore;
+                        
+                        
+                        div_kirimedit.onclick=  function(){
+                            let kolor = "w3-green";
+                            let valueKet  = ketedit.value;
+                            let TglAwal = dbTglAwal;
+                            let TglAkhir = dbTglAkhir;
+                            serveredit_tooltipkaldik(r, valueKet, TglAwal, TglAkhir,kolor,semester);
+                            divtool.style.display = "none";
+                        }
+                    }else{
+                        //... console.log("Anda akan menambahkan kaldik di tanggal ini tgl " + ttgl);
+                        div_kirimedit.style.display = "none";
+                        div_kirimtambah.style.display = "block";
+                        spanubahtambah.innerHTML ="Anda akan menambahkan Keterangan Kaldik ini"
+                        div_kirimtambah.onclick = function (){
+
+                            
+                            let d = StringTanggal2(new Date(ttgl))
+                            // var d = new Date(ttgl).toLocaleDateString().split('/');
+                            // var showTgl = d[2]+"-"+("0"+d[0]).slice(-2)+"-"+("0"+d[1]).slice(-2);
+                            // tgledit.value = showTgl;
+                            
+                                let kolor = "w3-green";
+                                let valueKet  = ketedit.value;
+                                let valueTgl = d;
+                                servertambah_tooltipkaldik("", valueKet, valueTgl,kolor,semester);
+                                divtool.style.display = "none";
+                            }
+                    }   
+                    tdfokus.setAttribute("class","w3-green");
+                }
+                btn_kuning.onclick = function (){
+                    let ttgl = tdfokus.getAttribute("data-stringTgl");
+                    div_datakirim.style.display = "block";
+                    if(celedit && tdfokus.hasAttribute("data-bariskalidk")){
+                        let r = tdfokus.getAttribute("data-bariskalidk");
+                        // ... console.log("Anda mengedit tanggal ini dgn idbaris= "+r);
+                        div_kirimedit.style.display = "block";
+                        div_kirimtambah.style.display = "none";
+                        spanubahtambah.innerHTML ="Anda akan mengedit Kaldik ini";
+                        let dbS = db.filter(s=> s.idbaris == r)[0];
+                        //let lama = dbS.lama;
+                        let dbTglAwal = StringTanggal2(new Date(dbS.start_tgl));
+                        let dbTglAkhir = StringTanggal2(new Date(dbS.end_tgl));
+
+                        let ketBefore = dbS.keterangan;
+                        ketedit.value = ketBefore;
+                        
+                        
+                        div_kirimedit.onclick=  function(){
+                            let kolor = "w3-yellow";
+                            let valueKet  = ketedit.value;
+                            let TglAwal = dbTglAwal;
+                            let TglAkhir = dbTglAkhir;
+                            serveredit_tooltipkaldik(r, valueKet, TglAwal, TglAkhir,kolor,semester);
+                            divtool.style.display = "none";
+                        }
+                    }else{
+                        //... console.log("Anda akan menambahkan kaldik di tanggal ini tgl " + ttgl);
+                        div_kirimedit.style.display = "none";
+                        div_kirimtambah.style.display = "block";
+                        spanubahtambah.innerHTML ="Anda akan menambahkan Keterangan Kaldik ini"
+                        div_kirimtambah.onclick = function (){
+                            let d = StringTanggal2(new Date(ttgl))
+                            
+                                let kolor = "w3-yellow";
+                                let valueKet  = ketedit.value;
+                                let valueTgl = d;
+                                servertambah_tooltipkaldik("", valueKet, valueTgl,kolor,semester);
+                                divtool.style.display = "none";
+                            
+                        }
+                    }   
+                    tdfokus.setAttribute("class","w3-yellow");    
+                }
+                div_kirimhapus.onclick= function (){
+                    if(celedit && tdfokus.hasAttribute("data-bariskalidk")){
+                        let r = tdfokus.getAttribute("data-bariskalidk");
+                        let konfirmasi = confirm("Anda yakin ingin menghapus keterangan tanggal ini?")
+                        if(konfirmasi){
+                            let datakaldikdihapus = db.filter(s => s.idbaris == r)[0];
+                            
+                            serverhapus_tooltipkaldik(r,semester);
+                            divtool.style.display = "none";
+                        }
+                        
+                    }else{
+                        alert("Tidak ada keterangan kalender di tanggal ini! Anda tidak bisa menghapusnya");
+                     
+                    }
+                }
+            }
+        }
+    }
+    dragElement(divtool);
+};
+
+const serveredit_tooltipkaldik = async (iRow, valueKet, valueTgl, valueTgl1, ColoR,v) =>{
+    url_absenkaldik = jlo.url_dataabsen + "?action=datakaldik&idss=" + jlo.ss_dataabsen;
+    let dbS = JSON.parse(localStorage.getItem("Kaldik"));
+    let db = dbS.filter(s => s.idbaris)[0];
+    
+    let link = url_kaldikaja + "?action=editkaldik";
+    let data = new FormData();
+    data.append("idbariskaldik",iRow);
+    data.append("keterangan", valueKet);
+    data.append("start_tgl", valueTgl)
+    data.append("end_tgl", valueTgl1);
+    data.append("warna", ColoR)
+    data.append('oleh', namauser);
+    await fetch(link, {
+        method: 'post',
+        body: data
+    }).then(m => m.json())
+        .then(k => {
+           alert("Berhasil diedit ("+k+")");
+           //console.log(k);
+        })
+        .catch(err => console.log(err));
+
+    await fetch(url_absenkaldik).then(m => m.json()).then(k => {
+
+        
+        //console.log(k)
+        arrayStringTglLibur = k.stringTgl.map(m => Object.keys(m)).reduce((a, b) => a.concat(b));
+        arrayKetLibur = k.stringTgl.map(m => Object.keys(m).map(n => m[n])).reduce((a, b) => a.concat(b));
+
+        localStorage.setItem('Kaldik', JSON.stringify(k.records));
+
+        localStorage.setItem('TglLibur', JSON.stringify(k.stringTgl))
+        KalendarPerSemester(v)
+
+        
+    });
+
+
+}
+
+const servertambah_tooltipkaldik = async (iRow, valueKet, valueTgl,ColoR,v) =>{
+    url_absenkaldik = jlo.url_dataabsen + "?action=datakaldik&idss=" + jlo.ss_dataabsen;
+    let dbS = JSON.parse(localStorage.getItem("Kaldik"));
+    //let db = dbS.filter(s => s.idbaris)[0];
+    
+    
+    let link = url_kaldikaja + "?action=tambahkaldik";
+    let data = new FormData();
+    data.append("idbariskaldik","");
+    data.append("keterangan", valueKet);
+    data.append("start_tgl", valueTgl)
+    data.append("end_tgl", valueTgl);
+    data.append("warna", ColoR)
+    data.append('oleh', namauser);
+    await fetch(link, {
+        method: 'post',
+        body: data
+    }).then(m => m.json())
+        .then(k => {
+            alert(k)
+        })
+        .catch(err => console.log(err));
+
+    await fetch(url_absenkaldik).then(m => m.json()).then(k => {
+
+        
+        console.log(k)
+        arrayStringTglLibur = k.stringTgl.map(m => Object.keys(m)).reduce((a, b) => a.concat(b));
+        arrayKetLibur = k.stringTgl.map(m => Object.keys(m).map(n => m[n])).reduce((a, b) => a.concat(b));
+
+        localStorage.setItem('Kaldik', JSON.stringify(k.records));
+
+        localStorage.setItem('TglLibur', JSON.stringify(k.stringTgl))
+
+        KalendarPerSemester(v)
+        
+    });
+
+
+}
+const serverhapus_tooltipkaldik = async (iRow,v) =>{
+    // let konfirm = confirm("Anda yakin ingin menghapus kalender pendidikan tertanggal ini? \n\n Klik OK untuk menghapus \n Klik CANCEL untuk membatalkan")
+    // if (!konfirm) {
+    //     alert("Anda membatalkan penghapusan tanggal kalender");
+    //     return;
+    // }
+    //alert("Anda menghapus tanggal pada baris di idss = " + (ind + 2))
+    let brs = iRow;
+    await fetch(url_kaldikaja + "?action=hapuskaldik&idbaris=" + brs, {
+        method: "post"
+    }).then(m => m.json())
+        .then(k => {
+            alert(k);
+
+        })
+        .catch(f => alert(f))
+
+    await fetch(url_absenkaldik).then(m => m.json()).then(k => {
+
+        
+        //console.log(k)
+        arrayStringTglLibur = k.stringTgl.map(m => Object.keys(m)).reduce((a, b) => a.concat(b));
+        arrayKetLibur = k.stringTgl.map(m => Object.keys(m).map(n => m[n])).reduce((a, b) => a.concat(b));
+
+        localStorage.setItem('Kaldik', JSON.stringify(k.records));
+
+        localStorage.setItem('TglLibur', JSON.stringify(k.stringTgl))
+        KalendarPerSemester(v);
+
+        
+    });
+
+
+}
+let tagJPserver;
+let tagJPkey;
+const cekJPserver =  async (v) =>{
+    let tab = "HEB"
+        let tabel = [[["idbaris"]]];
+        let head = tabel[0];
+        let key = JSON.stringify(head);
+        let datakirim = new FormData();
+        
+        datakirim.append("tab",tab);
+        datakirim.append("key",key);
+    try {
+        let m = await fetch(url_kaldikaja + "?action=getpostdatafromtab", {
+            method: "post",
+            body: datakirim
+        });
+        let k = await m.json();
+        //console.log(k);
+        tagJPserver = k.data.filter(s => s.semester == v && s.jenjangkelas == idJenjang);
+        tagJPkey = k.data[0];
+    } catch (er) {
+        return console.log(er);
+    }
+}
+let semesterfokusheb 
+const admkaldikHEB_pilihSemester = document.querySelectorAll("input[name=admkaldikHEB_pilihSemester]");
+admkaldikHEB_pilihSemester.forEach(el =>{
+    
+    
+    el.addEventListener("click", async function(){
+        let v = el.value;
+        loadingtopbarin("loadingtopbar");
+        await cekJPserver(v)
+        
+
+        html_admkaldikHEB_pilihSemester(v);
+        
+        clearInterval(stoploadingtopbar);
+            let divlod = document.querySelector(".loadingtopbar");
+            divlod.style.width = "100%";
+            setTimeout(() => {
+                divlod.style.width = "1px"
+                divlod.className += " w3-hide";
+
+            }, 3000);
+    })
+});
+const html_admkaldikHEB_pilihSemester = (semester)=>{
+    try{
+
+            let v = semester;
+            let th = idTeksTapel.split("/");
+            let thfokus = th[v-1];
+            let indekbulan1 = [0,1,2,3,4,5];
+            let indekbulan0 = [6,7,8,9,10,11];
+            let arrIndeks = v ==1 ?indekbulan0:indekbulan1;
+            document.querySelector(".h2_admHBE").innerHTML = "TAHUN PELAJARAN " + idTeksTapel + " SEMESTER " + semester;
+            document.querySelector(".h3_admHBE").innerHTML = "KELAS " + idNamaKelas;
+        document.querySelector(".namasekolah_admHBE").innerHTML = idNamaSekolah;
+        document.querySelector(".namakepsek_admHBE").innerHTML = idNamaKepsek;
+        document.querySelector(".nipkesek_admHBE").innerHTML = idNipKepsek;
+        document.querySelector(".titimangsa_admHBE").innerHTML = tanggalfull(new Date());
+        document.querySelector(".jenisguru_admHBE").innerHTML = idJenisGuru + " " + idgurumapelmapel;
+        document.querySelector(".namaguru_admHBE").innerHTML = namauser;
+        document.querySelector(".nipguru_admHBE").innerHTML = idNipGuruKelas;
+        
+        
+        
+        let tabel1 = document.querySelector(".tabelhari_admHBE");
+        let tabel2 = document.querySelector(".tabelhari_admJBE");
+        let tbody1 = tabel1.getElementsByTagName("tbody")[0];
+        let tfoot1 = tabel1.getElementsByTagName("tbody")[1];
+        let tbody2 = tabel2.getElementsByTagName("tbody")[0];
+        let tfoot2 = tabel2.getElementsByTagName("tbody")[1];
+        
+        let jjg;
+        if(idJenjang > 3){
+            jjg ="tinggi";
+        }else{
+            jjg = "rendah";
+        }
+        let arrTemaRendahGanjil = ["TEMA 1","TEMA 2","TEMA 3","TEMA 4"];
+        let arrTemaRendahGenap = ["TEMA 5","TEMA 6","TEMA 7","TEMA 8"];
+        let arrTemaTinggiGanjil = ["TEMA 1","TEMA 2","TEMA 3","TEMA 4","TEMA 5"];
+        let arrTemaTinggiGenap = ["TEMA 6","TEMA 7","TEMA 8","TEMA 9"];
+        let arrCodeMapelRendah = ["PKN","BINDO","MTK","SBDP","PJOK"];
+        let arrCodeMapelTinggi = ["PKN","BINDO","IPA","IPS","SBDP"];
+        let arrHeaderTinggi = ["PKN","Bahasa Indonesia","IPA","IPS","SBDP"]
+        let arrHeaderRendah = ["PKN","Bahasa Indonesia","MATEMATIKA","SBDP","PJOK"];
+        let ltd;
+        let fl;
+        
+        let konftema;
+        let konfmapel;
+        let konfheader;
+        if(semester == 1 && jjg == "tinggi"){
+            konftema = arrTemaTinggiGanjil;
+            konfmapel = arrCodeMapelTinggi;
+            konfheader = arrHeaderTinggi;
+            // ltd = 3
+        }else if(semester == 2 && jjg == "tinggi"){
+            konftema = arrTemaTinggiGenap;
+            konfmapel = arrCodeMapelTinggi;
+            konfheader = arrHeaderTinggi
+            // ltd = 3
+        }else if(semester == 1 && jjg == "rendah"){
+            // ltd = 4
+            konftema = arrTemaRendahGanjil
+            konfmapel = arrCodeMapelRendah;
+            konfheader = arrHeaderRendah
+        }else if(semester == 2 && jjg == "rendah"){
+            // ltd = 4
+            konftema = arrTemaRendahGenap
+            konfmapel = arrCodeMapelRendah;
+            konfheader = arrHeaderRendah
+        }
+        let objHEB = {};
+        let bulan = [];
+        let r = 0;
+        let col_sn = 0;
+        let col_sl = 0;
+        let col_rb = 0;
+        let col_km = 0;
+        let col_jm = 0;
+        let col_total = 0
+        for(a = 0 ; a < arrIndeks.length ; a++){ //array semester = tabel
+            let indekbulan = arrIndeks[a];
+            let bln = parseInt(indekbulan+1);
+            let namaBulan = NamaBulandariIndex(indekbulan);
+            //isikan ke tabel';
+            tbody1.rows[r].cells[0].innerHTML = namaBulan + " " + thfokus;
+            let lr = daysInMonth(bln, thfokus);
+            let sn = 0, sl=0, rb=0,km=0,jm=0;
+            let tot = 0;
+            for(b = 0 ; b < lr; b++){ // tgl dalam bulan
+                let dt = new Date(thfokus, indekbulan, (b+1));
+                let d = dt.getDay();
+                if(d == 1 && cocoklibur(dt)== false){
+                    sn++;
+                    tot++;
+                }
+                if(d == 2 && cocoklibur(dt) == false){
+                    sl++;
+                    tot++;
+                }
+                
+                if(d == 3 && cocoklibur(dt)==false){
+                    rb++;
+                    tot++;
+                }
+                
+                if(d == 4 && cocoklibur(dt)==false){
+                    km++;
+                    tot++;
+                }
+                
+                if(d == 5 && cocoklibur(dt)==false){
+                    jm++;
+                    tot++;
+                }
+                
+                
+            }
+            tbody1.rows[r].cells[1].innerHTML = sn;
+            tbody1.rows[r].cells[2].innerHTML = sl;
+            tbody1.rows[r].cells[3].innerHTML = rb;
+            tbody1.rows[r].cells[4].innerHTML = km;
+            tbody1.rows[r].cells[5].innerHTML = jm;
+            tbody1.rows[r].cells[6].innerHTML = tot +" hari.";
+            // isiuntuk kolom baris akhir;
+            let hari = {};
+            hari.sn = sn;
+            hari.sl = sl;
+            hari.rb = rb;
+            hari.km = km;
+            hari.jm = jm;
+            hari.total = tot;
+
+            // isikan kolom
+            col_sn += sn;
+            col_sl += sl;
+            col_rb += rb;
+            col_km += km;
+            col_jm += jm;
+            col_total += tot;
+            // isikan untuk objek 
+            //bulan.push(hari);
+            objHEB[namaBulan]=hari;
+            r++;
+        }
+        tfoot1.rows[0].cells[1].innerHTML = col_sn +" hari.";
+        tfoot1.rows[0].cells[2].innerHTML = col_sl +" hari.";
+        tfoot1.rows[0].cells[3].innerHTML = col_rb +" hari.";
+        tfoot1.rows[0].cells[4].innerHTML = col_km +" hari.";
+        tfoot1.rows[0].cells[5].innerHTML = col_jm +" hari.";
+        tfoot1.rows[0].cells[6].innerHTML = col_total +" hari.";
+
+        tfoot1.rows[1].cells[1].innerHTML = (col_sn * 7) +" JP.";
+        tfoot1.rows[1].cells[2].innerHTML = (col_sl * 7) +" JP.";
+        tfoot1.rows[1].cells[3].innerHTML = (col_rb * 7) +" JP.";
+        tfoot1.rows[1].cells[4].innerHTML = (col_km * 7) +" JP.";
+        tfoot1.rows[1].cells[5].innerHTML = (col_jm * 7) +" JP.";
+        tfoot1.rows[1].cells[6].innerHTML = (col_total * 7) +" JP.";
+        let objTotal = {};
+        objTotal.sn = col_sn;
+        objTotal.sl = col_sl;
+        objTotal.rb = col_rb;
+        objTotal.km = col_km;
+        objTotal.jm = col_jm;
+        objTotal.total = col_total;
+        
+        //asumsikan data server di sini belum ada:
+        //tabel kedua
+        let html = "";
+        // pelajaran agama:
+        let dbT = tagkdserver.filter(s => s.semester.indexOf(v)>-1 && s.koleksitema !== "");
+        let dBT_PAI = dbT.filter(s => s.mapel == "PAI").length;
+        let dBT_PKRIS = dbT.filter(s => s.mapel == "PKRIS").length;
+        let dBT_PKATO = dbT.filter(s => s.mapel == "PKATO").length;
+        let dBT_PKN = dbT.filter(s => s.mapel == "PKN").length;
+        let dBT_BINDO = dbT.filter(s => s.mapel == "BINDO").length;
+        let dBT_MTK = dbT.filter(s => s.mapel == "MTK").length;
+        let dBT_IPA = dbT.filter(s => s.mapel == "IPA").length;
+        let dBT_IPS = dbT.filter(s => s.mapel == "IPS").length;
+        let dBT_SBDP = dbT.filter(s => s.mapel == "SBDP").length;
+        let dBT_PJOK = dbT.filter(s => s.mapel == "PJOK").length;
+        let dBT_BSUND = dbT.filter(s => s.mapel == "BSUND").length;
+        let sRow_PAI = tagJPserver.filter(s => s.kodemapel == "PAI" && s.semester == v);
+        
+        let rBol = sRow_PAI.length == 0 ? false : true;
+        let sn1, sl2, rb3, km4, jm5,tot6
+        // Buat global:
+        let MPfokus, sRow_MP,rBool;
+        if(idgurumapelmapel == "PAI"){
+            html += `<tr class="w3-yellow"><td>PA Islam & BP</td><td>${dBT_PAI}</td><td>Nontematik</td>`;
+        }else{
+            html += `<tr><td>PA Islam & BP</td><td>${dBT_PAI}</td><td>Nontematik</td>`
+        }
+        if(rBol){
+            html+=`<td data-jpCodeMapel="PAI" data-jpDay="jp_sn" data-jpRow="${sRow_PAI[0].idbaris}">${sRow_PAI[0].jp_sn}</td>
+                <td data-jpCodeMapel="PAI" data-jpDay="jp_sl" data-jpRow="${sRow_PAI[0].idbaris}">${sRow_PAI[0].jp_sl}</td>
+                <td data-jpCodeMapel="PAI" data-jpDay="jp_rb" data-jpRow="${sRow_PAI[0].idbaris}">${sRow_PAI[0].jp_rb}</td>
+                <td data-jpCodeMapel="PAI" data-jpDay="jp_km" data-jpRow="${sRow_PAI[0].idbaris}">${sRow_PAI[0].jp_km}</td>
+                <td data-jpCodeMapel="PAI" data-jpDay="jp_jm" data-jpRow="${sRow_PAI[0].idbaris}">${sRow_PAI[0].jp_jm}</td>
+                <td> ${sRow_PAI[0].jp_sn==""?"":sRow_PAI[0].jp_sn * col_sn}</td>
+                <td> ${sRow_PAI[0].jp_sl==""?"":sRow_PAI[0].jp_sl * col_sl}</td>
+                <td> ${sRow_PAI[0].jp_rb==""?"":sRow_PAI[0].jp_rb * col_rb}</td>
+                <td> ${sRow_PAI[0].jp_km==""?"":sRow_PAI[0].jp_km * col_km}</td>
+                <td> ${sRow_PAI[0].jp_jm==""?"":sRow_PAI[0].jp_jm * col_jm}</td>`;
+            sn1 = sRow_PAI[0].jp_sn==""?0:sRow_PAI[0].jp_sn * col_sn;
+            sl2 = sRow_PAI[0].jp_sl==""?0:sRow_PAI[0].jp_sl * col_sl;
+            rb3 = sRow_PAI[0].jp_rb==""?0:sRow_PAI[0].jp_rb * col_rb;
+            km4 = sRow_PAI[0].jp_km==""?0:sRow_PAI[0].jp_km * col_km;
+            jm5 = sRow_PAI[0].jp_jm==""?0:sRow_PAI[0].jp_jm * col_jm;
+            tot6 = (parseInt(sn1) + parseInt(sl2) + parseInt(rb3) + parseInt(km4) + parseInt(jm5));
+            
+            html +=`<td>${tot6}</td></tr>`;
+        }else{
+            html+=`<td data-jpCodeMapel="PAI" data-jpDay="jp_sn"></td>
+            <td data-jpCodeMapel="PAI"  data-jpDay="jp_sl"></td>
+            <td data-jpCodeMapel="PAI" data-jpDay="jp_rb"></td>
+            <td data-jpCodeMapel="PAI" data-jpDay="jp_km" ></td>
+            <td data-jpCodeMapel="PAI" data-jpDay="jp_jm"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td></tr>`;
+        }
+
+
+        
+        MPfokus = "PKRIS";
+        sRow_MP = tagJPserver.filter(s => s.kodemapel == MPfokus && s.semester == v);
+        rBool = sRow_MP.length == 0 ? false : true;
+        
+        if(idgurumapelmapel == MPfokus){
+            html += `<tr class="w3-yellow"><td>PA Kristen & BP</td><td>${dBT_PKRIS}</td><td>Nontematik</td>`;
+        }else{
+            html += `<tr><td>PA Kristen & BP</td><td>${dBT_PKRIS}</td><td>Nontematik</td>`
+        }
+        if(rBool){
+            html+=`<td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_sn" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_sn}</td>
+                <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_sl" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_sl}</td>
+                <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_rb" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_rb}</td>
+                <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_km" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_km}</td>
+                <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_jm" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_jm}</td>
+                <td> ${sRow_MP[0].jp_sn==""?"":sRow_MP[0].jp_sn * col_sn}</td>
+                <td> ${sRow_MP[0].jp_sl==""?"":sRow_MP[0].jp_sl * col_sl}</td>
+                <td> ${sRow_MP[0].jp_rb==""?"":sRow_MP[0].jp_rb * col_rb}</td>
+                <td> ${sRow_MP[0].jp_km==""?"":sRow_MP[0].jp_km * col_km}</td>
+                <td> ${sRow_MP[0].jp_jm==""?"":sRow_MP[0].jp_jm * col_jm}</td>`;
+            sn1 = sRow_MP[0].jp_sn==""?0:sRow_MP[0].jp_sn * col_sn;
+            sl2 = sRow_MP[0].jp_sl==""?0:sRow_MP[0].jp_sl * col_sl;
+            rb3 = sRow_MP[0].jp_rb==""?0:sRow_MP[0].jp_rb * col_rb;
+            km4 = sRow_MP[0].jp_km==""?0:sRow_MP[0].jp_km * col_km;
+            jm5 = sRow_MP[0].jp_jm==""?0:sRow_MP[0].jp_jm * col_jm;
+            tot6 = (parseInt(sn1) + parseInt(sl2) + parseInt(rb3) + parseInt(km4) + parseInt(jm5));
+            
+            html +=`<td>${tot6}</td></tr>`;
+        }else{
+            html+=`<td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_sn"></td>
+            <td data-jpCodeMapel="${MPfokus}"  data-jpDay="jp_sl"></td>
+            <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_rb"></td>
+            <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_km" ></td>
+            <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_jm"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td></tr>`;
+        }
+
+        MPfokus = "PKATO";
+        sRow_MP = tagJPserver.filter(s => s.kodemapel == MPfokus && s.semester == v);
+        rBool = sRow_MP.length == 0 ? false : true;
+        
+        if(idgurumapelmapel == MPfokus){
+            html += `<tr class="w3-yellow"><td>PA Katolik & BP</td><td>${dBT_PKRIS}</td><td>Nontematik</td>`;
+        }else{
+            html += `<tr><td>PA Katolik & BP</td><td>${dBT_PKRIS}</td><td>Nontematik</td>`
+        }
+        if(rBool){
+            html+=`<td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_sn" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_sn}</td>
+                <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_sl" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_sl}</td>
+                <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_rb" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_rb}</td>
+                <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_km" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_km}</td>
+                <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_jm" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_jm}</td>
+                <td> ${sRow_MP[0].jp_sn==""?"":sRow_MP[0].jp_sn * col_sn}</td>
+                <td> ${sRow_MP[0].jp_sl==""?"":sRow_MP[0].jp_sl * col_sl}</td>
+                <td> ${sRow_MP[0].jp_rb==""?"":sRow_MP[0].jp_rb * col_rb}</td>
+                <td> ${sRow_MP[0].jp_km==""?"":sRow_MP[0].jp_km * col_km}</td>
+                <td> ${sRow_MP[0].jp_jm==""?"":sRow_MP[0].jp_jm * col_jm}</td>`;
+            sn1 = sRow_MP[0].jp_sn==""?0:sRow_MP[0].jp_sn * col_sn;
+            sl2 = sRow_MP[0].jp_sl==""?0:sRow_MP[0].jp_sl * col_sl;
+            rb3 = sRow_MP[0].jp_rb==""?0:sRow_MP[0].jp_rb * col_rb;
+            km4 = sRow_MP[0].jp_km==""?0:sRow_MP[0].jp_km * col_km;
+            jm5 = sRow_MP[0].jp_jm==""?0:sRow_MP[0].jp_jm * col_jm;
+            tot6 = (parseInt(sn1) + parseInt(sl2) + parseInt(rb3) + parseInt(km4) + parseInt(jm5));
+            
+            html +=`<td>${tot6}</td></tr>`;
+        }else{
+            html+=`<td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_sn"></td>
+            <td data-jpCodeMapel="${MPfokus}"  data-jpDay="jp_sl"></td>
+            <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_rb"></td>
+            <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_km" ></td>
+            <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_jm"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td></tr>`;
+        }
+        //pkn
+        MPfokus = "PKN";
+        sRow_MP = tagJPserver.filter(s => s.kodemapel == MPfokus && s.semester == v);
+        rBool = sRow_MP.length == 0 ? false : true;
+    let collTemaPKN = dbT.filter(s => s.mapel == "PKN").map(m=> JSON.parse(m.koleksitema)).reduce((a,b)=>a.concat(b)).filter(s => konftema.indexOf(s)>-1).filter((a, b, c) => c.indexOf(a) == b).sort().join(", ")
+        
+        html += `<tr><td>${MPfokus}</td><td>${dBT_PKN}</td><td>${collTemaPKN}</td>`;
+        if(rBool){
+            html+=`<td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_sn" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_sn}</td>
+                <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_sl" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_sl}</td>
+                <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_rb" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_rb}</td>
+                <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_km" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_km}</td>
+                <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_jm" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_jm}</td>
+                <td> ${sRow_MP[0].jp_sn==""?"":sRow_MP[0].jp_sn * col_sn}</td>
+                <td> ${sRow_MP[0].jp_sl==""?"":sRow_MP[0].jp_sl * col_sl}</td>
+                <td> ${sRow_MP[0].jp_rb==""?"":sRow_MP[0].jp_rb * col_rb}</td>
+                <td> ${sRow_MP[0].jp_km==""?"":sRow_MP[0].jp_km * col_km}</td>
+                <td> ${sRow_MP[0].jp_jm==""?"":sRow_MP[0].jp_jm * col_jm}</td>`;
+            sn1 = sRow_MP[0].jp_sn==""?0:sRow_MP[0].jp_sn * col_sn;
+            sl2 = sRow_MP[0].jp_sl==""?0:sRow_MP[0].jp_sl * col_sl;
+            rb3 = sRow_MP[0].jp_rb==""?0:sRow_MP[0].jp_rb * col_rb;
+            km4 = sRow_MP[0].jp_km==""?0:sRow_MP[0].jp_km * col_km;
+            jm5 = sRow_MP[0].jp_jm==""?0:sRow_MP[0].jp_jm * col_jm;
+            tot6 = (parseInt(sn1) + parseInt(sl2) + parseInt(rb3) + parseInt(km4) + parseInt(jm5));
+            
+            html +=`<td>${tot6}</td></tr>`;
+        }else{
+            html+=`<td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_sn"></td>
+            <td data-jpCodeMapel="${MPfokus}"  data-jpDay="jp_sl"></td>
+            <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_rb"></td>
+            <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_km" ></td>
+            <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_jm"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td></tr>`;
+        }
+        
+        
+        //bindo
+        let collTemaBINDO = dbT.filter(s => s.mapel == "BINDO").map(m=> JSON.parse(m.koleksitema)).reduce((a,b)=>a.concat(b)).filter(s => konftema.indexOf(s)>-1).filter((a, b, c) => c.indexOf(a) == b).sort().join(", ")
+        MPfokus = "BINDO";
+        sRow_MP = tagJPserver.filter(s => s.kodemapel == MPfokus && s.semester == v);
+        rBool = sRow_MP.length == 0 ? false : true;
+        html += `<tr><td>Bahasa Indonesia</td><td>${dBT_BINDO}</td><td>${collTemaBINDO}</td>`;
+        if(rBool){
+            html+=`<td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_sn" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_sn}</td>
+                <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_sl" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_sl}</td>
+                <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_rb" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_rb}</td>
+                <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_km" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_km}</td>
+                <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_jm" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_jm}</td>
+                <td> ${sRow_MP[0].jp_sn==""?"":sRow_MP[0].jp_sn * col_sn}</td>
+                <td> ${sRow_MP[0].jp_sl==""?"":sRow_MP[0].jp_sl * col_sl}</td>
+                <td> ${sRow_MP[0].jp_rb==""?"":sRow_MP[0].jp_rb * col_rb}</td>
+                <td> ${sRow_MP[0].jp_km==""?"":sRow_MP[0].jp_km * col_km}</td>
+                <td> ${sRow_MP[0].jp_jm==""?"":sRow_MP[0].jp_jm * col_jm}</td>`;
+            sn1 = sRow_MP[0].jp_sn==""?0:sRow_MP[0].jp_sn * col_sn;
+            sl2 = sRow_MP[0].jp_sl==""?0:sRow_MP[0].jp_sl * col_sl;
+            rb3 = sRow_MP[0].jp_rb==""?0:sRow_MP[0].jp_rb * col_rb;
+            km4 = sRow_MP[0].jp_km==""?0:sRow_MP[0].jp_km * col_km;
+            jm5 = sRow_MP[0].jp_jm==""?0:sRow_MP[0].jp_jm * col_jm;
+            tot6 = (parseInt(sn1) + parseInt(sl2) + parseInt(rb3) + parseInt(km4) + parseInt(jm5));
+            
+            html +=`<td>${tot6}</td></tr>`;
+        }else{
+            html+=`<td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_sn"></td>
+            <td data-jpCodeMapel="${MPfokus}"  data-jpDay="jp_sl"></td>
+            <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_rb"></td>
+            <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_km" ></td>
+            <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_jm"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td></tr>`;
+        }
+        
+            //MTK
+        if(jjg == "tinggi"){
+            MPfokus = "MTK";
+            sRow_MP = tagJPserver.filter(s => s.kodemapel == MPfokus && s.semester == v);
+            rBool = sRow_MP.length == 0 ? false : true;
+            
+            
+            html += `<tr><td>Matematika</td><td>${dBT_MTK}</td><td>Nontematik</td>`
+                
+                if(rBool){
+                    html+=`<td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_sn" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_sn}</td>
+                        <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_sl" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_sl}</td>
+                        <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_rb" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_rb}</td>
+                        <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_km" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_km}</td>
+                        <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_jm" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_jm}</td>
+                        <td> ${sRow_MP[0].jp_sn==""?"":sRow_MP[0].jp_sn * col_sn}</td>
+                        <td> ${sRow_MP[0].jp_sl==""?"":sRow_MP[0].jp_sl * col_sl}</td>
+                        <td> ${sRow_MP[0].jp_rb==""?"":sRow_MP[0].jp_rb * col_rb}</td>
+                        <td> ${sRow_MP[0].jp_km==""?"":sRow_MP[0].jp_km * col_km}</td>
+                        <td> ${sRow_MP[0].jp_jm==""?"":sRow_MP[0].jp_jm * col_jm}</td>`;
+                    sn1 = sRow_MP[0].jp_sn==""?0:sRow_MP[0].jp_sn * col_sn;
+                    sl2 = sRow_MP[0].jp_sl==""?0:sRow_MP[0].jp_sl * col_sl;
+                    rb3 = sRow_MP[0].jp_rb==""?0:sRow_MP[0].jp_rb * col_rb;
+                    km4 = sRow_MP[0].jp_km==""?0:sRow_MP[0].jp_km * col_km;
+                    jm5 = sRow_MP[0].jp_jm==""?0:sRow_MP[0].jp_jm * col_jm;
+                    tot6 = (parseInt(sn1) + parseInt(sl2) + parseInt(rb3) + parseInt(km4) + parseInt(jm5));
+                    
+                    html +=`<td>${tot6}</td></tr>`;
+                }else{
+                    html+=`<td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_sn"></td>
+                    <td data-jpCodeMapel="${MPfokus}"  data-jpDay="jp_sl"></td>
+                    <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_rb"></td>
+                    <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_km" ></td>
+                    <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_jm"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td></tr>`;
+                }
+        }else{
+            let collTemaMTK = dbT.filter(s => s.mapel == "MTK").map(m=> JSON.parse(m.koleksitema)).reduce((a,b)=>a.concat(b)).filter(s => konftema.indexOf(s)>-1).filter((a, b, c) => c.indexOf(a) == b).sort().join(", ")
+                MPfokus = "MTK";
+                sRow_MP = tagJPserver.filter(s => s.kodemapel == MPfokus && s.semester == v);
+                rBool = sRow_MP.length == 0 ? false : true;
+            
+                
+                html += `<tr><td>Matematika</td><td>${dBT_MTK}</td><td>${collTemaMTK}</td>`;
+                if(rBool){
+                    html+=`<td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_sn" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_sn}</td>
+                        <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_sl" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_sl}</td>
+                        <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_rb" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_rb}</td>
+                        <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_km" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_km}</td>
+                        <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_jm" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_jm}</td>
+                        <td> ${sRow_MP[0].jp_sn==""?"":sRow_MP[0].jp_sn * col_sn}</td>
+                        <td> ${sRow_MP[0].jp_sl==""?"":sRow_MP[0].jp_sl * col_sl}</td>
+                        <td> ${sRow_MP[0].jp_rb==""?"":sRow_MP[0].jp_rb * col_rb}</td>
+                        <td> ${sRow_MP[0].jp_km==""?"":sRow_MP[0].jp_km * col_km}</td>
+                        <td> ${sRow_MP[0].jp_jm==""?"":sRow_MP[0].jp_jm * col_jm}</td>`;
+                    sn1 = sRow_MP[0].jp_sn==""?0:sRow_MP[0].jp_sn * col_sn;
+                    sl2 = sRow_MP[0].jp_sl==""?0:sRow_MP[0].jp_sl * col_sl;
+                    rb3 = sRow_MP[0].jp_rb==""?0:sRow_MP[0].jp_rb * col_rb;
+                    km4 = sRow_MP[0].jp_km==""?0:sRow_MP[0].jp_km * col_km;
+                    jm5 = sRow_MP[0].jp_jm==""?0:sRow_MP[0].jp_jm * col_jm;
+                    tot6 = (parseInt(sn1) + parseInt(sl2) + parseInt(rb3) + parseInt(km4) + parseInt(jm5));
+                    
+                    html +=`<td>${tot6}</td></tr>`;
+                }else{
+                    html+=`<td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_sn"></td>
+                    <td data-jpCodeMapel="${MPfokus}"  data-jpDay="jp_sl"></td>
+                    <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_rb"></td>
+                    <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_km" ></td>
+                    <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_jm"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td></tr>`;
+                }
+        };
+        
+        //IPA dan IPS (KELAS TINGGI ONLY)
+        if(jjg == "tinggi"){   
+            let collTemaIPA = dbT.filter(s => s.mapel == "IPA").map(m=> JSON.parse(m.koleksitema)).reduce((a,b)=>a.concat(b)).filter(s => konftema.indexOf(s)>-1).filter((a, b, c) => c.indexOf(a) == b).sort().join(", ")
+            MPfokus = "IPA";
+            sRow_MP = tagJPserver.filter(s => s.kodemapel == MPfokus && s.semester == v);
+            rBool = sRow_MP.length == 0 ? false : true;
+            html += `<tr><td>IPA</td><td>${dBT_IPA}</td><td>${collTemaIPA}</td>`;
+            if(rBool){
+                html+=`<td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_sn" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_sn}</td>
+                    <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_sl" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_sl}</td>
+                    <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_rb" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_rb}</td>
+                    <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_km" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_km}</td>
+                    <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_jm" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_jm}</td>
+                    <td> ${sRow_MP[0].jp_sn==""?"":sRow_MP[0].jp_sn * col_sn}</td>
+                    <td> ${sRow_MP[0].jp_sl==""?"":sRow_MP[0].jp_sl * col_sl}</td>
+                    <td> ${sRow_MP[0].jp_rb==""?"":sRow_MP[0].jp_rb * col_rb}</td>
+                    <td> ${sRow_MP[0].jp_km==""?"":sRow_MP[0].jp_km * col_km}</td>
+                    <td> ${sRow_MP[0].jp_jm==""?"":sRow_MP[0].jp_jm * col_jm}</td>`;
+                sn1 = sRow_MP[0].jp_sn==""?0:sRow_MP[0].jp_sn * col_sn;
+                sl2 = sRow_MP[0].jp_sl==""?0:sRow_MP[0].jp_sl * col_sl;
+                rb3 = sRow_MP[0].jp_rb==""?0:sRow_MP[0].jp_rb * col_rb;
+                km4 = sRow_MP[0].jp_km==""?0:sRow_MP[0].jp_km * col_km;
+                jm5 = sRow_MP[0].jp_jm==""?0:sRow_MP[0].jp_jm * col_jm;
+                tot6 = (parseInt(sn1) + parseInt(sl2) + parseInt(rb3) + parseInt(km4) + parseInt(jm5));
+                
+                html +=`<td>${tot6}</td></tr>`;
+            }else{
+                html+=`<td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_sn"></td>
+                <td data-jpCodeMapel="${MPfokus}"  data-jpDay="jp_sl"></td>
+                <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_rb"></td>
+                <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_km" ></td>
+                <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_jm"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td></tr>`;
+            }
+            let collTemaIPS = dbT.filter(s => s.mapel == "IPS").map(m=> JSON.parse(m.koleksitema)).reduce((a,b)=>a.concat(b)).filter(s => konftema.indexOf(s)>-1).filter((a, b, c) => c.indexOf(a) == b).sort().join(", ");
+            MPfokus = "IPS";
+            sRow_MP = tagJPserver.filter(s => s.kodemapel == MPfokus && s.semester == v);
+            rBool = sRow_MP.length == 0 ? false : true;
+            html += `<tr><td>IPS</td><td>${dBT_IPS}</td><td>${collTemaIPS}</td>`;
+            if(rBool){
+                html+=`<td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_sn" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_sn}</td>
+                    <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_sl" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_sl}</td>
+                    <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_rb" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_rb}</td>
+                    <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_km" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_km}</td>
+                    <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_jm" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_jm}</td>
+                    <td> ${sRow_MP[0].jp_sn==""?"":sRow_MP[0].jp_sn * col_sn}</td>
+                    <td> ${sRow_MP[0].jp_sl==""?"":sRow_MP[0].jp_sl * col_sl}</td>
+                    <td> ${sRow_MP[0].jp_rb==""?"":sRow_MP[0].jp_rb * col_rb}</td>
+                    <td> ${sRow_MP[0].jp_km==""?"":sRow_MP[0].jp_km * col_km}</td>
+                    <td> ${sRow_MP[0].jp_jm==""?"":sRow_MP[0].jp_jm * col_jm}</td>`;
+                sn1 = sRow_MP[0].jp_sn==""?0:sRow_MP[0].jp_sn * col_sn;
+                sl2 = sRow_MP[0].jp_sl==""?0:sRow_MP[0].jp_sl * col_sl;
+                rb3 = sRow_MP[0].jp_rb==""?0:sRow_MP[0].jp_rb * col_rb;
+                km4 = sRow_MP[0].jp_km==""?0:sRow_MP[0].jp_km * col_km;
+                jm5 = sRow_MP[0].jp_jm==""?0:sRow_MP[0].jp_jm * col_jm;
+                tot6 = (parseInt(sn1) + parseInt(sl2) + parseInt(rb3) + parseInt(km4) + parseInt(jm5));
+                
+                html +=`<td>${tot6}</td></tr>`;
+            }else{
+                html+=`<td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_sn"></td>
+                <td data-jpCodeMapel="${MPfokus}"  data-jpDay="jp_sl"></td>
+                <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_rb"></td>
+                <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_km" ></td>
+                <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_jm"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td></tr>`;
+            }
+        }
+        //SBDP
+        let collTemaSBDP = dbT.filter(s => s.mapel == "SBDP").map(m=> JSON.parse(m.koleksitema)).reduce((a,b)=>a.concat(b)).filter(s => konftema.indexOf(s)>-1).filter((a, b, c) => c.indexOf(a) == b).sort().join(", ")
+            MPfokus = "SBDP";
+            sRow_MP = tagJPserver.filter(s => s.kodemapel == MPfokus && s.semester == v);
+            rBool = sRow_MP.length == 0 ? false : true;
+            html += `<tr><td>SBDP</td><td>${dBT_SBDP}</td><td>${collTemaSBDP}</td>`;
+            if(rBool){
+                html+=`<td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_sn" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_sn}</td>
+                    <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_sl" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_sl}</td>
+                    <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_rb" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_rb}</td>
+                    <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_km" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_km}</td>
+                    <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_jm" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_jm}</td>
+                    <td> ${sRow_MP[0].jp_sn==""?"":sRow_MP[0].jp_sn * col_sn}</td>
+                    <td> ${sRow_MP[0].jp_sl==""?"":sRow_MP[0].jp_sl * col_sl}</td>
+                    <td> ${sRow_MP[0].jp_rb==""?"":sRow_MP[0].jp_rb * col_rb}</td>
+                    <td> ${sRow_MP[0].jp_km==""?"":sRow_MP[0].jp_km * col_km}</td>
+                    <td> ${sRow_MP[0].jp_jm==""?"":sRow_MP[0].jp_jm * col_jm}</td>`;
+                sn1 = sRow_MP[0].jp_sn==""?0:sRow_MP[0].jp_sn * col_sn;
+                sl2 = sRow_MP[0].jp_sl==""?0:sRow_MP[0].jp_sl * col_sl;
+                rb3 = sRow_MP[0].jp_rb==""?0:sRow_MP[0].jp_rb * col_rb;
+                km4 = sRow_MP[0].jp_km==""?0:sRow_MP[0].jp_km * col_km;
+                jm5 = sRow_MP[0].jp_jm==""?0:sRow_MP[0].jp_jm * col_jm;
+                tot6 = (parseInt(sn1) + parseInt(sl2) + parseInt(rb3) + parseInt(km4) + parseInt(jm5));
+                
+                html +=`<td>${tot6}</td></tr>`;
+            }else{
+                html+=`<td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_sn"></td>
+                <td data-jpCodeMapel="${MPfokus}"  data-jpDay="jp_sl"></td>
+                <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_rb"></td>
+                <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_km" ></td>
+                <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_jm"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td></tr>`;
+            }
+
+        if(jjg == "tinggi"){
+            html += `<tr><td>PJOK</td><td>${dBT_PJOK}</td><td>Nontematik</td>`;
+            MPfokus = "PJOK";
+            sRow_MP = tagJPserver.filter(s => s.kodemapel == MPfokus && s.semester == v);
+            rBool = sRow_MP.length == 0 ? false : true;
+            if(rBool){
+                html+=`<td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_sn" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_sn}</td>
+                    <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_sl" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_sl}</td>
+                    <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_rb" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_rb}</td>
+                    <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_km" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_km}</td>
+                    <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_jm" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_jm}</td>
+                    <td> ${sRow_MP[0].jp_sn==""?"":sRow_MP[0].jp_sn * col_sn}</td>
+                    <td> ${sRow_MP[0].jp_sl==""?"":sRow_MP[0].jp_sl * col_sl}</td>
+                    <td> ${sRow_MP[0].jp_rb==""?"":sRow_MP[0].jp_rb * col_rb}</td>
+                    <td> ${sRow_MP[0].jp_km==""?"":sRow_MP[0].jp_km * col_km}</td>
+                    <td> ${sRow_MP[0].jp_jm==""?"":sRow_MP[0].jp_jm * col_jm}</td>`;
+                sn1 = sRow_MP[0].jp_sn==""?0:sRow_MP[0].jp_sn * col_sn;
+                sl2 = sRow_MP[0].jp_sl==""?0:sRow_MP[0].jp_sl * col_sl;
+                rb3 = sRow_MP[0].jp_rb==""?0:sRow_MP[0].jp_rb * col_rb;
+                km4 = sRow_MP[0].jp_km==""?0:sRow_MP[0].jp_km * col_km;
+                jm5 = sRow_MP[0].jp_jm==""?0:sRow_MP[0].jp_jm * col_jm;
+                tot6 = (parseInt(sn1) + parseInt(sl2) + parseInt(rb3) + parseInt(km4) + parseInt(jm5));
+                
+                html +=`<td>${tot6}</td></tr>`;
+            }else{
+                html+=`<td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_sn"></td>
+                <td data-jpCodeMapel="${MPfokus}"  data-jpDay="jp_sl"></td>
+                <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_rb"></td>
+                <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_km" ></td>
+                <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_jm"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td></tr>`;
+            }
+        }else{
+            let collTemaPJOK = dbT.filter(s => s.mapel == "PJOK").map(m=> JSON.parse(m.koleksitema)).reduce((a,b)=>a.concat(b)).filter(s => konftema.indexOf(s)>-1).filter((a, b, c) => c.indexOf(a) == b).sort().join(", ")
+            MPfokus = "PJOK";
+            sRow_MP = tagJPserver.filter(s => s.kodemapel == MPfokus && s.semester == v);
+            rBool = sRow_MP.length == 0 ? false : true;
+            html += `<tr><td>PJOK</td><td>${dBT_PJOK}</td><td>${collTemaPJOK}</td>`;
+            if(rBool){
+                html+=`<td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_sn" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_sn}</td>
+                    <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_sl" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_sl}</td>
+                    <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_rb" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_rb}</td>
+                    <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_km" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_km}</td>
+                    <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_jm" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_jm}</td>
+                    <td> ${sRow_MP[0].jp_sn==""?"":sRow_MP[0].jp_sn * col_sn}</td>
+                    <td> ${sRow_MP[0].jp_sl==""?"":sRow_MP[0].jp_sl * col_sl}</td>
+                    <td> ${sRow_MP[0].jp_rb==""?"":sRow_MP[0].jp_rb * col_rb}</td>
+                    <td> ${sRow_MP[0].jp_km==""?"":sRow_MP[0].jp_km * col_km}</td>
+                    <td> ${sRow_MP[0].jp_jm==""?"":sRow_MP[0].jp_jm * col_jm}</td>`;
+                sn1 = sRow_MP[0].jp_sn==""?0:sRow_MP[0].jp_sn * col_sn;
+                sl2 = sRow_MP[0].jp_sl==""?0:sRow_MP[0].jp_sl * col_sl;
+                rb3 = sRow_MP[0].jp_rb==""?0:sRow_MP[0].jp_rb * col_rb;
+                km4 = sRow_MP[0].jp_km==""?0:sRow_MP[0].jp_km * col_km;
+                jm5 = sRow_MP[0].jp_jm==""?0:sRow_MP[0].jp_jm * col_jm;
+                tot6 = (parseInt(sn1) + parseInt(sl2) + parseInt(rb3) + parseInt(km4) + parseInt(jm5));
+                
+                html +=`<td>${tot6}</td></tr>`;
+            }else{
+                html+=`<td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_sn"></td>
+                <td data-jpCodeMapel="${MPfokus}"  data-jpDay="jp_sl"></td>
+                <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_rb"></td>
+                <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_km" ></td>
+                <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_jm"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td></tr>`;
+            }
+        }
+        // BSUND
+        MPfokus = "BSUND";
+        sRow_MP = tagJPserver.filter(s => s.kodemapel == MPfokus && s.semester == v);
+        rBool = sRow_MP.length == 0 ? false : true;
+        html += `<tr><td>Bahasa dan Sastra Sunda</td><td>${dBT_BSUND}</td><td>Nontematik</td>`;
+        if(rBool){
+            html+=`<td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_sn" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_sn}</td>
+                <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_sl" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_sl}</td>
+                <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_rb" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_rb}</td>
+                <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_km" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_km}</td>
+                <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_jm" data-jpRow="${sRow_MP[0].idbaris}">${sRow_MP[0].jp_jm}</td>
+                <td> ${sRow_MP[0].jp_sn==""?"":sRow_MP[0].jp_sn * col_sn}</td>
+                <td> ${sRow_MP[0].jp_sl==""?"":sRow_MP[0].jp_sl * col_sl}</td>
+                <td> ${sRow_MP[0].jp_rb==""?"":sRow_MP[0].jp_rb * col_rb}</td>
+                <td> ${sRow_MP[0].jp_km==""?"":sRow_MP[0].jp_km * col_km}</td>
+                <td> ${sRow_MP[0].jp_jm==""?"":sRow_MP[0].jp_jm * col_jm}</td>`;
+            sn1 = sRow_MP[0].jp_sn==""?0:sRow_MP[0].jp_sn * col_sn;
+            sl2 = sRow_MP[0].jp_sl==""?0:sRow_MP[0].jp_sl * col_sl;
+            rb3 = sRow_MP[0].jp_rb==""?0:sRow_MP[0].jp_rb * col_rb;
+            km4 = sRow_MP[0].jp_km==""?0:sRow_MP[0].jp_km * col_km;
+            jm5 = sRow_MP[0].jp_jm==""?0:sRow_MP[0].jp_jm * col_jm;
+            tot6 = (parseInt(sn1) + parseInt(sl2) + parseInt(rb3) + parseInt(km4) + parseInt(jm5));
+            
+            html +=`<td>${tot6}</td></tr>`;
+        }else{
+            html+=`<td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_sn"></td>
+            <td data-jpCodeMapel="${MPfokus}"  data-jpDay="jp_sl"></td>
+            <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_rb"></td>
+            <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_km" ></td>
+            <td data-jpCodeMapel="${MPfokus}" data-jpDay="jp_jm"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td></tr>`;
+        }
+        
+        
+        tbody2.innerHTML = html;
+        
+        config_tabelhari_admJBE(semester);
+        
+    }catch(er){
+        alert("Pemetaan KD untuk semester ini belum diatur. Silakan atur, di menu Pemetaan KD pada sub 'Distribusi KD' ");
+    }
+}
+
+let config_tabelhari_admJBE = (semester) => {
+    let tabel = document.querySelector(".tabelhari_admJBE");
+    let tbody= tabel.getElementsByTagName("tbody")[0];
+    let lRow = tbody.rows;
+    for(i = 0 ; i < lRow.length ; i++){
+        let lCol = lRow[i].cells;
+        for(j = 0 ; j < lCol.length ; j++){
+            let td = lCol[j];
+            
+            let iRow;// = this.parentElement.rowIndex;
+            let iCol;// = this.cellIndex;
+            td.onmouseover = function(){
+                iRow = this.parentElement.rowIndex-2;
+                iCol = this.cellIndex;
+                let title = "Indek baris= " + iRow +" Indek kolom= " + iCol;
+                this.setAttribute("title",title);
+            }
+            td.onmouseout = function(){
+                this.removeAttribute("title");
+            }
+            td.onclick = function () {
+                iRow = this.parentElement.rowIndex-2;
+                iCol = this.cellIndex;
+                let tdfokus = this;
+                let tool = document.getElementById("tooltipHBE");
+                let lTop = (tabel.offsetTop + this.offsetTop+ this.offsetHeight +10) +"px";
+                let lLeft = (tabel.offsetLeft + this.offsetLeft + this.offsetWidth - 90) + "px";
+                let lebarwindow = document.querySelector(".tesbody").offsetWidth;
+                let inJP = document.getElementById("num_JP");
+                let svJP = document.querySelector(".btn_simpanJP");
+                let hpsJP = document.querySelector(".btn_hapusJP");
+                
+                tool.style.left = lLeft;
+                tool.style.top = lTop;
+                if(iCol > 2 && iCol < 8){
+                    tool.style.display = "block";
+                }else{
+                    tool.style.display = "none";
+                }
+                svJP.onclick = function(){
+                    //jika tidak ada databaris, maka ditambahkan
+                    //jika ada databaris, maka diedit
+                    let val = inJP.value;
+                    let rr, keyhari = tdfokus.getAttribute("data-jpDay");
+                    let rCM =tdfokus.getAttribute("data-jpcodemapel");
+                    let colThm = tbody.rows[iRow].cells[2].innerHTML;
+                    if(tdfokus.hasAttribute("data-jprow")){
+                        //edit:
+                        rr = tdfokus.getAttribute("data-jprow");
+                        saveServerJP(semester,rr,val,keyhari,rCM, colThm);
+                    }else{
+                        rr = "";
+                        saveServerJP(semester,rr,val,keyhari,rCM, colThm);
+                        tool.style.display = "none";
+                    }
+
+                }
+                //jika hapus!
+                hpsJP.onclick = function (){
+                    let val = ""
+                    let rr, keyhari = tdfokus.getAttribute("data-jpDay");
+                    let rCM =tdfokus.getAttribute("data-jpcodemapel");
+                    let colThm = tbody.rows[iRow].cells[2].innerHTML;
+                    if(tdfokus.hasAttribute("data-jprow")){
+                        //edit:
+                        rr = tdfokus.getAttribute("data-jprow");
+                        saveServerJP(semester,rr,val,keyhari,rCM, colThm);
+                        tool.style.display = "none";
+
+                    }else{
+                        rr = "";
+                        tool.style.display = "none";
+                        alert("Anda tidak bisa menghapus data ini sebab tidak ada informasi di server kami!")
+                        //saveServerJP(semester,rr,val,keyhari,rCM, colThm);
+                    }
+                }
+
+            }
+        }
+
+    }
+    let toold = document.getElementById("tooltipHBE");
+    dragElement(toold);
+}
+const saveServerJP = async(semester,baris, nilai,keyhari,rCM, colThm) =>{
+    loadingtopbarin("loadingtopbar");
+    let aksi ;
+    let oKey = Object.keys(tagJPkey);
+    let isibaru = {};
+    if(baris == ""){
+        aksi = url_kaldikaja +"?action=simpanbarisketaburut";
+        
+        for(i=0;i<oKey.length ; i++){
+            let tkey = oKey[i];
+            isibaru[tkey]="";
+        }
+        isibaru[keyhari] = nilai;
+        isibaru.jenjangkelas=idJenjang;
+        isibaru.semester = semester;
+        isibaru.mapeltema= colThm;
+        isibaru.kodemapel = rCM;
+        //delete isibaru.idbaris;
+        
+
+    }else{
+        aksi = url_kaldikaja +"?action=simpanbarisketabidbaris";
+        let objek = tagJPserver.filter(s=> s.idbaris== baris)[0];
+        let obb = {};
+        obb[keyhari] = nilai;
+        isibaru = Object.assign(objek,obb);
+
+    }
+        let tab = "HEB"
+        //let tabel = [[["idbaris"],["kelas"],["jenjangkelas"],["semester"],["mapeltema"],["kodemapel"],["jp_sn"],["jp_sl"],["jp_rb"],["jp_km"],["jp_jm"],["indek_jadpel"]]];
+        let head = Object.keys(isibaru);
+        let isii = Object.values(isibaru);
+        let key = JSON.stringify(head);
+        let datakirim = new FormData();
+        
+        datakirim.append("tab",tab);
+        datakirim.append("key",key);
+        if(baris !== ""){
+            datakirim.append("idbaris", baris)
+        }
+        let isi = JSON.stringify(isii);
+        datakirim.append("tabel",isi);
+        //datakirim.append("tipe",tipe); kalo ada format tanggal, kasih aja
+        fetch(aksi,{
+            method:"post",
+            body:datakirim
+        }).then(m => m.json())
+        .then(r => {
+            
+            console.log(r);
+            tagJPserver = r.data.filter(s => s.semester == semester && s.jenjangkelas == idJenjang);
+            tagJPkey = r.data[0];
+            html_admkaldikHEB_pilihSemester(semester);
+            clearInterval(stoploadingtopbar);
+            let divlod = document.querySelector(".loadingtopbar");
+            divlod.style.width = "100%";
+            setTimeout(() => {
+                divlod.style.width = "1px"
+                divlod.className += " w3-hide";
+
+            }, 3000);
+
+        })
+        .catch(er => console.log(er))
+    
+}
+
+
+const printadm_admHBE = (c,portr=true) =>{
+    //jaga-jaga untuk element class yang duplikat?
+    let dom = document.querySelector("."+c);
+    let indom = dom.innerHTML;//.textContent;
+    
+    let noSpace =indom.replace(/(\r\n|\n|\r)/gm, "").replace(/\s\s/g,"");
+    let cCls = noSpace.replace("w3-col l5 s12 w3-tiny","w3-col l5 s4 w3-tiny")
+    let cClss = cCls.replace("w3-col l7 s12 w3-tiny","w3-col l7 s8 w3-tiny")
+    
+    var root = window.location.origin;
+    
+    let el = document.getElementById("iframeprint");
+    let doc = el.contentDocument || el.contentWindow.document;;
+    let head = doc.head;
+    let body = doc.body;
+    //
+    // var isi = el.contentDocument || editore.contentWindow.document;;
+    // var headnya = isi.head;
+    while (head.hasChildNodes()) {
+        head.removeChild(head.firstChild);
+    }
+
+    //
+   
+    //isikan HEAD dengan title, style, link, dll.
+    head.innerHTML = "<title>E-DURASA ADMINISTRASI</title>";
+    head.innerHTML += '<link rel="stylesheet" href="https://edurasa.com/css/w3.css">';
+
+    //head.innerHTML += `<link rel="stylesheet" href="https://edurasa.com/css/w3.css">`;
+    head.innerHTML += '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">';
+
+    head.innerHTML += '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">';
+    head.innerHTML += '<link  rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">'
+
+    head.innerHTML +='<link rel="stylesheet" href="https://syahandrianeda.github.io/syahandrianeda/css/stylegurukelas.css">'
+    //head.innerHTML += `<style type="text/css"> .versii-table{width:950px;max-width:100%;border-collapse:collapse}.versi-table{width:auto;max-width:100%;border-collapse:collapse}.versi-table td,.versi-table th,.versi-table tr,.versii-table td,.versii-table th,.versii-table tr{border:1px solid #000;color:#000;padding:5px 10px 5px 10px}.versi-table th,.versii-table th{background-color:#eee;color:#00f;vertical-align:middle;text-align:center}.versi-table tr:nth-of-type(even) td,.versii-table tr:nth-of-type(even) td{border:0;background-color:#fff;border:1px solid #000}.versi-table tr:nth-of-type(odd) td,.versii-table tr:nth-of-type(odd) td{border:0;background-color:#eef;border:1px solid #000} .garis td,.garis th,.garis tr{border:0.5px solid rgb(119, 116, 116)} .garis th{border:1px solid #000;text-align:center;vertical-align:middle} </style>`;
+
+    if(portr){
+        head.innerHTML += `<style type="text/css" media="print">
+        @media print {
+            html,body{height:100%;width:100%;margin:0;padding:0}
+            
+             @page {
+                size: A4 portrait;
+               
+                
+                }
+        }
+        </style>`;
+    }else{
+        head.innerHTML += `<style type="text/css" media="print">
+        @media print {
+            html,body{margin:0;padding:0}
+            
+             @page {
+                size: A4 landscape;
+                
+                
+                }
+        }
+        </style>`;
+    }
+    
+    
+
+    body.innerHTML = cClss//indom;//noSpace;
+
+    window.frames["iframeprint"].focus();
+    window.frames["iframeprint"].print();
+}
+let switch_jadwalmpelkalender = true; // true untuk Tematik, false untuk Mapel
+let switch_jadpem_semester;
+let switch_htmlsubtema4;
+let switch_jikamapel;
+const admtentatif_pilihSemester = document.querySelectorAll("input[name=admtentatif_pilihSemester]");
+const rd_problemsubtema4 = document.querySelectorAll("input[name=rd_problemsubtema4]");
+const rd_nontematik = document.querySelectorAll("input[name=rd_switchjadpemb");
+const problem_subtema4 = document.querySelector(".problem_subtema4");
+if(idJenjang>3){
+    problem_subtema4.classList.remove("w3-hide");
+    document.getElementById("rd_problemsubtema4Not").checked = true;
+}else{
+    document.getElementById("rd_problemsubtema4With").checked = true;
+}
+admtentatif_pilihSemester.forEach(el=>{
+    if(el.checked){
+        switch_jadpem_semester = el.value;
+    }
+    el.addEventListener("change",()=>{
+        
+        switch_jadpem_semester = el.value;
+        // console.log(switch_jadpem_semester);
+        // console.log(switch_jadwalmpelkalender);
+        html_jadwalpelajaran_kaldik(switch_jadwalmpelkalender,switch_jadpem_semester,switch_htmlsubtema4,switch_jikamapel);
+
+    })
+})
+const switchjadpemb = (el)=>{
+    let pilihanmapel = document.querySelector(".mapelswitchjadpemb");
+    if(el.checked){
+        switch_jadwalmpelkalender = true;
+        document.getElementById("ketswitchjadpemb").innerHTML = "TEMATIK";
+        switch_jikamapel ="TEMATIK";
+        pilihanmapel.classList.add("w3-hide");
+        if(idJenjang > 3){
+            problem_subtema4.classList.remove("w3-hide");
+        }else{
+            if(problem_subtema4.className.indexOf("w3-hide")==-1){
+                problem_subtema4.classList.add("w3-hide");
+            }
+        }
+        
+    }else{
+        switch_jadwalmpelkalender = false;
+        document.getElementById("ketswitchjadpemb").innerHTML = "MATA PELAJARAN";
+        pilihanmapel.classList.remove("w3-hide");
+        
+        if(problem_subtema4.className.indexOf("w3-hide")==-1){
+            problem_subtema4.classList.add("w3-hide");
+        }
+       
+    }
+
+    if(switch_jadpem_semester == undefined){
+        document.querySelector("#admtentatif_pilihSemester2").checked = true;
+    }
+    html_jadwalpelajaran_kaldik(switch_jadwalmpelkalender,switch_jadpem_semester,switch_htmlsubtema4,switch_jikamapel);
+        
+}
+//jika kelas tinggi yang ga ada subtema 4
+rd_problemsubtema4.forEach(el=>{
+    if(el.checked){
+        switch_htmlsubtema4 = el.value
+    }
+    el.addEventListener("change",()=>{
+        if(switch_jadpem_semester == undefined){
+            document.querySelector("#admtentatif_pilihSemester2").checked = true;
+        }
+        if(el.checked){
+            switch_htmlsubtema4 = el.value
+        }
+        html_jadwalpelajaran_kaldik(switch_jadwalmpelkalender,switch_jadpem_semester,switch_htmlsubtema4,switch_jikamapel);
+        
+        
+    })
+    //console.log("disini tnpa event kita akan membuat html untuk true(tema) ="+switch_jadwalmpelkalender+" di semester "+switch_jadpem_semester +" khusus subtema4 kls tinggi bernilai: "+switch_htmlsubtema4 +" ini Mapel:"+ switch_jikamapel)
+})
+rd_nontematik.forEach(el=>{
+    if(el.checked){
+        switch_jikamapel = el.value;
+    }
+    el.addEventListener("change",()=>{
+        if(switch_jadpem_semester == undefined){
+            document.querySelector("#admtentatif_pilihSemester2").checked = true;
+        }
+        // karena kita memilih mapel maka seharusnya nilai 
+        if(el.checked){
+            switch_jikamapel = el.value;
+        }
+        html_jadwalpelajaran_kaldik(switch_jadwalmpelkalender,switch_jadpem_semester,switch_htmlsubtema4,switch_jikamapel);
+    })
+    //
+})
+
+const html_jadwalpelajaran_kaldik = async (booleanTema, semester, w_st4, n_mapel) =>{
+    let v = semester;
+            let th = idTeksTapel.split("/");
+            let thfokus = th[v-1];
+            let indekbulan1 = [0,1,2,3,4,5];
+            let indekbulan0 = [6,7,8,9,10,11];
+            let arCodeBulan = v ==1 ?indekbulan0:indekbulan1;
+        document.querySelector(".namasekolah_jadwalkadik").innerHTML = idNamaSekolah;
+        document.querySelector(".namakepsek_jadwalkadik").innerHTML = idNamaKepsek;
+        document.querySelector(".nipkesek_jadwalkadik").innerHTML = idNipKepsek;
+        document.querySelector(".titimangsa_jadwalkadik").innerHTML = tanggalfull(new Date());
+        document.querySelector(".jenisguru_jadwalkadik").innerHTML = idJenisGuru + " " + idgurumapelmapel;
+        document.querySelector(".namaguru_jadwalkadik").innerHTML = namauser;
+        document.querySelector(".nipguru_jadwalkadik").innerHTML = idNipGuruKelas;
+    let divHtml = document.querySelector(".tentatif_sebarantematik");
+    
+    let html ="";
+    
+    if(booleanTema){
+        //console.log("Anda akan membuat tema untuk semester " + semester + " dengan " + w_st4);
+        document.querySelector(".h3_jadwaltentatif").innerHTML="TEMATIK BERDASARKAN KALENDER PENDIDIKAN DI SEMESTER "+ semester +"<br> KELAS "+idNamaKelas+" TAHUN PELAJARAN " + idTeksTapel;
+        let arrTemaRendahGanjil = ["TEMA 1","TEMA 2","TEMA 3","TEMA 4"];
+        let arrTemaRendahGenap = ["TEMA 5","TEMA 6","TEMA 7","TEMA 8"];
+        let arrTemaTinggiGanjil = ["TEMA 1","TEMA 2","TEMA 3","TEMA 4","TEMA 5"];
+        let arrTemaTinggiGenap = ["TEMA 6","TEMA 7","TEMA 8","TEMA 9"];
+        // let arrCodeMapelRendah = ["PKN","BINDO","MTK","SBDP","PJOK"];
+        // let arrCodeMapelTinggi = ["PKN","BINDO","IPA","IPS","SBDP"];
+        // let arrHeaderTinggi = ["PKN","Bahasa Indonesia","IPA","IPS","SBDP"]
+        // let arrHeaderRendah = ["PKN","Bahasa Indonesia","MATEMATIKA","SBDP","PJOK"];
+        let ltd;
+        let fl;
+        
+        let konftema;
+        let konfmapel;
+        let konfheader;
+        if(idJenjang > 3 && semester == 1){
+            konftema = arrTemaTinggiGanjil;
+            if(w_st4 == "Tanpa Subtema4"){
+                ltd = 3;
+            }else{
+                ltd = 4
+            }
+        }else if(idJenjang > 3 && semester == 2){
+            konftema = arrTemaTinggiGenap;
+            if(w_st4 == "Tanpa Subtema4"){
+                ltd = 3;
+            }else{
+                ltd = 4
+            }
+        }else if(idJenjang <= 3 && semester == 1){
+            konftema = arrTemaRendahGanjil;
+            ltd = 4
+        }else if(idJenjang <= 3 && semester == 2){
+            konftema = arrTemaRendahGenap;
+            ltd = 4
+        }
+        // ltd untuk subtema (bisa berupa indek untuk for, dan bernilai integer)
+        let ac_tema = 0; // acuan untuk looping tema berupa indek
+        let ac_tgl = 1 ;//acuan untuk looping tanggal 1 (bukan indek)
+        let ac_bulan = 0 ;//acuan untuk looping bulan berupa indek;
+        let ac_lr = 0;
+        let ac_pb = 1;
+        let ac_maksPb = (ltd * 6);
+        let nama_tema, a_tgl, a_day, a_date, sebulan, nama_bulan;
+        let arrColor = ["w3-pale-red", "w3-pale-green", "w3-pale-yellow","w3-pale-blue"]///warna subtema
+
+        sebulan = daysInMonth((arCodeBulan[ac_bulan]+1),thfokus);// jumlah hari di bulan pertama sebelum looping;
+        a_tgl = new Date(thfokus, arCodeBulan[ac_bulan],ac_tgl); //tanggal pertama (0)
+        a_day = a_tgl.getDay();
+        a_date = a_tgl.getDate();
+        nama_bulan = NamaBulandariIndex(arCodeBulan[ac_bulan]);
+        html+=``;
+        let arrHTML = [];
+        let awalbulan = false;
+        let no_tema;
+        for(a=0; a < konftema.length ; a++){
+            nama_tema = konftema[a];
+            no_tema = nama_tema.match(/(\d+)/)[0];
+            
+           
+            html +=`<table class="w3-table garis w3-centered"><tr class="w3-dark-grey"><th colspan="7">${nama_bulan} ${thfokus}</th></tr><tr class="w3-dark-grey"><th>Mg</th><th>Sn</th><th>Sl</th><th>Rb</th><th>Km</th><th>Jm</th><th>Sb</th></tr>`;
+            
+            for(b=0 ; b <ltd ; b++){ // looping subtema:
+                let ddd = 0;
+                
+                do {
+                   
+                    if(a_date == 1){ // jika tgl 1, tentukan sel sebelumnya berdasarrkan indeknya;
+                        if(a_day !== 0){
+                            html +=`<tr>`;
+                            for(c = 0 ; c < (a_day); c++){
+                                html +=`<td class="w3-light-gray"></td>`;
+                            }
+                        }
+                        //isikan tanggalnya
+                        if(cocoklibur(a_tgl)){
+                            //cek keterangan libur
+                            //cek warna libur
+                            //koleksikan untuk keterangan di tabel ini
+                            let cclr = kelaswarnalibur(a_tgl);
+                            let wrn = cclr == ""? "w3-red":cclr;
+                            
+                            let ketlb = keteranganlibur(a_tgl)
+                            
+                            html +=`<td class="${wrn}" title="${ketlb}">${a_date}</td>`;
+                        
+                        }else{
+                            if( a_day == 0 || a_day == 6){
+                                html +=`<td class="w3-red">${a_date}</td>`;
+                            }else{
+                                let ww = arrColor[b];
+                                html +=`<td class="${ww} w3-display-container"><span class="w3-small w3-display-topleft ">${a_date}</span><span class="w3-tiny w3-display-bottomright">Pb${ddd+1}</span></td>`;
+                                ac_pb++;
+                                ddd++
+
+                            }
+                        }
+                        
+                        if(a_day == 6){
+                            html +=`</tr><tr>`;
+                            
+                        }
+                    }else{
+                        
+                        if(awalbulan){
+                            
+                                html +=`<tr>`;
+                                for(c = 0 ; c < (a_day); c++){
+                                    html +=`<td class="w3-light-gray"></td>`;
+                                }
+                            
+                        }
+                        if(cocoklibur(a_tgl)){
+                            let cclr = kelaswarnalibur(a_tgl);
+                            let wrn = cclr == ""? "w3-red":cclr;
+                            let ketlb = keteranganlibur(a_tgl)
+                            
+                            html +=`<td class="${wrn}" title="${ketlb}">${a_date}</td>`;
+                        }else{
+                            if( a_day == 0 || a_day == 6){
+                                
+                                html +=`<td class="w3-red">${a_date}</td>`;
+                            }else{
+                                
+                                let ww = arrColor[b];
+                                html +=`<td class="${ww} w3-display-container"><span class="w3-small w3-display-topleft ">${a_date}</span><span class="w3-tiny w3-display-bottomright">Pb${ddd+1}</span></td>`;
+                                ac_pb++;
+                                ddd++
+                            }
+                        }
+                        
+                        if(a_day == 6){
+                            html +=`</tr><tr>`;
+                            
+                        }
+                    }
+                    awalbulan = false;
+                    
+                    if(ac_tgl == sebulan){
+                        awalbulan = true;
+                        for(c = 0 ; c < (6 - a_day); c++){
+                            html +=`<td class="w3-light-gray"></td>`;
+                        }
+                        html+=`</tr></table>`;
+                        
+                        ac_tgl++
+                        ac_bulan++;
+                        ac_tgl = 1;
+                        a_tgl = new Date(thfokus, arCodeBulan[ac_bulan],ac_tgl); //tanggal pertama (0)
+                        a_day = a_tgl.getDay();
+                        a_date = a_tgl.getDate();
+                        nama_bulan = NamaBulandariIndex(arCodeBulan[ac_bulan]);
+                        sebulan = daysInMonth((arCodeBulan[ac_bulan]+1),thfokus);
+                        html +=`<table class="w3-table garis w3-centered"><tr class="w3-dark-grey"><th colspan="7">${nama_bulan} ${thfokus}</th></tr><tr class="w3-dark-grey"><th>Mg</th><th>Sn</th><th>Sl</th><th>Rb</th><th>Km</th><th>Jm</th><th>Sb</th></tr>`;
+
+                    }else{
+                        ac_tgl++
+                        a_tgl = new Date(thfokus, arCodeBulan[ac_bulan],ac_tgl); //tanggal pertama (0)
+                        a_day = a_tgl.getDay();
+                        a_date = a_tgl.getDate();
+                        
+                    }
+                    
+                    // ddd++
+                }
+                while(ddd < 6)
+                
+            } 
+            awalbulan = true;
+            for(c = 0 ; c < (7 - a_day); c++){
+                html +=`<td class="w3-light-gray"></td>`;
+
+            }
+            html+="</tr></table>";
+
+            
+
+            arrHTML.push(html)
+            html ="";
+
+        }
+        // divHtml.innerHTML = html;
+        // console.log(arrHTML);
+        // console.log(arrHTML[0])
+        let divdom = document.querySelectorAll(".jadwal_kaldik");
+        divdom.forEach(el=>{el.innerHTML=""});
+        for ( i = 0 ; i < arrHTML.length ; i++){
+            divdom[i].innerHTML = `<h3 class="w3-center">${konftema[i]}</h3>${arrHTML[i]}`;
+            divdom[i].innerHTML += `<br><span class="w3-pale-red">&nbsp;&nbsp;</span> Subtema 1<br><span class="w3-pale-green">&nbsp;&nbsp;</span> Subtema 2<br><span class="w3-pale-yellow">&nbsp;&nbsp;</span> Subtema 3<br>`;
+            if(idJenjang>3){
+                if(ltd == 4){
+                    divdom[i].innerHTML +=`<span class="w3-pale-blue">&nbsp;&nbsp;</span> Pembiasan/Literasi`
+                }
+
+            }else{
+                divdom[i].innerHTML +=`<span class="w3-pale-blue">&nbsp;&nbsp;</span>Subtema 4`
+            }
+            //["w3-pale-red", "w3-pale-green", "w3-pale-yellow","w3-pale-blue"]
+        }
+       
+        
+        
+        
+    }else{
+        let teksmapel
+        switch (n_mapel){
+            case "PAI":
+                teksmapel = "PENDIDIKAN AGAMA ISLAM DAN BUDI PEKERTI"
+            break;
+            case "PKRIS":
+                teksmapel = "PENDIDIKAN AGAMA KRISTEN DAN BUDI PEKERTI"
+            break;
+            case "PKATO":
+                teksmapel = "PENDIDIKAN AGAMA KATHOLIK DAN BUDI PEKERTI"
+            break;
+            case "MTK":
+                teksmapel = "MATEMATIKA"
+            break;
+            case "PJOK":
+                teksmapel = "PENDIDIKAN JASMANI, OLAHRAGA, DAN KESEHATAN"
+            break;
+            case "BSUND":
+                teksmapel = "BAHASA DAN SASTRA SUNDA"
+            break;
+            default:
+                teskmapel = "PILIH MATA PELAJARAN NONTEMATIK LAINNYA"
+
+        }
+        let divdom = document.querySelectorAll(".jadwal_kaldik");
+        divdom.forEach(el=>{el.innerHTML=""});
+        document.querySelector(".h3_jadwaltentatif").innerHTML= "Memproses ...."
+        if(idJenjang>3){
+            
+        }else{
+            if(n_mapel=="MTK" || n_mapel == "PJOK"){
+                alert("Pelajaran ini sudah ada di Tema");
+                document.querySelector(".h3_jadwaltentatif").innerHTML="PILIH MATA PELAJARAN NONTEMATIK LAINNYA"
+                return
+            }
+        }
+        document.querySelector(".h3_jadwaltentatif").innerHTML="MATA PELAJARAN "+ teksmapel+"<br> BERDASARKAN KALENDER PENDIDIKAN DI SEMESTER "+ semester +"<br> KELAS "+idNamaKelas+" TAHUN PELAJARAN " + idTeksTapel;;
+        loadingtopbarin("loadingtopbar");
+        await cekJPserver(semester)
+        clearInterval(stoploadingtopbar);
+            let divlod = document.querySelector(".loadingtopbar");
+            divlod.style.width = "100%";
+            setTimeout(() => {
+                divlod.style.width = "1px"
+                divlod.className += " w3-hide";
+
+            }, 3000);
+
+        let data_hariJadwal = tagJPserver;
+        let JPMP = data_hariJadwal.filter(s=>s.kodemapel == n_mapel);
+        if(JPMP.length == 0){
+            alert("Maaf, Anda tidak bisa melihat Jadwal Pelajaran mata pelajaran ini karena Anda belum mengatur PERHITUNGAN JUMLAH BELAJAR EFEKTIF TIAP MATA PELAJARAN di submenu 'SEBARAN HARI EFEKTIF'")
+            return
+        }
+        console.log(JPMP);
+        let hrBljr = JPMP.map(m => Object.fromEntries(Object.entries(m).filter(([k,v])=> k.indexOf("jp_")>-1 && v !=="")))[0];
+        let kodehari = Object.keys(hrBljr);
+        if(kodehari.length == 0){
+            alert("Maaf, Anda tidak bisa melihat Jadwal Pelajaran mata pelajaran ini karena Anda belum mengatur PERHITUNGAN JUMLAH BELAJAR EFEKTIF TIAP MATA PELAJARAN di submenu 'SEBARAN HARI EFEKTIF'")
+            return
+        }
+        //console.log(kodehari);
+        let dayCode = [1,2,3,4,5];
+        let jpCode = ["jp_sn","jp_sl","jp_rb","jp_km","jp_jm"];
+        let dayKal = kodehari.map(s => dayCode[jpCode.indexOf(s)])
+        //console.log(dayKal);
+        let day, date, longDate, dd, imonth, kmonth, namabulan, wrn, ket;
+        let pushHTML = []
+        let html = "";
+        for(i = 0 ; i < arCodeBulan.length ; i++){
+            imonth = arCodeBulan[i];
+            kmonth = (imonth+1);
+            namabulan = NamaBulandariIndex(imonth);
+            longDate = daysInMonth(kmonth, thfokus);
+            html = `<table class="w3-table garis w3-centered"><tr class="w3-dark-grey"><th colspan="7">${namabulan} ${thfokus}</th></tr><tr class="w3-dark-grey"><th>Mg</th><th>Sn</th><th>Sl</th><th>Rb</th><th>Km</th><th>Jm</th><th>Sb</th></tr>`;
+            for(j = 0 ; j < longDate ; j++){
+                dd = new Date(thfokus, imonth, (j+1))
+                day = dd.getDay();
+                date = dd.getDate();
+                if(date == 1){
+                    html +="<tr>"
+                    for(k = 0 ; k < (day);k++)
+                    html +=`<td class="w3-light-gray"></td>`
+                }
+                if(cocoklibur(dd)){
+                    wrn = kelaswarnalibur(dd) ==""?"w3-red":kelaswarnalibur(dd);
+                    ket = keteranganlibur(dd);
+                    html+=`<td class="${wrn}" title="${ket}">${date}</td>`
+                }else{
+                    if(dayKal.indexOf(day)>-1){
+                        html +=`<td class="w3-pale-green">${date}</td>`
+                    }else{
+                        if(day == 0 || day == 6){
+                            html +=`<td class="w3-red">${date}</td>`;
+
+                        }else{
+                            html +=`<td class="w3-light-gray">${date}</td>`;
+                        }
+
+                    }
+
+                }
+                
+                if(date == longDate){
+                    if(day == 6){
+                        html +=`</tr></table>`;
+                    }else{
+                        for(c=0 ; c < (6 - day);c++){
+                            html +=`<td class="w3-light-gray"></td>`;
+                        }
+                        html +=`</tr></table>`
+
+                    }
+                }else{
+                    if(day == 6){
+                        html += `</tr><tr>`;
+                        
+                    }
+                }
+            }
+            pushHTML.push(html)
+        }
+        for(h = 0 ; h < pushHTML.length ; h++){
+            divdom[h].innerHTML = pushHTML[h];
+        }
+
+        
+
+        
+    }
 }
