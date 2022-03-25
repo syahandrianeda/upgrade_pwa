@@ -1,6 +1,5 @@
-
-const staticCacheName = "st750"
-const dynamicChace = "din750";
+const staticCacheName = "st1058";
+const dynamicChace = "din1058";
 
 const assets = [
     "/",
@@ -73,7 +72,9 @@ const assets = [
     "/statis/newhome.js",
     "/statis/quill-upload-image.js",
     "/statis/image-resize.min.js",
-    "/statis/rpp.js","/statis/barcode.js",
+    "/statis/rpp.js",
+    "/statis/barcode.js",
+    "/statis/editortooltip.js",
 
 
     "/user/gmp.html",
@@ -131,17 +132,16 @@ self.addEventListener('activate', evt => {
 })
 self.addEventListener('fetch', evt => {
 
-    // console.log(evt.request.url);
+    // console.log(evt.request.url);https://script.google.com/macros/
     if (evt.request.url.indexOf('https://script.google.com') === -1 && assets.indexOf(evt.request.url) == -1 && evt.request.url.indexOf('https://drive.google.com') === -1) {
         evt.respondWith(
             caches.match(evt.request).then(cacheRes => {
-                return cacheRes || fetch(evt.request).then(fetchRes => {
-                    return caches.open(dynamicChace).then(cache => {
-                        cache.put(evt.request.url, fetchRes.clone());
-                        // check cached items size
-                        limitCacheSize(dynamicChace, 5);
-                        return fetchRes;
-                    })
+                return cacheRes || fetch(evt.request).then(async fetchRes => {
+                    const cache = await caches.open(dynamicChace);
+                    cache.put(evt.request.url, fetchRes.clone());
+                    // check cached items size
+                    limitCacheSize(dynamicChace, 5);
+                    return fetchRes;
                 });
             }).catch((er) => {
                 console.log(er)
@@ -150,6 +150,8 @@ self.addEventListener('fetch', evt => {
                 }
             })
         );
+    }else{
+        //console.log("tes fetch " + evt.request.url)
     }
     // // console.log('fetch event', evt);
 })

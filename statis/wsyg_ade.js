@@ -1,5 +1,6 @@
 let urladm = jlo.ss_datanilai;
 let petakd_semster="";
+let tagrppserver;
 const arrTagAdm = ["0","prota","prosem","silabus","rpp","kisi-kisi","petakd","sebarankd","soal","ph","pts","pak","pat","perbaikan","pengayaan","kkm","notularapat","kaldik"];
 const arrVersi = ["0","Mata Pelajaran","Tematik","Subtema","Pembelajaran","sebaran KD per tema","sebaran KD per semester","kaldik","HBE"]
 
@@ -943,19 +944,19 @@ function currentFrameAbsolutePosition() {
     let currentParentWindow;
     let positions = [];
     let rect;
-  
+    
     while (currentWindow !== window.top) {
-      currentParentWindow = currentWindow.parent;
-      for (let idx = 0; idx < currentParentWindow.frames.length; idx++)
-        if (currentParentWindow.frames[idx] === currentWindow) {
-          for (let frameElement of currentParentWindow.document.getElementsByTagName('iframe')) {
+        currentParentWindow = currentWindow.parent;
+            for (let idx = 0; idx < currentParentWindow.frames.length; idx++)
+                if (currentParentWindow.frames[idx] === currentWindow) {
+                for (let frameElement of currentParentWindow.document.getElementsByTagName('iframe')) {
             if (frameElement.contentWindow === currentWindow) {
               rect = frameElement.getBoundingClientRect();
               positions.push({x: rect.x, y: rect.y});
             }
-          }
-          currentWindow = currentParentWindow;
-          break;
+            }
+        currentWindow = currentParentWindow;
+        break;
         }
     }
     return positions.reduce((accumulator, currentValue) => {
@@ -964,7 +965,7 @@ function currentFrameAbsolutePosition() {
         y: accumulator.y + currentValue.y
       };
     }, { x: 0, y: 0 });
-  }
+}
 
 const htmlpecahanbiasa = (a,b)=>{
    // return `&nbsp;<div style="position:relative;display:inline-block;margin:2px 5px;height:35px;font-size:12px;vertical-align:middle;text-align:center;font-family:'Times New Roman', times, serif; ">&nbsp;${a}&nbsp;<div style="border-bottom:1px solid black"></div>&nbsp;${b}&nbsp;</div>&nbsp;`
@@ -2418,6 +2419,7 @@ function openCityy(evt, cityName) {
         tab[4].classList.add("w3-green");
         tab[8].classList.add("w3-green");
         tab[12].classList.add("w3-green");
+        tab[16].classList.add("w3-green");
         document.getElementById("tooltipkd1").style.display = 'none';
         document.getElementById("tooltipkdmapel").style.display = 'none';
         document.getElementById("tooltiptabelall").style.display = 'none';
@@ -2426,6 +2428,12 @@ function openCityy(evt, cityName) {
         tooltipkaldik.forEach(el => el.style.display = "none");
         let tooltipHBE = document.getElementById("tooltipHBE");
         tooltipHBE.style.display="none";
+
+        
+    let tesinner = evt.currentTarget.innerHTML;
+    if(tesinner == "Desain RPP"){
+        klikawaldesainrpp();
+    }
     
 }
 
@@ -4001,9 +4009,6 @@ function rdpetakd_semester (x){
             uncek.checked = true;
             tipe = uncek.value;
         }
-        
-        //console.log(tipe);
-        
         let dd1 = document.querySelector(".h_petakd1");
         let dd2 = document.querySelector(".h_petakd2");
         let tabel = document.querySelector(".tbl_distribusi_kd");
@@ -4063,10 +4068,9 @@ function rdpetakd_semester (x){
 function rdpetakd_temamapel  (x){
     let v;
     let tipe;
-    let kd34;
     let divsel = document.querySelector(".divselectpetakd_mapelmulok");
     let pengubahkd = document.getElementById("Ubahkddistribusi")
-    let divselClass = divsel.classList;
+    
         tipe = x.value;
         for(i = 0 ; i < rd_kdsemester.length; i++){
             let rad = rd_kdsemester[i];
@@ -4093,7 +4097,6 @@ function rdpetakd_temamapel  (x){
         let ttd_nipkepsek = document.querySelector(".spanpetakd_nipkepsek");
         let ttd_titimangsa = document.querySelector(".spanpetakd_titimangsa");
         let ttd_ketguru = document.querySelector(".spanpetakd_gmpkelas");
-        let ttd_ketampukelas = document.querySelector(".spanpetakd_kelasnya");
         let ttd_namaguru = document.querySelector(".spanpetakd_namaguru");
         let ttd_nipguru = document.querySelector(".spanpetakd_nipguru");
         dd1.innerHTML = "DISTRIBUSI KOMPETENSI PENGETAHUAN (KD-3)" ;//+ (v==1?"PENGETAHUAN":"KETERAMPILAN");
@@ -4158,9 +4161,7 @@ const tooltipkd_config = (kelas,semester) =>{
     
     
     for(var i = 1; i < tabler.rows.length; i++){
-        // row cells
         for(var j = 0; j < tabler.rows[i].cells.length; j++){
-            
             tabler.rows[i].cells[j].onmouseover = function(){
             //let baris = this.parentElement.nodeName;
             brs = this.parentElement.rowIndex - 1;
@@ -4168,7 +4169,6 @@ const tooltipkd_config = (kelas,semester) =>{
             let tekstitle = "Klik baris " + brs +" kolom "+ kolo;
             this.setAttribute("title",tekstitle);
             };
-            
             tabler.rows[i].cells[j].onmouseout = function(){
             this.removeAttribute("title")
             //console.log("onmouseout")
@@ -4231,7 +4231,6 @@ const tooltipkd_config = (kelas,semester) =>{
                 //tampilkan tooltip
                 let tdfokus = this;
                 
-                let tagclass = this.hasAttribute("class");
                 let ttop = (tabler.offsetTop + this.offsetTop  ) +"px";//this.offsetTop +"px";
                 let lleft =  (tabler.offsetLeft+ this.offsetLeft + this.offsetWidth +10) +"px";
                 document.querySelector("#tooltipkd1").style.top=ttop;
@@ -4239,7 +4238,6 @@ const tooltipkd_config = (kelas,semester) =>{
                 document.querySelector("#tooltipkd1").style.display="block";
                 let btn = document.querySelectorAll(".badge_kd");
                 let hapus_tooltipkd1 =  document.querySelector(".hapus_tooltipkd1");
-                //console.log(tagkd34);
                 
                 for(a = 0 ; a < btn.length ; a++){
                     //console.log(arrKDmapel)
@@ -4282,7 +4280,6 @@ const tooltipkd_config = (kelas,semester) =>{
                     document.querySelector("#tooltipkd1").style.display="none";
                 }
             }
-            
         }
     }
     dragElement(document.getElementById("tooltipkd1"));
@@ -4290,156 +4287,177 @@ const tooltipkd_config = (kelas,semester) =>{
         let judulserver = "PEMETAAN KD SEMESTER "+ semester;
         btnserver.setAttribute("onclick",`serveradm('prt_petakd_distribusi','${judulserver}',6,2)`);
 };
-const simpandistribusi_koleksitema = (row, val,semester)=>{
-    loadingtopbarin("loadingtopbar");
-    let objekserverkdsebelumnya = tagkdserver.filter(s => s.row == row)[0];
-    let arrkoleksitema = objekserverkdsebelumnya.koleksitema;
-    let arrsemester = objekserverkdsebelumnya.semester;
-    //console.log(objekserverkdsebelumnya);
-    let arrAsal = [];
-    let arrBaru =[]
-    if(arrkoleksitema !== ""){
-        arrAsal = JSON.parse(arrkoleksitema);
-        arrBaru = arrAsal;
-        if(arrAsal.indexOf(val)== -1){
-            arrBaru.push(val)
+const simpandistribusi_koleksitema = (row, val, semester) =>{
+    let objekBarisini = tagkdserver.filter(s => s.row == row)[0];
+    let objekserverkdsebelumnya = Object.assign({},objekBarisini);
+    let server_koleksitema = objekserverkdsebelumnya.koleksitema; 
+    let rest_koleksitema = [];
+    if(server_koleksitema !== ""){  
+        let arrserver_koleksitema = JSON.parse(server_koleksitema);
+        let cekIndekVal = arrserver_koleksitema.indexOf(val);
+        if(cekIndekVal == -1){
+            arrserver_koleksitema.push(val)
         }
+        rest_koleksitema = arrserver_koleksitema;
     }else{
-        arrBaru.push(val)
-    };
-    let smsAsal = [];
-    let smsBaru = [];
-    if(arrsemester !== ""){
-        smsAsal = JSON.parse(arrsemester);
-        smsBaru = smsAsal;
-        if(smsAsal.indexOf(semester) == -1){
-            smsBaru.push(semester)
-        }
-        
-    }else{
-        smsBaru.push(semester)
+        rest_koleksitema.push(val);// kalo isian koleksi tema di server kosong, tambahkan langsung
     }
-
-    let objekjadikirim = Object.assign(objekserverkdsebelumnya,{"koleksitema":JSON.stringify(arrBaru),"semester":JSON.stringify(smsBaru)});
-    let keyy = JSON.stringify(Object.keys(objekjadikirim));
-    ///idbaris = row;
-    let tabel= JSON.stringify(Object.values(objekjadikirim))
+    let rest_semester = [];
+    let arrTemaRendahGanjil = ["TEMA 1","TEMA 2","TEMA 3","TEMA 4"];
+    let arrTemaRendahGenap = ["TEMA 5","TEMA 6","TEMA 7","TEMA 8"];
+    let arrTemaTinggiGanjil = ["TEMA 1","TEMA 2","TEMA 3","TEMA 4","TEMA 5"];
+    let arrTemaTinggiGenap = ["TEMA 6","TEMA 7","TEMA 8","TEMA 9"];
+    let obj = {};
+        obj.tinggi =  {"1":arrTemaTinggiGanjil,"2":arrTemaTinggiGenap};
+        obj.rendah = {"1":arrTemaRendahGanjil, "2":arrTemaRendahGenap}
+    let konftema;
+    if(idJenjang > 3){
+            konftema = obj.tinggi;
+        }else{
+            konftema = obj.rendah;
+        }
+    for(i = 0 ; i < rest_koleksitema.length ; i++){
+        let namaTema = rest_koleksitema[i];
+        let cektema = Object.keys(konftema).filter(s => konftema[s].indexOf(namaTema)>-1)[0];
+        if(rest_semester.indexOf(cektema)==-1){
+            rest_semester.push(cektema)
+        }
+    }
     
+    let objekjadikirim = Object.assign(objekserverkdsebelumnya, {"koleksitema":JSON.stringify(rest_koleksitema),"semester":JSON.stringify(rest_semester)});
+    let keyy = JSON.stringify(Object.keys(objekjadikirim));
+    let tabel= JSON.stringify(Object.values(objekjadikirim))
+        
     let datakirim = new FormData();
-    datakirim.append("key",keyy);
-    datakirim.append("idbaris",row);
-    datakirim.append("tab","serverkd");
-    datakirim.append("tabel",tabel);
-    //datakirim.append("tipe",tipe);
+        datakirim.append("key",keyy);
+        datakirim.append("idbaris",row);
+        datakirim.append("tab","serverkd");
+        datakirim.append("tabel",tabel);
+    
     fetch(urladm+"?action=simpanbarisketabidbaris",{
-        method:"post",
-        body:datakirim
+            method:"post",
+            body:datakirim
+    }).then(m=>m.json())
+    .then(r => {
+            let result = r.data;
+            tagkdserver = result.filter(s => s.kelas == idJenjang);
+            let html="";
+            let tabel = document.querySelector(".tbl_distribusi_kd");
+            let tbody = tabel.getElementsByTagName("tbody")[0];
+            if(idJenjang>3){
+                html = htmldistribusikd_tematik(semester, "tinggi");
+                
+            }else{
+                
+                html = htmldistribusikd_tematik(semester, "rendah")
+            }
+            tbody.innerHTML = html;
+            tooltipkd_config("tbl_distribusi_kd",semester)
+            clearInterval(stoploadingtopbar);
+            let divlod = document.querySelector(".loadingtopbar");
+            divlod.style.width = "100%";
+            setTimeout(() => {
+                divlod.style.width = "1px"
+                divlod.className += " w3-hide";
+            }, 3000);
+            alert("Berhasil disimpan")
+    })
+    .catch(er => console.log(er))
+        
+}
+const hapusdistribusi_koleksitema = (row, val,semester) =>{
+    let objekBarisini = tagkdserver.filter(s => s.row == row)[0];
+    let objekserverkdsebelumnya = Object.assign({},objekBarisini);
+    let server_koleksitema = objekserverkdsebelumnya.koleksitema; 
+    let rest_koleksitema = [];
+    
+    let arrserver_koleksitema = JSON.parse(server_koleksitema);
+    let cekIndekVal = arrserver_koleksitema.indexOf(val);
+    
+    if(arrserver_koleksitema.length == 1 && cekIndekVal == -1){
+        rest_koleksitema = JSON.stringify(arrserver_koleksitema);
+    }else if(arrserver_koleksitema.length == 1 && cekIndekVal > -1){
+        rest_koleksitema = ""
+    }else{
+        arrserver_koleksitema.splice(cekIndekVal,1); 
+        rest_koleksitema = JSON.stringify(arrserver_koleksitema);
+    }
+    
+    let arrTemaRendahGanjil = ["TEMA 1","TEMA 2","TEMA 3","TEMA 4"];
+    let arrTemaRendahGenap = ["TEMA 5","TEMA 6","TEMA 7","TEMA 8"];
+    let arrTemaTinggiGanjil = ["TEMA 1","TEMA 2","TEMA 3","TEMA 4","TEMA 5"];
+    let arrTemaTinggiGenap = ["TEMA 6","TEMA 7","TEMA 8","TEMA 9"];
+    let obj = {};
+        obj.tinggi =  {"1":arrTemaTinggiGanjil,"2":arrTemaTinggiGenap};
+        obj.rendah = {"1":arrTemaRendahGanjil, "2":arrTemaRendahGenap}
+    let konftema;
+    if(idJenjang > 3){
+        konftema = obj.tinggi;
+    }else{
+        konftema = obj.rendah;
+    }
+    let rest_semester; 
+    let arrCekKol = [];
+    let arr_sem = []; 
+    if(rest_koleksitema == ""){
+        rest_semester = "";
+    }else{
+        arrCekKol = JSON.parse(rest_koleksitema);
+        for(i = 0 ; i < arrCekKol.length ; i++){
+            let namaTema = arrCekKol[i];
+            let ceknamaTema = Object.keys(konftema).filter(s => konftema[s].indexOf(namaTema)>-1)[0];
+            if(arr_sem.indexOf(ceknamaTema)==-1){
+                arr_sem.push(ceknamaTema);
+            }
+        }
+        rest_semester = JSON.stringify(arr_sem);
+
+    }
+    
+    let objekjadikirim = Object.assign(objekserverkdsebelumnya, {"koleksitema":rest_koleksitema,"semester":rest_semester});
+    let keyy = JSON.stringify(Object.keys(objekjadikirim));
+    let tabel= JSON.stringify(Object.values(objekjadikirim));
+    let datakirim = new FormData();
+        datakirim.append("key",keyy);
+        datakirim.append("idbaris",row);
+        datakirim.append("tab","serverkd");
+        datakirim.append("tabel",tabel);
+    
+    fetch(urladm+"?action=simpanbarisketabidbaris",{
+            method:"post",
+            body:datakirim
     }).then(m=>m.json())
     .then(r => {
         let result = r.data;
-        tagkdserver = result.filter(s => s.kelas == idJenjang);
+            tagkdserver = result.filter(s => s.kelas == idJenjang);
+        let html="";
+        let tabel = document.querySelector(".tbl_distribusi_kd");
+        let tbody = tabel.getElementsByTagName("tbody")[0];
+        
         if(idJenjang>3){
-            htmldistribusikd_tematik(semester, "tinggi");
-            console.log("htmldistritematik tinggi")
+            html = htmldistribusikd_tematik(semester, "tinggi");
         }else{
-            console.log("htmldistritematik rendah")
-            htmldistribusikd_tematik(semester, "rendah")
-        }
-
-        clearInterval(stoploadingtopbar);
-        let divlod = document.querySelector(".loadingtopbar");
-        divlod.style.width = "100%";
-        setTimeout(() => {
-            divlod.style.width = "1px"
-            divlod.className += " w3-hide";
-
-        }, 3000);
-       
-    })
-    .catch(er => console.log(er))
-    
-};
-const hapusdistribusi_koleksitema = (row, val,semester)=>{
-    loadingtopbarin("loadingtopbar");
-    let objekserverkdsebelumnya = tagkdserver.filter(s => s.row == row)[0];
-    let arrkoleksitema = objekserverkdsebelumnya.koleksitema;
-    let arrsemester = objekserverkdsebelumnya.semester;
-    //console.log(objekserverkdsebelumnya);
-    let arrAsal = [];
-    let resultakhir;
-    let arrBaru =[]
-    let prseKoleksitema = JSON.parse(arrkoleksitema);
-    let posisivalue = prseKoleksitema.indexOf(val);
-    if(prseKoleksitema.length == 1 && posisivalue == -1){
-        resultakhir = arrkoleksitema;
-    }else if(prseKoleksitema.length == 1 && posisivalue > -1){
-        resultakhir = "";
-    }else{
-        prseKoleksitema.splice(posisivalue,1);
-        resultakhir = JSON.stringify(prseKoleksitema)
-    }
-    // 
-    // if(arrkoleksitema !== ""){
-    //     arrAsal = JSON.parse(arrkoleksitema);
-    //     arrBaru = arrAsal;
-    //     if(arrAsal.indexOf(val)== -1){
-    //         arrBaru.push(val)
-    //     }
-    // }else{
-    //     arrBaru.push(val)
-    // // };
-    let smsAsal = [];
-    let smsBaru = [];
-    let resultSemester;
-    if(arrsemester !== ""){
-        smsAsal = JSON.parse(arrsemester);
-        let posisiAda = smsAsal.indexOf(semester)
-        // di array semester hanya ada 1, dan satunya itu bukan semester yang saat ini dipilih, maka:
-        if(smsAsal.length == 1 && posisiAda == -1){
-            resultSemester = smsAsal;
-        }else if(smsAsal.length == 1 && posisiAda > -1){
-            //jika isi satu-satunya dari array ini sama dengan semester yang saat ini dipilih, maka:
-            resultSemester = ""
-        }else{
-            smsAsal.splice(posisiAda,1);
-            resultSemester = JSON.stringify(smsAsal);
+            html = htmldistribusikd_tematik(semester, "rendah")
         }
         
-    }else{
-        smsBaru.push(semester)
-    }
-
-    let objekjadikirim = Object.assign(objekserverkdsebelumnya,{"koleksitema":resultakhir,"semester":resultSemester});
-    let keyy = JSON.stringify(Object.keys(objekjadikirim));
-    ///idbaris = row;
-    let tabel= JSON.stringify(Object.values(objekjadikirim))
-    
-    let datakirim = new FormData();
-    datakirim.append("key",keyy);
-    datakirim.append("idbaris",row);
-    datakirim.append("tab","serverkd");
-    datakirim.append("tabel",tabel);
-    //datakirim.append("tipe",tipe);
-    fetch(urladm+"?action=simpanbarisketabidbaris",{
-        method:"post",
-        body:datakirim
-    }).then(m=>m.json())
-    .then(r => {
-        let result = r.data;
-        tagkdserver = result.filter(s => s.kelas == idJenjang);
+        tbody.innerHTML = html;
+        
+        tooltipkd_config("tbl_distribusi_kd",semester)
+        
         clearInterval(stoploadingtopbar);
-        let divlod = document.querySelector(".loadingtopbar");
-        divlod.style.width = "100%";
-        setTimeout(() => {
-            divlod.style.width = "1px"
-            divlod.className += " w3-hide";
-
-        }, 3000);
+            let divlod = document.querySelector(".loadingtopbar");
+            divlod.style.width = "100%";
+            setTimeout(() => {
+                divlod.style.width = "1px"
+                divlod.className += " w3-hide";
+    
+            }, 3000);
+        alert("Berhasil dihapus")
     })
     .catch(er => console.log(er))
+        
     
-};
-
+}
 function htmldistribusikd_tematik (semester, jjg){
     
     let arrTemaRendahGanjil = ["TEMA 1","TEMA 2","TEMA 3","TEMA 4"];
@@ -4602,12 +4620,6 @@ const tampilkandistribusidalam_tipekd = (ele) =>{
         }
     }
 }
-const gabungdataserverkd =()=>{
-    
-    let newObjek = tagkdserver.map((item,i)=>Object.assign({},item,buateditorkdaktif[i]))
-    //console.log(newObjek);
-    return newObjek
-}
 
 //cek semester yang dipilih saat peta kd mapel berlangsung
 const petakd_mapelormulok = document.getElementById("petakd_mapelormulok");
@@ -4679,6 +4691,13 @@ const switchpetakd_mapel = (el) =>{
     htmlpetakd_generate("tbl_distribusi_kd", v,x);
     
     dragElement(document.getElementById("tooltipkdmapel"))
+}
+
+const gabungdataserverkd =()=>{
+    
+    let newObjek = tagkdserver.map((item,i)=>Object.assign({},item,buateditorkdaktif[i]))
+    //console.log(newObjek);
+    return newObjek
 }
 
 let acuanRowServer
@@ -5372,10 +5391,10 @@ const update_hapusdataserver = (cl, mapel,bol,row, val,fokus,indek) =>{
     .then(r => {
         let result = r.data;
         tagkdserver = result.filter(s => s.kelas == idJenjang);
+        htmlpetakd_generate(cl, mapel,bol,row);
         // console.log("distribusi  kd berhasil tersimpan");
         tooltipspin.style.display = "none";
         
-        htmlpetakd_generate(cl, mapel,bol,row);
         document.getElementById('tooltipkdmapel').style.display='none';
         
     })
@@ -5488,6 +5507,7 @@ const htmlpetakd_generate = (cl, mapel,bol,row) =>{
         let judulserver = "PEMETAAN KD MAPEL "+ mapel;
         btnserver.setAttribute("onclick",`serveradm('prt_petakd_distribusi','${judulserver}',6,1)`);
 }
+
 const select_sebarankdpertema = document.querySelector(".select_sebarankdpertema");
 const ckbox_sebarankdpertema = document.querySelector("#checkboxkd_sebarankdpertema");
 select_sebarankdpertema.addEventListener("change",()=>{
@@ -5662,8 +5682,6 @@ const htmlpetakd_sebaranpertema = (T,bol)=>{
     let countBottomH = document.querySelector(".jumlahkdditemaini_sebarankdpertema");
     countBottomH.innerHTML ="Jumlah KD di " + T + " ini ada " + dB.length;
     
-   
-
     let tdf = tfoot.rows[0].cells[2];
     let lasttdf = tfoot.rows[0].cells.length
     let tdff = tfoot.rows[1].cells[1];
@@ -6816,6 +6834,7 @@ const cekJPserver =  async (v) =>{
         let k = await m.json();
         //console.log(k);
         tagJPserver = k.data.filter(s => s.semester == v && s.jenjangkelas == idJenjang);
+        localStorage.setItem("loc_tagJPserver_"+v,JSON.stringify(tagJPserver));
         tagJPkey = k.data[0];
     } catch (er) {
         return console.log(er);
@@ -7679,6 +7698,8 @@ const saveServerJP = async(semester,baris, nilai,keyhari,rCM, colThm) =>{
         datakirim.append("key",key);
         if(baris !== ""){
             datakirim.append("idbaris", baris)
+        }else{
+            isii.shift()
         }
         let isi = JSON.stringify(isii);
         datakirim.append("tabel",isi);
@@ -7691,6 +7712,7 @@ const saveServerJP = async(semester,baris, nilai,keyhari,rCM, colThm) =>{
             
             console.log(r);
             tagJPserver = r.data.filter(s => s.semester == semester && s.jenjangkelas == idJenjang);
+            localStorage.setItem("loc_tagJPserver_"+semester,JSON.stringify(tagJPserver));
             tagJPkey = r.data[0];
             html_admkaldikHEB_pilihSemester(semester);
             clearInterval(stoploadingtopbar);
@@ -7947,18 +7969,19 @@ const html_jadwalpelajaran_kaldik = async (booleanTema, semester, w_st4, n_mapel
         let arrHTML = [];
         let awalbulan = false;
         let no_tema;
+        let obJadwalKaldik = {};
+        let keyT = "";
         for(a=0; a < konftema.length ; a++){
             nama_tema = konftema[a];
             no_tema = nama_tema.match(/(\d+)/)[0];
             
-           
+        
             html +=`<table class="w3-table garis w3-centered"><tr class="w3-dark-grey"><th colspan="7">${nama_bulan} ${thfokus}</th></tr><tr class="w3-dark-grey"><th>Mg</th><th>Sn</th><th>Sl</th><th>Rb</th><th>Km</th><th>Jm</th><th>Sb</th></tr>`;
             
             for(b=0 ; b <ltd ; b++){ // looping subtema:
                 let ddd = 0;
                 
                 do {
-                   
                     if(a_date == 1){ // jika tgl 1, tentukan sel sebelumnya berdasarrkan indeknya;
                         if(a_day !== 0){
                             html +=`<tr>`;
@@ -7984,6 +8007,8 @@ const html_jadwalpelajaran_kaldik = async (booleanTema, semester, w_st4, n_mapel
                             }else{
                                 let ww = arrColor[b];
                                 html +=`<td class="${ww} w3-display-container"><span class="w3-small w3-display-topleft ">${a_date}</span><span class="w3-tiny w3-display-bottomright">Pb${ddd+1}</span></td>`;
+                                keyT = "t"+no_tema +"_st"+(b+1)+"_pb" + (ddd+1);
+                                obJadwalKaldik[keyT] = StringTanggal2(a_tgl);
                                 ac_pb++;
                                 ddd++
 
@@ -8017,7 +8042,9 @@ const html_jadwalpelajaran_kaldik = async (booleanTema, semester, w_st4, n_mapel
                             }else{
                                 
                                 let ww = arrColor[b];
-                                html +=`<td class="${ww} w3-display-container"><span class="w3-small w3-display-topleft ">${a_date}</span><span class="w3-tiny w3-display-bottomright">Pb${ddd+1}</span></td>`;
+                                html +=`<td class="${ww} w3-display-container"><span class="w3-small w3-display-topleft ">${a_date}</span><span class="w3-tiny w3-display-bottomright">Pb${ddd+1}</span></td>`;let keyT = "t"+no_tema +"_st"+(b+1)+"_pb" + ddd;
+                                keyT = "t"+no_tema +"_st"+(b+1)+"_pb" + (ddd+1);
+                                obJadwalKaldik[keyT] = StringTanggal2(a_tgl);
                                 ac_pb++;
                                 ddd++
                             }
@@ -8091,7 +8118,9 @@ const html_jadwalpelajaran_kaldik = async (booleanTema, semester, w_st4, n_mapel
             }
             //["w3-pale-red", "w3-pale-green", "w3-pale-yellow","w3-pale-blue"]
         }
-       
+        let jst = JSON.stringify(obJadwalKaldik);
+        localStorage.setItem("jadwaltematik_"+semester, jst);
+
         
         
         
@@ -8226,4 +8255,1361 @@ const html_jadwalpelajaran_kaldik = async (booleanTema, semester, w_st4, n_mapel
 
         
     }
+}
+let hideall = document.querySelectorAll(".rp_hide");
+const klikawaldesainrpp = async () =>{
+    hideall.forEach(el=> el.classList.add("w3-hide"));
+    await dB_serverRPP();
+    let inrppsubtema4 =document.querySelector(".inrppsubtema4");
+    if(idJenjang > 3){
+        inrppsubtema4.classList.add("w3-hide");
+    }
+
+}
+const dB_serverRPP = async () => {
+    loadingtopbarin("loadingtopbar");
+    
+    let tab = "rpp";
+        let tabel =[[["idbaris"]]];
+        let head = tabel[0];
+        let key = JSON.stringify(head);
+        let datakirim = new FormData();
+        
+        datakirim.append("tab",tab);
+        datakirim.append("key",key);
+    await fetch(url_kaldikaja+"?action=getpostdatafromtab",{
+        method:"post",
+        body:datakirim
+    }).then(m => m.json())
+    .then(r => {
+        tagrppserver = r.data.filter(s=>s.jenjang_kelas == idJenjang);
+
+        clearInterval(stoploadingtopbar);
+            let divlod = document.querySelector(".loadingtopbar");
+            divlod.style.width = "100%";
+            setTimeout(() => {
+                divlod.style.width = "1px"
+                divlod.className += " w3-hide";
+
+            }, 3000);
+    }).catch(er=>console.log(er));
+
+}
+
+let tagrpp_semester
+let tagfokusrpp ; // jika tema: t6_t5_pb1 atau MTK PAI, dll
+let tagfokustema, tagfokussubtema, tagfokuspb, tagfokusmapel,tagfokustextarea;
+let tagrpp_temanontema = true;// isikan tema/nontematik ; true untuk tematik;
+const createrpp_semester = document.querySelectorAll("input[name=createrpp_semester]");
+createrpp_semester.forEach(el=>{
+    let arrTemaRendahGanjil = [1,2,3,4];
+        let arrTemaRendahGenap = [5,6,7,8];
+        let arrTemaTinggiGanjil = [1,2,3,4,5];
+        let arrTemaTinggiGenap = [6,7,8,9];
+        
+        let konftema;
+        el.addEventListener("change",()=>{
+            if(el.checked){
+                tagrpp_semester = el.value;
+                let semester = el.value;
+                if(idJenjang > 3 && semester == 1){
+                    konftema = arrTemaTinggiGanjil;
+                }else if(idJenjang > 3 && semester == 2){
+                    konftema = arrTemaTinggiGenap;
+                }else if(idJenjang <= 3 && semester == 1){
+                    konftema = arrTemaRendahGanjil;
+                }else if(idJenjang <= 3 && semester == 2){
+                    konftema = arrTemaRendahGenap;
+                }
+
+            
+                let html = "";
+                for(i = 0 ; i < konftema.length ; i++){
+                    html += `<input type="radio" class="inprpp" name="createrpp_tema" id="createrpp_tema${konftema[i]}" value="${konftema[i]}"><label for="createrpp_tema${konftema[i]}" class="lblinrpp">Tema ${konftema[i]}</label><br>`;
+                }
+                document.querySelector(".createrpp_koleksitema").innerHTML = html;
+                let subtemas = document.querySelectorAll("input[name=createrpp_subtema]");
+                subtemas.forEach(st => st.checked = false)
+                let pbs = document.querySelectorAll("input[name=createrpp_pb]");
+                pbs.forEach(pb => pb.checked = false)
+                tagfokustema = undefined;
+                tagfokussubtema = undefined;
+                tagfokuspb = undefined;
+                const createrpp_tema = document.querySelectorAll("input[name=createrpp_tema]");
+                createrpp_tema.forEach(el=> {
+                    el.addEventListener("change",()=>{
+                        let t = el.value;
+                        tagfokustema = t;
+                        let desainarea_rpp = document.querySelector(".desainarea_rpp");
+                        if(desainarea_rpp.className.indexOf("w3-hide")==-1){
+                            desainarea_rpp.classList.add("w3-hide");
+                        }
+                        tagfokusrpp = alt_tagfokusrpp();
+                        cek_tagdarirppserver(tagfokusrpp);
+                    })
+                });
+                tagfokusrpp = alt_tagfokusrpp();
+                cek_tagdarirppserver(tagfokusrpp);
+                
+            }
+        let desainarea_rpp = document.querySelector(".desainarea_rpp");
+        if(desainarea_rpp.className.indexOf("w3-hide")==-1){
+            desainarea_rpp.classList.add("w3-hide");
+        }
+        tagfokusrpp = alt_tagfokusrpp();
+        cek_tagdarirppserver(tagfokusrpp);
+    });
+})
+const creatrpp_tematiknontematik = document.querySelectorAll("input[name=creatrpp_tematiknontematik]");
+const rp_tema0 = document.querySelectorAll(".rp_tema0");
+const rp_nontema0 = document.querySelectorAll(".rp_nontema0");
+creatrpp_tematiknontematik.forEach(el=>{
+    el.addEventListener("change",()=>{
+        if(el.checked){
+            let value = el.value;
+            if(value == "tematik"){
+                tagrpp_temanontema = true
+                rp_tema0.forEach(d=> {
+                    if(d.className.indexOf("w3-hide")>-1){
+                        d.classList.remove("w3-hide")
+                    }
+                });
+                rp_nontema0.forEach(h=> {
+                    if(h.className.indexOf("w3-hide")==-1){
+                        h.classList.add("w3-hide")
+                    }
+                })
+            }else{
+                tagrpp_temanontema = false;
+                rp_tema0.forEach(d=> {
+                    if(d.className.indexOf("w3-hide")==-1){
+                        d.classList.add("w3-hide")
+                    }
+                });
+                rp_nontema0.forEach(h=> {
+                    if(h.className.indexOf("w3-hide")>-1){
+                        h.classList.remove("w3-hide")
+                    }
+                })
+            }
+            let desainarea_rpp = document.querySelector(".desainarea_rpp");
+            if(desainarea_rpp.className.indexOf("w3-hide")==-1){
+                desainarea_rpp.classList.add("w3-hide");
+            }               
+            tagfokusrpp = alt_tagfokusrpp();
+            cek_tagdarirppserver(tagfokusrpp);
+        }
+    })
+});
+const createrpp_nontematik = document.querySelectorAll("input[name=createrpp_nontematik]");
+createrpp_nontematik.forEach(el=> {
+    el.addEventListener("change",()=>{
+        let mapel = el.value;
+        tagfokusmapel = mapel;
+        let desainarea_rpp = document.querySelector(".desainarea_rpp");
+        if(desainarea_rpp.className.indexOf("w3-hide")==-1){
+            desainarea_rpp.classList.add("w3-hide");
+        }
+        tagfokusrpp = alt_tagfokusrpp();
+        cek_tagdarirppserver(tagfokusrpp);
+    })
+})
+const createrpp_pb = document.querySelectorAll("input[name=createrpp_pb]");
+createrpp_pb.forEach(el=> {
+    el.addEventListener("change",()=>{
+        let pb = el.value;
+        tagfokuspb = pb;
+        let desainarea_rpp = document.querySelector(".desainarea_rpp");
+        if(desainarea_rpp.className.indexOf("w3-hide")==-1){
+            desainarea_rpp.classList.add("w3-hide");
+        }
+        tagfokusrpp = alt_tagfokusrpp();
+        cek_tagdarirppserver(tagfokusrpp);
+    })
+})
+const createrpp_subtema = document.querySelectorAll("input[name=createrpp_subtema]");
+createrpp_subtema.forEach(el=> {
+    el.addEventListener("change",()=>{
+        let st = el.value;
+        tagfokussubtema = st;
+        let desainarea_rpp = document.querySelector(".desainarea_rpp");
+        if(desainarea_rpp.className.indexOf("w3-hide")==-1){
+            desainarea_rpp.classList.add("w3-hide");
+        }
+        tagfokusrpp = alt_tagfokusrpp();
+        cek_tagdarirppserver(tagfokusrpp);
+    })
+})
+
+const cek_tagdarirppserver = (tg) =>{
+    let datacekcocok = gabungdataserverkd();
+
+    let divdom = document.querySelector(".resultcreatepilihrpp");
+    let divsebarkd = document.querySelector(".kecocokan_tagserverkd");
+    let divjadwalkaldik = document.querySelector(".kecocokan_jadwalkaldik");
+    divdom.innerHTML = "Anda belum siap membuat database RPP. Silakan ceklis atau isikan semua data identitas RPP.";
+    divsebarkd.innerHTML ="Memfilter data di sebaran KD ..."
+    divjadwalkaldik.innerHTML ="Memfilter data jadwal RPP berdasarkan Kaldik ...";
+    let desainarea_rpp = document.querySelector(".desainarea_rpp");
+    if(tg == undefined){
+        if(desainarea_rpp.className.indexOf("w3-hide")==-1){
+            desainarea_rpp.classList.add("w3-hide");
+        }
+        return
+    }
+    let bol = Array.isArray(tg);
+    
+    let kriteria, tema_mapel, subtema_materi
+    if(bol){
+        kriteria = tg[1]
+        tema_mapel = tg[0];
+        subtema_materi = createrpp_textarea.value;
+    }else{
+        kriteria = tg;
+        let sPlit = tg.split("_");
+        let teks0 = "Tema " + sPlit[0].match(/(\d+)/)[0];
+        let teks1 = ", Subtema " + sPlit[1].match(/(\d+)/)[0];
+        let teks2 = ", Pembelajaran " + sPlit[2].match(/(\d+)/)[0];
+        tema_mapel = teks0 +teks1 +teks2 
+        subtema_materi =""
+    }
+    // cek! localStorage!
+    let cekObJadwalTematik;
+    let infoSebaranKD=""; // info Sebaran KD (tematik) dan  Distribusi KD Nontematik
+    //let dTCekllisKD = tagJPserver;
+    let tglKetemutematik;
+    
+    if(tagrpp_temanontema){
+        if(localStorage.hasOwnProperty("jadwaltematik_"+tagrpp_semester)){
+            cekObJadwalTematik  = JSON.parse(localStorage.getItem("jadwaltematik_"+tagrpp_semester));
+            tglKetemutematik = cekObJadwalTematik[kriteria];
+            divjadwalkaldik.innerHTML = tema_mapel + " berdasarkan Jadwal Pembelajaran Tentatif di Kalender Pendidikan dilaksanakan pada " + Tanggaldenganhari(tglKetemutematik);
+        }else{
+            divjadwalkaldik.innerHTML = tema_mapel + " berdasarkan Kalender Pendidikan belum terdeteksi. Silakan cek di Menu Kalender Pendidikan dan Submenu Jadwal Pembelajaran Tentatif";
+        }
+        let cekTSTPBini = datacekcocok.filter(s => s.semester.indexOf(tagrpp_semester)>-1 && s[kriteria] !=="");
+        
+        if(cekTSTPBini.length == 0){
+            infoSebaranKD = "Kami melacak Anda belum melengkapi Sebaran KD untuk " + tema_mapel + " ini. Silakan Anda atur melalui menu 'Sebaran KD' di submenu 'Per Tema', tetapi sebelumnya Anda harus memastikan terlebih dahulu Distribusi KD di menu Kalender.";
+        }else if(cekTSTPBini == 1){
+            infoSebaranKD ="Kami melacak Anda hanya mengisi satu muatan pelajaran saja untuk " + tema_mapel + " ini. Silakan Anda atur melalui menu 'Sebaran KD' di submenu 'Per Tema', tetapi sebelumnya Anda harus memastikan terlebih dahulu Distribusi KD di menu Kalender. <br>";
+            let m_MP = cekTSTPBini[0].mapel;
+            let m_KD = cekTSTPBini[0].kd +"/"+ cekTSTPBini[0].kd4
+            infoSebaranKD += "Yaitu " + convertcodemapelkemapel(m_MP) +" KD = " + m_KD;
+        }else{
+            infoSebaranKD = "Kami melacak bahwa Anda membuat Pemetaan KD pertema di " + tema_mapel + " ini memuat:<br><ol>";
+            for(m = 0 ; m < cekTSTPBini.length ; m++){
+                infoSebaranKD += "<li>" + convertcodemapelkemapel(cekTSTPBini[m].mapel) + " KD = " + cekTSTPBini[m].kd +" / "+ cekTSTPBini[m].kd4 +"</li>";
+            }
+            infoSebaranKD +="</ol>"
+        }
+        divsebarkd.innerHTML = infoSebaranKD;
+        divsebarkd.innerHTML += `<br><div class="w3-border w3-padding">Cek di: <br><br>Menu Tab 'Kalender Pendidikan' &gt;&gt; Submenu 'Distribusi KD'<br>Menu 'Sebaran KD' &gt;&gt; Submenu 'Pertema'</div>`;
+        
+    }else{
+        if(localStorage.hasOwnProperty("loc_tagJPserver_"+tagrpp_semester)){
+            let hr_nontematik = JSON.parse(localStorage.getItem("loc_tagJPserver_"+tagrpp_semester));
+            let arrSrcIndex = ["jp_sn","jp_sl", "jp_rb","jp_km","jp_jm"];
+            let arrHari = ["Senin","Selasa", "Rabu","Kamis","Jumat"];
+            let srcMapl = hr_nontematik.filter(s=>s.kodemapel == tema_mapel);
+            if(srcMapl.length >0){
+                let cekHarinya = srcMapl.map(s=> Object.fromEntries(Object.entries(s).filter(([k,v])=> k.indexOf("jp_")>-1 && v !=="")));
+                let keyOB = Object.keys(cekHarinya);
+                if(keyOB.length ==0){
+                    divjadwalkaldik.innerHTML = "Pelaksanaan KBM Mata Pelajaran "+ tema_mapel +" Belum Anda atur untuk semester "+ tagrpp_semester+" ini. Silakan Anda atur dulu di Menu 'Kalender Pendidikan' pada submenu 'Sebaran Hari Efektif' dengan memilih Mata Pelajaran ini!";
+                }else{
+                    let hariOknontematik = cekHarinya.map(m => Object.entries(m).map(([k,v])=> arrHari[arrSrcIndex.indexOf(k)])).join().split(",")
+                    divjadwalkaldik.innerHTML = "Pelaksanaan KBM Mata Pelajaran "+ convertcodemapelkemapel(tema_mapel) +" di semester "+tagrpp_semester+" ini dilaksanakan setiap hari " + hariOknontematik.join(", ");
+                }
+            }else{
+                divjadwalkaldik.innerHTML = "Pelaksanaan KBM Mata Pelajaran "+ convertcodemapelkemapel(tema_mapel)  +" Belum Anda atur semester "+ tagrpp_semester+" ini. Silakan Anda atur dulu di Menu 'Kalender Pendidikan' pada submenu 'Sebaran Hari Efektif' dengan memilih Mata Pelajaran ini!";
+            }
+
+        }else{
+            divjadwalkaldik.innerHTML = "Coba Anda buka terlebih dahulu Menu di 'Kalender Pendidikan' pada submenu 'Sebaran Hari Efektif'. cek setiap semester, kemudian kembali lagi di sini!";
+        }
+        let dat0 = datacekcocok.filter(s => s.semester.indexOf(tagrpp_semester)>-1 && s.mapel == tema_mapel);
+        let teksKetMapel ="";// = "Kami melacak berdasarkan fitur Distribusi KD bahwa Anda mengatur distribusi KD di semester " + tagrpp_semester + " untuk Mata Pelajaran " + tema_mapel;
+        if(dat0.length == 0){
+            teksKetMapel = "Anda belum mengatur pendistribusian KD untuk mata pelajaran "+ convertcodemapelkemapel(tema_mapel)+ " ini. Silakan Anda setting di Menu 'Kalender Pendidikan' melalui submenu 'Distribusi KD' dengan memilih 'Nontematik'"
+        }else{
+            teksKetMapel ="Kami melacak bahwa Mata Pelajaran " + convertcodemapelkemapel(tema_mapel) + " di semester " + tagrpp_semester + " ini memuat:<ol>"
+            for(n = 0  ; n <dat0.length ; n++){
+                teksKetMapel += "<li> KD = " +dat0[n].kd + "/" + dat0[0].kd4;
+            }
+            teksKetMapel += "</ol>"
+        }
+        divsebarkd.innerHTML = teksKetMapel;
+    
+    }
+
+    let temanontema = tagrpp_temanontema?"TEMATIK":"NONTEMATIK";
+    let tema_mapell = tagrpp_temanontema?tema_mapel:convertcodemapelkemapel(tema_mapel);
+    let k_tm = tagrpp_temanontema?kriteria:tema_mapel;
+
+    let data = tagrppserver.filter(s =>s.tema_mapel == k_tm && s.semester == tagrpp_semester && s.subtema_materipokok == subtema_materi);
+    
+    let boleanT = tagrpp_temanontema;
+    if(data.length == 0){
+        divdom.innerHTML=`Anda sudah siap untuk membuat baru database RPP dengan ketentuan:<br>RPP ${temanontema} ${tema_mapell} ${subtema_materi}<hr><div class="w3-center w3-padding"><button class="w3-btn w3-green" onclick="buatrppawal()"><i class="fa fa-pencil"></i> Buat RPP</button></div>`;
+    }else{
+        let baristerlacak = data[0].idbaris;
+        
+        divdom.innerHTML=`Materi ini sudah Anda, Anda dapat mengedit database RPP ${temanontema} ${tema_mapell} ${subtema_materi}<hr><div class="w3-center w3-padding"><button class="w3-btn w3-blue" onclick="Editrppawal('${baristerlacak}')"><i class="fa fa-pencil"></i> Edit RPP</button></div>`;
+    };
+
+
+}
+
+const createrpp_textarea = document.querySelector("#createrpp_textarea");
+createrpp_textarea.addEventListener("input",()=>{
+    let desainarea_rpp = document.querySelector(".desainarea_rpp");
+    if(desainarea_rpp.className.indexOf("w3-hide")==-1){
+        desainarea_rpp.classList.add("w3-hide");
+    }
+    let v = createrpp_textarea.value;
+    let dsgn_materipokok = document.querySelector(".dsgn_materipokok");
+    dsgn_materipokok.innerHTML = v;
+    tagfokustextarea = v;
+    tagfokusrpp = alt_tagfokusrpp();
+    cek_tagdarirppserver(tagfokusrpp);
+
+})
+
+const alt_tagfokusrpp = () =>{
+    let fokus;
+    if(tagrpp_temanontema){
+        if(tagfokustema == undefined || tagfokussubtema == undefined || tagfokuspb == undefined){
+            fokus = undefined
+        }else{
+            fokus = "t"+tagfokustema + "_st" + tagfokussubtema  + "_pb" +  tagfokuspb;
+        }
+    }else{
+        if(tagfokusmapel == undefined || tagfokustextarea == undefined || tagfokustextarea ==""){
+            fokus = undefined
+        }else{
+            fokus = [tagfokusmapel,tagfokustextarea]
+        }
+    }
+    return fokus;
+}
+
+const Tanggaldenganhari = (dt) =>{
+    let tgl = new Date(dt);
+    let m = tgl.getMonth();
+    let sm = tgl.getMonth() + 1;
+    let d = tgl.getDate();
+    let day = tgl.getDay()
+    let y = tgl.getFullYear();
+    let string = y + "-" + sm + "-" + d;
+    let arraynamaHari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+    //console.log(string)
+
+    let hari = arraynamaHari[day] + ", " + tanggalfull(string)
+
+    return hari
+}
+
+const convertcodemapelkemapel = (kode) =>{
+    let teksmapel 
+    switch(kode){
+            case "PAI":
+                teksmapel = "PENDIDIKAN AGAMA ISLAM DAN BUDI PEKERTI"
+            break;
+            case "PKRIS":
+                teksmapel = "PENDIDIKAN AGAMA KRISTEN DAN BUDI PEKERTI"
+            break;
+            case "PKATO":
+                teksmapel = "PENDIDIKAN AGAMA KATHOLIK DAN BUDI PEKERTI"
+            break;
+            case "MTK":
+                teksmapel = "MATEMATIKA"
+            break;
+            case "PJOK":
+                teksmapel = "PENDIDIKAN JASMANI, OLAHRAGA, DAN KESEHATAN"
+            break;
+            case "BSUND":
+                teksmapel = "BAHASA DAN SASTRA SUNDA"
+            break;
+            case "PKN":
+                teksmapel = "PKN"
+            break;
+            case "BINDO":
+                teksmapel = "BAHASA INDONESIA"
+            break;
+            case "IPA":
+                teksmapel = "IPA"
+            break;
+            case "IPS":
+                teksmapel = "IPS"
+            break;
+            case "SBDP":
+                teksmapel = "SBDP"
+            break;
+            case "PJOK":
+                teksmapel = "PJOK"
+            break;
+            default:
+                teskmapel = kode
+    }
+    return teksmapel
+
+}
+
+const convertlong_mapelkecodemapel = (kode) =>{
+    let teksmapel 
+    switch(kode){
+            case "PENDIDIKAN AGAMA ISLAM DAN BUDI PEKERTI":
+                teksmapel = "PAI"
+            break;
+            case "PENDIDIKAN AGAMA KRISTEN DAN BUDI PEKERTI":
+                teksmapel = "PKRIS"
+            break;
+            case "PENDIDIKAN AGAMA KATHOLIK DAN BUDI PEKERTI":
+                teksmapel = "PKATO"
+            break;
+            case "MATEMATIKA":
+                teksmapel = "MTK"
+            break;
+            case "PENDIDIKAN JASMANI, OLAHRAGA, DAN KESEHATAN":
+                teksmapel = "PJOK"
+            break;
+            case "BAHASA DAN SASTRA SUNDA":
+                teksmapel = "BSUND"
+            break;
+            case "PKN":
+                teksmapel = "PKN"
+            break;
+            case "BAHASA INDONESIA":
+                teksmapel = "BAHASA INDONESIA"
+            break;
+            case "IPA":
+                teksmapel = "IPA"
+            break;
+            case "IPS":
+                teksmapel = "IPS"
+            break;
+            case "SBDP":
+                teksmapel = "SBDP"
+            break;
+            case "PJOK":
+                teksmapel = "PJOK"
+            break;
+            default:
+                teskmapel = kode
+    }
+    return teksmapel
+
+}
+
+const convertshort_mapelkecodemapel = (kode) =>{
+    let teksmapel 
+    switch(kode){
+            case "PA ISLAM":
+                teksmapel = "PAI"
+            break;
+            case "PA KRISTEN":
+                teksmapel = "PKRIS"
+            break;
+            case "PA KATHOLIK":
+                teksmapel = "PKATO"
+            break;
+            case "MATEMATIKA":
+                teksmapel = "MTK"
+            break;
+            case "PJOK":
+                teksmapel = "PJOK"
+            break;
+            case "BAHASA SUNDA":
+                teksmapel = "BSUND"
+            break;
+            case "PKN":
+                teksmapel = "PKN"
+            break;
+            case "BAHASA INDONESIA":
+                teksmapel = "BAHASA INDONESIA"
+            break;
+            case "IPA":
+                teksmapel = "IPA"
+            break;
+            case "IPS":
+                teksmapel = "IPS"
+            break;
+            case "SBDP":
+                teksmapel = "SBDP"
+            break;
+            case "PJOK":
+                teksmapel = "PJOK"
+            break;
+            default:
+                teskmapel = kode
+    }
+    return teksmapel
+
+}
+
+const buatrppawal = () =>{
+    let tombolAwal = document.querySelector(".resultcreatepilihrpp");//.innerHTML = "Anda sekarang dalam situasi membuat RPP pertama kali untuk T"
+
+    let tbl = document.querySelector(".tabel_lampiran1");
+    let tb = tbl.getElementsByTagName("tbody")[0];
+    
+    let desainarea_rpp = document.querySelector(".desainarea_rpp");
+    let div_rppnontematik = document.querySelector(".clue_dsgnrpp_nontematik");
+    div_rppnontematik.classList.add("w3-hide");
+    let div_rpptematik = document.querySelector(".clue_dsgnrpp_tematik");
+    div_rpptematik.classList.add("w3-hide");
+
+    let html1="";
+    let html="";
+    for(i = 0 ; i < jsondatasiswa.length ; i++){
+        html +=`<tr><td>${i+1}</td><td>${jsondatasiswa[i].pd_nama}</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>`;
+        
+    }
+    tb.innerHTML = html;
+
+    desainarea_rpp.classList.remove("w3-hide");
+    //IDENTITAS UMUM:
+    let dsgnrpp_namasekolah = document.querySelectorAll(".dsgnrpp_namasekolah");
+    dsgnrpp_namasekolah.forEach(el=> el.innerHTML = idNamaSekolah);
+    let dsgnrpp_namakepsek = document.querySelectorAll(".dsgnrpp_namakepsek");
+    dsgnrpp_namakepsek.forEach(el=> el.innerHTML = idNamaKepsek);
+    
+    let dsgnrpp_nipkepsek = document.querySelectorAll(".dsgnrpp_nipkepsek");
+    dsgnrpp_nipkepsek.forEach(el=> el.innerHTML = idNipKepsek);
+
+    let dsgnrpp_namaguru = document.querySelectorAll(".dsgnrpp_namaguru");
+    dsgnrpp_namaguru.forEach(el=> el.innerHTML = namauser);
+    
+    let dsgnrpp_nipguru = document.querySelectorAll(".dsgnrpp_nipguru");
+    dsgnrpp_nipguru.forEach(el=> el.innerHTML = idNipGuruKelas);
+    /// FOKUS INFO
+    // console.log("tagrpp_semester")
+    // console.log(tagrpp_semester)
+    // console.log("tagfokusrpp") /// sama aja dengan tag (tg)
+    // console.log(tagfokusrpp)
+    // console.log("tagfokustema")
+    // console.log(tagfokustema)
+    // console.log("tagfokussubtema")
+    // console.log(tagfokussubtema)
+    // console.log("tagfokuspb")
+    // console.log(tagfokuspb)
+    // console.log("tagfokusmapel")
+    // console.log(tagfokusmapel)
+    // console.log("tagfokustextarea");
+    // console.log(tagfokustextarea);
+    // console.log("tagrpp_temanontema");
+    // console.log(tagrpp_temanontema);
+    let datacekcocok = gabungdataserverkd();
+    //IDENTITAS GLOBAL (Ada di Tematik maupun Nontematik)!
+    let dsgnrpp_kelasini = document.querySelectorAll(".dsgnrpp_kelasini");
+    let dsgnrpp_semester =document.querySelector(".dsgnrpp_semester");
+    let dsgnrpp_alokasiwaktu = document.querySelector(".dsgnrpp_alokasiwaktu");
+    let prt_judul = document.querySelector(".prt_judul");
+    let tujuanpembelajaran = document.querySelector(".prt_tujuanpembelajaran");
+    let langkahpendahuluan = document.querySelector(".langkahpendahuluan");
+    let langkahinti = document.querySelector(".langkahinti")
+    let langkahpenutup = document.querySelector(".langkahpenutup")
+    let tambahkanrubrik = document.querySelector(".tambahkanrubrik");
+    //let langkahpembelajaran = document.querySelector(".prt_langkahpembelajaran");
+    let penilaian = document.querySelector(".prt_penilaian");
+    
+    let MuatanPelajaran = document.querySelectorAll(".koleksimapel_muatanterpaduMP");
+    MuatanPelajaran.forEach(el => el.innerHTML = "");
+
+        dsgnrpp_kelasini.forEach(el => el.innerHTML = idgurumapelmapel);
+        dsgnrpp_semester.innerHTML = tagrpp_semester;
+
+    //console.log("KESIMPULAN:");
+    let kesimpulan ="";
+    let kriteria
+        let sPlit
+        let teks0
+        let teks1
+        let teks2
+        let cekTSTPBini
+        let tema_mapel
+        let cekObJadwalTematik,tglKetemutematik,spantanggal
+        spantanggal = document.querySelectorAll(".dsgnrpp_tgl");
+        let teksKD = DataKDKurtilas["kelas"+idJenjang];
+
+    
+    tambahkanrubrik.onclick = function(){
+        alert("Anda belum siap untuk menambahkan rubrik. Pastikan Anda dalam posisi mengedit RPP (minimal rpp yang Anda kerjakan sudah tersimpan di server)")
+    }
+    if(tagrpp_temanontema){
+        if(div_rpptematik.className.indexOf("w3-hide")>-1){
+            div_rpptematik.classList.remove("w3-hide")
+        }
+        if(div_rppnontematik.className.indexOf("w3-hide")==-1){
+            div_rppnontematik.classList.add("w3-hide")
+        }
+        kriteria = tagfokusrpp;
+        sPlit = kriteria.split("_");
+        teks0 = "TEMA " + sPlit[0].match(/(\d+)/)[0];
+        teks1 = " SUBTEMA " + sPlit[1].match(/(\d+)/)[0];
+        teks2 = " PEMBELAJARAN " + sPlit[2].match(/(\d+)/)[0];
+        tema_mapel = teks0 +teks1 +teks2 ;
+
+        tombolAwal.innerHTML = "Anda dalam situasi membuat RPP untuk "+tema_mapel + " pertama kali. Keadaan ini akan berubah ketika Anda mengirimkan informasi lagi di setiap komponen RPP.";
+        
+        cekTSTPBini = datacekcocok.filter(s => s.semester.indexOf(tagrpp_semester)>-1 && s[kriteria] !=="");
+        //console.log(cekTSTPBini);
+        kesimpulan +="Anda membuat Tema, yang akan dibuat kodenya: t"+tagfokustema +"_st"+tagfokussubtema +"_pb"+tagfokuspb;
+        kesimpulan +="tambahan mapel objek yang terdeteksi ada setelah console ini." ;
+        let isitema = teksKD.filter(s=> s["Tema "+tagfokustema])[0]
+        document.querySelector(".dsgnrpp_tema").innerHTML ="TEMA " + tagfokustema +"<br>" + isitema["Tema "+tagfokustema];
+        document.querySelector(".dsgnrpp_subtema").innerHTML ="SUBTEMA " + tagfokussubtema +"<br>" + isitema["Subtema "+tagfokussubtema];
+        document.querySelector(".dsgnrpp_pembelajaran").innerHTML ="Pembelajaran " + tagfokuspb;
+        document.querySelector(".dsgnrpp_semester").innerHTML =tagrpp_semester;
+        // IDENTITAS RPP:
+        dsgnrpp_alokasiwaktu.innerHTML = "1 Hari";
+        prt_judul.innerHTML = tema_mapel;
+        let judullampiran = document.querySelectorAll(".h_judullampiran");
+        let JUDULTEMA = "TEMA " + tagfokustema +" SUBTEMA " + tagfokussubtema + " PEMBELAJARAN " + tagfokuspb;
+        judullampiran.forEach(el => el.innerHTML = JUDULTEMA);
+        let arrMuatan = cekTSTPBini.filter(s => s[tagfokusrpp] !=="").map(m => Object.fromEntries(Object.entries(m).filter(([k,v])=>k == "mapel" || k == "kd" ||  k =="kd4")));
+        
+        for(m = 0 ; m < MuatanPelajaran.length && m < arrMuatan.length ; m++){
+            MuatanPelajaran[m].innerHTML = convertcodemapelkemapel(arrMuatan[m].mapel) + " (" + arrMuatan[m].kd +"/" + arrMuatan[m].kd4+")"
+        };
+
+        
+        //arrMuatan[i].mapel  +
+        //filter(s => s.t1_st1_pb1 !=="").map(m => Object.fromEntries(Object.entries(m).filter(([k,v])=>k == "mapel" || k == "kd")))
+
+
+        // tanggal pelaksanaan RPP tema st pb ini:
+        if(localStorage.hasOwnProperty("jadwaltematik_"+tagrpp_semester)){
+            cekObJadwalTematik  = JSON.parse(localStorage.getItem("jadwaltematik_"+tagrpp_semester));
+            tglKetemutematik = cekObJadwalTematik[kriteria];
+            spantanggal.forEach((el,i) => i == 0? el.innerHTML = Tanggaldenganhari(tglKetemutematik):el.innerHTML = tanggalfull(tglKetemutematik));
+            //console.log(cekObJadwalTematik);
+        }else{
+            spantanggal.forEach(el => el.innerHTML = "isi manual atau cek di Menu Kalender Pendidikan dan Submenu Jadwal Pembelajaran Tentatif");
+        }
+        //konvirmasi tooltip untuk Muatan Mapel;
+        let tambahmuatankduntukrppini = document.querySelector(".tambahmuatankduntukrppini");
+        tambahmuatankduntukrppini.onclick = function(){
+            tooltipMuatanMapel("TEMA "+tagfokustema,tagrpp_semester,tagfokusrpp);
+        }
+        /// TOOLTIP
+        tujuanpembelajaran.onclick=function(){
+            tooltipIsianRPP ("baru","prt_tujuanpembelajaran", tagfokusrpp, "tematik", tagrpp_semester, "")
+        }
+        langkahpendahuluan.onclick=function(){
+            tooltipIsianRPP ("baru","langkahpendahuluan", tagfokusrpp, "tematik", tagrpp_semester, "")
+        }
+
+        langkahinti.onclick=function(){
+            tooltipIsianRPP ("baru","langkahinti", tagfokusrpp, "tematik", tagrpp_semester, "")
+        }
+
+        langkahpenutup.onclick=function(){
+            tooltipIsianRPP ("baru","langkahpenutup", tagfokusrpp, "tematik", tagrpp_semester, "")
+
+        }
+        penilaian.onclick=function(){
+            tooltipIsianRPP ("baru","prt_penilaian", tagfokusrpp, "tematik", tagrpp_semester, "")
+        }
+        
+    }else{
+        if(div_rppnontematik.className.indexOf("w3-hide")>-1){
+            div_rppnontematik.classList.remove("w3-hide")
+        }
+        if(div_rpptematik.className.indexOf("w3-hide")==-1){
+            div_rpptematik.classList.add("w3-hide")
+        }
+        kriteria = tagfokusrpp[1]
+        tema_mapel = tagfokusrpp[0];
+        
+        let dsgn_matapelajaran = document.querySelector(".dsgn_matapelajaran");
+        dsgn_matapelajaran.innerHTML = convertcodemapelkemapel(tema_mapel);
+
+        
+
+        let dat0 = datacekcocok.filter(s => s.semester.indexOf(tagrpp_semester)>-1 && s.mapel == tema_mapel);
+        kesimpulan +="Anda membuat rpp nontematik dengan mata pelajaran code "+tagfokusmapel + " dengan judul " +tagfokustextarea;
+        //informasi untuk RPP nontematik:
+
+        console.log(dat0);
+        let hr_nontematik = JSON.parse(localStorage.getItem("loc_tagJPserver_"+tagrpp_semester));
+            let arrSrcIndex = ["jp_sn","jp_sl", "jp_rb","jp_km","jp_jm"];
+            let arrHari = ["Senin","Selasa", "Rabu","Kamis","Jumat"];
+            let srcMapl = hr_nontematik.filter(s=>s.kodemapel == tema_mapel);
+            console.log(srcMapl);
+        /// TOOLTIP
+        tujuanpembelajaran.onclick=function(){
+            tooltipIsianRPP ("baru","prt_tujuanpembelajaran", tema_mapel, "tematik", tagrpp_semester, "");
+        }
+        langkahpendahuluan.onclick=function(){
+            tooltipIsianRPP ("baru","langkahpendahuluan", tema_mapel, "tematik", tagrpp_semester, "");
+        }
+
+        langkahinti.onclick=function(){
+            tooltipIsianRPP ("baru","langkahinti", tema_mapel, "tematik", tagrpp_semester, "");
+        }
+
+        langkahpenutup.onclick=function(){
+            tooltipIsianRPP ("baru","langkahpenutup", tema_mapel, "tematik", tagrpp_semester, "");
+
+        }
+        penilaian.onclick=function(){
+            tooltipIsianRPP ("baru","prt_penilaian", tema_mapel, "tematik", tagrpp_semester, "");
+        }
+
+    }
+    console.log(kesimpulan);
+
+}
+
+const tooltipMuatanMapel = (theme,semester,ceklis) =>{ //tooltip yang muncul ketika user membuat RPP pertama kali (baru bikin)
+    let tambahmuatankduntukrppini = document.querySelector(".tambahmuatankduntukrppini");
+        let lLeft = (tambahmuatankduntukrppini.offsetLeft + tambahmuatankduntukrppini.offsetWidth + 10) + "px"
+        let lTop = (tambahmuatankduntukrppini.offsetTop) + "px";
+        // console.log("Left tool " + lLeft)
+        // console.log("top tool " + lTop)
+    let tool = document.getElementById("tooltipMuatanMapelTematik");
+    let modal = document.getElementById("prev_rpp");
+    tool.style.left = lLeft;
+    tool.style.top = lTop;
+    tool.style.display = "block";
+
+    //nama-nama mapel dalam tema di jenjang
+    let TinggiTemaRendahGanjil = ["TEMA 1","TEMA 2","TEMA 3","TEMA 4"];
+    let TinggiTemaRendahGenap = ["TEMA 5","TEMA 6","TEMA 7","TEMA 8"];
+    let arrTemaTinggiGanjil = ["TEMA 1","TEMA 2","TEMA 3","TEMA 4","TEMA 5"];
+    let arrTemaTinggiGenap = ["TEMA 6","TEMA 7","TEMA 8","TEMA 9"];
+    let arrCodeMapelRendah = ["PKN","BINDO","MTK","SBDP","PJOK"];
+    let arrCodeMapelTinggi = ["PKN","BINDO","IPA","IPS","SBDP"];
+    let arrHeaderTinggi = ["PKN","Bahasa Indonesia","IPA","IPS","SBDP"]
+    let arrHeaderRendah = ["PKN","Bahasa Indonesia","MATEMATIKA","SBDP","PJOK"];
+
+    let kolNamaMapel;
+    let kolCodeMapel
+    if(idJenjang > 3){
+        kolCodeMapel = arrCodeMapelTinggi;
+        kolNamaMapel = arrHeaderTinggi;
+    }else{
+        kolCodeMapel = arrCodeMapelRendah;
+        kolNamaMapel = arrHeaderRendah;
+    }
+    //bekerja dengan Select
+    let op = "";
+    let divop = document.querySelector(".muatanmapeltematik");
+    divop.innerHTML = "";
+    op = `<option value="default" selected>Pilih Mapel</option>`;
+    for(i = 0 ; i < kolCodeMapel.length ; i++){
+        op += `<option value="${kolCodeMapel[i]}">${kolNamaMapel[i]}</option>`;
+    }
+    divop.innerHTML = op;
+
+    let dbSebaranKD = gabungdataserverkd();
+    let tempattombolkdmuatanmapel = document.querySelector(".tempattombolkdmuatanmapel");
+    if(tempattombolkdmuatanmapel.className.indexOf("w3-hide")==-1){
+        tempattombolkdmuatanmapel.classList.add("w3-hide")
+    }
+
+    divop.addEventListener("change",()=>{
+        let sel = document.querySelector(".muatanmapeltematik");
+        let ops = sel.options;
+        let ind = ops.selectedIndex;
+        let v = ops[ind].value;
+        let T = ops[ind].text;
+        if(v =="default"){
+            return
+        }
+        tempattombolkdmuatanmapel.classList.remove("w3-hide");
+        // console.log("Nama Mapel : "+T)
+        // console.log("Nama Mapel : "+v);
+        let koleksiKDselect = dbSebaranKD.filter(s => (s.indikatorkd4 !=="" || s.indikatorkd3 !=="") && s.mapel==v);
+        //let isikan koleksi tiap-tiap KD:
+        let tombol = document.querySelectorAll(".rppbadge_kd");
+        let infowajarkd = document.querySelector(".infowajarkd");
+        infowajarkd.innerHTML = "";
+        
+        let count_coret = 0
+        for(j=0; j< koleksiKDselect.length ; j++){
+            let adaceklis = koleksiKDselect[j][ceklis]
+            if(adaceklis !==""){
+                tombol[j].setAttribute("title","KD sudah digunakan di RPP ini")
+                tombol[j].setAttribute("disabled","true")
+                tombol[j].innerHTML = "<s>"+koleksiKDselect[j].kd+"</s>";
+                count_coret++
+            }else{
+                tombol[j].innerHTML = koleksiKDselect[j].kd;
+                let infoTeksInd = koleksiKDselect[j].indikatorkd3;
+                tombol[j].setAttribute("data-infokdini",infoTeksInd)
+                if(tombol[j].hasAttribute("disabled")){
+                    tombol[j].removeAttribute("disabled")
+                }
+                if(tombol[j].hasAttribute("title")){
+                    tombol[j].removeAttribute("title")
+                }
+            }
+            if(tombol[j].className.indexOf("w3-hide")>-1){
+                tombol[j].classList.remove("w3-hide");
+                if(tombol[j].hasAttribute("disabled")){
+                    tombol[j].removeAttribute("disabled")
+                }
+            }
+        }
+        if(count_coret >=4){
+            infowajarkd.innerHTML = "KD dalam Mata Pelajaran " + convertcodemapelkemapel(v) + " di RPP ini tidak wajar! Seharusnya, KD dalam mata pelajaran yang sama paling banyak berjumlah 4 KD. Anda tidak bisa menambahkan KD untuk mata pelajaran ini lagi.";
+        }
+        //sisa tombol tolong disembunyikan
+        for(k=koleksiKDselect.length ; k < tombol.length ; k++){
+            tombol[k].classList.add("w3-hide");
+        }
+
+        //jika sudah dikenakan kd, tinggal berikan event tiap-tiap tombol, tapi deklarasi dulu biar aman jika ada perubahan terjadi
+        let tmb = document.querySelectorAll(".rppbadge_kd");
+        for(l = 0 ; l < tmb.length ; l++){
+            tmb[l].onmouseover = function(){
+                let tekstitle = this.getAttribute("data-infokdini")
+                infowajarkd.innerHTML = tekstitle;
+            }
+            tmb[l].onmouseout = function(){
+                infowajarkd.innerHTML = ""
+            }
+            tmb[l].onclick = async function(){
+                // let kdklik = tmb[l].innerHTML;
+                let kdklik = this.innerHTML;
+                        let dbServer = koleksiKDselect.filter(s => s.kd == kdklik)
+                        let barisServer = dbServer[0].row;
+                    
+                        tool.style.display = "none";
+                        modal.style.display = "block";
+                        
+                        await cekserverAdmKD(barisServer, theme, semester,ceklis);
+                        await simpanserverrppbaru (ceklis,"tematik", semester)
+                        modal.style.display = "none";
+            }
+        }
+
+
+    })
+dragElement(tool)
+
+}
+
+const modagantieditrpp = (brs, theme,semester,ceklis) => {
+    console.log(brs)
+    console.log(theme)
+    console.log(semester)
+    console.log(ceklis)
+    let modal = document.getElementById("prev_rpp");
+    modal.style.display = "none";
+
+    // simpan ke Sheet Adm Kepsek tab serverkd => result updatenya tagserverkd
+    // lalu simpan lagi ke sheet Kaldik di tab rpp
+    let srv_brs = tagrppserver.filter(s=> s.jenjang_kelas == idJenjang && s.tema_mapel == ceklis);
+    console.log("srv_brs pasti kosong jika dalam moda baru dibikin untuk thema :" + ceklis )
+    console.log(srv_brs)
+    console.log("sumber asli:" )
+    let sAsli = tagrppserver.filter(s=> s.jenjang_kelas == idJenjang);
+    console.log(sAsli);
+    let tombolAwal = document.querySelector(".resultcreatepilihrpp")
+    tombolAwal.innerHTML = "Anda dalam situasi mengedit RPP dari server secara langsung.";
+}
+
+const cekserverAdmKD = async (row,tema,semester,ceklis) =>{ // untuk TEMATIK
+
+    let obSource = Object.assign({},tagkdserver.filter(s => s.row == row)[0]);
+    let cekKoleksitema = obSource.koleksitema;
+    let cekSemester = obSource.semester;
+    let resTema = [];
+    let resSemester = [];
+    
+    if(cekKoleksitema !== ""){
+        let arrKolTema = JSON.parse(cekKoleksitema);
+        let cekParamTema = arrKolTema.indexOf(tema);
+        resTema = arrKolTema;
+        if(cekParamTema == -1){
+            //ga ada, maka push:
+            resTema.push(tema)
+        }else{
+            resTema = arrKolTema;
+        }
+    }else{
+        resTema.push(tema)
+    }
+
+    if(cekSemester !== ""){
+        let arSrc = JSON.parse(cekSemester);
+        resSemester = arSrc;
+        let cekS = arSrc.indexOf(semester);
+        if(cekS == -1){
+            resSemester.push(semester)
+        }else{
+            resSemester = arSrc;
+        }
+    }else{
+        resSemester.push(semester)
+    }
+    
+    //await fetch(url) //s[key_nama] == "✓"
+    let objekBaru = {};
+    objekBaru.koleksitema = JSON.stringify(resTema);
+    objekBaru.semester = JSON.stringify(resSemester);
+    objekBaru[ceklis] = "✓";
+    
+    let objekKirim = Object.assign(obSource,objekBaru);
+    let tab = "serverkd";
+    let key = Object.keys(objekKirim);
+    let val = Object.values(objekKirim);
+    let dataform = new FormData();
+    dataform.append("idbaris", row);
+    dataform.append("tab", tab);
+    dataform.append("key", JSON.stringify(key))
+    dataform.append("tabel", JSON.stringify(val))
+    await fetch(urladm+"?action=simpanbarisketabidbaris",{
+        method:"post",
+        body:dataform
+    }).then(m=>m.json())
+    .then(r => {
+        let result = r.data;
+        tagkdserver = result.filter(s => s.kelas == idJenjang);
+    }).catch(er=> console.log(er));
+
+
+    
+}
+const simpanserverrppbaru = async (ceklis,pilihantematik, semester) =>{
+    let pinjemObjek = Object.assign({},tagrppserver[0]);
+    let keyHeader = Object.keys(pinjemObjek);
+    let obPram = {};
+    for(let key in keyHeader){
+        obPram[keyHeader[key]] = "";
+    }
+        obPram.tema_mapel = ceklis;
+        obPram.jenjang_kelas = idJenjang;
+        obPram.tematik_nontematik = pilihantematik;
+        obPram.semester = semester;
+        obPram.alokasi_waktu = document.querySelector(".dsgnrpp_alokasiwaktu").innerHTML;
+
+    let ObjekKirim = Object.assign(pinjemObjek, obPram);
+    let objekVal = Object.values(ObjekKirim);
+    objekVal.shift();
+    let objekKey = Object.keys(ObjekKirim);
+
+
+//sekarang ujicoba untuk post
+        let key = JSON.stringify(objekKey);
+        let isi = JSON.stringify(objekVal);
+        let datakirim = new FormData();
+        datakirim.append("tabel",isi);
+        datakirim.append("key",key);
+        datakirim.append("tab","rpp");
+        //datakirim.append("tipe",tipe); kalo ada format tanggal, kasih aja
+        fetch(url_kaldikaja+"?action=simpanbarisketaburut",{
+            method:"post",
+            body:datakirim
+        }).then(m => m.json())
+        .then(r => {
+            tagrppserver = r.data.filter(s=>s.jenjang_kelas == idJenjang);
+            let rServer = tagrppserver.filter(s=> s.tema_mapel == ceklis)[0].idbaris;
+            htmlrpp_dariserver(rServer);
+            let tombolAwal = document.querySelector(".resultcreatepilihrpp");
+            tombolAwal.innerHTML = "Anda dalam situasi pengeditan RPP dari pembuatan RPP yang belum pernah ada di server. Saat ini, RPP ini sudah berada di database.";
+
+        })
+        .catch(er => console.log(er))    
+        //datakirim.append("tab",tab);
+        //datakirim.append("key",key);"simpanAdm"
+}
+
+const Editrppawal = (row) =>{ //seharusnya editrppawal = rpp yang dipanggil dari server (tagrppserver)
+    let db = tagrppserver.filter(s=> s.idbaris == row)[0];
+    
+    let rw =db.idbaris;
+    htmlrpp_dariserver(rw);
+    
+
+}
+
+const htmlrpp_dariserver = (row) =>{
+    //database dari server dan local_storage
+    let db = tagrppserver.filter(s => s.idbaris == row)[0];
+    
+    let teksKD = DataKDKurtilas["kelas"+idJenjang];
+    let kurikulum = gabungdataserverkd();
+    let cekObJadwalTematik,tglKetemutematik;
+    let spantanggal = document.querySelectorAll(".dsgnrpp_tgl");
+
+    // DISPLAY DESAIN
+    let desainarea_rpp = document.querySelector(".desainarea_rpp");
+    let div_rppnontematik = document.querySelector(".clue_dsgnrpp_nontematik");
+    desainarea_rpp.classList.remove("w3-hide");
+    let div_rpptematik = document.querySelector(".clue_dsgnrpp_tematik");
+    div_rpptematik.classList.add("w3-hide");
+    div_rppnontematik.classList.add("w3-hide");
+    // paramater:
+    /**
+     * 
+        tagrpp_semester
+        tagrpp_temanontema
+        tagfokusrpp:
+            tagfokusmapel
+            tagfokustextarea
+            tagfokustema
+            tagfokussubtema
+            tagfokuspb
+        konversi tagfokusrpp:
+        //rpp tematik:
+        tagfokusrpp = "t6_st1_pb" => string
+        // rpp nontematik
+        tagfokusrpp = [tagfokusmapel, tagfokustexare]
+     */
+
+    // IDENTITAS GLOBAL
+    let div_namasekolah = document.querySelectorAll(".dsgnrpp_namasekolah");
+    let div_kelasini = document.querySelectorAll(".dsgnrpp_kelasini");
+    let div_judullampiran = document.querySelectorAll(".h_judullampiran");
+    let div_semester =document.querySelector(".dsgnrpp_semester");
+    let prt_judul = document.querySelector(".prt_judul");
+
+    let div_alokasiwaktu = document.querySelector(".dsgnrpp_alokasiwaktu");
+    
+    let tema_mapel = Array.isArray(tagfokusrpp)?tagfokusrpp[0]:tagfokusrpp; // t6_st1_pb1 atau MTK
+    let tekstema_mapel = Array.isArray(tagfokusrpp)?convertcodemapelkemapel(tagfokusrpp[0]):"TEMA "+tagfokusrpp.split("_")[0].match(/(\d+)/)[0]+" SUBTEMA "+tagfokusrpp.split("_")[1].match(/(\d+)/)[0]+" PEMBELAJARAN "+tagfokusrpp.split("_")[2].match(/(\d+)/)[0];
+
+    // isi identitas global
+    div_alokasiwaktu.innerHTML = db.alokasi_waktu;
+    prt_judul.innerHTML = tekstema_mapel;
+    div_semester.innerHTML = tagrpp_semester;
+    div_kelasini.forEach(el =>el.innerHTML = idNamaKelas);
+    div_namasekolah.forEach(el =>el.innerHTML = idNamaSekolah);
+    div_judullampiran.forEach(el=> el.innerHTML = tekstema_mapel);
+
+    //identitas TANDA TANGAN
+    let dsgnrpp_namakepsek = document.querySelectorAll(".dsgnrpp_namakepsek");
+    let dsgnrpp_nipkepsek = document.querySelectorAll(".dsgnrpp_nipkepsek");
+    let dsgnrpp_namaguru = document.querySelectorAll(".dsgnrpp_namaguru");
+    let dsgnrpp_nipguru = document.querySelectorAll(".dsgnrpp_nipguru");
+    
+    dsgnrpp_namakepsek.forEach(el=> el.innerHTML = idNamaKepsek);
+    dsgnrpp_nipkepsek.forEach(el=> el.innerHTML = idNipKepsek);
+    dsgnrpp_namaguru.forEach(el=> el.innerHTML = namauser);
+    dsgnrpp_nipguru.forEach(el=> el.innerHTML = idNipGuruKelas);
+    
+    // IDENTITAS BERDASARKAN TEMATIK/NONTEMATIK
+    let div_muatanterpadu =  document.querySelectorAll(".koleksimapel_muatanterpaduMP");
+    let tujuanpembelajaran = document.querySelector(".prt_tujuanpembelajaran");
+    let langkahpendahuluan = document.querySelector(".langkahpendahuluan");
+    let langkahinti = document.querySelector(".langkahinti")
+    let langkahpenutup = document.querySelector(".langkahpenutup")
+    let tambahkanrubrik = document.querySelector(".tambahkanrubrik");
+    //let langkahpembelajaran = document.querySelector(".prt_langkahpembelajaran");
+    let penilaian = document.querySelector(".prt_penilaian");
+
+    // IDENTITAS KHUSUS TEMATIK
+    div_muatanterpadu.forEach(el => el.innerHTML = "");
+
+    // IDENTITAS KHUSUS NONTEMATIK
+    let div_materipokok = document.querySelector(".dsgn_materipokok");
+    let div_matapelajaran = document.querySelector(".dsgn_matapelajaran");
+    div_matapelajaran.innerHTML = "";
+    div_materipokok.innerHTML = "";
+
+    // khusus tabel Lampiran Penilaian sikap. Tabel lampiran lain sesuai dengan jumlah rubrik yang dibuat
+    let tbl = document.querySelector(".tabel_lampiran1");
+    let tb = tbl.getElementsByTagName("tbody")[0];
+    let html="";
+    for(i = 0 ; i < jsondatasiswa.length ; i++){
+        html +=`<tr><td>${i+1}</td><td>${jsondatasiswa[i].pd_nama}</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>`;
+    }
+    tb.innerHTML = html;
+
+    /// masalahrubrik;
+    let rubrik_rpp = document.querySelector(".rubrik_rpp");
+    let objekrubrik = Object.fromEntries(Object.entries(db).filter(([k,v])=> k.indexOf("rubrik_")>-1));
+    let arrObjekrubrik = Object.keys(objekrubrik);
+    let htm = "";
+    let ar_htm =[];
+    
+    for(j = 0 ; j < arrObjekrubrik.length ; j++){
+        let ke = arrObjekrubrik[j];
+        let t_ke = ke.replace("rubrik","rubriktipe")
+        let isidbke = db[ke];
+        if(isidbke !== ""){
+            htm +=`${db[ke]}<hr>`;
+            ar_htm.push(db[t_ke])
+        }
+
+    }
+    if(htm !== ""){
+        rubrik_rpp.innerHTML = htm;
+    }
+    console.log(ar_htm);
+    
+    
+    
+
+    if(tagrpp_temanontema){
+        //identitas TEMATIK by db RPP
+        let isitema = teksKD.filter(s=> s["Tema "+tagfokustema])[0]
+        document.querySelector(".dsgnrpp_tema").innerHTML ="TEMA " + tagfokustema +"<br>" + isitema["Tema "+tagfokustema];
+        document.querySelector(".dsgnrpp_subtema").innerHTML ="SUBTEMA " + tagfokussubtema +"<br>" + isitema["Subtema "+tagfokussubtema];
+        document.querySelector(".dsgnrpp_pembelajaran").innerHTML ="Pembelajaran " + tagfokuspb;
+        //Muatan Terpadu berdasarkan data ceklis di data kurikulum:
+        let dataCeklis = kurikulum.filter(s => s.semester.indexOf(tagrpp_semester)>-1 && s[tema_mapel] !=="");
+        let objekData_this = dataCeklis.filter(s => s[tagfokusrpp] !=="").map(m => Object.fromEntries(Object.entries(m).filter(([k,v])=>k == "mapel" || k == "kd" ||  k =="kd4")));
+        
+        for(i = 0 ; i < objekData_this.length && i < div_muatanterpadu.length ; i++){
+            div_muatanterpadu[i].innerHTML = convertcodemapelkemapel(objekData_this[i].mapel) + " (" + objekData_this[i].kd +"/" + objekData_this[i].kd4 + ")";
+        }
+        //DISPLAY TEMATIK
+        if(div_rpptematik.className.indexOf("w3-hide")>-1){
+            div_rpptematik.classList.remove("w3-hide")
+        }
+        if(div_rppnontematik.className.indexOf("w3-hide")==-1){
+            div_rppnontematik.classList.add("w3-hide")
+        }
+        // MASALAH TANGGAL PELAKSANAAN TEMATIK SESUAI KALDIK
+        if(localStorage.hasOwnProperty("jadwaltematik_"+tagrpp_semester)){
+            cekObJadwalTematik  = JSON.parse(localStorage.getItem("jadwaltematik_"+tagrpp_semester));
+            tglKetemutematik = cekObJadwalTematik[tema_mapel];
+            spantanggal.forEach((el,i) => i == 0? el.innerHTML = Tanggaldenganhari(tglKetemutematik):el.innerHTML = tanggalfull(tglKetemutematik));
+            //console.log(cekObJadwalTematik);
+        }else{
+            spantanggal.forEach(el => el.innerHTML = "isi manual atau cek di Menu Kalender Pendidikan dan Submenu Jadwal Pembelajaran Tentatif");
+        }
+        //konfirmasi tooltip:
+        let tambahmuatankduntukrppini = document.querySelector(".tambahmuatankduntukrppini");
+        tambahmuatankduntukrppini.onclick = function(){
+            tooltipMuatanMapel("TEMA "+tagfokustema,tagrpp_semester,tagfokusrpp);
+        }
+        /// TOOLTIP
+        tujuanpembelajaran.onclick=function(){
+            tooltipIsianRPP ("ada","prt_tujuanpembelajaran", tagfokusrpp, "tematik", tagrpp_semester, row,"")
+        }
+        langkahpendahuluan.onclick=function(){
+            tooltipIsianRPP ("ada","langkahpendahuluan", tagfokusrpp, "tematik", tagrpp_semester, row,"")
+        }
+
+        langkahinti.onclick=function(){
+            tooltipIsianRPP ("ada","langkahinti", tagfokusrpp, "tematik", tagrpp_semester, row,"")
+        }
+
+        langkahpenutup.onclick=function(){
+            tooltipIsianRPP ("ada","langkahpenutup", tagfokusrpp, "tematik", tagrpp_semester, row,"")
+
+        }
+        penilaian.onclick=function(){
+            tooltipIsianRPP ("ada","prt_penilaian", tagfokusrpp, "tematik", tagrpp_semester, row,"")
+        }
+        tambahkanrubrik.onclick = function () {
+            tooltipIsianRPP ("rubrik","tambahkanrubrik", tagfokusrpp, "tematik", tagrpp_semester, row,ar_htm.length);
+        }
+
+
+    }else{
+        if(div_rppnontematik.className.indexOf("w3-hide")>-1){
+            div_rppnontematik.classList.remove("w3-hide")
+        }
+        if(div_rpptematik.className.indexOf("w3-hide")==-1){
+            div_rpptematik.classList.add("w3-hide")
+        }
+        //div_materipokok.innerHTML = tekstema_mapel;
+    }
+}
+let valtiperubrik
+const tooltipIsianRPP =  (situasi,kelastarget, temamapel, pilihantematik, semester, row, indekrubrik) =>{
+    //definisi:
+    /** Parameter:
+     * situasi: Baru buat RPP atau mengedit RPP dari server
+     * kelastarget: kelas yang akan dimasukkan termasuk keyHeader yang bakal dikirim
+     * temampel : jika tematik, maka result akhirnya t6_st1_pb1, jika nontematik resultnya MTK, PAI, PJOK, dll
+     * pilihantematik: tematik atau nontematik
+     * semester: pilihan isian yang sedang dibuat semesternya
+     * row: baris dari database tagrppserver
+     */
+    //bekerja dengan aksiserver:
+    let simpanserver_tooltipketikanrpp = document.querySelector(".simpanserver_tooltipketikanrpp");
+    let iframebody = doctooltip.getElementById("edt2");//document.querySelector("#iframe_tooltipketikanrpp")
+    //sebelum bekerja, hapus dulu isian bodynya
+    iframebody.innerHTML = "";
+    //bekerja dengan display input JP
+    let infut = document.querySelector(".tooltipketikanrpp_inputjp");
+    let div_infut = document.querySelector(".tooltipketikanrpp_jp");
+    if(kelastarget.indexOf("langkah")==-1){
+        div_infut.classList.add("w3-hide");
+    }else{
+        if(div_infut.className.indexOf("w3-hide")>-1){
+            div_infut.classList.remove("w3-hide");
+        }
+    }
+    let aksiserver;
+    let param_tab = "rpp";
+    let pilihRubrik = document.querySelector(".sampelrubrik")
+    if(situasi == "baru"){
+        aksiserver =url_kaldikaja + "?action=simpanbarisketaburut";
+        if(pilihRubrik.className.indexOf("w3-hide")==-1){
+            pilihRubrik.classList.add("w3-hide");
+        }
+        
+    }else if(situasi == "rubrik"){
+        aksiserver = url_kaldikaja + "?action=simpanbarisketabidbaris";
+        if(pilihRubrik.className.indexOf("w3-hide")>-1){
+            pilihRubrik.classList.remove("w3-hide");
+        }
+    }else{
+        aksiserver = url_kaldikaja + "?action=simpanbarisketabidbaris";
+        if(pilihRubrik.className.indexOf("w3-hide")==-1){
+            pilihRubrik.classList.add("w3-hide");
+        }
+    }
+    
+    //bekerja dengan tag pada tooltip;
+    let tagsituasi = document.querySelector(".situasibuat_tooltipketikanrpp");
+    let tagtematiknon = document.querySelector(".tematiknontematik_tooltipketikanrpp");
+    let tagsemester = document.querySelector(".semester_tooltipketikanrpp");
+    let tagfokus = document.querySelector(".temammapel_tooltipketikanrpp");
+    tagsituasi.innerHTML = situasi;
+    tagtematiknon.innerHTML = pilihantematik;
+    tagsemester.innerHTML = semester;
+    tagfokus.innerHTML = temamapel;
+    // Bekerja dengan tooltip
+    let tool = document.getElementById("tooltipketikanrpp");
+    let posisiTarget = document.querySelector("." +kelastarget);
+    //bekerja dengan Display tooltip;
+    let lTop = (posisiTarget.offsetTop + 30)+"px";
+    let lLeft = (posisiTarget.offsetLeft + 10)+"px";
+    tool.style.left = lLeft;
+    tool.style.top = lTop;
+    tool.style.display = "block";
+    
+    //bekerja dengan db dan reQuest
+    // cari Key untuk server
+    let keykirimketikan = keyRPPServer(kelastarget);
+    let ChecedRubrik = document.querySelectorAll("input[name=piihansampelrubrik]");
+    
+    
+    simpanserver_tooltipketikanrpp.onclick = function (){
+        let isiframe = iframebody.innerHTML;
+        if(isiframe ==""){
+            alert("Anda tidak boleh mengirimkan nilai ini dengan isian kosong!");
+            return
+        }
+        let resultframe = isiframe.replace(/(\r\n|\n|\r)/gm, "").replace(/\s\s/g,"");
+        
+        /// sekarang ujicoba pengisianyya
+        //khsusu kelastarget yang ada kata langkah-nya, maka itu dipastikan ga perlu isian
+        if(kelastarget.indexOf("langkah")==-1){
+            document.querySelector("."+kelastarget).innerHTML = resultframe;
+        }else{
+            document.querySelector(".isi_"+kelastarget).innerHTML = resultframe;
+            document.querySelector(".judul_"+kelastarget).innerHTML = infut.value + " Menit."
+        }
+        // start dari sini
+        let pinjemObjek = Object.assign({},tagrppserver[0]);
+        let keyHeader = Object.keys(pinjemObjek);
+        let ObjekKirim ={};
+        let objekVal = []
+        if(situasi == "baru"){
+
+            let obPram = {};
+            for(let key in keyHeader){
+                obPram[keyHeader[key]] = "";
+            }
+            obPram.tema_mapel = temamapel;
+            obPram.jenjang_kelas = idJenjang;
+            obPram.tematik_nontematik = pilihantematik;
+            obPram.semester = semester;
+            obPram[keykirimketikan] = resultframe;
+            obPram.alokasi_waktu = document.querySelector(".dsgnrpp_alokasiwaktu").innerHTML;
+            ObjekKirim = Object.assign(pinjemObjek, obPram);
+            objekVal = Object.values(ObjekKirim);
+            objekVal.shift();
+        }else if(situasi=="rubrik"){
+            if(valtiperubrik == undefined){
+                alert("Seharusnya Anda memilih tipe rubrik yang akan dibuat untuk membantu Anda dalam pengisian data rubrik!");
+                return
+            }
+            let oR = {};
+            oR["rubriktipe_"+indekrubrik] = valtiperubrik;
+            oR["rubrik_"+indekrubrik] = resultframe;
+            ObjekKirim = Object.assign(pinjemObjek, oR);
+        }else{
+            let ob = {}
+            ob[keykirimketikan] = resultframe;
+            ob.alokasi_waktu = document.querySelector(".dsgnrpp_alokasiwaktu").innerHTML;
+            ObjekKirim = Object.assign(pinjemObjek, ob);
+
+        }
+            let objekKey = Object.keys(ObjekKirim);
+            console.log(ObjekKirim);
+            
+            // //sekarang ujicoba untuk post
+            // let key = JSON.stringify(objekKey);
+            // let isi = JSON.stringify(objekVal);
+            // let datakirim = new FormData();
+            // datakirim.append("tabel",isi);
+            // datakirim.append("key",key);
+            // datakirim.append("tab","rpp");
+            // agar proses request menunggu, lebih baik ini dibikin async await saat fetching
+            // fetch(url_kaldikaja+"?action=simpanbarisketaburut",{
+            //     method:"post",
+            //     body:datakirim
+            // }).then(m => m.json())
+            // .then(r => {
+            // tagrppserver = r.data.filter(s=>s.jenjang_kelas == idJenjang);
+            // let rServer = tagrppserver.filter(s=> s.tema_mapel == ceklis)[0].idbaris;
+            // Editrppawal(rServer);
+            // let tombolAwal = document.querySelector(".resultcreatepilihrpp");
+            // tombolAwal.innerHTML = "Anda dalam situasi pengeditan RPP dari pembuatan RPP yang belum pernah ada di server. Saat ini, RPP ini sudah berada di database.";
+            
+            // }).catch(er => console.log(er))    
+
+        // // setelah proses fetching selesai maka, tutup tool ini
+        tool.style.display="none";
+        
+        
+    }
+    
+    dragElement(tool);
+}
+
+
+//////////////////tes tooltip
+const keyRPPServer = (kelastarget) => {
+    let result 
+    switch(kelastarget){
+        case "prt_tujuanpembelajaran": 
+        result = "tujuan_pembelajaran"
+        break;
+        case "langkahpendahuluan":
+            result = "kegiatan_pendahuluan"
+            break;
+        case "langkahinti":
+            result="kegiatan_inti"
+            break;
+        case "langkahpenutup":
+            result="kegiatan_penutup"
+            break;
+        case "prt_penilaian":
+            result ="penilaian"
+            break;
+        
+        default:
+            result = kelastarget
+
+    }
+    return result;
+}
+
+const onC_rubrik = (el) =>{
+    let val = el.value;
+    valtiperubrik = val;
+    let Radios = document.querySelectorAll(".gambarseluruhrubrik");
+    let dRadios = document.querySelector(".previewpilihanrubrik")
+    if(dRadios.className.indexOf("w3-hide")>-1){
+        dRadios.classList.remove("w3-hide")
+    }
+    Radios.forEach(img => {
+        img.classList.add("w3-hide")
+    })
+    let idImg = document.getElementById("sampelrubrik"+val);
+    idImg.classList.remove("w3-hide");
 }

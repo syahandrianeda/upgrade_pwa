@@ -522,12 +522,15 @@ width:100%;
   text-align: center;
 }
 #idmateri{width:100%}
-
-#flag {
-  width: 110px;
-  height: 56px;
+.flag {
+  /* width: 110px; */
+  /* auto; */
+  /* width: auto; */
+  /* margin:0 1px; */
+  height: 76px;
   box-sizing: content-box;
   padding-top: 15px;
+  /* padding: 5px 15px; */
   position: relative;
   /* background: rgb(0, 247, 255); */
   color: white;
@@ -536,18 +539,31 @@ width:100%;
   text-align: center;
   text-transform: uppercase;
   font-weight: bold;
+  border:0
 }
-#flag:after {
+.flag:after{
   content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 0;
-  height: 0;
-  border-bottom: 13px solid #eee;
-  border-left: 55px solid transparent;
-  border-right: 55px solid transparent;
+  position:absolute;
+  bottom:-2px;
+  right:0;
+  width: 20%;;
+  border-bottom: 35px solid #fdf5e6;
+  /* border-right: 30px solid transparent; */
+  border-left: 100px solid transparent;
+  
 }
+.flag:before{
+  content: "";
+  position:absolute;
+  bottom:-2px;
+  left:0;
+  width: 20%;
+  border-bottom: 35px solid #fdf5e6;
+  
+  /* border-left: 30px solid transparent; */
+  border-right: 100px solid transparent;
+}
+
 
 .btn_edt {
   border:.5pt dotted transparent;
@@ -593,7 +609,7 @@ div.denom {
   height: 250px;
   width: 350px;
 }
-#tooltipkd1 .badge_kd, #tooltipkdmapel .badge_mapel{
+#tooltipkd1 .badge_kd, #tooltipkdmapel .badge_mapel,#tooltipMuatanMapelTematik .rppbadge_kd{
   margin:3px;
   padding:3px;
   cursor:pointer;
@@ -604,7 +620,7 @@ div.denom {
   font-size: 10px;
 }
 #tooltiptabel, #tooltiptabelall, #tooltipkd1,#tooltipkdmapel,#tooltipkaldik0, #tooltipkaldik1, 
-#tooltipkaldik2, #tooltipkaldik3, #tooltipkaldik4, #tooltipHBE,
+#tooltipkaldik2, #tooltipkaldik3, #tooltipkaldik4, #tooltipHBE, #tooltipMuatanMapelTematik,#tooltipketikanrpp,
 #tooltipkaldik5{
   position: absolute;
   display: none;
@@ -657,6 +673,29 @@ div.denom {
   
   display:block;
 }
+.tooltiparahatast{
+  content: "";
+  position:absolute;
+  
+  /* position tooltip correctly */
+  /* left:0;
+  margin-left:-20px; */
+  /* margin-left: 0; */
+  left : 200px;
+ 
+  /* vertically center */
+  top:-10px;
+  transform:translateY(-50%);
+ 
+  /* the arrow */
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 20px solid black;
+  
+  display:block;
+}
 .tooltiparahkanan{
   content: "";
   position:absolute;
@@ -680,7 +719,7 @@ div.denom {
   
   display:block;
 }
-#tooltiptabel:after, #tooltiptabelall:after, #tooltipkd1:after{
+#tooltiptabel:after, #tooltiptabelall:after, #tooltipkd1:after, #tooltipMuatanMapelTematik:after{
   content: "";
   position:absolute;
   
@@ -703,7 +742,7 @@ div.denom {
 #tooltipkaldikheader1,
 #tooltipkaldikheader2,
 #tooltipkaldikheader3,
-#tooltipkaldikheader4, #tooltipHBEheader,
+#tooltipkaldikheader4, #tooltipHBEheader, #tooltipMuatanMapelTematikheader, #tooltipketikanrppheader,
 #tooltipkaldikheader5
 {
   cursor:move;
@@ -725,9 +764,13 @@ div#tooltipkd1header {
   width: 200px;
 }
 
-#tooltipkaldik0,#tooltipkaldik1,#tooltipkaldik2,#tooltipkaldik3,#tooltipkaldik4,
+#tooltipkaldik0,#tooltipkaldik1,#tooltipkaldik2,#tooltipkaldik3,#tooltipkaldik4, #tooltipMuatanMapelTematik,
 #tooltipkaldik5{
   width: 350px;
+}
+#tooltipketikanrpp{
+  width:530px;
+  
 }
 .tooltiparahkiri0,.tooltiparahkiri1,.tooltiparahkiri2,.tooltiparahkiri3,.tooltiparahkiri4,
 .tooltiparahkiri5{
@@ -796,4 +839,29 @@ div#tooltipkd1header {
   border-bottom: 20px solid rgb(71, 71, 71);
   
   display:block;
+}
+/* cobates */
+
+input.inprpp{
+  display:none;
+}
+input[class=inprpp]+label.lblinrpp {
+  color: #000;
+  cursor: pointer
+}
+
+input[class=inprpp]:checked+label.lblinrpp::before {
+  content: " \2705"
+}
+
+input[class=inprpp]:checked+label.lblinrpp {
+  color: #00f;
+  background-color: #ff0
+}
+input.rad_custom {
+  width:20px;height:20px;position:relative;top:5px;
+}
+label.labrad_custom{
+  font-size: 14px;
+  cursor: pointer;
 }

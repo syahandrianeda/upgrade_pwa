@@ -5633,15 +5633,7 @@ const kodeidabsen = (tgl) => {
     let output = dt + "" + mo + "" + y;
     return output
 }
-function ade() {
-    let d = new Date()
-    let dt = d.getDate();
-    let m = d.getMonth() + 1;
-    let mo = addZero(m);
-    let y = d.getFullYear();
-    let output = dt + "" + mo + "" + y;
-    console.log(output)
-}
+
 const StringTanggal = (tgl) => { //parameter tgl bentuk tgl
     let m = tgl.getMonth() + 1;
     let d = tgl.getDate();

@@ -1573,3 +1573,232 @@ data-value="true">
         
         
     </div>`
+
+
+    const simpandistribusi_koleksitemaG = (row, val,semester)=>{
+        loadingtopbarin("loadingtopbar");
+        ///datakonversi ada disemester berapa
+        let arrTemaRendahGanjil = ["TEMA 1","TEMA 2","TEMA 3","TEMA 4"];
+        let arrTemaRendahGenap = ["TEMA 5","TEMA 6","TEMA 7","TEMA 8"];
+        let arrTemaTinggiGanjil = ["TEMA 1","TEMA 2","TEMA 3","TEMA 4","TEMA 5"];
+        let arrTemaTinggiGenap = ["TEMA 6","TEMA 7","TEMA 8","TEMA 9"];
+        
+        let obj = {};
+        obj.tinggi =  {"1":arrTemaTinggiGanjil,"2":arrTemaTinggiGenap};
+        obj.rendah = {"1":arrTemaRendahGanjil, "2":arrTemaRendahGenap}
+        let konftema;
+        if(id.jenjang > 3){
+            konftema = obj.tinggi;
+        }else{
+            konftema = obj.rendah;
+        }
+        let konfSemester;
+        
+        //selesai data
+        let objekserverkdsebelumnya = Object.assign({},tagkdserver.filter(s => s.row == row)[0]);
+        let arrkoleksitema = objekserverkdsebelumnya.koleksitema;
+        let arrsemester = objekserverkdsebelumnya.semester;
+        //console.log(objekserverkdsebelumnya);
+        let arrAsal = [];
+        let arrBaru =[]
+        if(arrkoleksitema !== ""){
+            arrAsal = JSON.parse(arrkoleksitema);
+            arrBaru = arrAsal;
+            if(arrAsal.indexOf(val)== -1){
+                arrBaru.push(val)
+            }
+        }else{
+            arrBaru.push(val)
+        };
+    
+        let smsBaru = []; /// mengecek semester berdasarkan tema-nya
+        for(i = 0 ; i < arrBaru.length ; i++){
+            let cek = arrBaru[i];
+            let dCek = Object.keys(konftema).filter(s => konftema[s].indexOf(cek)>-1)[0]
+            if(smsBaru.indexOf(dCek)==-1){
+                smsBaru.push(dCek)
+            }
+        }
+        // let smsAsal = [];
+        // let smsBaru = [];
+        // if(arrsemester !== ""){
+        //     smsAsal = JSON.parse(arrsemester);
+        //     smsBaru = smsAsal;
+        //     if(smsAsal.indexOf(semester) == -1){
+        //         smsBaru.push(semester)
+        //     }
+            
+        // }else{
+        //     smsBaru.push(semester)
+        // }
+    
+        let objekjadikirim = Object.assign(objekserverkdsebelumnya,{"koleksitema":JSON.stringify(arrBaru),"semester":JSON.stringify(smsBaru)});
+        let keyy = JSON.stringify(Object.keys(objekjadikirim));
+        ///idbaris = row;
+        let tabel= JSON.stringify(Object.values(objekjadikirim))
+        
+        let datakirim = new FormData();
+        datakirim.append("key",keyy);
+        datakirim.append("idbaris",row);
+        datakirim.append("tab","serverkd");
+        datakirim.append("tabel",tabel);
+        //datakirim.append("tipe",tipe);
+        fetch(urladm+"?action=simpanbarisketabidbaris",{
+            method:"post",
+            body:datakirim
+        }).then(m=>m.json())
+        .then(r => {
+            let result = r.data;
+            tagkdserver = result.filter(s => s.kelas == idJenjang);
+            let html="";
+            let tabel = document.querySelector(".tbl_distribusi_kd");
+            let tbody = tabel.getElementsByTagName("tbody")[0];
+            if(idJenjang>3){
+                html = htmldistribusikd_tematik(semester, "tinggi");
+                
+            }else{
+                
+                html = htmldistribusikd_tematik(semester, "rendah")
+            }
+            tbody.innerHTML = html;
+            
+            tooltipkd_config("tbl_distribusi_kd",semester)
+    
+            clearInterval(stoploadingtopbar);
+            let divlod = document.querySelector(".loadingtopbar");
+            divlod.style.width = "100%";
+            setTimeout(() => {
+                divlod.style.width = "1px"
+                divlod.className += " w3-hide";
+    
+            }, 3000);
+            alert("Berhasil disimpan")
+        })
+        .catch(er => console.log(er))
+        
+    };
+    const hapusdistribusi_koleksitemaG = (row, val,semester)=>{
+        loadingtopbarin("loadingtopbar");
+        let objekserverkdsebelumnya = Object.assign({},tagkdserver.filter(s => s.row == row)[0]);
+        let arrkoleksitema = objekserverkdsebelumnya.koleksitema;
+        let arrsemester = objekserverkdsebelumnya.semester;
+        //console.log(objekserverkdsebelumnya);
+        let arrAsal = [];
+        let resultakhir;
+        let arrBaru =[]
+        let prseKoleksitema = JSON.parse(arrkoleksitema);
+        let posisivalue = prseKoleksitema.indexOf(val);
+        if(prseKoleksitema.length == 1 && posisivalue == -1){
+            resultakhir = arrkoleksitema;
+        }else if(prseKoleksitema.length == 1 && posisivalue > -1){
+            resultakhir = "";
+        }else{
+            prseKoleksitema.splice(posisivalue,1);
+            resultakhir = JSON.stringify(prseKoleksitema)
+        }
+        // 
+        // if(arrkoleksitema !== ""){
+        //     arrAsal = JSON.parse(arrkoleksitema);
+        //     arrBaru = arrAsal;
+        //     if(arrAsal.indexOf(val)== -1){
+        //         arrBaru.push(val)
+        //     }
+        // }else{
+        //     arrBaru.push(val)
+        // // };
+        let smsAsal = [];
+        let smsBaru = [];
+        let resultSemester;
+        // if(arrsemester !== ""){
+        //     smsAsal = JSON.parse(arrsemester);
+        //     let posisiAda = smsAsal.indexOf(semester)
+        //     // di array semester hanya ada 1, dan satunya itu bukan semester yang saat ini dipilih, maka:
+        //     if(smsAsal.length == 1 && posisiAda == -1){
+        //         resultSemester = smsAsal;
+        //     }else if(smsAsal.length == 1 && posisiAda > -1){
+        //         //jika isi satu-satunya dari array ini sama dengan semester yang saat ini dipilih, maka:
+        //         resultSemester = ""
+        //     }else{
+        //         smsAsal.splice(posisiAda,1);
+        //         resultSemester = JSON.stringify(smsAsal);
+        //     }
+            
+        // }else{
+        //     smsBaru.push(semester)
+        // }
+        ///datakonversi ada disemester berapa
+        let arrTemaRendahGanjil = ["TEMA 1","TEMA 2","TEMA 3","TEMA 4"];
+        let arrTemaRendahGenap = ["TEMA 5","TEMA 6","TEMA 7","TEMA 8"];
+        let arrTemaTinggiGanjil = ["TEMA 1","TEMA 2","TEMA 3","TEMA 4","TEMA 5"];
+        let arrTemaTinggiGenap = ["TEMA 6","TEMA 7","TEMA 8","TEMA 9"];
+        
+        let obj = {};
+        obj.tinggi =  {"1":arrTemaTinggiGanjil,"2":arrTemaTinggiGenap};
+        obj.rendah = {"1":arrTemaRendahGanjil, "2":arrTemaRendahGenap}
+        let konftema;
+        if(id.jenjang > 3){
+            konftema = obj.tinggi;
+        }else{
+            konftema = obj.rendah;
+        }
+        
+        
+        //selesai data
+        
+        if(resultakhir ==""){
+            resultSemester = ""
+        }else{
+            let arrKo = JSON.parse(resultakhir);
+            for(i = 0 ; i < arrKo.length ; i++){
+                let tem = arrKo[i];
+                let cekTem = Object.keys(konftema).filter(s=> konftema[s].indexOf(tem)>-1)[0]
+                if(smsBaru.indexOf(cekTem)==-1){
+                    smsBaru.push(cekTem)
+                }
+            }
+            resultSemester = JSON.stringify(smsBaru);
+        }
+    
+        let objekjadikirim = Object.assign(objekserverkdsebelumnya,{"koleksitema":resultakhir,"semester":resultSemester});
+        ///idbaris = row;
+        let keyy = JSON.stringify(Object.keys(objekjadikirim));
+        let tabel= JSON.stringify(Object.values(objekjadikirim))
+        
+        let datakirim = new FormData();
+        datakirim.append("key",keyy);
+        datakirim.append("idbaris",row);
+        datakirim.append("tab","serverkd");
+        datakirim.append("tabel",tabel);
+        //datakirim.append("tipe",tipe);
+        fetch(urladm+"?action=simpanbarisketabidbaris",{
+            method:"post",
+            body:datakirim
+        }).then(m=>m.json())
+        .then(r => {
+            let result = r.data;
+            tagkdserver = result.filter(s => s.kelas == idJenjang);
+            let html="";
+            let tabel = document.querySelector(".tbl_distribusi_kd");
+            let tbody = tabel.getElementsByTagName("tbody")[0];
+            if(idJenjang>3){
+                html = htmldistribusikd_tematik(semester, "tinggi");
+                
+            }else{
+                
+                html = htmldistribusikd_tematik(semester, "rendah")
+            }
+            tbody.innerHTML = html;
+            tooltipkd_config("tbl_distribusi_kd",semester)
+            clearInterval(stoploadingtopbar);
+            let divlod = document.querySelector(".loadingtopbar");
+            divlod.style.width = "100%";
+            setTimeout(() => {
+                divlod.style.width = "1px"
+                divlod.className += " w3-hide";
+    
+            }, 3000);
+            alert("Berhasil dihapus")
+        })
+        .catch(er => console.log(er))
+        
+    };
