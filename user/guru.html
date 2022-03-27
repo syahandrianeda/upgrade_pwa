@@ -4297,6 +4297,7 @@
                                 <div style="height:500px"></div>
                             </div>
                             <div class="w3-col l10 s10 lampiran2_rpptematiknontematik w3-padding">
+                                <h4 class="w3-center" style="font-weight: bold;">Daftar Rubrik</h4>
                                 <div style="overflow-x: auto;" class="rubrik_rpp">
                                     Rubrik 1 dan Keterangannya yang dapat diunggah dalam bentuk gambar maupun teks.<br><br>
                                     Untuk menambahkan Klik tombol Tambah pada tombol di samping<br>
@@ -5332,7 +5333,7 @@ _OPSI-PG-C_1C #
         </div>
     </div>
     
-    <button onclick="document.getElementById('tooltipketikanrpp').style.display='block'">CEK MODAL</button>
+    <button onclick="document.getElementById('tooltipkalendernontematik').style.display='block'">CEK MODAL</button>
     <!-- <button onclick="document.getElementById('tooltipkdmapel').style.display='block'">Tess</button>
     <button onclick="htmldistribusikd_tematik()">Cek ArrObj</button>
     <button onclick="gabungdataserverkd()">Gabung OBjek KD</button> -->
@@ -5458,7 +5459,7 @@ _OPSI-PG-C_1C #
         </div>
         <div class="w3-margin-top w3-border-top tooltipkaldik_tempattgl0 w3-tiny">
             <span class="ubahtambah_tooltipkaldik0"></span>:
-            Keterangan Kalendar:<br>
+            Keterangan Kalender:<br>
             <input type="text" class="w3-input w3-margin-bottom" id="ket_tooltipkaldik0" placeholder="Ketikan keterangan di sini ..."/>
             
             <div class="w3-center">
@@ -5486,7 +5487,7 @@ _OPSI-PG-C_1C #
         </div>
         <div class="w3-margin-top w3-border-top tooltipkaldik_tempattgl1 w3-tiny">
             <span class="ubahtambah_tooltipkaldik1"></span>:
-            Keterangan Kalendar:<br>
+            Keterangan Kalender:<br>
             <input type="text" class="w3-input w3-margin-bottom" id="ket_tooltipkaldik1" placeholder="Ketikan keterangan di sini ..."/>
             
             <div class="w3-center">
@@ -5513,7 +5514,7 @@ _OPSI-PG-C_1C #
         </div>
         <div class="w3-margin-top w3-border-top tooltipkaldik_tempattgl2 w3-tiny">
             <span class="ubahtambah_tooltipkaldik2"></span>:
-            Keterangan Kalendar:<br>
+            Keterangan Kalender:<br>
             <input type="text" class="w3-input w3-margin-bottom" id="ket_tooltipkaldik2" placeholder="Ketikan keterangan di sini ..."/>
             <!-- Tanggal :
             <input type="date" class="w3-input" id="date_tooltipkaldik2" /> -->
@@ -5541,7 +5542,7 @@ _OPSI-PG-C_1C #
         </div>
         <div class="w3-margin-top w3-border-top tooltipkaldik_tempattgl3 w3-tiny">
             <span class="ubahtambah_tooltipkaldik3"></span>:
-            Keterangan Kalendar:<br>
+            Keterangan Kalender:<br>
             <input type="text" class="w3-input w3-margin-bottom" id="ket_tooltipkaldik3" placeholder="Ketikan keterangan di sini ..."/>
             <!-- Tanggal :
             <input type="date" class="w3-input" id="date_tooltipkaldik3" /> -->
@@ -5569,7 +5570,7 @@ _OPSI-PG-C_1C #
         </div>
         <div class="w3-margin-top w3-border-top tooltipkaldik_tempattgl4 w3-tiny">
             <span class="ubahtambah_tooltipkaldik4"></span>:
-            Keterangan Kalendar:<br>
+            Keterangan Kalender:<br>
             <input type="text" class="w3-input w3-margin-bottom" id="ket_tooltipkaldik4" placeholder="Ketikan keterangan di sini ..."/>
             <!-- Tanggal :
             <input type="date" class="w3-input" id="date_tooltipkaldik4" /> -->
@@ -5597,7 +5598,7 @@ _OPSI-PG-C_1C #
         </div>
         <div class="w3-margin-top w3-border-top tooltipkaldik_tempattgl5 w3-tiny">
             <span class="ubahtambah_tooltipkaldik5"></span>:
-            Keterangan Kalendar:<br>
+            Keterangan Kalender:<br>
             <input type="text" class="w3-input w3-margin-bottom" id="ket_tooltipkaldik5" placeholder="Ketikan keterangan di sini ..."/>
             <!-- Tanggal :
             <input type="date" class="w3-input" id="date_tooltipkaldik5" /> -->
@@ -5685,10 +5686,11 @@ _OPSI-PG-C_1C #
         <div id="tooltipketikanrppheader">Geser</div>
             <div class="w3-container w3-tiny">
                 Tag:
-                <span class="situasibuat_tooltipketikanrpp w3-button">Baru/Edit</span>
-                <span class="tematiknontematik_tooltipketikanrpp w3-button">tematik</span>
-                <span class="semester_tooltipketikanrpp w3-button">semester</span>
-                <span class="temammapel_tooltipketikanrpp w3-button">tagfokus</span>
+                <span class="situasibuat_tooltipketikanrpp w3-button" title="Situasi">Baru/Edit</span>
+                <span class="tematiknontematik_tooltipketikanrpp w3-button" title="Tematik/nontematik">tematik</span>
+                <span class="semester_tooltipketikanrpp w3-button" title="Semester">semester</span>
+                <span class="temammapel_tooltipketikanrpp w3-button" title="tema/mapel">tagfokus</span>
+                <span class="barisdatabase_tooltipketikanrpp w3-button" title="barisdatabase">baris</span>
             </div>
             <div class="informasi_tooltiprpp w3-round-large w3-border w3-padding w3-center"></div>
             <div class="w3-container w3-border w3-padding tooltipketikanrpp_jp w3-tiny">
@@ -5710,12 +5712,16 @@ _OPSI-PG-C_1C #
                     <label for="radiorubriktipe4" class="labrad_custom">
                         <input type="radio" id="radiorubriktipe4" name="pilihansampelrubrik" value="tipe4" class="rad_custom" onchange="onC_rubrik(this)">Tipe 4
                     </label>
+                    <label for="radiorubriktipe5" class="labrad_custom">
+                        <input type="radio" id="radiorubriktipe5" name="pilihansampelrubrik" value="tipe5" class="rad_custom" onchange="onC_rubrik(this)">Tipe 5
+                    </label>
                 </div>
                 <div class="previewpilihanrubrik w3-hide w3-margin-top w3-center">
                     <img src="/img/rubrik1.PNG" class="w3-round-large gambarseluruhrubrik" id="sampelrubriktipe1" style="max-width:350px">
                     <img src="/img/rubrik2.PNG" class="w3-round-large gambarseluruhrubrik" id="sampelrubriktipe2" style="max-width:350px">
                     <img src="/img/rubrik3.PNG" class="w3-round-large gambarseluruhrubrik" id="sampelrubriktipe3" style="max-width:350px">
-                    <img src="/img/rubrik3.PNG" class="w3-round-large gambarseluruhrubrik" id="sampelrubriktipe4" style="max-width:350px">
+                    <img src="/img/rubrik4.PNG" class="w3-round-large gambarseluruhrubrik" id="sampelrubriktipe4" style="max-width:350px">
+                    <img src="/img/rubrik5.PNG" class="w3-round-large gambarseluruhrubrik" id="sampelrubriktipe5" style="max-width:350px">
                 </div>
             </div>
             <div class="w3-container w3-margin-top w3-border-top">
@@ -5790,6 +5796,21 @@ _OPSI-PG-C_1C #
                 <button class="simpanserver_tooltipketikanrpp w3-button w3-green" title="simpan"><i class="fa fa-save"></i> </button>
             </div>
     </div>
+    <div id="tooltipkalendernontematik">
+        <div id="tooltipkalendernontematikheader">Geser
+            <span class="w3-button w3-red w3-right" onclick="document.getElementById('tooltipkalendernontematik').style.display='none'">&times</span>
+        </div>
+        <div class="tooltipkalendernontematik_info w3-tiny">
+            Info: <br><br>
+            Atur JP di menu Kalender Pendidikan &gt;&gt; submenu Sebaran Hari efektif
+        </div>
+        <div class="w3-container w3-center w3-small">
+            <input type="number" class="w3-input jprpp_pelaksanaannontematik w3-margin-bottom" placeholder="masukkan angka Jam Pelajaran">
+            <input type="date" class="w3-input daterpp_pelaksanaannontematik">
+            <button class="w3-button w3-green w3-round-large simpandaterpp_pelaksanaannontematik"><i class="fa fa-save"></i> Tetapkan di seluruh titimangsa</button>
+        </div>
+    </div>
+
     <button class="w3-button" style="position: fixed;bottom:5px;right:0;z-index:3" onclick="window.scrollTo({ top: 43, behavior: 'smooth' })"><i class="fa fa-arrow-up"></i></button>
     <script src="/statis/app.js"></script>
     <script src="/statis/exceltabel.js"></script>

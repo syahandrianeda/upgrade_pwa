@@ -212,7 +212,7 @@
             
             let imgs = doctooltip.querySelectorAll("img");
             imgs.forEach(item => {
-                item.style.maxWidth ="300px";
+                item.style.maxWidth ="1000px";
             })
             clearInterval(stoploadingtopbar);
             let divlod = document.querySelector(".loadingtopbar");

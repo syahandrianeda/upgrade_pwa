@@ -1,5 +1,4 @@
 
-
 const chg_rppsampai = ()=>{
     let ck = document.querySelector("#rpp_tglsampai")
     let dv = document.querySelector("#dv_tglsampai")
@@ -422,4 +421,7 @@ function tabA(evt, cityName) {
     }
     document.getElementById(cityName).style.display = "block";
     evt.currentTarget.className += " w3-green";
+    if(evt.currentTarget.innerHTML == "Database RPP"){
+        console.log("Anda fokus ke TAB Database RPP");
+    }
 }

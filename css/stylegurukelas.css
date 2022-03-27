@@ -620,7 +620,7 @@ div.denom {
   font-size: 10px;
 }
 #tooltiptabel, #tooltiptabelall, #tooltipkd1,#tooltipkdmapel,#tooltipkaldik0, #tooltipkaldik1, 
-#tooltipkaldik2, #tooltipkaldik3, #tooltipkaldik4, #tooltipHBE, #tooltipMuatanMapelTematik,#tooltipketikanrpp,
+#tooltipkaldik2, #tooltipkaldik3, #tooltipkaldik4, #tooltipHBE,#tooltipkalendernontematik, #tooltipMuatanMapelTematik,#tooltipketikanrpp,
 #tooltipkaldik5{
   position: absolute;
   display: none;
@@ -719,7 +719,7 @@ div.denom {
   
   display:block;
 }
-#tooltiptabel:after, #tooltiptabelall:after, #tooltipkd1:after, #tooltipMuatanMapelTematik:after{
+#tooltiptabel:after, #tooltiptabelall:after, #tooltipkd1:after, #tooltipMuatanMapelTematik:after,#tooltipkalendernontematik:after{
   content: "";
   position:absolute;
   
@@ -743,7 +743,7 @@ div.denom {
 #tooltipkaldikheader2,
 #tooltipkaldikheader3,
 #tooltipkaldikheader4, #tooltipHBEheader, #tooltipMuatanMapelTematikheader, #tooltipketikanrppheader,
-#tooltipkaldikheader5
+#tooltipkaldikheader5,#tooltipkalendernontematikheader
 {
   cursor:move;
 }
@@ -765,7 +765,7 @@ div#tooltipkd1header {
 }
 
 #tooltipkaldik0,#tooltipkaldik1,#tooltipkaldik2,#tooltipkaldik3,#tooltipkaldik4, #tooltipMuatanMapelTematik,
-#tooltipkaldik5{
+#tooltipkaldik5,#tooltipkalendernontematik{
   width: 350px;
 }
 #tooltipketikanrpp{
