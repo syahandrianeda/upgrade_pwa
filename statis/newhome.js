@@ -57,10 +57,7 @@ if (tapel_bulan_ini >= 6) {
                 let count = k.result.length;
                 //console.log(count)
                 for(let i = 0 ; i < count ; i++){
-                    html += `<div class="mySlides w3-animate-fading container2">
-                    <img src="https://drive.google.com/uc?export=view&id=${dd[i].idpoto_potoguru}" style="width:280px" class="w3-circle"/>
-                    <div class="container2 content2"> ${dd[i].guru_namalengkap}<br>${dd[i].gurukelas_gmp}  ${dd[i].kelasampu == "Kepala Sekolah"?"":dd[i].kelas} </div>
-                  </div>`;
+                    html += `<div class="mySlides w3-animate-fading container2"><img alt="potoprofilguruke-${(i+1)}" src="https://drive.google.com/uc?export=view&id=${dd[i].idpoto_potoguru}" style="width:280px" class="w3-circle"/><div class="container2 content2"> ${dd[i].guru_namalengkap}<br>${dd[i].gurukelas_gmp}  ${dd[i].kelasampu == "Kepala Sekolah"?"":dd[i].kelas} </div></div>`;
                 }
                 document.querySelector(".potopotoguru").innerHTML = html;
                 var myIndex = 0;
@@ -268,7 +265,8 @@ const edurapilihlogin = ()=>{
       tablinks[i].className = tablinks[i].className.replace(" w3-dark-grey", "");
     }
     document.getElementById(menuName).style.display = "block";
-    evt.currentTarget.firstElementChild.className += " w3-dark-grey";
+    // evt.currentTarget.firstElementChild.className += " w3-dark-grey";
+    evt.currentTarget.className += " w3-dark-grey";
   }
   document.getElementById("myLink").click();
 

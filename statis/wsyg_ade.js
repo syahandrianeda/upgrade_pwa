@@ -1,6 +1,7 @@
 let urladm = jlo.ss_datanilai;
 let petakd_semster="";
 let tagrppserver;
+
 const arrTagAdm = ["0","prota","prosem","silabus","rpp","kisi-kisi","petakd","sebarankd","soal","ph","pts","pak","pat","perbaikan","pengayaan","kkm","notularapat","kaldik"];
 const arrVersi = ["0","Mata Pelajaran","Tematik","Subtema","Pembelajaran","sebaran KD per tema","sebaran KD per semester","kaldik","HBE"]
 
@@ -2457,7 +2458,7 @@ select_prota.addEventListener("change",async()=>{
     document.querySelector(".spanprota_titimangsa").innerHTML = "14 Juli 2021";
     document.querySelector(".spanprota_gmpkelas").innerHTML = idJenisGuru +" " + idgurumapelmapel;
     document.querySelector(".spanprota_namaguru").innerHTML = namauser;
-    document.querySelector(".spanprota_nipguru").innerHTML = "NIP. " + idNipGuruKelas;
+    document.querySelector(".spanprota_nipguru").innerHTML = idNipGuruKelas==""?"-":"NIP. "+idNipGuruKelas;
     /// Untuk parameter Tombol Simpan Server ;
     //onclick="serveradm('prt_prota_mapel',1,2)" class="btnserver_protatematik
     let btnserver = document.querySelector(".btnserver_protamapel");
@@ -2519,7 +2520,7 @@ select_prosem.addEventListener("change",async()=>{
     document.querySelector(".spanprosemmapel_titimangsa").innerHTML = "14 Juli 2021";
     document.querySelector(".spanprosemmapel_gmpkelas").innerHTML = idJenisGuru +" " + idgurumapelmapel;
     document.querySelector(".spanprosemmapel_namaguru").innerHTML = namauser;
-    document.querySelector(".spanprosemmapel_nipguru").innerHTML = "NIP. " + idNipGuruKelas;
+    document.querySelector(".spanprosemmapel_nipguru").innerHTML = idNipGuruKelas==""?"-":"NIP. "+idNipGuruKelas;
     
     /// INI MENGAMBIL DATA YANG BELUM PERNAH DIBUAT
     let btnserver = document.querySelector(".btnserver_prosemmapel");
@@ -2584,7 +2585,7 @@ select_prosemtematik.addEventListener("change",async()=>{
     document.querySelector(".spanprosemtematik_titimangsa").innerHTML = "14 Juli 2021";
     document.querySelector(".spanprosemtematik_gmpkelas").innerHTML = idJenisGuru +" " + idgurumapelmapel;
     document.querySelector(".spanprosemtematik_namaguru").innerHTML = namauser;
-    document.querySelector(".spanprosemtematik_nipguru").innerHTML = "NIP. " + idNipGuruKelas;
+    document.querySelector(".spanprosemtematik_nipguru").innerHTML = idNipGuruKelas==""?"-":"NIP. "+idNipGuruKelas;
     
     /// INI MENGAMBIL DATA YANG BELUM PERNAH DIBUAT
     let btnserver = document.querySelector(".btnserver_prosemtematik");
@@ -3440,7 +3441,7 @@ select_protatematik.addEventListener("change",()=>{
     document.querySelector(".spanprotatematik_titimangsa").innerHTML = "14 Juli 2021";
     document.querySelector(".spanprotatematik_gmpkelas").innerHTML = idJenisGuru +" " + idgurumapelmapel;
     document.querySelector(".spanprotatematik_namaguru").innerHTML = namauser;
-    document.querySelector(".spanprotatematik_nipguru").innerHTML = "NIP. " + idNipGuruKelas;
+    document.querySelector(".spanprotatematik_nipguru").innerHTML = idNipGuruKelas==""?"-":"NIP. "+idNipGuruKelas;
     //configTooltipAlltable('tabel_prota_tematik',8,false);
     configTooltip("tabel_prota_tematik",true)
     /// Untuk parameter Tombol Simpan Server ;
@@ -4031,7 +4032,7 @@ function rdpetakd_semester (x){
         ttd_titimangsa.innerHTML = tanggalfull(new Date());
         ttd_ketguru.innerHTML = idJenisGuru +" "+ idgurumapelmapel;
         ttd_namaguru.innerHTML = namauser;
-        ttd_nipguru.innerHTML = "NIP. " + idNipGuruKelas;
+        ttd_nipguru.innerHTML = idNipGuruKelas==""?"-":"NIP. "+idNipGuruKelas;
 
         let html = "";
         let tbh = "";
@@ -4107,7 +4108,7 @@ function rdpetakd_temamapel  (x){
         ttd_titimangsa.innerHTML = tanggalfull(new Date());
         ttd_ketguru.innerHTML = idJenisGuru +" "+ idgurumapelmapel;
         ttd_namaguru.innerHTML = namauser;
-        ttd_nipguru.innerHTML = "NIP. " + idNipGuruKelas;
+        ttd_nipguru.innerHTML = idNipGuruKelas==""?"-":"NIP. "+idNipGuruKelas;
 
         let html = "";
         let tbh = "";
@@ -5588,7 +5589,7 @@ select_sebarankdpertema.addEventListener("change",()=>{
     titimangsa_sebarankdpertema.innerHTML = tanggalfull(new Date());
     gmpkelas_sebarankdpertema.innerHTML = idJenisGuru +" " + idgurumapelmapel;
     namaguru_sebarankdpertema.innerHTML = namauser;
-    nipguru_sebarankdpertema.innerHTML = "NIP. " + idNipGuruKelas;
+    nipguru_sebarankdpertema.innerHTML = idNipGuruKelas==""?"-":"NIP. "+idNipGuruKelas;
     ttdnipkepsek_sebarankdpertema.innerHTML = "NIP. "+idNipKepsek;
 
     htmlpetakd_sebaranpertema(v,bolkd);
@@ -5885,7 +5886,7 @@ const htmlsebaransemester = (semester,booleankd) =>{
     titimangsa_sebarankdpersemester.innerHTML = tanggalfull(new Date());
     gmpkelas_sebarankdpersemester.innerHTML = idJenisGuru +" " + idgurumapelmapel;
     namaguru_sebarankdpersemester.innerHTML = namauser;
-    nipguru_sebarankdpersemester.innerHTML = "NIP. " + idNipGuruKelas;
+    nipguru_sebarankdpersemester.innerHTML = idNipGuruKelas==""?"-":"NIP. "+idNipGuruKelas;
     let htmlT = "";
     let htmlB = "";
     let htmlFt = "";
@@ -6171,7 +6172,7 @@ admkaldik_pilihSemester.forEach(el=>{
         let h3_admkaldik = document.querySelector(".h3_admkaldik");
         let h4_admkaldik = document.querySelector(".h4_admkaldik");
         let div_ttd = document.querySelector(".ttd_admkaldik")
-        div_ttd.innerHTML = `<div class="w3-row w3-margin-top"><div class="w3-col l6 s6 w3-center">Mengetahui,<br>Kepala ${idNamaSekolah}<br><br><br><br><u><b>${idNamaKepsek}</b></u><br>NIP. ${idNipKepsek}</div><div class="w3-col l6 s6 w3-center">Depok, ${tanggalfull(new Date())}<br>${idJenisGuru} ${idgurumapelmapel}<br><br><br><br><u><b>${namauser}</b></u><br>NIP. ${idNipGuruKelas}</div>`;
+        div_ttd.innerHTML = `<div class="w3-row w3-margin-top"><div class="w3-col l6 s6 w3-center">Mengetahui,<br>Kepala ${idNamaSekolah}<br><br><br><br><u><b>${idNamaKepsek}</b></u><br>NIP. ${idNipKepsek}</div><div class="w3-col l6 s6 w3-center">Depok, ${tanggalfull(new Date())}<br>${idJenisGuru} ${idgurumapelmapel}<br><br><br><br><u><b>${namauser}</b></u><br>${idNipGuruKelas==""?"-":"NIP. "+idNipGuruKelas}</div>`;
         h3_admkaldik.innerHTML = "KALENDER PENDIDIKAN "+idNamaSekolah.toUpperCase();
         h4_admkaldik.innerHTML = "TAHUN PELAJARAN "+idTeksTapel+" SEMESTER " + v;
 
@@ -6290,7 +6291,7 @@ const KalendarPerSemester = (v)=>{
         h3_admkaldik.innerHTML = "KALENDER PENDIDIKAN "+idNamaSekolah.toUpperCase();
         h4_admkaldik.innerHTML = "TAHUN PELAJARAN "+idTeksTapel+" SEMESTER " + v;
         let div_ttd = document.querySelector(".ttd_admkaldik")
-        div_ttd.innerHTML = `<div class="w3-row w3-margin-top"><div class="w3-col l6 s6 w3-center">Mengetahui,<br>Kepala ${idNamaSekolah}<br><br><br><br><u><b>${idNamaKepsek}</b></u><br>NIP. ${idNipKepsek}</div><div class="w3-col l6 s6 w3-center">Depok, ${tanggalfull(new Date())}<br>${idJenisGuru} ${idgurumapelmapel}<br><br><br><br><u><b>${namauser}</b></u><br>NIP. ${idNipGuruKelas}</div>`;
+        div_ttd.innerHTML = `<div class="w3-row w3-margin-top"><div class="w3-col l6 s6 w3-center">Mengetahui,<br>Kepala ${idNamaSekolah}<br><br><br><br><u><b>${idNamaKepsek}</b></u><br>NIP. ${idNipKepsek}</div><div class="w3-col l6 s6 w3-center">Depok, ${tanggalfull(new Date())}<br>${idJenisGuru} ${idgurumapelmapel}<br><br><br><br><u><b>${namauser}</b></u><br>${idNipGuruKelas==""?"-":"NIP. "+idNipGuruKelas}</div>`;
 
         let bulan;
         for(i =0 ; i < tabel.length ; i++){
@@ -6886,7 +6887,7 @@ const html_admkaldikHEB_pilihSemester = (semester)=>{
         document.querySelector(".titimangsa_admHBE").innerHTML = tanggalfull(new Date());
         document.querySelector(".jenisguru_admHBE").innerHTML = idJenisGuru + " " + idgurumapelmapel;
         document.querySelector(".namaguru_admHBE").innerHTML = namauser;
-        document.querySelector(".nipguru_admHBE").innerHTML = idNipGuruKelas;
+        document.querySelector(".nipguru_admHBE").innerHTML = idNipGuruKelas==""?"-":"NIP. "+idNipGuruKelas;
         
         
         
@@ -7837,8 +7838,18 @@ admtentatif_pilihSemester.forEach(el=>{
         switch_jadpem_semester = el.value;
     }
     el.addEventListener("change",()=>{
-        
+        // khusus gmp
+        if(window.location.href.indexOf("gmp.html")>-1){
+            rd_nontematik.forEach(el=>{
+                if(el.checked){
+                    switch_jikamapel = el.value
+                }
+            })
+            switch_jadwalmpelkalender = false;
+        }
+        // selesai khusus gmp
         switch_jadpem_semester = el.value;
+
         // console.log(switch_jadpem_semester);
         // console.log(switch_jadwalmpelkalender);
         html_jadwalpelajaran_kaldik(switch_jadwalmpelkalender,switch_jadpem_semester,switch_htmlsubtema4,switch_jikamapel);
@@ -7863,6 +7874,7 @@ const switchjadpemb = (el)=>{
     }else{
         switch_jadwalmpelkalender = false;
         document.getElementById("ketswitchjadpemb").innerHTML = "MATA PELAJARAN";
+        
         pilihanmapel.classList.remove("w3-hide");
         
         if(problem_subtema4.className.indexOf("w3-hide")==-1){
@@ -7925,7 +7937,7 @@ const html_jadwalpelajaran_kaldik = async (booleanTema, semester, w_st4, n_mapel
         document.querySelector(".titimangsa_jadwalkadik").innerHTML = tanggalfull(new Date());
         document.querySelector(".jenisguru_jadwalkadik").innerHTML = idJenisGuru + " " + idgurumapelmapel;
         document.querySelector(".namaguru_jadwalkadik").innerHTML = namauser;
-        document.querySelector(".nipguru_jadwalkadik").innerHTML = idNipGuruKelas;
+        document.querySelector(".nipguru_jadwalkadik").innerHTML = idNipGuruKelas==""?"-":"NIP. "+idNipGuruKelas;
     let divHtml = document.querySelector(".tentatif_sebarantematik");
     
     let html ="";
@@ -8197,7 +8209,7 @@ const html_jadwalpelajaran_kaldik = async (booleanTema, semester, w_st4, n_mapel
             alert("Maaf, Anda tidak bisa melihat Jadwal Pelajaran mata pelajaran ini karena Anda belum mengatur PERHITUNGAN JUMLAH BELAJAR EFEKTIF TIAP MATA PELAJARAN di submenu 'SEBARAN HARI EFEKTIF'")
             return
         }
-        console.log(JPMP);
+        //console.log(JPMP);
         let hrBljr = JPMP.map(m => Object.fromEntries(Object.entries(m).filter(([k,v])=> k.indexOf("jp_")>-1 && v !=="")))[0];
         let kodehari = Object.keys(hrBljr);
         if(kodehari.length == 0){
@@ -8808,7 +8820,7 @@ const buatrppawal = () =>{
     dsgnrpp_namaguru.forEach(el=> el.innerHTML = namauser);
     
     let dsgnrpp_nipguru = document.querySelectorAll(".dsgnrpp_nipguru");
-    dsgnrpp_nipguru.forEach(el=> el.innerHTML = idNipGuruKelas);
+    dsgnrpp_nipguru.forEach(el=> el.innerHTML = idNipGuruKelas==""?"-":"NIP. "+idNipGuruKelas);
     /// FOKUS INFO
     // console.log("tagrpp_semester")
     // console.log(tagrpp_semester)
@@ -9331,7 +9343,7 @@ const htmlrpp_dariserver = (row) =>{
     dsgnrpp_namakepsek.forEach(el=> el.innerHTML = idNamaKepsek);
     dsgnrpp_nipkepsek.forEach(el=> el.innerHTML = idNipKepsek);
     dsgnrpp_namaguru.forEach(el=> el.innerHTML = namauser);
-    dsgnrpp_nipguru.forEach(el=> el.innerHTML = idNipGuruKelas);
+    dsgnrpp_nipguru.forEach(el=> el.innerHTML = idNipGuruKelas==""?"-":"NIP. "+idNipGuruKelas);
     
     // IDENTITAS BERDASARKAN TEMATIK/NONTEMATIK
     let div_muatanterpadu =  document.querySelectorAll(".koleksimapel_muatanterpaduMP");
@@ -10059,7 +10071,7 @@ const htmllampiran_rubrik = (rubrikkode,indekrubrik) =>{
     <div class="flag w3-blue">Lampiran ${(indekrubrik+3)}</div>
     <h6>Daftar Nilai Rubrik ke-${(indekrubrik+1)}</h6>
     <div class="w3-border w3-round-large w3-margin-bottom w3-tiny w3-padding">
-        Kriteria rubrik ada di lampiran 2 RPP ini</div></div>
+        Kriteria rubrik ada di Lampiran Rubrik RPP ini</div></div>
     <div class="w3-col l10 s10 w3-padding">
     <h4 class="w3-center">Daftar Nilai Rubrik ke-${(indekrubrik+1)}</h4>
         <div style="overflow-x:auto">`;

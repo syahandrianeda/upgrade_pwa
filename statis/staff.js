@@ -11527,6 +11527,7 @@ const btn_historimedia = () =>{
 }
 
 
+
 function ubahhalaman(hal){
     //validasi jumlah halaman dulu
     //jika hal <1, misalnya nol, maka balikin lagi hal = 1

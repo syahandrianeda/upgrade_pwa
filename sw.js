@@ -1,5 +1,5 @@
-const staticCacheName = "st146";
-const dynamicChace = "din1146";
+const staticCacheName = "st1230";
+const dynamicChace = "din1230";
 
 const assets = [
     "/",
@@ -32,6 +32,7 @@ const assets = [
     "/img/pngegg%20(14).png",
     "/img/pngegg%20(2).png",
     "/img/pngegg%20(3).png",
+    "/img/pngegg%20(4).png",
     "/img/akarkuadrat.PNG",
     "/img/akarkubik.PNG",
     "/img/lg_absensi.png",
@@ -49,7 +50,8 @@ const assets = [
     "/img/galeri.jpg",
     "/img/studio.png",
     "/img/googlemeet.png",
-    "/img/hero-bg.png","/img/arsipsurat.jpg",
+    "/img/hero-bg.png",
+    "/img/arsipsurat.jpg",
 
 
     "/statis/app.js",
@@ -70,8 +72,6 @@ const assets = [
     "/statis/dataakreditasi.json",
     "/statis/wsyg_ade.js",
     "/statis/newhome.js",
-    "/statis/quill-upload-image.js",
-    "/statis/image-resize.min.js",
     "/statis/rpp.js",
     "/statis/barcode.js",
     "/statis/editortooltip.js",

@@ -391,6 +391,7 @@ function tampilinsublamangurukelas(fitur) {
         dataprofilsekolah.style.display = "none";
         divgaleri.style.display = "none";
         divsuratsurat.style.display = "none";
+        divpkks.style.display = "none";
         document.querySelector(".btntab_dataguru").click();
         window.scrollTo({ top: y, behavior: 'smooth' });
 
@@ -406,6 +407,7 @@ function tampilinsublamangurukelas(fitur) {
         dataprofilsekolah.style.display = "none";
         divgaleri.style.display = "none";
         divsuratsurat.style.display = "none";
+        divpkks.style.display = "none";
         window.scrollTo({ top: y, behavior: 'smooth' });
 
     }
@@ -421,7 +423,7 @@ function tampilinsublamangurukelas(fitur) {
         dataprofilsekolah.style.display = "none";
         divgaleri.style.display = "none";
         divsuratsurat.style.display = "none"; 
-        
+        divpkks.style.display = "none";
         window.scrollTo({ top: 43, behavior: 'smooth' });
 
     } else if (fitur == "pembelajaran") {
@@ -436,6 +438,7 @@ function tampilinsublamangurukelas(fitur) {
         dataprofilsekolah.style.display = "none";
         divgaleri.style.display = "none";
         divsuratsurat.style.display = "none";
+        divpkks.style.display = "none";
         window.scrollTo({ top: y, behavior: 'smooth' });
     } else if (fitur == "kurikulum") {
         datakelassaya.style.display = "none";
@@ -449,6 +452,7 @@ function tampilinsublamangurukelas(fitur) {
         dataprofilsekolah.style.display = "none";
         divgaleri.style.display = "none";
         divsuratsurat.style.display = "none";
+        divpkks.style.display = "none";
         window.scrollTo({ top: y, behavior: 'smooth' });
     } else if (fitur == "mapel") {
         datakelassaya.style.display = "none";
@@ -462,6 +466,7 @@ function tampilinsublamangurukelas(fitur) {
         dataprofilsekolah.style.display = "none";
         divgaleri.style.display = "none";
         divsuratsurat.style.display = "none";
+        divpkks.style.display = "none";
         window.scrollTo({ top: y, behavior: 'smooth' });
         
         
@@ -478,7 +483,7 @@ function tampilinsublamangurukelas(fitur) {
         divgaleri.style.display = "none";
         dataprofilsekolah.style.display = "none";
         divsuratsurat.style.display = "none";
-        
+        divpkks.style.display = "none";
         window.scrollTo({ top: y, behavior: 'smooth' });
     }
     else if (fitur == "akreditasi") {
@@ -493,6 +498,7 @@ function tampilinsublamangurukelas(fitur) {
         divgaleri.style.display = "none";
         dataprofilsekolah.style.display = "none";
         divsuratsurat.style.display = "none";
+        divpkks.style.display = "none";
         window.scrollTo({ top: y, behavior: 'smooth' });
     }
     else if (fitur == "meme") {
@@ -507,7 +513,7 @@ function tampilinsublamangurukelas(fitur) {
         dataframekreatif.style.display = "block";
         dataprofilsekolah.style.display = "none";
         divsuratsurat.style.display = "none";
-
+        divpkks.style.display = "none";
 
         window.scrollTo({ top: y, behavior: 'smooth' });
     }else if (fitur == "profilesekolah") {
@@ -522,7 +528,7 @@ function tampilinsublamangurukelas(fitur) {
         divsuratsurat.style.display = "none";
         dataakreditasi.style.display = "none";
         divsuratsurat.style.display = "none";
-        
+        divpkks.style.display = "none";
         window.scrollTo({ top: y, behavior: 'smooth' });
 
 
@@ -540,6 +546,7 @@ function tampilinsublamangurukelas(fitur) {
         
         dataprofilsekolah.style.display = "none";
         divgaleri.style.display = "block";
+        divpkks.style.display = "none";
         window.scrollTo({ top: y, behavior: 'smooth' });
     }else if (fitur == "surat") {
         datakelassaya.style.display = "none";
@@ -551,6 +558,22 @@ function tampilinsublamangurukelas(fitur) {
         dataakreditasi.style.display = "none";
         
         divsuratsurat.style.display = "block";
+        
+        dataprofilsekolah.style.display = "none";
+        divgaleri.style.display = "none";
+        divpkks.style.display = "none";
+        window.scrollTo({ top: y, behavior: 'smooth' });
+    }else if (fitur == "pkks") {
+        datakelassaya.style.display = "none";
+        dataabsensi.style.display = "none";
+        datapembelajaran.style.display = "none";
+        datakurikulum.style.display = "none";
+        datanilaimapel.style.display = "none";
+        datakehadiranguru.style.display = "none";
+        dataakreditasi.style.display = "none";
+        
+        divsuratsurat.style.display = "none";
+        divpkks.style.display = "block";
         
         dataprofilsekolah.style.display = "none";
         divgaleri.style.display = "none";
@@ -6352,6 +6375,7 @@ const atributgaleri = () =>{
     ret.nol = nol;
     return ret;
 }
+
 const galery = async() => {
     
     loadingtopbarin("loadingtopbar");
@@ -6380,29 +6404,31 @@ const galery = async() => {
         let dt = r.data.filter(s => s.status !== "hapus");
         jsongaleridihapus = dtt.filter(s=> s.status == "hapus");
         jsongaleri = dtt.filter(s=> s.status !== "hapus");
-        
+        objGaleri = jsongaleri.reverse();
         if(res > 1){
-            for(i = dt.length-1 ;  i>=0;i--){
-                let d = dt[i];
-                let hh = cekpreviewupload2(d.tipe,d.idfile);
-                html +=`<div class="w3-col l2" style="height: 270px;">
-                <div class="isigaleri">
-                    ${hh}
-                    <div class="overlaygaleri">
-                    Tgl ${tanggalfull(new Date(d.tglkejadian))}
-                        <div class="w3-text-white w3-margin">${d.keterangan}</div>
-                        <div class="w3-text-white w3-margin w3-tiny">Ditambahkan oleh: <br> ${d.oleh}</div>
-                        <div class="w3-white w3-margin w3-tiny">${d.tags}</div>
-                    <div class="textgaleri">
-                            <button onclick="window.open('https://drive.google.com/file/d/${d.idfile}/view?usp=drivesdk','', 'width=720,height=600')">Detail</button>
-                            <button onclick="hapusgaleri(${d.idbaris})">Hapus</button>
+            document.querySelector(".paginationgalery").style.display = "block";
+            ubahhalaman(1);
+            // for(i = dt.length-1 ;  i>=0;i--){
+            //     let d = dt[i];
+            //     let hh = cekpreviewupload2(d.tipe,d.idfile);
+            //     html +=`<div class="w3-col l2" style="height: 270px;">
+            //     <div class="isigaleri">
+            //         ${hh}
+            //         <div class="overlaygaleri">
+            //         Tgl ${tanggalfull(new Date(d.tglkejadian))}
+            //             <div class="w3-text-white w3-margin">${d.keterangan}</div>
+            //             <div class="w3-text-white w3-margin w3-tiny">Ditambahkan oleh: <br> ${d.oleh}</div>
+            //             <div class="w3-white w3-margin w3-tiny">${d.tags}</div>
+            //         <div class="textgaleri">
+            //                 <button onclick="window.open('https://drive.google.com/file/d/${d.idfile}/view?usp=drivesdk','', 'width=720,height=600')">Detail</button>
+            //                 <button onclick="hapusgaleri(${d.idbaris})">Hapus</button>
                             
-                        </div>
-                      </div>
-                </div>
-            </div>`;
-            }
-            ttbody.innerHTML = html;
+            //             </div>
+            //           </div>
+            //     </div>
+            // </div>`;
+            // }
+            // ttbody.innerHTML = html;
         }
         
         
@@ -6509,6 +6535,14 @@ const cekpreviewupload2 = (tipe,idfile) =>{
     return res
 
 }
+let pageini=1, jumlahperpage=12;
+let objGaleri;
+let divresultgaleri = document.querySelector(".tempatgaleri");
+let tombl_next = document.querySelector(".tombl_next");
+let tombl_prev = document.querySelector(".tombl_prev");
+let tombl_last = document.querySelector(".tombl_last");
+let tombl_first = document.querySelector(".tombl_first");
+let spangal_pages = document.querySelector(".spangal_pages");
 let objekfileunggahmultiple = {};
 const inputfileunggahgalerimultiple = async() => {
     let prv = document.querySelector(".previewgaleri");
@@ -6751,29 +6785,33 @@ const carimediagaleri = (el)=>{
         }
         
         if(rec.length == 0){
-            html = `<div class="w3-red w3-col l12 w3-center">Tidak ditemukan</div>`;
+            tbody.innerHTML = `<div class="w3-red w3-col l12 w3-center">Tidak ditemukan</div>`;
+            document.querySelector(".paginationgalery").style.display = "none";
             
         }else{
             let dt = rec;
-            for(i = dt.length-1 ;  i>=0;i--){
-                let d = dt[i];
-                let hh = cekpreviewupload2(d.tipe,d.idfile);
-                html +=`<div class="w3-col l2" style="height: 270px;">
-                <div class="isigaleri">
-                    ${hh}
-                    <div class="overlaygaleri">
-                    Tgl ${tanggalfull(new Date(d.tglkejadian))}
-                        <div class="w3-text-white w3-margin">${d.keterangan}</div>
-                        <div class="w3-text-white w3-margin w3-tiny">Ditambahkan oleh: <br> ${d.oleh}</div>
-                        <div class="w3-white w3-margin w3-tiny">${d.tags}</div>
-                    <div class="textgaleri">
-                            <button onclick="window.open('https://drive.google.com/file/d/${d.idfile}/view?usp=drivesdk','', 'width=720,height=600')">Detail</button>
-                            <button onclick="hapusgaleri(${d.idbaris})">Hapus</button>
-                    </div>
-                </div>
-                </div>
-                </div>`;
-            }
+            objGaleri = dt.reverse();
+            document.querySelector(".paginationgalery").style.display = "block";
+            ubahhalaman(1);
+            // for(i = dt.length-1 ;  i>=0;i--){
+            //     // let d = dt[i];
+            //     // let hh = cekpreviewupload2(d.tipe,d.idfile);
+            //     // html +=`<div class="w3-col l2" style="height: 270px;">
+            //     // <div class="isigaleri">
+            //     //     ${hh}
+            //     //     <div class="overlaygaleri">
+            //     //     Tgl ${tanggalfull(new Date(d.tglkejadian))}
+            //     //         <div class="w3-text-white w3-margin">${d.keterangan}</div>
+            //     //         <div class="w3-text-white w3-margin w3-tiny">Ditambahkan oleh: <br> ${d.oleh}</div>
+            //     //         <div class="w3-white w3-margin w3-tiny">${d.tags}</div>
+            //     //     <div class="textgaleri">
+            //     //             <button onclick="window.open('https://drive.google.com/file/d/${d.idfile}/view?usp=drivesdk','', 'width=720,height=600')">Detail</button>
+            //     //             <button onclick="hapusgaleri(${d.idbaris})">Hapus</button>
+            //     //     </div>
+            //     // </div>
+            //     // </div>
+            //     // </div>`;
+            // }
             
         
         
@@ -6784,7 +6822,7 @@ const carimediagaleri = (el)=>{
             
     }
     
-    tbody.innerHTML = html;
+    //tbody.innerHTML = html;
 };
 const hapusgaleri = (id) =>{
     let d = jsongaleri.filter(s=> s.idbaris == id)[0];
@@ -6834,27 +6872,30 @@ const hapusgaleri = (id) =>{
                 jsongaleri = dtt.filter(s=> s.status !== "hapus");
                 
                 if(res > 1){
-                    for(i = dt.length-1 ;  i>=0;i--){
-                        let d = dt[i];
-                        let hh = cekpreviewupload2(d.tipe,d.idfile);
-                        html +=`<div class="w3-col l2" style="height: 270px;">
-                        <div class="isigaleri">
-                            ${hh}
-                            <div class="overlaygaleri">
-                                Tgl ${tanggalfull(new Date(d.tglkejadian))}
-                                <div class="w3-text-white w3-margin">${d.keterangan}</div>
-                                <div class="w3-text-white w3-margin w3-tiny">Ditambahkan oleh: <br> ${d.oleh}</div>
-                                <div class="w3-white w3-margin w3-tiny">${d.tags}</div>
-                            <div class="textgaleri">
-                                    <button onclick="window.open('https://drive.google.com/file/d/${d.idfile}/view?usp=drivesdk','', 'width=720,height=600')">Detail</button>
-                                    <button onclick="hapusgaleri(${d.idbaris})">Hapus</button>
+                    objGaleri = jsongaleri.reverse();
+                    document.querySelector(".paginationgalery").style.display = "block";
+                    ubahhalaman(1);
+                    // for(i = dt.length-1 ;  i>=0;i--){
+                    //     let d = dt[i];
+                    //     let hh = cekpreviewupload2(d.tipe,d.idfile);
+                    //     html +=`<div class="w3-col l2" style="height: 270px;">
+                    //     <div class="isigaleri">
+                    //         ${hh}
+                    //         <div class="overlaygaleri">
+                    //             Tgl ${tanggalfull(new Date(d.tglkejadian))}
+                    //             <div class="w3-text-white w3-margin">${d.keterangan}</div>
+                    //             <div class="w3-text-white w3-margin w3-tiny">Ditambahkan oleh: <br> ${d.oleh}</div>
+                    //             <div class="w3-white w3-margin w3-tiny">${d.tags}</div>
+                    //         <div class="textgaleri">
+                    //                 <button onclick="window.open('https://drive.google.com/file/d/${d.idfile}/view?usp=drivesdk','', 'width=720,height=600')">Detail</button>
+                    //                 <button onclick="hapusgaleri(${d.idbaris})">Hapus</button>
                                     
-                                </div>
-                              </div>
-                        </div>
-                    </div>`;
-                    }
-                    ttbody.innerHTML = html;
+                    //             </div>
+                    //           </div>
+                    //     </div>
+                    // </div>`;
+                    // }
+                    //ttbody.innerHTML = html;
                 }
                 
                 clearInterval(stoploadingtopbar);
@@ -6904,4 +6945,129 @@ const btn_historimedia = () =>{
     }else{
         ttbody.innerHTML = html;
     }
+}
+
+
+
+function ubahhalaman(hal){
+    //validasi jumlah halaman dulu
+    //jika hal <1, misalnya nol, maka balikin lagi hal = 1
+    if(hal < 1){
+        hal = 1
+    }
+    //jika halaman melebihi allhalamangaleri, maka  balikin ke halaman allhalaman galeri
+    if(hal > allhalamangaleri()){
+        hal = allhalamangaleri()
+    }
+    // let loopStart = (hal-1)*jumlahperpage;
+    // let loopEnd = ((hal*jumlahperpage)<objGaleri.length?(hal*jumlahperpage)-1:objGaleri.length-1)
+   let halakhir = allhalamangaleri();
+    let loopStart = ((halakhir-hal)*jumlahperpage < objGaleri.length?(halakhir-hal)*jumlahperpage:0);
+   let ceil = Math.ceil(objGaleri.length / (hal * jumlahperpage));
+    let loopEnd = ((ceil*jumlahperpage)<objGaleri.length?(ceil*jumlahperpage)-1:objGaleri.length-1);
+
+    //console.log(loopStart)
+    //console.log(loopEnd)
+    let html = "";
+    for(var i = (hal-1) * jumlahperpage; i < (hal * jumlahperpage) && i < objGaleri.length; i++){        
+        let d = objGaleri[i];
+        let hh = cekpreviewupload2(d.tipe,d.idfile);
+        html +=`<div class="w3-col l2" style="max-height: 270px;">
+            <div class="isigaleri">
+                ${hh}
+                <div class="overlaygaleri">
+                Tgl ${tanggalfull(new Date(d.tglkejadian))}
+                    <div class="w3-text-white w3-margin">${d.keterangan}</div>
+                    <div class="w3-text-white w3-margin w3-tiny">Ditambahkan oleh: <br> ${d.oleh}</div>
+                    <div class="w3-white w3-margin w3-tiny">${d.tags}</div>
+                <div class="textgaleri">
+                        <button onclick="window.open('https://drive.google.com/file/d/${d.idfile}/view?usp=drivesdk','', 'width=720,height=600')">Detail</button>
+                        <button onclick="hapusgaleri(${d.idbaris})">Hapus</button>
+                    </div>
+                </div>
+            </div>
+            </div>`;
+        }
+    divresultgaleri.innerHTML = html;
+    
+    //buat untuk span
+    
+    spangal_pages.innerHTML = "Halaman " + hal + " dari " + allhalamangaleri();
+
+    if (hal == 1) {
+        tombl_prev.style.display = "none";
+        tombl_first.style.display = "none";
+    } else {
+        tombl_first.style.display = "inline-block"
+        tombl_prev.style.display = "inline-block";
+    }
+
+    if (hal == allhalamangaleri()) {
+        tombl_next.style.display = "none";
+        tombl_last.style.display = "none";
+     } else {
+        tombl_last.style.display = "inline-block";
+        tombl_next.style.display = "inline-block";
+    }
+
+
+    //forloop dari pagination:
+    // (var i = (page-1) * records_per_page; i < (page * records_per_page) && i < objJson.length; i++)
+    // buatkan format isiannya:
+    //ini dari format asal:
+    // for(i = dt.length-1 ;  i>=0;i--){
+    //     let d = dt[i];
+    //     let hh = cekpreviewupload2(d.tipe,d.idfile);
+    //     html +=`<div class="w3-col l2" style="max-height: 270px;">
+    //     <div class="isigaleri">
+    //         ${hh}
+    //         <div class="overlaygaleri">
+    //         Tgl ${tanggalfull(new Date(d.tglkejadian))}
+    //             <div class="w3-text-white w3-margin">${d.keterangan}</div>
+    //             <div class="w3-text-white w3-margin w3-tiny">Ditambahkan oleh: <br> ${d.oleh}</div>
+    //             <div class="w3-white w3-margin w3-tiny">${d.tags}</div>
+    //         <div class="textgaleri">
+    //                 <button onclick="window.open('https://drive.google.com/file/d/${d.idfile}/view?usp=drivesdk','', 'width=720,height=600')">Detail</button>
+    //                 <button onclick="hapusgaleri(${d.idbaris})">Hapus</button>
+    //             </div>
+    //         </div>
+    //     </div>
+    // </div>`;
+    // }
+    //selesai format asal
+
+
+
+}
+function allhalamangaleri(){
+    return Math.ceil(objGaleri.length / jumlahperpage);
+}
+function halamanberikutnya(){
+    
+    if(pageini < allhalamangaleri()){
+        pageini++
+        ubahhalaman(pageini)
+    }
+   
+    
+}
+function halamansebelumnya(){
+    if(pageini > 1){
+        pageini--
+      
+        ubahhalaman(pageini)
+    }
+}
+function halamanawal(){
+    pageini = 1;
+    ubahhalaman(1);
+}
+function halamanakhir(){
+    let h = allhalamangaleri();
+    pageini = h;
+    ubahhalaman(pageini);
+}
+
+const admPKKS = ()=>{
+    tampilinsublamangurukelas("pkks");
 }

@@ -13,6 +13,7 @@ let REKAPAbsen = {},
     OBJEKHariEfektif;
 let obDataRekapKehadiran;
 jsonlocalstorage = JSON.parse(localStorage.getItem("inst_id"));
+let tagkdserver
 let jsonabsenkelasperbulan = [];
 let idinterval;
 let namanamakelasdijenjangini=[];
@@ -5445,3 +5446,24 @@ function getnilaimapel(tagihan, idelemen) {
         .catch(er => { alert(er); console.log(er) })
 }
 
+
+const StringTanggal2 = (tgl) => { //parameter tgl bentuk tgl
+    let m = tgl.getMonth() + 1;
+    let d = tgl.getDate();
+    let y = tgl.getFullYear();
+
+
+    let string = y + "-" + addZero(m) + "-" + addZero(d);
+
+
+    //console.log(string)
+    return string
+}
+
+// pengaturan guru_gmpadm:
+// setiap kelas gmp_nontematik dihidden semua
+// di sini hanya menampilkan data-data elemen yang diberikan class hidden = w3-hide
+/**
+ * label dan input id=petakd_rd3
+ * label dan input (switch) untuk id=switchjadpemb bernilai false! dan span keteranga innerHTML-nnya dibuat NONTEMATIK
+ */
