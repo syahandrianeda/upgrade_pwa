@@ -3971,13 +3971,10 @@ const cekApiSebaranKD = () =>{
     }).then(m => m.json())
     .then(r => {
        //console.log(r);
-       let dd = r.data;
-       let fil_kelas = dd.filter(s => s.kelas == idJenjang);
-       tagkdserver = fil_kelas;
-       let filt_mapelkd = fil_kelas.filter(s => s.mapel=="MTK");
-    //    console.log(fil_kelas);
-    //    console.log(filt_mapelkd);
-       
+        let dd = r.data;
+        let fil_kelas = dd.filter(s => s.kelas == idJenjang);
+        tagkdserver = fil_kelas;
+        let filt_mapelkd = fil_kelas.filter(s => s.mapel=="MTK");
         clearInterval(stoploadingtopbar);
             let divlod = document.querySelector(".loadingtopbar");
             divlod.style.width = "100%";
