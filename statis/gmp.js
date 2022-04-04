@@ -22,7 +22,7 @@ let buateditorkdaktif = [];
 let stoploadingtopbar;
 const loadingtopbarin = (el) => {
     var elem = document.querySelector("." + el);
-    elem.className = elem.className.replace("w3-hide", "");
+    elem.className = elem.className.replace(/\sw3-hide/g, "");
     elem.style.width = "1px";
     var width = 1;
     stoploadingtopbar = setInterval(frame2, 10);
@@ -5467,3 +5467,6 @@ const StringTanggal2 = (tgl) => { //parameter tgl bentuk tgl
  * label dan input id=petakd_rd3
  * label dan input (switch) untuk id=switchjadpemb bernilai false! dan span keteranga innerHTML-nnya dibuat NONTEMATIK
  */
+///////////////////////////////// SPPD DAN NOTULA RAPAT //////////////////////////////////////
+
+////////////////////////// SELESEAI SPPD DAN NOTULA RAPAT ////////////////////////////////////

@@ -1,5 +1,5 @@
-const staticCacheName = "st1482";
-const dynamicChace = "din1482";
+const staticCacheName = "st1608";
+const dynamicChace = "din1608";
 const assets = [
     "/",
     "/index.html",
@@ -51,6 +51,8 @@ const assets = [
     "/img/googlemeet.png",
     "/img/hero-bg.png",
     "/img/arsipsurat.jpg",
+    "/img/bg_offline.webp",
+    "/img/kotadepok.png",
 
 
     "/statis/app.js",
@@ -116,7 +118,7 @@ self.addEventListener('install', evt => {
 
 self.addEventListener('activate', evt => {
 
-    // console.log('server worker berahsil diaktivasi')
+    console.log('server worker berahsil diaktivasi')
     evt.waitUntil(
         caches.keys().then(keys => {
             //         //console.log(keys);
@@ -132,7 +134,7 @@ self.addEventListener('activate', evt => {
 self.addEventListener('fetch', evt => {
 
     // console.log(evt.request.url);https://script.google.com/macros/
-    if (evt.request.url.indexOf('https://script.google.com') === -1 && assets.indexOf(evt.request.url) == -1 && evt.request.url.indexOf('https://drive.google.com') === -1) {
+    if (evt.request.url.indexOf('https://script.google.com') == -1 && assets.indexOf(evt.request.url) == -1 && evt.request.url.indexOf('https://drive.google.com') == -1) {
         evt.respondWith(
             caches.match(evt.request).then(cacheRes => {
                 return cacheRes || fetch(evt.request).then(async fetchRes => {
@@ -141,8 +143,9 @@ self.addEventListener('fetch', evt => {
                     // check cached items size
                     limitCacheSize(dynamicChace, 5);
                     return fetchRes;
-                });
+                }).catch(er=>{console.log("errror dari sini: "+ er)});
             }).catch((er) => {
+                console.log("errror di sini kapan munculnya")
                 console.log(er)
                 if (evt.request.url.indexOf('.html') > -1) {
                     return caches.match('/user/offline.html');
@@ -150,7 +153,6 @@ self.addEventListener('fetch', evt => {
             })
         );
     }else{
-        //console.log("tes fetch " + evt.request.url)
     }
     // // console.log('fetch event', evt);
 })

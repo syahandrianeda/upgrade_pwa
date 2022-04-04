@@ -24,7 +24,8 @@ jsonlocalstorage = JSON.parse(localStorage.getItem("inst_id"));
 let stoploadingtopbar;
 const loadingtopbarin = (el) => {
     var elem = document.querySelector("." + el);
-    elem.className = elem.className.replace("w3-hide", "")
+    elem.className = elem.className.replace(/\sw3-hide/g, "");
+    elem.style.width = "1px";
     var width = 1;
     stoploadingtopbar = setInterval(frame2, 10);
 

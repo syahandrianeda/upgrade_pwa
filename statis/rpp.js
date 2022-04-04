@@ -432,7 +432,7 @@ let cekliktematiknontematik = document.getElementById("rpp_tematiknontematik");
 let ceklik_dilampirin = document.querySelector(".lampiran_rpptematiknontematik");
 let pagination_rpp = document.querySelector(".pagination_rpp");
 
-function tabA(evt, cityName) {
+async function tabA(evt, cityName) {
     var i, tabcontent, tablinks;
     tabcontent = document.getElementsByClassName("isiadm");//("tabcontent");
     for (i = 0; i < tabcontent.length; i++) {
@@ -442,7 +442,7 @@ function tabA(evt, cityName) {
     for (i = 0; i < tablinks.length; i++) {
         tablinks[i].className = tablinks[i].className.replace(" w3-green", "");
     }
-    document.getElementById(cityName).style.display = "block";
+    // document.getElementById(cityName).style.display = "block";
     evt.currentTarget.className += " w3-green";
     if(evt.currentTarget.innerHTML == "Database RPP"){
         //console.log("Anda fokus ke TAB Database RPP");
@@ -506,6 +506,7 @@ function tabA(evt, cityName) {
             }
         }
     }
+    document.getElementById(cityName).style.display = "block";
 }
 
 

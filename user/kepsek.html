@@ -2892,6 +2892,8 @@
             <div class="tab">
                 <button class="tablinks btn_suratmasuk" onclick="openCity(event, 'divsuratmasuk')">Surat Masuk</button>
                 <button class="tablinks btn_suratkeluar" onclick="openCity(event, 'divsuratkeluar')">Surat Keluar</button>
+                <button class="tablinks btn_sppd" onclick="openCity(event, 'divsppd')">SPPD</button>
+                <button class="tablinks btn_notularapat" onclick="openCity(event, 'divnotularapat')">Notula Rapat</button>
             </div>  
             <div id="divsuratmasuk" class="tabcontent">
                 <h4>Surat Masuk</h4>
@@ -3137,6 +3139,283 @@
                 </table>
                 
 
+                </div>
+            </div>
+            
+            <div id="divsppd" class="tabcontent">
+                <h3>SPPD</h3>
+                <div class="tab">
+                    <button class="btnadm" onclick="tabA(event, 'sppd_create')">Buat SPPD</button>
+                    <button class="btnadm" onclick="tabA(event, 'sppd_sppdku')">SPPD-ku</button>
+                    
+                </div>
+                <div class="isiadm" id="sppd_create">
+                    <h4>Buat SPPD</h4>
+                    <div class="infoserver_sppd">Anda berhak membuatkan SPPD untuk diri Anda dan PTK lain. Fitur ini digunakan untuk membuatkan SPPD yang ditujukan kepada PTK. Jika Anda membuatkan SPPD untuk PTK lain, maka akan otomatis SPPD akan diinformasikan di menu SPPD-ku di masing-masing laman Edurasa PTK (edurasa guru, edurasa GMP, edurasa staff, dan edurasa Kepala sekolah).</div>
+                    <br>
+                    <div class="spddcreate_settingbuat">
+                        <button class="w3-button w3-blue w3-round-large sppdcreate_btn_sppdbaru" title="Buat SPPD"><i class="fa fa-pencil"></i> Buat SPPD</button>
+                        <button class="w3-button w3-blue w3-round-large sppdcreate_btn_sppdtabel" title="tabel SPPD"><i class="fa fa-table"></i> SPPD yang telah dibuat</button>
+                    </div>
+                    <div class="w3-card-4 w3-padding w3-round-large w3-white w3-hide settingsppd_hidden sppdbaru" style="max-width: 800px;margin:15px auto;">
+                        <h5 class="w3-center">Format Pembuatan SPPD</h5>
+                        <div class="w3-border w3-round-large w3-padding">
+                            <label for="createsppd_pegawaiyangdiperintah">Pegawai Yang Diperintah:
+                                <select id="createsppd_pegawaiyangdiperintah" data-keyCreatesppd="ptk_diperintah" class="w3-select w3-pale-green" onchange="selectsppd_pilihptk()">
+                                    <option>PILIH PTK</option>
+                                </select>
+                            </label><br>
+                            Database PTK:<br>
+                            <label for="createsppd_nippegawai">NIP (ASN):
+                                <input type="text" id="createsppd_nippegawai" class="w3-input w3-pale-green">
+                            </label>
+                            <label for="createsppd_golonganpegawai">Golongan Ruang:
+                                <input type="text" id="createsppd_golonganpegawai" class="w3-input w3-pale-green" data-keyCreatesppd="ptk_golongan">
+                            </label>
+                            <label for="createsppd_jabatanpegawai">Jabatan:
+                                <input type="text" id="createsppd_jabatanpegawai" class="w3-input w3-pale-green" data-keyCreatesppd="ptk_jabatan">
+                            </label><br>
+                        </div><br>
+                        <div class="w3-border w3-round-large w3-padding">
+                            <label for="createsppd_maksudperjalanandinas">
+                                Maksud Perjalanan Dinas:
+                                <input type="text" id="createsppd_maksudperjalanandinas" class="w3-input w3-pale-green" data-keyCreatesppd="ptk_maksudsppd">
+                            </label><br>
+                            <label for="createsppd_tujuantempatdinas">
+                                Tempat Tujuan Perjalanan Dinas:
+                                <input type="text" id="createsppd_tujuantempatdinas" class="w3-input w3-pale-green" data-keyCreatesppd="ptk_tempatsppd">
+                            </label><br>
+                            <label for="createsppd_tanggalmulai">
+                                Tanggal Berangkat/Pelaksanaan :
+                                <input type="date" id="createsppd_tanggalmulai" class="w3-input w3-pale-green" data-keyCreatesppd="ptk_starttgl">
+                            </label><br>
+                            <label for="createsppd_lamaperjalanan">
+                                Lama Perjalanan Dinas (hari):
+                                <input type="number" id="createsppd_lamaperjalanan" min="1" max="100" class="w3-input w3-pale-green" data-keyCreatesppd="ptk_durasisppd">
+                            </label>
+                        </div><br>
+                        <div class="w3-border w3-round-large w3-padding">
+                            <label for="createsppd_dbsuratkeluar">
+                                Informasi No. Surat Terakhir:
+                                <input type="text" id="createsppd_dbsuratkeluar" class="w3-input w3-pale-green" disabled>
+                            </label><br>
+                            <label for="createsppd_nosuratSPPD">
+                                No. Surat SPPD ini:
+                                <input type="text" id="createsppd_nosuratSPPD" class="w3-input w3-pale-green" data-keyCreatesppd="ptk_nosppd">
+                            </label>
+                        </div>
+                        <div class="w3-padding w3-center">
+                            <button class="w3-button w3-blue w3-round" onclick="serverkirimsppd()" >Buat SPPD</button>
+                        </div>
+                    </div>
+                    <div class="w3-card-4 w3-padding w3-round-large w3-white w3-hide settingsppd_hidden sppdtabel" style="max-width: 1200px;margin:15px auto;overflow-x: auto;">
+                        <h5>Tabel Database SPPD yang telah dibuat/dilaporkan (versi Cetak)</h5>
+                        <table class="w3-table garis w3-tiny tabeldbsppd">
+                            <thead>
+                                <tr class="w3-light-gray">
+                                    <th class="w3-display-container">
+                                        <span class="w3-round bturut_tabeldbsppd w3-display-topright" title="Urutkan" onclick="urutkanTabel('tabeldbsppd',false)"><i class="fa fa-sort-amount-asc tangan"></i></span>
+                                        No. urut
+                                    </th>
+                                    <th>PTK Yang Diperintah</th>
+                                    <th>Maksud Perjalanan</th>
+                                    <th>Tempat Tujuan</th>
+                                    <th>Tanggal Pelaksanaan</th>
+                                    <th>Lama Pelaksanaan</th>
+                                    <th>No. Surat SPPD</th>
+                                    <th>Arsip Surat No. Surat SPPD</th>
+                                    <th>Laporan Resume</th>
+                                    <th>Cetak Resum (jika ada)</th>
+                                    <th>SPPD Scan/Upload</th>
+                                    <th>SPPD Cetak/Edit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Mr. Cyber Brian</td>
+                                    <td>Moving Crazy Script</td>
+                                    <td>Depok</td>
+                                    <td>1 Januari 2022</td>
+                                    <td>Tidak Mengirimkan resum</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td><button onclick="alert('cetak SPPD untuk baris ini')"></button></td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>mrs. Cyber Brian</td>
+                                    <td>Moving Crazy Script</td>
+                                    <td>Moscow Urra</td>
+                                    <td>1 Januari 2022</td>
+                                    <td>Tidak Mengirimkan resum</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td><button onclick="alert('cetak SPPD untuk baris ini')">Lihat</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="isiadm" id="sppd_sppdku">
+                    <h3>SPPD-ku</h3>
+                    Di sini akan muncul data SPPD yang ditunjukkan kepada Anda. Anda dapat melihat SPPD tersebut (format tidak ditandatangani) dan Anda dapat mengetikkan Resume Perjalanan Dinas untuk disimpan di server.
+                    <div class="sppd_terbaru">
+                        
+                    </div>
+                    <div class="w3-padding w3-card-4 w3-round-large w3-white" style="max-width:1000px;margin:15px auto;overflow-x: auto;">
+                        <h4>Rekapitulasi SPPD-ku</h4>
+                        Tabel ini menyajikan data SPPD yang ditujukan kepada Anda. Data diurutkan dari yang terbaru hingga terlama.
+                        <table class="w3-table garis w3-small tabelsppdku">
+                            <thead>
+                                <tr class="w3-light-gray">
+                                    <th>No</th>
+                                    <th>Kegiatan SPPD</th>
+                                    <th>Tempat Tujuan</th>
+                                    <th>Tanggal Pelaksanaan</th>
+                                    <th>Cetak Ulang</th>
+                                    <th>Resume</th>
+                                    <th>Aksi Resume</th>
+                                    <th>Upload SPPD</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Rapat FLS2N</td>
+                                    <td>SDN Edurasa</td>
+                                    <td>1 Januari 2022</td>
+                                    <td>Cetak Ulang</td>
+                                    <td>status Resume apakah sudah diketik atau belum</td>
+                                    <td>
+                                        <button onclick="alert('Anda melihat resume yang telah Anda buat dan Anda bisa mengeditnya')">Lihat/Edit</button>
+                                        <button onclick="alert('Kondisi ini dimana Anda mendapatkan SPPD dari Staff dan Anda belum mengisi resume perjalanan dari SPPD di baris ini')">Isi Resume</button>
+                                    </td>
+                                    <td>Jika ga mau diketik, Anda bisa unggah di poto SPPD bersama Resumenya di fitur ini</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="isiadm" id="sppd_db">
+                    Database SPPD
+                </div>
+            </div>
+            <div id="divnotularapat" class="tabcontent">
+                <h3>UNDANGAN DAN NOTULA RAPAT</h3>
+                <div class="w3-tab">
+                    <div class="w3-button  btnadm w3-border w3-round-xlarge  klikfiturrapat" onclick="tabA(event, 'rapat_create')">Undangan Rapat</div>
+                    <div class="w3-button btnadm  w3-border w3-round-xlarge " onclick="tabA(event, 'dbrapat_create')">Data Rapat Sekolah</div>
+                    <div class="w3-button btnadm  w3-border w3-round-xlarge fokusngetiknotula " onclick="tabA(event, 'notula_create')">Notula Rapat</div>
+                </div>
+                <div class="isiadm" id="rapat_create">
+                    <h4>Undangan Rapat</h4>
+                    Buat undangan rapat untuk PTK di lingkungan Anda melalui form isian ini. PTK Anda akan mendapatkan informasi undangan rapat yang telah Anda buat dan mendapatkan notulanya.
+                    <div class="w3-round-xlarge w3-white w3-padding w3-card-4 " style="max-width:800px;overflow-x: auto;margin:15px auto">
+                        <div  class="w3-border w3-round-xlarge w3-padding w3-margin-bottom">
+                            <label for="rapat_pengundang">
+                                Diundang Oleh:<input type="text" id="rapat_pengundang" class="w3-input w3-border w3-pale-green" data-keyRapat="diundang_oleh"/>
+                            </label><br>
+                        </div>
+                        <div  class="w3-border w3-round-xlarge w3-padding w3-margin-bottom">
+                            <label for="rapat_agendarapat">
+                                Jenis Agenda Rapat:
+                                <select id="rapat_agendarapat" class="w3-select w3-border w3-round-xlarge" data-keyRapat="agenda_rapat">
+                                    <option value="Rapat Mingguan" selected>Rapat Mingguan</option>
+                                    <option value="Rapat Bulanan">Rapat Bulanan</option>
+                                    <option value="Rapat Semesteran">Rapat Semesteran</option>
+                                    <option value="Rapat Tahunan">Rapat Tahunan</option>
+                                    <option value="Rapat Insidental">Rapat Insidental</option>
+                                    <option value="Rapat Khusus">Rapat Khusus(Korlas/Komite/dll)</option>
+                                </select>
+                            </label><br>
+                        </div>
+                        <div  class="w3-border w3-round-xlarge w3-padding w3-margin-bottom">
+                            <label for="rapat_tema">
+                                Tema/Topik Rapat:
+                                <input type="text" id="rapat_tema" class="w3-input w3-border w3-pale-green" data-keyRapat="tema_rapat"/>
+                            </label><br>
+                        </div>
+                        <div  class="w3-border w3-round-xlarge w3-padding w3-margin-bottom w3-center">
+                            <label for="rapat_tgl">
+                                Waktu Pelaksanaan Rapat:<input type="datetime-local" id="rapat_tgl" class="w3-border w3-round-xlarge w3-padding" data-keyRapat="pelaksanaan_rapat">
+                            </label><br>
+                        </div>
+                        <div class="w3-center w3-padding w3-border w3-round-xxlarge">
+                            <button class="w3-button w3-round-large w3-blue w3-padding buatrapatbaru" onclick="buatRapatbaru()"><i class="fa fa-pencil"></i> Buat</button>
+                            <button class="w3-button w3-round-large w3-green w3-padding editrapatbaru w3-hide"><i class="fa fa-edit"></i> Simpan Pengeditan</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="isiadm" id="dbrapat_create">
+                    <h4>Daftar Kumpulan Rapat Sekolah</h4>
+                    Disini Anda dapat melihat seluruh kegiatan rapat yang telah Anda undang beserta kumpulan notulennya.
+                    <div class="w3-round-xlarge w3-white w3-padding w3-card-4" style="max-width:1000px;overflow-x: auto;margin:15px auto">
+                        <table class="w3-table garis tabel_dbrapatsekolah w3-small">
+                            <thead>
+                                <tr class="w3-dark-gray">
+                                    <th>No</th>
+                                    <th>Aksi</th>
+                                    <th>Pengundang</th>
+                                    <th>Jenis Rapat</th>
+                                    <th>Tema/Topik Rapat</th>
+                                    <th>Waktu Pelaksanaan</th>
+                                    <th>Notulen Rapat</th>
+                                    <th>Keterangan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td><button class="w3-btn">Edit</button></td>
+                                    <td>Kepala Sekolah</td>
+                                    <td>Rapat Bulanan</td>
+                                    <td>Pembahasan Kegiatan PTS</td>
+                                    <td>Senin, 31 Februari 2022</td>
+                                    <td>
+                                        <button class="w3-btn w3-round-large w3-border w3-tiny">Notula Ruliyanti</button>
+                                        <button class="w3-btn w3-round-large w3-border w3-tiny">Notula Widya Hendarsari</button>
+                                        <button class="w3-btn w3-round-large w3-border w3-tiny">Notula Anisa Setiawati</button>
+                                        <button class="w3-btn w3-round-large w3-border w3-tiny">Notula Miftah Mawadah</button>
+                                    </td>
+                                    <td>
+                                        Notula diisi oleh 4 PTK
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="isiadm" id="notula_create">
+                    <h4>Notula Rapat-ku</h4>
+                    Tabel berikut adalah data Undangan Rapat yang ditunjukkan kepada Anda. Lengkapi notula rapat Anda untuk dapat dilaporkan/diarsipkan. 
+                    <br><span class="w3-tiny">Tabel diurutkan dari yang terbaru</span>
+                    <div class="w3-round-xlarge w3-white w3-padding w3-card-4" style="max-width:1000px;overflow-x: auto;margin:15px auto">
+                        <table class="datanotularapatku w3-table garis w3-small">
+                            <thead>
+                                <tr class="w3-light-grey">
+                                    <th>No</th>
+                                    <th>Diundang oleh</th>
+                                    <th>Agenda Rapat</th>
+                                    <th>Tema/Topik Rapat</th>
+                                    <th>Pelaksanaan</th>
+                                    <th>Notula Rapat</th>
+                                    <th>Keterangan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Kepala Sekolah</td>
+                                    <td>Rapat Mingguan, Bulanan, Semester, tahunan, insidental</td>
+                                    <td>Tema Rapat</td>
+                                    <td>Senin, 31 Februari 2022</td>
+                                    <td><button onclick="alert('Buat/edit Notula Rapat. Termasuk Cetak Notula Anda')"><i class="fa fa-pencil"></i></button></td>
+                                    <td>Keterangan jika sudah/belum menulis notula</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
             
@@ -3417,10 +3696,760 @@
 
     <div id="testabel"></div>
     <iframe id="iframeprint" name="iframeprint" style="display:none"></iframe>
+    <div class="w3-modal w3-sand w3-animate-zoom" id="modal_sppd">
+        <div style="position:sticky;top:0px;margin-top:5px;display:block;margin-left:5px;cursor:pointer;z-index:5">
+            <span class="w3-button w3-red w3-right" onclick="document.getElementById('modal_sppd').style.display='none'">&times</span>
+            <button onclick="printsuratLandscape('spddcreate_preview',true)" class="w3-blue w3-button w3-left w3-round"><i class="fa fa-print"></i> Cetak</button>
+        </div>
+        <div class="w3-modal-content spddcreate_preview w3-card-4 w3-white w3-padding w3-round-large" style="max-width:1000px;margin:15px auto">
+            <div class="sppdcreate_koppendidik w3-row">
+                <div class="w3-col l2 s2 w3-center"><img src="/img/kotadepok.png" style="max-height: 150px;"></div>
+                <div class="w3-col l10 s10 w3-center">
+                    <font size="5">PEMERINTAH DAERAH KOTA DEPOK</font><br>
+                    <font size="4" face="Arial Black" class="w3-xxxlarge">DINAS PENDIDIKAN</font><br>
+                    Komplek Balaikota Depok, Gedung Dibaleka II Lantai 4<br>
+                    Jalan Margonda Raya Nomor 54 Depok, Jawa Barat
+                    <br>Telp./Fax.  021 -  29402287      http://disdik.depok.go.id
+                </div>
+            </div>
+            <div class="w3-clear" style="border-top:5px double black"></div>
+            <div class="w3-right w3-margin-top w3-margin-right">
+                <table>
+                    <tr>
+                        <td>Lampiran</td>
+                        <td>:</td>
+                        <td>ke-1</td>
+                    </tr>
+                    <tr>
+                        <td>Kode Nomor</td>
+                        <td>:</td>
+                        <td>421.2</td>
+                    </tr>
+                    <tr>
+                        <td>Nomor</td>
+                        <td>:</td>
+                        <td><span class="sppdcreat_input_nosurat">SD-014/RAJA1/III/2022</span></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="w3-clear"></div>
+            <div class="w3-center w3-large w3-margin-top" style="font-weight: bold;"><u>SURAT PERINTAH PERJALANAN DINAS</u></div>
+            <div class="w3-center w3-margin-bottom">(S P P D)</div>
+            
+                <table style="margin:15px auto;width:98%;" class="tabelsppd">
+                    <tr>
+                        <td>1.</td>
+                        <td>Pejabat yang memberi perintah</td>
+                        <td>KEPALA DINAS PENDIDIKAN KOTA DEPOK</td>
+                    </tr>
+                    <tr>
+                        <td>2.</td>
+                        <td>Nama Pegawai yang diperintah<br>NIP.</td>
+                        <td><span class="sppdcreate_input_pendidik">Nama Guru </span><br><span class="sppdcreate_input_nippendidik">NIP jika ada</span></td>
+                    </tr>
+                    <tr>
+                        <td>3.</td>
+                        <td>
+                            <ol style="list-style-type:lower-latin">
+                                <li>Pangkat dan Golongan<br>menurut PP No. 6 Tahun 1997</li>
+                                <li>Jabatan</li>
+                                <li>Tingkat Menurut peraturan perjalanan</li>
+                            </ol>
+                        </td>
+                        <td>
+                            <ol style="list-style-type: none;">
+                                <li class="w3-border-bottom"><span class="spddcreate_input_pangkatpendidik">Golongan III/A</span><br></li><br>
+                                <li  class="w3-border-bottom"><span class="spddcreate_input_jabatanpendidik">Guru Kelas 1</span></li>
+                                <li class="w3-border-bottom">-</li>
+                            </ol>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>4.</td>
+                        <td>Maksud perjalanan Dinas</td>
+                        <td><span class="sppdcreate_maksudperjalanandinas"></span></td>
+                    </tr>
+                    <tr>
+                        <td>5.</td>
+                        <td>Alat angkut yang dipergunakan</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>6.</td>
+                        <td>
+                            <ol style="list-style-type:lower-latin">
+                                <li>Tempat Berangkat</li>
+                                <li>Tempat Tujuan</li>
+                            </ol>
+                        </td>
+                        <td>
+                            <ol style="list-style-type:none">
+                                <li class="w3-border-bottom">UPTD SDN Ratujaya 1</li>
+                                <li class="w3-border-bottom"><span class="sppdcreate_tempattujuan">Tempat Tujuan</span></li>
+                            </ol>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>7.</td>
+                        <td>
+                            <ol style="list-style-type: lower-latin;">
+                                <li>Lamanya perjalanan dinas</li>
+                                <li>Tanggal berangkat</li>
+                                <li>Tanggal harus kembali</li>
+                            </ol>
+                        </td>
+                        <td>
+                            <ol style="list-style-type:none">
+                                <li class="w3-border-bottom"><span class="sppddcreate_input_lamaperjalanan">1 (satu) hari</span></li>
+                                <li class="w3-border-bottom"><span class="sppddcreate_input_starttanggal">00 Januari 202#</span></li>
+                                <li class="w3-border-bottom"><span class="sppddcreate_input_endtanggal">00 Januari 202#</span></li>
+                            </ol>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>8.</td>
+                        <td>Pengikut</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>9.</td>
+                        <td>Pembebanan Anggaran
+                            <ol style="list-style-type:lower-latin">
+                                <li>Instansi</li>
+                                <li>Mata Anggaran</li>
+                            </ol>
+                        </td>
+                        <td><br>
+                            <ol style="list-style-type:none">
+                                <li class="w3-border-bottom">Dinas Pendidikan</li>
+                                <li class="w3-border-bottom">5.2.2.15.02</li>
+                            </ol>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>10.</td>
+                        <td>Keterangan lain-lain</td>
+                        <td>Lihat sebelah</td>
+                    </tr>
+                </table>
+            <div class="w3-right w3-margin-right">
+                <table style="margin:5px auto">
+                    <tr>
+                        <td>Dikeluarkan di </td>
+                        <td>:</td>
+                        <td>Depok</td>
+                    </tr>
+                    <tr>
+                        <td>Pada Tanggal </td>
+                        <td>:</td>
+                        <td><span class="sppddcreate_input_starttanggal"></span></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="w3-center">
+                            Kepala <span class="sppdcreate_ttdnamasekolah">UPTD SDN Ratujaya 1</span>
+                            <br><br><br><br>
+                            <u><b class="sppdcreate_namakepsek">Nama Kepala Sekolah</b></u><br>
+                            <span class="spddcreate_nipksek"></span>
+                        </td>
+                    </tr>
+                </table>
+            </div><div class="w3-clear"></div>
+            <div class="w3-hide-small w3-border-top w3-border-bottom w3-border-black w3-center" style="background-color: rgba(191, 250, 235, 0.514);">Halaman 1 SPPD</div>
+            <div style="break-after: page;"></div>
+            <div class="w3-right w3-margin-right">
+                <table class="w3-small">
+                    <tr valign="top">
+                        <td>SPPD No.</td>
+                        <td>:</td>
+                        <td>421.2<span class="sppdcreat_input_nosurat">...</span></td>
+                    </tr>
+                    <tr valign="top">
+                        <td>
+                            Berangkat dari:<br>(tempat kedudukan)
+                        </td>
+                        <td>:</td>
+                        <td>UPTD SDN Ratujaya 1</td>
+                    </tr>
+                    <tr valign="top">
+                        <td>
+                            Pada Tanggal
+                        </td>
+                        <td>:</td>
+                        <td><span class="sppddcreate_input_starttanggal"></span></td>
+                    </tr>
+                    <tr valign="top">
+                        <td>
+                            Ke
+                        </td>
+                        <td>:</td>
+                        <td><span class="sppdcreate_tempattujuan"></span></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="w3-clear"></div>
+            <table class="w3-table garis w3-small">
+                <tr>
+                    <td style="width:50%;height:200px;" class="w3-display-container">II. <table class="w3-small" style="display:inline-block;vertical-align: top;">
+                            <tr>
+                                <td>Tiba di</td>
+                                <td>:</td>
+                                <td><span class="sppdcreate_tempattujuan"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Pada Tanggal</td>
+                                <td>:</td>
+                                <td><span class="sppddcreate_input_starttanggal"></span></td>
+                            </tr>
+                        </table>
+                        <div class="w3-display-bottomleft w3-margin-left">NIP.</div>
+                    </td>
+                    <td style="height:200px;" class="w3-display-container">
+                        <table class="w3-small">
+                            <tr>
+                                <td>Berangkat dari</td>
+                                <td>:</td>
+                                <td>UPTD SDN Ratujaya 1</td>
+                            </tr>
+                            <tr>
+                                <td>ke</td>
+                                <td>:</td>
+                                <td><span class="sppdcreate_tempattujuan"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Pada Tanggal</td>
+                                <td>:</td>
+                                <td><span class="sppddcreate_input_starttanggal"></span></td>
+                            </tr>
+                        </table>
+                        <div class="w3-display-bottomleft w3-margin-left">NIP.</div>
+                    </td>
+                    
+                </tr>
+                <tr>
+                    <td style="height:200px;">
+                        III. <table style="display:inline-block;vertical-align: top;">
+                            <tr>
+                                <td>Tiba di</td>
+                                <td>:</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Pada Tanggal</td>
+                                <td>:</td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td style="height:200px;">
+                        <table>
+                            <tr>
+                                <td>Berangkat dari</td>
+                                <td>:</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>ke</td>
+                                <td>:</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Pada Tanggal</td>
+                                <td>:</td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </td>
+                    
+                </tr>
+                <tr>
+                    
+                    <td style="height:200px;">
+                        IV. <table style="display:inline-block;vertical-align: top;">
+                            <tr>
+                                <td>Tiba di</td>
+                                <td>:</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Pada Tanggal</td>
+                                <td>:</td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td style="height:200px;">
+                        <table>
+                            <tr>
+                                <td>Berangkat dari</td>
+                                <td>:</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>ke</td>
+                                <td>:</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Pada Tanggal</td>
+                                <td>:</td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </td>
+                    
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div class="w3-row">
+                            <div class="w3-col l6 s6" style="visibility: hidden;">Mengetahui</div>
+                            <div class="w3-col l6 s6">
+                                <ol style="list-style-type: upper-roman" start="5">
+                                    <li>Tiba kembali di : UPTD SDN ratujaya 1<br>
+                                        Pada tanggal : <span class="sppddcreate_input_endtanggal">Tanggal</span><br>
+                                        Telah diperiksa, dengan keterangan bahwa perjalanan tersebut diatas benar dilakukan atas perintahnya dan semata-mata untuk kepentingan jabatan dalam waktu yang sesingkat-singkatnya.
+                                    </li>
+                                </ol>
+                                Kepala <span class="sppdcreate_ttdnamasekolah">UPTD SDN Ratujaya 1</span>
+                            <br><br><br><br>
+                            <u><b class="sppdcreate_namakepsek">Nama Kepala Sekolah</b></u><br>
+                            <span class="spddcreate_nipksek"></span>
+                            </div>
+                            <div class="w3-col l12 s12">
+                                <ol style="list-style-type: upper-roman" start="6">
+                                    <li>CATATAN LAIN-LAIN</li>
+                                    <li>PERHATIAN<br>Pejabat yang berwenang menerbitkan SPPD, pegawai yang melakukan perjalanan dinas, para pejabat yang mengesahkan tanggal berangkat/tiba serta Bendaharawan bertanggung jawab berdasarkan peraturan-peraturan Keuangan Negara apabila Negara mendapat rugi akibat kesalahan, kealpaannya.
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <div class="w3-clear w3-margin-top"></div>
+            <div class="w3-hide-small w3-border-top w3-border-bottom w3-border-black w3-center" style="background-color: rgba(191, 250, 235, 0.514);">Halaman 2 SPPD</div>
+            <div style="break-after: page;"></div>
+            <div class="w3-row w3-margin-top">
+                <div class="w3-col l2 s2 w3-center">
+                    <img src="/img/kotadepok.png" style="max-height: 150px;">
+                </div>
+                <div class="w3-col l10 s10 w3-center">
+                    <font size="5">PEMERINTAH DAERAH KOTA DEPOK</font><br>
+                    <font size="5">DINAS PENDIDIKAN</font><br>
+                    <font size="3" face="Arial Black" class="w3-xxxlarge">UPTD SDN RATUJAYA 1</font><br>
+                    Jl. SMP Ratujaya No. 41 RT.05/RW.03 Kelurahan Ratujaya-Kecamatan Cipayung<br>
+                    NPSN: 20228914 | NSS: 101026604052 | surel: uptdsdnratujaya1@gmail.com
+                </div>
+            </div>
+            <div class="w3-clear" style="border-top:5px double black"></div>
+            <br>
+            <div class="w3-center w3-margin-top w3-large" style="font-weight: bold;"><u>SURAT TUGAS</u></div>
+            <div class="w3-center w3-margin-bottom">No. :421.2/<span class="sppdcreat_input_nosurat"></span></div>
+            <br><br>
+            <p>Yang bertanda tangan di bawah ini, Kepala UPTD SDN Ratujaya 1 memberikan tugas kepada:</p>
+            <div style="margin-left:35px">
+                <table>
+                    <tr>
+                        <td style="width:150px;">Nama</td>
+                        <td>:</td>
+                        <td><span class="sppdcreate_input_pendidik">Nama Guru</span></td>
+                    </tr>
+                    <tr>
+                        <td>NIP</td>
+                        <td>:</td>
+                        <td><span class="sppdcreate_input_nippendidik"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Jabatan</td>
+                        <td>:</td>
+                        <td><span class="spddcreate_input_jabatanpendidik"></td>
+                    </tr>
+                </table>
+            </div>
+            <p>Untuk melaksanakan tugas:</p>
+            <div style="margin-left:35px">
+                <table>
+                    <tr>
+                        <td style="width:150px;">Kegiatan</td>
+                        <td>:</td>
+                        <td><span class="sppdcreate_maksudperjalanandinas"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Tempat</td>
+                        <td>:</td>
+                        <td><span class="sppdcreate_tempattujuan"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Hari/Tanggal</td>
+                        <td>:</td>
+                        <td><span class="sppddcreate_input_starttanggal"></span></td>
+                    </tr>
+                </table>
+            </div>
+            <p>Demikian Surat Tugas ini dibuat agar dapat dipergunakan sebagaimana mestinya.</p>
+            <br><br><br>
+            <div class="w3-right w3-margin-right w3-margin-bottom w3-center">
+                Depok, <span class="sppddcreate_input_starttanggal"></span><br>
+                Kepala <span class="sppdcreate_ttdnamasekolah">UPTD SDN Ratujaya 1</span>
+                <br><br><br><br>
+                <u><b class="sppdcreate_namakepsek">Nama Kepala Sekolah</b></u><br>
+                <span class="spddcreate_nipksek"></span>
+            </div>
+
+            <div class="w3-clear w3-margin-top"></div>
+            <div class="w3-hide-small w3-border-top w3-border-bottom w3-border-black w3-center" style="background-color: rgba(191, 250, 235, 0.514);">Halaman Surat Tugas untuk SPPD</div>
+            <div style="break-after: page;"></div>
+            <div class="w3-row w3-margin-top">
+                <div class="w3-col l2 s2 w3-sand" style="height:138px;">
+                    <div class="flag w3-blue">Resume Perjalanan Dinas</div>
+                </div>
+                <div class="w3-col l10 s10">
+                    <table style="max-width:1000px;margin:2px 5px">
+                        <tr>
+                            <td style="width:5%">Nama</td>
+                            <td style="width:5px">:</td>
+                            <td class="w3-border-bottom" style="width:93%"><span class="sppdcreate_input_pendidik">NAMA GURU</span></td>
+                        </tr>
+                        <tr>
+                            <td>Hari/Tanggal</td>
+                            <td>:</td>
+                            <td class="w3-border-bottom"><span class="sppddcreate_input_starttanggal">TANGGAL</span></td>
+                        </tr>
+                        <tr>
+                            <td>Tempat</td>
+                            <td>:</td>
+                            <td class="w3-border-bottom"><span class="sppdcreate_tempattujuan">TEMPAT</span></td>
+                        </tr>
+                        <tr>
+                            <td>Kegiatan</td>
+                            <td>:</td>
+                            <td class="w3-border-bottom"><span class="sppdcreate_maksudperjalanandinas">KEGIATAN</span></td>
+                        </tr>
+                        <tr>
+                            <td>Pelaksanaan</td>
+                            <td>:</td>
+                            <td class="w3-border-bottom"><span class="sppddcreate_input_starttanggal"></span></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="w3-col l12 s12 bgsekolah">
+                    <table style="border-collapse: collapse;width: 99%;">
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                    </table>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="w3-center w3-padding w3-center">
+            Jika terdapat kesalahan pengetikan/informasi, sebaiknya Anda meminta operator (laman staff) untuk mengeditnya. Meski di sini Anda bisa mengedit manual tiap-tiap elemen yang bisa diedit, namun itu tidak tersimpan di server. Jika Anda mengedit manual, Anda hanya dapat memanfaatkan hasil editan Anda untuk keperluan dicetak saja.
+        </div>
+    </div>
+    <div class="w3-modal w3-sand" id="sppd_previewresume">
+        <div style="position:sticky;top:0px;margin-top:5px;display:block;margin-left:5px;cursor:pointer;z-index:5">
+            <button class="w3-red w3-center w3-btn w3-right" onclick="document.getElementById('sppd_previewresume').style.display='none';document.getElementById('keyboard_ketikan').style.display='none';">
+                &times;
+            </button>
+            <button class="w3-blue w3-center w3-btn w3-left" onclick="printsuratLandscape('printpreviewresume',true)">
+                <i class="fa fa-print"></i>
+            </button>
+            <button class="w3-green w3-center w3-btn w3-left w3-margin-left isitekselemenini" onclick="alert('spddcreate_preview')" >
+                <i class="fa fa-edit"></i>
+            </button>
+        </div>
+        
+        <div class="w3-modal-content w3-card-4 w3-padding w3-white w3-round-large printpreviewresume" style="max-width: 1000px;margin:15px auto">
+            <div class="w3-row w3-margin-top">
+                <div class="w3-col l2 s2 w3-sand" style="height:138px;">
+                    <div class="flag w3-blue">Resume Perjalanan Dinas</div>
+                </div>
+                <div class="w3-col l10 s10">
+                    <table style="max-width:1000px;margin:2px 5px">
+                        <tr>
+                            <td style="width:5%">Nama</td>
+                            <td style="width:5px">:</td>
+                            <td class="w3-border-bottom" style="width:93%"><span class="prevsppd_ptk">NAMA GURU</span></td>
+                        </tr>
+                        <tr>
+                            <td>Hari/Tanggal</td>
+                            <td>:</td>
+                            <td class="w3-border-bottom"><span class="prevsppd_starttanggal">TANGGAL</span></td>
+                        </tr>
+                        <tr>
+                            <td>Tempat</td>
+                            <td>:</td>
+                            <td class="w3-border-bottom"><span class="prevsppd_tempattujuan">TEMPAT</span></td>
+                        </tr>
+                        <tr>
+                            <td>Kegiatan</td>
+                            <td>:</td>
+                            <td class="w3-border-bottom"><span class="prevsppd_maksudperjalanandinas">KEGIATAN</span></td>
+                        </tr>
+                        <tr>
+                            <td>Pelaksanaan</td>
+                            <td>:</td>
+                            <td class="w3-border-bottom"><span class="prevsppd_starttanggal"></span></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="w3-col l12 s12 prevsppd_isiresume bgsekolah">
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eosxplicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eosxplicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eosxplicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eosxplicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eosxplicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eosxplicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eosxplicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eosxplicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eosxplicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eosxplicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eosxplicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="keyboard_ketikan" style="z-index: 5;">
+        <div id="keyboard_ketikanheader" class="w3-center"> Geser-geser
+            <span class="w3-button w3-red w3-right" onclick="document.getElementById('keyboard_ketikan').style.display='none'">&times;</span>
+        </div>
+        <div class="w3-clear w3-margin-top w3-padding w3-small w3-sand">
+            <button class="w3-right w3-green" onclick="tooglesembunyimenu(this)" title="Sembunyikan Menu"><i class="fa fa-eye-slash"></i></button>
+            <div class="tempatmenukeyboard">
+                    <label for="html_edtkeyboard">Tampilan HTML :
+                        <input type="checkbox" id="html_edtkeyboard"  class="w3-check">
+                    </label><br>
+                    Editor Umum:
+                    <span  class="btn_edtkeyboard w3-btn" data-keycmdkeyboard="undo" title="Undo"><i class="fa fa-undo"></i></span>
+                    <span  class="btn_edtkeyboard w3-btn" data-keycmdkeyboard="redo" title="Redo"><i class="fa fa-repeat"></i></span> 
+                    <span  class="btn_edtkeyboard w3-btn" data-keycmdkeyboard="removeFormat" title="Hapus Format"><i class="fa fa-eraser"></i></span> 
+                    |
+                    <span  class="btn_edtkeyboard w3-btn" data-keycmdkeyboard="bold" title="tebalkan teks"><i class="fa fa-bold"></i></span>
+                    <span  class="btn_edtkeyboard w3-btn" data-keycmdkeyboard="underline" title="garis bawahi teks"><i class="fa fa-underline"></i></span>
+                    <span  class="btn_edtkeyboard w3-btn" data-keycmdkeyboard="italic" title="miringkan teks"><i class="fa fa-italic"></i></span>
+                    <span  class="btn_edtkeyboard w3-btn" data-keycmdkeyboard="subscript" title="subscript"><i class="fa fa-subscript"></i></span>
+                    <span  class="btn_edtkeyboard w3-btn" data-keycmdkeyboard="superscript" title="superscript"><i class="fa fa-superscript"></i></span>
+                    <span  class="btn_edtkeyboard w3-btn" data-keycmdkeyboard="strikeThrough" title="garis hapus"><i class="fa fa-strikethrough"></i></span>
+                    |
+                    <div class="w3-dropdown-hover">
+                        <span class="w3-button dropdown_jenishurufkeyboard">Pilih Jenis Huruf</span>
+                        <div class="w3-dropdown-content w3-light-gray"><div class="w3-btn w3-block btn_edtkeyboard" data-keycmdkeyboard="fontname">Arial</div><div class="w3-btn w3-block btn_edtkeyboard" data-keycmdkeyboard="fontname">Arial Black</div><div class="w3-btn w3-block btn_edtkeyboard" data-keycmdkeyboard="fontname">Courier New</div><div class="w3-btn w3-block btn_edtkeyboard" data-keycmdkeyboard="fontname">cursive</div><div class="w3-btn w3-block btn_edtkeyboard" data-keycmdkeyboard="fontname">Monospace</div><div class="w3-btn w3-block btn_edtkeyboard" data-keycmdkeyboard="fontname">sans-serif</div><div class="w3-btn w3-block btn_edtkeyboard" data-keycmdkeyboard="fontname">Verdana,sans-serif</div><div class="w3-btn w3-block btn_edtkeyboard" data-keycmdkeyboard="fontname">Times New Roman</div>
+                        </div>
+                    </div>
+                
+                    |
+                    <div class="w3-dropdown-hover">
+                        Paragraf :
+                        <span class="w3-button dropdown_jenisparagrafkeyboard"><i class="fa fa-align-left"></i> </span>
+                        <div class="w3-dropdown-content w3-light-gray">
+                            <div class="w3-block btn_edtkeyboard w3-hover-blue" data-grupkeyboard="Paragraf" data-keycmdkeyboard="justifyLeft" title="Rata Kiri"><i class="fa fa-align-left"></i> </div>
+                            <div class="w3-block btn_edtkeyboard w3-hover-blue" data-grupkeyboard="Paragraf"  data-keycmdkeyboard="justifyRight" title="Rata Kanan"><i class="fa fa-align-right"></i> </div>
+                            <div class="w3-block btn_edtkeyboard w3-hover-blue" data-grupkeyboard="Paragraf"  data-keycmdkeyboard="justifyCenter" title="Rata Tengah"><i class="fa fa-align-center"></i> </div>
+                            <div class="w3-block btn_edtkeyboard w3-hover-blue" data-grupkeyboard="Paragraf"  data-keycmdkeyboard="justifyFull" title="Rata Kiri Kanan"><i class="fa fa-align-justify"></i> </div>
+                        </div>   
+                    </div>
+                    <span  class="btn_edtkeyboard w3-btn" data-keycmdkeyboard="insertOrderedList" title="List Nomor"><i class="fa fa-list-ol"></i></span>
+                    <span  class="btn_edtkeyboard w3-btn" data-keycmdkeyboard="insertunOrderedList" title="List Point"><i class="fa fa-list-ul"></i></span>
+                    <div class="w3-btn w3-btn" id="keyboardedt_table" title="Buat table dengan memasukkan angka Baris dan Kolom"><i class="fa fa-table"></i> </div>
+                    |
+                    <div class="w3-dropdown-hover">
+                        <span title="Simbol" class="w3-btn">Ω</span>
+                        <div class="w3-dropdown-content w3-light-gray"><span class="btn_edtkeyboard w3-hover-aqua" data-grupkeyboard="simbol" data-keycmdkeyboard="insertText" title="Pi Lingkaran">&#8508;</span><span class="btn_edtkeyboard w3-hover-aqua" data-grupkeyboard="simbol" data-keycmdkeyboard="insertText" title="kali">&times;</span><span class="btn_edtkeyboard w3-hover-aqua" data-grupkeyboard="simbol" data-keycmdkeyboard="insertText" title="Bagi">&div;</span><span class="btn_edtkeyboard w3-hover-aqua" data-grupkeyboard="simbol" data-keycmdkeyboard="insertText" title="Plus minus">&PlusMinus;</span><span class="btn_edtkeyboard w3-hover-aqua" data-grupkeyboard="simbol" data-keycmdkeyboard="insertText" title="simbol sudut">&ang;</span><span class="btn_edtkeyboard w3-hover-aqua" data-grupkeyboard="simbol" data-keycmdkeyboard="insertText" title="lebih besar sama dengan">&ge;</span><span class="btn_edtkeyboard w3-hover-aqua" data-grupkeyboard="simbol" data-keycmdkeyboard="insertText" title="lebih kecil sama dengan">&le;</span><span class="btn_edtkeyboard w3-hover-aqua" data-grupkeyboard="simbol" data-keycmdkeyboard="insertText" title="Derajat Suhu">&#176;</span><span class="btn_edtkeyboard w3-hover-aqua" data-grupkeyboard="simbol" data-keycmdkeyboard="insertText" title="Ceklis">&checkmark;</span><br><sup>Anda dapat menggunakan ketik langsung dengan menekan tombol di keyboard <i class="fa fa-windows"></i> dan tombol titik (.);</sup>
+                        </div>
+                        
+                    </div>
+                    <span class="w3-btn btn_edtkeyboard" title="Hyperlink" data-keycmdkeyboard="createLink"><i class="fa fa-link"></i> </span>
+                    <label for="keyboarduploadgambar_edt" class="w3-btn" title="Upload Gambar"><i class="fa fa-image"></i></label>
+                    <input type="file" id="keyboarduploadgambar_edt" class="w3-hide">
+                    <span class="w3-btn w3-padding" id="keyboardbtn_edtkeyboardyt" title="Masukan Video Youtube"><i class="fa fa-youtube-play"></i></span>
+                    <div class="w3-dropdown-hover">
+                        <span class="w3-btn" title="formula">&#131;</span>
+                        <div class="w3-dropdown-content w3-light-gray"><div class="w3-border-bottom  w3-center w3-hover-aqua w3-margin" title="pecahan biasa">    <div id="keyboardsimpan_pecahanbiasa" class="w3-right"><i class="fa fa-save"></i></div>    <div style="margin:auto;width:20%">        <div class="q"></div>        <div class="frac">        <div class="numer"><span contenteditable="true" id="keyboardinpecbiasa_pembilang" title ="Masukkan angka pembilang">2</span></div>        <div class="denom"><span contenteditable="true" id="keyboardinpecbiasa_penyebut"  title ="Masukkan angka penyebut">5</span></div>    </div>         </div></div><div class="w3-clear"></div><div class="w3-border-bottom  w3-center w3-hover-aqua w3-margin" title="pecahan campuran">    <div id="keyboardsimpan_pecahancampuran" class="w3-right"><i class="fa fa-save"></i></div>    <div style="margin:auto;width:20%">        <div class="q" contenteditable="true" id="keyboardinpecCamp_satuan"  title="satuan pecahan">3</div>        <div class="frac">            <div class="numer"><span contenteditable="true"  id="keyboardinpecCamp_pembilang" title ="Masukkan angka pembilang">2</span></div>            <div class="denom"><span contenteditable="true"  id="keyboardinpecCamp_penyebut" title ="Masukkan angka penyebut">5</span></div>        </div>     </div></div><div class="w3-clear"></div><div class="w3-border-top w3-border-bottom w3-center w3-padding-24" title="akar kuadrat">    <div id="keyboardsimpan_akarkuadrat" class="w3-right"><i class="fa fa-save"></i></div>    <span>&#8730;</span><span style="top:2px;left: -1px;padding:0 2px ;position:relative;border-top:1px solid black" id="keyboardinakar_kuadrat" contenteditable="true">123</span></div><div class="w3-clear"></div><div class="w3-border-top w3-border-bottom w3-center w3-padding-24" title="akar pangkat tiga">    <div id="keyboardsimpan_akarpangkattiga" class="w3-right"><i class="fa fa-save"></i></div>    <span style="position:relative;top: -10px;left:6px">3</span><span>&#8730;</span><span style="top:2px;left: -1px;padding:0 2px ;position:relative;border-top:1px solid black"  id="keyboardinakar_tiga"  contenteditable="true">123</span></div>
+                        
+                        </div>
+                    </div>
+                    <div class="w3-dropdown-hover">
+                        <span class="keyboardgrup_ukuranfont w3-btn w3-hover-aqua" title="Ukuran Font" >Normal</span>
+                        <div class="w3-dropdown-content w3-light-grey" ><div class="w3-btn w3-hover-aqua btn_edtkeyboard w3-block" data-grupkeyboard="ukuranfont" data-keycmdkeyboard="fontsize" data-keyval="1">Sangat Kecil</div><div class="w3-btn w3-hover-aqua btn_edtkeyboard w3-block" data-grupkeyboard="ukuranfont" data-keycmdkeyboard="fontsize" data-keyval="2">Sedikit lebih Kecil</div><div class="w3-btn w3-hover-aqua btn_edtkeyboard w3-block" data-grupkeyboard="ukuranfont" data-keycmdkeyboard="fontsize" data-keyval="3">Normal</div><div class="w3-btn w3-hover-aqua btn_edtkeyboard w3-block" data-grupkeyboard="ukuranfont" data-keycmdkeyboard="fontsize" data-keyval="4">Medium</div><div class="w3-btn w3-hover-aqua btn_edtkeyboard w3-block" data-grupkeyboard="ukuranfont" data-keycmdkeyboard="fontsize" data-keyval="5">Gede</div><div class="w3-btn w3-hover-aqua btn_edtkeyboard w3-block" data-grupkeyboard="ukuranfont" data-keycmdkeyboard="fontsize" data-keyval="6">Gede Banget</div><div class="w3-btn w3-hover-aqua btn_edtkeyboard w3-block" data-grupkeyboard="ukuranfont" data-keycmdkeyboard="fontsize" data-keyval="7">Maksimum</div>
+                        </div>
+                    </div>
+                    <div class="w3-dropdown-hover">
+                        <span class="keyboardgrup_heading w3-btn w3-hover-aqua" title="Heading">Heading</span>
+                        <div class="w3-dropdown-content w3-light-grey"><div class="w3-btn w3-hover-aqua w3-block btn_edtkeyboard" data-grupkeyboard="heading" data-keycmdkeyboard="formatblock" data-keyval="h1">Heading 1</div><div class="w3-btn w3-hover-aqua w3-block btn_edtkeyboard" data-grupkeyboard="heading" data-keycmdkeyboard="formatblock" data-keyval="h2">Heading 2</div><div class="w3-btn w3-hover-aqua w3-block btn_edtkeyboard" data-grupkeyboard="heading" data-keycmdkeyboard="formatblock" data-keyval="h3">Heading 3</div><div class="w3-btn w3-hover-aqua w3-block btn_edtkeyboard" data-grupkeyboard="heading" data-keycmdkeyboard="formatblock" data-keyval="h4">Heading 4</div><div class="w3-btn w3-hover-aqua w3-block btn_edtkeyboard" data-grupkeyboard="heading" data-keycmdkeyboard="formatblock" data-keyval="h5">Heading 5</div><div class="w3-btn w3-hover-aqua w3-block btn_edtkeyboard" data-grupkeyboard="heading" data-keycmdkeyboard="formatblock" data-keyval="h6">Heading 6</div><div class="w3-btn w3-hover-aqua w3-block btn_edtkeyboard" data-grupkeyboard="heading" data-keycmdkeyboard="formatblock" data-keyval="p">Paragraf</div><div class="w3-btn w3-hover-aqua w3-block btn_edtkeyboard" data-grupkeyboard="heading" data-keycmdkeyboard="formatblock" data-keyval="pre">Pre Code</div>
+                        </div>
+                    </div>
+                    <span class="w3-btn w3-padding" id="keyboardbtn_gantihalaman" title="Halaman Baru"><i class="fa fa-file-text-o"></i></span>
+            </div>
+        </div>
+        <iframe id="iframe_keyboardumum" class="w3-input w3-margin-top w3-white w3-border" style="resize: vertical;height: 300px;"></iframe>
+        <!-- /// selesai -->
+        <div class="w3-margin-top w3-center">
+            <button class="w3-green  w3-padding w3-round-large simpankeyboard">
+                <i class="fa fa-save"></i> 
+            </button>
+        </div>
+    </div>
+    
+    <input type="file" id="uploadsppd" class="w3-hide"/>
+    <div id="useredit_sppd" class="w3-modal w3-sand">
+        <div style="position:sticky;top:0px;margin-top:5px;display:block;margin-left:5px;cursor:pointer;z-index:5">
+            <button class="w3-red w3-center w3-button w3-right" onclick="document.getElementById('useredit_sppd').style.display='none'">&times;</button>
+        </div>
+        <div class="w3-modal-content w3-card-4 w3-padding w3-round-large w3-white" style="max-width: 800px;">
+            <h5 class="w3-center">Format Pengeditan SPPD</h5>
+            <div class="w3-border w3-round-large w3-padding">
+                <label for="editabelsppd_pegawaiyangdiperintah">Pegawai Yang Diperintah:
+                    <input id="editabelsppd_pegawaiyangdiperintah" class="w3-input w3-pale-green" disabled>
+                    <span class="w3-tiny">Nama PTK tidak bisa diedit! Jika ingin diedit, maka pengeditan di Profil akun masing-masing guru</span>
+                </label><br>
+                <br>
+                <label for="editabelsppd_golonganpegawai">Golongan Ruang:
+                    <input type="text" id="editabelsppd_golonganpegawai" class="w3-input w3-pale-green" data-keyeditabelsppd="ptk_golongan">
+                </label><br>
+                <label for="editabelsppd_jabatanpegawai">Jabatan:
+                    <input type="text" id="editabelsppd_jabatanpegawai" class="w3-input w3-pale-green" data-keyeditabelsppd="ptk_jabatan">
+                </label><br>
+            </div><br>
+            <div class="w3-border w3-round-large w3-padding">
+                <label for="editabelsppd_maksudperjalanandinas">
+                    Maksud Perjalanan Dinas:
+                    <input type="text" id="editabelsppd_maksudperjalanandinas" class="w3-input w3-pale-green" data-keyeditabelsppd="ptk_maksudsppd">
+                </label><br>
+                <label for="editabelsppd_tujuantempatdinas">
+                    Tempat Tujuan Perjalanan Dinas:
+                    <input type="text" id="editabelsppd_tujuantempatdinas" class="w3-input w3-pale-green" data-keyeditabelsppd="ptk_tempatsppd">
+                </label><br>
+                <label for="editabelsppd_tanggalmulai">
+                    Tanggal Berangkat/Pelaksanaan :
+                    <input type="date" id="editabelsppd_tanggalmulai" class="w3-input w3-pale-green" data-keyeditabelsppd="ptk_starttgl">
+                </label><br>
+                <label for="editabelsppd_lamaperjalanan">
+                    Lama Perjalanan Dinas (hari):
+                    <input type="number" id="editabelsppd_lamaperjalanan" min="1" max="100" class="w3-input w3-pale-green" data-keyeditabelsppd="ptk_durasisppd">
+                </label>
+            </div><br>
+            <div class="w3-border w3-round-large w3-padding">
+                <label for="editabelsppd_nosuratSPPD">
+                    No. Surat SPPD ini:
+                    <input type="text" id="editabelsppd_nosuratSPPD" class="w3-input w3-pale-green" data-keyeditabelsppd="ptk_nosppd">
+                </label>
+            </div><br>
+            <div class="w3-border w3-padding w3-round-large w3-tiny w3-center w3-hide-small">
+                NIP guru dan PTK Jabatan diambil dari profil guru di akun masing-masing PTK, Golongan Ruang diatur di <b>Data PTK</b>.
+                <br><br>Golongan ruang di sini diperuntukkan untuk jabatan yang diminta saat melaksanakan SPPD. Bisa saja jabatan yang dimaksud adalah jabatan yang berupa Tugas Tambahan dari PTK tersebut. Semisal, PTK yang menjabat sebagai Pembina UKS, Pembina Pramuka, Bendahara, dll.
+            </div>
+            <div class="w3-padding w3-center">
+                <button class="w3-button w3-blue w3-round serverkirimeditan_sppd" title="Simpan Perubahan" >Simpan Pengeditan SPPD</button>
+            </div>
+        </div>
+
+    </div>
+    <div id="template_notularapat" class="w3-modal w3-sand">
+        <div style="position:sticky;top:0px;margin-top:5px;display:block;margin-left:5px;cursor:pointer;z-index:5">
+            <button class="w3-red w3-center w3-btn w3-right" onclick="document.getElementById('template_notularapat').style.display='none';document.getElementById('keyboard_ketikan').style.display='none';">
+                &times;
+            </button>
+            <button class="w3-blue w3-center w3-btn w3-left" onclick="printsuratLandscape('printNotula',true)">
+                <i class="fa fa-print"></i>
+            </button>
+            <button class="w3-green w3-center w3-btn w3-left w3-margin-left ketikkanrapat">
+                <i class="fa fa-edit"></i>
+            </button>
+        </div>
+        <div class="w3-white w3-round-large w3-padding printNotula" style="max-width: 1000px;margin:15px auto;">
+            <div class="w3-row w3-margin-top w3-margin-bottom">
+                <div class="w3-col l2 s2 w3-sand" style="height:138px;">
+                    <div class="flag w3-blue">Notula Rapat</div>
+                </div>
+                <div class="w3-col l10 s10 w3-border-bottom w3-margin-bottom">
+                    <div class="w3-center judul_jenisrapat w3-xxlarge" style="font-weight: bold;">Judul</div>
+                    <div class="w3-center judul_temarapat w3-xlarge" style="font-weight: bold;">Judul2</div>
+                    <div class="w3-center judul_wakturapat" style="font-weight: bold;">Pelaksanaan</div><br>
+                    <div class="w3-center judul_notulen">Notulen</div>
+                </div>
+                <div class="w3-col l12 s12 isiteks_rapat bgsekolah">
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eosxplicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eosxplicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eosxplicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eosxplicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eosxplicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                </div>
+            </div>
+            <br><br>
+            <div class="w3-row w3-margin-top tandatangannotulen">
+
+            </div>
+        </div>
+    </div>
     <script src="/statis/app.js"></script>
     <script src="/statis/kepsek.js"></script>
     <script src="/statis/excelkepsek.js"></script>
     <script src="/timekbm.js"></script>
+    <!-- <button onclick="document.getElementById('template_notularapat').style.display='block'">Buka</button> -->
 </body>
 
 </html>

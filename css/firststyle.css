@@ -20,6 +20,7 @@ button.login{background-color:#00f}button.wa{background-color:#4caf50}button.log
 }
 .hero::after {background-color: white;}
 .tesbody{background: rgb(255, 255, 255) url("/img/hero-bg.png") repeat }
+/* .tesbody{background: rgb(255, 255, 255) url("/img/hero-bg.png") repeat } */
 /* .tesbody{background: rgb(208, 221, 250) url("/img/bgwa2.png") repeat } */
 /* .tesbody{background: rgba(250, 244, 164, 0.6) url("/img/lg_bg.png") repeat } */
     /* background-image: url(/img/bgwa.png);background-repeat: repeat; background-color: #faf4a4} */

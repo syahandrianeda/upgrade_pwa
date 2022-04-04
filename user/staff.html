@@ -2883,6 +2883,7 @@
                 <button class="tablinks btn_suratmasuk" onclick="openCity(event, 'divsuratmasuk')">Surat Masuk</button>
                 <button class="tablinks btn_suratkeluar" onclick="openCity(event, 'divsuratkeluar')">Surat Keluar</button>
                 <button class="tablinks btn_sppd" onclick="openCity(event, 'divsppd')">SPPD</button>
+                <button class="tablinks btn_notularapat" onclick="openCity(event, 'divnotularapat')">Notula Rapat</button>
             </div>  
             <div id="divsuratmasuk" class="tabcontent">
                 <h4>Surat Masuk</h4>
@@ -3196,7 +3197,7 @@
                             <button class="w3-button w3-blue w3-round" onclick="serverkirimsppd()" >Buat SPPD</button>
                         </div>
                     </div>
-                    <div class="w3-card-4 w3-padding w3-round-large w3-white w3-hide settingsppd_hidden sppdtabel" style="max-width: 1000px;margin:15px auto;overflow-x: auto;">
+                    <div class="w3-card-4 w3-padding w3-round-large w3-white w3-hide settingsppd_hidden sppdtabel" style="max-width: 1200px;margin:15px auto;overflow-x: auto;">
                         <h5>Tabel Database SPPD yang telah dibuat/dilaporkan (versi Cetak)</h5>
                         <table class="w3-table garis w3-tiny tabeldbsppd">
                             <thead>
@@ -3212,10 +3213,10 @@
                                     <th>Lama Pelaksanaan</th>
                                     <th>No. Surat SPPD</th>
                                     <th>Arsip Surat No. Surat SPPD</th>
-                                    
                                     <th>Laporan Resume</th>
+                                    <th>Cetak Resum (jika ada)</th>
                                     <th>SPPD Scan/Upload</th>
-                                    <th>SPPD Cetak</th>
+                                    <th>SPPD Cetak/Edit</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -3226,6 +3227,8 @@
                                     <td>Depok</td>
                                     <td>1 Januari 2022</td>
                                     <td>Tidak Mengirimkan resum</td>
+                                    <td></td>
+                                    <td></td>
                                     <td><button onclick="alert('cetak SPPD untuk baris ini')"></button></td>
                                 </tr>
                                 <tr>
@@ -3235,6 +3238,8 @@
                                     <td>Moscow Urra</td>
                                     <td>1 Januari 2022</td>
                                     <td>Tidak Mengirimkan resum</td>
+                                    <td></td>
+                                    <td></td>
                                     <td><button onclick="alert('cetak SPPD untuk baris ini')">Lihat</button></td>
                                 </tr>
                             </tbody>
@@ -3285,7 +3290,123 @@
                     Database SPPD
                 </div>
             </div>
-            
+            <div id="divnotularapat" class="tabcontent">
+                <h3>UNDANGAN DAN NOTULA RAPAT</h3>
+                <div class="w3-tab">
+                    <div class="w3-button  btnadm w3-border w3-round-xlarge  klikfiturrapat" onclick="tabA(event, 'rapat_create')">Undangan Rapat</div>
+                    <div class="w3-button btnadm  w3-border w3-round-xlarge " onclick="tabA(event, 'dbrapat_create')">Data Rapat Sekolah</div>
+                    <div class="w3-button btnadm  w3-border w3-round-xlarge fokusngetiknotula " onclick="tabA(event, 'notula_create')">Notula Rapat</div>
+                </div>
+                <div class="isiadm" id="rapat_create">
+                    <h4>Undangan Rapat</h4>
+                    Buat undangan rapat untuk PTK di lingkungan Anda melalui form isian ini. PTK Anda akan mendapatkan informasi undangan rapat yang telah Anda buat dan mendapatkan notulanya.
+                    <div class="w3-round-xlarge w3-white w3-padding w3-card-4 " style="max-width:800px;overflow-x: auto;margin:15px auto">
+                        <div  class="w3-border w3-round-xlarge w3-padding w3-margin-bottom">
+                            <label for="rapat_pengundang">
+                                Diundang Oleh:<input type="text" id="rapat_pengundang" class="w3-input w3-border w3-pale-green" data-keyRapat="diundang_oleh"/>
+                            </label><br>
+                        </div>
+                        <div  class="w3-border w3-round-xlarge w3-padding w3-margin-bottom">
+                            <label for="rapat_agendarapat">
+                                Jenis Agenda Rapat:
+                                <select id="rapat_agendarapat" class="w3-select w3-border w3-round-xlarge" data-keyRapat="agenda_rapat">
+                                    <option value="Rapat Mingguan" selected>Rapat Mingguan</option>
+                                    <option value="Rapat Bulanan">Rapat Bulanan</option>
+                                    <option value="Rapat Semesteran">Rapat Semesteran</option>
+                                    <option value="Rapat Tahunan">Rapat Tahunan</option>
+                                    <option value="Rapat Insidental">Rapat Insidental</option>
+                                    <option value="Rapat Khusus">Rapat Khusus(Korlas/Komite/dll)</option>
+                                </select>
+                            </label><br>
+                        </div>
+                        <div  class="w3-border w3-round-xlarge w3-padding w3-margin-bottom">
+                            <label for="rapat_tema">
+                                Tema/Topik Rapat:
+                                <input type="text" id="rapat_tema" class="w3-input w3-border w3-pale-green" data-keyRapat="tema_rapat"/>
+                            </label><br>
+                        </div>
+                        <div  class="w3-border w3-round-xlarge w3-padding w3-margin-bottom w3-center">
+                            <label for="rapat_tgl">
+                                Waktu Pelaksanaan Rapat:<input type="datetime-local" id="rapat_tgl" class="w3-border w3-round-xlarge w3-padding" data-keyRapat="pelaksanaan_rapat">
+                            </label><br>
+                        </div>
+                        <div class="w3-center w3-padding w3-border w3-round-xxlarge">
+                            <button class="w3-button w3-round-large w3-blue w3-padding buatrapatbaru" onclick="buatRapatbaru()"><i class="fa fa-pencil"></i> Buat</button>
+                            <button class="w3-button w3-round-large w3-green w3-padding editrapatbaru w3-hide"><i class="fa fa-edit"></i> Simpan Pengeditan</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="isiadm" id="dbrapat_create">
+                    <h4>Daftar Kumpulan Rapat Sekolah</h4>
+                    Disini Anda dapat melihat seluruh kegiatan rapat yang telah Anda undang beserta kumpulan notulennya.
+                    <div class="w3-round-xlarge w3-white w3-padding w3-card-4" style="max-width:1000px;overflow-x: auto;margin:15px auto">
+                        <table class="w3-table garis tabel_dbrapatsekolah w3-small">
+                            <thead>
+                                <tr class="w3-dark-gray">
+                                    <th>No</th>
+                                    <th>Aksi</th>
+                                    <th>Pengundang</th>
+                                    <th>Jenis Rapat</th>
+                                    <th>Tema/Topik Rapat</th>
+                                    <th>Waktu Pelaksanaan</th>
+                                    <th>Notulen Rapat</th>
+                                    <th>Keterangan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td><button class="w3-btn">Edit</button></td>
+                                    <td>Kepala Sekolah</td>
+                                    <td>Rapat Bulanan</td>
+                                    <td>Pembahasan Kegiatan PTS</td>
+                                    <td>Senin, 31 Februari 2022</td>
+                                    <td>
+                                        <button class="w3-btn w3-round-large w3-border w3-tiny">Notula Ruliyanti</button>
+                                        <button class="w3-btn w3-round-large w3-border w3-tiny">Notula Widya Hendarsari</button>
+                                        <button class="w3-btn w3-round-large w3-border w3-tiny">Notula Anisa Setiawati</button>
+                                        <button class="w3-btn w3-round-large w3-border w3-tiny">Notula Miftah Mawadah</button>
+                                    </td>
+                                    <td>
+                                        Notula diisi oleh 4 PTK
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="isiadm" id="notula_create">
+                    <h4>Notula Rapat-ku</h4>
+                    Tabel berikut adalah data Undangan Rapat yang ditunjukkan kepada Anda. Lengkapi notula rapat Anda untuk dapat dilaporkan/diarsipkan. 
+                    <br><span class="w3-tiny">Tabel diurutkan dari yang terbaru</span>
+                    <div class="w3-round-xlarge w3-white w3-padding w3-card-4" style="max-width:1000px;overflow-x: auto;margin:15px auto">
+                        <table class="datanotularapatku w3-table garis w3-small">
+                            <thead>
+                                <tr class="w3-light-grey">
+                                    <th>No</th>
+                                    <th>Diundang oleh</th>
+                                    <th>Agenda Rapat</th>
+                                    <th>Tema/Topik Rapat</th>
+                                    <th>Pelaksanaan</th>
+                                    <th>Notula Rapat</th>
+                                    <th>Keterangan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Kepala Sekolah</td>
+                                    <td>Rapat Mingguan, Bulanan, Semester, tahunan, insidental</td>
+                                    <td>Tema Rapat</td>
+                                    <td>Senin, 31 Februari 2022</td>
+                                    <td><button onclick="alert('Buat/edit Notula Rapat. Termasuk Cetak Notula Anda')"><i class="fa fa-pencil"></i></button></td>
+                                    <td>Keterangan jika sudah/belum menulis notula</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="w3-container" id="divgaleri">
             <h3>Galeri</h3>
@@ -4251,37 +4372,39 @@
                         </tr>
                     </table>
                 </div>
-                <table style="border-collapse: collapse;width: 99%;">
-                    <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
-                    <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
-                    <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
-                    <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
-                    <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
-                    <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
-                    <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
-                    <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
-                    <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
-                    <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
-                    <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
-                    <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
-                    <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
-                    <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
-                    <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
-                    <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
-                    <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
-                    <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
-                    <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
-                    <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
-                    <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
-                    <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
-                    <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
-                    <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
-                    <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
-                    <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
-                    <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
-                    <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
-                    <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
-                </table>
+                <div class="w3-col l12 s12 bgsekolah">
+                    <table style="border-collapse: collapse;width: 99%;">
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid grey;"><td style="height:28px">&nbsp; </td></tr>
+                    </table>
+                </div>
             </div>
 
 
@@ -4292,18 +4415,18 @@
     </div>
     <div class="w3-modal w3-sand" id="sppd_previewresume">
         <div style="position:sticky;top:0px;margin-top:5px;display:block;margin-left:5px;cursor:pointer;z-index:5">
-            <button class="w3-red w3-center tangan w3-right" onclick="document.getElementById('sppd_previewresume').style.display='none'">
+            <button class="w3-red w3-center w3-btn w3-right" onclick="document.getElementById('sppd_previewresume').style.display='none';document.getElementById('keyboard_ketikan').style.display='none';">
                 &times;
             </button>
-            <button class="w3-blue w3-center tangan w3-left" onclick="printsuratLandscape('printpreviewresume',true)">
+            <button class="w3-blue w3-center w3-btn w3-left" onclick="printsuratLandscape('printpreviewresume',true)">
                 <i class="fa fa-print"></i>
             </button>
-            <button class="w3-green w3-center tangan w3-left w3-margin-left isitekselemenini" onclick="alert('spddcreate_preview')" >
+            <button class="w3-green w3-center w3-btn w3-left w3-margin-left isitekselemenini" onclick="alert('spddcreate_preview')" >
                 <i class="fa fa-edit"></i>
             </button>
         </div>
         
-        <div class="w3-modal-content w3-card-4 w3-padding w3-white w3-round-large printpreviewresume" style="max-width: 1000px;">
+        <div class="w3-modal-content w3-card-4 w3-padding w3-white w3-round-large printpreviewresume" style="max-width: 1000px;margin:15px auto">
             <div class="w3-row w3-margin-top">
                 <div class="w3-col l2 s2 w3-sand" style="height:138px;">
                     <div class="flag w3-blue">Resume Perjalanan Dinas</div>
@@ -4337,7 +4460,7 @@
                         </tr>
                     </table>
                 </div>
-                <div class="w3-col l12 s12 prevsppd_isiresume">
+                <div class="w3-col l12 s12 prevsppd_isiresume  bgsekolah">
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
@@ -4379,7 +4502,7 @@
             </div>
         </div>
     </div>
-    <div id="keyboard_ketikan">
+    <div id="keyboard_ketikan" style="z-index: 5;">
         <div id="keyboard_ketikanheader" class="w3-center"> Geser-geser
             <span class="w3-button w3-red w3-right" onclick="document.getElementById('keyboard_ketikan').style.display='none'">&times;</span>
         </div>
@@ -4459,10 +4582,8 @@
             </button>
         </div>
     </div>
-    <button onclick="document.getElementById('sppd_previewresume').style.display='block'">TES MODAL</button>
-    <button onclick="document.getElementById('keyboard_ketikan').style.display='block'">TES KETIKAN</button>
-    <button onclick="document.getElementById('useredit_sppd').style.display='block'">TES EDIT SPPD</button>
     
+    <input type="file" id="uploadsppd" class="w3-hide"/>
     <div id="useredit_sppd" class="w3-modal w3-sand">
         <div style="position:sticky;top:0px;margin-top:5px;display:block;margin-left:5px;cursor:pointer;z-index:5">
             <button class="w3-red w3-center w3-button w3-right" onclick="document.getElementById('useredit_sppd').style.display='none'">&times;</button>
@@ -4471,15 +4592,13 @@
             <h5 class="w3-center">Format Pengeditan SPPD</h5>
             <div class="w3-border w3-round-large w3-padding">
                 <label for="editabelsppd_pegawaiyangdiperintah">Pegawai Yang Diperintah:
-                    <input id="editabelsppd_pegawaiyangdiperintah" data-keyeditabelsppd="ptk_diperintah" class="w3-input w3-pale-green"">
+                    <input id="editabelsppd_pegawaiyangdiperintah" class="w3-input w3-pale-green" disabled>
+                    <span class="w3-tiny">Nama PTK tidak bisa diedit! Jika ingin diedit, maka pengeditan di Profil akun masing-masing guru</span>
                 </label><br>
-                Database PTK:<br>
-                <label for="editabelsppd_nippegawai">NIP (ASN):
-                    <input type="text" id="editabelsppd_nippegawai" class="w3-input w3-pale-green">
-                </label>
+                <br>
                 <label for="editabelsppd_golonganpegawai">Golongan Ruang:
                     <input type="text" id="editabelsppd_golonganpegawai" class="w3-input w3-pale-green" data-keyeditabelsppd="ptk_golongan">
-                </label>
+                </label><br>
                 <label for="editabelsppd_jabatanpegawai">Jabatan:
                     <input type="text" id="editabelsppd_jabatanpegawai" class="w3-input w3-pale-green" data-keyeditabelsppd="ptk_jabatan">
                 </label><br>
@@ -4507,18 +4626,73 @@
                     No. Surat SPPD ini:
                     <input type="text" id="editabelsppd_nosuratSPPD" class="w3-input w3-pale-green" data-keyeditabelsppd="ptk_nosppd">
                 </label>
+            </div><br>
+            <div class="w3-border w3-padding w3-round-large w3-tiny w3-center w3-hide-small">
+                NIP guru dan PTK Jabatan diambil dari profil guru di akun masing-masing PTK, Golongan Ruang diatur di <b>Data PTK</b>.
+                <br><br>Golongan ruang di sini diperuntukkan untuk jabatan yang diminta saat melaksanakan SPPD. Bisa saja jabatan yang dimaksud adalah jabatan yang berupa Tugas Tambahan dari PTK tersebut. Semisal, PTK yang menjabat sebagai Pembina UKS, Pembina Pramuka, Bendahara, dll.
             </div>
             <div class="w3-padding w3-center">
-                <button class="w3-button w3-blue w3-round serverkirimeditan_sppd" onclick="alert('serverkirimeditan_sppd')" >Simpan Pengeditan SPPD</button>
+                <button class="w3-button w3-blue w3-round serverkirimeditan_sppd" title="Simpan Perubahan" >Simpan Pengeditan SPPD</button>
             </div>
         </div>
 
+    </div>
+    <div id="template_notularapat" class="w3-modal w3-sand">
+        <div style="position:sticky;top:0px;margin-top:5px;display:block;margin-left:5px;cursor:pointer;z-index:5">
+            <button class="w3-red w3-center w3-btn w3-right" onclick="document.getElementById('template_notularapat').style.display='none';document.getElementById('keyboard_ketikan').style.display='none';">
+                &times;
+            </button>
+            <button class="w3-blue w3-center w3-btn w3-left" onclick="printsuratLandscape('printNotula',true)">
+                <i class="fa fa-print"></i>
+            </button>
+            <button class="w3-green w3-center w3-btn w3-left w3-margin-left ketikkanrapat">
+                <i class="fa fa-edit"></i>
+            </button>
+        </div>
+        <div class="w3-white w3-round-large w3-padding printNotula" style="max-width: 1000px;margin:15px auto;">
+            <div class="w3-row w3-margin-top w3-margin-bottom">
+                <div class="w3-col l2 s2 w3-sand" style="height:138px;">
+                    <div class="flag w3-blue">Notula Rapat</div>
+                </div>
+                <div class="w3-col l10 s10 w3-border-bottom w3-margin-bottom">
+                    <div class="w3-center judul_jenisrapat w3-xxlarge" style="font-weight: bold;">Judul</div>
+                    <div class="w3-center judul_temarapat w3-xlarge" style="font-weight: bold;">Judul2</div>
+                    <div class="w3-center judul_wakturapat" style="font-weight: bold;">Pelaksanaan</div><br>
+                    <div class="w3-center judul_notulen">Notulen</div>
+                </div>
+                <div class="w3-col l12 s12 isiteks_rapat bgsekolah">
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eosxplicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eosxplicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eosxplicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eosxplicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eosxplicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                </div>
+            </div>
+            <br><br>
+            <div class="w3-row w3-margin-top tandatangannotulen">
+
+            </div>
+        </div>
     </div>
     <script src="/statis/app.js"></script>
     <script src="/timekbm.js"></script>
     <script src="/statis/staff.js"></script>
     <script src="/statis/excelstaff.js"></script>
-
+<!-- <button onclick="document.getElementById('sppd_previewresume').style.display='block'">TES MODAL</button>
+    <button onclick="document.getElementById('keyboard_ketikan').style.display='block'">TES KETIKAN</button>
+    <button onclick="document.getElementById('useredit_sppd').style.display='block'">TES EDIT SPPD</button> -->
 </body>
 
 </html>

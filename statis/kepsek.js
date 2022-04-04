@@ -22,7 +22,8 @@ let dataketeranganakreditasi;
 let stoploadingtopbar;
 const loadingtopbarin = (el) => {
     var elem = document.querySelector("." + el);
-    elem.className = elem.className.replace("w3-hide", "")
+    elem.className = elem.className.replace(/\sw3-hide/g, "");
+    elem.style.width = "1px";
     var width = 1;
     stoploadingtopbar = setInterval(frame2, 10);
 
@@ -621,10 +622,13 @@ function openCity(evt, cityName) {
     }
     tablinks = document.getElementsByClassName("tablinks");
     for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
+        tablinks[i].className = tablinks[i].className.replace(/active/g, "");
     }
     document.getElementById(cityName).style.display = "block";
     evt.currentTarget.className += " active";
+    if(evt.currentTarget.innerHTML == "Notula Rapat"){
+        document.querySelector(".klikfiturrapat").click();
+    }
 }
 
 
@@ -5684,7 +5688,7 @@ const kirimserver_suratmasuk = () => {
     datakirim.append("tipe",tipe);
     let html = "";
     let ttbody = document.querySelector(".tabel_suratmasuk").getElementsByTagName("tbody")[0];
-    ttbody.innerhtml= `<tr><td colspan="9"><img src="/img/barloading.gif"/> sedang proses kriim</td></tr>`;
+    ttbody.innerHTML= `<tr><td colspan="9"><img src="/img/barloading.gif"/> sedang proses kriim</td></tr>`;
     setdata.forEach(s => s.value ="");
     
 
@@ -5784,7 +5788,7 @@ const kirimserver_suratkeluar = () => {
     datakirim.append("tipe",tipe);
     let html = "";
     let ttbody = document.querySelector(".tabel_suratkeluar").getElementsByTagName("tbody")[0];
-    ttbody.innerhtml= `<tr><td colspan="9"><img src="/img/barloading.gif"/> sedang proses kriim</td></tr>`;
+    ttbody.innerHTML= `<tr><td colspan="9"><img src="/img/barloading.gif"/> sedang proses kriim</td></tr>`;
     setdata.forEach(s => s.value ="");
     
 
@@ -5920,7 +5924,7 @@ const kirimserver_editsuratmasuk = (a)=>{
     datakirim.append("tipe",tipe);
     let html = "";
     let ttbody = document.querySelector(".tabel_suratmasuk").getElementsByTagName("tbody")[0];
-    ttbody.innerhtml= `<tr><td colspan="9"><img src="/img/barloading.gif"/> sedang proses Edit</td></tr>`;
+    ttbody.innerHTML= `<tr><td colspan="9"><img src="/img/barloading.gif"/> sedang proses Edit</td></tr>`;
     setdata.forEach(s => s.value ="");
     let bt = document.querySelector(".tombolkirimsuratmasuk");
      bt.setAttribute("onclick",`kirimserver_suratmasuk()`);
@@ -6014,7 +6018,7 @@ const kirimserver_editsuratkeluar = (a)=>{
     datakirim.append("tipe",tipe);
     let html = "";
     let ttbody = document.querySelector(".tabel_suratkeluar").getElementsByTagName("tbody")[0];
-    ttbody.innerhtml= `<tr><td colspan="9"><img src="/img/barloading.gif"/> sedang proses Edit</td></tr>`;
+    ttbody.innerHTML= `<tr><td colspan="9"><img src="/img/barloading.gif"/> sedang proses Edit</td></tr>`;
     setdata.forEach(s => s.value ="");
     let bt = document.querySelector(".tombolkirimsuratkeluar");
      bt.setAttribute("onclick",`kirimserver_suratkeluar()`);
@@ -6116,7 +6120,7 @@ const hapussurat = (a)=>{
     datakirim.append("tipe",tipe);
     let html = "";
     let ttbody = document.querySelector(".tabel_suratmasuk").getElementsByTagName("tbody")[0];
-    ttbody.innerhtml= `<tr><td colspan="9"><img src="/img/barloading.gif"/> sedang proses Edit</td></tr>`;
+    ttbody.innerHTML= `<tr><td colspan="9"><img src="/img/barloading.gif"/> sedang proses Edit</td></tr>`;
     
 
         
@@ -6209,7 +6213,7 @@ const hapussuratkeluar = (a)=>{
     datakirim.append("tipe",tipe);
     let html = "";
     let ttbody = document.querySelector(".tabel_suratkeluar").getElementsByTagName("tbody")[0];
-    ttbody.innerhtml= `<tr><td colspan="9"><img src="/img/barloading.gif"/> sedang proses Edit</td></tr>`;
+    ttbody.innerHTML= `<tr><td colspan="9"><img src="/img/barloading.gif"/> sedang proses Edit</td></tr>`;
     
 
         
@@ -7067,7 +7071,2152 @@ function halamanakhir(){
     pageini = h;
     ubahhalaman(pageini);
 }
+async function tabA(evt, cityName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("isiadm");//("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("btnadm");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(/\sw3-green/g, "");
+    }
+    // document.getElementById(cityName).style.display = "block";
+    evt.currentTarget.className += " w3-green";
+    if(evt.currentTarget.innerHTML =="SPPD-ku"){
+        await rekapsppdku();
+    }else if(evt.currentTarget.innerHTML == "Data Rapat Sekolah"){
+        await cektagdbrapat();
+        rekapRapatSekolah();
+    }else if(evt.currentTarget.innerHTML == "Notula Rapat"){
+        await cektagdbrapat();
+        rekapRapatSekolahuntukku();
+    }
+    document.getElementById(cityName).style.display = "block";
+}
+
+const printsuratLandscape = (c,portr)=>{
+    let dom = document.querySelector("."+c);
+    let indom = dom.innerHTML;//.textContent;
+    
+    let noSpace =indom.replace(/(\r\n|\n|\r)/gm, "").replace(/\s\s/g,"");
+    
+    
+    var root = window.location.origin;
+    
+    let el = document.getElementById("iframeprint");
+    let doc = el.contentDocument || el.contentWindow.document;;
+    let head = doc.head;
+    let body = doc.body;
+    //
+    // var isi = el.contentDocument || editore.contentWindow.document;;
+    // var headnya = isi.head;
+    while (head.hasChildNodes()) {
+        head.removeChild(head.firstChild);
+    }
+
+    //
+   
+    //isikan HEAD dengan title, style, link, dll.
+    head.innerHTML = "<title>E-DURASA ADMINISTRASI</title>";
+    head.innerHTML += '<link rel="stylesheet" href="https://edurasa.com/css/w3.css">';
+
+    //head.innerHTML += `<link rel="stylesheet" href="https://edurasa.com/css/w3.css">`;
+    head.innerHTML += '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">';
+
+    head.innerHTML += '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">';
+    head.innerHTML += '<link  rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">'
+
+    head.innerHTML +='<link rel="stylesheet" href="https://syahandrianeda.github.io/syahandrianeda/css/stylegurukelas.css">'
+    //head.innerHTML += `<style type="text/css"> .versii-table{width:950px;max-width:100%;border-collapse:collapse}.versi-table{width:auto;max-width:100%;border-collapse:collapse}.versi-table td,.versi-table th,.versi-table tr,.versii-table td,.versii-table th,.versii-table tr{border:1px solid #000;color:#000;padding:5px 10px 5px 10px}.versi-table th,.versii-table th{background-color:#eee;color:#00f;vertical-align:middle;text-align:center}.versi-table tr:nth-of-type(even) td,.versii-table tr:nth-of-type(even) td{border:0;background-color:#fff;border:1px solid #000}.versi-table tr:nth-of-type(odd) td,.versii-table tr:nth-of-type(odd) td{border:0;background-color:#eef;border:1px solid #000} .garis td,.garis th,.garis tr{border:0.5px solid rgb(119, 116, 116)} .garis th{border:1px solid #000;text-align:center;vertical-align:middle} </style>`;
+
+    if(portr){
+        head.innerHTML += `<style type="text/css" media="print">
+        @media print {
+            html,body{margin:0;padding:0}
+            
+             @page {
+                size: A4 portrait;
+               
+                
+                }
+        }
+        </style>`;
+    }else{
+        head.innerHTML += `<style type="text/css" media="print">
+        @media print {
+            html,body{margin:0;padding:0}
+            
+             @page {
+                size: A4 landscape;
+                
+                
+                }
+        }
+        </style>`;
+    }
+    
+    
+
+    body.innerHTML = noSpace;
+    // body.innerHTML += `<div class="w3-row w3-margin-top"><div class="w3-col l6 s6 w3-center">Mengetahui,<br>Kepala ${idNamaSekolah}<br><br><br><br><u><b>${idNamaKepsek}</b></u><br>NIP. ${idNipKepsek}</div><div class="w3-col l6 s6 w3-center">Depok, ${tanggalfull(new Date())}<br>${idJenisGuru} ${idgurumapelmapel}<br><br><br><br><u><b>${namauser}</b></u><br>NIP. ${idNipGuruKelas}</div>`;
+
+    window.frames["iframeprint"].focus();
+    window.frames["iframeprint"].print();
+}
+
+const settingsppd_hidden = document.querySelectorAll(".settingsppd_hidden");
+let tagdbsppd
+const sppdcreate_btn_sppdbaru = document.querySelector(".sppdcreate_btn_sppdbaru");
+sppdcreate_btn_sppdbaru.addEventListener("click", async()=>{
+    settingsppd_hidden.forEach(el => {
+        if(el.className.indexOf("sppdbaru")>-1 && el.className.indexOf("w3-hide")>-1){
+            el.classList.remove("w3-hide")
+            
+        }else{
+            if(el.className.indexOf("w3-hide")==-1){
+                el.classList.add("w3-hide");
+            }
+        }
+    })
+    //perlu data no.surat keluar
+    if(jsonsuratkeluar.length == 0){
+        let tab = "suratkeluar";
+        let tabel = headersuratkeluar();
+        
+        let key = JSON.stringify(tabel);
+        let datakirim = new FormData();
+    
+        datakirim.append("tab",tab)
+        datakirim.append("key",key)
+        await fetch(linktendik+"?action=getpostdatafromtab",{
+            method:"post",
+            body:datakirim
+        }).then(m => m.json())
+        .then(r => {
+           // console.log(r);
+            
+            let res = r.result;
+            let rec = r.data.filter(s=> s.status !== "hapus");
+           //console.log(rec)
+            if(res > 1){
+                jsonsuratkeluar = rec;
+            }
+        }).catch(er => console.log(er))
+    }
+    //tapi kalo tetap nol, maka kasih tau user!
+    let nosuratterakhir = document.querySelector("#createsppd_dbsuratkeluar")
+    if(jsonsuratkeluar.length !== 0){
+        nosuratterakhir.value = jsonsuratkeluar[jsonsuratkeluar.length-1].nosurat;
+    }else{
+        nosuratterakhir.value ="";
+    }
+    // buat isi options
+    let el_options = document.querySelector("#createsppd_pegawaiyangdiperintah")
+    let html = `<option value= "default">PILIH PTK YANG DIPERINTAH</option>`
+    for(i=0; i < dataapiguru.length ; i++){
+        html +=`<option value="${dataapiguru[i].id}">${dataapiguru[i].guru_namalengkap}</option>`
+    }
+    el_options.innerHTML = html;
+    document.querySelector("#createsppd_nosuratSPPD").value = "421.2/";
+
+})
+const sppdcreate_btn_sppdtabel = document.querySelector(".sppdcreate_btn_sppdtabel");
+sppdcreate_btn_sppdtabel.addEventListener("click", async()=>{
+    // alert("Nantikan setelah selesai dan berhasil membuat db SPPD");
+    await cektagdbsppd()
+    
+    //console.log(tagdbsppd);
+    settingsppd_hidden.forEach(el => {
+        if(el.className.indexOf("sppdtabel")>-1 && el.className.indexOf("w3-hide")>-1){
+            el.classList.remove("w3-hide")
+            
+        }else{
+            if(el.className.indexOf("w3-hide")==-1){
+                el.classList.add("w3-hide");
+            }
+        }
+    });
+    let tabel = document.querySelector(".tabeldbsppd");
+    let tbody = tabel.getElementsByTagName("tbody")[0];
+    tbody.innerHTML = "";
+    let html = "";
+    
+    for(i = (tagdbsppd.length - 1) ; i >=0 ; i--){
+        //i>=0;i--
+        let data = tagdbsppd[i];
+        let id_guru = data.ptk_diperintah;
+        let apiguru= dataapiguru.filter(s => s.id == id_guru)[0];
+        let btnSuratKeluar = data.arsip_nosppd==""?`<button class="w3-button w3-green" onclick="nosppdkesuratkeluar(${data.idbaris})">Arsipkan!</button>`:"Sudah diarsipkan";
+        let tomboluploadsppd = data.versiupload == ""?`<button class="w3-btn w3-blue w3-tiny" onclick="uploadscan_sppd('${data.idbaris}')"><i class="fa fa-upload"></i></button>`:`<button class="w3-btn w3-green" onclick="window.open('https://drive.google.com/file/d/${data.versiupload}/view?usp=drivesdk','', 'width=720,height=600')"><i class="fa fa-eye"></i></button>`;
+        html +=`<tr>
+        <td>${(i+1)}</td>
+        <td>${apiguru.guru_namalengkap}</td>
+        <td>${data.ptk_maksudsppd}</td>
+        <td>${data.ptk_tempatsppd}</td>
+        <td>${tanggalfull(new Date(data.ptk_starttgl))}</td>
+        <td>${data.ptk_durasisppd} hari</td>
+        <td>${data.ptk_nosppd}</td>
+        <td>${btnSuratKeluar}</td>
+        <td>${data.resume==""?"Kosong":"Sudah Terisi"}</td>
+        <td>${data.resume==""?"":`<button class="w3-btn w3-tiny w3-green" onclick="preview_resumesppd('${data.idbaris}')" title="Cetak Resume"><i class="fa fa-print"></i></button>`}</td>
+        <td>${tomboluploadsppd}</td>
+        <td><button class="w3-btn w3-tiny w3-blue" onclick="preview_sppd('${data.idbaris}')" title="preview/print"><i class="fa fa-eye"></i></button> <button class="w3-btn w3-tiny w3-sand" onclick="edit_sppd('${data.idbaris}')"  title="edit"><i class="fa fa-edit"></i></button></td>
+        </tr>`;
+
+    }
+    tbody.innerHTML = html;
+
+});
+let teksdefaultinfosppd = "Anda berhak membuatkan SPPD untuk diri Anda dan PTK lain. Fitur ini digunakan untuk membuatkan SPPD yang ditujukan kepada PTK. Jika Anda membuatkan SPPD untuk PTK lain, maka akan otomatis SPPD akan diinformasikan di menu SPPD-ku di masing-masing laman Edurasa PTK (edurasa guru, edurasa GMP, edurasa staff, dan edurasa Kepala sekolah).";
+const selectsppd_pilihptk = async ()=>{
+    let elemen = document.querySelector("#createsppd_pegawaiyangdiperintah");
+    let ops = elemen.options;
+    let indek = ops.selectedIndex;
+    let validguru = ops[indek].value;
+    let teksGuru = ops[indek].text;
+    
+    let db_ptk = dataapiguru.filter(s => s.id == validguru)[0]
+    let daftarsatu = await objekArraydatatendik();
+    let db_df = daftarsatu.filter(s => s.idguru == validguru)[0]
+    
+    let input_nippegawai = document.querySelector("#createsppd_nippegawai");
+    input_nippegawai.value = db_ptk.guru_nip;
+    let input_golruang = document.querySelector("#createsppd_golonganpegawai");
+    input_golruang.value = db_df.golonganruang==""?"":"Golongan "+ db_df.golonganruang;
+    let input_jabatan = document.querySelector("#createsppd_jabatanpegawai");
+    input_jabatan.value = db_df.jabatan;
+    
+}
+
+const serverkirimsppd = async() =>{
+    let info = document.querySelector(".infoserver_sppd");
+    info.innerHTML = `<img src="/img/barloading.gif"> sedang proses pengiriman....`;
+    document.querySelector(".sppdbaru").classList.add("w3-hide")
+    let dataa = document.querySelectorAll("[data-keyCreatesppd]");
+    let enip = document.getElementById("createsppd_nippegawai");
+    let data = new FormData();
+    let key = ["idbaris"];
+    let val = []
+    for(i=0 ; i < dataa.length ; i++){
+        let dd = dataa[i].nodeName;
+        let v = dataa[i].value;
+        let k = dataa[i].getAttribute("data-keyCreatesppd")
+        //console.log(v);
+        key.push(k);
+        val.push(v);
+        
+        
+
+        if(dd == "SELECT"){
+            dataa[i].selectedIndex = 0;
+        }else{
+            dataa[i].value = "";
+        }
+    }
+    key.push("resume");
+    val.push("");
+    key.push("arsip_nosppd")
+    val.push("");
+    key.push("versiupload");
+    val.push("");
+
+    data.append("tab","sppd");
+    data.append("tabel",JSON.stringify(val))
+    data.append("key",JSON.stringify(key))
+    enip.value = "";
+    // for (var pair of data.entries()) {
+    //     console.log(pair[0]+ ', ' + pair[1]); 
+    // }
+    let link =  jlo.url_dataabsen+"?action=simpanbarisketaburut";
+    await fetch(link,{method:"post",body:data}).then(m => m.json())
+    .then(r=> {
+        //console.log(r);
+        tagdbsppd = r.data;
+        info.innerHTML = "Berhasil tersimpan...!"
+        setTimeout(() => {
+            
+            info.innerHTML = teksdefaultinfosppd
+    
+        }, 3000);
+    })
+    .catch(er =>console.log(er))
+    
+}
+
+const objekArraydatatendik = async() =>{
+    if(arraydatatendik.length == 0){
+        await fetch(linktendik + "?action=tabeltendik")
+        .then(m => m.json()).then(k => {
+            //console.log(k);
+            arraydatatendik = k;
+        }).catch(er => console.log(er))
+    }
+
+    let k = arraydatatendik[0];
+    let arr = [];
+    for(i = 1 ; i < arraydatatendik.length; i++){
+        let m = arraydatatendik[i];
+        let ob = {}
+        for(j = 0 ; j < m.length; j++){
+            ob[k[j]]=m[j]
+        }
+        arr.push(ob);
+        
+    }
+    
+    return arr
+}
+
+const cektagdbsppd = async () =>{
+    let tab = "sppd";
+        let tabel = keyheader_sppd();
+        
+        let key = JSON.stringify(tabel);
+        let datakirim = new FormData();
+    
+        datakirim.append("tab",tab)
+        datakirim.append("key",key)
+        await fetch(jlo.url_dataabsen+"?action=getpostdatafromtab",{
+            method:"post",
+            body:datakirim
+        }).then(m => m.json())
+        .then(r => {
+           // console.log(r);
+            
+            let res = r.result;
+            //console.log(r)
+            if(res == 1){
+                tagdbsppd = []
+            }else{
+                tagdbsppd = r.data;
+
+            }
+        }).catch(er=> console.log(er))
+}
+const keyheader_sppd = () =>{
+    let dataa = document.querySelectorAll("[data-keyCreatesppd]");
+    
+    let key = ["idbaris"];
+    let val = []
+    for(i=0 ; i < dataa.length ; i++){
+        let k = dataa[i].getAttribute("data-keyCreatesppd");
+        key.push(k);
+    }
+    key.push("resume");
+    key.push("arsip_nosppd");
+    key.push("versiupload");
+    
+    return key
+}
+const nosppdkesuratkeluar = (brs)=>{
+    console.log(brs);
+    let objek = Object.assign({},tagdbsppd.filter(s => s.idbaris == brs)[0]);
+    let fileInput = document.querySelector("#uploadsppd");
+    fileInput.click();
+    fileInput.onchange = function() {
+        let files = fileInput.files;
+        if (!files || !files.length) {
+        //          console.log('No files selected');
+        alert("Tidak ada file terpilih!")
+        return;
+        }
+            let reader = new FileReader();
+            var item = files[0];
+            let namafile = item.name;
+            
+            
+            //let obKey = Object.keys(key);
+            let v = [];
+            
+            loadingtopbarin("loadingtopbar");
+            reader.readAsDataURL(item);
+            reader.onload = async function (e) {
+                let key = headersuratkeluar()
+                
+                
+                // kita upload gambar dulu ke Drive
+                let src = e.target.result;
+                let dataa = src.replace(/^.*,/, '');
+                let tipe = src.match(/^.*(?=;)/)[0]; 
+                
+                let tipenyaaja = tipe.split("/")[1]
+                let realtipe;
+                if(tipenyaaja.indexOf("vnd")>-1){
+                    realtipe = tipefile;
+                }else{
+                    realtipe = tipenyaaja;
+                }
+                let fileTIPE =realtipe;
+                
+                let dataupload = new FormData();
+                let fileresult
+                dataupload.append("fileContent", dataa);
+                dataupload.append("mimeType", tipe);
+                dataupload.append("filename", namafile);
+                dataupload.append("kelas", "000 Surat Keluar");
+                
+                await fetch(linktendik+"?action=uploadfiledulu", {
+                    method: 'post',
+                    body: dataupload
+                }).then(m => m.json())
+                    .then(r => {
+                        console.log("result uploadfile dulu")
+                        console.log(r)
+                        if (r.sukses == "Sukses") {
+                            let link = r.idfile
+                            fileresult = link
+                            
+                        } else {
+                            // el_label.innerHTML = `<i class="fa fa-upload warnaeka  w3-round-large w3-padding w3-border-black w3-border-bottom w3-center"> Unggah File</i>`;
+                            // elinput.value = r.idfile;
+                        }
+                        // dockeyboard.execCommand("insertImage",false, linkgambar);
+                        // let imgs = dockeyboard.querySelectorAll("img");
+                        // imgs.forEach(item => {
+                        //     item.style.maxWidth ="500px";
+                        // })
+                    })
+                    .catch(er => {
+                        console.log(er);
+                        
+                        // alert("Maaf, terjadi kesalahan. Silakan ulangi sesi Anda sesaat lagi.")
+                        // el_label.innerHTML = `<i class="fa fa-upload warnaeka  w3-round-large w3-padding w3-border-black w3-border-bottom w3-center"> Unggah File</i>`;
+                    })
+                
+                    //isi untuk sppd
+                let type = [2,5];
+                let nosurat = objek.ptk_nosppd;
+                let kegiatan = objek.ptk_maksudsppd;
+                let tanggal = objek.ptk_starttgl;
+                let dptk = "Panitia " + kegiatan + " di " + objek.ptk_tempatsppd;
+                let perihalsppd = 'Perihal_sppd_' + kegiatan;
+                let objekvalue = [nosurat, tanggal, perihalsppd, "fitur SPPD", dptk, fileresult, "diarsipkan",namauser];//tanpa idbaris
+                //idbaris	nosurat	tglsurat	perihal	indekssurat	ditujukkankepada	idfile	status	oleh
+                let tabel = JSON.stringify(objekvalue);
+                let keyy = JSON.stringify(key);
+                let tipee = JSON.stringify(type);
+                
+                let tagNosurat = perihalsppd +"_result="
+                let datakirim = new FormData();
+                datakirim.append("key",keyy);
+                datakirim.append("tab","suratkeluar");
+                datakirim.append("tabel",tabel);
+                datakirim.append("tipe",tipee);
+                
+                await fetch(linktendik+"?action=simpanbarisketaburut",{
+                    method:"post",
+                    body:datakirim
+                }).then(m => m.json())
+                .then(r => {
+                    let res = r.result;
+                    console.log(r);
+                    console.log(res);
+                    tagNosurat += res;
+                    
+                })
+                .catch(er => console.log(er))
+
+                 //update untuk key:
+                objek.arsip_nosppd = tagNosurat;
+                let keySppd = Object.keys(objek);
+                let valSppd = Object.values(objek);
+                let stfyKey = JSON.stringify(keySppd);
+                let stfyVal = JSON.stringify(valSppd);
+                let kirimsppd = new FormData();
+                kirimsppd.append("idbaris",brs);
+                kirimsppd.append("tab","sppd");
+                kirimsppd.append("key",stfyKey)
+                kirimsppd.append("tabel",stfyVal);
+                await fetch(jlo.url_dataabsen+"?action=simpanbarisketabidbaris",{
+                    method:"post",body:kirimsppd
+                    }).then(m => m.json()).then(r=>{
+                        let dbSppd = r.data;
+                        tagdbsppd = dbSppd;
+                        let tabel = document.querySelector(".tabeldbsppd");
+                        let tbody = tabel.getElementsByTagName("tbody")[0];
+                        tbody.innerHTML = "";
+                        let html = "";
+                        for(i = (tagdbsppd.length - 1) ; i >=0 ; i--){
+                            let data = tagdbsppd[i];
+                            let id_guru = data.ptk_diperintah;
+                            let apiguru= dataapiguru.filter(s => s.id == id_guru)[0];
+                            let btnSuratKeluar = data.arsip_nosppd==""?`<button class="w3-button w3-green" onclick="nosppdkesuratkeluar(${data.idbaris})">Arsipkan!</button>`:"Sudah diarsipkan";
+                            let tomboluploadsppd = data.versiupload == ""?`<button class="w3-btn w3-blue w3-tiny" onclick="uploadscan_sppd('${data.idbaris}')"><i class="fa fa-upload"></i></button>`:`<button class="w3-btn w3-green" onclick="window.open('https://drive.google.com/file/d/${data.versiupload}/view?usp=drivesdk','', 'width=720,height=600')"><i class="fa fa-eye"></i></button>`;
+                            html +=`<tr>
+                                    <td>${(i+1)}</td>
+                                    <td>${apiguru.guru_namalengkap}</td>
+                                    <td>${data.ptk_maksudsppd}</td>
+                                    <td>${data.ptk_tempatsppd}</td>
+                                    <td>${tanggalfull(new Date(data.ptk_starttgl))}</td>
+                                    <td>${data.ptk_durasisppd} hari</td>
+                                    <td>${data.ptk_nosppd}</td>
+                                    <td>${btnSuratKeluar}</td>
+                                    <td>${data.resume==""?"Kosong":"Sudah Terisi"}</td>
+                                    <td>${data.resume==""?"":`<button class="w3-btn w3-tiny w3-green" onclick="preview_resumesppd('${data.idbaris}')" title="Cetak Resume"><i class="fa fa-print"></i></button>`}</td>
+                                    <td>${tomboluploadsppd}</td>
+                                    <td><button class="w3-btn w3-tiny w3-blue" onclick="preview_sppd('${data.idbaris}')" title="preview/print"><i class="fa fa-eye"></i></button> <button class="w3-btn w3-tiny w3-sand" onclick="edit_sppd('${data.idbaris}')"  title="edit"><i class="fa fa-edit"></i></button></td>
+                                    </tr>`;
+                        }
+                        tbody.innerHTML = html;
+                
+                    }).catch(er => console.log(er))
+                }
+    };
+    
+}
+const preview_sppd= (brs) =>{
+    let data = tagdbsppd.filter(s=> s.idbaris == brs)[0];
+    let vidguru = data.ptk_diperintah;
+    let dbUser = dataapiguru.filter(s => s.id == vidguru)[0];
+    let dmodal = document.getElementById("modal_sppd");
+    dmodal.style.display = "block";
+    let namaPTK = dbUser.guru_namalengkap;
+    let nipPTK = dbUser.guru_nip==""?"":"NIP. "+dbUser.guru_nip;
+    let pangkatPTK = data.ptk_golongan;
+    let jabatanPTK = data.ptk_jabatan;
+    let maksudsppd = data.ptk_maksudsppd;
+    let tempatsppd = data.ptk_tempatsppd;
+    let tglstartsppd = tanggalfull(new Date(data.ptk_starttgl));
+    let tglstartsppdfull = Tanggaldenganhari(new Date(data.ptk_starttgl));
+        let durasi = data.ptk_durasisppd;
+        let d0 = new Date(data.ptk_starttgl);
+        let m0 = d0.getMonth();
+        let y0 = d0.getFullYear();
+        let dt0 = d0.getDate();
+        let dt1 = ((durasi-1) + dt0)
+        let endDt = new Date(y0,m0,dt1);
+    let tglendsppd = tanggalfull(endDt);
+    let no_sppd = data.ptk_nosppd;
+
+    let sppd_ptk = document.querySelectorAll(".sppdcreate_input_pendidik");//m
+    let sppd_nip = document.querySelectorAll(".sppdcreate_input_nippendidik");//m
+    let sppd_pangkat = document.querySelector(".spddcreate_input_pangkatpendidik");//t
+    let sppd_jabatan = document.querySelectorAll(".spddcreate_input_jabatanpendidik");//m
+    let sppd_maksud = document.querySelectorAll(".sppdcreate_maksudperjalanandinas");//m
+    let sppd_tempat = document.querySelectorAll(".sppdcreate_tempattujuan");//m
+    let sppd_durasi = document.querySelector(".sppddcreate_input_lamaperjalanan")
+    let sppd_start = document.querySelectorAll(".sppddcreate_input_starttanggal");
+    let sppd_end = document.querySelectorAll(".sppddcreate_input_endtanggal");
+    let sppd_namasekolah = document.querySelectorAll(".sppdcreate_ttdnamasekolah");
+    let sppd_namakepsek = document.querySelectorAll(".sppdcreate_namakepsek");
+    let sppd_nipksek = document.querySelectorAll(".spddcreate_nipksek");
+    let nosppd = document.querySelectorAll(".sppdcreat_input_nosurat");
+
+    sppd_ptk.forEach(el => el.innerHTML = namaPTK);
+    sppd_nip.forEach(el => el.innerHTML = nipPTK);
+    sppd_pangkat.innerHTML = pangkatPTK;
+    sppd_jabatan.forEach(el => el.innerHTML = jabatanPTK);
+    sppd_maksud.forEach(el=> el.innerHTML = maksudsppd);
+    sppd_tempat.forEach(el => el.innerHTML = tempatsppd);
+    sppd_durasi.innerHTML = durasi + " hari.";
+    sppd_start.forEach((el,i )=> {
+        if(i == (sppd_start.length-2)||i == (sppd_start.length-4)){
+            el.innerHTML = tglstartsppdfull;
+        }else{
+            el.innerHTML = tglstartsppd;
+        }
+    });
+    sppd_end.forEach(el=>el.innerHTML = tglendsppd);
+    sppd_namasekolah.forEach(el => el.innerHTML = idNamaSekolah);
+    sppd_namakepsek.forEach(el => el.innerHTML = idNamaKepsek);
+    sppd_nipksek.forEach(el => el.innerHTML = "NIP. "+ idNipKepsek);
+    nosppd.forEach((el,i) => i == 0? el.innerHTML = no_sppd.replace("421.2",""):el.innerHTML = no_sppd);
+
+}
+const Tanggaldenganhari = (dt) =>{
+    let tgl = new Date(dt);
+    let m = tgl.getMonth();
+    let sm = tgl.getMonth() + 1;
+    let d = tgl.getDate();
+    let day = tgl.getDay()
+    let y = tgl.getFullYear();
+    let string = y + "-" + sm + "-" + d;
+    let arraynamaHari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+    //console.log(string)
+
+    let hari = arraynamaHari[day] + ", " + tanggalfull(string)
+
+    return hari
+}
+
+/// INI UNTUK SPPD PTK YANG AKAN/BELUM MENGISI RESUME PERJALANAN DAPAT DIGUNAKAN UNTUK GURU.HTML MAUPUN YANG LAINNYA
+const rekapsppdku = async() =>{
+    let id_guru = idguru;
+    await cektagdbsppd()
+    let dataku = tagdbsppd.filter(s=> s.ptk_diperintah == id_guru);
+    let datahariini = dataku.filter(s => StringTanggal(new Date(s.ptk_starttgl)) == StringTanggal(new Date()));
+    // console.log(dataku);
+    // console.log(datahariini);
+    let html = "";
+    let tabel = document.querySelector(".tabelsppdku");
+    let tbody = tabel.getElementsByTagName("tbody")[0];
+    
+    
+    if(dataku.length == 0){
+        tbody.innerHTML = `<tr><td colspan="8">Maaf, Anda kurang jalan-jalan. Eh, belum pernah diberi tugas perjalanan dinas. Healing sendiri aja ... 🤪</td></tr>`;
+        return;
+    }
+    for(i = (dataku.length - 1); i >= 0 ; i--){
+        let brs = dataku[i]["idbaris"];
+        html +=`<tr>
+        <td>${(i+1)}</td>
+        <td>${dataku[i]["ptk_maksudsppd"]}</td>
+        <td>${dataku[i]["ptk_tempatsppd"]}</td>
+        <td>${Tanggaldenganhari(dataku[i]["ptk_starttgl"])}</td>
+        <td class="w3-center"><button class="tangan" onclick="preview_sppd('${brs}')"><i class="fa fa-print"></i></button></td>
+        <td>${dataku[i]["resume"]==""?"Resume belum diisi":"Resume Sudah Diisi"}</td>
+        <td class="w3-center">${dataku[i]["resume"]==""?`<button class="tangan" onclick="isiresumebaris('${brs}')" title="Isi resume"><i class="fa fa-pencil"></i></button>`:`<button onclick="isiresumebaris('${brs}')" title="Editresume" class="tangan"><i class="fa fa-edit"></i></button>`}</td>
+        <td class="w3-center"><button class="tangan" onclick="uploadscan_sppd('${brs}')"><i class="fa fa-upload"></i></button></td>
+        </tr>`;
+    }
+    tbody.innerHTML = html;
+
+}
+const preview_resumesppd = (brs)=>{
+    //console.log(brs);
+    let data = tagdbsppd.filter(s => s.idbaris == brs)[0];// bentuknya objek;
+    
+    let vidguru = data.ptk_diperintah;
+    let dbUser = dataapiguru.filter(s => s.id == vidguru)[0];
+
+    let tgl = tanggalfull(new Date(data.ptk_starttgl));
+    let tgl1 = Tanggaldenganhari(new Date(data.ptk_starttgl));
+    let ptk = dbUser.guru_namalengkap;
+    let tempat = data.ptk_tempatsppd;
+    let maksud = data.ptk_maksudsppd;
+    let template = document.querySelector("#sppd_previewresume");
+    template.style.display = "block";
+    let isiteks = document.querySelector(".isitekselemenini");
+    if(isiteks.className.indexOf("w3-hide")==-1){
+        isiteks.classList.add("w3-hide")
+    }
+    let prevsppd_ptk = document.querySelector(".prevsppd_ptk");
+    let prevsppd_starttanggal = document.querySelectorAll(".prevsppd_starttanggal");
+    let prevsppd_tempattujuan = document.querySelector(".prevsppd_tempattujuan");
+    let prevsppd_maksudperjalanandinas = document.querySelector(".prevsppd_maksudperjalanandinas");
+    let prevsppd_isiresume = document.querySelector(".prevsppd_isiresume");
+    prevsppd_isiresume.innerHTML = data.resume;
+    
+    prevsppd_ptk.innerHTML = ptk;
+    prevsppd_starttanggal.forEach((el, i)=> i == 0? el.innerHTML = tgl: el.innerHTML = tgl1);
+    prevsppd_tempattujuan.innerHTML = tempat;
+    prevsppd_maksudperjalanandinas.innerHTML = maksud;
+}
+const isiresumebaris = (brs) =>{
+   
+    let data = tagdbsppd.filter(s => s.idbaris == brs)[0];// bentuknya objek;
+    keyboardtooltip(data,"resume");
+    let vidguru = data.ptk_diperintah;
+    let dbUser = dataapiguru.filter(s => s.id == vidguru)[0];
+
+    let tgl = tanggalfull(new Date(data.ptk_starttgl));
+    let tgl1 = Tanggaldenganhari(new Date(data.ptk_starttgl));
+    let ptk = dbUser.guru_namalengkap;
+    let tempat = data.ptk_tempatsppd;
+    let maksud = data.ptk_maksudsppd;
+
+    let template = document.querySelector("#sppd_previewresume");
+    template.style.display = "block";
+    let isiteks = document.querySelector(".isitekselemenini");
+    if(isiteks.className.indexOf("w3-hide")>-1){
+        isiteks.classList.remove("w3-hide")
+    }
+    isiteks.setAttribute("onclick",`isitekselemenini("printpreviewresume","prevsppd_isiresume", "atas", "${brs}")`);
+
+    let prevsppd_ptk = document.querySelector(".prevsppd_ptk");
+    let prevsppd_starttanggal = document.querySelectorAll(".prevsppd_starttanggal");
+    let prevsppd_tempattujuan = document.querySelector(".prevsppd_tempattujuan");
+    let prevsppd_maksudperjalanandinas = document.querySelector(".prevsppd_maksudperjalanandinas");
+    let prevsppd_isiresume = document.querySelector(".prevsppd_isiresume");
+    prevsppd_isiresume.innerHTML = data.resume;
+    
+    prevsppd_ptk.innerHTML = ptk;
+    prevsppd_starttanggal.forEach((el, i)=> i == 0? el.innerHTML = tgl: el.innerHTML = tgl1);
+    prevsppd_tempattujuan.innerHTML = tempat;
+    prevsppd_maksudperjalanandinas.innerHTML = maksud;
+
+}
+const tooglesembunyimenu = (btn)=>{
+    let el = document.querySelector(".tempatmenukeyboard");
+    if(el.className.indexOf("visibel")>-1){
+        el.classList.remove("visibel");
+        btn.innerHTML = `<i class="fa fa-eye-slash"></i>`
+        btn.setAttribute("title","Sembunyikan Menu");
+    }else{
+        el.classList.add("visibel");
+        btn.innerHTML = `<i class="fa fa-eye"></i>`
+        btn.setAttribute("title","Buka Menu");
+    }
+}
+
+
+const keyboardtooltip = (objek={},jeniskirimanobjek="")=>{
+   
+    let keyboardeditor = document.querySelector("#iframe_keyboardumum");
+    const dockeyboard = keyboardeditor.contentDocument || keyboardeditor.contentWindow.document;
+            dockeyboard.body.designMode = "on";
+            dockeyboard.body.setAttribute("spellcheck","false");
+            dockeyboard.body.setAttribute("contenteditable","true");
+            dockeyboard.body.setAttribute("id","edt3");
+            // dockeyboard.body.setAttribute("style","font-size:12px");
+        var root = window.location.origin;
+        dockeyboard.head.innerHTML = `<link rel="stylesheet" href="${root}/css/w3.css">
+        <link href="https://fonts.googleapis.com/css?family=Raleway">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
+        <link rel="stylesheet" href="https://syahandrianeda.github.io/syahandrianeda/css/stylegurukelas.css">`;
+        
+    dockeyboard.addEventListener("input",(e)=>{
+        let v = e.target;
+        let domm = v.querySelectorAll("div");
+        if(v.childNodes[0].nodeName == "#text"){
+            // let s = dockeyboard.createElement("div");
+            // s.innerHTML = v.innerHTML;
+            // dockeyboard.body.appendChild(s);
+            dockeyboard.body.innerHTML = "<div class='garisbuku'>"+v.innerHTML+"</div>";
+            
+        }
+        domm.forEach(dom=>{
+            if(dom.hasAttribute("class")){
+                if(dom.className.indexOf("garisbuku")==-1){
+                    dom.classList.add("garisbuku")
+                }
+            }else{
+                if(dom.hasAttribute("style")){
+                    let cek = dom.getAttribute("style");
+                    if(cek.indexOf("break-after:page")>-1){
+                        dom.removeAttribute("style");
+                        dom.setAttribute("style","break-after:page")
+                    }else{
+                        dom.setAttribute("class","garisbuku")
+                    }
+                    
+                }else{
+                    dom.setAttribute("class","garisbuku")
+                }
+            }
+        })
+    })
+    
+    
+    const btnn = document.querySelectorAll(".btn_edtkeyboard");//
+    const allowhtmll = document.querySelector("#html_edtkeyboard");
+    
+    let show2 = false;
+    allowhtmll.addEventListener("change", ()=>{
+        if(!allowhtmll.checked){
+            //asli
+            dockeyboard.body.innerHTML = dockeyboard.body.textContent;
+            
+            show2 = false;
+        }else{
+                // asli
+                dockeyboard.body.textContent =dockeyboard.body.innerHTML;
+            show2 =true;
+        }
+    })
+    for (let i = 0 ; i < btnn.length ; i++){
+        let cmd = btnn[i].getAttribute("data-keycmdkeyboard");
+        let owngrup = btnn[i].hasAttribute("data-grupkeyboard");
+        
+        btnn[i].addEventListener("click",()=>{
+            if(show2){
+                alert("Hilangkan dulu Ceklisnya")
+            }else{
+            
+                if(cmd === "fontname"){
+                    let val = btnn[i].innerHTML;
+                    document.querySelector(".dropdown_jenishurufkeyboard").innerHTML = val;
+                    dockeyboard.execCommand(cmd,false,val);
+    
+                }else if(cmd==="removeFormat"){ 
+                    dockeyboard.execCommand(cmd, false, null);
+                    document.querySelector(".dropdown_jenishurufkeyboard").innerHTML = "Pilih Jenis Huruf"
+                }else if(cmd == "createLink"){
+                    let prom = prompt("Masukkan link","");
+                    if(!prom){return};
+                    dockeyboard.execCommand(cmd, false, prom);
+                    //console.log(dockeyboard.body.designMode)
+                    const linkifram = dockeyboard.querySelectorAll("a");
+    linkifram.forEach(el =>{
+        el.target = "_blank";
+        //console.log(el);
+        el.addEventListener("mouseover", () =>{
+            dockeyboard.body.designMode = "Off";
+        });
+        el.addEventListener("mouseout", () =>{
+            dockeyboard.body.designMode = "On";
+        })
+        //console.log(dockeyboard.body.designMode)
+    })   
+                }else if(owngrup){
+                    let grup = btnn[i].getAttribute("data-grupkeyboard");
+                    if(grup == "Paragraf"){
+    //paragraf:
+    let dom = document.querySelector(".dropdown_jenisparagrafkeyboard");
+    if(cmd =="justifyLeft"){
+        dom.innerHTML = `<i class="fa fa-align-left"></i> `;
+    }else if(cmd == "justifyRight"){
+        dom.innerHTML = `<i class="fa fa-align-right"></i> `;
+    }else if(cmd == "justifyCenter"){
+        dom.innerHTML = `<i class="fa fa-align-center"></i> `;
+    }else if(cmd == "justifyFull"){
+        dom.innerHTML = `<i class="fa fa-align-justify"></i> `;
+    }else{
+        dom.innerHTML = "Tak dikenal";
+    }
+    dockeyboard.execCommand(cmd, false, null)
+                    }else if (grup == "ukuranfont") {
+    let val = btnn[i].getAttribute("data-keyval");
+    document.querySelector(".grup_ukuranfont").innerHTML = btnn[i].innerHTML;
+    dockeyboard.execCommand(cmd, false, val);
+    
+    
+                    }else if(grup == "heading"){
+    let val = btnn[i].getAttribute("data-keyval");
+    document.querySelector(".grup_heading").innerHTML = btnn[i].innerHTML;
+    dockeyboard.execCommand(cmd, false, val);
+    
+                    }
+                    else{
+    let teks = btnn[i].innerHTML;
+    dockeyboard.execCommand(cmd,false,teks)
+    // dockeyboard.execCommand("insertText",false,"&nbsp;")
+                    }
+                } else{
+                    dockeyboard.execCommand(cmd, false, null)
+                    // dockeyboard.execCommand("insertText",false,"&nbsp;")
+                    btnn[i].classList.toggle("active");
+                    
+                }
+    
+    
+    
+                
+            }
+          
+        })
+    
+    };
+    let keyboardedtbl = document.querySelector("#keyboardedt_table");
+    let keyboardsPchBiasa = document.querySelector("#keyboardsimpan_pecahanbiasa");
+    let keyboardsPchCamp = document.querySelector("#keyboardsimpan_pecahancampuran");
+    let keyboardsAkarKdrat = document.querySelector("#keyboardsimpan_akarkuadrat");
+    let keyboardsAkartiga = document.querySelector("#keyboardsimpan_akarpangkattiga");
+    
+    
+    keyboardedtbl.addEventListener("click", () => {
+        try{
+        let promp = prompt("Masukkan jumlah baris, contoh 3 x 4 (3 baris, 4 kolom) tanpa spasi","3x4");
+        if(!promp){return }
+        let teks = promp.replace(/\s+/g,"");
+        let ang = teks.toLowerCase().split("x");
+        let brs = parseInt(ang[0]);
+        let cols = parseInt(ang[0]);
+        let html = `&nbsp;<table class="w3-table garis">`
+        for(i = 0 ; i < brs ; i++){
+            html +=`<tr>`
+            for (j = 0 ; j <cols; j++){
+                html +=`<td>teks</td>`
+            }
+            html +=`</tr>`
+        }
+        html +=`</table>&nbsp;`;
+        dockeyboard.execCommand("insertHTML",null, html);
+        }
+        catch(er){
+            console.log(er);    
+        }
+    });
+    keyboardsPchBiasa.addEventListener("click", () =>{
+        let a = document.querySelector("#inpecbiasa_pembilang").innerHTML;
+        let b = document.querySelector("#inpecbiasa_penyebut").innerHTML;
+        let teks = htmlpecahanbiasa(a,b);
+        dockeyboard.execCommand("insertHTML",null, teks);
+    })
+    keyboardsPchCamp.addEventListener("click",()=>{
+        let a = document.querySelector("#inpecCamp_satuan").innerHTML;
+        let b = document.querySelector("#inpecCamp_pembilang").innerHTML;
+        let c = document.querySelector("#inpecCamp_penyebut").innerHTML;
+        let teks = htmlpecahancampuran(a,b,c);
+        dockeyboard.execCommand("insertHTML",null, teks);
+    })
+    keyboardsAkarKdrat.addEventListener("click",()=>{
+        let a = "";
+        let b = document.querySelector("#inakar_kuadrat").innerHTML;
+        let teks = htmlakarpangkatn(a,b);
+        dockeyboard.execCommand("insertHTML",null, teks);
+    
+    })
+    keyboardsAkartiga.addEventListener("click",()=>{
+        let a = "3";
+        let b = document.querySelector("#inakar_tiga").innerHTML;
+        let teks = htmlakarpangkatn(a,b);
+        dockeyboard.execCommand("insertHTML",null, teks);
+    });
+    let keyboardfileInput = document.querySelector("#keyboarduploadgambar_edt");
+    
+    keyboardfileInput.addEventListener('change', async() => {
+        const files = keyboardfileInput.files;
+        if (!files || !files.length) {
+        //          console.log('No files selected');
+        return;
+        }
+            let reader = new FileReader();
+            var item = files[0];
+            let namafile = item.name;
+            
+            let atGal = atributgaleri()
+            let key = atGal.key;
+            //let obKey = Object.keys(key);
+            let v = [];
+            
+            loadingtopbarin("loadingtopbar");
+            reader.readAsDataURL(item);
+            reader.onload = async function (e) {
+                // kita upload gambar dulu ke Drive
+                let src = e.target.result;
+                let dataa = src.replace(/^.*,/, '');
+                let tipe = src.match(/^.*(?=;)/)[0]; 
+                
+                let tipenyaaja = tipe.split("/")[1]
+                let realtipe;
+                if(tipenyaaja.indexOf("vnd")>-1){
+                    realtipe = tipefile;
+                }else{
+                    realtipe = tipenyaaja;
+                }
+                let fileTIPE =realtipe;
+                // obret.data = dataa;
+                // obret.tipe = tipe;
+                // obret.ext = realtipe;
+                // obret.size = ukuran;
+                // obret.namafile = file.name;
+                
+                let data = new FormData();
+                
+                let linkgambar = "/img/NO+GAGAL.png"
+
+                data.append("fileContent", dataa);
+                data.append("mimeType", tipe);
+                data.append("filename", namafile);
+                data.append("kelas", "000 GALERI");
+                
+                await fetch(linktendik+"?action=uploadfiledulu", {
+                    method: 'post',
+                    body: data
+                }).then(m => m.json())
+                    .then(r => {
+                        if (r.sukses == "Sukses") {
+                            let link = r.idfile
+                            fileresult = link
+                            linkgambar = "https://drive.google.com/uc?export=view&id=" + link;
+                            // setTimeout(() => {
+                            //     el_label.innerHTML = `<i class="fa fa-upload warnaeka  w3-round-large w3-padding w3-border-black w3-border-bottom w3-center"> Unggah File</i>`;
+            
+                            // }, 3000);
+                            // el_label.innerHTML = `Gagal Mengunggah`;
+                        } else {
+                            // el_label.innerHTML = `<i class="fa fa-upload warnaeka  w3-round-large w3-padding w3-border-black w3-border-bottom w3-center"> Unggah File</i>`;
+                            // elinput.value = r.idfile;
+                        }
+                        dockeyboard.execCommand("insertImage",false, linkgambar);
+                        let imgs = dockeyboard.querySelectorAll("img");
+                        imgs.forEach(item => {
+                            item.style.maxWidth ="500px";
+                        })
+                    })
+                    .catch(er => {
+                        console.log(er);
+                        
+                        // alert("Maaf, terjadi kesalahan. Silakan ulangi sesi Anda sesaat lagi.")
+                        // el_label.innerHTML = `<i class="fa fa-upload warnaeka  w3-round-large w3-padding w3-border-black w3-border-bottom w3-center"> Unggah File</i>`;
+                    })
+                
+                enableImageResizeInDiv2("edt3");    
+                // setelah responnhya keluar, nanti tinggal dikirim ke Galeri berikut skripnya
+                let type = [3];
+
+                let objekvalue = [];//'', '', '', '', namauser, 'dipublikasikan', 'Tidak Ada', 'Tidak Ada', ''];//tanpa idbaris
+                if(jeniskirimanobjek == "resume"){
+                    let kegiatan = objek.ptk_maksudsppd;
+                    let tanggal = objek.ptk_starttgl;
+                    let lampiransppd = 'lampiran_sppd_' + kegiatan;
+                    objekvalue = [kegiatan, tanggal, fileresult, fileTIPE, namauser, 'dipublikasikan', 'Tidak Ada', 'Tidak Ada', lampiransppd];//tanpa idbaris
+                }else{ //rapat kalo ga salah
+                    let kegiatan = objek.tema_rapat;
+                    let tanggal = objek.pelaksanaan_rapat;
+                    let lampiransppd = objek.agenda_rapat
+                    objekvalue = [kegiatan, tanggal, fileresult, fileTIPE, namauser, 'dipublikasikan', 'Tidak Ada', 'Tidak Ada', lampiransppd];//tanpa idbaris
+                
+                }
+
+
+                let tabel = JSON.stringify(objekvalue);
+                let keyy = JSON.stringify(key);
+                let tipee = JSON.stringify(type);
+            
+                let datakirim = new FormData();
+                datakirim.append("key",keyy);
+                datakirim.append("tab","galeri");
+                datakirim.append("tabel",tabel);
+                datakirim.append("tipe",tipee);
+                fetch(linktendik+"?action=simpanbarisketaburut",{
+                    method:"post",
+                    body:datakirim
+                }).then(m => m.json())
+                .then(r => {
+                    let res = r.result;
+                    
+                    
+                })
+                .catch(er => console.log(er))
+
+        }
+    });
+    
+    
+    const keyboardbtnn_edtyt = document.querySelector("#keyboardbtn_edtkeyboardyt");
+    keyboardbtnn_edtyt.addEventListener("click", () => {
+        let prom = prompt("Masukkan link youtube","");
+        if(!prom){return};
+        let reg = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
+        let url = prom.match(reg)
+        let html=`<iframe style="resize: both;" src='https://www.youtube.com/embed/${url[1]}'  frameborder='1' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe><br/><br/>`;
+        let ch = document.querySelector("#html_edtkeyboard");
+        if(!ch.checked){
+            ch.checked = true;
+            dockeyboard.execCommand("insertHTML",false,html);
+            ch.checked = false
+        }else{
+            dockeyboard.execCommand("insertText",false,html);
+        }
+    })
+    
+    const keyboardbtn_gantihalaman = document.getElementById("keyboardbtn_gantihalaman");
+    keyboardbtn_gantihalaman.addEventListener("click",()=>{
+        let html = `<div class="w3-border-bottom w3-hide-small"> </div><div style="break-after:page"></div>`;
+        let ch = document.querySelector("#html_edtkeyboard");
+        if(!ch.checked){
+            ch.checked = true;
+            dockeyboard.execCommand("insertHTML",false,html);
+            ch.checked = false
+        }else{
+            dockeyboard.execCommand("insertText",false,html);
+        }
+    })
+    
+    
+    function enableImageResizeInDiv2(id) {
+        if (!(/chrome/i.test(navigator.userAgent) && /google/i.test(window.navigator.vendor))) {
+            return;
+        }
+        var editor = dockeyboard.getElementById(id);
+        
+        var resizing = false;
+        var currentImage;
+        var createDOM = function (elementType, className, styles) {
+            let ele = document.createElement(elementType);
+            ele.className = className;
+            setStyle(ele, styles);
+            return ele;
+        };
+        var setStyle = function (ele, styles) {
+            for (key in styles) {
+                ele.style[key] = styles[key];
+               
+            }
+            return ele;
+        };
+        var removeResizeFrame = function () {
+            dockeyboard.querySelectorAll(".resize-frame,.resizer").forEach((item) => item.parentNode.removeChild(item));
+        };
+        var offset = function offset(el) {
+             const rect = el.getBoundingClientRect();
+            // scrollLeft = window.pageXOffset ||dockeyboard.documentElement.scrollLeft,
+            // scrollTop = window.pageYOffset || dockeyboard.documentElement.scrollTop;
+            // console.log(scrollLeft);
+            // return { top: rect.top + scrollTop, left: rect.left + scrollLeft }
+            var currentFramePosition = currentFrameAbsolutePosition()
+            var elemTop = rect.top + currentFramePosition.y;
+            var elemBottom = rect.bottom + currentFramePosition.y;
+        
+    
+            // var currentFramePosition = getCurrentFrameAbsolutePosition();
+            // var elemTop = rect.top + currentFramePosition.y;
+            // var elemBottom = rect.bottom + currentFramePosition.y;
+             return { top: elemTop, left: elemBottom }
+        };
+        var clickImage = function (img) {
+            removeResizeFrame();
+            currentImage = img;
+            const imgHeight = img.offsetHeight;
+            const imgWidth = img.offsetWidth;
+            const imgPosition = { top: img.offsetTop, left: img.offsetLeft };
+            const editorScrollTop = editor.scrollTop;
+            const editorScrollLeft = editor.scrollLeft;
+            const top = imgPosition.top - editorScrollTop - 1;
+            const left = imgPosition.left - editorScrollLeft - 1;
+    
+            editor.append(createDOM('span', 'resize-frame', {
+                margin: '10px',
+                position: 'absolute',
+                top: (top + imgHeight - 10) + 'px',
+                left: (left + imgWidth - 10) + 'px',
+                border: 'solid 3px blue',
+                width: '6px',
+                height: '6px',
+                cursor: 'se-resize',
+                zIndex: 1
+            }));
+    
+            editor.append(createDOM('span', 'resizer top-border', {
+                position: 'absolute',
+                top: (top) + 'px',
+                left: (left) + 'px',
+                border: 'dashed 1px grey',
+                width: imgWidth + 'px',
+                height: '0px'
+            }));
+    
+            editor.append(createDOM('span', 'resizer left-border', {
+                position: 'absolute',
+                top: (top) + 'px',
+                left: (left) + 'px',
+                border: 'dashed 1px grey',
+                width: '0px',
+                height: imgHeight + 'px'
+            }));
+    
+            editor.append(createDOM('span', 'resizer right-border', {
+                position: 'absolute',
+                top: (top) + 'px',
+                left: (left + imgWidth) + 'px',
+                border: 'dashed 1px grey',
+                width: '0px',
+                height: imgHeight + 'px'
+            }));
+    
+            editor.append(createDOM('span', 'resizer bottom-border', {
+                position: 'absolute',
+                top: (top + imgHeight) + 'px',
+                left: (left) + 'px',
+                border: 'dashed 1px grey',
+                width: imgWidth + 'px',
+                height: '0px'
+            }));
+    
+            dockeyboard.querySelector('.resize-frame').onmousedown = () => {
+                resizing = true;
+                return false;
+            };
+    
+            editor.onmouseup = () => {
+                if (resizing) {
+                    currentImage.style.width = dockeyboard.querySelector('.top-border').offsetWidth + 'px';
+                    currentImage.style.height = dockeyboard.querySelector('.left-border').offsetHeight + 'px';
+                    refresh();
+                    currentImage.click();
+                    resizing = false;
+                }
+            };
+    
+            editor.onmousemove = (e) => {
+                if (currentImage && resizing) {
+                    let height = e.pageY - offset(currentImage).top;
+                    let width = e.pageX - offset(currentImage).left;
+                    height = height < 1 ? 1 : height;
+                    width = width < 1 ? 1 : width;
+                    const top = imgPosition.top - editorScrollTop - 1;
+                    const left = imgPosition.left - editorScrollLeft - 1;
+                    setStyle(dockeyboard.querySelector('.resize-frame'), {
+    top: (top + height - 10) + 'px',
+    left: (left + width - 10) + "px"
+                    });
+                   
+                    setStyle(dockeyboard.querySelector('.top-border'), { width: width + "px" });
+                    setStyle(dockeyboard.querySelector('.left-border'), { height: height + "px" });
+                    setStyle(dockeyboard.querySelector('.right-border'), {
+    left: (left + width) + 'px',
+    height: height + "px"
+                    });
+                    setStyle(dockeyboard.querySelector('.bottom-border'), {
+    top: (top + height) + 'px',
+    width: width + "px"
+                    });
+                }
+                return false;
+            };
+        };
+        var bindClickListener = function () {
+            editor.querySelectorAll('img').forEach((img, i) => {
+                
+                img.onclick = (e) => {
+                    if (e.target === img) {
+    clickImage(img);
+                    }
+                };
+            });
+        };
+        var currentFramePosition = function(){
+            let currentWindow = window;
+        let currentParentWindow;
+        let positions = [];
+        let rect;
+      
+        while (currentWindow !== window.top) {
+          currentParentWindow = currentWindow.parent;
+          for (let idx = 0; idx < currentParentWindow.frames.length; idx++)
+            if (currentParentWindow.frames[idx] === currentWindow) {
+              for (let frameElement of currentParentWindow.document.getElementsByTagName('iframe')) {
+                if (frameElement.contentWindow === currentWindow) {
+                  rect = frameElement.getBoundingClientRect();
+                  positions.push({x: rect.x, y: rect.y});
+                }
+              }
+              currentWindow = currentParentWindow;
+              break;
+            }
+        }
+        return positions.reduce((accumulator, currentValue) => {
+          return {
+            x: accumulator.x + currentValue.x,
+            y: accumulator.y + currentValue.y
+          };
+        }, { x: 0, y: 0 });
+        };
+        var refresh = function () {
+            bindClickListener();
+            removeResizeFrame();
+            if (!currentImage) {
+                return;
+            }
+            var img = currentImage;
+            var imgHeight = img.offsetHeight;
+            var imgWidth = img.offsetWidth;
+            var imgPosition = { top: img.offsetTop, left: img.offsetLeft };
+            var editorScrollTop = editor.scrollTop;
+            var editorScrollLeft = editor.scrollLeft;
+            const top = imgPosition.top - editorScrollTop - 1;
+            const left = imgPosition.left - editorScrollLeft - 1;
+    
+            editor.append(createDOM('span', 'resize-frame', {
+                position: 'absolute',
+                top: (top + imgHeight) + 'px',
+                left: (left + imgWidth) + 'px',
+                border: 'solid 2px red',
+                width: '6px',
+                height: '6px',
+                cursor: 'se-resize',
+                zIndex: 1
+            }));
+    
+            editor.append(createDOM('span', 'resizer', {
+                position: 'absolute',
+                top: (top) + 'px',
+                left: (left) + 'px',
+                border: 'dashed 1px grey',
+                width: imgWidth + 'px',
+                height: '0px'
+            }));
+    
+            editor.append(createDOM('span', 'resizer', {
+                position: 'absolute',
+                top: (top) + 'px',
+                left: (left + imgWidth) + 'px',
+                border: 'dashed 1px grey',
+                width: '0px',
+                height: imgHeight + 'px'
+            }));
+    
+            editor.append(createDOM('span', 'resizer', {
+                position: 'absolute',
+                top: (top + imgHeight) + 'px',
+                left: (left) + 'px',
+                border: 'dashed 1px grey',
+                width: imgWidth + 'px',
+                height: '0px'
+            }));
+        };
+        var reset = function () {
+            if (currentImage != null) {
+                currentImage = null;
+                resizing = false;
+                removeResizeFrame();
+            }
+            bindClickListener();
+        };
+        editor.addEventListener('scroll', function () {
+            reset();
+        }, false);
+        editor.addEventListener('mouseup', function (e) {
+            if (!resizing) {
+                const x = (e.x) ? e.x : e.clientX;
+                const y = (e.y) ? e.y : e.clientY;
+                let mouseUpElement = dockeyboard.elementFromPoint(x, y);
+                if (mouseUpElement) {
+                    let matchingElement = null;
+                    if (mouseUpElement.tagName === 'IMG') {
+    matchingElement = mouseUpElement;
+                    }
+                    if (!matchingElement) {
+    reset();
+                    } else {
+    clickImage(matchingElement);
+                    }
+                }
+            }
+        });
+       
+    
+    }
+    enableImageResizeInDiv2("edt3");
+    ///
+    function bubbleIframeMouseMove2(iframe){
+        // Save any previous onmousemove handler
+        var existingOnMouseMove = iframe.contentWindow.onmousemove;
+    
+        // Attach a new onmousemove listener
+        iframe.contentWindow.onmousemove = function(e){
+            // Fire any existing onmousemove listener 
+            if(existingOnMouseMove) existingOnMouseMove(e);
+    
+            // Create a new event for the this window
+            var evt = document.createEvent("MouseEvents");
+    
+            // We'll need this to offset the mouse move appropriately
+            var boundingClientRect = iframe.getBoundingClientRect();
+    
+            // Initialize the event, copying exiting event values
+            // for the most part
+            evt.initMouseEvent( 
+                "mousemove", 
+                true, // bubbles
+                false, // not cancelable 
+                window,
+                e.detail,
+                e.screenX,
+                e.screenY, 
+                e.clientX + boundingClientRect.left, 
+                e.clientY + boundingClientRect.top, 
+                e.ctrlKey, 
+                e.altKey,
+                e.shiftKey, 
+                e.metaKey,
+                e.button, 
+                null // no related element
+            );
+    
+            // Dispatch the mousemove event on the iframe element
+            iframe.dispatchEvent(evt);
+        };
+    }
+    bubbleIframeMouseMove2(keyboardeditor);
+function currentFrameAbsolutePosition() {
+        let currentWindow = window;
+        let currentParentWindow;
+        let positions = [];
+        let rect;
+        
+        while (currentWindow !== window.top) {
+            currentParentWindow = currentWindow.parent;
+                for (let idx = 0; idx < currentParentWindow.frames.length; idx++)
+                    if (currentParentWindow.frames[idx] === currentWindow) {
+                    for (let frameElement of currentParentWindow.document.getElementsByTagName('iframe')) {
+                if (frameElement.contentWindow === currentWindow) {
+                    rect = frameElement.getBoundingClientRect();
+                    positions.push({x: rect.x, y: rect.y});
+                }
+                }
+            currentWindow = currentParentWindow;
+            break;
+            }
+        }
+            return positions.reduce((accumulator, currentValue) => {
+            
+                return {
+                x: accumulator.x + currentValue.x,
+                y: accumulator.y + currentValue.y
+            };
+        }, { x: 0, y: 0 });
+    }
+
+
+
+}
+
+// keyboardtooltip({},"");
+
+const isitekselemenini = (paren="", target, posisitooltip="atas", baris="") =>{
+    let elemen = document.querySelector("."+target);
+    let simpan = document.querySelector(".simpankeyboard");
+    
+    let lebarwindow = document.querySelector(".tesbody").offsetWidth;
+    let bataskanan = lebarwindow * 0.5;
+    let keyboard = document.getElementById("keyboard_ketikan");
+    dragElement(keyboard);
+    let keyboardeditor = document.querySelector("#iframe_keyboardumum");//.style.display="none";
+    let wdoc = keyboardeditor.contentDocument || keyboardeditor.contentWindow.document;
+    let body = wdoc.body;
+    body.innerHTML = elemen.innerHTML;
+    let lLeft, tTop;
+    if(posisitooltip == "atas"){
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        let pAre = document.querySelector("."+paren);
+        tTop = (elemen.offsetTop + window.scrollY + pAre.offsetTop + 10)+"px";
+        lLeft = pAre.offsetLeft + "px";//(bataskanan - (keyboard.offsetWidth/2) + elemen.offsetLeft) + "px";
+    }else{
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        let pAre = document.querySelector("."+paren);
+        tTop = (elemen.offsetTop + 10) +"px";
+        lLeft = pAre.offsetLeft + "px";//(bataskanan - (keyboard.offsetWidth/2) + elemen.offsetLeft) + "px";
+    }
+    console.log(tTop)
+    console.log(lLeft)
+    keyboard.style.top = tTop;
+    keyboard.style.left = lLeft;
+    keyboard.style.display="block";
+    simpan.addEventListener("click", async()=>{
+        elemen.innerHTML = body.innerHTML;
+        //simpan ke tab = sppd di baris
+        if(baris ==""){
+            alert("Perubahan tidak bisa disimpan di server")
+            return
+        }
+      
+        let par = parseInt(baris);
+        await cektagdbrapat();
+        let data = tagdbsppd.filter(s => s.idbaris == par)[0];//
+        let objekKirim = Object.assign({},data);
+        objekKirim.resume = body.innerHTML;
+        let iBaris = objekKirim.idbaris;
+        let key = Object.keys(objekKirim);
+        let val = Object.values(objekKirim);
+        //val.shift();
+        let datakirim = new FormData();
+        datakirim.append("idbaris",iBaris);
+        datakirim.append("tabel", JSON.stringify(val));
+        datakirim.append("key",JSON.stringify(key));
+        datakirim.append("tab","sppd");
+        //animasi loading:
+        loadingtopbarin("loadingtopbar");
+        fetch(jlo.url_dataabsen+"?action=simpanbarisketabidbaris",{
+            method:"post",
+            body:datakirim
+        }).then(m => m.json())
+        .then(r => {
+            tagdbsppd = r.data;
+            clearInterval(stoploadingtopbar);
+            let divlod = document.querySelector(".loadingtopbar");
+            divlod.style.width = "100%";
+                setTimeout(() => {
+                    divlod.style.width = "1px"
+                    divlod.className += " w3-hide";
+    
+                }, 3000);
+        })
+        .catch(er => console.log(er))
+        
+        
+        keyboard.style.display="none";
+    })
+
+}
+
+const isitekselemeniniRapat = (paren="", target, posisitooltip="atas", baris="",keynotula) =>{
+    let elemen = document.querySelector("."+target);
+    let simpan = document.querySelector(".simpankeyboard");
+    
+    let lebarwindow = document.querySelector(".tesbody").offsetWidth;
+    let bataskanan = lebarwindow * 0.5;
+    let keyboard = document.getElementById("keyboard_ketikan");
+    dragElement(keyboard);
+    let keyboardeditor = document.querySelector("#iframe_keyboardumum");
+    let wdoc = keyboardeditor.contentDocument || keyboardeditor.contentWindow.document;
+    let body = wdoc.body;
+    body.innerHTML = elemen.innerHTML;
+    let lLeft, tTop;
+    if(posisitooltip == "atas"){
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        let pAre = document.querySelector("."+paren);
+        tTop = (elemen.offsetTop + window.scrollY + pAre.offsetTop + 10)+"px";
+        lLeft = pAre.offsetLeft + "px";//(bataskanan - (keyboard.offsetWidth/2) + elemen.offsetLeft) + "px";
+    }else{
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        document.getElementById("template_notularapat").scrollTo({top:0, behavior:"smooth"})
+        let pAre = document.querySelector("."+paren);
+        tTop = (elemen.offsetTop + 10) +"px";
+        lLeft = pAre.offsetLeft + "px";//(bataskanan - (keyboard.offsetWidth/2) + elemen.offsetLeft) + "px";
+    }
+    console.log(tTop)
+    console.log(lLeft)
+    keyboard.style.top = tTop;
+    keyboard.style.left = lLeft;
+    keyboard.style.display="block";
+    simpan.addEventListener("click",async ()=>{
+        elemen.innerHTML = body.innerHTML;
+        //simpan ke tab = sppd di baris
+        if(baris ==""){
+            alert("Perubahan tidak bisa disimpan di server")
+            return
+        }
+       
+        let par = parseInt(baris);
+        let data = tagdbrapat.filter(s => s.idbaris == par)[0];//
+        let objekKirim = Object.assign({},data);
+        objekKirim[keynotula] = body.innerHTML;
+        let iBaris = objekKirim.idbaris;
+        let key = Object.keys(objekKirim);
+        let val = Object.values(objekKirim);
+        //val.shift();
+        let datakirim = new FormData();
+        datakirim.append("idbaris",iBaris);
+        datakirim.append("tabel", JSON.stringify(val));
+        datakirim.append("key",JSON.stringify(key));
+        datakirim.append("tab","notularapat");
+        //animasi loading:
+        loadingtopbarin("loadingtopbar");
+        await fetch(jlo.url_dataabsen+"?action=simpanbarisketabidbaris",{
+            method:"post",
+            body:datakirim
+        }).then(m => m.json())
+        .then(r => {
+            tagdbsppd = r.data;
+            clearInterval(stoploadingtopbar);
+            let divlod = document.querySelector(".loadingtopbar");
+            divlod.style.width = "100%";
+            setTimeout(() => {
+                divlod.style.width = "1px"
+                divlod.className += " w3-hide";
+                
+            }, 3000);
+            document.querySelector(".fokusngetiknotula").click();
+        })
+        .catch(er => console.log(er))
+        
+        
+        keyboard.style.display="none";
+    })
+
+}
+
+const edit_sppd = (brs)=>{
+    let data = tagdbsppd.filter(s => s.idbaris == brs)[0];// bentuknya objek;
+    let vidguru = data.ptk_diperintah;
+    let dbUser = dataapiguru.filter(s => s.id == vidguru)[0];
+
+    let tgl = new Date(data.ptk_starttgl);
+    var d = tgl.toLocaleDateString().split('/');
+    var tglawal = d[2]+"-"+("0"+d[0]).slice(-2)+"-"+("0"+d[1]).slice(-2);
+    
+    let ptk = dbUser.guru_namalengkap;
+    let tempat = data.ptk_tempatsppd;
+    let maksud = data.ptk_maksudsppd;
+
+    
+    let prevsppd_ptk = document.querySelector("#editabelsppd_pegawaiyangdiperintah");
+    let edit_jabatan = document.querySelector("#editabelsppd_jabatanpegawai")
+    let prevsppd_starttanggal = document.querySelector("#editabelsppd_tanggalmulai");
+    let prevsppd_tempattujuan = document.querySelector("#editabelsppd_tujuantempatdinas");
+    let prevsppd_maksudperjalanandinas = document.querySelector("#editabelsppd_maksudperjalanandinas");
+    let edit_durasi = document.getElementById("editabelsppd_lamaperjalanan");
+    let edit_nosppd = document.getElementById("editabelsppd_nosuratSPPD");
+    let modalt = document.getElementById("useredit_sppd");
+    modalt.style.display = "block";
+    
+    let btn_save = document.querySelector(".serverkirimeditan_sppd");
+    
+    
+    prevsppd_ptk.value = ptk;
+    edit_jabatan.value = data.ptk_jabatan;
+    prevsppd_starttanggal.value = tglawal;
+    prevsppd_tempattujuan.value = tempat;
+    edit_durasi.value = data.ptk_durasisppd;
+    prevsppd_maksudperjalanandinas.value = maksud;
+    edit_nosppd.value = data.ptk_nosppd;
+
+    btn_save.addEventListener("click",()=>{
+        loadingtopbarin("loadingtopbar");
+        let dataCopy = Object.assign({},data);
+        let elemenisi = document.querySelectorAll("[data-keyeditabelsppd]")
+        for(i=0 ; i < elemenisi.length; i++){
+            let keyEl = elemenisi[i].getAttribute("data-keyeditabelsppd");
+            let valEl = elemenisi[i].value;
+            dataCopy[keyEl] = valEl;
+        }
+        let oKey = Object.keys(dataCopy)
+        let oVal = Object.values(dataCopy)
+        let keyy = JSON.stringify(oKey);
+        let tabel = JSON.stringify(oVal);
+        let datakirim = new FormData();
+        datakirim.append("idbaris",brs);
+        datakirim.append("key",keyy);
+        datakirim.append("tab","sppd");
+        datakirim.append("tabel",tabel);
+        
+        fetch(jlo.url_dataabsen+"?action=simpanbarisketabidbaris",{
+            method:"post",
+            body:datakirim
+        }).then(m => m.json())
+        .then(r => {
+            let res = r.result;
+            let dtt = r.data;
+            alert("Data berhasil diperbarui")
+            tagdbsppd = dtt;
+
+                let tabel = document.querySelector(".tabeldbsppd");
+                let tbody = tabel.getElementsByTagName("tbody")[0];
+                tbody.innerHTML = "";
+                let html = "";
+                
+                for(i = (tagdbsppd.length - 1) ; i >=0 ; i--){
+                    //i>=0;i--
+                    let data = tagdbsppd[i];
+                    let id_guru = data.ptk_diperintah;
+                    let apiguru= dataapiguru.filter(s => s.id == id_guru)[0];
+                    let btnSuratKeluar = data.arsip_nosppd==""?`<button class="w3-button w3-green" onclick="nosppdkesuratkeluar(${data.idbaris})">Arsipkan!</button>`:"Sudah diarsipkan";
+                    let tomboluploadsppd = data.versiupload == ""?`<button class="w3-btn w3-blue w3-tiny" onclick="uploadscan_sppd('${data.idbaris}')"><i class="fa fa-upload"></i></button>`:`<button class="w3-btn w3-green" onclick="window.open('https://drive.google.com/file/d/${data.versiupload}/view?usp=drivesdk','', 'width=720,height=600')"><i class="fa fa-eye"></i></button>`;
+                    html +=`<tr>
+                    <td>${(i+1)}</td>
+                    <td>${apiguru.guru_namalengkap}</td>
+                    <td>${data.ptk_maksudsppd}</td>
+                    <td>${data.ptk_tempatsppd}</td>
+                    <td>${tanggalfull(new Date(data.ptk_starttgl))}</td>
+                    <td>${data.ptk_durasisppd} hari</td>
+                    <td>${data.ptk_nosppd}</td>
+                    <td>${btnSuratKeluar}</td>
+                    <td>${data.resume==""?"Kosong":"Sudah Terisi"}</td>
+                    <td>${data.resume==""?"":`<button class="w3-btn w3-tiny w3-green" onclick="preview_resumesppd('${data.idbaris}')" title="Cetak Resume"><i class="fa fa-print"></i></button>`}</td>
+                    <td>${tomboluploadsppd}</td>
+                    <td><button class="w3-btn w3-tiny w3-blue" onclick="preview_sppd('${data.idbaris}')" title="preview/print"><i class="fa fa-eye"></i></button> <button class="w3-btn w3-tiny w3-sand" onclick="edit_sppd('${data.idbaris}')"  title="edit"><i class="fa fa-edit"></i></button></td>
+                    </tr>`;
+
+                }
+                tbody.innerHTML = html;
+                for(i=0 ; i < elemenisi.length; i++){
+                    elemenisi[i].value = "";
+                }
+            clearInterval(stoploadingtopbar);
+            let divlod = document.querySelector(".loadingtopbar");
+            divlod.style.width = "100%";
+                setTimeout(() => {
+                    divlod.style.width = "1px"
+                    divlod.className += " w3-hide";
+    
+                }, 3000);
+            
+           
+        })
+        .catch(er => console.log(er))
+        modalt.style.display = "none";
+    })
+
+}
+
+
+const uploadscan_sppd = (brs)=>{
+    //console.log(brs);
+    let objek = Object.assign({},tagdbsppd.filter(s => s.idbaris == brs)[0]);
+    let fileInput = document.querySelector("#uploadsppd");
+    fileInput.click();
+    fileInput.onchange = function() {
+        let files = fileInput.files;
+        if (!files || !files.length) {
+        //          console.log('No files selected');
+        alert("Tidak ada file terpilih!")
+        return;
+        }
+            let reader = new FileReader();
+            var item = files[0];
+            let namafile = item.name;
+            
+            let atGal = atributgaleri()
+            let key = atGal.key;
+            //let obKey = Object.keys(key);
+            let v = [];
+            
+            loadingtopbarin("loadingtopbar");
+            reader.readAsDataURL(item);
+            reader.onload = async function (e) {
+                // kita upload gambar dulu ke Drive
+                let src = e.target.result;
+                let dataa = src.replace(/^.*,/, '');
+                let tipe = src.match(/^.*(?=;)/)[0]; 
+                
+                let tipenyaaja = tipe.split("/")[1]
+                let realtipe;
+                if(tipenyaaja.indexOf("vnd")>-1){
+                    realtipe = tipefile;
+                }else{
+                    realtipe = tipenyaaja;
+                }
+                let fileTIPE =realtipe;
+                
+                let data = new FormData();
+                let fileresult
+                data.append("fileContent", dataa);
+                data.append("mimeType", tipe);
+                data.append("filename", namafile);
+                data.append("kelas", "000 GALERI");
+                
+                await fetch(linktendik+"?action=uploadfiledulu", {
+                    method: 'post',
+                    body: data
+                }).then(m => m.json())
+                    .then(r => {
+                        if (r.sukses == "Sukses") {
+                            let link = r.idfile
+                            fileresult = link
+                            
+                        } else {
+                            // el_label.innerHTML = `<i class="fa fa-upload warnaeka  w3-round-large w3-padding w3-border-black w3-border-bottom w3-center"> Unggah File</i>`;
+                            // elinput.value = r.idfile;
+                        }
+                        // dockeyboard.execCommand("insertImage",false, linkgambar);
+                        // let imgs = dockeyboard.querySelectorAll("img");
+                        // imgs.forEach(item => {
+                        //     item.style.maxWidth ="500px";
+                        // })
+                    })
+                    .catch(er => {
+                        console.log(er);
+                        
+                        // alert("Maaf, terjadi kesalahan. Silakan ulangi sesi Anda sesaat lagi.")
+                        // el_label.innerHTML = `<i class="fa fa-upload warnaeka  w3-round-large w3-padding w3-border-black w3-border-bottom w3-center"> Unggah File</i>`;
+                    })
+                
+                //update untuk key:
+                objek.versiupload = fileresult;
+                let keySppd = Object.keys(objek);
+                let valSppd = Object.values(objek);
+                let stfyKey = JSON.stringify(keySppd);
+                let stfyVal = JSON.stringify(valSppd);
+                let kirimsppd = new FormData();
+                kirimsppd.append("idbaris",brs);
+                kirimsppd.append("tab","sppd");
+                kirimsppd.append("key",stfyKey)
+                kirimsppd.append("tabel",stfyVal);
+                await fetch(jlo.url_dataabsen+"?action=simpanbarisketabidbaris",{
+                    method:"post",body:kirimsppd
+                }).then(m => m.json()).then(r=>{
+                    let dbSppd = r.data;
+                    tagdbsppd = dbSppd;
+                    let tabel = document.querySelector(".tabeldbsppd");
+                let tbody = tabel.getElementsByTagName("tbody")[0];
+                tbody.innerHTML = "";
+                let html = "";
+                
+                for(i = (tagdbsppd.length - 1) ; i >=0 ; i--){
+                    //i>=0;i--
+                    let data = tagdbsppd[i];
+                    let id_guru = data.ptk_diperintah;
+                    let apiguru= dataapiguru.filter(s => s.id == id_guru)[0];
+                    let btnSuratKeluar = data.arsip_nosppd==""?`<button class="w3-button w3-green" onclick="nosppdkesuratkeluar(${data.idbaris})">Arsipkan!</button>`:"Sudah diarsipkan";
+                    let tomboluploadsppd = data.versiupload == ""?`<button class="w3-btn w3-blue w3-tiny" onclick="uploadscan_sppd('${data.idbaris}')"><i class="fa fa-upload"></i></button>`:`<button class="w3-btn w3-green" onclick="window.open('https://drive.google.com/file/d/${data.versiupload}/view?usp=drivesdk','', 'width=720,height=600')"><i class="fa fa-eye"></i></button>`;
+                    html +=`<tr>
+                    <td>${(i+1)}</td>
+                    <td>${apiguru.guru_namalengkap}</td>
+                    <td>${data.ptk_maksudsppd}</td>
+                    <td>${data.ptk_tempatsppd}</td>
+                    <td>${tanggalfull(new Date(data.ptk_starttgl))}</td>
+                    <td>${data.ptk_durasisppd} hari</td>
+                    <td>${data.ptk_nosppd}</td>
+                    <td>${btnSuratKeluar}</td>
+                    <td>${data.resume==""?"Kosong":"Sudah Terisi"}</td>
+                    <td>${data.resume==""?"":`<button class="w3-btn w3-tiny w3-green" onclick="preview_resumesppd('${data.idbaris}')" title="Cetak Resume"><i class="fa fa-print"></i></button>`}</td>
+                    <td>${tomboluploadsppd}</td>
+                    <td><button class="w3-btn w3-tiny w3-blue" onclick="preview_sppd('${data.idbaris}')" title="preview/print"><i class="fa fa-eye"></i></button> <button class="w3-btn w3-tiny w3-sand" onclick="edit_sppd('${data.idbaris}')"  title="edit"><i class="fa fa-edit"></i></button></td>
+                    </tr>`;
+
+                }
+                tbody.innerHTML = html;
+
+                }).catch(er => console.log(er))
+
+
+                let type = [3];
+                let kegiatan = objek.ptk_maksudsppd;
+                let tanggal = objek.ptk_starttgl;
+                let lampiransppd = 'lampiran_sppd_' + kegiatan;
+                let objekvalue = [kegiatan, tanggal, fileresult, fileTIPE, namauser, 'dipublikasikan', 'Tidak Ada', 'Tidak Ada', lampiransppd];//tanpa idbaris
+
+                let tabel = JSON.stringify(objekvalue);
+                let keyy = JSON.stringify(key);
+                let tipee = JSON.stringify(type);
+            
+                let datakirim = new FormData();
+                datakirim.append("key",keyy);
+                datakirim.append("tab","galeri");
+                datakirim.append("tabel",tabel);
+                datakirim.append("tipe",tipee);
+                await fetch(linktendik+"?action=simpanbarisketaburut",{
+                    method:"post",
+                    body:datakirim
+                }).then(m => m.json())
+                .then(r => {
+                    let res = r.result;
+                    
+                    
+                })
+                .catch(er => console.log(er));
+            
+                clearInterval(stoploadingtopbar);
+            let divlod = document.querySelector(".loadingtopbar");
+            divlod.style.width = "100%";
+                setTimeout(() => {
+                    divlod.style.width = "1px"
+                    divlod.className += " w3-hide";
+    
+            }, 3000);
+
+        }
+    };
+    
+}
 
 const admPKKS = ()=>{
     tampilinsublamangurukelas("pkks");
+}
+/// NOTULA RAPAT
+
+function dragElement(elmnt) {
+    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    if (document.getElementById(elmnt.id + "header")) {
+        /* if present, the header is where you move the DIV from:*/
+        document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+    } else {
+        /* otherwise, move the DIV from anywhere inside the DIV:*/
+        elmnt.onmousedown = dragMouseDown;
+    }
+
+    function dragMouseDown(e) {
+        e = e || window.event;
+        e.preventDefault();
+        // get the mouse cursor position at startup:
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        document.onmouseup = closeDragElement;
+        // call a function whenever the cursor moves:
+        document.onmousemove = elementDrag;
+    }
+
+    function elementDrag(e) {
+        e = e || window.event;
+        e.preventDefault();
+        // calculate the new cursor position:
+        pos1 = pos3 - e.clientX;
+        pos2 = pos4 - e.clientY;
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        // set the element's new position:
+        elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+        elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+    }
+
+    function closeDragElement() {
+        /* stop moving when mouse button is released:*/
+        document.onmouseup = null;
+        document.onmousemove = null;
+    }
+}
+
+const getlocalDateTime = (dd) => {
+    let result;
+    let d = new Date(dd);
+    // "yyyy-MM-ddThh:mm"
+    result = d.getFullYear() + "-" + addZero(d.getMonth() + 1) + "-" + addZero(d.getDate()) + "T" + addZero(d.getHours()) + ":" + addZero(d.getMinutes());
+    // [addZero(d.getMonth() + 1),
+    // new Date(d.getDate()),
+    // d.getFullYear()].join('/') + ', ' +
+    //     [addZero(d.getHours()),
+    //     addZero(d.getMinutes())].join(':');
+    return result;
+}
+
+let tagdbrapat;
+let keyRapat = ["idbaris","diundang_oleh","agenda_rapat","tema_rapat","pelaksanaan_rapat","notulaptk_2","notulaptk_3","notulaptk_4","notulaptk_5","notulaptk_6","notulaptk_7","notulaptk_8","notulaptk_9","notulaptk_10","notulaptk_11","notulaptk_12","notulaptk_13","notulaptk_14","notulaptk_15","notulaptk_16","notulaptk_17","notulaptk_18","notulaptk_19","notulaptk_20","notulaptk_21","notulaptk_22","notulaptk_23","notulaptk_24","notulaptk_25"];
+const cektagdbrapat = async() =>{
+    let tabel = keyRapat;
+    let key = JSON.stringify(tabel);
+    let datakirim = new FormData();
+    
+    datakirim.append("tab","notularapat")
+    datakirim.append("key",key)
+    await fetch(jlo.url_dataabsen+"?action=getpostdatafromtab",{
+            method:"post",
+            body:datakirim
+        }).then(m => m.json())
+        .then(r => {
+            
+            let res = r.result;
+            if(res == 1){
+                tagdbrapat = []
+            }else{
+                tagdbrapat = r.data;
+
+            }
+        }).catch(er=> console.log(er))
+}
+const rekapRapatSekolah = () =>{
+    let tabel = document.querySelector(".tabel_dbrapatsekolah");
+    let tbody = tabel.getElementsByTagName("tbody")[0];
+    
+    let html = "";
+    for(i = (tagdbrapat.length-1) ; i>= 0 ; i--){
+        let ob = tagdbrapat[i];
+        let brs = ob.idbaris;
+        let notulen = Object.keys(ob).filter(m => m.indexOf("notulaptk_")>-1 && ob[m] !== "").map(s => idgurunyasiapa(s.match(/(\d+)/)[0]).split(",")[0]);
+        let keynotulen = Object.keys(ob).filter(m => m.indexOf("notulaptk_")>-1 && ob[m] !== "")
+        let idgurunotulen = Object.keys(ob).filter(m => m.indexOf("notulaptk_")>-1 && ob[m] !== "").map(s => s.match(/(\d+)/)[0]);
+        let btnNotula ="";
+        for(j = 0 ; j < notulen.length ; j++){
+            btnNotula +=`<button class="w3-btn w3-round-large w3-border w3-tiny" onclick="notulaptk('${brs}','${keynotulen[j]}')">${notulen[j]}</button>`
+        }
+        html +=`<tr>
+        <td>${(i+1)}</td>
+        <td><button onclick="editrapatini('${tagdbrapat[i].idbaris}')" class="w3-btn w3-border w3-round-large w3-tiny">Edit</button></td>
+        <td>${tagdbrapat[i].diundang_oleh}</td>
+        <td>${tagdbrapat[i].agenda_rapat}</td>
+        <td>${tagdbrapat[i].tema_rapat}</td>
+        <td>${tanggalfulllengkap(tagdbrapat[i].pelaksanaan_rapat)}</td>
+        <td>${btnNotula}</td>
+        <td>${notulen.length==""?"Belum ada yang mengisi":notulen.length + " notulen."}</td>
+        </tr>`
+    }
+    tbody.innerHTML = html;
+}
+const rekapRapatSekolahuntukku = () =>{
+    let tabel = document.querySelector(".datanotularapatku");
+    let tbody = tabel.getElementsByTagName("tbody")[0];
+    
+    let html = "";
+    for(i = (tagdbrapat.length-1) ; i>= 0 ; i--){
+        let ob = tagdbrapat[i];
+        let brs = ob.idbaris;
+        let notulasiapa ="notulaptk_"+idguru;
+        let Notula = ob[notulasiapa];
+        let btnNotula = `<button class="w3-btn w3-border w3-round-large" onclick="isinotulaptk('${brs}','${notulasiapa}')"><i class="fa fa-edit"></button>`;
+        html +=`<tr>
+        <td>${(i+1)}</td>
+        <td>${tagdbrapat[i].diundang_oleh}</td>
+        <td>${tagdbrapat[i].agenda_rapat}</td>
+        <td>${tagdbrapat[i].tema_rapat}</td>
+        <td>${tanggalfulllengkap(tagdbrapat[i].pelaksanaan_rapat)}</td>
+        <td>${btnNotula}</td>
+        <td>${Notula==""?"-":"Sudah mengisi notula"}</td>
+        </tr>`
+    }
+    tbody.innerHTML = html;
+}
+const editrapatini = (brs) =>{
+    let rRow = parseInt(brs);
+    let db  = tagdbrapat.filter(s => s.idbaris == brs)[0];
+    let dbCopy = Object.assign({},db);
+   
+    let tabmenu = document.querySelector(".klikfiturrapat");
+    tabmenu.click();
+    document.getElementById("rapat_pengundang").value = dbCopy.diundang_oleh;
+    document.getElementById("rapat_agendarapat").value = dbCopy.agenda_rapat;
+    document.getElementById("rapat_tema").value = dbCopy.tema_rapat;
+    document.getElementById("rapat_tgl").value = getlocalDateTime(dbCopy.pelaksanaan_rapat);
+    let btnEdit = document.querySelector(".editrapatbaru");
+    let btnBuatBaru = document.querySelector(".buatrapatbaru");
+    if(btnEdit.className.indexOf("w3-hide")>-1){
+        btnEdit.classList.remove("w3-hide");
+        btnBuatBaru.classList.add("w3-hide")
+    };
+    btnEdit.setAttribute("onclick",`editRapatServer('${brs}')`);//
+
+}
+const buatRapatbaru = () =>{
+    let elemen_data = document.querySelectorAll("[data-keyRapat]");
+    let ob = {};
+    for(i = 0 ; i < elemen_data.length ; i ++){
+        let dom = elemen_data[i];
+        let k = dom.getAttribute("data-keyRapat");
+        ob[k] = dom.value;
+    }
+    
+    let obBantu = {}
+    for(j = 0 ; j < keyRapat.length ; j++){
+        let kk = keyRapat[j];
+        obBantu[kk] = ""
+    }
+    
+    let obCombine = Object.assign(obBantu, ob);
+    let obKey = Object.keys(obCombine);
+    let obVal = Object.values(obCombine);
+    obVal.shift();
+    let tab = "notularapat";
+    let datakirim = new FormData();
+    datakirim.append("tab",tab);
+    datakirim.append("key", JSON.stringify(obKey));
+    datakirim.append("tabel", JSON.stringify(obVal));
+    loadingtopbarin("loadingtopbar");
+    fetch(jlo.url_dataabsen+"?action=simpanbarisketaburut",{
+        method:"post",body:datakirim
+    }).then(m=> m.json()).then(r =>{
+        tagdbrapat = r.data;
+        alert("Berhasil disimpan");
+        clearInterval(stoploadingtopbar);
+            let divlod = document.querySelector(".loadingtopbar");
+            divlod.style.width = "100%";
+                setTimeout(() => {
+                    divlod.style.width = "1px"
+                    divlod.className += " w3-hide";
+    
+                }, 3000);
+
+                for(i = 0 ; i < elemen_data.length ; i ++){
+                    let dom = elemen_data[i];
+                    dom.value = "";
+                }
+                
+    })
+
+    
+
+}
+const editRapatServer = async (brs)=>{
+    loadingtopbarin("loadingtopbar");
+    await cektagdbrapat();
+    let db  = tagdbrapat.filter(s => s.idbaris == brs)[0];
+    let obCopy = Object.assign({},db);
+    let elemen_data = document.querySelectorAll("[data-keyRapat]");
+    let obEdit = {};
+    for(i = 0 ; i < elemen_data.length ; i ++){
+        let dom = elemen_data[i];
+        let k = dom.getAttribute("data-keyRapat");
+        obEdit[k] = dom.value;
+    }
+    let gabunganBarudanIsian = Object.assign(obCopy,obEdit);
+    let oKey = Object.keys(gabunganBarudanIsian)
+    let oVal = Object.values(gabunganBarudanIsian)
+    console.log(obCopy);
+    console.log(gabunganBarudanIsian);
+    let datakirim = new FormData();
+    datakirim.append("tab","notularapat")
+    datakirim.append("key",JSON.stringify(oKey))
+    datakirim.append("tabel",JSON.stringify(oVal))
+    datakirim.append("idbaris",brs);
+    await fetch(jlo.url_dataabsen+"?action=simpanbarisketabidbaris",{
+        method:"post",body:datakirim
+    }).then(m=> m.json()).then(r=>{
+        alert("Berhasil diedit");
+        tagdbrapat = r.data;
+
+        
+    }).catch(er => console.log(er))
+    clearInterval(stoploadingtopbar);
+    let divlod = document.querySelector(".loadingtopbar");
+    divlod.style.width = "100%";
+    setTimeout(() => {
+        divlod.style.width = "1px"
+        divlod.className += " w3-hide";
+
+    }, 3000);
+
+
+    let btnEdit = document.querySelector(".editrapatbaru");
+    let btnBuatBaru = document.querySelector(".buatrapatbaru");
+    if(btnEdit.className.indexOf("w3-hide")==-1){
+        btnEdit.classList.add("w3-hide");
+        btnBuatBaru.classList.remove("w3-hide")
+    };
+    
+    for(i = 0 ; i < elemen_data.length ; i ++){
+        let dom = elemen_data[i];
+        dom.value = "";
+    }
+
+    
+
+
+}
+const idgurunyasiapa = (iD) =>{
+    let data = dataapiguru.filter(s=> s.id == iD)[0];
+    // let ob = {};
+    // ob.nama = data.guru_namalengkap;
+    // ob.nip = data.guru_nip;
+    return data.guru_namalengkap
+}
+const idgurunyanip = (iD) =>{
+    let data = dataapiguru.filter(s=> s.id == iD)[0];
+    let pnsbukan = data.guru_nip == ""?"-":"NIP. "+data.guru_nip;
+    // let ob = {};
+    // ob.nama = data.guru_namalengkap;
+    // ob.nip = data.guru_nip;
+    return pnsbukan
+}
+const notulaptk = (brs, keynotula) =>{
+    // hanya khusus untuk melihat saja! di akhir paragraf ada tanda tangannya!
+    let db = tagdbrapat.filter(s => s.idbaris == brs)[0];
+    let idGuru = keynotula.match(/(\d+)/)[0];
+    let namagurunya = idgurunyasiapa(parseInt(idGuru));
+    let template = document.getElementById("template_notularapat");
+    let judul1 = document.querySelector(".judul_jenisrapat");
+    let judul2 = document.querySelector(".judul_temarapat");
+    let judul3 = document.querySelector(".judul_wakturapat");
+    let lembarisian = document.querySelector(".isiteks_rapat");
+    let lembarttd = document.querySelector(".tandatangannotulen");
+    let judulpenulis = document.querySelector(".judul_notulen");
+    let tg = new Date(db.pelaksanaan_rapat);
+    let tglf = tanggalfulllengkap(tg);
+    
+    template.style.display ="block";
+    judul1.innerHTML = db.agenda_rapat;
+    judul2.innerHTML = db.tema_rapat;
+    judul3.innerHTML = tglf;
+    lembarisian.innerHTML = db[keynotula];
+
+    
+    lembarttd.innerHTML = `<div class="w3-col l6 s6 w3-center">Mengetahui, <br>Kepala ${idNamaSekolah}<br><br><br><br><u><b>${idNamaKepsek}</b></u><br>NIP. ${idNipKepsek}</div><div class="w3-col l6 s6 w3-center">Depok, ${tanggalfull(tg)}<br>Notulen<br><br><br><br><u><b>${namagurunya}</b></u><br>${idgurunyanip(parseInt(idGuru))}</div>`;
+    judulpenulis.innerHTML = "Notulen: " + namagurunya;
+
+    //karena ini untuk dilihat kepsek, maka notula ga boleh diketik ma dia:
+    let btnKetik = document.querySelector(".ketikkanrapat")
+    if(btnKetik.className.indexOf("w3-hide")==-1){
+        btnKetik.classList.add("w3-hide")
+    }
+    
+
+
+}
+const isinotulaptk = (brs, keynotula) =>{
+    // hanya khusus untuk melihat saja! di akhir paragraf ada tanda tangannya!
+    let db = tagdbrapat.filter(s => s.idbaris == brs)[0];
+    keyboardtooltip(db,"notula");
+    let idGuru = keynotula.match(/(\d+)/)[0];
+    let namagurunya = idgurunyasiapa(parseInt(idGuru));
+    let template = document.getElementById("template_notularapat");
+    let judul1 = document.querySelector(".judul_jenisrapat");
+    let judul2 = document.querySelector(".judul_temarapat");
+    let judul3 = document.querySelector(".judul_wakturapat");
+    let lembarisian = document.querySelector(".isiteks_rapat");
+    let lembarttd = document.querySelector(".tandatangannotulen");
+    let judulpenulis = document.querySelector(".judul_notulen");
+    let tg = new Date(db.pelaksanaan_rapat);
+    let tglf = tanggalfulllengkap(tg);
+    
+    template.style.display ="block";
+    judul1.innerHTML = db.agenda_rapat;
+    judul2.innerHTML = db.tema_rapat;
+    judul3.innerHTML = tglf;
+    lembarisian.innerHTML = db[keynotula];
+
+    
+    lembarttd.innerHTML = `<div class="w3-col l6 s6 w3-center">Mengetahui, <br>Kepala ${idNamaSekolah}<br><br><br><br><u><b>${idNamaKepsek}</b></u><br>NIP. ${idNipKepsek}</div><div class="w3-col l6 s6 w3-center">Depok, ${tanggalfull(tg)}<br>Notulen<br><br><br><br><u><b>${namagurunya}</b></u><br>${idgurunyanip(parseInt(idGuru))}</div>`;
+    judulpenulis.innerHTML = "Notulen: " + namagurunya;
+
+    //karena ini untuk dilihat kepsek, maka notula ga boleh diketik ma dia:
+    let btnKetik = document.querySelector(".ketikkanrapat")
+    if(btnKetik.className.indexOf("w3-hide")>-1){
+        btnKetik.classList.remove("w3-hide")
+    }
+    
+    // btnKetik.setAttribute("onclick",`isitekselemenini("printpreviewresume","prevsppd_isiresume", "atas", "${brs}")`);
+    btnKetik.setAttribute("onclick",`isitekselemeniniRapat("printNotula","isiteks_rapat", "atasnotula", "${brs}","${keynotula}")`);
+
+
+
 }
