@@ -944,3 +944,30 @@ label.labrad_custom{
   
 
 }
+.canvas_ljk,.patokan_PG {
+  /* position: absolute !important; */
+  width:350px;
+  height: 550px;
+  border:1px solid black;
+    /* width: 100% ;
+    height: auto ; */
+}
+.patokan_PG{
+  position: absolute;
+  padding:0 5px;
+}
+.patokan_tabelPG{
+  width: 100%;
+  border-collapse: collapse;
+}
+.patokan_tabelPG th{
+  background-color: #5e5e5f;
+  color: white;
+}
+.patokan_tabelPG tr, .patokan_tabelPG th, .patokan_tabelPG td{
+  font-size: 10px;
+  border: 1px solid rgb(255, 0, 0);
+  padding:4px;
+  color: white;
+  /* height: 550px; */
+}

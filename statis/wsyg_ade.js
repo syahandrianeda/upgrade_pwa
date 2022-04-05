@@ -2957,7 +2957,7 @@ const printadm = (c,portr=true) =>{
         head.innerHTML += '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">';
         head.innerHTML += '<link  rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">'
     
-        head.innerHTML +='<link rel="stylesheet" href="https://syahandrianeda.github.io/syahandrianeda/css/stylegurukelas.css">'
+        head.innerHTML +='<link rel="stylesheet" href="https://edurasa.com/css/stylegurukelas.css">'
         //head.innerHTML += `<style type="text/css"> .versii-table{width:950px;max-width:100%;border-collapse:collapse}.versi-table{width:auto;max-width:100%;border-collapse:collapse}.versi-table td,.versi-table th,.versi-table tr,.versii-table td,.versii-table th,.versii-table tr{border:1px solid #000;color:#000;padding:5px 10px 5px 10px}.versi-table th,.versii-table th{background-color:#eee;color:#00f;vertical-align:middle;text-align:center}.versi-table tr:nth-of-type(even) td,.versii-table tr:nth-of-type(even) td{border:0;background-color:#fff;border:1px solid #000}.versi-table tr:nth-of-type(odd) td,.versii-table tr:nth-of-type(odd) td{border:0;background-color:#eef;border:1px solid #000} .garis td,.garis th,.garis tr{border:0.5px solid rgb(119, 116, 116)} .garis th{border:1px solid #000;text-align:center;vertical-align:middle} </style>`;
     
         if(portr){
@@ -6112,7 +6112,7 @@ const printadmKaldik = (c,portr=true) =>{
     head.innerHTML += '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">';
     head.innerHTML += '<link  rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">'
 
-    head.innerHTML +='<link rel="stylesheet" href="https://syahandrianeda.github.io/syahandrianeda/css/stylegurukelas.css">'
+    head.innerHTML +='<link rel="stylesheet" href="https://edurasa.com/css/stylegurukelas.css">'
     //head.innerHTML += `<style type="text/css"> .versii-table{width:950px;max-width:100%;border-collapse:collapse}.versi-table{width:auto;max-width:100%;border-collapse:collapse}.versi-table td,.versi-table th,.versi-table tr,.versii-table td,.versii-table th,.versii-table tr{border:1px solid #000;color:#000;padding:5px 10px 5px 10px}.versi-table th,.versii-table th{background-color:#eee;color:#00f;vertical-align:middle;text-align:center}.versi-table tr:nth-of-type(even) td,.versii-table tr:nth-of-type(even) td{border:0;background-color:#fff;border:1px solid #000}.versi-table tr:nth-of-type(odd) td,.versii-table tr:nth-of-type(odd) td{border:0;background-color:#eef;border:1px solid #000} .garis td,.garis th,.garis tr{border:0.5px solid rgb(119, 116, 116)} .garis th{border:1px solid #000;text-align:center;vertical-align:middle} </style>`;
 
     if(portr){
@@ -7788,7 +7788,7 @@ const printadm_admHBE = (c,portr=true) =>{
     head.innerHTML += '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">';
     head.innerHTML += '<link  rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">'
 
-    head.innerHTML +='<link rel="stylesheet" href="https://syahandrianeda.github.io/syahandrianeda/css/stylegurukelas.css">'
+    head.innerHTML +='<link rel="stylesheet" href="https://edurasa.com/css/stylegurukelas.css">'
     //head.innerHTML += `<style type="text/css"> .versii-table{width:950px;max-width:100%;border-collapse:collapse}.versi-table{width:auto;max-width:100%;border-collapse:collapse}.versi-table td,.versi-table th,.versi-table tr,.versii-table td,.versii-table th,.versii-table tr{border:1px solid #000;color:#000;padding:5px 10px 5px 10px}.versi-table th,.versii-table th{background-color:#eee;color:#00f;vertical-align:middle;text-align:center}.versi-table tr:nth-of-type(even) td,.versii-table tr:nth-of-type(even) td{border:0;background-color:#fff;border:1px solid #000}.versi-table tr:nth-of-type(odd) td,.versii-table tr:nth-of-type(odd) td{border:0;background-color:#eef;border:1px solid #000} .garis td,.garis th,.garis tr{border:0.5px solid rgb(119, 116, 116)} .garis th{border:1px solid #000;text-align:center;vertical-align:middle} </style>`;
 
     if(portr){
@@ -10199,7 +10199,7 @@ const printsuratLandscape = (c,portr)=>{
     head.innerHTML += '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">';
     head.innerHTML += '<link  rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">'
 
-    head.innerHTML +='<link rel="stylesheet" href="https://syahandrianeda.github.io/syahandrianeda/css/stylegurukelas.css">'
+    head.innerHTML +='<link rel="stylesheet" href="https://edurasa.com/css/stylegurukelas.css">'
     //head.innerHTML += `<style type="text/css"> .versii-table{width:950px;max-width:100%;border-collapse:collapse}.versi-table{width:auto;max-width:100%;border-collapse:collapse}.versi-table td,.versi-table th,.versi-table tr,.versii-table td,.versii-table th,.versii-table tr{border:1px solid #000;color:#000;padding:5px 10px 5px 10px}.versi-table th,.versii-table th{background-color:#eee;color:#00f;vertical-align:middle;text-align:center}.versi-table tr:nth-of-type(even) td,.versii-table tr:nth-of-type(even) td{border:0;background-color:#fff;border:1px solid #000}.versi-table tr:nth-of-type(odd) td,.versii-table tr:nth-of-type(odd) td{border:0;background-color:#eef;border:1px solid #000} .garis td,.garis th,.garis tr{border:0.5px solid rgb(119, 116, 116)} .garis th{border:1px solid #000;text-align:center;vertical-align:middle} </style>`;
 
     if(portr){
@@ -10711,7 +10711,7 @@ const keyboardtooltip = (objek={},jeniskirimanobjek="")=>{
         dockeyboard.head.innerHTML = `<link rel="stylesheet" href="${root}/css/w3.css">
         <link href="https://fonts.googleapis.com/css?family=Raleway">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
-        <link rel="stylesheet" href="https://syahandrianeda.github.io/syahandrianeda/css/stylegurukelas.css">`;
+        <link rel="stylesheet" href="https://edurasa.com/css/stylegurukelas.css">`;
         
     dockeyboard.addEventListener("input",(e)=>{
         let v = e.target;
@@ -11399,7 +11399,7 @@ function currentFrameAbsolutePosition() {
 const isitekselemenini = (paren="", target, posisitooltip="atas", baris="") =>{
     let elemen = document.querySelector("."+target);
     let simpan = document.querySelector(".simpankeyboard");
-    
+    simpan.onclick= null;
     let lebarwindow = document.querySelector(".tesbody").offsetWidth;
     let bataskanan = lebarwindow * 0.5;
     let keyboard = document.getElementById("keyboard_ketikan");
@@ -11411,8 +11411,10 @@ const isitekselemenini = (paren="", target, posisitooltip="atas", baris="") =>{
     let lLeft, tTop;
     if(posisitooltip == "atas"){
         window.scrollTo({ top: 0, behavior: 'smooth' });
+        document.querySelector(".prevsppd_isiresume").scrollTo({ top: 0, behavior: 'smooth' });
         let pAre = document.querySelector("."+paren);
-        tTop = (elemen.offsetTop + window.scrollY + pAre.offsetTop + 10)+"px";
+        // tTop = (elemen.offsetTop + window.scrollY + pAre.offsetTop + 10)+"px";
+        tTop = (elemen.offsetTop+ 10)+"px";
         lLeft = pAre.offsetLeft + "px";//(bataskanan - (keyboard.offsetWidth/2) + elemen.offsetLeft) + "px";
     }else{
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -11420,12 +11422,12 @@ const isitekselemenini = (paren="", target, posisitooltip="atas", baris="") =>{
         tTop = (elemen.offsetTop + 10) +"px";
         lLeft = pAre.offsetLeft + "px";//(bataskanan - (keyboard.offsetWidth/2) + elemen.offsetLeft) + "px";
     }
-    console.log(tTop)
-    console.log(lLeft)
+    
+    
     keyboard.style.top = tTop;
     keyboard.style.left = lLeft;
     keyboard.style.display="block";
-    simpan.addEventListener("click", async()=>{
+    simpan.onclick= async()=>{
         elemen.innerHTML = body.innerHTML;
         //simpan ke tab = sppd di baris
         if(baris ==""){
@@ -11455,6 +11457,36 @@ const isitekselemenini = (paren="", target, posisitooltip="atas", baris="") =>{
         }).then(m => m.json())
         .then(r => {
             tagdbsppd = r.data;
+            let id_guru = idguru;
+            let dataku = tagdbsppd.filter(s=> s.ptk_diperintah == id_guru);
+            
+            // console.log(dataku);
+            // console.log(datahariini);
+            let html = "";
+            let tabel = document.querySelector(".tabelsppdku");
+            let tbody = tabel.getElementsByTagName("tbody")[0];
+            
+            
+            if(dataku.length == 0){
+                tbody.innerHTML = `<tr><td colspan="8">Maaf, Anda kurang jalan-jalan. Eh, belum pernah diberi tugas perjalanan dinas. Healing sendiri aja ... 🤪</td></tr>`;
+                return;
+            }
+            for(i = (dataku.length - 1); i >= 0 ; i--){
+                let brs = dataku[i]["idbaris"];
+                let udahdiunggah = dataku[i].versiupload;
+                let btnn = udahdiunggah ==""?`<button class="tangan" onclick="uploadscan_sppd('${brs}')"><i class="fa fa-upload"></i></button>` :`<button class="tangan" onclick="uploadscan_sppd('${brs}')"><i class="fa fa-upload"></i></button><button class="tangan" onclick="window.open('https://drive.google.com/file/d/${dataku[i].versiupload}/view?usp=drivesdk','', 'width=720,height=600')"><i class="fa fa-eye"></i></button>` ;
+                html +=`<tr>
+                <td>${(i+1)}</td>
+                <td>${dataku[i]["ptk_maksudsppd"]}</td>
+                <td>${dataku[i]["ptk_tempatsppd"]}</td>
+                <td>${Tanggaldenganhari(dataku[i]["ptk_starttgl"])}</td>
+                <td class="w3-center"><button class="tangan" onclick="preview_sppd('${brs}')"><i class="fa fa-print"></i></button></td>
+                <td>${dataku[i]["resume"]==""?"Resume belum diisi":"Resume Sudah Diisi"}</td>
+                <td class="w3-center">${dataku[i]["resume"]==""?`<button class="tangan" onclick="isiresumebaris('${brs}')" title="Isi resume"><i class="fa fa-pencil"></i></button>`:`<button onclick="isiresumebaris('${brs}')" title="Editresume" class="tangan"><i class="fa fa-edit"></i></button>`}</td>
+                <td class="w3-center">${btnn}</td>
+                </tr>`;
+            }
+            tbody.innerHTML = html;
             clearInterval(stoploadingtopbar);
             let divlod = document.querySelector(".loadingtopbar");
             divlod.style.width = "100%";
@@ -11468,14 +11500,14 @@ const isitekselemenini = (paren="", target, posisitooltip="atas", baris="") =>{
         
         
         keyboard.style.display="none";
-    })
+    }
 
 }
 
 const isitekselemeniniRapat = (paren="", target, posisitooltip="atas", baris="",keynotula) =>{
     let elemen = document.querySelector("."+target);
     let simpan = document.querySelector(".simpankeyboard");
-    
+    simpan.onclick= null;
     let lebarwindow = document.querySelector(".tesbody").offsetWidth;
     let bataskanan = lebarwindow * 0.5;
     let keyboard = document.getElementById("keyboard_ketikan");
@@ -11497,12 +11529,11 @@ const isitekselemeniniRapat = (paren="", target, posisitooltip="atas", baris="",
         tTop = (elemen.offsetTop + 10) +"px";
         lLeft = pAre.offsetLeft + "px";//(bataskanan - (keyboard.offsetWidth/2) + elemen.offsetLeft) + "px";
     }
-    console.log(tTop)
-    console.log(lLeft)
+    
     keyboard.style.top = tTop;
     keyboard.style.left = lLeft;
     keyboard.style.display="block";
-    simpan.addEventListener("click",async ()=>{
+    simpan.onclick =async ()=>{
         elemen.innerHTML = body.innerHTML;
         //simpan ke tab = sppd di baris
         if(baris ==""){
@@ -11545,7 +11576,7 @@ const isitekselemeniniRapat = (paren="", target, posisitooltip="atas", baris="",
         
         
         keyboard.style.display="none";
-    })
+    }
 
 }
 
@@ -12105,6 +12136,7 @@ const isinotulaptk = (brs, keynotula) =>{
     
     // btnKetik.setAttribute("onclick",`isitekselemenini("printpreviewresume","prevsppd_isiresume", "atas", "${brs}")`);
     btnKetik.setAttribute("onclick",`isitekselemeniniRapat("printNotula","isiteks_rapat", "atasnotula", "${brs}","${keynotula}")`);
+
 
 
 

@@ -7413,7 +7413,7 @@ const tombolaksikronologi = (currEssay, parNama, z, idhtmlmateri) => {
 
     if (cek.length == 0) {
         //jika siswa belum mengerjakan, tolong bantu isi!
-        kodehtml = `<button class="w3-button w3-khaki w3-card-4" onclick="bantusiswaisiljk('${z + "_" + idhtmlmateri}')">Bantu Isi</button>`
+        kodehtml = `<button class="w3-button w3-khaki w3-card-4" onclick="bantusiswaisiljk('${z + "_" + idhtmlmateri}')">Bantu Isi</button><button class="w3-button w3-khaki w3-card-4" onclick="trialScanLJK('${z + "_" + idhtmlmateri}')">SCAN LJK</button>`
 
     } else {
         // console.log(cek)

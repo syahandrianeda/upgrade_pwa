@@ -726,4 +726,427 @@ const htmllampiran2_rubrik = (rubrikkode,indekrubrik) =>{
     return html
 }
 
+const trialScanLJK = (param) =>{
+    //(z_idhtmlmateri)
+    
+    let params = param.split("_");
+    let par = params[1]; //indek materi kbm
+    parameterbantuisiljk = par;
+    let idsw = params[0]; //indek id siswa
 
+    //alert (par);
+    let siswabantu = JSON.parse(localStorage.getItem("datasiswa_" + idNamaKelas))["datasiswa"][idsw];
+    let tk_siswa = siswabantu.id
+
+
+    loadingljk.style.display = "block";
+
+    //bikin judul h4
+    let datamateri = kronologijson;
+    kodebarismateriyangdikerjakan = datamateri[par].idbaris;
+    
+    console.log(datamateri);
+
+    let versi = datamateri[par].versi;
+    let adapg = (datamateri[par].jumlahpg == 0) ? false : true;
+
+    let jumlahsoal = (datamateri[par].jumlahpg * 1) + (datamateri[par].jumlahessay * 1);
+
+    //console.log(datamateri)
+    var judul = document.createElement("h4")
+    judul.setAttribute("class", "w3-center");
+    judul.innerHTML = "TRIAL SCANNER LJK E-DURASA";
+
+    let tes = document.getElementById("infoloadingljk");
+    // tes.innerHTML = `<i class="fa fa-spin fa-refresh w3-xxxlarge"></i> On Process ...`
+    tes.innerHTML = "";
+    tes.appendChild(judul);
+    tes.innerHTML +="Disini akan muncul Canvas"
+    let cv = document.createElement("canvas");
+    cv.setAttribute("style","width:355px;height:630px");
+    cv.setAttribute("id","canvasScannerLJK")
+    tes.appendChild(cv);
+    //tambahkan tombol
+    let inputImg =document.createElement("input")
+    inputImg.setAttribute("type","file");
+    inputImg.setAttribute("id","inputCanvasfile");
+    inputImg.setAttribute("onchange","fn_inputCanvasFile()");
+    tes.appendChild(inputImg)
+
+    //-- Bikin Tabel identitas:
+   
+
+
+
+
+    $.getJSON(constpreviewljk + "?idmateri=" + datamateri[par].idmateri + "&action=previewriwayat", function (json) {
+         console.log(json)
+        // document.getElementById("loadi").remove();
+        let teks = (versi == "baru"?brkline(json).teks : brkline2(json).teks); 
+        let kkc, kc;
+        if (adapg) {
+            kc = brkline(json).kunci;
+            kkc = window.atob(kc).split(",").join("<br>");
+
+
+        } else {
+            kc = 0;
+            kkc ="blank"
+        }
+        //document.querySelector("#infoloadingljk").innerHTML += teks;//brkline(json).teks;
+        document.querySelector("#infoloadingljk").innerHTML += "<hr>";//brkline(json).teks;
+        document.querySelector("#infoloadingljk").innerHTML += kkc;//brkline(json).teks;
+        document.querySelector("#infoloadingljk").innerHTML += JSON.stringify(brkline(json).kd);//brkline(json).teks;
+
+
+        // //console.log(kuncijawabanku)
+        // var elEssay = document.getElementsByClassName("soalessay")
+        // if (elEssay.length !== 0) {
+        //     for (i = 0; i < elEssay.length; i++) {
+        //         var idEl = elEssay[i].getAttribute("id");
+        //         var inidEl = idEl.replace("essay", "");
+        //         var tempattombol = document.getElementById("tomboljawaban" + inidEl);
+        //         // var tombolsatu = document.createElement("button");
+        //         // tombolsatu.setAttribute("onclick", "tombolketikjawaban2('" + inidEl + "_" + idsw + "')");
+        //         // var tekstombolsatu = document.createTextNode("Ketik Jawaban No " + inidEl);
+        //         // tombolsatu.appendChild(tekstombolsatu);
+                
+        //         // tempattombol.appendChild(tombolsatu);
+        //         tempattombol.innerHTML = `<hr><button onclick="tombolketikjawaban2('${inidEl}_${idsw}')">Ketik Jawaban No ${inidEl}</button>`
+                
+        //         tempattombol.innerHTML += "<br/><br/><sub>atau</sub></br/></br/> "
+        //         // var tomboldua = document.createElement("button");
+        //         // tomboldua.setAttribute("onclick", "tomboluploadjawaban2('" + inidEl + "_" + idsw + "')");
+        //         // var tekstomboldua = document.createTextNode("Upload Media No " + inidEl);
+        //         // tomboldua.appendChild(tekstomboldua);
+        //         // tempattombol.appendChild(tomboldua);
+        //         tempattombol.innerHTML += `<button onclick="tomboluploadjawaban2('${inidEl}_${idsw}')">Upload Media No ${inidEl}</button>`
+
+        //         tempattombol.innerHTML += "<br/><sub>Pilih Salah satu cara Kalian menjawab soal ini</sub>"
+
+        //     }
+        // }
+        // //})
+        // //idkelas	idmapel	namasiswa crtToken	jenistagihan	kodeunik		nilaikd	html_jawaban	emailguru
+        // document.querySelector("#infoloadingljk").appendChild(formljkbantu);
+        // let uhtml = `<input name="tokensiswa" id="n_tokensiswa" />
+        // <input id="matericode" name="matericode" />
+        // <div id="tempatinputidentitashasilbelajar">tempatinputidentitashasilbelajar</div>
+        // <div id="tempatinputpilihanganda">Tempat Input Pilihan Ganda</div>
+        // <div id="tempatinputjawabanessay">Tempat Input Essay</div>
+        // <textarea id="tekshtmlnilai" name="tekshtmlnilai"></textarea>`
+        // document.getElementById("ljkbantu").innerHTML = uhtml;
+
+
+        // let identitasljkbantu = document.createElement("div")
+        // identitasljkbantu.setAttribute("id", "previewljkbantu")
+        // identitasljkbantu.setAttribute("class", "w3-card-4 w3-padding")
+        // identitasljkbantu.setAttribute("style", "display:block")
+        // identitasljkbantu.innerHTML = "previewljkbantu"
+        // document.getElementById("ljkbantu").after(identitasljkbantu);
+
+
+
+        // previewljkbantu.innerHTML = buathtmlljk(adapg);
+        // selwaktumulai.innerHTML = tanggalfulllengkap(new Date());
+
+        // hasilakhirnamasiswa.innerHTML = siswabantu.pd_nama;
+        // hasilakhirmapeltema.innerHTML = datamateri[par].idmapel.toUpperCase();
+        // let kc;
+        // if (adapg) {
+        //     kc = brkline(json).kunci;
+        // } else {
+        //     kc = 0;
+        // }
+        // document.querySelector("#infoloadingljk").innerHTML += `<button class="wa" onclick="hasilakhirelamaso('${tk_siswa}_${datamateri[par].idbaris}_${kc}')">Selesai</button>`
+
+
+    })
+
+}
+const fn_inputCanvasFile = () =>{
+    let elemenInput = document.getElementById("inputCanvasfile");
+    var reader = new FileReader();
+    let item = elemenInput.files[0]
+
+    //image turned to base64-encoded Data URI.
+    reader.readAsDataURL(item);
+    reader.name = item.name; //get the image's name
+    reader.size = item.size; //get the image's size
+    reader.onload = function (event) {
+        let mmtpe = event.target.result.match(/^.*(?=;)/)[0];
+        var img = new Image(); //create a image
+        img.src = event.target.result; //result is base64-encoded Data URI
+        img.name = event.target.name; //set name (optional)
+        img.size = event.target.size; //set size (optional)
+        img.onload = function (el) {
+            var elem = document.getElementById("canvasScannerLJK")
+
+            //scale the image to 600 (width) and keep aspect ratio
+            // var scaleFactor = resize_width / el.target.width;
+            // elem.width = resize_width;
+            // elem.height = el.target.height * scaleFactor;
+
+            //draw in canvas
+            var ctx = elem.getContext('2d');
+            ctx.drawImage(el.target, 0, 0);
+
+            //get the base64-encoded Data URI from the resize image
+            // var srcEncoded = ctx.canvas.toDataURL(el.target, 'image/jpeg', 0);
+            var srcEncoded = ctx.canvas.toDataURL(el.target, mmtpe, 0);
+
+
+
+
+
+        }
+
+    }
+
+
+}
+let strimingljk = ""
+const tutupmodalljk = ()=>{
+    let modalL = document.getElementById("modal_scannerLJK");
+    modalL.style.display = "none";
+    // nantinya akan ada fungsi untuk menghentinkan proses kamera.
+    if (strimingljk == "") {
+        alert("Mohon tunggu, proses loading sedang berlangsung....");
+        return
+    }
+    strimingljk.getTracks().forEach(k => k.stop());
+}
+const posisikamera = document.getElementById("tampilankameraLJK");
+const posisiScreenshot  = document.getElementById("tampilanScreenshotLJK");
+const bukaKameraScanner = () =>{
+    let modalL = document.getElementById("modal_scannerLJK");
+    modalL.style.display = "block";
+    let patokan = document.querySelector(".patokan_PG");
+    let elemenvideo = document.querySelectorAll(".canvas_ljk");
+    
+    elemenvideo.forEach(el =>{
+        if(el.className.indexOf("w3-hide")==-1){
+            el.classList.add("w3-hide")
+        }
+    });
+    posisikamera.classList.remove("w3-hide");
+    let lTop = posisikamera.offsetTop;
+    let lLeft = posisikamera.offsetLeft;
+    let lHeight = posisikamera.offsetHeight;
+    
+    patokan.style.top =  lTop + "px";
+    patokan.style.left =  lLeft +"px";
+    
+    // saat klik:
+    start_kameraLJK()
+}
+
+const start_kameraLJK = () =>{
+    
+    // const set_audivideo = {audio: false,video: true};
+    // const status_kameraljk = (stream) =>{
+    //     window.stream = stream; // make stream available to browser console
+    //     posisikamera.srcObject = stream;
+    //     strimingljk = stream
+    // }
+    // const err_kameraljk = (err)=>{
+    //     console.log('navigator.MediaDevices.getUserMedia error: ', err.message, err.name);
+    // }
+    // navigator.mediaDevices.getUserMedia(set_audivideo).then(status_kameraljk).catch(err_kameraljk);
+    
+    let constraintObj = {
+        audio: false,
+        video: true
+    };
+    // width: 1280, height: 720  -- preference only
+    // facingMode: {exact: "user"}
+    // facingMode: "environment"
+
+    //handle older browsers that might implement getUserMedia in some way
+    if (navigator.mediaDevices === undefined) {
+        navigator.mediaDevices = {};
+        navigator.mediaDevices.getUserMedia = function (constraintObj) {
+            let getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+            if (!getUserMedia) {
+                return Promise.reject(new Error('getUserMedia is not implemented in this browser'));
+            }
+            return new Promise(function (resolve, reject) {
+                getUserMedia.call(navigator, constraintObj, resolve, reject);
+            });
+        }
+
+    } else {
+        navigator.mediaDevices.enumerateDevices()
+            .then(devices => {
+                devices.forEach(device => {
+                    // console.log(device.kind.toUpperCase(), device.label);
+                    // console.log(device.getTracks());
+                    //alert(device.deviceId)
+                })
+            })
+            .catch(err => {
+                // console.log(err.name, err.message);
+                alert(err.name + "\n" + err.message);
+            })
+
+    }
+
+
+    navigator.mediaDevices.getUserMedia(constraintObj)
+        .then(function (mediaStreamObj) {
+            //connect the media stream to the first video element
+            let video = document.getElementById("tampilankameraLJK");
+            if ("srcObject" in video) {
+                video.srcObject = mediaStreamObj;
+            } else {
+                //old version
+                video.src = window.URL.createObjectURL(mediaStreamObj);
+            }
+
+            video.onloadedmetadata = function (ev) {
+                //show in the video element what is being captured by the webcam
+                video.play();
+            };
+
+            strimingljk = mediaStreamObj;
+            //add listeners for saving video/audio
+
+            let mediaRecorder = new MediaRecorder(mediaStreamObj);
+            let chunks = [];
+            video.play();
+            // start.addEventListener('click', (ev) => {
+            //     // divP.style.display = "block";
+            //     // divV.style.display = "none";
+            //     spanstatus.innerHTML = "Sedang merekam <i class='fa fa-spin fa-refresh'></i>";
+            //     videostatus.removeAttribute("class");//.replace("w3-blue w3-opacity w3-display-topmiddle w3-hide", "w3-blue w3-opacity w3-display-topmiddle w3-show");
+            //     videostatus.setAttribute("class", "w3-blue w3-opacity w3-display-topmiddle w3-show");//.replace("w3-blue w3-opacity w3-display-topmiddle w3-hide", "w3-blue w3-opacity w3-display-topmiddle w3-show");
+            //     elvid1.removeAttribute("class");
+            //     elvid1.setAttribute("class", "containerbaru w3-center w3-show");
+            //     elvid2.removeAttribute("class");
+            //     elvid2.setAttribute("class", "containerbaru w3-center w3-hide");
+
+            //     //video.play();
+            //     // console.log(mediaRecorder.state);
+            //     if (mediaRecorder.state == "recording") {
+            //         alert("Anda sedang proses merekam.");
+            //         return
+            //     }
+               
+            //     mediaRecorder.start();
+            //     //localStream.getTracks().forEach(k => k = mediaStreamObj);
+            //     //elvid2.getAttribute("class").replace("containerbaru w3-center w3-show", "containerbaru w3-center w3-hide")
+            // })
+            // stopB.addEventListener('click', (ev) => {
+            //     if (mediaRecorder.state === "inactive") {
+            //         alert("Maaf, Tombol berfungsi ketika sedang proses rekaman");
+            //         return
+            //     }
+            //     videostatus.removeAttribute("class");
+            //     videostatus.setAttribute("class", "w3-blue w3-opacity w3-display-topmiddle w3-show");//.replace("w3-blue w3-opacity w3-display-topmiddle w3-show", "w3-blue w3-opacity w3-display-topmiddle w3-hide");
+            //     elvid1.removeAttribute("class");
+            //     elvid1.setAttribute("class", "containerbaru w3-center w3-hide");
+            //     elvid2.removeAttribute("class");
+            //     elvid2.setAttribute("class", "containerbaru w3-center w3-show");
+
+
+            //     video.pause();
+            //     mediaRecorder.stop();
+            //     //localStream.getTracks().forEach(k => k.stop());
+            //     // console.log(mediaRecorder.state);
+            //     //console.log(mediaRecorder);
+            // });
+            mediaRecorder.ondataavailable = function (ev) {
+
+                chunks.push(ev.data);
+            }
+            // mediaRecorder.onstop = (ev) => {
+            //     // divP.style.display = "none";
+            //     // divV.style.display = "block";
+            //     let blob = new Blob(chunks, { 'type': 'video/mp4;' });
+            //     let videoURL = window.URL.createObjectURL(blob);
+            //     vidSave.src = videoURL;
+            //     //console.log(formatBytes(blob.size, 2));
+            //     spanstatus.innerHTML = "Ukuran Video " + formatBytes(blob.size, 2);
+            //     //---------------------------------------------------
+            //     var reader = new FileReader();
+            //     reader.readAsDataURL(blob);
+
+            //     reader.onload = function (e) {
+            //         let urlbs64 = e.target.result;
+            //         //console.log(urlbs64);
+            //         var inputbase64 = document.createElement("input");
+            //         inputbase64.setAttribute("name", "videodata");
+            //         inputbase64.setAttribute("id", "videodata");
+            //         inputbase64.value = urlbs64.replace(/^.*,/, '');
+
+            //         inputbase64.setAttribute("style", "display:none");
+
+            //         var inputfilename = document.createElement("input");
+            //         inputfilename.setAttribute("name", "videofilename");
+            //         inputfilename.setAttribute("id", "videofilename");
+            //         inputfilename.setAttribute("style", "display:none");
+            //         inputfilename.value = "Kelas_" + idJenjang + "_" + StringTanggal(new Date()) + "_id_" + new Date().getTime();;// + namebantukirim.value.toUpperCase().replace(/\s+/, "_");
+
+            //         var inputmimetype = document.createElement("input");
+            //         inputmimetype.setAttribute("name", "videomimeType")
+            //         inputmimetype.setAttribute("id", "videomimeType")
+            //         inputmimetype.setAttribute("style", "display:none")
+
+            //         inputmimetype.value = "video/mp4";//srcEncoded.match(/^.*(?=;)/)[0];;//"data:image/jpeg";;// 
+
+
+            //         resultuploadvideomateri.innerHTML = "";
+            //         resultuploadvideomateri.appendChild(inputbase64);
+            //         resultuploadvideomateri.appendChild(inputfilename);
+            //         resultuploadvideomateri.appendChild(inputmimetype);
+            //     }
+            //     //---------------------------------------------------
+            //     chunks = [];
+
+            // }
+            // btnBack.addEventListener('click', (ev) => {
+            //     if (mediaRecorder.state == "recording") {
+            //         alert("Anda sedang merekam. Silakan berhenti dulu dari perekaman");
+            //         return
+            //     }
+            //     video.play();
+            //     vidSave.src = "";
+            //     videostatus.removeAttribute("class");
+            //     videostatus.setAttribute("class", "w3-blue w3-opacity w3-display-topmiddle w3-hide");//.replace("w3-blue w3-opacity w3-display-topmiddle w3-show", "w3-blue w3-opacity w3-display-topmiddle w3-hide");
+            //     elvid1.removeAttribute("class");
+            //     elvid1.setAttribute("class", "containerbaru w3-center w3-show");
+            //     elvid2.removeAttribute("class");
+            //     elvid2.setAttribute("class", "containerbaru w3-center w3-hide");
+            //     spanstatus.innerHTML = "Kamera sudah siap, silakan rekam.";
+            //     resultuploadvideomateri.innerHTML = "";
+
+
+
+            // })
+            
+
+        })
+        .catch(function (err) {
+            //console.log(err.name, err.message);
+            alert(err.name + "\n" + err.message);
+        });
+
+        
+
+}
+const ambilscreenshotljk = ()=>{
+    posisiScreenshot.getContext('2d').drawImage(posisikamera, 0, 0);
+    let elemenvideo = document.querySelectorAll(".canvas_ljk");
+    
+    elemenvideo.forEach(el =>{
+        if(el.className.indexOf("w3-hide")==-1){
+            el.classList.add("w3-hide")
+        }
+    });
+    posisiScreenshot.classList.remove("w3-hide");
+    if (strimingljk == "") {
+        alert("Mohon tunggu, proses loading sedang berlangsung....");
+        return
+    }
+    strimingljk.getTracks().forEach(k => k.stop());
+}

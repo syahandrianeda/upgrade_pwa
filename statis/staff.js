@@ -11709,7 +11709,7 @@ const printsuratLandscape = (c,portr)=>{
     head.innerHTML += '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">';
     head.innerHTML += '<link  rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">'
 
-    head.innerHTML +='<link rel="stylesheet" href="https://syahandrianeda.github.io/syahandrianeda/css/stylegurukelas.css">'
+    head.innerHTML +='<link rel="stylesheet" href="https://edurasa.com/css/stylegurukelas.css">'
     //head.innerHTML += `<style type="text/css"> .versii-table{width:950px;max-width:100%;border-collapse:collapse}.versi-table{width:auto;max-width:100%;border-collapse:collapse}.versi-table td,.versi-table th,.versi-table tr,.versii-table td,.versii-table th,.versii-table tr{border:1px solid #000;color:#000;padding:5px 10px 5px 10px}.versi-table th,.versii-table th{background-color:#eee;color:#00f;vertical-align:middle;text-align:center}.versi-table tr:nth-of-type(even) td,.versii-table tr:nth-of-type(even) td{border:0;background-color:#fff;border:1px solid #000}.versi-table tr:nth-of-type(odd) td,.versii-table tr:nth-of-type(odd) td{border:0;background-color:#eef;border:1px solid #000} .garis td,.garis th,.garis tr{border:0.5px solid rgb(119, 116, 116)} .garis th{border:1px solid #000;text-align:center;vertical-align:middle} </style>`;
 
     if(portr){
@@ -12356,7 +12356,7 @@ const keyboardtooltip = (objek={},jeniskirimanobjek="")=>{
         dockeyboard.head.innerHTML = `<link rel="stylesheet" href="${root}/css/w3.css">
         <link href="https://fonts.googleapis.com/css?family=Raleway">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
-        <link rel="stylesheet" href="https://syahandrianeda.github.io/syahandrianeda/css/stylegurukelas.css">`;
+        <link rel="stylesheet" href="https://edurasa.com/css/stylegurukelas.css">`;
         
     dockeyboard.addEventListener("input",(e)=>{
         let v = e.target;
@@ -13044,7 +13044,7 @@ function currentFrameAbsolutePosition() {
 const isitekselemenini = (paren="", target, posisitooltip="atas", baris="") =>{
     let elemen = document.querySelector("."+target);
     let simpan = document.querySelector(".simpankeyboard");
-    
+    simpan.onclick= null;
     let lebarwindow = document.querySelector(".tesbody").offsetWidth;
     let bataskanan = lebarwindow * 0.5;
     let keyboard = document.getElementById("keyboard_ketikan");
@@ -13057,7 +13057,10 @@ const isitekselemenini = (paren="", target, posisitooltip="atas", baris="") =>{
     if(posisitooltip == "atas"){
         window.scrollTo({ top: 0, behavior: 'smooth' });
         let pAre = document.querySelector("."+paren);
-        tTop = (elemen.offsetTop + window.scrollY + pAre.offsetTop + 10)+"px";
+        document.querySelector(".prevsppd_isiresume").scrollTo({ top: 0, behavior: 'smooth' });
+        
+        // tTop = (elemen.offsetTop + window.scrollY + pAre.offsetTop + 10)+"px";
+        tTop = (elemen.offsetTop+ 10)+"px";
         lLeft = pAre.offsetLeft + "px";//(bataskanan - (keyboard.offsetWidth/2) + elemen.offsetLeft) + "px";
     }else{
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -13070,7 +13073,7 @@ const isitekselemenini = (paren="", target, posisitooltip="atas", baris="") =>{
     keyboard.style.top = tTop;
     keyboard.style.left = lLeft;
     keyboard.style.display="block";
-    simpan.addEventListener("click", async()=>{
+    simpan.onclick= async()=>{
         elemen.innerHTML = body.innerHTML;
         //simpan ke tab = sppd di baris
         if(baris ==""){
@@ -13113,14 +13116,14 @@ const isitekselemenini = (paren="", target, posisitooltip="atas", baris="") =>{
         
         
         keyboard.style.display="none";
-    })
+    }
 
 }
 
 const isitekselemeniniRapat = (paren="", target, posisitooltip="atas", baris="",keynotula) =>{
     let elemen = document.querySelector("."+target);
     let simpan = document.querySelector(".simpankeyboard");
-    
+    simpan.onclick= null;
     let lebarwindow = document.querySelector(".tesbody").offsetWidth;
     let bataskanan = lebarwindow * 0.5;
     let keyboard = document.getElementById("keyboard_ketikan");
@@ -13147,7 +13150,7 @@ const isitekselemeniniRapat = (paren="", target, posisitooltip="atas", baris="",
     keyboard.style.top = tTop;
     keyboard.style.left = lLeft;
     keyboard.style.display="block";
-    simpan.addEventListener("click",async ()=>{
+    simpan.onclick= async ()=>{
         elemen.innerHTML = body.innerHTML;
         //simpan ke tab = sppd di baris
         if(baris ==""){
@@ -13190,7 +13193,7 @@ const isitekselemeniniRapat = (paren="", target, posisitooltip="atas", baris="",
         
         
         keyboard.style.display="none";
-    })
+    }
 
 }
 
@@ -13210,6 +13213,7 @@ const edit_sppd = (brs)=>{
     
     let prevsppd_ptk = document.querySelector("#editabelsppd_pegawaiyangdiperintah");
     let edit_jabatan = document.querySelector("#editabelsppd_jabatanpegawai")
+    let edit_golruang = document.querySelector("#editabelsppd_golonganpegawai")
     let prevsppd_starttanggal = document.querySelector("#editabelsppd_tanggalmulai");
     let prevsppd_tempattujuan = document.querySelector("#editabelsppd_tujuantempatdinas");
     let prevsppd_maksudperjalanandinas = document.querySelector("#editabelsppd_maksudperjalanandinas");
@@ -13221,8 +13225,10 @@ const edit_sppd = (brs)=>{
     let btn_save = document.querySelector(".serverkirimeditan_sppd");
     
     
+    
     prevsppd_ptk.value = ptk;
     edit_jabatan.value = data.ptk_jabatan;
+    edit_golruang.value = data.ptk_golongan;
     prevsppd_starttanggal.value = tglawal;
     prevsppd_tempattujuan.value = tempat;
     edit_durasi.value = data.ptk_durasisppd;
@@ -13267,7 +13273,7 @@ const edit_sppd = (brs)=>{
                     //i>=0;i--
                     let data = tagdbsppd[i];
                     let id_guru = data.ptk_diperintah;
-                    let apiguru= dataapiguru.filter(s => s.id == id_guru)[0];
+                    let apiguru = dataapiguru.filter(s => s.id == id_guru)[0];
                     let btnSuratKeluar = data.arsip_nosppd==""?`<button class="w3-button w3-green" onclick="nosppdkesuratkeluar(${data.idbaris})">Arsipkan!</button>`:"Sudah diarsipkan";
                     let tomboluploadsppd = data.versiupload == ""?`<button class="w3-btn w3-blue w3-tiny" onclick="uploadscan_sppd('${data.idbaris}')"><i class="fa fa-upload"></i></button>`:`<button class="w3-btn w3-green" onclick="window.open('https://drive.google.com/file/d/${data.versiupload}/view?usp=drivesdk','', 'width=720,height=600')"><i class="fa fa-eye"></i></button>`;
                     html +=`<tr>

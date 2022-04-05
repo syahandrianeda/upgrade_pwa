@@ -7127,7 +7127,7 @@ const printsuratLandscape = (c,portr)=>{
     head.innerHTML += '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">';
     head.innerHTML += '<link  rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">'
 
-    head.innerHTML +='<link rel="stylesheet" href="https://syahandrianeda.github.io/syahandrianeda/css/stylegurukelas.css">'
+    head.innerHTML +='<link rel="stylesheet" href="https://edurasa.com/css/stylegurukelas.css">'
     //head.innerHTML += `<style type="text/css"> .versii-table{width:950px;max-width:100%;border-collapse:collapse}.versi-table{width:auto;max-width:100%;border-collapse:collapse}.versi-table td,.versi-table th,.versi-table tr,.versii-table td,.versii-table th,.versii-table tr{border:1px solid #000;color:#000;padding:5px 10px 5px 10px}.versi-table th,.versii-table th{background-color:#eee;color:#00f;vertical-align:middle;text-align:center}.versi-table tr:nth-of-type(even) td,.versii-table tr:nth-of-type(even) td{border:0;background-color:#fff;border:1px solid #000}.versi-table tr:nth-of-type(odd) td,.versii-table tr:nth-of-type(odd) td{border:0;background-color:#eef;border:1px solid #000} .garis td,.garis th,.garis tr{border:0.5px solid rgb(119, 116, 116)} .garis th{border:1px solid #000;text-align:center;vertical-align:middle} </style>`;
 
     if(portr){
@@ -7764,7 +7764,7 @@ const keyboardtooltip = (objek={},jeniskirimanobjek="")=>{
         dockeyboard.head.innerHTML = `<link rel="stylesheet" href="${root}/css/w3.css">
         <link href="https://fonts.googleapis.com/css?family=Raleway">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
-        <link rel="stylesheet" href="https://syahandrianeda.github.io/syahandrianeda/css/stylegurukelas.css">`;
+        <link rel="stylesheet" href="https://edurasa.com/css/stylegurukelas.css">`;
         
     dockeyboard.addEventListener("input",(e)=>{
         let v = e.target;
@@ -8450,7 +8450,7 @@ function currentFrameAbsolutePosition() {
 const isitekselemenini = (paren="", target, posisitooltip="atas", baris="") =>{
     let elemen = document.querySelector("."+target);
     let simpan = document.querySelector(".simpankeyboard");
-    
+    simpan.onclick=null;
     let lebarwindow = document.querySelector(".tesbody").offsetWidth;
     let bataskanan = lebarwindow * 0.5;
     let keyboard = document.getElementById("keyboard_ketikan");
@@ -8462,8 +8462,10 @@ const isitekselemenini = (paren="", target, posisitooltip="atas", baris="") =>{
     let lLeft, tTop;
     if(posisitooltip == "atas"){
         window.scrollTo({ top: 0, behavior: 'smooth' });
+        document.querySelector(".prevsppd_isiresume").scrollTo({ top: 0, behavior: 'smooth' });
         let pAre = document.querySelector("."+paren);
-        tTop = (elemen.offsetTop + window.scrollY + pAre.offsetTop + 10)+"px";
+        // tTop = (elemen.offsetTop + window.scrollY + pAre.offsetTop + 10)+"px";
+        tTop = (elemen.offsetTop+ 10)+"px";
         lLeft = pAre.offsetLeft + "px";//(bataskanan - (keyboard.offsetWidth/2) + elemen.offsetLeft) + "px";
     }else{
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -8471,12 +8473,11 @@ const isitekselemenini = (paren="", target, posisitooltip="atas", baris="") =>{
         tTop = (elemen.offsetTop + 10) +"px";
         lLeft = pAre.offsetLeft + "px";//(bataskanan - (keyboard.offsetWidth/2) + elemen.offsetLeft) + "px";
     }
-    console.log(tTop)
-    console.log(lLeft)
+    
     keyboard.style.top = tTop;
     keyboard.style.left = lLeft;
     keyboard.style.display="block";
-    simpan.addEventListener("click", async()=>{
+    simpan.onclick= async()=>{
         elemen.innerHTML = body.innerHTML;
         //simpan ke tab = sppd di baris
         if(baris ==""){
@@ -8519,14 +8520,14 @@ const isitekselemenini = (paren="", target, posisitooltip="atas", baris="") =>{
         
         
         keyboard.style.display="none";
-    })
+    }
 
 }
 
 const isitekselemeniniRapat = (paren="", target, posisitooltip="atas", baris="",keynotula) =>{
     let elemen = document.querySelector("."+target);
     let simpan = document.querySelector(".simpankeyboard");
-    
+    simpan.onclick= null;
     let lebarwindow = document.querySelector(".tesbody").offsetWidth;
     let bataskanan = lebarwindow * 0.5;
     let keyboard = document.getElementById("keyboard_ketikan");
@@ -8553,7 +8554,7 @@ const isitekselemeniniRapat = (paren="", target, posisitooltip="atas", baris="",
     keyboard.style.top = tTop;
     keyboard.style.left = lLeft;
     keyboard.style.display="block";
-    simpan.addEventListener("click",async ()=>{
+    simpan.onclick= async ()=>{
         elemen.innerHTML = body.innerHTML;
         //simpan ke tab = sppd di baris
         if(baris ==""){
@@ -8596,7 +8597,7 @@ const isitekselemeniniRapat = (paren="", target, posisitooltip="atas", baris="",
         
         
         keyboard.style.display="none";
-    })
+    }
 
 }
 
