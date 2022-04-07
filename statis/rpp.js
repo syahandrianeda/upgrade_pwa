@@ -929,6 +929,7 @@ const bukaKameraScanner = () =>{
             el.classList.add("w3-hide")
         }
     });
+    // document.querySelector(".patokan_PG").classList.remove("w3-hide");
     posisikamera.classList.remove("w3-hide");
     let lTop = posisikamera.offsetTop;
     let lLeft = posisikamera.offsetLeft;
@@ -956,7 +957,17 @@ const start_kameraLJK = () =>{
     
     let constraintObj = {
         audio: false,
-        video: true
+        video: {
+            facingMode: "environment",
+            // , //"user",
+            height: 550,//{ min: 550, ideal: 720, max: 1080 },
+            width:350,// { min: 350, ideal: 1280, max: 1920 },
+            // width: { min: 550, ideal: 720, max: 1080 },
+            // height:{ min: 978, ideal: 1280, max: 1920 },
+            position:{top:0,left:0,bottom:0,right:0}
+            // class: 'responsive-iframebaru',
+            // poster: '/img/192.png'
+        }
     };
     // width: 1280, height: 720  -- preference only
     // facingMode: {exact: "user"}
@@ -1135,7 +1146,8 @@ const start_kameraLJK = () =>{
 
 }
 const ambilscreenshotljk = ()=>{
-    posisiScreenshot.getContext('2d').drawImage(posisikamera, 0, 0);
+    posisiScreenshot.getContext('2d').drawImage(posisikamera, 0, 0,posisiScreenshot.width, posisiScreenshot.height);
+    
     let elemenvideo = document.querySelectorAll(".canvas_ljk");
     
     elemenvideo.forEach(el =>{
@@ -1143,10 +1155,134 @@ const ambilscreenshotljk = ()=>{
             el.classList.add("w3-hide")
         }
     });
+    // document.querySelector(".patokan_PG").classList.add("w3-hide");
     posisiScreenshot.classList.remove("w3-hide");
     if (strimingljk == "") {
         alert("Mohon tunggu, proses loading sedang berlangsung....");
         return
     }
+    
     strimingljk.getTracks().forEach(k => k.stop());
 }
+const cekPosisiKunci = ()=>{
+    let tabelsource = document.querySelector(".source_tabelkamera");
+    let ts_body = tabelsource.getElementsByTagName("tbody")[0];
+    // Tes Kunci jawabannya:
+    let kuncijawaban = ["1B","2A","3D","4C","5D","6A","7D","8A","9A","10B","11A","12C","13D","14A","15C","16C","17B","18D","19B","20D","21A","22B","23C","24D","25A"];
+    // console.log(JSON.stringify(kuncijawaban));
+    let tabelresult = document.querySelector(".tabeldeteksiwarna");
+    let tblR_body = tabelresult.getElementsByTagName("tbody")[0];
+    // pertama, warnai tabelresult berdasarkan kunci dengan warna class!
+    for(i = 0 ; i <tblR_body.rows.length && i < 20 ; i++){
+        let rRow = tblR_body.rows[i];
+        let angkaKuncijawaban = kuncijawaban[i].match(/(\d+)/)[0];
+        let HurufKuncijawaban = kuncijawaban[i].match(/[ABCD]/)[0];
+        //console.log(angkaKuncijawaban+"="+HurufKuncijawaban)
+        
+        for(j = 1 ; j < rRow.cells.length ; j++){
+            //dimulai dari j = 1 sebab kita menghindari kolom pertama yang berindeks 0;
+            let kolomHuruf = ekstactKuncijawaban(HurufKuncijawaban);
+            if(kolomHuruf == j){
+                // kita cek posisi kunci di titik ini di tabel sumber (tabelsource);
+                let el_td = ts_body.rows[i].cells[j]
+                //console.log(el_td.innerHTML);
+                let w_eltd = (el_td.offsetWidth/2);
+                let l_eltd = (tabelsource.offsetLeft + el_td.offsetLeft + w_eltd-5);//dikurangi 5 sebab hurufnya berukuran 10px, setengahnya
+                let t_eltd = (tabelsource.offsetTop + el_td.offsetTop + 5);//ditambah 5, sebab paddingnya 4px, jadi tambahkan 1 pixel
+               // console.log("left=" + tabelsource.offsetLeft +", top="+tabelsource.offsetTop);
+               console.log(kuncijawaban[i])
+                console.log("left=" + l_eltd +", top="+t_eltd);
+                // let tanda = document.createElement("span");
+                // tanda.setAttribute("style","position:absolute;top:"+t_eltd+"px;left:"+l_eltd+"px;width:15px;background-color:red");
+                // tanda.innerHTML="&nbsp;";
+                // //el_td.appendChild(tanda);
+                let ccanvas = document.querySelector(".patokan_PG");//
+                
+                let xCanvas = document.getElementById("tampilanScreenshotLJK").offsetLeft;
+                let yCanvas = document.getElementById("tampilanScreenshotLJK").offsetTop;
+                
+                var canvast = document.getElementById("tampilanScreenshotLJK");
+                
+                let corX = (el_td.offsetLeft + w_eltd-3);
+                let corY = (el_td.offsetTop + 5);
+
+                
+                    
+                console.log("left=" + corX+", top="+corY);
+                let coloR = warnaScrenshot(((corX/2)+2)*1.675, ((corY/4)+0.75)*1.1);
+                console.log(coloR);
+                rRow.cells[j].setAttribute("style","background-color:"+coloR);
+                let tanda = document.createElement("span");
+                // tanda.setAttribute("style","position:absolute;top:"+t_eltd+"px;left:"+l_eltd+"px;width:15px;height:15px;background-color:blue;z-index:9");
+                tanda.setAttribute("style","position:absolute;top:"+corY+"px;left:"+corX+"px;width:15px;height:15px;background-color:green;z-index:9");
+                tanda.innerHTML="&nbsp;";
+                ccanvas.appendChild(tanda);
+                var canvas = document.getElementById("tampilanScreenshotLJK");
+                var ctx = canvas.getContext("2d");
+                ctx.fillStyle = "rgb(6, 14, 246)";//+(w_eltd-3)
+                ctx.fillRect(((corX/2)+2)*1.675, ((corY/4)+0.75)*1.1, 15, 5);
+
+            }
+        }
+    }
+    
+    
+    
+
+    
+}
+const ekstactKuncijawaban = (teks)=>{
+    let ret = 0;
+    switch(teks){
+        case "A":
+            ret = 1
+        break;
+        case "B":
+            ret = 2
+        break;
+        case "C":
+            ret = 3
+        break;
+        case "D":
+            ret = 4
+        break;
+
+    }
+    return ret
+}
+function rgbToHex(r, g, b) {
+    if (r > 255 || g > 255 || b > 255)
+        throw "Invalid color component";
+    return ((r << 16) | (g << 8) | b).toString(16);
+}
+
+const warnaScrenshot = (x,y) =>{
+    var canvas = document.getElementById("tampilanScreenshotLJK");
+    var coord = "x=" + x + ", y=" + y;
+    var context = canvas.getContext('2d');
+    var pixelData = context.getImageData(x, y, 1, 1).data; 
+    //console.log("left=" + x +", top="+y);
+    // context.putImageData(pixelData, x, y);
+    // console.log(pixelData);
+
+    // If transparency on the image
+    if((pixelData[0] == 0) && (pixelData[1] == 0) && (pixelData[2] == 0) && (pixelData[3] == 0)){
+ 				coord += " (Transparent color detected, cannot be converted to HEX)";
+    }
+    var hex = "#" + ("000000" + rgbToHex(pixelData[0], pixelData[1], pixelData[2])).slice(-6);
+    
+   // document.getElementById("status").innerHTML = coord;
+    //document.getElementById("color").style.backgroundColor = hex;
+    // Draw the color and coordinates.
+    // document.getElementById("status").innerHTML = coord;
+    // document.getElementById("color").style.backgroundColor = hex;
+    return hex
+}
+
+function getCursorPosition(canvas, event) {
+    var rect = canvas.getBoundingClientRect();
+    var x = event.clientX - rect.left;
+    var y = event.clientY - rect.top;
+    console.log("x: " + x + " y: " + y);
+}
+
