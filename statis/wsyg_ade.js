@@ -2963,7 +2963,7 @@ const printadm = (c,portr=true) =>{
         if(portr){
             head.innerHTML += `<style type="text/css" media="print">
             @media print {
-                html,body{height:100%;width:100%;margin:0;padding:0}
+                html,body{margin:0;padding:0}
                 
                  @page {
                     size: A4 portrait;
