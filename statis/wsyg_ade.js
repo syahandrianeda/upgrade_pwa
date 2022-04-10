@@ -400,7 +400,6 @@ for (let i = 0 ; i < btn.length ; i++){
         if(show){
             alert("Hilangkan dulu Ceklisnya")
         }else{
-           
             if(cmd === "fontname"){
                 let val = btn[i].innerHTML;
                 document.querySelector(".dropdown_jenishuruf").innerHTML = val;
@@ -429,69 +428,42 @@ linkifram.forEach(el =>{
             }else if(owngrup){
                 let grup = btn[i].getAttribute("data-grup");
                 if(grup == "Paragraf"){
-//paragraf:
-let dom = document.querySelector(".dropdown_jenisparagraf");
-if(cmd =="justifyLeft"){
-    dom.innerHTML = `<i class="fa fa-align-left"></i> `;
-}else if(cmd == "justifyRight"){
-    dom.innerHTML = `<i class="fa fa-align-right"></i> `;
-}else if(cmd == "justifyCenter"){
-    dom.innerHTML = `<i class="fa fa-align-center"></i> `;
-}else if(cmd == "justifyFull"){
-    dom.innerHTML = `<i class="fa fa-align-justify"></i> `;
-}else{
-    dom.innerHTML = "Tak dikenal";
-}
-doc.execCommand(cmd, false, null)
-                }else if (grup == "ukuranfont") {
-let val = btn[i].getAttribute("data-keyval");
-document.querySelector(".grup_ukuranfont").innerHTML = btn[i].innerHTML;
-doc.execCommand(cmd, false, val);
+                    //paragraf:
+                    let dom = document.querySelector(".dropdown_jenisparagraf");
+                    if(cmd =="justifyLeft"){
+                        dom.innerHTML = `<i class="fa fa-align-left"></i> `;
+                    }else if(cmd == "justifyRight"){
+                        dom.innerHTML = `<i class="fa fa-align-right"></i> `;
+                    }else if(cmd == "justifyCenter"){
+                        dom.innerHTML = `<i class="fa fa-align-center"></i> `;
+                    }else if(cmd == "justifyFull"){
+                        dom.innerHTML = `<i class="fa fa-align-justify"></i> `;
+                    }else{
+                        dom.innerHTML = "Tak dikenal";
+                    }
+                    doc.execCommand(cmd, false, null)
+                    }else if (grup == "ukuranfont") {
+                    let val = btn[i].getAttribute("data-keyval");
+                    document.querySelector(".grup_ukuranfont").innerHTML = btn[i].innerHTML;
+                    doc.execCommand(cmd, false, val);
 
 
                 }else if(grup == "heading"){
-let val = btn[i].getAttribute("data-keyval");
-document.querySelector(".grup_heading").innerHTML = btn[i].innerHTML;
-doc.execCommand(cmd, false, val);
-
-                }
-                else{
-let teks = btn[i].innerHTML;
-doc.execCommand(cmd,false,teks)
-// doc.execCommand("insertText",false,"&nbsp;")
-                }
+                    let val = btn[i].getAttribute("data-keyval");
+                    document.querySelector(".grup_heading").innerHTML = btn[i].innerHTML;
+                    doc.execCommand(cmd, false, val);
+                }else{
+                        let teks = btn[i].innerHTML;
+                        doc.execCommand(cmd,false,teks);
+                    }
             } else{
                 doc.execCommand(cmd, false, null)
-                // doc.execCommand("insertText",false,"&nbsp;")
                 btn[i].classList.toggle("active");
-                
+                                        
             }
-
-
-
-            
         }
-      
+                        
     })
-        
-
-        
-    // btn[i].classList.remove("active");
-    // btn[i].addEventListener("click",()=>{
-    //     if(cmd ==="showCode"){
-    //         if(show){
-    //             document.innerHTML = document.textContent;
-    //             show = false;
-    //         }else{
-    //             document.textContent =document.innerHTML;
-    //             show =true;
-    //         }
-    //     }else{
-    //         document.execCommand(cmd, false, null)
-    //     }   
-    //     btn[i].classList.toggle("active");
-    // });
-    
 
 };
 
@@ -502,6 +474,20 @@ let sPchBiasa = document.querySelector("#simpan_pecahanbiasa");
 let sPchCamp = document.querySelector("#simpan_pecahancampuran");
 let sAkarKdrat = document.querySelector("#simpan_akarkuadrat");
 let sAkartiga = document.querySelector("#simpan_akarpangkattiga");
+let keypastekangambar_edt = document.getElementById("pastekangambar_edt");
+let keyKopSekolah = document.getElementById("kopsekolah_edt");
+keypastekangambar_edt.addEventListener("click",()=>{
+    let teksCopy = yangluCopy;
+    if(teksCopy == ""){
+        alert("Ga ada yang dicopy, Mas/Mis Bro....")
+        return
+    }
+    doc.execCommand("insertHTML",null, teksCopy)
+    })
+keyKopSekolah.addEventListener("click",()=>{
+        let teks = `<div class="w3-row w3-bottombar w3-border-black"><div class="w3-col l2 s2"><img src="/img/kotadepok.png" width="80px" style="width: 77px; height: 88px;"></div><div class="w3-col l10 s10 w3-center">PEMERINTAH DAERAH KOTA DEPOK<br>DINAS PENDIDIKAN<br><font size="5"><b>${idNamaSekolah.toUpperCase()}</b></font><br><font size="1">${teksalamat}</font></div></div><div><br></div>`;
+        doc.execCommand("insertHTML",null, teks)
+})
 fcolor.addEventListener("input", () =>{
     let v =  fcolor.value
         doc.execCommand("forecolor", false, v);
@@ -519,7 +505,7 @@ edtbl.addEventListener("click", () => {
     let teks = promp.replace(/\s+/g,"");
     let ang = teks.toLowerCase().split("x");
     let brs = parseInt(ang[0]);
-    let cols = parseInt(ang[0]);
+    let cols = parseInt(ang[1]);
     let html = `&nbsp;<table class="w3-table garis">`
     for(i = 0 ; i < brs ; i++){
         html +=`<tr>`
@@ -1139,8 +1125,7 @@ select_pg_abcd.addEventListener("click",()=>{
             nosoal = teks.match(/\d+/)[0];
             let patt_nosoal = nosoal + ". ";
             txt_nono = teks.replace(patt_nosoal,"")
-            console.log(teks);
-            console.log(nosoal);
+            
             objeksoal.no = nosoal;
             pertanyaan.push(txt_nono);
         }
@@ -1856,11 +1841,17 @@ const sebelumkirimmateri = () =>{
         
         //console.log(i)
         let teks = isi[i].outerHTML;
-        //console.log(teks);
-        let m = teks.match(/<div>(.*)<\/div>/)[1];
-        //console.log(m);
-        let tekmatch = m.replace(/&lt;\|\|&gt;/g,"<||>");;//teks.replace("<div>","").replace("</div>","") ;//
-        div += tekmatch +"\r\n";
+        //console.log(teks.match(/<div>(.*)<\/div>/));
+        let perkaramatch = teks.match(/<div>(.*)<\/div>/);
+        if(perkaramatch !== null){
+
+            let m = teks.match(/<div>(.*)<\/div>/)[1];
+            //console.log(m);
+            let tekmatch = m.replace(/&lt;\|\|&gt;/g,"<||>");;//teks.replace("<div>","").replace("</div>","") ;//
+            div += tekmatch +"\r\n";
+        }else{
+            div += teks;
+        }
     }
     tes = div
    // console.log(tes);
@@ -2949,15 +2940,15 @@ const printadm = (c,portr=true) =>{
        
         //isikan HEAD dengan title, style, link, dll.
         head.innerHTML = "<title>E-DURASA ADMINISTRASI</title>";
-        head.innerHTML += '<link rel="stylesheet" href="https://edurasa.com/css/w3.css">';
+        head.innerHTML += '<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">';
     
-        //head.innerHTML += `<link rel="stylesheet" href="https://edurasa.com/css/w3.css">`;
+        //head.innerHTML += `<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">`;
         head.innerHTML += '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">';
     
         head.innerHTML += '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">';
         head.innerHTML += '<link  rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">'
     
-        head.innerHTML +='<link rel="stylesheet" href="https://edurasa.com/css/stylegurukelas.css">'
+        head.innerHTML +='<link rel="stylesheet" href="https://syahandrianeda.github.io/syahandrianeda/css/stylegurukelas.css">'
         //head.innerHTML += `<style type="text/css"> .versii-table{width:950px;max-width:100%;border-collapse:collapse}.versi-table{width:auto;max-width:100%;border-collapse:collapse}.versi-table td,.versi-table th,.versi-table tr,.versii-table td,.versii-table th,.versii-table tr{border:1px solid #000;color:#000;padding:5px 10px 5px 10px}.versi-table th,.versii-table th{background-color:#eee;color:#00f;vertical-align:middle;text-align:center}.versi-table tr:nth-of-type(even) td,.versii-table tr:nth-of-type(even) td{border:0;background-color:#fff;border:1px solid #000}.versi-table tr:nth-of-type(odd) td,.versii-table tr:nth-of-type(odd) td{border:0;background-color:#eef;border:1px solid #000} .garis td,.garis th,.garis tr{border:0.5px solid rgb(119, 116, 116)} .garis th{border:1px solid #000;text-align:center;vertical-align:middle} </style>`;
     
         if(portr){
@@ -6104,15 +6095,15 @@ const printadmKaldik = (c,portr=true) =>{
    
     //isikan HEAD dengan title, style, link, dll.
     head.innerHTML = "<title>E-DURASA ADMINISTRASI</title>";
-    head.innerHTML += '<link rel="stylesheet" href="https://edurasa.com/css/w3.css">';
+    head.innerHTML += '<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">';
 
-    //head.innerHTML += `<link rel="stylesheet" href="https://edurasa.com/css/w3.css">`;
+    //head.innerHTML += `<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">`;
     head.innerHTML += '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">';
 
     head.innerHTML += '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">';
     head.innerHTML += '<link  rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">'
 
-    head.innerHTML +='<link rel="stylesheet" href="https://edurasa.com/css/stylegurukelas.css">'
+    head.innerHTML +='<link rel="stylesheet" href="https://syahandrianeda.github.io/syahandrianeda/css/stylegurukelas.css">'
     //head.innerHTML += `<style type="text/css"> .versii-table{width:950px;max-width:100%;border-collapse:collapse}.versi-table{width:auto;max-width:100%;border-collapse:collapse}.versi-table td,.versi-table th,.versi-table tr,.versii-table td,.versii-table th,.versii-table tr{border:1px solid #000;color:#000;padding:5px 10px 5px 10px}.versi-table th,.versii-table th{background-color:#eee;color:#00f;vertical-align:middle;text-align:center}.versi-table tr:nth-of-type(even) td,.versii-table tr:nth-of-type(even) td{border:0;background-color:#fff;border:1px solid #000}.versi-table tr:nth-of-type(odd) td,.versii-table tr:nth-of-type(odd) td{border:0;background-color:#eef;border:1px solid #000} .garis td,.garis th,.garis tr{border:0.5px solid rgb(119, 116, 116)} .garis th{border:1px solid #000;text-align:center;vertical-align:middle} </style>`;
 
     if(portr){
@@ -7780,15 +7771,15 @@ const printadm_admHBE = (c,portr=true) =>{
    
     //isikan HEAD dengan title, style, link, dll.
     head.innerHTML = "<title>E-DURASA ADMINISTRASI</title>";
-    head.innerHTML += '<link rel="stylesheet" href="https://edurasa.com/css/w3.css">';
+    head.innerHTML += '<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">';
 
-    //head.innerHTML += `<link rel="stylesheet" href="https://edurasa.com/css/w3.css">`;
+    //head.innerHTML += `<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">`;
     head.innerHTML += '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">';
 
     head.innerHTML += '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">';
     head.innerHTML += '<link  rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">'
 
-    head.innerHTML +='<link rel="stylesheet" href="https://edurasa.com/css/stylegurukelas.css">'
+    head.innerHTML +='<link rel="stylesheet" href="https://syahandrianeda.github.io/syahandrianeda/css/stylegurukelas.css">'
     //head.innerHTML += `<style type="text/css"> .versii-table{width:950px;max-width:100%;border-collapse:collapse}.versi-table{width:auto;max-width:100%;border-collapse:collapse}.versi-table td,.versi-table th,.versi-table tr,.versii-table td,.versii-table th,.versii-table tr{border:1px solid #000;color:#000;padding:5px 10px 5px 10px}.versi-table th,.versii-table th{background-color:#eee;color:#00f;vertical-align:middle;text-align:center}.versi-table tr:nth-of-type(even) td,.versii-table tr:nth-of-type(even) td{border:0;background-color:#fff;border:1px solid #000}.versi-table tr:nth-of-type(odd) td,.versii-table tr:nth-of-type(odd) td{border:0;background-color:#eef;border:1px solid #000} .garis td,.garis th,.garis tr{border:0.5px solid rgb(119, 116, 116)} .garis th{border:1px solid #000;text-align:center;vertical-align:middle} </style>`;
 
     if(portr){
@@ -10191,15 +10182,15 @@ const printsuratLandscape = (c,portr)=>{
    
     //isikan HEAD dengan title, style, link, dll.
     head.innerHTML = "<title>E-DURASA ADMINISTRASI</title>";
-    head.innerHTML += '<link rel="stylesheet" href="https://edurasa.com/css/w3.css">';
+    head.innerHTML += '<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">';
 
-    //head.innerHTML += `<link rel="stylesheet" href="https://edurasa.com/css/w3.css">`;
+    //head.innerHTML += `<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">`;
     head.innerHTML += '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">';
 
     head.innerHTML += '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">';
     head.innerHTML += '<link  rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">'
 
-    head.innerHTML +='<link rel="stylesheet" href="https://edurasa.com/css/stylegurukelas.css">'
+    head.innerHTML +='<link rel="stylesheet" href="https://syahandrianeda.github.io/syahandrianeda/css/stylegurukelas.css">'
     //head.innerHTML += `<style type="text/css"> .versii-table{width:950px;max-width:100%;border-collapse:collapse}.versi-table{width:auto;max-width:100%;border-collapse:collapse}.versi-table td,.versi-table th,.versi-table tr,.versii-table td,.versii-table th,.versii-table tr{border:1px solid #000;color:#000;padding:5px 10px 5px 10px}.versi-table th,.versii-table th{background-color:#eee;color:#00f;vertical-align:middle;text-align:center}.versi-table tr:nth-of-type(even) td,.versii-table tr:nth-of-type(even) td{border:0;background-color:#fff;border:1px solid #000}.versi-table tr:nth-of-type(odd) td,.versii-table tr:nth-of-type(odd) td{border:0;background-color:#eef;border:1px solid #000} .garis td,.garis th,.garis tr{border:0.5px solid rgb(119, 116, 116)} .garis th{border:1px solid #000;text-align:center;vertical-align:middle} </style>`;
 
     if(portr){
@@ -10711,7 +10702,7 @@ const keyboardtooltip = (objek={},jeniskirimanobjek="")=>{
         dockeyboard.head.innerHTML = `<link rel="stylesheet" href="${root}/css/w3.css">
         <link href="https://fonts.googleapis.com/css?family=Raleway">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
-        <link rel="stylesheet" href="https://edurasa.com/css/stylegurukelas.css">`;
+        <link rel="stylesheet" href="https://syahandrianeda.github.io/syahandrianeda/css/stylegurukelas.css">`;
         
     dockeyboard.addEventListener("input",(e)=>{
         let v = e.target;
@@ -10859,7 +10850,7 @@ const keyboardtooltip = (objek={},jeniskirimanobjek="")=>{
         let teks = promp.replace(/\s+/g,"");
         let ang = teks.toLowerCase().split("x");
         let brs = parseInt(ang[0]);
-        let cols = parseInt(ang[0]);
+        let cols = parseInt(ang[1]);
         let html = `&nbsp;<table class="w3-table garis">`
         for(i = 0 ; i < brs ; i++){
             html +=`<tr>`

@@ -5791,12 +5791,14 @@ function DaysInMonth2(Y, M) {
 }
 
 /////////////////////// penggabungan UPLOADMATERI milik guru kelas dan guru mapel diputuskan pake punya guru mapel
+let yangluCopy ="";
 const kopipaste = (id) => {
     try{
     var copyText = document.getElementById(id);
     copyText.select();
     copyText.setSelectionRange(0, 99999);
     document.execCommand("copy");
+    yangluCopy = copyText.value;
     //navigator.clipboard.writeText(copyText.value);
     // alert("Copied the text: " + copyText.value);
     // alert("Berhasil Ngopi ... ^_^");

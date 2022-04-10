@@ -692,7 +692,7 @@
                                         </label>
                                     </span>
                                     |
-                                    <div class="w3-dropdown-hover w3-btn">
+                                    <div class="w3-dropdown-hover">
                                         Paragraf :<span class="w3-button dropdown_jenisparagraf"><i class="fa fa-align-left"></i> </span>
                                         <div class="w3-dropdown-content w3-light-gray"><div class="w3-block btn_edt w3-hover-blue" data-grup="Paragraf" data-keycmd="justifyLeft" title="Rata Kiri"><i class="fa fa-align-left"></i> </div><div class="w3-block btn_edt w3-hover-blue" data-grup="Paragraf"  data-keycmd="justifyRight" title="Rata Kanan"><i class="fa fa-align-right"></i> </div><div class="w3-block btn_edt w3-hover-blue" data-grup="Paragraf"  data-keycmd="justifyCenter" title="Rata Tengah"><i class="fa fa-align-center"></i> </div><div class="w3-block btn_edt w3-hover-blue" data-grup="Paragraf"  data-keycmd="justifyFull" title="Rata Kiri Kanan"><i class="fa fa-align-justify"></i> </div>
                                         </div>   
@@ -728,6 +728,8 @@
                                         </div>
                                     </div>
                                     | Koleksi Gambar: <div id="daftarGambar_edt" class="w3-btn w3-round-large"><i class="fa fa-image"></i></div>
+                                    |<span id="pastekangambar_edt" class="w3-btn w3-round-large">Pastekan Gambar</span>
+                                    |<span id="kopsekolah_edt" class="w3-btn w3-round-large">Kop Sekolah</span>
                                 <div class="w3-right menueditsoal_edt w3-btn" title="buka menu edit Soal">Menu Edit Soal <i class="fa fa-arrow-circle-down"></i></div>
                                 </div>
                                 <div class="w3-sand w3-col l12 toolsoal_edt">
@@ -1434,6 +1436,7 @@
                     <button class="tablinks" onclick="openCityy(event, 'buat_rpp')">Desain RPP</button>
                     <button class="tablinks" onclick="openCityy(event, 'sppd_sppdku')">SPPD-ku</button>
                     <button class="tablinks fokusngetiknotula" onclick="openCityy(event, 'notula_create')">Notula Rapat</button>
+                    <button class="tablinks"  onclick="document.getElementById('modal_formatLJK').style.display='block'">Format LJK</button>
                     <button class="tablinks w3-hide" onclick="openCityy(event, 'buat_kkm')">KKM</button>
                     <button class="tablinks w3-hide" onclick="openCityy(event, 'buat_perbaikan')">Perbaikan/Pengayaan</button>
                     <button class="tablinks w3-hide" onclick="openCityy(event, 'buat_psikoedukatif')">Psikoedukatif</button>
@@ -5571,6 +5574,308 @@ _OPSI-PG-C_1C isikan opsi jawaban C
         </div>
     </div>
     <!-- end modal sppd -->
+    <div class="w3-modal w3-light-gray" id="modal_scannerLJK">
+        <div class="w3-button w3-red w3-round" onclick="tutupmodalljk()">&times;</div>
+        <div clas="w3-modal-container">
+            <h4 class="w3-center">SCANNER LJK EDURASA</h4>
+            
+            <div class="info_fokusscanerLJK w3-tiny">
+                Info Fokus LJK: Anda sedang ngapain di sini informasinya....
+            </div>
+            <div class="w3-border w3-center fokus_scaner">
+                <video class='canvas_ljk' poster="/img/192.png" id="tampilankameraLJK" >
+                    Wew ... Browser Anda tidak mendukungnya
+                </video>
+                <div class="patokan_PG w3-opacity-max">
+                    <table class="garis patokan_tabelPG source_tabelkamera w3-centered">
+                        <thead>
+                            <tr class="w3-light-gray">
+                                <th >No</th><th>A</th><th>B</th><th>C</th><th>D</th>
+                            </tr>   
+                        </thead>
+                        <tbody>
+                            <tr><td>1</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>2</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>3</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>4</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>5</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>6</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>7</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>8</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>9</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>10</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>11</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>12</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>13</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>14</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>15</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>16</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>17</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>18</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>19</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>20</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="w3-clear"></div>
+                <canvas class='canvas_ljk' id="tampilanScreenshotLJK">
+                    Wew ... Browser Anda tidak mendukungnya
+                </canvas>
+                <div class="scn_tabeljawabansiswa">
+                    <table class="garis patokan_tabelPG tabeldeteksiwarna1 w3-centered">
+                        <thead>
+                            <tr class="w3-light-gray">
+                                <th >No</th><th>A</th><th>B</th><th>C</th><th>D</th>
+                            </tr>   
+                        </thead>
+                        <tbody>
+                            <tr><td>1</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>2</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>3</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>4</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>5</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>6</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>7</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>8</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>9</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>10</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>11</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>12</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>13</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>14</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>15</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>16</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>17</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>18</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>19</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>20</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                        </tbody>
+                    </table>
+                    <table class="garis patokan_tabelPG tabeldeteksiwarna2 w3-centered">
+                        <tbody>
+                            <tr><td>21</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>22</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>23</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>24</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>25</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>26</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>27</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>28</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>29</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>30</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>31</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>32</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>33</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>34</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>35</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>36</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>37</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>38</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>39</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>40</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tabel_deteksiwarna"> 
+                     <div class="info_coordinatmouslj">TES DETEKSI WARNA</div>
+                    <table class="garis patokan_tabelPG tabeldeteksiwarna w3-centered">
+                        <thead>
+                            <tr class="w3-light-gray">
+                                <th >No</th><th>A</th><th>B</th><th>C</th><th>D</th>
+                            </tr>   
+                        </thead>
+                        <tbody>
+                            <tr><td>1</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>2</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>3</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>4</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>5</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>6</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>7</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>8</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>9</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>10</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>11</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>12</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>13</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>14</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>15</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>16</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>17</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>18</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>19</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>20</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                        </tbody>
+                    </table>
+                   
+                    Tabel Patokan data
+                </div>
+                
+            </div>
+            <div class="w3-center w3-border w3-round tombolaksi_scannerljk w3-bottom">
+                <button onclick="ambilscreenshotljk(1)" id="tapscan_pertama">Ambil Gambar Part 1</button>
+                <button onclick="ambilscreenshotljk(2)" id="tapscan_kedua">Ambil Gambar part 2</button>
+                <button onclick="selesaiambilscreenshot()" id="tapscan_finish">Selesai</button>
+                <!-- <button onclick="cekPosisiKunci()">Cek Posisi Kunci</button> -->
+            </div>
+            <div class="w3-tiny w3-justify w3-border w3-padding">
+                Tips:
+                <ol>
+                    <li>Hanya mampu menyecan dari 1-20 Soal Pilihan Ganda (pertimbangan developer), jika PG lebih dari 20, Anda bisa meneken 2 kali ambil gambar.</li>
+                    <li>Gunakan perangkat ponsel Anda (Android support, Ios belum diujicobakan). Untuk PC/Laptop menyesuaikan aja.</li>
+                    <li>
+                        Arahkan kamera Anda hingga sesuai dengan tabel opsi Pilihan Ganda
+                    </li>
+                    <li>Jika sudah Pas, klik Ambil gambar. Aplikasi akan mencoba mendeteksi gambar dan menganalisisnya hingga membentuk jawaban yang telah discan</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <div class="w3-modal w3-sand" id="modal_formatLJK">
+        <span class="w3-button w3-right w3-red" onclick="document.getElementById('modal_formatLJK').style.display='none'">&times;</span>
+        <div class="w3-modal-content areaprint_formatljk w3-padding w3-text-green" style="max-width: 1000px;">
+            <h3 class="w3-center">Lembar Jawaban Digital</h3>
+            <div class="w3-row w3-margin-top w3-margin-bottom">
+                <div class="w3-col l12 s12 w3-small">
+                    <table style="width: 100%;">
+                        <tr><td style="width:30%">Identitas Tes (Tes Mapel, Tema, dll)</td><td style="width:2px">:</td><td style="border-bottom: .5pt solid green;"> </td></tr>
+                    </table>
+                
+                    <table style="width: 100%;">
+                        <tr><td style="width:20%">Nama Siswa</td><td style="width:2px">:</td><td style="border-bottom: .5pt solid green;"> </td></tr>
+                        <tr><td>Kelas</td><td style="width:2px">:</td><td style="border-bottom: .5pt solid green;"> </td></tr>
+                        <tr><td>Tanggal Tes</td><td style="width:2px">:</td><td style="border-bottom: .5pt solid green;"> </td></tr>
+                    </table>
+                </div>
+                
+            </div>
+            
+            
+            <div class="w3-row margin-top">
+                <div class="w3-col l12 s12">PILIHAN GANDA</div>
+                <div class="w3-col l6 s6 w3-center">
+                    <table class="patokan_tabelformatljk w3-centered" style="width:350px">
+                        <thead>
+                            <tr class="w3-light-gray">
+                                <th >No</th><th>A</th><th>B</th><th>C</th><th>D</th>
+                            </tr>   
+                        </thead>
+                        <tbody>
+                            <tr><td>1</td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">A</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">B</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">C</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">D</span></td></tr>
+                            <tr><td>2</td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">A</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">B</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">C</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">D</span></td></tr>
+                            <tr><td>3</td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">A</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">B</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">C</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">D</span></td></tr>
+                            <tr><td>4</td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">A</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">B</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">C</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">D</span></td></tr>
+                            <tr><td>5</td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">A</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">B</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">C</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">D</span></td></tr>
+                            <tr><td>6</td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">A</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">B</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">C</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">D</span></td></tr>
+                            <tr><td>7</td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">A</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">B</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">C</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">D</span></td></tr>
+                            <tr><td>8</td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">A</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">B</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">C</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">D</span></td></tr>
+                            <tr><td>9</td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">A</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">B</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">C</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">D</span></td></tr>
+                            <tr><td>10</td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">A</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">B</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">C</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">D</span></td></tr>
+                            <tr><td>11</td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">A</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">B</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">C</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">D</span></td></tr>
+                            <tr><td>12</td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">A</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">B</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">C</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">D</span></td></tr>
+                            <tr><td>13</td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">A</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">B</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">C</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">D</span></td></tr>
+                            <tr><td>14</td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">A</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">B</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">C</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">D</span></td></tr>
+                            <tr><td>15</td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">A</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">B</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">C</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">D</span></td></tr>
+                            <tr><td>16</td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">A</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">B</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">C</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">D</span></td></tr>
+                            <tr><td>17</td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">A</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">B</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">C</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">D</span></td></tr>
+                            <tr><td>18</td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">A</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">B</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">C</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">D</span></td></tr>
+                            <tr><td>19</td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">A</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">B</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">C</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">D</span></td></tr>
+                            <tr><td>20</td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">A</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">B</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">C</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">D</span></td></tr>
+                        </tbody>
+                        
+                        
+                    </table>
+                </div>
+                <div class="w3-col l6 s6 w3-center">
+                    <table class="patokan_tabelformatljk w3-centered" style="width:350px">
+                        <thead>
+                            <tr class="w3-light-gray">
+                                <th >No</th><th>A</th><th>B</th><th>C</th><th>D</th>
+                            </tr>   
+                        </thead>
+                        <tbody>
+                            <tr><td>21</td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">A</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">B</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">C</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">D</span></td></tr>
+                            <tr><td>22</td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">A</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">B</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">C</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">D</span></td></tr>
+                            <tr><td>23</td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">A</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">B</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">C</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">D</span></td></tr>
+                            <tr><td>24</td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">A</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">B</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">C</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">D</span></td></tr>
+                            <tr><td>25</td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">A</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">B</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">C</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">D</span></td></tr>
+                            <tr><td>26</td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">A</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">B</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">C</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">D</span></td></tr>
+                            <tr><td>27</td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">A</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">B</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">C</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">D</span></td></tr>
+                            <tr><td>28</td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">A</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">B</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">C</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">D</span></td></tr>
+                            <tr><td>29</td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">A</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">B</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">C</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">D</span></td></tr>
+                            <tr><td>30</td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">A</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">B</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">C</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">D</span></td></tr>
+                            <tr><td>31</td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">A</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">B</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">C</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">D</span></td></tr>
+                            <tr><td>32</td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">A</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">B</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">C</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">D</span></td></tr>
+                            <tr><td>33</td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">A</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">B</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">C</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">D</span></td></tr>
+                            <tr><td>34</td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">A</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">B</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">C</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">D</span></td></tr>
+                            <tr><td>35</td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">A</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">B</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">C</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">D</span></td></tr>
+                            <tr><td>36</td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">A</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">B</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">C</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">D</span></td></tr>
+                            <tr><td>37</td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">A</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">B</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">C</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">D</span></td></tr>
+                            <tr><td>38</td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">A</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">B</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">C</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">D</span></td></tr>
+                            <tr><td>39</td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">A</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">B</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">C</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">D</span></td></tr>
+                            <tr><td>40</td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">A</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">B</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">C</span></td><td><span class="w3-border w3-border-green" style="padding:3px;box-sizing:border-box">D</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="w3-col l12 s12 w3-margin-top ">
+                    ISIAN
+                    <table style="border-collapse: collapse;width: 99%;">
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        <tr style="border-bottom: .5pt solid green"><td style="height:28px">&nbsp; </td></tr>
+                        
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="w3-center w3-padding">
+            <div class="w3-hide-large">Anda membukanya di HP, maka tampilan LJK ini akan berantakan. Coba buka di PC/Laptop.</div>
+            <button onclick="printadm('areaprint_formatljk')" style="width:fit-content;" class="w3-button w3-bottom w3-blue w3-hover-green w3-round-large" title="Cetak Prota"><i class="fa fa-print"></i></button>
+        </div>
+                            
+    </div>
     <button class="w3-button" style="position: fixed;bottom:5px;right:0;z-index:3" onclick="window.scrollTo({ top: 43, behavior: 'smooth' })"><i class="fa fa-arrow-up"></i></button>
     <script src="/statis/app.js"></script>
     <script src="/statis/exceltabel.js"></script>
