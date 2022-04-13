@@ -661,11 +661,14 @@
                         <div class="w3-row-padding">
 
                             <div class="w3-row">
-                                <div class="w3-col l2 w3-small">
+                                <div class="w3-col l2 w3-small divmenumelayang">
                                     <label for="html_edt">Tampilan HTML :
                                         <input type="checkbox" id="html_edt"  class="w3-check">
+                                    </label><br>
+                                    <span class="w3-tiny">@versi syahandrianeda</span><br>
+                                    <label for="menu_melayang" class="w3-small">Jadikan Menu ini Melayang :
+                                        <input type="checkbox" id="menu_melayang" class="w3-check">
                                     </label>
-                                    <span class="w3-tiny">@versi syahandrianeda</span>
                                 </div>
                                 <div class="w3-light-grey w3-col l10 w3-small">
                                     Editor Umum:
@@ -730,6 +733,7 @@
                                     | Koleksi Gambar: <div id="daftarGambar_edt" class="w3-btn w3-round-large"><i class="fa fa-image"></i></div>
                                     |<span id="pastekangambar_edt" class="w3-btn w3-round-large">Pastekan Gambar</span>
                                     |<span id="kopsekolah_edt" class="w3-btn w3-round-large">Kop Sekolah</span>
+                                    |<span id="inserthtml_edt" class="w3-btn w3-round-large">Insert HTML</span>
                                 <div class="w3-right menueditsoal_edt w3-btn" title="buka menu edit Soal">Menu Edit Soal <i class="fa fa-arrow-circle-down"></i></div>
                                 </div>
                                 <div class="w3-sand w3-col l12 toolsoal_edt">
@@ -3881,6 +3885,7 @@
                 INI KONTEN MATERI
             </div>
         </div>
+        <button class="w3-button w3-pale-green" style="position: fixed;bottom:5px;right:50px;z-index:4" onclick="document.getElementById('pranalamateri').scrollTo({ top: 43, behavior: 'smooth' })"><i class="fa fa-arrow-up"></i></button>
     </div>
     <div class="w3-modal w3-white" id="modaldaftarnilai">
         <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="width:98%">
@@ -3907,7 +3912,8 @@
                 <h3>Rekap Nilai Per KD</h3>
                 <hr>
                 <div id="tablinkKDtabel" style="overflow-x: auto;">
-                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Soluta, omnis maiores eligendi quam quis
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Soluta, omnis maiores eligendi quam
+                    quis
                     harum
 
                 </div>
@@ -3918,7 +3924,8 @@
                 <hr>
                 <div id="tablinkPGtabel" style="overflow-x: auto;">
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed ratione iste provident temporibus
-                    voluptatem. Temporibus asperiores placeat esse mollitia tempore. Quis debitis error ab et! Ducimus
+                    voluptatem. Temporibus asperiores placeat esse mollitia tempore. Quis debitis error ab et!
+                    Ducimus
                     aliquam iusto voluptatem nisi!
                 </div>
             </div>
@@ -3926,23 +3933,17 @@
                 <h3>Analisis Soal tipe SKOR</h3>
                 <hr>
                 <div id="tablinkSkortabel" style="overflow-x: auto;">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat ex illo tempore cumque provident?
-                    Sapiente, veritatis. Aspernatur numquam, odit expedita voluptatibus repellat aliquam architecto, ex
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat ex illo tempore cumque
+                    provident?
+                    Sapiente, veritatis. Aspernatur numquam, odit expedita voluptatibus repellat aliquam architecto,
+                    ex
                     amet
                     veniam earum corrupti alias!
                 </div>
             </div>
-            <!-- <div id="tablinkGabungan" class="w3-container city  w3-padding">
-                <h3>Analisis Gabungan</h3>
-                <hr>
-                <div id="tablinkGabungantabel" style="overflow-x: auto;">
-                </div>
-            </div> -->
 
-            <!-- <div class="w3-container tabdaftarnilai">
-                DI SINI AKAN TAMPIL TABEL DAN TAB
-            </div> -->
         </div>
+        <button class="w3-button w3-pale-green" style="position: fixed;bottom:5px;right:50px;z-index:4" onclick="document.getElementById('modaldaftarnilai').scrollTo({ top: 43, behavior: 'smooth' })"><i class="fa fa-arrow-up"></i></button>
     </div>
 
 
@@ -4078,7 +4079,8 @@ _OPSI-PG-C_1C isikan opsi jawaban C
                 <h3>Rekap Nilai Per KD</h3>
                 <hr>
                 <div id="tablinkKDkronologitabel" style="overflow-x: auto;">
-                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Soluta, omnis maiores eligendi quam quis
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Soluta, omnis maiores eligendi quam
+                    quis
                     harum
 
                 </div>
@@ -4089,7 +4091,8 @@ _OPSI-PG-C_1C isikan opsi jawaban C
                 <hr>
                 <div id="tablinkPGkronologitabel" style="overflow-x: auto;">
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed ratione iste provident temporibus
-                    voluptatem. Temporibus asperiores placeat esse mollitia tempore. Quis debitis error ab et! Ducimus
+                    voluptatem. Temporibus asperiores placeat esse mollitia tempore. Quis debitis error ab et!
+                    Ducimus
                     aliquam iusto voluptatem nisi!
                 </div>
             </div>
@@ -4097,8 +4100,10 @@ _OPSI-PG-C_1C isikan opsi jawaban C
                 <h3>Analisis Soal tipe SKOR</h3>
                 <hr>
                 <div id="tablinkSkorkronologitabel" style="overflow-x: auto;">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat ex illo tempore cumque provident?
-                    Sapiente, veritatis. Aspernatur numquam, odit expedita voluptatibus repellat aliquam architecto, ex
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat ex illo tempore cumque
+                    provident?
+                    Sapiente, veritatis. Aspernatur numquam, odit expedita voluptatibus repellat aliquam architecto,
+                    ex
                     amet
                     veniam earum corrupti alias!
                 </div>
@@ -4109,19 +4114,34 @@ _OPSI-PG-C_1C isikan opsi jawaban C
                 DI SINI AKAN TAMPIL TABEL DAN TAB
             </div> -->
         </div>
+        <button class="w3-button w3-pale-green" style="position: fixed;bottom:5px;right:50px;z-index:4" onclick="document.getElementById('modaldaftarnilaikronologi').scrollTo({ top: 43, behavior: 'smooth' })"><i class="fa fa-arrow-up"></i></button>
     </div>
 
-    <div id="loadingljk" class="w3-modal w3-white">
+    <!-- <div id="loadingljk" class="w3-modal w3-white">
         <div class="w3-modal-container">
             <div class="w3-modal-content w3-card-4 w3-padding-16" style="width: 98%;">
-                <!-- <span class="w3-btn w3-blue w3-right w3-badge" onclick="loadingljk.style.display='none'">&times;</span> -->
-                <span class="w3-btn w3-blue w3-right w3-badge" onclick="tutuploadingljk()">&times;</span>
+                   <span class="w3-btn w3-blue w3-right w3-badge" onclick="tutuploadingljk()">&times;</span>
                 <div id="infoloadingljk" class="w3-margin">
                     <i class=" fa fa-spin fa-spinner w3-jumbo w3-display-middle"></i>
                 </div>
                 <div style="height: 50px;"></div>
             </div>
         </div>
+    </div> -->
+    <div id="loadingljk" class="w3-modal">
+        <div class="w3-modal-content w3-card-4 " style="width: 98%">
+            <header class="warnaeka w3-card-4  w3-border-bottom w3-border-black w3-container">
+                <span class="w3-button w3-right w3-round-large w3-light-blue" onclick="tutuploadingljk()">&times;</span>
+            </header>
+            <div id="infoloadingljk" class="w3-margin">
+                <!-- <i class=" fa fa-spin fa-spinner w3-jumbo w3-display-middle"></i> -->
+                <p class="w3-center"><img src="/img/barloading.gif"></p>
+            </div>
+            <div style="height: 50px;clear:both"></div>
+            <footer class="warnaeka w3-card-4  w3-topbar w3-border-black w3-container"><br></footer>
+        </div>
+        <button class="w3-button w3-pale-green" style="position: fixed;bottom:5px;right:50px;z-index:4" onclick="document.getElementById('loadingljk').scrollTo({ top: 43, behavior: 'smooth' })"><i class="fa fa-arrow-up"></i></button>
+
     </div>
 
     <div id="previewpotoabsen" class="w3-modal" onclick="this.style.display='none';pesanpreviewpotoabsen.innerHTML=''">
@@ -5754,7 +5774,7 @@ _OPSI-PG-C_1C isikan opsi jawaban C
             <div class="w3-row margin-top">
                 <div class="w3-col l12 s12">PILIHAN GANDA</div>
                 <div class="w3-col l6 s6 w3-center">
-                    <table class="patokan_tabelformatljk w3-centered" style="width:350px">
+                    <table class="patokan_tabelformatljk w3-centered" style="width:315px">
                         <thead>
                             <tr class="w3-light-gray">
                                 <th >No</th><th>A</th><th>B</th><th>C</th><th>D</th>
@@ -5787,7 +5807,7 @@ _OPSI-PG-C_1C isikan opsi jawaban C
                     </table>
                 </div>
                 <div class="w3-col l6 s6 w3-center">
-                    <table class="patokan_tabelformatljk w3-centered" style="width:350px">
+                    <table class="patokan_tabelformatljk w3-centered" style="width:315px">
                         <thead>
                             <tr class="w3-light-gray">
                                 <th >No</th><th>A</th><th>B</th><th>C</th><th>D</th>

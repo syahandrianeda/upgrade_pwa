@@ -4553,7 +4553,7 @@ const previewkronologi = (par) => {
     //let datamateri = JSON.parse(localStorage.getItem(keyy))
     let datamateri = kronologijson;
     let versi = datamateri[par].versi;
-    console.log(versi);
+    
 
     //bikin judul h4
     var judul = document.createElement("h4")

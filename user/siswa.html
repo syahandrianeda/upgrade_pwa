@@ -374,8 +374,8 @@
             <div class="w3-container ">
 
                 <div class="w3-dark-grey w3-panel">
-
-                    <div class="w3-container w3-center">
+                    <button onclick="document.querySelector('.tesconsole').innerHTML = ''">Hapus</button>
+                    <div class="w3-container w3-center tesconsole">
 
                     </div>
 
@@ -1067,6 +1067,66 @@
     </footer>
     <script src="/statis/app.js"></script>
     <script src="/timekbm.js"></script>
+    <script>
+	
+        // "librairie" de gestion de la visibilité
+        //  var visible = vis(); // donne l'état courant
+        //  vis(function(){});   // définit un handler pour les changements de visibilité
+        var vis = (function(){
+            var stateKey, eventKey, keys = {
+                hidden: "visibilitychange",
+                webkitHidden: "webkitvisibilitychange",
+                mozHidden: "mozvisibilitychange",
+                msHidden: "msvisibilitychange"
+            };
+            for (stateKey in keys) {
+                if (stateKey in document) {
+                    eventKey = keys[stateKey];
+                    break;
+                }
+            }
+            return function(c) {
+                if (c) {
+                    document.addEventListener(eventKey, c);
+                    
+                    //document.addEventListener("blur", c);
+                    //document.addEventListener("focus", c);
+                }
+                return !document[stateKey];
+            }
+        })();
+        //handler perubahan!
+        let tagPerubahanHidden = 0;
+        vis(function(){
+            document.title = vis() ? 'e-LAMASO SISWA' : 'Not visible';
+            //let tesdiv = document.querySelector(".tesconsole")
+            //tesdiv.innerHTML +=`Setelan awal: ${vis()} (tagperubahan = ${tagPerubahanHidden})<br><br>`;
+            // console.log("setelan awal");
+            // console.log(new Date, 'visible ?', vis());
+            if(vis() && tagPerubahanHidden == 0){
+               //tesdiv.innerHTML +=`tidak direload karena false dan tagperubahan = 0<br><br>`;
+                
+            }else if(vis() && tagPerubahanHidden > 0){
+                // console.log("Ga bakal direload");
+                alert("Ananda berusaha meninggalkan edurasa, Jawaban yang Ananda isi sebelumnya akan hilang. Hindari membuka tab/aplikasi lain apalagi untuk browsing/googling ya ...");
+                window.location.reload();
+                tagPerubahanHidden = 0;
+                //tesdiv.innerHTML +=`direload karena True dan tagperubahan > 0 lalu dikembalikan tagnya jadi 0<br><br>`;
+                
+            }else{
+                tagPerubahanHidden++;
+                //tesdiv.innerHTML +=`pernah keluar dan tagperubahan bertambah<br><br>`;
+                // alert("Ananda berusaha meninggalkan edurasa, Jawaban yang Ananda isi sebelumnya akan hilang. Hindari membuka tab/aplikasi lain apalagi untuk browsing/googling ya ...");
+                // console.log("Ananda berusaha meninggalkan edurasa, Jawaban yang Ananda isi sebelumnya akan hilang. Hindari membuka tab/aplikasi lain apalagi untuk browsing/googling ya ...");
+                // window.location.reload();
+
+            }
+        });
+        
+        // to set the initial state
+        document.title = vis() ? 'e-LAMASO SISWA' : 'Not visible';
+        
+    </script>
     <script src="/statis/siswa.js"></script>
     
     <div id="tempattextarea"></div>

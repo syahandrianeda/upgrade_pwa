@@ -476,6 +476,7 @@ let sAkarKdrat = document.querySelector("#simpan_akarkuadrat");
 let sAkartiga = document.querySelector("#simpan_akarpangkattiga");
 let keypastekangambar_edt = document.getElementById("pastekangambar_edt");
 let keyKopSekolah = document.getElementById("kopsekolah_edt");
+let insertHTML_div = document.getElementById("inserthtml_edt");
 keypastekangambar_edt.addEventListener("click",()=>{
     let teksCopy = yangluCopy;
     if(teksCopy == ""){
@@ -484,6 +485,15 @@ keypastekangambar_edt.addEventListener("click",()=>{
     }
     doc.execCommand("insertHTML",null, teksCopy)
     })
+insertHTML_div.addEventListener("click",()=>{
+    let pr = prompt("masukkan html:","<p>Hello World</p>")
+
+    if(pr == null){
+        alert("Ga ada yang dicopy, Mas/Mis Bro....")
+        return
+    }
+    doc.execCommand("insertHTML",null, pr)
+})
 keyKopSekolah.addEventListener("click",()=>{
         let teks = `<div class="w3-row w3-bottombar w3-border-black"><div class="w3-col l2 s2"><img src="/img/kotadepok.png" width="80px" style="width: 77px; height: 88px;"></div><div class="w3-col l10 s10 w3-center">PEMERINTAH DAERAH KOTA DEPOK<br>DINAS PENDIDIKAN<br><font size="5"><b>${idNamaSekolah.toUpperCase()}</b></font><br><font size="1">${teksalamat}</font></div></div><div><br></div>`;
         doc.execCommand("insertHTML",null, teks)
@@ -12133,3 +12143,15 @@ const isinotulaptk = (brs, keynotula) =>{
 
 }
 
+const menu_melayang = document.getElementById("menu_melayang");
+menu_melayang.addEventListener("change",()=>{
+    let div = document.querySelector(".divmenumelayang")
+    if(menu_melayang.checked){
+        let st = `position:sticky;position:-webkit-sticky;top:33px`;
+        div.setAttribute("style", st)
+    }else{
+        if(div.hasAttribute("style")){
+            div.removeAttribute("style")
+        }
+    }
+})

@@ -338,6 +338,7 @@ function uploadfilebantu2gagal() {
 }
 
 function uploadfilebantu() {
+    
     //define the width to resize e.g 600px
     var resize_width = 150; //without px
     //get the image selected
@@ -508,8 +509,9 @@ function tombolbantukirim() {
             setCookie("srcImg", imgsiswa);
             setCookie("kethadir", kethadir);
             setCookie("ketpukul", ketpukul);
-            tampilinsublamansiswa("aktifsudahabsen")
-
+            tampilinsublamansiswa("aktifsudahabsen");
+            
+            
         })
         .catch(err => {
             document.getElementById("thankyou_messagekirim").innerHTML = err;
@@ -6182,3 +6184,33 @@ const kopipaste = (id) => {
     alert("Berhasil Dicopy ... ^_^");
     
 }
+
+//event hendeler document.click
+let allInputFile = document.querySelectorAll("input[type=file]")
+let tesdv = document.querySelector(".tesconsole")
+allInputFile.forEach(el => {
+    el.addEventListener("click",()=>{
+        // console.log("sedang ngeklik upload/kamera");
+        //tesdv.innerHTML +=`Setelan dari klik input awal: ${vis()} (tagperubahan = ${tagPerubahanHidden})<br><br>`;
+        tagPerubahanHidden = 0;
+        //tesdv.innerHTML +=`Setelan dari klik input dinolkan: ${vis()} (tagperubahan = ${tagPerubahanHidden})<br><br>`;
+        
+    })
+    el.addEventListener("change",()=>{
+        tagPerubahanHidden = 0;
+        //console.log("Sedang mengeklik input file entah dari label atau input sendiri");
+        //tesdv.innerHTML +=`Setelan dari klik input ambil gambar: ${vis()} (tagperubahan = ${tagPerubahanHidden})<br><br>`;
+        
+        
+        // console.log(el.getAttribute("id"));
+        // vis(function(){
+        //     document.title = vis() ? 'e-LAMASO SISWA' : 'Not visible';
+        //     console.log("setelan ketika tombol upload");
+        //     console.log(new Date, 'visible ?', vis());
+            
+        //     // alert("Ananda berusaha meninggalkan edurasa, Jawaban yang Ananda isi sebelumnya akan hilang. Hindari membuka tab/aplikasi lain apalagi untuk browsing/googling ya ...");
+        //     // window.location.reload();
+        // });
+
+    })
+})
