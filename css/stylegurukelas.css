@@ -743,7 +743,7 @@ div.denom {
 #tooltipkaldikheader2,
 #tooltipkaldikheader3,
 #tooltipkaldikheader4, #tooltipHBEheader, #tooltipMuatanMapelTematikheader, #tooltipketikanrppheader,#keyboard_ketikanheader,
-#tooltipkaldikheader5,#tooltipkalendernontematikheader
+#tooltipkaldikheader5,#tooltipkalendernontematikheader,#tooltipbaru_keyboard_ketikanheader
 {
   cursor:move;
 }
@@ -904,7 +904,7 @@ label.labrad_custom{
   line-clamp:5px;
   /* border-top:.5pt solid gainsboro; */
 }
-#keyboard_ketikan{
+#keyboard_ketikan,#tooltipbaru_keyboard_ketikan{
   max-width: 1000px;
   position: absolute;
   display: none;
@@ -1033,4 +1033,27 @@ label.labrad_custom{
 }
 .patokan_tabelformatljk tr:nth-of-type(even) td{
   background-color: rgb(199, 250, 199);
+}
+input.indsgeval,input.indsgeval1{
+  display:none;
+}
+label.lblindsgeval,label.lblindsgeval1{
+  border:.5pt solid black;
+  padding:2px;
+  margin-bottom:5px;
+  line-height: 2em;
+  box-sizing: border-box;
+}
+input[class=indsgeval]+label.lblindsgeval, input[class=indsgeval1]+label.lblindsgeval1 {
+  color: #000;
+  cursor: pointer
+}
+
+input[class=indsgeval]:checked+label.lblindsgeval::before , input[class=indsgeval1]:checked+label.lblindsgeval1::before {
+  content: " \2705"
+}
+
+input[class=indsgeval]:checked+label.lblindsgeval ,input[class=indsgeval1]:checked+label.lblindsgeval1 {
+  color: #00f;
+  background-color: #ff0
 }

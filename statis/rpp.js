@@ -1303,3 +1303,1872 @@ const nouruttabelpatokanPG = (part) =>{
 
 
 }
+//// desain soal
+let databasesoal = [];
+let databasesoalkosong = {};
+let keydatabasesoal = [];
+//data fokus server bank soal:
+//default:
+let serverbsoal_jenjang = document.querySelector("[data-bsoal=jenjang]");
+let serverbsoal_oleh = document.querySelector("[data-bsoal=oleh]");
+
+serverbsoal_jenjang = idJenjang;
+serverbsoal_oleh.innerHTML = namauser;
+
+//dinamis:
+let serverbsoal_bentuksoal = document.querySelector("[data-bsoal=bentuksoal]")
+
+const tampilanawaldesainevaluasi = () =>{
+    let dsgpg_step = document.querySelectorAll(".dsgpg_step");
+    let p_pilihbentuksoal = document.querySelector(".p_pilihbentuksoal");
+    p_pilihbentuksoal.innerHTML = `<img src="/img/barloading.gif"> <br>sedang memproses....`
+    let tab = "banksoal"
+    let tabel = [[["idbaris"]]];
+    let head = tabel[0];
+    let key = JSON.stringify(head);
+    let datakirim = new FormData();
+    
+    datakirim.append("tab",tab);
+    datakirim.append("key",key);
+    fetch(url_kaldikaja+"?action=getpostdatafromtab",{
+        method:"post",
+        body:datakirim
+    }).then(m => m.json())
+    .then(r => {
+        p_pilihbentuksoal.innerHTML = `Pilih Bentuk Soal:`;
+       //console.log(r);
+       keydatabasesoal = Object.keys(r.data[0]);
+       if(r.result>1){
+           databasesoal = r.data;
+       }
+       for(i=0 ; i < keydatabasesoal.length; i++){
+           databasesoalkosong[keydatabasesoal[i]]="";
+       }
+    }).catch(er=>console.log(er));
+
+
+    for(i = 0 ; i < dsgpg_step.length ; i++){
+        let el= dsgpg_step[i];
+        if(el.className.indexOf("w3-hide")){
+           el.classList.add("w3-hide")
+        }
+    }
+    //isikan data-data di kartu soal:
+    document.querySelector(".kartusoalnamasekolah").innerHTML = idNamaSekolah.toUpperCase();
+    document.querySelector(".tapelkartusoal").innerHTML = "Tahun pelajaran " + idTeksTapel;
+    document.querySelector("[data-bsoal=jenjang]").innerHTML = idJenjang;
+
+}
+
+
+//step1, pilih bentuk soal PG atau ISIAN
+const dsgpg_bentuksoal = document.querySelectorAll("input[name=dsgpg_bentuksoal");
+const items_komponensoal = document.querySelectorAll(".dsgpg_item");
+const divtipeopsipg = document.querySelector(".divtipeopsipg");
+const shortcutkuncijawaban = document.querySelector(".shortcutkuncijawaban");
+let arrayopsibaru = ["A","B","C","D"];
+dsgpg_bentuksoal.forEach(el =>{
+    el.addEventListener("change",()=>{
+        if(el.checked){
+            let val = el.value;
+            serverbsoal_bentuksoal.innerHTML = val;
+            document.querySelector(".dsgbpg_opsipg").innerHTML =""
+            
+            if(val == "Pilihan Ganda"){
+                if(divtipeopsipg.className.indexOf("w3-hide")>-1){
+                    divtipeopsipg.classList.remove("w3-hide");
+                    shortcutkuncijawaban.classList.remove("w3-hide");
+                };
+            }else{
+                if(divtipeopsipg.className.indexOf("w3-hide")==-1){
+                    divtipeopsipg.classList.add("w3-hide");
+                    shortcutkuncijawaban.classList.add("w3-hide")
+                }
+                
+            }
+            
+            let dsgpg_step = document.querySelectorAll(".dsgpg_step");
+            if(dsgpg_step[0].className.indexOf("w3-hide")>-1){
+                dsgpg_step[0].classList.remove("w3-hide");
+            };
+            
+
+        }
+    });
+})
+
+const dsgpg_mapel = async ()=>{
+    let steppgmapel = document.getElementById("steppgmapel");
+    let options = steppgmapel.options;
+    let indek = options.selectedIndex;
+    let val = options[indek].value;
+    let teks = options[indek].text;
+    if(val =="default"){
+        alert("Silakan pilih mapelnya");
+        return
+    }
+    let datakd = await gabungdataserverkd();
+    let datalingkupmateri = LingkupMateri[val];
+    let dbkdmapel = datakd.filter(s=> s.mapel == val && (s.indikatorkd3 !=="" || s.indikatorkd4 !== ""));
+    
+    //sembunyikan dulu nomor KD-nya
+    let labels = document.querySelectorAll(".lblindsgeval");
+    labels.forEach(el=>{
+        if(el.hasAttribute("checked")){
+            el.removeAttribute("checked")
+        }
+        if(el.className.indexOf("w3-hide")==-1){
+            el.classList.add("w3-hide")
+        }
+    });
+    //setelah disembunyikan, tampilkan KD-KD yang ada di mapel yang telah dipilih;
+    let bunyikd = document.querySelector(".bunyikdyandipilih");
+    let isiankodemapel = document.querySelector("[data-bsoal=kodemapel]");
+    let isianteksmapel = document.querySelector("[data-bsoal=tekskodemapel]");
+    let isiankd = document.querySelector("[data-bsoal=kd]");
+    let isiantekskd = document.querySelector("[data-bsoal=tekskd]");
+    let isianlingkupmateri = document.querySelector("[data-bsoal=ruanglingkup]");
+    isiantekskd.innerHTML = "";
+    isiankd.innerHTML = "";
+    isianlingkupmateri.innerHTML = "";
+
+    isiankodemapel.innerHTML = val;
+    isianteksmapel.innerHTML = teks;
+
+    bunyikd.innerHTML = "";
+    for(i = 0 ; i < labels.length && i < dbkdmapel.length; i++){
+        labels[i].classList.remove("w3-hide");
+        let kdklik = labels[i];
+        let adaceklis = window.getComputedStyle(kdklik,"::before").content;
+        if(adaceklis!=="none"){
+            kdklik.style.backgroundColor= "inherit";
+            kdklik.style.color= "inherit";
+            kdklik.innerHTML =kdklik.innerHTML.replace("&#9989;","");
+            
+        }
+
+
+        kdklik.onclick = function(){
+            let tekskd = dbkdmapel.filter(s=> s.kd == kdklik.innerHTML)[0];
+            bunyikd.innerHTML = tekskd.indikatorkd3;
+            isiantekskd.innerHTML = kdklik.innerHTML +" " + tekskd.indikatorkd3
+            isiankd.innerHTML = kdklik.innerHTML;
+            
+            
+            let dsgpg_step = document.querySelectorAll(".dsgpg_step");
+            if(dsgpg_step[1].className.indexOf("w3-hide")>-1){
+                dsgpg_step[1].classList.remove("w3-hide");
+            }
+             //isikan di kartusoal
+        }
+        //tambahkan fungsi onclick
+    }
+    //sembunyikan semua ruanglingkupmateri:
+    let ruanglingkup = document.querySelectorAll(".labellingkupmateri");
+    ruanglingkup.forEach(el=>{
+        if(el.hasAttribute("checked")){
+            el.removeAttribute("checked")
+        }
+
+        if(el.className.indexOf("w3-hide")==-1){
+            el.classList.add("w3-hide")
+        }
+    });
+
+    for(j = 0 ; j < ruanglingkup.length && j < datalingkupmateri.length; j++){
+        //atur ulang value = tiap ruanglingkupmateri;
+        if(ruanglingkup[j].className.indexOf("w3-hide")>-1){
+            ruanglingkup[j].classList.remove("w3-hide");
+        }
+        let inputnya = document.getElementById("dsgnpg_lingkupmateri"+(j+1))
+        inputnya.setAttribute("value",datalingkupmateri[j]);
+        // ruanglingkup[j].setAttribute("value",datalingkupmateri[j]);
+        ruanglingkup[j].innerHTML = datalingkupmateri[j];
+
+        let divulang = ruanglingkup[j];
+        divulang.onclick = function (){
+            //isikan di kartusoal;
+            let tesvalue = divulang.innerHTML;
+            isianlingkupmateri.innerHTML = tesvalue;
+            
+        }
+
+    }
+
+
+}
+
+const inputindikatorsoal = document.getElementById("indsgevalpgindikatorsoal");
+inputindikatorsoal.addEventListener("input",()=>{
+    document.querySelector("[data-bsoal=indikatorsoal]").innerHTML =  inputindikatorsoal.value;
+})
+const pilihlevelbsoal = document.getElementById("indsgevalpglevelsoal");
+pilihlevelbsoal.addEventListener("change",()=>{
+    let op = pilihlevelbsoal.options;
+    let indek = op.selectedIndex;
+    let val = op[indek].value;
+    let teks = op[indek].text;
+    document.querySelector("[data-bsoal=levelkognitif]").innerHTML = val;
+    document.querySelector(".artilevel").innerHTML = teks;
+
+})
+const inputmateripokok = document.getElementById("indsgevalpgmateripokok");
+inputmateripokok.addEventListener("input",()=>{
+    document.querySelector("[data-bsoal=materi]").innerHTML= inputmateripokok.value
+})
+let tagtampilanpg="BIASA";
+const spantampilanopsipg = document.getElementById("spantampilanopsipg");
+const isianJumlahkolompg = document.querySelector(".jikaopsipgtabel");
+const tipetamapilanpg = document.querySelectorAll("input[name=tipetamapilanpg]");
+const divdsgn_pg = document.querySelector(".dsgbpg_opsipg");
+const divkartusoal = document.getElementById("formatkartusoal");
+const tampilanopsipg = (el) =>{
+    document.querySelector(".buattooltippertanyaan").onclick = null;
+    document.querySelector(".buattooltipilustrasi").onclick = null;
+    document.querySelector(".buattooltippenskoran").onclick = null;
+    if(el.checked){
+        tagtampilanpg = "BIASA";
+        spantampilanopsipg.innerHTML = "BIASA";
+        isianJumlahkolompg.classList.add("w3-hide")
+    }else{
+        tagtampilanpg = "TABEL"
+        spantampilanopsipg.innerHTML = "TABEL";
+        isianJumlahkolompg.classList.remove("w3-hide");
+    }
+    let v 
+    tipetamapilanpg.forEach(elE=>{
+        if(elE.checked){
+            v = elE.value;
+            
+            let html = "";
+            if(tagtampilanpg =="BIASA"){
+                for(i = 0 ; i < v.length; i++){
+                    html +=`<div class="w3-col" style="width:35px">${arrayopsibaru[i]}.</div>`
+                    html +=`<div class="w3-rest tangan buattooltipopsipg${arrayopsibaru[i]}" data-bsoal="opsi${arrayopsibaru[i]}" title="klik untuk menambahkan teks">KLLIK BAGIAN INI UNTUK MENGISI TEKS OPSI PG ${arrayopsibaru[i]}</div>`
+                }
+            }else{
+                let htmll =`<table class="kartusoalpg_tabel w3-table garis">`
+                let head = `<thead><tr class="w3-light-grey">`;
+                let body = `<tbody>`
+                let d = document.getElementById("opsipgkolomtabel").value;
+                
+                for(i = 0 ; i < v.length ; i ++){
+                    body +=`<tr><td>${arrayopsibaru[i]}.</td>`
+                    for(j = 0 ; j <d; j++){
+                        if(j == 0 && i == 0){
+                            head +=`<th style="width:35px"></th>`
+                        }else if(j > 0 && i == 0){
+                            head+=`<th class="headtabelopsi" contenteditable="true">Silakan Edit</th>`
+                        }
+                        if(j >0){
+                            body +=`<td class="bodytabelopsi_col${j}_row${i}" title="klik Bagian ini untuk mengetikkan teks opsi pilhan ganda">KLIK BAGIAN INI UNTUK MENGETIK TEKS OPSI PG ${arrayopsibaru[i]}</td>`;
+                        }
+                        
+                    }
+                    body+=`</tr>`
+                }
+                head +=`</tr></thead>`;
+                body +=`</tbody>`;
+                
+                htmll +=`${head}${body}</table>`;
+                html = htmll
+            }
+            divdsgn_pg.innerHTML = html;
+            
+        }
+
+    })
+    //element pertanyaan
+    document.querySelector(".buattooltippertanyaan").onclick = function(){
+        
+        isiteksunsurbanksoal("formatkartusoal", "buattooltippertanyaan", "atas", "")
+    };
+    document.querySelector(".buattooltipilustrasi").onclick = function(){
+            isiteksunsurbanksoal("formatkartusoal", "buattooltipilustrasi", "atas", "")
+        };
+    document.querySelector(".buattooltippenskoran").onclick = function(){
+        
+        isiteksunsurbanksoal("formatkartusoal", "buattooltippenskoran", "atas", "");
+    }
+        
+        
+        
+
+          
+        aktifintooltipdidesainsoal(v);
+}
+// divdsgn_pg.innerHTML = ""
+
+tipetamapilanpg.forEach(el=>{
+    el.addEventListener("change",()=>{
+        let v
+        let html = "";
+        if(el.checked){
+            //element pertanyaan
+            document.querySelector(".buattooltippertanyaan").onclick = null;
+            document.querySelector(".buattooltipilustrasi").onclick = null;
+            document.querySelector(".buattooltippenskoran").onclick = null;
+             v = el.value;
+            
+            if(tagtampilanpg =="BIASA"){
+                for(i = 0 ; i < v.length; i++){
+                    html +=`<div class="w3-col" style="width:35px">${arrayopsibaru[i]}.</div>`
+                    html +=`<div class="w3-rest tangan buattooltipopsipg${arrayopsibaru[i]}" data-bsoal="opsi${arrayopsibaru[i]}" title="klik untuk menambahkan teks">KLLIK BAGIAN INI UNTUK MENGISI TEKS</div>`
+                }
+            }else{
+                let htmll =`<table class="kartusoalpg_tabel w3-table garis">`
+                let head = `<thead><tr class="w3-light-grey">`;
+                let body = `<tbody>`
+                let d = document.getElementById("opsipgkolomtabel").value;
+                
+                for(i = 0 ; i < v.length ; i ++){
+                    body +=`<tr><td>${arrayopsibaru[i]}</td>`
+                    for(j = 0 ; j <d; j++){
+                        if(j == 0 && i == 0){
+                            head +=`<th style="width:35px"></th>`
+                        }else if(j > 0 && i == 0){
+                            head+=`<th class="headtabelopsi" contenteditable="true">Silakan Edit</th>`
+                        }
+                        if(j >0){
+                            body +=`<td class="bodytabelopsi_col${j}_row${i}" title="klik Bagian ini untuk mengetikkan teks opsi pilhan ganda">KLIK BAGIAN INI UNTUK MENGETIK TEKS</td>`;
+                        }
+                        
+                    }
+                    body+=`</tr>`
+                }
+                head +=`</tr></thead>`;
+                body +=`</tbody>`;
+                
+                htmll +=`${head}${body}</table>`;
+                html = htmll
+            }
+            // divdsgn_pg.innerHTML = html;
+           
+            //element pertanyaan
+            document.querySelector(".buattooltippertanyaan").onclick = function(){
+                //
+                isiteksunsurbanksoal("formatkartusoal", "buattooltippertanyaan", "atas", "")};
+            document.querySelector(".buattooltippenskoran").onclick = function(){
+                
+                isiteksunsurbanksoal("formatkartusoal", "buattooltippenskoran", "atas", "");}
+            document.querySelector(".buattooltipilustrasi").onclick = function(){
+                
+                isiteksunsurbanksoal("formatkartusoal", "buattooltipilustrasi", "atas", "");}
+                
+
+        }
+        
+        divdsgn_pg.innerHTML = html;
+        
+        aktifintooltipdidesainsoal (v);
+        if(divkartusoal.className.indexOf("w3-hide")>-1){
+            divkartusoal.classList.remove("w3-hide")
+        }
+        
+    })
+});
+
+const aktifintooltipdidesainsoal = (v) =>{
+    if(tagtampilanpg =="BIASA"){
+        for(i = 0 ; i < v.length; i++){
+            // console.log(arrayopsibaru);
+            let ttt = arrayopsibaru[i]
+            // console.log(ttt)
+            document.querySelector(`[data-bsoal=opsi${ttt}]`).onclick =function(){
+                //buattooltipopsiA
+                isiteksunsurbanksoal("formatkartusoal", `buattooltipopsipg${ttt}`, "atas", ""); 
+            }
+        }
+    }else{
+        let tbl = document.querySelector(".kartusoalpg_tabel");
+        let tbdy = tbl.getElementsByTagName("tbody")[0];
+        let rRow = tbdy.rows;
+        for(a=0 ; a < rRow.length ; a++){
+            let cCol = rRow[a].cells;
+            for(b=0 ; b < cCol.length; b++){
+                let sel = cCol[b];
+                let iRow =  sel.parentElement.rowIndex;//.parentElement.rowIndex 
+                let icol = sel.cellIndex;
+                let tekskeslas = `bodytabelopsi_col${b}_row${a}`
+                if(b>0){
+                    sel.setAttribute("style","cursor:pointer");
+                    sel.onmousemove = function (){
+                        let tekstitle = "Baris "+ iRow + " Kolom " + icol;
+                        sel.setAttribute("title",tekstitle)
+                    }
+                    sel.onmouseout = function () {
+                        sel.removeAttribute("title");
+                    }
+                    sel.onclick = function (){
+                        //console.log("lagi klik sel = ",sel.innerHTML+" tekstkelas " + tekskeslas)
+                        // let atributkelas = sel.getAttribute("class");
+                        // alert("isi sel=" +sel.innerHTML +"\r\n, dan atributnya: "+ atributkelas+"\r\n tekskelas"+tekskeslas);
+                        isiteksunsurbanksoal("bataskiriformatkartusoal", tekskeslas, "atas", ""); 
+                        // isiteksunsurbanksoal("formatkartusoal", "buattooltippenskoran", "atas", "");
+                    }
+                }
+
+            }
+        }
+
+
+        // for(i = 0 ; i < v.length ; i ++){
+        //    // document.querySelector(`[data-bsoal=opsi${arrayopsibaru[i]}]`).onclick =null;
+        // }
+        
+    }
+    
+    document.querySelector(".klikmateritooltip").onclick = function (){        
+        isiteksunsurbanksoal("formatkartusoal", "klikmateritooltip", "atas", ""); 
+    } 
+    document.querySelector(".klikindikatortooltip").onclick = function(){
+        isiteksunsurbanksoal("formatkartusoal", "klikindikatortooltip", "atas", ""); 
+    }
+    document.querySelector(".klikrefrensitooltip").onclick = function(){
+        isiteksunsurbanksoal("formatkartusoal", "klikrefrensitooltip", "atas", ""); 
+    }  
+}
+
+const keyboardtooltipbaru = ()=>{
+   
+    let keyboardeditor2 = document.querySelector("#iframe_tooltipbaru_keyboardumum");
+    const dockeyboardbaru = keyboardeditor2.contentDocument || keyboardeditor2.contentWindow.document;
+            dockeyboardbaru.body.designMode = "on";
+            dockeyboardbaru.body.setAttribute("spellcheck","false");
+            dockeyboardbaru.body.setAttribute("contenteditable","true");
+            dockeyboardbaru.body.setAttribute("id","edt4");
+            // dockeyboardbaru.body.setAttribute("style","font-size:12px");
+        var root = window.location.origin;
+        dockeyboardbaru.head.innerHTML = `<link rel="stylesheet" href="${root}/css/w3.css">
+        <link href="https://fonts.googleapis.com/css?family=Raleway">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
+        <link rel="stylesheet" href="https://syahandrianeda.github.io/syahandrianeda/css/stylegurukelas.css">`;
+        
+    dockeyboardbaru.addEventListener("input",(e)=>{
+        let v = e.target;
+        let domm = v.querySelectorAll("div");
+        // if(v.childNodes[0].nodeName == "#text"){
+        //     // let s = dockeyboardbaru.createElement("div");
+        //     // s.innerHTML = v.innerHTML;
+        //     // dockeyboardbaru.body.appendChild(s);
+        //     dockeyboardbaru.body.innerHTML = "<div>"+v.innerHTML+"</div>";
+            
+        // }
+        // domm.forEach(dom=>{
+        //     // if(dom.hasAttribute("class")){
+        //     //     if(dom.className.indexOf("garisbuku")==-1){
+        //     //         dom.classList.add("garisbuku")
+        //     //     }
+        //     // }else{
+        //     //     if(dom.hasAttribute("style")){
+        //     //         let cek = dom.getAttribute("style");
+        //     //         if(cek.indexOf("break-after:page")>-1){
+        //     //             dom.removeAttribute("style");
+        //     //             dom.setAttribute("style","break-after:page")
+        //     //         }else{
+        //     //             dom.setAttribute("class","garisbuku")
+        //     //         }
+                    
+        //     //     }else{
+        //     //         dom.setAttribute("class","garisbuku")
+        //     //     }
+        //     // }
+        // })
+    })
+    
+    
+    const btnn = document.querySelectorAll(".btn_tooltipbaru_edtkeyboard");//
+    const allowhtmll = document.querySelector("#html_tooltipbaru_edtkeyboard");
+    
+    let showww = false;
+    allowhtmll.addEventListener("change", ()=>{
+        if(!allowhtmll.checked){
+            //asli
+            dockeyboardbaru.body.innerHTML = dockeyboardbaru.body.textContent;
+            
+            showww = false;
+        }else{
+                // asli
+                dockeyboardbaru.body.textContent =dockeyboardbaru.body.innerHTML;
+            showww =true;
+        }
+    })
+    for (let i = 0 ; i < btnn.length ; i++){
+        let cmd = btnn[i].getAttribute("data-tooltipbaru_keycmdkeyboard");
+        let owngrup = btnn[i].hasAttribute("data-tooltipbaru_grupkeyboard");
+        
+        btnn[i].addEventListener("click",()=>{
+            if(showww){
+                alert("Hilangkan dulu Ceklisnya")
+            }else{
+            
+                if(cmd === "fontname"){
+                    let val = btnn[i].innerHTML;
+                    document.querySelector(".dropdown_tooltipbaru_jenishurufkeyboard").innerHTML = val;
+                    dockeyboardbaru.execCommand(cmd,false,val);
+    
+                }else if(cmd==="removeFormat"){ 
+                    dockeyboardbaru.execCommand(cmd, false, null);
+                    document.querySelector(".dropdown_tooltipbaru_jenishurufkeyboard").innerHTML = "Pilih Jenis Huruf"
+                }else if(cmd == "createLink"){
+                    let prom = prompt("Masukkan link","");
+                    if(!prom){return};
+                    dockeyboardbaru.execCommand(cmd, false, prom);
+                    //console.log(dockeyboardbaru.body.designMode)
+                    const linkifram = dockeyboardbaru.querySelectorAll("a");
+    linkifram.forEach(el =>{
+        el.target = "_blank";
+        //console.log(el);
+        el.addEventListener("mouseover", () =>{
+            dockeyboardbaru.body.designMode = "Off";
+        });
+        el.addEventListener("mouseout", () =>{
+            dockeyboardbaru.body.designMode = "On";
+        })
+        //console.log(dockeyboardbaru.body.designMode)
+    })   
+                }else if(owngrup){
+                    let grup = btnn[i].getAttribute("data-tooltipbaru_grupkeyboard");
+                    if(grup == "Paragraf"){
+    //paragraf:
+    let dom = document.querySelector(".dropdown_tooltipbaru_jenisparagrafkeyboard");
+    if(cmd =="justifyLeft"){
+        dom.innerHTML = `<i class="fa fa-align-left"></i> `;
+    }else if(cmd == "justifyRight"){
+        dom.innerHTML = `<i class="fa fa-align-right"></i> `;
+    }else if(cmd == "justifyCenter"){
+        dom.innerHTML = `<i class="fa fa-align-center"></i> `;
+    }else if(cmd == "justifyFull"){
+        dom.innerHTML = `<i class="fa fa-align-justify"></i> `;
+    }else{
+        dom.innerHTML = "Tak dikenal";
+    }
+    dockeyboardbaru.execCommand(cmd, false, null)
+                    }else if (grup == "ukuranfont") {
+    let val = btnn[i].getAttribute("data-keyval");
+    document.querySelector(".tooltipbaru_keyboard").innerHTML = btnn[i].innerHTML;
+    dockeyboardbaru.execCommand(cmd, false, val);
+    
+    
+                    }else if(grup == "heading"){
+    let val = btnn[i].getAttribute("data-keyval");
+    document.querySelector(".tooltipbaru_keyboardgrup_heading").innerHTML = btnn[i].innerHTML;
+    dockeyboardbaru.execCommand(cmd, false, val);
+    
+                    }
+                    else{
+    let teks = btnn[i].innerHTML;
+    dockeyboardbaru.execCommand(cmd,false,teks)
+    // dockeyboardbaru.execCommand("insertText",false,"&nbsp;")
+                    }
+                } else{
+                    dockeyboardbaru.execCommand(cmd, false, null)
+                    // dockeyboardbaru.execCommand("insertText",false,"&nbsp;")
+                    btnn[i].classList.toggle("active");
+                    
+                }
+    
+    
+    
+                
+            }
+          
+        })
+    
+    };
+    let keyboardedtbl = document.querySelector("#tooltipbaru_keyboardedt_table");
+    let keyboardsPchBiasa = document.querySelector("#tooltipbaru_keyboardsimpan_pecahanbiasa");
+    let keyboardsPchCamp = document.querySelector("#tooltipbaru_keyboardsimpan_pecahancampuran");
+    let keyboardsAkarKdrat = document.querySelector("#tooltipbaru_keyboardsimpan_akarkuadrat");
+    let keyboardsAkartiga = document.querySelector("#tooltipbaru_keyboardsimpan_akarpangkattiga");
+    
+    
+    keyboardedtbl.addEventListener("click", () => {
+        try{
+        let promp = prompt("Masukkan jumlah baris, contoh 3 x 4 (3 baris, 4 kolom) tanpa spasi","3x4");
+        if(!promp){return }
+        let teks = promp.replace(/\s+/g,"");
+        let ang = teks.toLowerCase().split("x");
+        let brs = parseInt(ang[0]);
+        let cols = parseInt(ang[1]);
+        let html = `&nbsp;<table class="w3-table garis">`
+        for(i = 0 ; i < brs ; i++){
+            if(i==0){
+                html +=`<tr class="w3-light-grey">`;
+            }else{
+                    html +=`<tr>`;
+                }
+            for (j = 0 ; j <cols; j++){
+                html +=`<td>teks</td>`
+            }
+            html +=`</tr>`
+        }
+        html +=`</table>&nbsp;`;
+        dockeyboardbaru.execCommand("insertHTML",null, html);
+        }
+        catch(er){
+            console.log(er);    
+        }
+    });
+    keyboardsPchBiasa.addEventListener("click", () =>{
+        let a = document.querySelector("#tooltipbaru_keyboardinpecbiasa_pembilang").innerHTML;
+        let b = document.querySelector("#tooltipbaru_keyboardinpecbiasa_penyebut").innerHTML;
+        let teks = htmlpecahanbiasa(a,b);
+        dockeyboardbaru.execCommand("insertHTML",null, teks);
+    })
+    keyboardsPchCamp.addEventListener("click",()=>{
+        let a = document.querySelector("#tooltipbaru_keyboardinpecCamp_satuan").innerHTML;
+        let b = document.querySelector("#tooltipbaru_keyboardinpecCamp_pembilang").innerHTML;
+        let c = document.querySelector("#tooltipbaru_keyboardinpecCamp_penyebut").innerHTML;
+        let teks = htmlpecahancampuran(a,b,c);
+        dockeyboardbaru.execCommand("insertHTML",null, teks);
+    })
+    keyboardsAkarKdrat.addEventListener("click",()=>{
+        let a = "";
+        let b = document.querySelector("#tooltipbaru_keyboardinakar_kuadrat").innerHTML;
+        let teks = htmlakarpangkatn(a,b);
+        dockeyboardbaru.execCommand("insertHTML",null, teks);
+    
+    })
+    keyboardsAkartiga.addEventListener("click",()=>{
+        let a = "3";
+        let b = document.querySelector("#tooltipbaru_keyboardinakar_tiga").innerHTML;
+        let teks = htmlakarpangkatn(a,b);
+        dockeyboardbaru.execCommand("insertHTML",null, teks);
+    });
+    let keyboardfileInput = document.querySelector("#tooltipbaru_keyboarduploadgambar_edt");
+    
+    keyboardfileInput.addEventListener('change', async() => {
+        const files = keyboardfileInput.files;
+            
+        if (!files || !files.length) {
+        //          console.log('No files selected');
+        return;
+        }
+            let ketval = document.formuploadmateri.idmapel.value
+            let val = (ketval == "") ? "bank soal" : ketval;
+            let reader = new FileReader();
+            var item = files[0];
+            let url ="";
+        
+    loadingtopbarin("loadingtopbar");
+    reader.readAsDataURL(item);
+    reader.onload = async function (e) {
+
+        let bs64 = e.target.result.replace(/^.*,/, '');
+        let mmtpe = e.target.result.match(/^.*(?=;)/)[0];
+        let namafile = "edurasa_" + new Date().getTime()
+        let frmdata = new FormData();
+            frmdata.append("gmbrdata", bs64);
+            frmdata.append("gmbrfilename", namafile);
+            frmdata.append("gmbrmimeType", mmtpe);
+            frmdata.append("keterangan", val);
+
+    await fetch(linkmateri + "&action=uplgmbrmateri", {
+                method: 'post',
+                body: frmdata
+        })
+        .then(m => m.json())
+        .then(k => {
+            let link = k.url
+            url = "https://drive.google.com/uc?export=view&id=" + link;
+            //matikan animasi
+            dockeyboardbaru.execCommand("insertImage",false, url);
+            let imgs = dockeyboardbaru.querySelectorAll("img");
+            imgs.forEach(item => {
+                item.style.maxWidth ="300px";
+            })
+            clearInterval(stoploadingtopbar);
+            let divlod = document.querySelector(".loadingtopbar");
+            divlod.style.width = "100%";
+            setTimeout(() => {
+                divlod.style.width = "1px"
+                divlod.className += " w3-hide";
+
+            }, 3000);
+
+        })
+        .catch(er => {
+        console.log(er);
+        
+        })
+    }
+});
+    
+    
+    const keyboardbtnn_edtyt = document.querySelector("#keyboardbtn_tooltipbaru_edtkeyboardyt");
+    keyboardbtnn_edtyt.addEventListener("click", () => {
+        let prom = prompt("Masukkan link youtube","");
+        if(!prom){return};
+        let reg = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
+        let url = prom.match(reg)
+        let html=`<iframe style="resize: both;" src='https://www.youtube.com/embed/${url[1]}'  frameborder='1' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe><br/><br/>`;
+        let ch = document.querySelector("#html_tooltipbaru_edtkeyboard");
+        if(!ch.checked){
+            ch.checked = true;
+            dockeyboardbaru.execCommand("insertHTML",false,html);
+            ch.checked = false
+        }else{
+            dockeyboardbaru.execCommand("insertText",false,html);
+        }
+    })
+    
+    const tooltipbaru_keyboardbtn_gantihalaman = document.getElementById("tooltipbaru_keyboardbtn_gantihalaman");
+    tooltipbaru_keyboardbtn_gantihalaman.addEventListener("click",()=>{
+        let html = `<div class="w3-border-bottom w3-hide-small"> </div><div style="break-after:page"></div>`;
+        let ch = document.querySelector("#html_tooltipbaru_edtkeyboard");
+        if(!ch.checked){
+            ch.checked = true;
+            dockeyboardbaru.execCommand("insertHTML",false,html);
+            ch.checked = false
+        }else{
+            dockeyboardbaru.execCommand("insertText",false,html);
+        }
+    })
+    
+    
+    function enableImageResizeInDiv2(id) {
+        if (!(/chrome/i.test(navigator.userAgent) && /google/i.test(window.navigator.vendor))) {
+            return;
+        }
+        var editor = dockeyboardbaru.getElementById(id);
+        
+        var resizing = false;
+        var currentImage;
+        var createDOM = function (elementType, className, styles) {
+            let ele = document.createElement(elementType);
+            ele.className = className;
+            setStyle(ele, styles);
+            return ele;
+        };
+        var setStyle = function (ele, styles) {
+            for (key in styles) {
+                ele.style[key] = styles[key];
+               
+            }
+            return ele;
+        };
+        var removeResizeFrame = function () {
+            dockeyboardbaru.querySelectorAll(".resize-frame,.resizer").forEach((item) => item.parentNode.removeChild(item));
+        };
+        var offset = function offset(el) {
+             const rect = el.getBoundingClientRect();
+            // scrollLeft = window.pageXOffset ||dockeyboardbaru.documentElement.scrollLeft,
+            // scrollTop = window.pageYOffset || dockeyboardbaru.documentElement.scrollTop;
+            // console.log(scrollLeft);
+            // return { top: rect.top + scrollTop, left: rect.left + scrollLeft }
+            var currentFramePosition = currentFrameAbsolutePosition()
+            var elemTop = rect.top + currentFramePosition.y;
+            var elemBottom = rect.bottom + currentFramePosition.y;
+        
+    
+            // var currentFramePosition = getCurrentFrameAbsolutePosition();
+            // var elemTop = rect.top + currentFramePosition.y;
+            // var elemBottom = rect.bottom + currentFramePosition.y;
+             return { top: elemTop, left: elemBottom }
+        };
+        var clickImage = function (img) {
+            removeResizeFrame();
+            currentImage = img;
+            const imgHeight = img.offsetHeight;
+            const imgWidth = img.offsetWidth;
+            const imgPosition = { top: img.offsetTop, left: img.offsetLeft };
+            const editorScrollTop = editor.scrollTop;
+            const editorScrollLeft = editor.scrollLeft;
+            const top = imgPosition.top - editorScrollTop - 1;
+            const left = imgPosition.left - editorScrollLeft - 1;
+    
+            editor.append(createDOM('span', 'resize-frame', {
+                margin: '10px',
+                position: 'absolute',
+                top: (top + imgHeight - 10) + 'px',
+                left: (left + imgWidth - 10) + 'px',
+                border: 'solid 3px blue',
+                width: '6px',
+                height: '6px',
+                cursor: 'se-resize',
+                zIndex: 1
+            }));
+    
+            editor.append(createDOM('span', 'resizer top-border', {
+                position: 'absolute',
+                top: (top) + 'px',
+                left: (left) + 'px',
+                border: 'dashed 1px grey',
+                width: imgWidth + 'px',
+                height: '0px'
+            }));
+    
+            editor.append(createDOM('span', 'resizer left-border', {
+                position: 'absolute',
+                top: (top) + 'px',
+                left: (left) + 'px',
+                border: 'dashed 1px grey',
+                width: '0px',
+                height: imgHeight + 'px'
+            }));
+    
+            editor.append(createDOM('span', 'resizer right-border', {
+                position: 'absolute',
+                top: (top) + 'px',
+                left: (left + imgWidth) + 'px',
+                border: 'dashed 1px grey',
+                width: '0px',
+                height: imgHeight + 'px'
+            }));
+    
+            editor.append(createDOM('span', 'resizer bottom-border', {
+                position: 'absolute',
+                top: (top + imgHeight) + 'px',
+                left: (left) + 'px',
+                border: 'dashed 1px grey',
+                width: imgWidth + 'px',
+                height: '0px'
+            }));
+    
+            dockeyboardbaru.querySelector('.resize-frame').onmousedown = () => {
+                resizing = true;
+                return false;
+            };
+    
+            editor.onmouseup = () => {
+                if (resizing) {
+                    currentImage.style.width = dockeyboardbaru.querySelector('.top-border').offsetWidth + 'px';
+                    currentImage.style.height = dockeyboardbaru.querySelector('.left-border').offsetHeight + 'px';
+                    refresh();
+                    currentImage.click();
+                    resizing = false;
+                }
+            };
+    
+            editor.onmousemove = (e) => {
+                if (currentImage && resizing) {
+                    let height = e.pageY - offset(currentImage).top;
+                    let width = e.pageX - offset(currentImage).left;
+                    height = height < 1 ? 1 : height;
+                    width = width < 1 ? 1 : width;
+                    const top = imgPosition.top - editorScrollTop - 1;
+                    const left = imgPosition.left - editorScrollLeft - 1;
+                    setStyle(dockeyboardbaru.querySelector('.resize-frame'), {
+    top: (top + height - 10) + 'px',
+    left: (left + width - 10) + "px"
+                    });
+                   
+                    setStyle(dockeyboardbaru.querySelector('.top-border'), { width: width + "px" });
+                    setStyle(dockeyboardbaru.querySelector('.left-border'), { height: height + "px" });
+                    setStyle(dockeyboardbaru.querySelector('.right-border'), {
+    left: (left + width) + 'px',
+    height: height + "px"
+                    });
+                    setStyle(dockeyboardbaru.querySelector('.bottom-border'), {
+    top: (top + height) + 'px',
+    width: width + "px"
+                    });
+                }
+                return false;
+            };
+        };
+        var bindClickListener = function () {
+            editor.querySelectorAll('img').forEach((img, i) => {
+                
+                img.onclick = (e) => {
+                    if (e.target === img) {
+    clickImage(img);
+                    }
+                };
+            });
+        };
+        var currentFramePosition = function(){
+            let currentWindow = window;
+        let currentParentWindow;
+        let positions = [];
+        let rect;
+      
+        while (currentWindow !== window.top) {
+          currentParentWindow = currentWindow.parent;
+          for (let idx = 0; idx < currentParentWindow.frames.length; idx++)
+            if (currentParentWindow.frames[idx] === currentWindow) {
+              for (let frameElement of currentParentWindow.document.getElementsByTagName('iframe')) {
+                if (frameElement.contentWindow === currentWindow) {
+                  rect = frameElement.getBoundingClientRect();
+                  positions.push({x: rect.x, y: rect.y});
+                }
+              }
+              currentWindow = currentParentWindow;
+              break;
+            }
+        }
+        return positions.reduce((accumulator, currentValue) => {
+          return {
+            x: accumulator.x + currentValue.x,
+            y: accumulator.y + currentValue.y
+          };
+        }, { x: 0, y: 0 });
+        };
+        var refresh = function () {
+            bindClickListener();
+            removeResizeFrame();
+            if (!currentImage) {
+                return;
+            }
+            var img = currentImage;
+            var imgHeight = img.offsetHeight;
+            var imgWidth = img.offsetWidth;
+            var imgPosition = { top: img.offsetTop, left: img.offsetLeft };
+            var editorScrollTop = editor.scrollTop;
+            var editorScrollLeft = editor.scrollLeft;
+            const top = imgPosition.top - editorScrollTop - 1;
+            const left = imgPosition.left - editorScrollLeft - 1;
+    
+            editor.append(createDOM('span', 'resize-frame', {
+                position: 'absolute',
+                top: (top + imgHeight) + 'px',
+                left: (left + imgWidth) + 'px',
+                border: 'solid 2px red',
+                width: '6px',
+                height: '6px',
+                cursor: 'se-resize',
+                zIndex: 1
+            }));
+    
+            editor.append(createDOM('span', 'resizer', {
+                position: 'absolute',
+                top: (top) + 'px',
+                left: (left) + 'px',
+                border: 'dashed 1px grey',
+                width: imgWidth + 'px',
+                height: '0px'
+            }));
+    
+            editor.append(createDOM('span', 'resizer', {
+                position: 'absolute',
+                top: (top) + 'px',
+                left: (left + imgWidth) + 'px',
+                border: 'dashed 1px grey',
+                width: '0px',
+                height: imgHeight + 'px'
+            }));
+    
+            editor.append(createDOM('span', 'resizer', {
+                position: 'absolute',
+                top: (top + imgHeight) + 'px',
+                left: (left) + 'px',
+                border: 'dashed 1px grey',
+                width: imgWidth + 'px',
+                height: '0px'
+            }));
+        };
+        var reset = function () {
+            if (currentImage != null) {
+                currentImage = null;
+                resizing = false;
+                removeResizeFrame();
+            }
+            bindClickListener();
+        };
+        editor.addEventListener('scroll', function () {
+            reset();
+        }, false);
+        editor.addEventListener('mouseup', function (e) {
+            if (!resizing) {
+                const x = (e.x) ? e.x : e.clientX;
+                const y = (e.y) ? e.y : e.clientY;
+                let mouseUpElement = dockeyboardbaru.elementFromPoint(x, y);
+                if (mouseUpElement) {
+                    let matchingElement = null;
+                    if (mouseUpElement.tagName === 'IMG') {
+    matchingElement = mouseUpElement;
+                    }
+                    if (!matchingElement) {
+    reset();
+                    } else {
+    clickImage(matchingElement);
+                    }
+                }
+            }
+        });
+       
+    
+    }
+    enableImageResizeInDiv2("edt4");
+    ///
+    function bubbleIframeMouseMove2(iframe){
+        // Save any previous onmousemove handler
+        var existingOnMouseMove = iframe.contentWindow.onmousemove;
+    
+        // Attach a new onmousemove listener
+        iframe.contentWindow.onmousemove = function(e){
+            // Fire any existing onmousemove listener 
+            if(existingOnMouseMove) existingOnMouseMove(e);
+    
+            // Create a new event for the this window
+            var evt = document.createEvent("MouseEvents");
+    
+            // We'll need this to offset the mouse move appropriately
+            var boundingClientRect = iframe.getBoundingClientRect();
+    
+            // Initialize the event, copying exiting event values
+            // for the most part
+            evt.initMouseEvent( 
+                "mousemove", 
+                true, // bubbles
+                false, // not cancelable 
+                window,
+                e.detail,
+                e.screenX,
+                e.screenY, 
+                e.clientX + boundingClientRect.left, 
+                e.clientY + boundingClientRect.top, 
+                e.ctrlKey, 
+                e.altKey,
+                e.shiftKey, 
+                e.metaKey,
+                e.button, 
+                null // no related element
+            );
+    
+            // Dispatch the mousemove event on the iframe element
+            iframe.dispatchEvent(evt);
+        };
+    }
+    bubbleIframeMouseMove2(keyboardeditor2);
+function currentFrameAbsolutePosition() {
+        let currentWindow = window;
+        let currentParentWindow;
+        let positions = [];
+        let rect;
+        
+        while (currentWindow !== window.top) {
+            currentParentWindow = currentWindow.parent;
+                for (let idx = 0; idx < currentParentWindow.frames.length; idx++)
+                    if (currentParentWindow.frames[idx] === currentWindow) {
+                    for (let frameElement of currentParentWindow.document.getElementsByTagName('iframe')) {
+                if (frameElement.contentWindow === currentWindow) {
+                    rect = frameElement.getBoundingClientRect();
+                    positions.push({x: rect.x, y: rect.y});
+                }
+                }
+            currentWindow = currentParentWindow;
+            break;
+            }
+        }
+            return positions.reduce((accumulator, currentValue) => {
+            
+                return {
+                x: accumulator.x + currentValue.x,
+                y: accumulator.y + currentValue.y
+            };
+        }, { x: 0, y: 0 });
+    }
+
+
+
+}
+
+const tooltipbaru_tooglesembunyimenu = (btn)=>{
+    let el = document.querySelector(".tempatmenukeyboardbaru");
+    if(el.className.indexOf("visibel")>-1){
+        el.classList.remove("visibel");
+        btn.innerHTML = `<i class="fa fa-eye-slash"></i>`
+        btn.setAttribute("title","Sembunyikan Menu");
+    }else{
+        el.classList.add("visibel");
+        btn.innerHTML = `<i class="fa fa-eye"></i>`
+        btn.setAttribute("title","Buka Menu");
+    }
+}
+const isiteksunsurbanksoal = (paren="", target, posisitooltip="atas", baris="") =>{
+    console.log(paren)
+    console.log(target)
+    keyboardtooltipbaru()
+    let elemen = document.querySelector("."+target);
+    let simpan = document.querySelector(".simpankeyboardtooltipbaru");
+    simpan.onclick= null;
+    let lebarwindow = document.querySelector(".tesbody").offsetWidth;
+    let bataskanan = lebarwindow * 0.5;
+    let keyboard = document.getElementById("tooltipbaru_keyboard_ketikan");
+    dragElement(keyboard);
+    let keyboardeditor = document.querySelector("#iframe_tooltipbaru_keyboardumum");//.style.display="none";
+    let wdoc = keyboardeditor.contentDocument || keyboardeditor.contentWindow.document;
+    let body = wdoc.body;
+    body.innerHTML = elemen.innerHTML;
+    let lLeft, tTop;
+    if(paren == "bataskiriformatkartusoal"){
+        let pAre = document.querySelector("."+paren);
+        let batastabel = document.querySelector(".kartusoalpg_tabel");
+        tTop = (batastabel.offsetTop + elemen.offsetTop+ 20)+"px";
+        lLeft = pAre.offsetLeft + "px";
+    }else if(paren == "tempatnaskahsoal_soal"){
+        let pAre = document.querySelector("."+paren);
+        
+        tTop = (pAre.offsetTop + elemen.offsetTop+ 20)+"px";
+        lLeft = pAre.offsetLeft + "px";
+    
+    }else{
+        // window.scrollTo({ top: 0, behavior: 'smooth' });
+        let pAre = document.querySelector("."+paren);
+        tTop = (elemen.offsetTop + 20) +"px";
+        lLeft = pAre.offsetLeft + "px";
+    }
+    
+    
+    keyboard.style.top = tTop;
+    keyboard.style.left = lLeft;
+    keyboard.style.display="block";
+    simpan.onclick= async()=>{
+        elemen.innerHTML = body.innerHTML;
+        
+        
+        keyboard.style.display="none";
+    }
+
+}
+
+const simpanItemBanksoal = () =>{
+    let elemenkirim = document.querySelectorAll("[data-bsoal]");
+    let desainObjek = {}
+    elemenkirim.forEach((el,i)=>{
+        // console.log(i,el.nodeName,el.getAttribute("data-bsoal"))
+        let key = el.getAttribute("data-bsoal");
+        if(el.nodeName == "INPUT"){
+            desainObjek[key]= el.value;
+        }else{
+            let teksinner = el.innerHTML;
+            let teksjadi = el.innerHTML
+            // let cek = teksinner.match(/<div>(.*)<\/div>/);
+            // let teksjadi ="";
+            // if(cek == null){
+            //     teksjadi = teksinner
+            // }else{
+            //     teksjadi = cek[1]
+            // }
+            desainObjek[key]= teksjadi;
+        }
+    });
+    desainObjek.rombel = idNamaKelas;
+    desainObjek.tampilanpg = tagtampilanpg;
+    if(tagtampilanpg=="TABEL"){
+        let tabel = document.querySelector(".kartusoalpg_tabel");
+        let tbody = tabel.getElementsByTagName("tbody")[0];
+        let theader = tabel.getElementsByTagName("thead")[0];
+        let rRow = tbody.rows;
+        let arHed = [];
+        for(a = 1 ; a < theader.rows[0].cells.length ; a++){
+            let teksheader = theader.rows[0].cells[a].innerHTML;
+            arHed.push(teksheader)
+        }
+        desainObjek.headerpg = JSON.stringify(arHed);
+        for(i = 0 ; i < rRow.length ; i ++){
+            let cCol = rRow[i].cells;
+            let arOpsi = [];
+            for(j = 1 ; j < cCol.length ; j ++){
+                
+                arOpsi.push(cCol[j].innerHTML)
+            }
+            let keyy = "opsi"+arrayopsibaru[i];
+            desainObjek[keyy] = JSON.stringify(arOpsi);
+
+
+        }
+    }
+    
+   
+    let obAs = Object.assign({},databasesoalkosong);
+    let obJadi = Object.assign(obAs,desainObjek);
+    
+    let key = JSON.stringify(Object.keys(obJadi))
+    let nilai = Object.values(obJadi);
+    nilai.shift()
+    let tabel = JSON.stringify (nilai)
+    let tab = "banksoal"
+    
+    let datakirim = new FormData()
+    datakirim.append("tab",tab);
+    datakirim.append("key",key);
+    datakirim.append("tabel",tabel);
+    
+    fetch(url_kaldikaja+"?action=simpanbarisketaburut",{
+        method:"post",
+        body:datakirim
+    }).then(m => m.json())
+    .then(r => {
+        
+       console.log(r);
+       keydatabasesoal = Object.keys(r.data[0]);
+       if(r.result>1){
+           databasesoal = r.data;
+       }
+       for(i=0 ; i < keydatabasesoal.length; i++){
+           databasesoalkosong[keydatabasesoal[i]]="";
+       }
+       alert("Data Berhasil disimpan");
+       elemenkirim.forEach((el,i)=>{
+        // console.log(i,el.nodeName,el.getAttribute("data-bsoal"))
+        
+        //kalo sudah berhasil tolong sembunyikan kartu soalnya
+        if(divkartusoal.className.indexOf("w3-hide")==-1){
+            divkartusoal.classList.add("w3-hide")
+        }
+    });
+    }).catch(er=>console.log(er));
+}
+
+const antaraDiv = (teks)=>{
+    let cek = teks.match(/<div>(.*)<\/div>/);
+            let teksjadi ="";
+            if(cek == null){
+                teksjadi = teks
+            }else{
+                teksjadi = cek[1]
+            }
+            return teksjadi;
+}
+
+const print2Word = (element, filename)=>{
+    //https://github.com/markswindoll/jQuery-Word-Export/blob/master/jquery.wordexport.js
+
+        var static = {
+        mhtml: {
+            top: "Mime-Version: 1.0\nContent-Base: " + location.href + "\nContent-Type: Multipart/related; boundary=\"NEXT.ITEM-BOUNDARY\";type=\"text/html\"\n\n--NEXT.ITEM-BOUNDARY\nContent-Type: text/html; charset=\"utf-8\"\nContent-Location: " + location.href + "\n\n<!DOCTYPE html>\n<html>\n_html_</html>",
+            head: "<head>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n<style>\n_styles_\n</style>\n</head>\n",
+            body: "<body>_body_</body>"
+        }
+    };
+    var options = {
+        maxWidth: 150
+    };
+    // Clone selected element before manipulating it
+    let div = document.getElementById(element)
+    var markup = div.cloneNode(true);
+
+    // Remove hidden elements from the output
+    // markup.forEach(self => {
+        
+    //     if (self.is(':hidden'))
+    //         self.remove();
+    // });
+
+    // Embed all images using Data URLs
+    var images = Array();
+    var img = markup.querySelectorAll("img");
+    for (var i = 0; i < img.length; i++) {
+        // Calculate dimensions of output image
+        var w = Math.min(img[i].width, options.maxWidth);
+        var h = img[i].height * (w / img[i].width);
+        // Create canvas for converting image to data URL
+        var canvas = document.createElement("CANVAS");
+        canvas.width = w;
+        canvas.height = h;
+        // Draw image to canvas
+        var context = canvas.getContext('2d');
+        context.drawImage(img[i], 0, 0, w, h);
+        // Get data URL encoding of image
+        var uri = canvas.toDataURL("image/png");
+        $(img[i]).attr("src", img[i].src);
+        img[i].width = w;
+        img[i].height = h;
+        // Save encoded image to array
+        images[i] = {
+            type: uri.substring(uri.indexOf(":") + 1, uri.indexOf(";")),
+            encoding: uri.substring(uri.indexOf(";") + 1, uri.indexOf(",")),
+            location: $(img[i]).attr("src"),
+            data: uri.substring(uri.indexOf(",") + 1)
+        };
+    }
+
+    // Prepare bottom of mhtml file with image data
+    var mhtmlBottom = "\n";
+    for (var i = 0; i < images.length; i++) {
+        mhtmlBottom += "--NEXT.ITEM-BOUNDARY\n";
+        mhtmlBottom += "Content-Location: " + images[i].location + "\n";
+        mhtmlBottom += "Content-Type: " + images[i].type + "\n";
+        mhtmlBottom += "Content-Transfer-Encoding: " + images[i].encoding + "\n\n";
+        mhtmlBottom += images[i].data + "\n\n";
+    }
+    mhtmlBottom += "--NEXT.ITEM-BOUNDARY--";
+
+    //TODO: load css from included stylesheet
+    var styles = "";
+    styles+= '<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">';
+    styles+=`<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">`;
+    styles+='<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">';
+    styles+= '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">';
+    styles+='<link  rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">'
+    styles+='<link rel="stylesheet" href="https://syahandrianeda.github.io/syahandrianeda/css/stylegurukelas.css">'
+        
+
+    // Aggregate parts of the file together
+    css = ('\
+    <style>\
+    @page{size: 841.95pt 595.35pt;mso-page-orientation: landscape;}\
+    table.w3-table{border:1px solid black;border-collapse:collapse}\
+    strong{font-weight:bolder}dfn{font-style:italic}mark{background:#ff0;color:#000}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}figure{margin:1em 40px}img{border-style:none}code,kbd,pre,samp{font-family:monospace,monospace;font-size:1em}hr{box-sizing:content-box;height:0;overflow:visible}button,input,optgroup,select,textarea{font:inherit;margin:0}optgroup{font-weight:700}button,input{overflow:visible}button,select{text-transform:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner,button::-moz-focus-inner{border-style:none;padding:0}[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[type=submit]:-moz-focusring,button:-moz-focusring{outline:1px dotted ButtonText}fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em}legend{color:inherit;display:table;max-width:100%;padding:0;white-space:normal}textarea{overflow:auto}[type=checkbox],[type=radio]{padding:0}[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}[type=search]::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}body,html{font-family:Verdana,sans-serif;font-size:15px;line-height:1.5}html{overflow-x:hidden}h1{font-size:36px}h2{font-size:30px}h3{font-size:24px}h4{font-size:20px}h5{font-size:18px}h6{font-size:16px}div.Wordw3-serif{font-family:serif}div.Wordw3-sans-serif{font-family:sans-serif}div.Wordw3-cursive{font-family:cursive}div.Wordw3-monospace{font-family:monospace}h1,h2,h3,h4,h5,h6{font-family:"Segoe UI",Arial,sans-serif;font-weight:400;margin:10px 0}div.Wordw3-wide{letter-spacing:4px}hr{border:0;border-top:1px solid #eee;margin:20px 0}div.Wordw3-image{max-width:100%;height:auto}img{vertical-align:middle}a{color:inherit}div.Wordw3-table,div.Wordw3-table-all{border-collapse:collapse;border-spacing:0;width:100%;display:table}div.Wordw3-table-all{border:1px solid #ccc}div.Wordw3-bordered tr,div.Wordw3-table-all tr{border-bottom:1px solid #ddd}div.Wordw3-striped tbody tr:nth-child(even){background-color:#f1f1f1}div.Wordw3-table-all tr:nth-child(odd){background-color:#fff}div.Wordw3-table-all tr:nth-child(even){background-color:#f1f1f1}div.Wordw3-hoverable tbody tr:hover,div.Wordw3-uldiv.Wordw3-hoverable li:hover{background-color:#ccc}div.Wordw3-centered tr td,div.Wordw3-centered tr th{text-align:center}div.Wordw3-table td,div.Wordw3-table th,div.Wordw3-table-all td,div.Wordw3-table-all th{padding:8px 8px;display:table-cell;text-align:left;vertical-align:top}div.Wordw3-table td:first-child,div.Wordw3-table th:first-child,div.Wordw3-table-all td:first-child,div.Wordw3-table-all th:first-child{padding-left:16px}div.Wordw3-btn,div.Wordw3-button{border:none;display:inline-block;padding:8px 16px;vertical-align:middle;overflow:hidden;text-decoration:none;color:inherit;background-color:inherit;text-align:center;cursor:pointer;white-space:nowrap}div.Wordw3-btn:hover{box-shadow:0 8px 16px 0 rgba(0,0,0,.2),0 6px 20px 0 rgba(0,0,0,.19)}div.Wordw3-btn,div.Wordw3-button{-webkit-touch-callout:none;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}div.Wordw3-btn:disabled,div.Wordw3-button:disabled,div.Wordw3-disabled{cursor:not-allowed;opacity:.3}div.Wordw3-disabled *,:disabled *{pointer-events:none}div.Wordw3-btndiv.Wordw3-disabled:hover,div.Wordw3-btn:disabled:hover{box-shadow:none}div.Wordw3-badge,div.Wordw3-tag{background-color:#000;color:#fff;display:inline-block;padding-left:8px;padding-right:8px;text-align:center}div.Wordw3-badge{border-radius:50%}div.Wordw3-ul{list-style-type:none;padding:0;margin:0}div.Wordw3-ul li{padding:8px 16px;border-bottom:1px solid #ddd}div.Wordw3-ul li:last-child{border-bottom:none}div.Wordw3-display-container,div.Wordw3-tooltip{position:relative}div.Wordw3-tooltip div.Wordw3-text{display:none}div.Wordw3-tooltip:hover div.Wordw3-text{display:inline-block}div.Wordw3-ripple:active{opacity:.5}div.Wordw3-ripple{transition:opacity 0s}div.Wordw3-input{padding:8px;display:block;border:none;border-bottom:1px solid #ccc;width:100%}div.Wordw3-select{padding:9px 0;width:100%;border:none;border-bottom:1px solid #ccc}div.Wordw3-dropdown-click,div.Wordw3-dropdown-hover{position:relative;display:inline-block;cursor:pointer}div.Wordw3-dropdown-hover:hover div.Wordw3-dropdown-content{display:block}div.Wordw3-dropdown-click:hover,div.Wordw3-dropdown-hover:first-child{background-color:#ccc;color:#000}div.Wordw3-dropdown-click:hover>div.Wordw3-button:first-child,div.Wordw3-dropdown-hover:hover>div.Wordw3-button:first-child{background-color:#ccc;color:#000}div.Wordw3-dropdown-content{cursor:auto;color:#000;background-color:#fff;display:none;position:absolute;min-width:160px;margin:0;padding:0;z-index:1}div.Wordw3-check,div.Wordw3-radio{width:24px;height:24px;position:relative;top:6px}div.Wordw3-sidebar{height:100%;width:200px;background-color:#fff;position:fixed!important;z-index:1;overflow:auto}div.Wordw3-bar-block div.Wordw3-dropdown-click,div.Wordw3-bar-block div.Wordw3-dropdown-hover{width:100%}div.Wordw3-bar-block div.Wordw3-dropdown-click div.Wordw3-dropdown-content,div.Wordw3-bar-block div.Wordw3-dropdown-hover div.Wordw3-dropdown-content{min-width:100%}div.Wordw3-bar-block div.Wordw3-dropdown-click div.Wordw3-button,div.Wordw3-bar-block div.Wordw3-dropdown-hover div.Wordw3-button{width:100%;text-align:left;padding:8px 16px}#main,div.Wordw3-main{transition:margin-left .4s}div.Wordw3-modal{z-index:3;display:none;padding-top:100px;position:fixed;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:#000;background-color:rgba(0,0,0,.4)}div.Wordw3-modal-content{margin:auto;background-color:#fff;position:relative;padding:0;outline:0;width:600px}div.Wordw3-bar{width:100%;overflow:hidden}div.Wordw3-center div.Wordw3-bar{display:inline-block;width:auto}div.Wordw3-bar div.Wordw3-bar-item{padding:8px 16px;float:left;width:auto;border:none;display:block;outline:0}div.Wordw3-bar div.Wordw3-dropdown-click,div.Wordw3-bar div.Wordw3-dropdown-hover{position:static;float:left}div.Wordw3-bar div.Wordw3-button{white-space:normal}div.Wordw3-bar-block div.Wordw3-bar-item{width:100%;display:block;padding:8px 16px;text-align:left;border:none;white-space:normal;float:none;outline:0}div.Wordw3-bar-blockdiv.Wordw3-center div.Wordw3-bar-item{text-align:center}div.Wordw3-block{display:block;width:100%}div.Wordw3-responsive{display:block;overflow-x:auto}div.Wordw3-bar:after,div.Wordw3-bar:before,div.Wordw3-cell-row:after,div.Wordw3-cell-row:before,div.Wordw3-clear:after,div.Wordw3-clear:before,div.Wordw3-container:after,div.Wordw3-container:before,div.Wordw3-panel:after,div.Wordw3-panel:before,div.Wordw3-row-padding:after,div.Wordw3-row-padding:before,div.Wordw3-row:after,div.Wordw3-row:before{content:"";display:table;clear:both}div.Wordw3-col,div.Wordw3-half,div.Wordw3-quarter,div.Wordw3-third,div.Wordw3-threequarter,div.Wordw3-twothird{float:left;width:100%}div.Wordw3-col.s1{width:8.33333%}div.Wordw3-col.s2{width:16.66666%}div.Wordw3-col.s3{width:24.99999%}div.Wordw3-col.s4{width:33.33333%}div.Wordw3-col.s5{width:41.66666%}div.Wordw3-col.s6{width:49.99999%}div.Wordw3-col.s7{width:58.33333%}div.Wordw3-col.s8{width:66.66666%}div.Wordw3-col.s9{width:74.99999%}div.Wordw3-col.s10{width:83.33333%}div.Wordw3-col.s11{width:91.66666%}div.Wordw3-col.s12{width:99.99999%}@media (min-width:601px){div.Wordw3-col.m1{width:8.33333%}div.Wordw3-col.m2{width:16.66666%}div.Wordw3-col.m3,div.Wordw3-quarter{width:24.99999%}div.Wordw3-col.m4,div.Wordw3-third{width:33.33333%}div.Wordw3-col.m5{width:41.66666%}div.Wordw3-col.m6,div.Wordw3-half{width:49.99999%}div.Wordw3-col.m7{width:58.33333%}div.Wordw3-col.m8,div.Wordw3-twothird{width:66.66666%}div.Wordw3-col.m9,div.Wordw3-threequarter{width:74.99999%}div.Wordw3-col.m10{width:83.33333%}div.Wordw3-col.m11{width:91.66666%}div.Wordw3-col.m12{width:99.99999%}}@media (min-width:993px){div.Wordw3-col.l1{width:8.33333%}div.Wordw3-col.l2{width:16.66666%}div.Wordw3-col.l3{width:24.99999%}div.Wordw3-col.l4{width:33.33333%}div.Wordw3-col.l5{width:41.66666%}div.Wordw3-col.l6{width:49.99999%}div.Wordw3-col.l7{width:58.33333%}div.Wordw3-col.l8{width:66.66666%}div.Wordw3-col.l9{width:74.99999%}div.Wordw3-col.l10{width:83.33333%}div.Wordw3-col.l11{width:91.66666%}div.Wordw3-col.l12{width:99.99999%}}div.Wordw3-rest{overflow:hidden}div.Wordw3-stretch{margin-left:-16px;margin-right:-16px}div.Wordw3-auto,div.Wordw3-content{margin-left:auto;margin-right:auto}div.Wordw3-content{max-width:980px}div.Wordw3-auto{max-width:1140px}div.Wordw3-cell-row{display:table;width:100%}div.Wordw3-cell{display:table-cell}div.Wordw3-cell-top{vertical-align:top}div.Wordw3-cell-middle{vertical-align:middle}div.Wordw3-cell-bottom{vertical-align:bottom}div.Wordw3-hide{display:none!important}div.Wordw3-show,div.Wordw3-show-block{display:block!important}div.Wordw3-show-inline-block{display:inline-block!important}@media (max-width:1205px){div.Wordw3-auto{max-width:95%}}@media (max-width:600px){div.Wordw3-modal-content{margin:0 10px;width:auto!important}div.Wordw3-modal{padding-top:30px}div.Wordw3-dropdown-clickdiv.Wordw3-mobile div.Wordw3-dropdown-content,div.Wordw3-dropdown-hoverdiv.Wordw3-mobile div.Wordw3-dropdown-content{position:relative}div.Wordw3-hide-small{display:none!important}div.Wordw3-mobile{display:block;width:100%!important}div.Wordw3-bar-itemdiv.Wordw3-mobile,div.Wordw3-dropdown-clickdiv.Wordw3-mobile,div.Wordw3-dropdown-hoverdiv.Wordw3-mobile{text-align:center}div.Wordw3-dropdown-clickdiv.Wordw3-mobile,div.Wordw3-dropdown-clickdiv.Wordw3-mobile div.Wordw3-btn,div.Wordw3-dropdown-clickdiv.Wordw3-mobile div.Wordw3-button,div.Wordw3-dropdown-hoverdiv.Wordw3-mobile,div.Wordw3-dropdown-hoverdiv.Wordw3-mobile div.Wordw3-btn,div.Wordw3-dropdown-hoverdiv.Wordw3-mobile div.Wordw3-button{width:100%}}@media (max-width:768px){div.Wordw3-modal-content{width:500px}div.Wordw3-modal{padding-top:50px}}@media (min-width:993px){div.Wordw3-modal-content{width:900px}div.Wordw3-hide-large{display:none!important}div.Wordw3-sidebardiv.Wordw3-collapse{display:block!important}}@media (max-width:992px) and (min-width:601px){div.Wordw3-hide-medium{display:none!important}}@media (max-width:992px){div.Wordw3-sidebardiv.Wordw3-collapse{display:none}div.Wordw3-main{margin-left:0!important;margin-right:0!important}div.Wordw3-auto{max-width:100%}}div.Wordw3-bottom,div.Wordw3-top{position:fixed;width:100%;z-index:1}div.Wordw3-top{top:0}div.Wordw3-bottom{bottom:0}div.Wordw3-overlay{position:fixed;display:none;width:100%;height:100%;top:0;left:0;right:0;bottom:0;background-color:rgba(0,0,0,.5);z-index:2}div.Wordw3-display-topleft{position:absolute;left:0;top:0}div.Wordw3-display-topright{position:absolute;right:0;top:0}div.Wordw3-display-bottomleft{position:absolute;left:0;bottom:0}div.Wordw3-display-bottomright{position:absolute;right:0;bottom:0}div.Wordw3-display-middle{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);-ms-transform:translate(-50%,-50%)}div.Wordw3-display-left{position:absolute;top:50%;left:0;transform:translate(0,-50%);-ms-transform:translate(0,-50%)}div.Wordw3-display-right{position:absolute;top:50%;right:0;transform:translate(0,-50%);-ms-transform:translate(0,-50%)}div.Wordw3-display-topmiddle{position:absolute;left:50%;top:0;transform:translate(-50%,0);-ms-transform:translate(-50%,0)}div.Wordw3-display-bottommiddle{position:absolute;left:50%;bottom:0;transform:translate(-50%,0);-ms-transform:translate(-50%,0)}div.Wordw3-display-container:hover div.Wordw3-display-hover{display:block}div.Wordw3-display-container:hover spandiv.Wordw3-display-hover{display:inline-block}div.Wordw3-display-hover{display:none}div.Wordw3-display-position{position:absolute}div.Wordw3-circle{border-radius:50%}div.Wordw3-round-small{border-radius:2px}div.Wordw3-round,div.Wordw3-round-medium{border-radius:4px}div.Wordw3-round-large{border-radius:8px}div.Wordw3-round-xlarge{border-radius:16px}div.Wordw3-round-xxlarge{border-radius:32px}div.Wordw3-row-padding,div.Wordw3-row-padding>div.Wordw3-col,div.Wordw3-row-padding>div.Wordw3-half,div.Wordw3-row-padding>div.Wordw3-quarter,div.Wordw3-row-padding>div.Wordw3-third,div.Wordw3-row-padding>div.Wordw3-threequarter,div.Wordw3-row-padding>div.Wordw3-twothird{padding:0 8px}div.Wordw3-container,div.Wordw3-panel{padding:.01em 16px}div.Wordw3-panel{margin-top:16px;margin-bottom:16px}div.Wordw3-code,div.Wordw3-codespan{font-family:Consolas,"courier new";font-size:16px}div.Wordw3-code{width:auto;background-color:#fff;padding:8px 12px;border-left:4px solid #4caf50;word-wrap:break-word}div.Wordw3-codespan{color:#dc143c;background-color:#f1f1f1;padding-left:4px;padding-right:4px;font-size:110%}div.Wordw3-card,div.Wordw3-card-2{box-shadow:0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12)}div.Wordw3-card-4,div.Wordw3-hover-shadow:hover{box-shadow:0 4px 10px 0 rgba(0,0,0,.2),0 4px 20px 0 rgba(0,0,0,.19)}div.Wordw3-spin{animation:w3-spin 2s infinite linear}@keyframes w3-spin{0%{transform:rotate(0)}100%{transform:rotate(359deg)}}div.Wordw3-animate-fading{animation:fading 10s infinite}@keyframes fading{0%{opacity:0}50%{opacity:1}100%{opacity:0}}div.Wordw3-animate-opacity{animation:opac .8s}@keyframes opac{from{opacity:0}to{opacity:1}}div.Wordw3-animate-top{position:relative;animation:animatetop .4s}@keyframes animatetop{from{top:-300px;opacity:0}to{top:0;opacity:1}}div.Wordw3-animate-left{position:relative;animation:animateleft .4s}@keyframes animateleft{from{left:-300px;opacity:0}to{left:0;opacity:1}}div.Wordw3-animate-right{position:relative;animation:animateright .4s}@keyframes animateright{from{right:-300px;opacity:0}to{right:0;opacity:1}}div.Wordw3-animate-bottom{position:relative;animation:animatebottom .4s}@keyframes animatebottom{from{bottom:-300px;opacity:0}to{bottom:0;opacity:1}}div.Wordw3-animate-zoom{animation:animatezoom .6s}@keyframes animatezoom{from{transform:scale(0)}to{transform:scale(1)}}div.Wordw3-animate-input{transition:width .4s ease-in-out}div.Wordw3-animate-input:focus{width:100%!important}div.Wordw3-hover-opacity:hover,div.Wordw3-opacity{opacity:.6}div.Wordw3-hover-opacity-off:hover,div.Wordw3-opacity-off{opacity:1}div.Wordw3-opacity-max{opacity:.25}div.Wordw3-opacity-min{opacity:.75}div.Wordw3-grayscale-max,div.Wordw3-greyscale-max,div.Wordw3-hover-grayscale:hover,div.Wordw3-hover-greyscale:hover{filter:grayscale(100%)}div.Wordw3-grayscale,div.Wordw3-greyscale{filter:grayscale(75%)}div.Wordw3-grayscale-min,div.Wordw3-greyscale-min{filter:grayscale(50%)}div.Wordw3-sepia{filter:sepia(75%)}div.Wordw3-hover-sepia:hover,div.Wordw3-sepia-max{filter:sepia(100%)}div.Wordw3-sepia-min{filter:sepia(50%)}div.Wordw3-tiny{font-size:10px!important}div.Wordw3-small{font-size:12px!important}div.Wordw3-medium{font-size:15px!important}div.Wordw3-large{font-size:18px!important}div.Wordw3-xlarge{font-size:24px!important}div.Wordw3-xxlarge{font-size:36px!important}div.Wordw3-xxxlarge{font-size:48px!important}div.Wordw3-jumbo{font-size:64px!important}div.Wordw3-left-align{text-align:left!important}div.Wordw3-right-align{text-align:right!important}div.Wordw3-justify{text-align:justify!important}div.Wordw3-center{text-align:center!important}div.Wordw3-border-0{border:0!important}div.Wordw3-border{border:1px solid #ccc!important}div.Wordw3-border-top{border-top:1px solid #ccc!important}div.Wordw3-border-bottom{border-bottom:1px solid #ccc!important}div.Wordw3-border-left{border-left:1px solid #ccc!important}div.Wordw3-border-right{border-right:1px solid #ccc!important}div.Wordw3-topbar{border-top:6px solid #ccc!important}div.Wordw3-bottombar{border-bottom:6px solid #ccc!important}div.Wordw3-leftbar{border-left:6px solid #ccc!important}div.Wordw3-rightbar{border-right:6px solid #ccc!important}div.Wordw3-code,div.Wordw3-section{margin-top:16px!important;margin-bottom:16px!important}div.Wordw3-margin{margin:16px!important}div.Wordw3-margin-top{margin-top:16px!important}div.Wordw3-margin-bottom{margin-bottom:16px!important}div.Wordw3-margin-left{margin-left:16px!important}div.Wordw3-margin-right{margin-right:16px!important}div.Wordw3-padding-small{padding:4px 8px!important}div.Wordw3-padding{padding:8px 16px!important}div.Wordw3-padding-large{padding:12px 24px!important}div.Wordw3-padding-16{padding-top:16px!important;padding-bottom:16px!important}div.Wordw3-padding-24{padding-top:24px!important;padding-bottom:24px!important}div.Wordw3-padding-32{padding-top:32px!important;padding-bottom:32px!important}div.Wordw3-padding-48{padding-top:48px!important;padding-bottom:48px!important}div.Wordw3-padding-64{padding-top:64px!important;padding-bottom:64px!important}div.Wordw3-padding-top-64{padding-top:64px!important}div.Wordw3-padding-top-48{padding-top:48px!important}div.Wordw3-padding-top-32{padding-top:32px!important}div.Wordw3-padding-top-24{padding-top:24px!important}div.Wordw3-left{float:left!important}div.Wordw3-right{float:right!important}div.Wordw3-button:hover{color:#000!important;background-color:#ccc!important}div.Wordw3-hover-none:hover,div.Wordw3-transparent{background-color:transparent!important}div.Wordw3-hover-none:hover{box-shadow:none!important}div.Wordw3-amber,div.Wordw3-hover-amber:hover{color:#000!important;background-color:#ffc107!important}div.Wordw3-aqua,div.Wordw3-hover-aqua:hover{color:#000!important;background-color:#0ff!important}div.Wordw3-blue,div.Wordw3-hover-blue:hover{color:#fff!important;background-color:#2196f3!important}div.Wordw3-hover-light-blue:hover,div.Wordw3-light-blue{color:#000!important;background-color:#87ceeb!important}div.Wordw3-brown,div.Wordw3-hover-brown:hover{color:#fff!important;background-color:#795548!important}div.Wordw3-cyan,div.Wordw3-hover-cyan:hover{color:#000!important;background-color:#00bcd4!important}div.Wordw3-blue-gray,div.Wordw3-blue-grey,div.Wordw3-hover-blue-gray:hover,div.Wordw3-hover-blue-grey:hover{color:#fff!important;background-color:#607d8b!important}div.Wordw3-green,div.Wordw3-hover-green:hover{color:#fff!important;background-color:#4caf50!important}div.Wordw3-hover-light-green:hover,div.Wordw3-light-green{color:#000!important;background-color:#8bc34a!important}div.Wordw3-hover-indigo:hover,div.Wordw3-indigo{color:#fff!important;background-color:#3f51b5!important}div.Wordw3-hover-khaki:hover,div.Wordw3-khaki{color:#000!important;background-color:khaki!important}div.Wordw3-hover-lime:hover,div.Wordw3-lime{color:#000!important;background-color:#cddc39!important}div.Wordw3-hover-orange:hover,div.Wordw3-orange{color:#000!important;background-color:#ff9800!important}div.Wordw3-deep-orange,div.Wordw3-hover-deep-orange:hover{color:#fff!important;background-color:#ff5722!important}div.Wordw3-hover-pink:hover,div.Wordw3-pink{color:#fff!important;background-color:#e91e63!important}div.Wordw3-hover-purple:hover,div.Wordw3-purple{color:#fff!important;background-color:#9c27b0!important}div.Wordw3-deep-purple,div.Wordw3-hover-deep-purple:hover{color:#fff!important;background-color:#673ab7!important}div.Wordw3-hover-red:hover,div.Wordw3-red{color:#fff!important;background-color:#f44336!important}div.Wordw3-hover-sand:hover,div.Wordw3-sand{color:#000!important;background-color:#fdf5e6!important}div.Wordw3-hover-teal:hover,div.Wordw3-teal{color:#fff!important;background-color:#009688!important}div.Wordw3-hover-yellow:hover,div.Wordw3-yellow{color:#000!important;background-color:#ffeb3b!important}div.Wordw3-hover-white:hover,div.Wordw3-white{color:#000!important;background-color:#fff!important}div.Wordw3-black,div.Wordw3-hover-black:hover{color:#fff!important;background-color:#000!important}div.Wordw3-gray,div.Wordw3-grey,div.Wordw3-hover-gray:hover,div.Wordw3-hover-grey:hover{color:#000!important;background-color:#9e9e9e!important}div.Wordw3-hover-light-gray:hover,div.Wordw3-hover-light-grey:hover,div.Wordw3-light-gray,div.Wordw3-light-grey{color:#000!important;background-color:#f1f1f1!important}div.Wordw3-dark-gray,div.Wordw3-dark-grey,div.Wordw3-hover-dark-gray:hover,div.Wordw3-hover-dark-grey:hover{color:#fff!important;background-color:#616161!important}div.Wordw3-hover-pale-red:hover,div.Wordw3-pale-red{color:#000!important;background-color:#fdd!important}div.Wordw3-hover-pale-green:hover,div.Wordw3-pale-green{color:#000!important;background-color:#dfd!important}div.Wordw3-hover-pale-yellow:hover,div.Wordw3-pale-yellow{color:#000!important;background-color:#ffc!important}div.Wordw3-hover-pale-blue:hover,div.Wordw3-pale-blue{color:#000!important;background-color:#dff!important}div.Wordw3-hover-text-amber:hover,div.Wordw3-text-amber{color:#ffc107!important}div.Wordw3-hover-text-aqua:hover,div.Wordw3-text-aqua{color:#0ff!important}div.Wordw3-hover-text-blue:hover,div.Wordw3-text-blue{color:#2196f3!important}div.Wordw3-hover-text-light-blue:hover,div.Wordw3-text-light-blue{color:#87ceeb!important}div.Wordw3-hover-text-brown:hover,div.Wordw3-text-brown{color:#795548!important}div.Wordw3-hover-text-cyan:hover,div.Wordw3-text-cyan{color:#00bcd4!important}div.Wordw3-hover-text-blue-gray:hover,div.Wordw3-hover-text-blue-grey:hover,div.Wordw3-text-blue-gray,div.Wordw3-text-blue-grey{color:#607d8b!important}div.Wordw3-hover-text-green:hover,div.Wordw3-text-green{color:#4caf50!important}div.Wordw3-hover-text-light-green:hover,div.Wordw3-text-light-green{color:#8bc34a!important}div.Wordw3-hover-text-indigo:hover,div.Wordw3-text-indigo{color:#3f51b5!important}div.Wordw3-hover-text-khaki:hover,div.Wordw3-text-khaki{color:#b4aa50!important}div.Wordw3-hover-text-lime:hover,div.Wordw3-text-lime{color:#cddc39!important}div.Wordw3-hover-text-orange:hover,div.Wordw3-text-orange{color:#ff9800!important}div.Wordw3-hover-text-deep-orange:hover,div.Wordw3-text-deep-orange{color:#ff5722!important}div.Wordw3-hover-text-pink:hover,div.Wordw3-text-pink{color:#e91e63!important}div.Wordw3-hover-text-purple:hover,div.Wordw3-text-purple{color:#9c27b0!important}div.Wordw3-hover-text-deep-purple:hover,div.Wordw3-text-deep-purple{color:#673ab7!important}div.Wordw3-hover-text-red:hover,div.Wordw3-text-red{color:#f44336!important}div.Wordw3-hover-text-sand:hover,div.Wordw3-text-sand{color:#fdf5e6!important}div.Wordw3-hover-text-teal:hover,div.Wordw3-text-teal{color:#009688!important}div.Wordw3-hover-text-yellow:hover,div.Wordw3-text-yellow{color:#d2be0e!important}div.Wordw3-hover-text-white:hover,div.Wordw3-text-white{color:#fff!important}div.Wordw3-hover-text-black:hover,div.Wordw3-text-black{color:#000!important}div.Wordw3-hover-text-gray:hover,div.Wordw3-hover-text-grey:hover,div.Wordw3-text-gray,div.Wordw3-text-grey{color:#757575!important}div.Wordw3-hover-text-light-gray:hover,div.Wordw3-hover-text-light-grey:hover,div.Wordw3-text-light-gray,div.Wordw3-text-light-grey{color:#f1f1f1!important}div.Wordw3-hover-text-dark-gray:hover,div.Wordw3-hover-text-dark-grey:hover,div.Wordw3-text-dark-gray,div.Wordw3-text-dark-grey{color:#3a3a3a!important}div.Wordw3-border-amber,div.Wordw3-hover-border-amber:hover{border-color:#ffc107!important}div.Wordw3-border-aqua,div.Wordw3-hover-border-aqua:hover{border-color:#0ff!important}div.Wordw3-border-blue,div.Wordw3-hover-border-blue:hover{border-color:#2196f3!important}div.Wordw3-border-light-blue,div.Wordw3-hover-border-light-blue:hover{border-color:#87ceeb!important}div.Wordw3-border-brown,div.Wordw3-hover-border-brown:hover{border-color:#795548!important}div.Wordw3-border-cyan,div.Wordw3-hover-border-cyan:hover{border-color:#00bcd4!important}div.Wordw3-border-blue-gray,div.Wordw3-border-blue-grey,div.Wordw3-hover-border-blue-gray:hover,div.Wordw3-hover-border-blue-grey:hover{border-color:#607d8b!important}div.Wordw3-border-green,div.Wordw3-hover-border-green:hover{border-color:#4caf50!important}div.Wordw3-border-light-green,div.Wordw3-hover-border-light-green:hover{border-color:#8bc34a!important}div.Wordw3-border-indigo,div.Wordw3-hover-border-indigo:hover{border-color:#3f51b5!important}div.Wordw3-border-khaki,div.Wordw3-hover-border-khaki:hover{border-color:khaki!important}div.Wordw3-border-lime,div.Wordw3-hover-border-lime:hover{border-color:#cddc39!important}div.Wordw3-border-orange,div.Wordw3-hover-border-orange:hover{border-color:#ff9800!important}div.Wordw3-border-deep-orange,div.Wordw3-hover-border-deep-orange:hover{border-color:#ff5722!important}div.Wordw3-border-pink,div.Wordw3-hover-border-pink:hover{border-color:#e91e63!important}div.Wordw3-border-purple,div.Wordw3-hover-border-purple:hover{border-color:#9c27b0!important}div.Wordw3-border-deep-purple,div.Wordw3-hover-border-deep-purple:hover{border-color:#673ab7!important}div.Wordw3-border-red,div.Wordw3-hover-border-red:hover{border-color:#f44336!important}div.Wordw3-border-sand,div.Wordw3-hover-border-sand:hover{border-color:#fdf5e6!important}div.Wordw3-border-teal,div.Wordw3-hover-border-teal:hover{border-color:#009688!important}div.Wordw3-border-yellow,div.Wordw3-hover-border-yellow:hover{border-color:#ffeb3b!important}div.Wordw3-border-white,div.Wordw3-hover-border-white:hover{border-color:#fff!important}div.Wordw3-border-black,div.Wordw3-hover-border-black:hover{border-color:#000!important}div.Wordw3-border-gray,div.Wordw3-border-grey,div.Wordw3-hover-border-gray:hover,div.Wordw3-hover-border-grey:hover{border-color:#9e9e9e!important}div.Wordw3-border-light-gray,div.Wordw3-border-light-grey,div.Wordw3-hover-border-light-gray:hover,div.Wordw3-hover-border-light-grey:hover{border-color:#f1f1f1!important}div.Wordw3-border-dark-gray,div.Wordw3-border-dark-grey,div.Wordw3-hover-border-dark-gray:hover,div.Wordw3-hover-border-dark-grey:hover{border-color:#616161!important}div.Wordw3-border-pale-red,div.Wordw3-hover-border-pale-red:hover{border-color:#ffe7e7!important}div.Wordw3-border-pale-green,div.Wordw3-hover-border-pale-green:hover{border-color:#e7ffe7!important}div.Wordw3-border-pale-yellow,div.Wordw3-hover-border-pale-yellow:hover{border-color:#ffc!important}div.Wordw3-border-pale-blue,div.Wordw3-hover-border-pale-blue:hover{border-color:#e7ffff!important}\
+    </style>\
+    ');
+    // table.garis td,table.garis th,table.garis tr {  border: 1px solid #000}table.garis th {border: 1px solid #000;text-align: center;vertical-align: middle}\
+    // html{box-sizing:border-box}*,:after,:before{box-sizing:inherit}html{-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body{margin:0}article,aside,details,figcaption,figure,footer,header,main,menu,nav,section{display:block}summary{display:list-item}audio,canvas,progress,video{display:inline-block}progress{vertical-align:baseline}audio:not([controls]){display:none;height:0}[hidden],template{display:none}a{background-color:transparent}a:active,a:hover{outline-width:0}abbr[title]{border-bottom:none;text-decoration:underline;text-decoration:underline dotted}b,strong{font-weight:bolder}dfn{font-style:italic}mark{background:#ff0;color:#000}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}figure{margin:1em 40px}img{border-style:none}code,kbd,pre,samp{font-family:monospace,monospace;font-size:1em}hr{box-sizing:content-box;height:0;overflow:visible}button,input,optgroup,select,textarea{font:inherit;margin:0}optgroup{font-weight:700}button,input{overflow:visible}button,select{text-transform:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner,button::-moz-focus-inner{border-style:none;padding:0}[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[type=submit]:-moz-focusring,button:-moz-focusring{outline:1px dotted ButtonText}fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em}legend{color:inherit;display:table;max-width:100%;padding:0;white-space:normal}textarea{overflow:auto}[type=checkbox],[type=radio]{padding:0}[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}[type=search]::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}body,html{font-family:Verdana,sans-serif;font-size:15px;line-height:1.5}html{overflow-x:hidden}h1{font-size:36px}h2{font-size:30px}h3{font-size:24px}h4{font-size:20px}h5{font-size:18px}h6{font-size:16px}.w3-serif{font-family:serif}.w3-sans-serif{font-family:sans-serif}.w3-cursive{font-family:cursive}.w3-monospace{font-family:monospace}h1,h2,h3,h4,h5,h6{font-family:"Segoe UI",Arial,sans-serif;font-weight:400;margin:10px 0}.w3-wide{letter-spacing:4px}hr{border:0;border-top:1px solid #eee;margin:20px 0}.w3-image{max-width:100%;height:auto}img{vertical-align:middle}a{color:inherit}.w3-table,.w3-table-all{border-collapse:collapse;border-spacing:0;width:100%;display:table}.w3-table-all{border:1px solid #ccc}.w3-bordered tr,.w3-table-all tr{border-bottom:1px solid #ddd}.w3-striped tbody tr:nth-child(even){background-color:#f1f1f1}.w3-table-all tr:nth-child(odd){background-color:#fff}.w3-table-all tr:nth-child(even){background-color:#f1f1f1}.w3-hoverable tbody tr:hover,.w3-ul.w3-hoverable li:hover{background-color:#ccc}.w3-centered tr td,.w3-centered tr th{text-align:center}.w3-table td,.w3-table th,.w3-table-all td,.w3-table-all th{padding:8px 8px;display:table-cell;text-align:left;vertical-align:top}.w3-table td:first-child,.w3-table th:first-child,.w3-table-all td:first-child,.w3-table-all th:first-child{padding-left:16px}.w3-btn,.w3-button{border:none;display:inline-block;padding:8px 16px;vertical-align:middle;overflow:hidden;text-decoration:none;color:inherit;background-color:inherit;text-align:center;cursor:pointer;white-space:nowrap}.w3-btn:hover{box-shadow:0 8px 16px 0 rgba(0,0,0,.2),0 6px 20px 0 rgba(0,0,0,.19)}.w3-btn,.w3-button{-webkit-touch-callout:none;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.w3-btn:disabled,.w3-button:disabled,.w3-disabled{cursor:not-allowed;opacity:.3}.w3-disabled *,:disabled *{pointer-events:none}.w3-btn.w3-disabled:hover,.w3-btn:disabled:hover{box-shadow:none}.w3-badge,.w3-tag{background-color:#000;color:#fff;display:inline-block;padding-left:8px;padding-right:8px;text-align:center}.w3-badge{border-radius:50%}.w3-ul{list-style-type:none;padding:0;margin:0}.w3-ul li{padding:8px 16px;border-bottom:1px solid #ddd}.w3-ul li:last-child{border-bottom:none}.w3-display-container,.w3-tooltip{position:relative}.w3-tooltip .w3-text{display:none}.w3-tooltip:hover .w3-text{display:inline-block}.w3-ripple:active{opacity:.5}.w3-ripple{transition:opacity 0s}.w3-input{padding:8px;display:block;border:none;border-bottom:1px solid #ccc;width:100%}.w3-select{padding:9px 0;width:100%;border:none;border-bottom:1px solid #ccc}.w3-dropdown-click,.w3-dropdown-hover{position:relative;display:inline-block;cursor:pointer}.w3-dropdown-hover:hover .w3-dropdown-content{display:block}.w3-dropdown-click:hover,.w3-dropdown-hover:first-child{background-color:#ccc;color:#000}.w3-dropdown-click:hover>.w3-button:first-child,.w3-dropdown-hover:hover>.w3-button:first-child{background-color:#ccc;color:#000}.w3-dropdown-content{cursor:auto;color:#000;background-color:#fff;display:none;position:absolute;min-width:160px;margin:0;padding:0;z-index:1}.w3-check,.w3-radio{width:24px;height:24px;position:relative;top:6px}.w3-sidebar{height:100%;width:200px;background-color:#fff;position:fixed!important;z-index:1;overflow:auto}.w3-bar-block .w3-dropdown-click,.w3-bar-block .w3-dropdown-hover{width:100%}.w3-bar-block .w3-dropdown-click .w3-dropdown-content,.w3-bar-block .w3-dropdown-hover .w3-dropdown-content{min-width:100%}.w3-bar-block .w3-dropdown-click .w3-button,.w3-bar-block .w3-dropdown-hover .w3-button{width:100%;text-align:left;padding:8px 16px}#main,.w3-main{transition:margin-left .4s}.w3-modal{z-index:3;display:none;padding-top:100px;position:fixed;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:#000;background-color:rgba(0,0,0,.4)}.w3-modal-content{margin:auto;background-color:#fff;position:relative;padding:0;outline:0;width:600px}.w3-bar{width:100%;overflow:hidden}.w3-center .w3-bar{display:inline-block;width:auto}.w3-bar .w3-bar-item{padding:8px 16px;float:left;width:auto;border:none;display:block;outline:0}.w3-bar .w3-dropdown-click,.w3-bar .w3-dropdown-hover{position:static;float:left}.w3-bar .w3-button{white-space:normal}.w3-bar-block .w3-bar-item{width:100%;display:block;padding:8px 16px;text-align:left;border:none;white-space:normal;float:none;outline:0}.w3-bar-block.w3-center .w3-bar-item{text-align:center}.w3-block{display:block;width:100%}.w3-responsive{display:block;overflow-x:auto}.w3-bar:after,.w3-bar:before,.w3-cell-row:after,.w3-cell-row:before,.w3-clear:after,.w3-clear:before,.w3-container:after,.w3-container:before,.w3-panel:after,.w3-panel:before,.w3-row-padding:after,.w3-row-padding:before,.w3-row:after,.w3-row:before{content:"";display:table;clear:both}.w3-col,.w3-half,.w3-quarter,.w3-third,.w3-threequarter,.w3-twothird{float:left;width:100%}.w3-col.s1{width:8.33333%}.w3-col.s2{width:16.66666%}.w3-col.s3{width:24.99999%}.w3-col.s4{width:33.33333%}.w3-col.s5{width:41.66666%}.w3-col.s6{width:49.99999%}.w3-col.s7{width:58.33333%}.w3-col.s8{width:66.66666%}.w3-col.s9{width:74.99999%}.w3-col.s10{width:83.33333%}.w3-col.s11{width:91.66666%}.w3-col.s12{width:99.99999%}@media (min-width:601px){.w3-col.m1{width:8.33333%}.w3-col.m2{width:16.66666%}.w3-col.m3,.w3-quarter{width:24.99999%}.w3-col.m4,.w3-third{width:33.33333%}.w3-col.m5{width:41.66666%}.w3-col.m6,.w3-half{width:49.99999%}.w3-col.m7{width:58.33333%}.w3-col.m8,.w3-twothird{width:66.66666%}.w3-col.m9,.w3-threequarter{width:74.99999%}.w3-col.m10{width:83.33333%}.w3-col.m11{width:91.66666%}.w3-col.m12{width:99.99999%}}@media (min-width:993px){.w3-col.l1{width:8.33333%}.w3-col.l2{width:16.66666%}.w3-col.l3{width:24.99999%}.w3-col.l4{width:33.33333%}.w3-col.l5{width:41.66666%}.w3-col.l6{width:49.99999%}.w3-col.l7{width:58.33333%}.w3-col.l8{width:66.66666%}.w3-col.l9{width:74.99999%}.w3-col.l10{width:83.33333%}.w3-col.l11{width:91.66666%}.w3-col.l12{width:99.99999%}}.w3-rest{overflow:hidden}.w3-stretch{margin-left:-16px;margin-right:-16px}.w3-auto,.w3-content{margin-left:auto;margin-right:auto}.w3-content{max-width:980px}.w3-auto{max-width:1140px}.w3-cell-row{display:table;width:100%}.w3-cell{display:table-cell}.w3-cell-top{vertical-align:top}.w3-cell-middle{vertical-align:middle}.w3-cell-bottom{vertical-align:bottom}.w3-hide{display:none!important}.w3-show,.w3-show-block{display:block!important}.w3-show-inline-block{display:inline-block!important}@media (max-width:1205px){.w3-auto{max-width:95%}}@media (max-width:600px){.w3-modal-content{margin:0 10px;width:auto!important}.w3-modal{padding-top:30px}.w3-dropdown-click.w3-mobile .w3-dropdown-content,.w3-dropdown-hover.w3-mobile .w3-dropdown-content{position:relative}.w3-hide-small{display:none!important}.w3-mobile{display:block;width:100%!important}.w3-bar-item.w3-mobile,.w3-dropdown-click.w3-mobile,.w3-dropdown-hover.w3-mobile{text-align:center}.w3-dropdown-click.w3-mobile,.w3-dropdown-click.w3-mobile .w3-btn,.w3-dropdown-click.w3-mobile .w3-button,.w3-dropdown-hover.w3-mobile,.w3-dropdown-hover.w3-mobile .w3-btn,.w3-dropdown-hover.w3-mobile .w3-button{width:100%}}@media (max-width:768px){.w3-modal-content{width:500px}.w3-modal{padding-top:50px}}@media (min-width:993px){.w3-modal-content{width:900px}.w3-hide-large{display:none!important}.w3-sidebar.w3-collapse{display:block!important}}@media (max-width:992px) and (min-width:601px){.w3-hide-medium{display:none!important}}@media (max-width:992px){.w3-sidebar.w3-collapse{display:none}.w3-main{margin-left:0!important;margin-right:0!important}.w3-auto{max-width:100%}}.w3-bottom,.w3-top{position:fixed;width:100%;z-index:1}.w3-top{top:0}.w3-bottom{bottom:0}.w3-overlay{position:fixed;display:none;width:100%;height:100%;top:0;left:0;right:0;bottom:0;background-color:rgba(0,0,0,.5);z-index:2}.w3-display-topleft{position:absolute;left:0;top:0}.w3-display-topright{position:absolute;right:0;top:0}.w3-display-bottomleft{position:absolute;left:0;bottom:0}.w3-display-bottomright{position:absolute;right:0;bottom:0}.w3-display-middle{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);-ms-transform:translate(-50%,-50%)}.w3-display-left{position:absolute;top:50%;left:0;transform:translate(0,-50%);-ms-transform:translate(0,-50%)}.w3-display-right{position:absolute;top:50%;right:0;transform:translate(0,-50%);-ms-transform:translate(0,-50%)}.w3-display-topmiddle{position:absolute;left:50%;top:0;transform:translate(-50%,0);-ms-transform:translate(-50%,0)}.w3-display-bottommiddle{position:absolute;left:50%;bottom:0;transform:translate(-50%,0);-ms-transform:translate(-50%,0)}.w3-display-container:hover .w3-display-hover{display:block}.w3-display-container:hover span.w3-display-hover{display:inline-block}.w3-display-hover{display:none}.w3-display-position{position:absolute}.w3-circle{border-radius:50%}.w3-round-small{border-radius:2px}.w3-round,.w3-round-medium{border-radius:4px}.w3-round-large{border-radius:8px}.w3-round-xlarge{border-radius:16px}.w3-round-xxlarge{border-radius:32px}.w3-row-padding,.w3-row-padding>.w3-col,.w3-row-padding>.w3-half,.w3-row-padding>.w3-quarter,.w3-row-padding>.w3-third,.w3-row-padding>.w3-threequarter,.w3-row-padding>.w3-twothird{padding:0 8px}.w3-container,.w3-panel{padding:.01em 16px}.w3-panel{margin-top:16px;margin-bottom:16px}.w3-code,.w3-codespan{font-family:Consolas,"courier new";font-size:16px}.w3-code{width:auto;background-color:#fff;padding:8px 12px;border-left:4px solid #4caf50;word-wrap:break-word}.w3-codespan{color:#dc143c;background-color:#f1f1f1;padding-left:4px;padding-right:4px;font-size:110%}.w3-card,.w3-card-2{box-shadow:0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12)}.w3-card-4,.w3-hover-shadow:hover{box-shadow:0 4px 10px 0 rgba(0,0,0,.2),0 4px 20px 0 rgba(0,0,0,.19)}.w3-spin{animation:w3-spin 2s infinite linear}@keyframes w3-spin{0%{transform:rotate(0)}100%{transform:rotate(359deg)}}.w3-animate-fading{animation:fading 10s infinite}@keyframes fading{0%{opacity:0}50%{opacity:1}100%{opacity:0}}.w3-animate-opacity{animation:opac .8s}@keyframes opac{from{opacity:0}to{opacity:1}}.w3-animate-top{position:relative;animation:animatetop .4s}@keyframes animatetop{from{top:-300px;opacity:0}to{top:0;opacity:1}}.w3-animate-left{position:relative;animation:animateleft .4s}@keyframes animateleft{from{left:-300px;opacity:0}to{left:0;opacity:1}}.w3-animate-right{position:relative;animation:animateright .4s}@keyframes animateright{from{right:-300px;opacity:0}to{right:0;opacity:1}}.w3-animate-bottom{position:relative;animation:animatebottom .4s}@keyframes animatebottom{from{bottom:-300px;opacity:0}to{bottom:0;opacity:1}}.w3-animate-zoom{animation:animatezoom .6s}@keyframes animatezoom{from{transform:scale(0)}to{transform:scale(1)}}.w3-animate-input{transition:width .4s ease-in-out}.w3-animate-input:focus{width:100%!important}.w3-hover-opacity:hover,.w3-opacity{opacity:.6}.w3-hover-opacity-off:hover,.w3-opacity-off{opacity:1}.w3-opacity-max{opacity:.25}.w3-opacity-min{opacity:.75}.w3-grayscale-max,.w3-greyscale-max,.w3-hover-grayscale:hover,.w3-hover-greyscale:hover{filter:grayscale(100%)}.w3-grayscale,.w3-greyscale{filter:grayscale(75%)}.w3-grayscale-min,.w3-greyscale-min{filter:grayscale(50%)}.w3-sepia{filter:sepia(75%)}.w3-hover-sepia:hover,.w3-sepia-max{filter:sepia(100%)}.w3-sepia-min{filter:sepia(50%)}.w3-tiny{font-size:10px!important}.w3-small{font-size:12px!important}.w3-medium{font-size:15px!important}.w3-large{font-size:18px!important}.w3-xlarge{font-size:24px!important}.w3-xxlarge{font-size:36px!important}.w3-xxxlarge{font-size:48px!important}.w3-jumbo{font-size:64px!important}.w3-left-align{text-align:left!important}.w3-right-align{text-align:right!important}.w3-justify{text-align:justify!important}.w3-center{text-align:center!important}.w3-border-0{border:0!important}.w3-border{border:1px solid #ccc!important}.w3-border-top{border-top:1px solid #ccc!important}.w3-border-bottom{border-bottom:1px solid #ccc!important}.w3-border-left{border-left:1px solid #ccc!important}.w3-border-right{border-right:1px solid #ccc!important}.w3-topbar{border-top:6px solid #ccc!important}.w3-bottombar{border-bottom:6px solid #ccc!important}.w3-leftbar{border-left:6px solid #ccc!important}.w3-rightbar{border-right:6px solid #ccc!important}.w3-code,.w3-section{margin-top:16px!important;margin-bottom:16px!important}.w3-margin{margin:16px!important}.w3-margin-top{margin-top:16px!important}.w3-margin-bottom{margin-bottom:16px!important}.w3-margin-left{margin-left:16px!important}.w3-margin-right{margin-right:16px!important}.w3-padding-small{padding:4px 8px!important}.w3-padding{padding:8px 16px!important}.w3-padding-large{padding:12px 24px!important}.w3-padding-16{padding-top:16px!important;padding-bottom:16px!important}.w3-padding-24{padding-top:24px!important;padding-bottom:24px!important}.w3-padding-32{padding-top:32px!important;padding-bottom:32px!important}.w3-padding-48{padding-top:48px!important;padding-bottom:48px!important}.w3-padding-64{padding-top:64px!important;padding-bottom:64px!important}.w3-padding-top-64{padding-top:64px!important}.w3-padding-top-48{padding-top:48px!important}.w3-padding-top-32{padding-top:32px!important}.w3-padding-top-24{padding-top:24px!important}.w3-left{float:left!important}.w3-right{float:right!important}.w3-button:hover{color:#000!important;background-color:#ccc!important}.w3-hover-none:hover,.w3-transparent{background-color:transparent!important}.w3-hover-none:hover{box-shadow:none!important}.w3-amber,.w3-hover-amber:hover{color:#000!important;background-color:#ffc107!important}.w3-aqua,.w3-hover-aqua:hover{color:#000!important;background-color:#0ff!important}.w3-blue,.w3-hover-blue:hover{color:#fff!important;background-color:#2196f3!important}.w3-hover-light-blue:hover,.w3-light-blue{color:#000!important;background-color:#87ceeb!important}.w3-brown,.w3-hover-brown:hover{color:#fff!important;background-color:#795548!important}.w3-cyan,.w3-hover-cyan:hover{color:#000!important;background-color:#00bcd4!important}.w3-blue-gray,.w3-blue-grey,.w3-hover-blue-gray:hover,.w3-hover-blue-grey:hover{color:#fff!important;background-color:#607d8b!important}.w3-green,.w3-hover-green:hover{color:#fff!important;background-color:#4caf50!important}.w3-hover-light-green:hover,.w3-light-green{color:#000!important;background-color:#8bc34a!important}.w3-hover-indigo:hover,.w3-indigo{color:#fff!important;background-color:#3f51b5!important}.w3-hover-khaki:hover,.w3-khaki{color:#000!important;background-color:khaki!important}.w3-hover-lime:hover,.w3-lime{color:#000!important;background-color:#cddc39!important}.w3-hover-orange:hover,.w3-orange{color:#000!important;background-color:#ff9800!important}.w3-deep-orange,.w3-hover-deep-orange:hover{color:#fff!important;background-color:#ff5722!important}.w3-hover-pink:hover,.w3-pink{color:#fff!important;background-color:#e91e63!important}.w3-hover-purple:hover,.w3-purple{color:#fff!important;background-color:#9c27b0!important}.w3-deep-purple,.w3-hover-deep-purple:hover{color:#fff!important;background-color:#673ab7!important}.w3-hover-red:hover,.w3-red{color:#fff!important;background-color:#f44336!important}.w3-hover-sand:hover,.w3-sand{color:#000!important;background-color:#fdf5e6!important}.w3-hover-teal:hover,.w3-teal{color:#fff!important;background-color:#009688!important}.w3-hover-yellow:hover,.w3-yellow{color:#000!important;background-color:#ffeb3b!important}.w3-hover-white:hover,.w3-white{color:#000!important;background-color:#fff!important}.w3-black,.w3-hover-black:hover{color:#fff!important;background-color:#000!important}.w3-gray,.w3-grey,.w3-hover-gray:hover,.w3-hover-grey:hover{color:#000!important;background-color:#9e9e9e!important}.w3-hover-light-gray:hover,.w3-hover-light-grey:hover,.w3-light-gray,.w3-light-grey{color:#000!important;background-color:#f1f1f1!important}.w3-dark-gray,.w3-dark-grey,.w3-hover-dark-gray:hover,.w3-hover-dark-grey:hover{color:#fff!important;background-color:#616161!important}.w3-hover-pale-red:hover,.w3-pale-red{color:#000!important;background-color:#fdd!important}.w3-hover-pale-green:hover,.w3-pale-green{color:#000!important;background-color:#dfd!important}.w3-hover-pale-yellow:hover,.w3-pale-yellow{color:#000!important;background-color:#ffc!important}.w3-hover-pale-blue:hover,.w3-pale-blue{color:#000!important;background-color:#dff!important}.w3-hover-text-amber:hover,.w3-text-amber{color:#ffc107!important}.w3-hover-text-aqua:hover,.w3-text-aqua{color:#0ff!important}.w3-hover-text-blue:hover,.w3-text-blue{color:#2196f3!important}.w3-hover-text-light-blue:hover,.w3-text-light-blue{color:#87ceeb!important}.w3-hover-text-brown:hover,.w3-text-brown{color:#795548!important}.w3-hover-text-cyan:hover,.w3-text-cyan{color:#00bcd4!important}.w3-hover-text-blue-gray:hover,.w3-hover-text-blue-grey:hover,.w3-text-blue-gray,.w3-text-blue-grey{color:#607d8b!important}.w3-hover-text-green:hover,.w3-text-green{color:#4caf50!important}.w3-hover-text-light-green:hover,.w3-text-light-green{color:#8bc34a!important}.w3-hover-text-indigo:hover,.w3-text-indigo{color:#3f51b5!important}.w3-hover-text-khaki:hover,.w3-text-khaki{color:#b4aa50!important}.w3-hover-text-lime:hover,.w3-text-lime{color:#cddc39!important}.w3-hover-text-orange:hover,.w3-text-orange{color:#ff9800!important}.w3-hover-text-deep-orange:hover,.w3-text-deep-orange{color:#ff5722!important}.w3-hover-text-pink:hover,.w3-text-pink{color:#e91e63!important}.w3-hover-text-purple:hover,.w3-text-purple{color:#9c27b0!important}.w3-hover-text-deep-purple:hover,.w3-text-deep-purple{color:#673ab7!important}.w3-hover-text-red:hover,.w3-text-red{color:#f44336!important}.w3-hover-text-sand:hover,.w3-text-sand{color:#fdf5e6!important}.w3-hover-text-teal:hover,.w3-text-teal{color:#009688!important}.w3-hover-text-yellow:hover,.w3-text-yellow{color:#d2be0e!important}.w3-hover-text-white:hover,.w3-text-white{color:#fff!important}.w3-hover-text-black:hover,.w3-text-black{color:#000!important}.w3-hover-text-gray:hover,.w3-hover-text-grey:hover,.w3-text-gray,.w3-text-grey{color:#757575!important}.w3-hover-text-light-gray:hover,.w3-hover-text-light-grey:hover,.w3-text-light-gray,.w3-text-light-grey{color:#f1f1f1!important}.w3-hover-text-dark-gray:hover,.w3-hover-text-dark-grey:hover,.w3-text-dark-gray,.w3-text-dark-grey{color:#3a3a3a!important}.w3-border-amber,.w3-hover-border-amber:hover{border-color:#ffc107!important}.w3-border-aqua,.w3-hover-border-aqua:hover{border-color:#0ff!important}.w3-border-blue,.w3-hover-border-blue:hover{border-color:#2196f3!important}.w3-border-light-blue,.w3-hover-border-light-blue:hover{border-color:#87ceeb!important}.w3-border-brown,.w3-hover-border-brown:hover{border-color:#795548!important}.w3-border-cyan,.w3-hover-border-cyan:hover{border-color:#00bcd4!important}.w3-border-blue-gray,.w3-border-blue-grey,.w3-hover-border-blue-gray:hover,.w3-hover-border-blue-grey:hover{border-color:#607d8b!important}.w3-border-green,.w3-hover-border-green:hover{border-color:#4caf50!important}.w3-border-light-green,.w3-hover-border-light-green:hover{border-color:#8bc34a!important}.w3-border-indigo,.w3-hover-border-indigo:hover{border-color:#3f51b5!important}.w3-border-khaki,.w3-hover-border-khaki:hover{border-color:khaki!important}.w3-border-lime,.w3-hover-border-lime:hover{border-color:#cddc39!important}.w3-border-orange,.w3-hover-border-orange:hover{border-color:#ff9800!important}.w3-border-deep-orange,.w3-hover-border-deep-orange:hover{border-color:#ff5722!important}.w3-border-pink,.w3-hover-border-pink:hover{border-color:#e91e63!important}.w3-border-purple,.w3-hover-border-purple:hover{border-color:#9c27b0!important}.w3-border-deep-purple,.w3-hover-border-deep-purple:hover{border-color:#673ab7!important}.w3-border-red,.w3-hover-border-red:hover{border-color:#f44336!important}.w3-border-sand,.w3-hover-border-sand:hover{border-color:#fdf5e6!important}.w3-border-teal,.w3-hover-border-teal:hover{border-color:#009688!important}.w3-border-yellow,.w3-hover-border-yellow:hover{border-color:#ffeb3b!important}.w3-border-white,.w3-hover-border-white:hover{border-color:#fff!important}.w3-border-black,.w3-hover-border-black:hover{border-color:#000!important}.w3-border-gray,.w3-border-grey,.w3-hover-border-gray:hover,.w3-hover-border-grey:hover{border-color:#9e9e9e!important}.w3-border-light-gray,.w3-border-light-grey,.w3-hover-border-light-gray:hover,.w3-hover-border-light-grey:hover{border-color:#f1f1f1!important}.w3-border-dark-gray,.w3-border-dark-grey,.w3-hover-border-dark-gray:hover,.w3-hover-border-dark-grey:hover{border-color:#616161!important}.w3-border-pale-red,.w3-hover-border-pale-red:hover{border-color:#ffe7e7!important}.w3-border-pale-green,.w3-hover-border-pale-green:hover{border-color:#e7ffe7!important}.w3-border-pale-yellow,.w3-hover-border-pale-yellow:hover{border-color:#ffc!important}.w3-border-pale-blue,.w3-hover-border-pale-blue:hover{border-color:#e7ffff!important}\
+    // var fileContent = static.mhtml.top.replace("_html_", static.mhtml.head.replace("_styles_", css) + static.mhtml.body.replace("_body_", markup.innerHTML)) + mhtmlBottom;
+    var fileContent ='\
+    <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">\
+    <head>'+css+'\
+        <title>Document Title</title>\
+        <xml>\
+        <w:worddocument xmlns:w="#unknown">\
+            <w:view>Print</w:view>\
+            <w:zoom>90</w:zoom>\
+            <w:donotoptimizeforbrowser />\
+        </w:worddocument>\
+        </xml>\
+    </head>\
+    <body style="tab-interval:.5in">\
+        <div class="Section1">' + markup.innerHTML + '</div>\
+    </body>\
+    </html>';
+    // Create a Blob with the file contents
+    var blob = new Blob([fileContent], {
+        type: "application/msword;charset=utf-8"
+    });
+
+    //saveAs(blob, fileName + ".doc");
+    //var url = URL.createObjectURL(blob);
+    // var url = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(markup.innerHTML);
+    window.URL = window.URL || window.webkitURL;
+    var url = window.URL.createObjectURL(blob);
+    // Specify file name
+    // var url = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(markup.innerHTML);// window.atob(unescape(encodeURIComponent(markup.innerHTML)));//encodeURIComponent(markup);// window.btoa(unescape(encodeURIComponent(markup.innerHTML)));;
+    filename = filename?filename+'.doc':'document.doc';
+
+    // Create download link element
+    var downloadLink = document.createElement("a");
+
+    document.body.appendChild(downloadLink);
+
+    if(navigator.msSaveOrOpenBlob ){
+        navigator.msSaveOrOpenBlob(blob, filename); // IE10-11
+    }else{
+        // Create a link to the file
+        downloadLink.href = url;
+        
+        // Setting the file name
+        downloadLink.download = filename;
+        
+        //triggering the function
+        downloadLink.click();
+    }
+
+    document.body.removeChild(downloadLink);
+}
+
+const print2Wordv1 = (element, filename = '')=>{
+    
+    //function Export2Doc(element, filename = ''){
+        //var html, link, blob, url, css;
+        
+        /*css = (
+          '<style>' +
+          '@page WordSection1{size: 841.95pt 595.35pt;mso-page-orientation: landscape;}' +
+          'div.WordSection1 {page: WordSection1;}' +
+          '</style>'
+        );*/
+        var preHtml = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Export HTML To Doc</title>";
+        
+        //  preHtml += `<style>.w3-white{color:#000!important;background-color:#fff!important}.w3-card-4{box-shadow:0 4px 10px 0 rgba(0,0,0,.2),0 4px 20px 0 rgba(0,0,0,.19)}.w3-row:after,.w3-row:before{content:"";display:table;clear:both}.w3-col,.w3-half,.w3-quarter,.w3-third,.w3-threequarter,.w3-twothird{float:left;width:100%}.w3-col.s1{width:8.33333%}.w3-col.s2{width:16.66666%}.w3-col.s3{width:24.99999%}.w3-col.s4{width:33.33333%}.w3-col.s5{width:41.66666%}.w3-col.s6{width:49.99999%}.w3-col.s7{width:58.33333%}.w3-col.s8{width:66.66666%}.w3-col.s9{width:74.99999%}.w3-col.s10{width:83.33333%}.w3-col.s11{width:91.66666%}.w3-col.s12{width:99.99999%}@media (min-width:601px){.w3-col.m1{width:8.33333%}.w3-col.m2{width:16.66666%}.w3-col.m3,.w3-quarter{width:24.99999%}.w3-col.m4,.w3-third{width:33.33333%}.w3-col.m5{width:41.66666%}.w3-col.m6,.w3-half{width:49.99999%}.w3-col.m7{width:58.33333%}.w3-col.m8,.w3-twothird{width:66.66666%}.w3-col.m9,.w3-threequarter{width:74.99999%}.w3-col.m10{width:83.33333%}.w3-col.m11{width:91.66666%}.w3-col.m12{width:99.99999%}}@media (min-width:993px){.w3-col.l1{width:8.33333%}.w3-col.l2{width:16.66666%}.w3-col.l3{width:24.99999%}.w3-col.l4{width:33.33333%}.w3-col.l5{width:41.66666%}.w3-col.l6{width:49.99999%}.w3-col.l7{width:58.33333%}.w3-col.l8{width:66.66666%}.w3-col.l9{width:74.99999%}.w3-col.l10{width:83.33333%}.w3-col.l11{width:91.66666%}.w3-col.l12{width:99.99999%}}.w3-rest{overflow:hidden}.w3-stretch{margin-left:-16px;margin-right:-16px}.w3-auto,.w3-content{margin-left:auto;margin-right:auto}.w3-content{max-width:980px}.w3-auto{max-width:1140px}
+        //  .w3-cell-row{display:table;width:100%}.w3-cell{display:table-cell}.w3-cell-top{vertical-align:top}.w3-cell-middle{vertical-align:middle}.w3-cell-bottom{vertical-align:bottom}.w3-hide{display:none!important}.w3-sepia{filter:sepia(75%)}.w3-hover-sepia:hover,.w3-sepia-max{filter:sepia(100%)}
+        //  .w3-sepia-min{filter:sepia(50%)}.w3-tiny{font-size:10px!important}.w3-small{font-size:12px!important}.w3-medium{font-size:15px!important}.w3-large{font-size:18px!important}.w3-xlarge{font-size:24px!important}.w3-xxlarge{font-size:36px!important}.w3-xxxlarge{font-size:48px!important}
+        //  .w3-jumbo{font-size:64px!important}.w3-left-align{text-align:left!important}.w3-right-align{text-align:right!important}.w3-justify{text-align:justify!important}.w3-center{text-align:center!important}.w3-border-0{border:0!important}.w3-border{border:1px solid #ccc!important}.w3-border-top{border-top:1px solid #ccc!important}
+        //  .w3-border-bottom{border-bottom:1px solid #ccc!important}.w3-border-left{border-left:1px solid #ccc!important}.w3-border-right{border-right:1px solid #ccc!important}.w3-topbar{border-top:6px solid #ccc!important}.w3-bottombar{border-bottom:6px solid #ccc!important}.w3-leftbar{border-left:6px solid #ccc!important}
+        //  .w3-rightbar{border-right:6px solid #ccc!important}.w3-code,.w3-section{margin-top:16px!important;margin-bottom:16px!important}.w3-margin{margin:16px!important}.w3-margin-top{margin-top:16px!important}.w3-margin-bottom{margin-bottom:16px!important}.w3-margin-left{margin-left:16px!important}
+        //  .w3-margin-right{margin-right:16px!important}.w3-padding-small{padding:4px 8px!important}.w3-padding{padding:8px 16px!important}.w3-padding-large{padding:12px 24px!important}.w3-padding-16{padding-top:16px!important;padding-bottom:16px!important}.w3-padding-24{padding-top:24px!important;padding-bottom:24px!important}
+        //  .w3-padding-32{padding-top:32px!important;padding-bottom:32px!important}.w3-padding-48{padding-top:48px!important;padding-bottom:48px!important}.w3-padding-64{padding-top:64px!important;padding-bottom:64px!important}.w3-padding-top-64{padding-top:64px!important}.w3-padding-top-48{padding-top:48px!important}
+        //  .w3-padding-top-32{padding-top:32px!important}.w3-padding-top-24{padding-top:24px!important}.w3-left{float:left!important}.w3-right{float:right!important}.w3-button:hover{color:#000!important;background-color:#ccc!important}.w3-hover-none:hover,.w3-transparent{background-color:transparent!important}.w3-hover-none:hover{box-shadow:none!important}
+        //  .w3-amber,.w3-hover-amber:hover{color:#000!important;background-color:#ffc107!important}.w3-aqua,.w3-hover-aqua:hover{color:#000!important;background-color:#0ff!important}.w3-blue,.w3-hover-blue:hover{color:#fff!important;background-color:#2196f3!important}.w3-hover-light-blue:hover,
+        //  .w3-light-blue{color:#000!important;background-color:#87ceeb!important}.w3-brown,.w3-hover-brown:hover{color:#fff!important;background-color:#795548!important}.w3-cyan,.w3-hover-cyan:hover{color:#000!important;background-color:#00bcd4!important}.w3-blue-gray,.w3-blue-grey,.w3-hover-blue-gray:hover,.w3-hover-blue-grey:hover{color:#fff!important;background-color:#607d8b!important}
+        //  .w3-green,.w3-hover-green:hover{color:#fff!important;background-color:#4caf50!important}.w3-hover-light-green:hover,.w3-light-green{color:#000!important;background-color:#8bc34a!important}.w3-hover-indigo:hover,.w3-indigo{color:#fff!important;background-color:#3f51b5!important}.w3-hover-khaki:hover,.w3-khaki{color:#000!important;background-color:khaki!important}
+        //  .w3-hover-lime:hover,.w3-lime{color:#000!important;background-color:#cddc39!important}.w3-hover-orange:hover,.w3-orange{color:#000!important;background-color:#ff9800!important}.w3-deep-orange,.w3-hover-deep-orange:hover{color:#fff!important;background-color:#ff5722!important}.w3-hover-pink:hover,
+        //  .w3-pink{color:#fff!important;background-color:#e91e63!important}.w3-hover-purple:hover,.w3-purple{color:#fff!important;background-color:#9c27b0!important}.w3-deep-purple,.w3-hover-deep-purple:hover{color:#fff!important;background-color:#673ab7!important}.w3-hover-red:hover,.w3-red{color:#fff!important;background-color:#f44336!important}
+        //  .w3-hover-sand:hover,.w3-sand{color:#000!important;background-color:#fdf5e6!important}.w3-hover-teal:hover,.w3-teal{color:#fff!important;background-color:#009688!important}.w3-hover-yellow:hover,.w3-yellow{color:#000!important;background-color:#ffeb3b!important}.w3-hover-white:hover,
+        //  .w3-white{color:#000!important;background-color:#fff!important}.w3-black,.w3-hover-black:hover{color:#fff!important;background-color:#000!important}.w3-gray,.w3-grey,.w3-hover-gray:hover,.w3-hover-grey:hover{color:#000!important;background-color:#9e9e9e!important}.w3-hover-light-gray:hover,
+        //  .w3-hover-light-grey:hover,.w3-light-gray,.w3-light-grey{color:#000!important;background-color:#f1f1f1!important}.w3-dark-gray,.w3-dark-grey,.w3-hover-dark-gray:hover,.w3-hover-dark-grey:hover{color:#fff!important;background-color:#616161!important}.w3-hover-pale-red:hover,
+        //  .w3-pale-red{color:#000!important;background-color:#fdd!important}.w3-hover-pale-green:hover,.w3-pale-green{color:#000!important;background-color:#dfd!important}.w3-hover-pale-yellow:hover,.w3-pale-yellow{color:#000!important;background-color:#ffc!important}.w3-hover-pale-blue:hover,.w3-pale-blue{color:#000!important;background-color:#dff!important}.w3-hover-text-amber:hover,.w3-text-amber{color:#ffc107!important}.w3-hover-text-aqua:hover,.w3-text-aqua{color:#0ff!important}.w3-hover-text-blue:hover,.w3-text-blue{color:#2196f3!important}.w3-hover-text-light-blue:hover,.w3-text-light-blue{color:#87ceeb!important}.w3-hover-text-brown:hover,.w3-text-brown{color:#795548!important}.w3-hover-text-cyan:hover,.w3-text-cyan{color:#00bcd4!important}.w3-hover-text-blue-gray:hover,.w3-hover-text-blue-grey:hover,.w3-text-blue-gray,.w3-text-blue-grey{color:#607d8b!important}.w3-hover-text-green:hover,.w3-text-green{color:#4caf50!important}.w3-hover-text-light-green:hover,.w3-text-light-green{color:#8bc34a!important}.w3-hover-text-indigo:hover,.w3-text-indigo{color:#3f51b5!important}.w3-hover-text-khaki:hover,.w3-text-khaki{color:#b4aa50!important}.w3-hover-text-lime:hover,.w3-text-lime{color:#cddc39!important}.w3-hover-text-orange:hover,.w3-text-orange{color:#ff9800!important}.w3-hover-text-deep-orange:hover,.w3-text-deep-orange{color:#ff5722!important}.w3-hover-text-pink:hover,.w3-text-pink{color:#e91e63!important}.w3-hover-text-purple:hover,.w3-text-purple{color:#9c27b0!important}.w3-hover-text-deep-purple:hover,.w3-text-deep-purple{color:#673ab7!important}.w3-hover-text-red:hover,.w3-text-red{color:#f44336!important}.w3-hover-text-sand:hover,.w3-text-sand{color:#fdf5e6!important}.w3-hover-text-teal:hover,.w3-text-teal{color:#009688!important}.w3-hover-text-yellow:hover,.w3-text-yellow{color:#d2be0e!important}.w3-hover-text-white:hover,.w3-text-white{color:#fff!important}.w3-hover-text-black:hover,.w3-text-black{color:#000!important}.w3-hover-text-gray:hover,.w3-hover-text-grey:hover,.w3-text-gray,.w3-text-grey{color:#757575!important}.w3-hover-text-light-gray:hover,.w3-hover-text-light-grey:hover,.w3-text-light-gray,.w3-text-light-grey{color:#f1f1f1!important}.w3-hover-text-dark-gray:hover,.w3-hover-text-dark-grey:hover,
+        //  .w3-text-dark-gray,.w3-text-dark-grey{color:#3a3a3a!important}.w3-border-amber,.w3-hover-border-amber:hover{border-color:#ffc107!important}.w3-border-aqua,.w3-hover-border-aqua:hover{border-color:#0ff!important}.w3-border-blue,.w3-hover-border-blue:hover{border-color:#2196f3!important}.w3-border-light-blue,.w3-hover-border-light-blue:hover{border-color:#87ceeb!important}.w3-border-brown,.w3-hover-border-brown:hover{border-color:#795548!important}
+        //  .w3-border-cyan,.w3-hover-border-cyan:hover{border-color:#00bcd4!important}.w3-border-blue-gray,.w3-border-blue-grey,.w3-hover-border-blue-gray:hover,.w3-hover-border-blue-grey:hover{border-color:#607d8b!important}.w3-border-green,.w3-hover-border-green:hover{border-color:#4caf50!important}.w3-border-light-green,
+        //  .w3-hover-border-light-green:hover{border-color:#8bc34a!important}.w3-border-indigo,.w3-hover-border-indigo:hover{border-color:#3f51b5!important}.w3-border-khaki,.w3-hover-border-khaki:hover{border-color:khaki!important}.w3-border-lime,.w3-hover-border-lime:hover{border-color:#cddc39!important}
+        //  .w3-border-orange,.w3-hover-border-orange:hover{border-color:#ff9800!important}.w3-border-deep-orange,.w3-hover-border-deep-orange:hover{border-color:#ff5722!important}.w3-border-pink,.w3-hover-border-pink:hover{border-color:#e91e63!important}.w3-border-purple,.w3-hover-border-purple:hover{border-color:#9c27b0!important}.w3-border-deep-purple,.w3-hover-border-deep-purple:hover{border-color:#673ab7!important}.w3-border-red,.w3-hover-border-red:hover{border-color:#f44336!important}.w3-border-sand,.w3-hover-border-sand:hover{border-color:#fdf5e6!important}.w3-border-teal,.w3-hover-border-teal:hover{border-color:#009688!important}.w3-border-yellow,.w3-hover-border-yellow:hover{border-color:#ffeb3b!important}.w3-border-white,.w3-hover-border-white:hover{border-color:#fff!important}.w3-border-black,.w3-hover-border-black:hover{border-color:#000!important}.w3-border-gray,.w3-border-grey,.w3-hover-border-gray:hover,.w3-hover-border-grey:hover{border-color:#9e9e9e!important}.w3-border-light-gray,.w3-border-light-grey,.w3-hover-border-light-gray:hover,.w3-hover-border-light-grey:hover{border-color:#f1f1f1!important}.w3-border-dark-gray,.w3-border-dark-grey,.w3-hover-border-dark-gray:hover,.w3-hover-border-dark-grey:hover{border-color:#616161!important}.w3-border-pale-red,.w3-hover-border-pale-red:hover{border-color:#ffe7e7!important}.w3-border-pale-green,.w3-hover-border-pale-green:hover{border-color:#e7ffe7!important}.w3-border-pale-yellow,.w3-hover-border-pale-yellow:hover{border-color:#ffc!important}.w3-border-pale-blue,.w3-hover-border-pale-blue:hover{border-color:#e7ffff!important}`
+        // preHtml += '<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">';
+    
+        //head.innerHTML += `<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">`;
+        // preHtml +='<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">';
+    
+        // preHtml +='<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">';
+        // preHtml +='<link  rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">'
+    
+        // preHtml +='<link rel="stylesheet" href="https://syahandrianeda.github.io/syahandrianeda/css/stylegurukelas.css">'
+        css = ('\
+        <style>\
+        @page WordSection1{size: 841.95pt 595.35pt;mso-page-orientation: landscape;}\
+        @page WordSection1{size: 841.95pt 595.35pt;mso-page-orientation: portrait;}\
+        div.WordSection1 {page: WordSection1;}\
+        html{box-sizing:border-box}*,:after,:before{box-sizing:inherit}html{-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body{margin:0}article,aside,details,figcaption,figure,footer,header,main,menu,nav,section{display:block}summary{display:list-item}audio,canvas,progress,video{display:inline-block}progress{vertical-align:baseline}audio:not([controls]){display:none;height:0}[hidden],template{display:none}a{background-color:transparent}a:active,a:hover{outline-width:0}abbr[title]{border-bottom:none;text-decoration:underline;text-decoration:underline dotted}b,strong{font-weight:bolder}dfn{font-style:italic}mark{background:#ff0;color:#000}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}figure{margin:1em 40px}img{border-style:none}code,kbd,pre,samp{font-family:monospace,monospace;font-size:1em}hr{box-sizing:content-box;height:0;overflow:visible}button,input,optgroup,select,textarea{font:inherit;margin:0}optgroup{font-weight:700}button,input{overflow:visible}button,select{text-transform:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner,button::-moz-focus-inner{border-style:none;padding:0}[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[type=submit]:-moz-focusring,button:-moz-focusring{outline:1px dotted ButtonText}fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em}legend{color:inherit;display:table;max-width:100%;padding:0;white-space:normal}textarea{overflow:auto}[type=checkbox],[type=radio]{padding:0}[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}[type=search]::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}body,html{font-family:Verdana,sans-serif;font-size:15px;line-height:1.5}html{overflow-x:hidden}h1{font-size:36px}h2{font-size:30px}h3{font-size:24px}h4{font-size:20px}h5{font-size:18px}h6{font-size:16px}.Wordw3-serif{font-family:serif}.Wordw3-sans-serif{font-family:sans-serif}.Wordw3-cursive{font-family:cursive}.Wordw3-monospace{font-family:monospace}h1,h2,h3,h4,h5,h6{font-family:"Segoe UI",Arial,sans-serif;font-weight:400;margin:10px 0}.Wordw3-wide{letter-spacing:4px}hr{border:0;border-top:1px solid #eee;margin:20px 0}.Wordw3-image{max-width:100%;height:auto}img{vertical-align:middle}a{color:inherit}.Wordw3-table,.Wordw3-table-all{border-collapse:collapse;border-spacing:0;width:100%;display:table}.Wordw3-table-all{border:1px solid #ccc}.Wordw3-bordered tr,.Wordw3-table-all tr{border-bottom:1px solid #ddd}.Wordw3-striped tbody tr:nth-child(even){background-color:#f1f1f1}.Wordw3-table-all tr:nth-child(odd){background-color:#fff}.Wordw3-table-all tr:nth-child(even){background-color:#f1f1f1}.Wordw3-hoverable tbody tr:hover,.Wordw3-ul.Wordw3-hoverable li:hover{background-color:#ccc}.Wordw3-centered tr td,.Wordw3-centered tr th{text-align:center}.Wordw3-table td,.Wordw3-table th,.Wordw3-table-all td,.Wordw3-table-all th{padding:8px 8px;display:table-cell;text-align:left;vertical-align:top}.Wordw3-table td:first-child,.Wordw3-table th:first-child,.Wordw3-table-all td:first-child,.Wordw3-table-all th:first-child{padding-left:16px}.Wordw3-btn,.Wordw3-button{border:none;display:inline-block;padding:8px 16px;vertical-align:middle;overflow:hidden;text-decoration:none;color:inherit;background-color:inherit;text-align:center;cursor:pointer;white-space:nowrap}.Wordw3-btn:hover{box-shadow:0 8px 16px 0 rgba(0,0,0,.2),0 6px 20px 0 rgba(0,0,0,.19)}.Wordw3-btn,.Wordw3-button{-webkit-touch-callout:none;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.Wordw3-btn:disabled,.Wordw3-button:disabled,.Wordw3-disabled{cursor:not-allowed;opacity:.3}.Wordw3-disabled *,:disabled *{pointer-events:none}.Wordw3-btn.Wordw3-disabled:hover,.Wordw3-btn:disabled:hover{box-shadow:none}.Wordw3-badge,.Wordw3-tag{background-color:#000;color:#fff;display:inline-block;padding-left:8px;padding-right:8px;text-align:center}.Wordw3-badge{border-radius:50%}.Wordw3-ul{list-style-type:none;padding:0;margin:0}.Wordw3-ul li{padding:8px 16px;border-bottom:1px solid #ddd}.Wordw3-ul li:last-child{border-bottom:none}.Wordw3-display-container,.Wordw3-tooltip{position:relative}.Wordw3-tooltip .Wordw3-text{display:none}.Wordw3-tooltip:hover .Wordw3-text{display:inline-block}.Wordw3-ripple:active{opacity:.5}.Wordw3-ripple{transition:opacity 0s}.Wordw3-input{padding:8px;display:block;border:none;border-bottom:1px solid #ccc;width:100%}.Wordw3-select{padding:9px 0;width:100%;border:none;border-bottom:1px solid #ccc}\
+        .Wordw3-dropdown-click,.Wordw3-dropdown-hover{position:relative;display:inline-block;cursor:pointer}.Wordw3-dropdown-hover:hover .Wordw3-dropdown-content{display:block}.Wordw3-dropdown-click:hover,.Wordw3-dropdown-hover:first-child{background-color:#ccc;color:#000}.Wordw3-dropdown-click:hover>.Wordw3-button:first-child,.Wordw3-dropdown-hover:hover>.Wordw3-button:first-child{background-color:#ccc;color:#000}.Wordw3-dropdown-content{cursor:auto;color:#000;background-color:#fff;display:none;position:absolute;min-width:160px;margin:0;padding:0;z-index:1}.Wordw3-check,.Wordw3-radio{width:24px;height:24px;position:relative;top:6px}.Wordw3-sidebar{height:100%;width:200px;background-color:#fff;position:fixed!important;z-index:1;overflow:auto}.Wordw3-bar-block .Wordw3-dropdown-click,.Wordw3-bar-block .Wordw3-dropdown-hover{width:100%}.Wordw3-bar-block .Wordw3-dropdown-click .Wordw3-dropdown-content,.Wordw3-bar-block .Wordw3-dropdown-hover .Wordw3-dropdown-content{min-width:100%}.Wordw3-bar-block .Wordw3-dropdown-click .Wordw3-button,.Wordw3-bar-block .Wordw3-dropdown-hover .Wordw3-button{width:100%;text-align:left;padding:8px 16px}#main,.Wordw3-main{transition:margin-left .4s}.Wordw3-modal{z-index:3;display:none;padding-top:100px;position:fixed;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:#000;background-color:rgba(0,0,0,.4)}.Wordw3-modal-content{margin:auto;background-color:#fff;position:relative;padding:0;outline:0;width:600px}.Wordw3-bar{width:100%;overflow:hidden}.Wordw3-center .Wordw3-bar{display:inline-block;width:auto}.Wordw3-bar .Wordw3-bar-item{padding:8px 16px;float:left;width:auto;border:none;display:block;outline:0}.Wordw3-bar .Wordw3-dropdown-click,.Wordw3-bar .Wordw3-dropdown-hover{position:static;float:left}.Wordw3-bar .Wordw3-button{white-space:normal}.Wordw3-bar-block .Wordw3-bar-item{width:100%;display:block;padding:8px 16px;text-align:left;border:none;white-space:normal;float:none;outline:0}.Wordw3-bar-block.Wordw3-center .Wordw3-bar-item{text-align:center}.Wordw3-block{display:block;width:100%}.Wordw3-responsive{display:block;overflow-x:auto}.Wordw3-bar:after,.Wordw3-bar:before,.Wordw3-cell-row:after,.Wordw3-cell-row:before,.Wordw3-clear:after,.Wordw3-clear:before,.Wordw3-container:after,.Wordw3-container:before,.Wordw3-panel:after,.Wordw3-panel:before,.Wordw3-row-padding:after,.Wordw3-row-padding:before,.Wordw3-row:after,.Wordw3-row:before{content:"";display:table;clear:both}.Wordw3-col,.Wordw3-half,.Wordw3-quarter,.Wordw3-third,.Wordw3-threequarter,.Wordw3-twothird{float:left;width:100%}.Wordw3-col.s1{width:8.33333%}.Wordw3-col.s2{width:16.66666%}.Wordw3-col.s3{width:24.99999%}.Wordw3-col.s4{width:33.33333%}.Wordw3-col.s5{width:41.66666%}.Wordw3-col.s6{width:49.99999%}.Wordw3-col.s7{width:58.33333%}.Wordw3-col.s8{width:66.66666%}.Wordw3-col.s9{width:74.99999%}.Wordw3-col.s10{width:83.33333%}.Wordw3-col.s11{width:91.66666%}.Wordw3-col.s12{width:99.99999%}@media (min-width:601px){.Wordw3-col.m1{width:8.33333%}.Wordw3-col.m2{width:16.66666%}.Wordw3-col.m3,.Wordw3-quarter{width:24.99999%}.Wordw3-col.m4,.Wordw3-third{width:33.33333%}.Wordw3-col.m5{width:41.66666%}.Wordw3-col.m6,.Wordw3-half{width:49.99999%}.Wordw3-col.m7{width:58.33333%}.Wordw3-col.m8,.Wordw3-twothird{width:66.66666%}.Wordw3-col.m9,.Wordw3-threequarter{width:74.99999%}.Wordw3-col.m10{width:83.33333%}.Wordw3-col.m11{width:91.66666%}.Wordw3-col.m12{width:99.99999%}}@media (min-width:993px){.Wordw3-col.l1{width:8.33333%}.Wordw3-col.l2{width:16.66666%}.Wordw3-col.l3{width:24.99999%}.Wordw3-col.l4{width:33.33333%}.Wordw3-col.l5{width:41.66666%}.Wordw3-col.l6{width:49.99999%}.Wordw3-col.l7{width:58.33333%}.Wordw3-col.l8{width:66.66666%}.Wordw3-col.l9{width:74.99999%}.Wordw3-col.l10{width:83.33333%}.Wordw3-col.l11{width:91.66666%}.Wordw3-col.l12{width:99.99999%}}.Wordw3-rest{overflow:hidden}.Wordw3-stretch{margin-left:-16px;margin-right:-16px}.Wordw3-auto,.Wordw3-content{margin-left:auto;margin-right:auto}.Wordw3-content{max-width:980px}.Wordw3-auto{max-width:1140px}.Wordw3-cell-row{display:table;width:100%}.Wordw3-cell{display:table-cell}.Wordw3-cell-top{vertical-align:top}.Wordw3-cell-middle{vertical-align:middle}.Wordw3-cell-bottom{vertical-align:bottom}.Wordw3-hide{display:none!important}.Wordw3-show,.Wordw3-show-block{display:block!important}.Wordw3-show-inline-block{display:inline-block!important}@media (max-width:1205px){.Wordw3-auto{max-width:95%}}@media (max-width:600px){.Wordw3-modal-content{margin:0 10px;width:auto!important}.Wordw3-modal{padding-top:30px}.Wordw3-dropdown-click.Wordw3-mobile .Wordw3-dropdown-content,.Wordw3-dropdown-hover.Wordw3-mobile .Wordw3-dropdown-content{position:relative}.Wordw3-hide-small{display:none!important}.Wordw3-mobile{display:block;width:100%!important}.Wordw3-bar-item.Wordw3-mobile,.Wordw3-dropdown-click.Wordw3-mobile,.Wordw3-dropdown-hover.Wordw3-mobile{text-align:center}.Wordw3-dropdown-click.Wordw3-mobile,.Wordw3-dropdown-click.Wordw3-mobile .Wordw3-btn,.Wordw3-dropdown-click.Wordw3-mobile .Wordw3-button,.Wordw3-dropdown-hover.Wordw3-mobile,.Wordw3-dropdown-hover.Wordw3-mobile .Wordw3-btn,.Wordw3-dropdown-hover.Wordw3-mobile .Wordw3-button{width:100%}}@media (max-width:768px){.Wordw3-modal-content{width:500px}.Wordw3-modal{padding-top:50px}}@media (min-width:993px){.Wordw3-modal-content{width:900px}.Wordw3-hide-large{display:none!important}.Wordw3-sidebar.Wordw3-collapse{display:block!important}}@media (max-width:992px) and (min-width:601px){.Wordw3-hide-medium{display:none!important}}@media (max-width:992px){.Wordw3-sidebar.Wordw3-collapse{display:none}.Wordw3-main{margin-left:0!important;margin-right:0!important}.Wordw3-auto{max-width:100%}}.Wordw3-bottom,.Wordw3-top{position:fixed;width:100%;z-index:1}.Wordw3-top{top:0}.Wordw3-bottom{bottom:0}.Wordw3-overlay{position:fixed;display:none;width:100%;height:100%;top:0;left:0;right:0;bottom:0;background-color:rgba(0,0,0,.5);z-index:2}.Wordw3-display-topleft{position:absolute;left:0;top:0}.Wordw3-display-topright{position:absolute;right:0;top:0}.Wordw3-display-bottomleft{position:absolute;left:0;bottom:0}.Wordw3-display-bottomright{position:absolute;right:0;bottom:0}.Wordw3-display-middle{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);-ms-transform:translate(-50%,-50%)}.Wordw3-display-left{position:absolute;top:50%;left:0;transform:translate(0,-50%);-ms-transform:translate(0,-50%)}.Wordw3-display-right{position:absolute;top:50%;right:0;transform:translate(0,-50%);-ms-transform:translate(0,-50%)}.Wordw3-display-topmiddle{position:absolute;left:50%;top:0;transform:translate(-50%,0);-ms-transform:translate(-50%,0)}.Wordw3-display-bottommiddle{position:absolute;left:50%;bottom:0;transform:translate(-50%,0);-ms-transform:translate(-50%,0)}.Wordw3-display-container:hover .Wordw3-display-hover{display:block}.Wordw3-display-container:hover span.Wordw3-display-hover{display:inline-block}.Wordw3-display-hover{display:none}.Wordw3-display-position{position:absolute}.Wordw3-circle{border-radius:50%}.Wordw3-round-small{border-radius:2px}.Wordw3-round,.Wordw3-round-medium{border-radius:4px}.Wordw3-round-large{border-radius:8px}.Wordw3-round-xlarge{border-radius:16px}.Wordw3-round-xxlarge{border-radius:32px}.Wordw3-row-padding,.Wordw3-row-padding>.Wordw3-col,.Wordw3-row-padding>.Wordw3-half,.Wordw3-row-padding>.Wordw3-quarter,.Wordw3-row-padding>.Wordw3-third,.Wordw3-row-padding>.Wordw3-threequarter,.Wordw3-row-padding>.Wordw3-twothird{padding:0 8px}.Wordw3-container,.Wordw3-panel{padding:.01em 16px}.Wordw3-panel{margin-top:16px;margin-bottom:16px}.Wordw3-code,.Wordw3-codespan{font-family:Consolas,"courier new";font-size:16px}.Wordw3-code{width:auto;background-color:#fff;padding:8px 12px;border-left:4px solid #4caf50;word-wrap:break-word}.Wordw3-codespan{color:#dc143c;background-color:#f1f1f1;padding-left:4px;padding-right:4px;font-size:110%}.Wordw3-card,.Wordw3-card-2{box-shadow:0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12)}.Wordw3-card-4,.Wordw3-hover-shadow:hover{box-shadow:0 4px 10px 0 rgba(0,0,0,.2),0 4px 20px 0 rgba(0,0,0,.19)}.Wordw3-spin{animation:w3-spin 2s infinite linear}@keyframes w3-spin{0%{transform:rotate(0)}100%{transform:rotate(359deg)}}.Wordw3-animate-fading{animation:fading 10s infinite}@keyframes fading{0%{opacity:0}50%{opacity:1}100%{opacity:0}}.Wordw3-animate-opacity{animation:opac .8s}@keyframes opac{from{opacity:0}to{opacity:1}}.Wordw3-animate-top{position:relative;animation:animatetop .4s}@keyframes animatetop{from{top:-300px;opacity:0}to{top:0;opacity:1}}.Wordw3-animate-left{position:relative;animation:animateleft .4s}@keyframes animateleft{from{left:-300px;opacity:0}to{left:0;opacity:1}}.Wordw3-animate-right{position:relative;animation:animateright .4s}@keyframes animateright{from{right:-300px;opacity:0}to{right:0;opacity:1}}.Wordw3-animate-bottom{position:relative;animation:animatebottom .4s}@keyframes animatebottom{from{bottom:-300px;opacity:0}to{bottom:0;opacity:1}}.Wordw3-animate-zoom{animation:animatezoom .6s}@keyframes animatezoom{from{transform:scale(0)}to{transform:scale(1)}}.Wordw3-animate-input{transition:width .4s ease-in-out}.Wordw3-animate-input:focus{width:100%!important}.Wordw3-hover-opacity:hover,.Wordw3-opacity{opacity:.6}.Wordw3-hover-opacity-off:hover,.Wordw3-opacity-off{opacity:1}.Wordw3-opacity-max{opacity:.25}.Wordw3-opacity-min{opacity:.75}.Wordw3-grayscale-max,.Wordw3-greyscale-max,.Wordw3-hover-grayscale:hover,.Wordw3-hover-greyscale:hover{filter:grayscale(100%)}.Wordw3-grayscale,.Wordw3-greyscale{filter:grayscale(75%)}.Wordw3-grayscale-min,.Wordw3-greyscale-min{filter:grayscale(50%)}.Wordw3-sepia{filter:sepia(75%)}.Wordw3-hover-sepia:hover,.Wordw3-sepia-max{filter:sepia(100%)}.Wordw3-sepia-min{filter:sepia(50%)}.Wordw3-tiny{font-size:10px!important}.Wordw3-small{font-size:12px!important}.Wordw3-medium{font-size:15px!important}.Wordw3-large{font-size:18px!important}.Wordw3-xlarge{font-size:24px!important}\
+        .Wordw3-xxlarge{font-size:36px!important}.Wordw3-xxxlarge{font-size:48px!important}.Wordw3-jumbo{font-size:64px!important}.Wordw3-left-align{text-align:left!important}.Wordw3-right-align{text-align:right!important}.Wordw3-justify{text-align:justify!important}.Wordw3-center{text-align:center!important}.Wordw3-border-0{border:0!important}.Wordw3-border{border:1px solid #ccc!important}.Wordw3-border-top{border-top:1px solid #ccc!important}.Wordw3-border-bottom{border-bottom:1px solid #ccc!important}.Wordw3-border-left{border-left:1px solid #ccc!important}.Wordw3-border-right{border-right:1px solid #ccc!important}.Wordw3-topbar{border-top:6px solid #ccc!important}.Wordw3-bottombar{border-bottom:6px solid #ccc!important}.Wordw3-leftbar{border-left:6px solid #ccc!important}.Wordw3-rightbar{border-right:6px solid #ccc!important}.Wordw3-code,.Wordw3-section{margin-top:16px!important;margin-bottom:16px!important}.Wordw3-margin{margin:16px!important}.Wordw3-margin-top{margin-top:16px!important}.Wordw3-margin-bottom{margin-bottom:16px!important}.Wordw3-margin-left{margin-left:16px!important}.Wordw3-margin-right{margin-right:16px!important}.Wordw3-padding-small{padding:4px 8px!important}.Wordw3-padding{padding:8px 16px!important}.Wordw3-padding-large{padding:12px 24px!important}.Wordw3-padding-16{padding-top:16px!important;padding-bottom:16px!important}.Wordw3-padding-24{padding-top:24px!important;padding-bottom:24px!important}.Wordw3-padding-32{padding-top:32px!important;padding-bottom:32px!important}.Wordw3-padding-48{padding-top:48px!important;padding-bottom:48px!important}.Wordw3-padding-64{padding-top:64px!important;padding-bottom:64px!important}.Wordw3-padding-top-64{padding-top:64px!important}.Wordw3-padding-top-48{padding-top:48px!important}.Wordw3-padding-top-32{padding-top:32px!important}.Wordw3-padding-top-24{padding-top:24px!important}.Wordw3-left{float:left!important}.Wordw3-right{float:right!important}.Wordw3-button:hover{color:#000!important;background-color:#ccc!important}.Wordw3-hover-none:hover,.Wordw3-transparent{background-color:transparent!important}.Wordw3-hover-none:hover{box-shadow:none!important}.Wordw3-amber,.Wordw3-hover-amber:hover{color:#000!important;background-color:#ffc107!important}.Wordw3-aqua,.Wordw3-hover-aqua:hover{color:#000!important;background-color:#0ff!important}.Wordw3-blue,.Wordw3-hover-blue:hover{color:#fff!important;background-color:#2196f3!important}.Wordw3-hover-light-blue:hover,.Wordw3-light-blue{color:#000!important;background-color:#87ceeb!important}.Wordw3-brown,.Wordw3-hover-brown:hover{color:#fff!important;background-color:#795548!important}.Wordw3-cyan,.Wordw3-hover-cyan:hover{color:#000!important;background-color:#00bcd4!important}.Wordw3-blue-gray,.Wordw3-blue-grey,.Wordw3-hover-blue-gray:hover,.Wordw3-hover-blue-grey:hover{color:#fff!important;background-color:#607d8b!important}.Wordw3-green,.Wordw3-hover-green:hover{color:#fff!important;background-color:#4caf50!important}.Wordw3-hover-light-green:hover,.Wordw3-light-green{color:#000!important;background-color:#8bc34a!important}.Wordw3-hover-indigo:hover,.Wordw3-indigo{color:#fff!important;background-color:#3f51b5!important}.Wordw3-hover-khaki:hover,.Wordw3-khaki{color:#000!important;background-color:khaki!important}.Wordw3-hover-lime:hover,.Wordw3-lime{color:#000!important;background-color:#cddc39!important}.Wordw3-hover-orange:hover,.Wordw3-orange{color:#000!important;background-color:#ff9800!important}.Wordw3-deep-orange,.Wordw3-hover-deep-orange:hover{color:#fff!important;background-color:#ff5722!important}.Wordw3-hover-pink:hover,.Wordw3-pink{color:#fff!important;background-color:#e91e63!important}.Wordw3-hover-purple:hover,.Wordw3-purple{color:#fff!important;background-color:#9c27b0!important}.Wordw3-deep-purple,.Wordw3-hover-deep-purple:hover{color:#fff!important;background-color:#673ab7!important}.Wordw3-hover-red:hover,.Wordw3-red{color:#fff!important;background-color:#f44336!important}.Wordw3-hover-sand:hover,.Wordw3-sand{color:#000!important;background-color:#fdf5e6!important}.Wordw3-hover-teal:hover,.Wordw3-teal{color:#fff!important;background-color:#009688!important}.Wordw3-hover-yellow:hover,.Wordw3-yellow{color:#000!important;background-color:#ffeb3b!important}.Wordw3-hover-white:hover,.Wordw3-white{color:#000!important;background-color:#fff!important}.Wordw3-black,.Wordw3-hover-black:hover{color:#fff!important;background-color:#000!important}.Wordw3-gray,.Wordw3-grey,\
+        .Wordw3-hover-gray:hover,.Wordw3-hover-grey:hover{color:#000!important;background-color:#9e9e9e!important}.Wordw3-hover-light-gray:hover,.Wordw3-hover-light-grey:hover,.Wordw3-light-gray,.Wordw3-light-grey{color:#000!important;background-color:#f1f1f1!important}.Wordw3-dark-gray,.Wordw3-dark-grey,.Wordw3-hover-dark-gray:hover,.Wordw3-hover-dark-grey:hover{color:#fff!important;background-color:#616161!important}.Wordw3-hover-pale-red:hover,.Wordw3-pale-red{color:#000!important;background-color:#fdd!important}.Wordw3-hover-pale-green:hover,.Wordw3-pale-green{color:#000!important;background-color:#dfd!important}.Wordw3-hover-pale-yellow:hover,.Wordw3-pale-yellow{color:#000!important;background-color:#ffc!important}.Wordw3-hover-pale-blue:hover,.Wordw3-pale-blue{color:#000!important;background-color:#dff!important}.Wordw3-hover-text-amber:hover,.Wordw3-text-amber{color:#ffc107!important}.Wordw3-hover-text-aqua:hover,.Wordw3-text-aqua{color:#0ff!important}.Wordw3-hover-text-blue:hover,.Wordw3-text-blue{color:#2196f3!important}.Wordw3-hover-text-light-blue:hover,.Wordw3-text-light-blue{color:#87ceeb!important}.Wordw3-hover-text-brown:hover,.Wordw3-text-brown{color:#795548!important}.Wordw3-hover-text-cyan:hover,.Wordw3-text-cyan{color:#00bcd4!important}.Wordw3-hover-text-blue-gray:hover,.Wordw3-hover-text-blue-grey:hover,.Wordw3-text-blue-gray,.Wordw3-text-blue-grey{color:#607d8b!important}.Wordw3-hover-text-green:hover,.Wordw3-text-green{color:#4caf50!important}.Wordw3-hover-text-light-green:hover,.Wordw3-text-light-green{color:#8bc34a!important}.Wordw3-hover-text-indigo:hover,.Wordw3-text-indigo{color:#3f51b5!important}.Wordw3-hover-text-khaki:hover,.Wordw3-text-khaki{color:#b4aa50!important}.Wordw3-hover-text-lime:hover,.Wordw3-text-lime{color:#cddc39!important}.Wordw3-hover-text-orange:hover,.Wordw3-text-orange{color:#ff9800!important}.Wordw3-hover-text-deep-orange:hover,.Wordw3-text-deep-orange{color:#ff5722!important}.Wordw3-hover-text-pink:hover,.Wordw3-text-pink{color:#e91e63!important}.Wordw3-hover-text-purple:hover,.Wordw3-text-purple{color:#9c27b0!important}.Wordw3-hover-text-deep-purple:hover,.Wordw3-text-deep-purple{color:#673ab7!important}.Wordw3-hover-text-red:hover,.Wordw3-text-red{color:#f44336!important}.Wordw3-hover-text-sand:hover,.Wordw3-text-sand{color:#fdf5e6!important}.Wordw3-hover-text-teal:hover,.Wordw3-text-teal{color:#009688!important}.Wordw3-hover-text-yellow:hover,.Wordw3-text-yellow{color:#d2be0e!important}.Wordw3-hover-text-white:hover,.Wordw3-text-white{color:#fff!important}.Wordw3-hover-text-black:hover,.Wordw3-text-black{color:#000!important}.Wordw3-hover-text-gray:hover,.Wordw3-hover-text-grey:hover,.Wordw3-text-gray,.Wordw3-text-grey{color:#757575!important}.Wordw3-hover-text-light-gray:hover,.Wordw3-hover-text-light-grey:hover,.Wordw3-text-light-gray,.Wordw3-text-light-grey{color:#f1f1f1!important}.Wordw3-hover-text-dark-gray:hover,.Wordw3-hover-text-dark-grey:hover,.Wordw3-text-dark-gray,.Wordw3-text-dark-grey{color:#3a3a3a!important}.Wordw3-border-amber,.Wordw3-hover-border-amber:hover{border-color:#ffc107!important}.Wordw3-border-aqua,.Wordw3-hover-border-aqua:hover{border-color:#0ff!important}.Wordw3-border-blue,.Wordw3-hover-border-blue:hover{border-color:#2196f3!important}.Wordw3-border-light-blue,.Wordw3-hover-border-light-blue:hover{border-color:#87ceeb!important}.Wordw3-border-brown,.Wordw3-hover-border-brown:hover{border-color:#795548!important}.Wordw3-border-cyan,.Wordw3-hover-border-cyan:hover{border-color:#00bcd4!important}.Wordw3-border-blue-gray,.Wordw3-border-blue-grey,.Wordw3-hover-border-blue-gray:hover,.Wordw3-hover-border-blue-grey:hover{border-color:#607d8b!important}.Wordw3-border-green,.Wordw3-hover-border-green:hover{border-color:#4caf50!important}.Wordw3-border-light-green,.Wordw3-hover-border-light-green:hover{border-color:#8bc34a!important}.Wordw3-border-indigo,.Wordw3-hover-border-indigo:hover{border-color:#3f51b5!important}.Wordw3-border-khaki,.Wordw3-hover-border-khaki:hover{border-color:khaki!important}.Wordw3-border-lime,.Wordw3-hover-border-lime:hover{border-color:#cddc39!important}.Wordw3-border-orange,.Wordw3-hover-border-orange:hover{border-color:#ff9800!important}.Wordw3-border-deep-orange,.Wordw3-hover-border-deep-orange:hover{border-color:#ff5722!important}.Wordw3-border-pink,.Wordw3-hover-border-pink:hover{border-color:#e91e63!important}.Wordw3-border-purple,.Wordw3-hover-border-purple:hover{border-color:#9c27b0!important}.Wordw3-border-deep-purple,.Wordw3-hover-border-deep-purple:hover{border-color:#673ab7!important}.Wordw3-border-red,.Wordw3-hover-border-red:hover{border-color:#f44336!important}.Wordw3-border-sand,.Wordw3-hover-border-sand:hover{border-color:#fdf5e6!important}.Wordw3-border-teal,.Wordw3-hover-border-teal:hover{border-color:#009688!important}.Wordw3-border-yellow,.Wordw3-hover-border-yellow:hover{border-color:#ffeb3b!important}.Wordw3-border-white,.Wordw3-hover-border-white:hover{border-color:#fff!important}.Wordw3-border-black,.Wordw3-hover-border-black:hover{border-color:#000!important}.Wordw3-border-gray,.Wordw3-border-grey,.Wordw3-hover-border-gray:hover,.Wordw3-hover-border-grey:hover{border-color:#9e9e9e!important}.Wordw3-border-light-gray,.Wordw3-border-light-grey,.Wordw3-hover-border-light-gray:hover,.Wordw3-hover-border-light-grey:hover{border-color:#f1f1f1!important}.Wordw3-border-dark-gray,.Wordw3-border-dark-grey,.Wordw3-hover-border-dark-gray:hover,.Wordw3-hover-border-dark-grey:hover{border-color:#616161!important}.Wordw3-border-pale-red,.Wordw3-hover-border-pale-red:hover{border-color:#ffe7e7!important}.Wordw3-border-pale-green,.Wordw3-hover-border-pale-green:hover{border-color:#e7ffe7!important}.Wordw3-border-pale-yellow,.Wordw3-hover-border-pale-yellow:hover{border-color:#ffc!important}.Wordw3-border-pale-blue,.Wordw3-hover-border-pale-blue:hover{border-color:#e7ffff!important}\
+        </style>\
+        ');
+        preHtml +="</head><body><div class='w3-border w3-border-black'>HALOOOOOO</div>"
+
+        var postHtml = "</body></html>";
+        
+        var convv = document.getElementById(element).innerHTML;
+        var conv2 = convv.replace(/src="\/img/g,`src="https://edurasa.com/img`);
+        var conv1 = conv2.replace("90px",`2cm`);
+        var conv = '<div class="Section1">' + conv1 + '</div>'; 
+
+        var html = preHtml+conv+postHtml;
+    
+        var blob = new Blob(['\ufeff', css + html], {
+            type: 'application/msword'
+        });
+        //var url = URL.createObjectURL(blob);
+        var url = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(html);
+        // window.URL = window.URL || window.webkitURL;
+        // var url = window.URL.createObjectURL(blob);
+        
+        // Specify file name
+        filename = filename?filename+'.doc':'document.doc';
+        
+        // Create download link element
+        var downloadLink = document.createElement("a");
+    
+        document.body.appendChild(downloadLink);
+        
+        if(navigator.msSaveOrOpenBlob ){
+            navigator.msSaveOrOpenBlob(blob, filename); // IE10-11
+        }else{
+            // Create a link to the file
+            downloadLink.href = url;
+            
+            // Setting the file name
+            downloadLink.download = filename;
+            
+            //triggering the function
+            downloadLink.click();
+        }
+        
+        document.body.removeChild(downloadLink);
+    // }
+     
+}
+
+function CleanWordFormatting(input) {
+    // 1. Remove line breaks / Mso classes
+    var stringStripper = /(\n|\r| class=(")?Mso[a-zA-Z]+(")?)/g;
+    var output = input.replace(stringStripper, ' ');
+
+    // 2. Strip Word generated HTML comments
+    var commentSripper = new RegExp('<!--(.*?)-->', 'g');
+    var output = output.replace(commentSripper, '');
+    var tagStripper = new RegExp('<(/)*(meta|link|\\?xml:|st1:|o:|font)(.*?)>', 'gi');
+
+    // 3. Remove tags leave content if any
+    output = output.replace(tagStripper, '');
+
+    // 4. Remove everything in between and including tags '<style(.)style(.)>'
+    var badTags = ['style', 'script', 'applet', 'embed', 'noframes', 'noscript'];
+    for (var i = 0; i < badTags.length; i++) {
+        tagStripper = new RegExp('<' + badTags[i] + '.*?' + badTags[i] + '(.*?)>', 'gi');
+        output = output.replace(tagStripper, '');
+    }
+
+    // 5. Remove any unwanted styling
+    // NOTE: Add your own list of 'blacklisted' css attributes here
+    var badStyling = ['margin-top:', 'margin-bottom:', 'line-height:', 'mso-fareast-font-family:&quot;', 'font-weight:', 'margin:'];
+    for (var i = 0; i < badStyling.length; i++) {
+        attrStripper = new RegExp('(' + badStyling[i] + ')([^;]*)+[^]', 'gm');
+        output = output.replace(attrStripper, '');
+    }
+
+    // 6. Remove any unwanted attributes
+    var badAttributes = ['start'];
+    for (var i = 0; i < badAttributes.length; i++) {
+        var attributeStripper = new RegExp(' ' + badAttributes[i] + '="(.*?)"', 'gi');
+        output = output.replace(attributeStripper, '');
+    }
+
+    return output;
+}
+
+//http://jsfiddle.net/z5hroz4p/8/
+function get_previoussibling(n) {
+    x = n.previousSibling;
+    while (x.nodeType != 1) {
+        x = x.previousSibling;
+    }
+    return x;
+}
+function get_nextsibling(n) {
+    x = n.nextSibling;
+    while (x != null && x.nodeType != 1) {
+        x = x.nextSibling;
+    }
+
+    return x;
+}
+function MoveUp() {
+    var table,// =document.querySelector(".tempatnaskahsoal_soal"),
+        row = this.parentNode;
+
+
+    while (row != null) {
+        if (row.nodeName == 'TR') {
+            break;
+        }
+        row = row.parentNode;
+    }
+    table = row.parentNode;
+    
+    let batas = row.rowIndex;
+    if (batas !== 0) {
+        table.insertBefore(row, get_previoussibling(row));
+
+    } else {
+        alert("Cukup, tidak bisa dinaikkan lagi.");
+        return
+    }
+
+    tabel = document.querySelector(".tempatnaskahsoal_soal");
+    let lRow = tabel.rows;
+    let no=0;
+    for(i=0; i < lRow.length ; i++){
+        if(lRow[i].hasAttribute("class")){
+            // no = no
+        }else{
+            no++
+        }
+        if(lRow[i].cells.length == 3){
+            lRow[i].cells[1].innerHTML = no+".";
+        }else if(lRow[i].cells.length == 4){
+            lRow[i].cells[2].innerHTML = no+".";
+        }
+    }
+
+
+}
+function MoveDown() {
+    // var table = document.querySelector(".tempatnaskahsoal_soal"),
+    var table,
+        row = this.parentNode;
+    let cektabel = document.querySelector(".tempatnaskahsoal_soal");
+    let batasbawah = cektabel.rows.length;
+
+    while (row != null) {
+        if (row.nodeName == 'TR') {
+            break;
+        }
+        row = row.parentNode;
+    }
+    table = row.parentNode;
+    // console.log("movedown",table);//result tbody
+    // let batas = row.rowIndex;
+    // console.log(batas);
+    // if (batas !== (batasbawah - 1)) {
+    //     table.insertBefore(row, get_nextsibling(get_nextsibling(row)));
+
+    // } else {
+    //     alert
+    // }
+
+    let batas = row.rowIndex;
+    if (batas !== (batasbawah - 1)) {
+        table.insertBefore(row, get_nextsibling(get_nextsibling(row)));
+
+    } else {
+        alert("Cukup, tidak bisa diturunkan lagi.");
+        return
+    }
+
+    tabel = document.querySelector(".tempatnaskahsoal_soal");
+    let lRow = tabel.rows;
+    let no=0;
+    for(i=0; i < lRow.length ; i++){
+        if(lRow[i].hasAttribute("class")){
+            // no = no
+        }else{
+            no++
+        }
+        if(lRow[i].cells.length == 3){
+            lRow[i].cells[1].innerHTML = no+".";
+        }else if(lRow[i].cells.length == 4){
+            lRow[i].cells[2].innerHTML = no+".";
+        }
+    }
+
+
+}
+
+const editsoalini =  (el)=>{
+    let tabel = document.querySelector(".tempatnaskahsoal_soal");
+    let lRow = el.parentElement.rowIndex;
+    let lCol = el.cellIndex;
+    
+    el.setAttribute("data-idbarissoal",lRow+"_"+lCol);
+}
+
+const informasi_naskahsoal = (k) =>{
+    let div = document.querySelector(".infobutton_naskahsoal");
+    if(k == "naikkan"){
+        div.innerHTML ="Jadikan nomor soal ini naik satu tingkat"
+    }else if(k == "turunkan"){
+        div.innerHTML ="Jadikan nomor soal ini turun satu tingkat"
+    }else if(k =="tambahpetunjuk"){
+        div.innerHTML =`Adakalanya soal memerlukan petunjuk. Misalnya:<br><br>Berilah tanda silang (x) pada huruf A, B, C, dan D di depan jawaban yang paling benar! <br>Teks Ilustrasi berikut untuk menjawab pertanyaan soal nomor 38 dan 39!<br><br>Pada database naskah soal, kami menyedikan <b>Ilustrasi</b>,<b> pertanyaan</b>, <b> dan opsi pilihan Ganda</b>. Setiap ilustrasi yang sama, bisa dihilangkan ceklisnya ketika Anda memilih soal tersebut.`;
+    }else if(k=="hapus"){
+        div.innerHTML ="Hapus soal ini dari desain naskah soal."
+    }else if(k=="tambahsoal"){
+        div.innerHTML ="Anda akan ditambahkan kolom untuk pengisian item soal baru"
+    }else if(k == "cetak"){
+        div.innerHTML = "Anda bisa mencetak naskah soal yang Anda desain. Tampilan cetak akan mengilangkan tombol bantu dari area desain"
+    }else if(k=="exportmsword"){
+        div.innerHTML = "(fitur trial): Anda dapat mengeksport desain naskah soal ke dalam file Ms. Word"
+    }else if(k=="downloadkisi"){
+        div.innerHTML ="Desain naskah soal Anda akan otomatis dibuatkan File-file kisi-kisinya. Anda tinggal mencetaknya atau mencetaknya."
+    }else if(k=="downloadkunci"){
+        div.innerHTML = "Desain naskah soal Anda akan otomatis dibuatkan file kunci jawaban dan/atau penskoran soal isiannya."
+    }else if(k=="simpanserver"){
+        div.innerHTML = "Simpan desain naskah soal yang Anda buat ini sebagai karya Anda. Anda dapat melihatnya kemballi di menu <b>Databas Bank Soal</b>"
+    }
+}
+const removeinformasi = ()=>{
+    document.querySelector(".infobutton_naskahsoal").innerHTML = "";
+}
+const tambahkanselnaskahsoal = ()=>{
+    let tabel = document.querySelector(".tempatnaskahsoal_soal");
+    let r = tabel.insertRow();
+    r.setAttribute("onmouseover","td_tomboleditsoal(this,'show')");
+    r.setAttribute("onmouseout","td_tomboleditsoal(this,'hide')");
+
+    let d = r.insertCell(-1);
+    d.setAttribute("class","w3-hide");
+    d.innerHTML = `<button onclick="MoveUp.call(this)" onmouseover="informasi_naskahsoal('naikkan')" onmouseout="removeinformasi()" class="warnaeka w3-button  w3-round-large " title="Naikkan">&#8679;</button><button onclick="MoveDown.call(this)" onmouseover="informasi_naskahsoal('turunkan')" onmouseout="removeinformasi()"  class="warnaeka w3-button  w3-round-large" title="Turunkan">&#8681;</button><button class="warnaeka w3-button w3-round-large ns_tambahpetunjuk  w3-tiny" onmouseover="informasi_naskahsoal('tambahpetunjuk')" onmouseout="removeinformasi()"  title="Tambahkan keterangan petunjuk/diawal" onclick="ns_tambahkanpetunjuk(this)"><i class="fa fa-plus"></i></button><button class="warnaeka w3-button w3-round-large w3-tiny ns_hapussoalini" onmouseover="informasi_naskahsoal('hapus')" onmouseout="removeinformasi()"  onclick="hapussoalini(this)" title="Hapus Soal ini"><i class="fa fa-trash"></i></button>`;
+    d = r.insertCell(-1);
+    d.setAttribute("style","width:15px");
+    d.innerHTML ="";
+    d = r.insertCell(-1);
+    d.setAttribute("title","Klik 2 kali untuk mengedit");
+    d.setAttribute("ondblclick","editsoalini(this)");
+    d.innerHTML = "Dobel Klik untuk menentukan soal di Area ini " + new Date().getTime();
+    
+    tabel = document.querySelector(".tempatnaskahsoal_soal");
+    let lRow = tabel.rows;
+    let no=0;
+    for(i=0; i < lRow.length ; i++){
+        if(lRow[i].hasAttribute("class")){
+            // no = no
+        }else{
+            no++
+        }
+        if(lRow[i].cells.length == 3){
+            lRow[i].cells[1].innerHTML = no+".";
+        }else if(lRow[i].cells.length == 4){
+            lRow[i].cells[2].innerHTML = no+".";
+        }
+    }
+}
+const td_tomboleditsoal = (el,k) =>{
+    let td = el.cells[0];
+    let indekbarisfokus = el.rowIndex;
+    // 
+    let cektabel = document.querySelector(".tempatnaskahsoal_soal");
+    
+    if(k == "show"){
+        for(i=0 ; i < cektabel.rows.length ; i++){
+            if(i == indekbarisfokus ){
+                
+                td.setAttribute("class","w3-show w3-border");
+                td.setAttribute("style","width:66px")
+                // el.insertCell(-1);
+            }else{
+                let tm = cektabel.rows[i].insertCell(0);
+                tm.setAttribute("style","width:66px")
+                tm.classList.add("selsementara")
+
+            }
+        }
+    }else{
+        td.setAttribute("class","w3-hide");
+        let selsementara = document.querySelectorAll(".selsementara");
+        for(i=0 ; i < selsementara.length ; i++){
+            selsementara[i].remove();
+        }
+
+        let tabel = document.querySelector(".tempatnaskahsoal_soal");
+        let lRow = tabel.rows;
+        for(j = 0 ; j < lRow.length ; j++){
+            let cCol = lRow[j].cells
+            if(cCol.length == 4){
+                lRow[j].deleteCell(0);
+                console.log("hapus sel di onmouse 0 indek", i)
+            }
+        }
+
+        // if(el.cells.length == 4){
+        //     el.deleteCell(-1);
+        // }
+    }
+    
+
+}
+const ns_tambahkanpetunjuk = (el) =>{
+    var table,// =document.querySelector(".tempatnaskahsoal_soal"),
+        row = el.parentNode.parentElement.parentElement;
+        let fokusbaris = el.parentNode.parentElement;
+        let lBrs = fokusbaris.rowIndex;
+        let tKelas = "ns_petunjuke_"+ lBrs;
+        
+        let baris = row.insertRow(lBrs);
+        baris.setAttribute("class","barispetunjuk");
+        baris.setAttribute("onmouseover","td_tomboleditsoal(this,'show')");
+        baris.setAttribute("onmouseout","td_tomboleditsoal(this,'hide')");
+        
+        let td = baris.insertCell(-1);
+        td.innerHTML = `<button onclick="MoveUp.call(this)" onmouseover="informasi_naskahsoal('naikkan')" onmouseout="removeinformasi()" class="warnaeka w3-button  w3-round-large " title="Naikkan">&#8679;</button><button onclick="MoveDown.call(this)" onmouseover="informasi_naskahsoal('turunkan')" onmouseout="removeinformasi()"  class="warnaeka w3-button  w3-round-large" title="Turunkan">&#8681;</button><button class="warnaeka w3-button w3-round-large ns_tambahpetunjuk  w3-tiny" onmouseover="informasi_naskahsoal('tambahpetunjuk')" onmouseout="removeinformasi()"  title="Tambahkan keterangan petunjuk/diawal" onclick="ns_tambahkanpetunjuk(this)"><i class="fa fa-plus"></i></button><button class="warnaeka w3-button w3-round-large w3-tiny ns_hapussoalini" onmouseover="informasi_naskahsoal('hapus')" onmouseout="removeinformasi()"  onclick="hapussoalini(this)" title="Hapus Soal ini"><i class="fa fa-trash"></i></button>`;
+        
+        td = baris.insertCell(-1);
+        td.setAttribute("colspan","2")
+        td.setAttribute("class","tangan petunjuk "+ tKelas);
+        td.innerHTML = "Beri Keterangan naskah soal Anda!";
+        
+        // td = baris.insertCell(-1);
+        // td.innerHTML =""
+        // row.cells[2].innerHTML = "Tes Cek td petunjuk"
+        // let td = row.cells[2];
+        isiteksunsurbanksoal("tempatnaskahsoal_soal", tKelas, "atas", ""); 
+        // td.onclick = function (){
+        //     // alert("Anda mengeklik ini")
+        //     isiteksunsurbanksoal("tempatnaskahsoal_soal", tKelas, "atas", ""); 
+        // }
+
+    // while (row != null) {
+    //     if (row.nodeName == 'TR') {
+    //         break;
+    //     }
+    //     row = row.parentNode;
+        
+    // }
+    // table = row.parentElement;
+    // console.log(table);
+    
+    // console.log(table.cells[2].innerHTML);
+
+    // table.cells[2].innerHTML = "Tambah Petunjuk";
+
+    // console.log(el.parentElement.cells[2].innerHTML);
+}
+const hapussoalini = (el)=>{
+    let tabel = document.querySelector(".tempatnaskahsoal_soal");
+    if(tabel.rows.length == 1){
+        alert("Maaf, tidak bisa dihapus!");
+        return
+    }
+    let fokusbaris = el.parentNode.parentElement;
+    let lBrs = fokusbaris.rowIndex;
+    tabel.deleteRow(lBrs);
+    
+    tabel = document.querySelector(".tempatnaskahsoal_soal");
+    let lRow = tabel.rows;
+        for(j = 0 ; j < lRow.length ; j++){
+            let cCol = lRow[j].cells
+            if(cCol.length == 4){
+                lRow[j].deleteCell(0);
+                console.log("hapus sel 0 indek", i)
+            }
+        }
+}
+
+const mulaidesainnaskahsoal = ()=>{
+    
+    let divarea = document.querySelector(".areadesain_naskahsoal");
+    let isikanrombel = document.getElementById("naskahsoal_rombel");
+    isikanrombel.setAttribute("value",idNamaKelas);
+    let isikanjenjang = document.getElementById("naskahsoal_jenjang");
+    isikanjenjang.setAttribute("value",idJenjang);
+
+    document.querySelector(".idns_rombel").innerHTML = idNamaKelas;
+    document.querySelector(".idns_jenjang").innerHTML = idJenjang;
+    //area desain naskah ditampilkan
+    
+    //cek pengaturan:
+    let kop = document.getElementById("naskahsoal_kop");
+    let areakop = document.querySelector(".kopnaskahsoal");
+    
+    if(kop.checked){
+        if(areakop.className.indexOf("w3-hide")>-1){
+            areakop.classList.remove("w3-hide")
+        }
+        
+    }else{
+        if(areakop.className.indexOf("w3-hide")==-1){
+            areakop.classList.add("w3-hide")
+        }
+    }
+    
+    let ns_identitaskelas = document.querySelectorAll("input[name=ns_identitaskelas]");
+    ns_identitaskelas.forEach(el =>{
+        if(el.checked){
+            document.querySelector(".naskahsoal_namakelas").innerHTML = el.value
+        }
+    });
+    let tekswaktu = "";
+    let waktuawal = document.getElementById("naskahsoal_titinmangsa").value;
+    let waktuakhir = document.getElementById("naskahsoal_titinmangsaakhir").value;
+    //hari
+    document.querySelector(".naskahsoal_haritanggal").innerHTML = Tanggaldenganhari(new Date(waktuawal));
+    let inputjudul = document.getElementById("naskahsoal_identitas").value;
+    document.querySelector(".naskahsoal_judul").innerHTML = inputjudul==""?"JUDUL BELUM DIISI": inputjudul;
+    let selectmapel = document.getElementById("naskahsoal_mapelapatema");
+    let ops = selectmapel.options;
+    let indek = ops.selectedIndex;
+    let v_mapel = ops[indek].value;
+    let t_mapel = ops[indek].text;
+    document.querySelector(".naskahsoal_isitematikbukan").innerHTML = t_mapel;
+
+    
+    
+    if(waktuawal == "" || waktuakhir == ""){
+        alert("Anda belum mengatur waktu pelaksanaan");
+        return
+    }
+    let dtAwal = new Date(waktuawal);
+    let dtAkhir = new Date(waktuakhir);
+    tekswaktu = dtAwal.getHours()+"."+dtAwal.getMinutes() +" - "+ dtAkhir.getHours()+":"+dtAkhir.getMinutes() + " WIB.";
+    let menit = (dtAkhir.getTime() - dtAwal.getTime())/(60000);
+    tekswaktu +="("+menit+" Menit)";
+    document.querySelector(".naskahsoal_Waktu").innerHTML = tekswaktu;
+    
+    if(divarea.className.indexOf("w3-hide")>-1){
+        divarea.classList.remove("w3-hide")
+    }
+    let tombol = document.querySelector(".areadesain_naskahsoaltombol");
+    if(tombol.className.indexOf("w3-hide")>-1){
+        tombol.classList.remove("w3-hide");
+    }
+
+    
+
+    //tampilkan semua div area kerja:
+
+}
+
+// (function findDuplicateIds() {
+//     var ids = {};
+//     var all = document.all || document.getElementsByTagName("*");
+//     for (var i = 0, l = all.length; i < l; i++) {
+//         var id = all[i].id;
+//         if (id) {
+//             if (ids[id]) {
+//                 console.log("Duplicate id: #" + id);
+//             } else {
+//                 ids[id] = 1;
+//             }
+//         }
+//     }
+// })();

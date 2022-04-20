@@ -1,5 +1,5 @@
-const staticCacheName = "st1852";
-const dynamicChace = "din1852";
+const staticCacheName = "st2145";
+const dynamicChace = "din2145";
 const assets = [
     "/","/index.html","/css/w3.css",
     "/css/firststyle.css","/css/css_siswa.css", "/css/css_timeline.css",
@@ -21,6 +21,13 @@ const assets = [
     "/img/arsipsurat.jpg",
     "/img/bg_offline.webp",
     "/img/kotadepok.png",
+    
+    "/img/rubrik1.PNG",
+    "/img/rubrik2.PNG",
+    "/img/rubrik3.PNG",
+    "/img/rubrik4.PNG",
+    "/img/rubrik5.PNG",
+    
     "/img/sdnratujaya1-transparent.png",
     "/img/sdnratujaya1-transparent2.png",
     "/statis/app.js",
@@ -113,7 +120,7 @@ self.addEventListener('fetch', evt => {
                     return fetchRes;
                 }).catch(er=>{console.log("errror dari sini: "+ er)});
             }).catch((er) => {
-                console.log("errror di sini kapan munculnya")
+                //console.log("errror di sini kapan munculnya")
                 console.log(er)
                 if (evt.request.url.indexOf('.html') > -1) {
                     return caches.match('/user/offline.html');

@@ -2422,6 +2422,7 @@ async function openCityy(evt, cityName) {
         tab[8].classList.add("w3-green");
         tab[12].classList.add("w3-green");
         tab[16].classList.add("w3-green");
+        tab[18].classList.add("w3-green");
         document.getElementById("tooltipkd1").style.display = 'none';
         document.getElementById("tooltipkdmapel").style.display = 'none';
         document.getElementById("tooltiptabelall").style.display = 'none';
@@ -2442,6 +2443,8 @@ async function openCityy(evt, cityName) {
         await cektagdbrapat();
         rekapRapatSekolahuntukku();
        
+    }else if(tesinner == "Desain Evaluasi"){
+        tampilanawaldesainevaluasi()
     }
     document.getElementById(cityName).style.display = "block";
     
@@ -10697,6 +10700,7 @@ const tooglesembunyimenu = (btn)=>{
         btn.setAttribute("title","Buka Menu");
     }
 }
+
 
 
 const keyboardtooltip = (objek={},jeniskirimanobjek="")=>{

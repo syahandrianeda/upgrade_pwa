@@ -25,13 +25,13 @@ if (linkyangsedangaktif.indexOf("guru.html") > -1) {
     <option id="indek5" value="2022-06-01">Juni 2022</option>`;
 
     document.getElementById("daftarpilihbulankehadiranguru").innerHTML = `
-    <option id="indeka" value="${yyyyxmmxdd(new Date())}">Pilih Bulan</option>
-    <option id="indek10" value="2022-01-01">Januari 2022</option>
-    <option id="indek11" value="2022-02-01">Februari 2022</option>
-    <option id="indek12" value="2022-03-01">Maret 2022</option>
-    <option id="indek13" value="2022-04-01">April 2022</option>
-    <option id="indek14" value="2022-05-01">Mei 2022</option>
-    <option id="indek15" value="2022-06-01">Juni 2022</option>`;
+    <option id="indekaa" value="${yyyyxmmxdd(new Date())}">Pilih Bulan</option>
+    <option id="indek10a" value="2022-01-01">Januari 2022</option>
+    <option id="indek11a" value="2022-02-01">Februari 2022</option>
+    <option id="indek12a" value="2022-03-01">Maret 2022</option>
+    <option id="indek13a" value="2022-04-01">April 2022</option>
+    <option id="indek14a" value="2022-05-01">Mei 2022</option>
+    <option id="indek15a" value="2022-06-01">Juni 2022</option>`;
 
     let kodebarismateriyangdikerjakan = "belumdisi";
     let parameterbantuisiljk = "belumdisi";
@@ -454,13 +454,13 @@ const LingkupMateri = {
     "PAI":["Al-Quran dan Hadits","Akidah","Akhlak","Fiqih","Sejarah peradaban Islam"],
     "PKRIS":["Allah tritunggal dan karyanya","Nilai-nilai Kristiani"],
     "PKATO":["Pribadi Siswa","Yesus Kristus","Gereja","Masyarakat"],
-    "PKN":["Persatuan","HAM","Pancasila"],
+    "PKN":["Persatuan dan Kesatuan","HAM","Pancasila"],
     "BINDO":["Membaca nonsastra", "Membaca Sastra","Menulis terbatas","Menyunting kata/istilah, frase, kalimat, paragraf, ejaan, dan tanda baca"],
     "MTK":["Bilangan","Geometri dan Pengukuran","Statistika Penyajian Data"],
     "IPA":["Makhluk hidup dan lingkungannya","Struktur dan fungsi makhluk hidup","Benda dan sifatnya","Energi dan Perubahannya","Bumi dan Alam Semesta"],
     "IPS":["Geografi","Ekonomi","Sosiologi","Sejarah"],
     "SBDP":["Seni rupa","Seni musik","Seni Tari","Seni Drama", "Keterampilan"],
-    "PJOK":["Aktivitas permainan bola besar dan bola kecil","Aktivitas Atletik","Aktivitas Beladiri","Aktivitas Pengembangan Kebugaran Jasmani","Aktivitas Senam","Aktivitas gerak berirama","Aktivitas Air dan Keselamatan Diri","Keshetan"],
+    "PJOK":["Aktivitas permainan bola besar dan bola kecil","Aktivitas Atletik","Aktivitas Beladiri","Aktivitas Pengembangan Kebugaran Jasmani","Aktivitas Senam","Aktivitas gerak berirama","Aktivitas Air dan Keselamatan Diri","Kesehatan"],
     "BSUND":["Membaca nonsastra", "Membaca Sastra","Menulis terbatas","Menyunting kata/istilah, frase, kalimat, paragraf, ejaan, dan tanda baca"]
 
 }
