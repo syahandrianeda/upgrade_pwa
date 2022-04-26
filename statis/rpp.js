@@ -15,399 +15,6 @@ const admguru = async()=>{
     await kurikulumdiamdiam()
     document.querySelector(".tabrpp").click();
 }
-// const previewrpp = () =>{
-//     document.getElementById("prev_rpp").style.display = "block";
-//     let dataisian = obj_isianrpp();
-//     let datarpp =dataisian.objek[0];
-//     //console.log(datarpp)
-//     document.querySelector("#prt_mapel").innerHTML = datarpp.rpp_jenistematik + ": "+ JSON.stringify(datarpp.mapel_dipilih).replace(/["']/g, " ") ;
-
-//     document.querySelector("#prt_kelas").innerHTML = idNamaKelas + " / "+ datarpp.rpp_semester;
-//     document.querySelector("#prt_judul").innerHTML = datarpp.rpp_judul;
-//     document.querySelector("#prt_tema").innerHTML = datarpp.rpp_tema;
-//     document.querySelector("#prt_tgl").innerHTML = (datarpp.rpp_adabatastanggal == "true" ? tanggalfull(datarpp.rpp_tglawal) +" s/d " + tanggalfull(datarpp.rpp_tglakhir): tanggalfull(datarpp.rpp_tglawal));
-//     document.querySelector("#prt_tujuanpembelajaran").innerHTML = datarpp.rpp_tujuanpembelajaran;// (datarpp.rpp_tujuanpembelajaran).search('ql-formula') == -1? datarpp.rpp_tujuanpembelajaran : (datarpp.rpp_tujuanpembelajaran).replace(/([\n])/g, '<br/>') ;;;
-//     //datarpp.rpp_tujuanpembelajaran;//(datarpp.rpp_tujuanpembelajaran).replace(/[\n]/g, "<br>") ; 
-//     document.querySelector("#prt_langkahpembelajaran").innerHTML = datarpp.rpp_langkahpembelajaran;// (datarpp.rpp_langkahpembelajaran).replace(/([\n])/g, '<br/>'); ; 
-//     document.querySelector("#prt_penilaian").innerHTML = datarpp.rpp_penilaian; 
-    
-
-// }
-
-// var toolbarOptions = [
-//       ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-//       ['blockquote', 'code-block','formula'],
-//       [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-//       [{ 'font': [] }],
-//       [{ 'align': [] }],
-//       [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-//       [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-//       ['link', 'image','video'],
-//       [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-//       [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-//       [{ 'direction': 'rtl' }],                         // text direction
-//       [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-    
-    
-//       ['clean']                                         // remove formatting button
-// ];
-
-//     const options = {};
-  
-//   var opsimath = document.querySelector("#optionmath")
-//     options["operators"] = JSON.parse(opsimath.getAttribute("data-value"));
-// var quill = new Quill('#editor', {
-//         modules: {
-//         toolbar: {
-//                 container: toolbarOptions,
-//                 handlers: { "image": quill_img_handler },
-//         },
-//         imageResize: {
-//                 displaySize: true
-//             },
-//         formula: true,
-//         },
-//         theme: 'snow'
-//       });
-// var quill1 = new Quill('#editor1', {
-//     modules: {
-//         toolbar: {
-//                 container: toolbarOptions,
-//                 handlers: { "image": quill_img_handler1 },
-//         },
-//         imageResize: {
-//                 displaySize: true
-//             },
-//         formula: true,
-//         },
-//         theme: 'snow'
-//     });
-//     const enableMathQuillFormulaAuthoring = window.mathquill4quill();      
-//     enableMathQuillFormulaAuthoring(quill, options);
-//     enableMathQuillFormulaAuthoring(quill1, options);
-
-
-// function quill_img_handler() {
-//     let fileInput = this.container.querySelector('input.ql-image[type=file]');
-//     console.log(this);
-// if (fileInput == null) {
-//             fileInput = document.createElement('input');
-//             fileInput.setAttribute('type', 'file');
-//             fileInput.setAttribute('accept', 'image/png, image/gif, image/jpeg, image/bmp, image/x-icon');
-//             fileInput.classList.add('ql-image');
-//     fileInput.addEventListener('change', () => {
-//             const files = fileInput.files;
-//             const range = this.quill.getSelection(true);
-            
-//             if (!files || !files.length) {
-//             //          console.log('No files selected');
-//             return;
-//             }
-//                 let ketval = document.formuploadmateri.idmapel.value
-//                 let val = (ketval == "") ? "e-lamaso" : ketval;
-//                 let reader = new FileReader();
-//                 var item = files[0];
-//                 let url ="";
-//                 this.quill.enable(false);
-//         loadingtopbarin("loadingtopbar");
-//         reader.readAsDataURL(item);
-//         reader.onload = async function (e) {
-
-//             let bs64 = e.target.result.replace(/^.*,/, '');
-//             let mmtpe = e.target.result.match(/^.*(?=;)/)[0];
-//             let namafile = "edurasa_" + new Date().getTime()
-//             let frmdata = new FormData();
-//                 frmdata.append("gmbrdata", bs64);
-//                 frmdata.append("gmbrfilename", namafile);
-//                 frmdata.append("gmbrmimeType", mmtpe);
-//                 frmdata.append("keterangan", val);
-
-//         await fetch(linkmateri + "&action=uplgmbrmateri", {
-//                     method: 'post',
-//                     body: frmdata
-//             })
-//             .then(m => m.json())
-//             .then(k => {
-//                 let link = k.url
-//                 url = "https://drive.google.com/uc?export=view&id=" + link;
-//                 //matikan animasi
-//                 clearInterval(stoploadingtopbar);
-//                 let divlod = document.querySelector(".loadingtopbar");
-//                 divlod.style.width = "100%";
-//                 setTimeout(() => {
-//                     divlod.style.width = "1px"
-//                     divlod.className += " w3-hide";
-
-//                 }, 3000);
-
-//                 quill.enable(true);
-//                 quill.insertEmbed(range.index, 'image', url);
-//                 quill.setSelection(range.index + 1, Quill.sources.SILENT);
-//             })
-//             .catch(er => {
-//             console.log(er);
-//                 quill.enable(true);
-//             })
-
-//         }
-
-//     });
-//           this.container.appendChild(fileInput);
-// }
-// fileInput.click();
-// }   
-// function quill_img_handler1() {
-//     let fileInput = this.container.querySelector('input.ql-image[type=file]');
-//     console.log(this);
-// if (fileInput == null) {
-//             fileInput = document.createElement('input');
-//             fileInput.setAttribute('type', 'file');
-//             fileInput.setAttribute('accept', 'image/png, image/gif, image/jpeg, image/bmp, image/x-icon');
-//             fileInput.classList.add('ql-image');
-//             fileInput.addEventListener('change', () => {
-//             const files = fileInput.files;
-//             const range = quill1.getSelection(true);
-            
-//             if (!files || !files.length) {
-//             //          console.log('No files selected');
-//             return;
-//             }
-//                 let ketval = document.formuploadmateri.idmapel.value
-//                 let val = (ketval == "") ? "e-lamaso" : ketval;
-//                 let reader = new FileReader();
-//                 var item = files[0];
-//                 let url ="";
-//                 quill1.enable(false);
-//         loadingtopbarin("loadingtopbar");
-//         reader.readAsDataURL(item);
-//         reader.onload = async function (e) {
-
-//             let bs64 = e.target.result.replace(/^.*,/, '');
-//             let mmtpe = e.target.result.match(/^.*(?=;)/)[0];
-//             let namafile = "edurasa_" + new Date().getTime()
-//             let frmdata = new FormData();
-//                 frmdata.append("gmbrdata", bs64);
-//                 frmdata.append("gmbrfilename", namafile);
-//                 frmdata.append("gmbrmimeType", mmtpe);
-//                 frmdata.append("keterangan", val);
-
-//         await fetch(linkmateri + "&action=uplgmbrmateri", {
-//                     method: 'post',
-//                     body: frmdata
-//             })
-//             .then(m => m.json())
-//             .then(k => {
-//                 let link = k.url
-//                 url = "https://drive.google.com/uc?export=view&id=" + link;
-//                 //matikan animasi
-//                 clearInterval(stoploadingtopbar);
-//                 let divlod = document.querySelector(".loadingtopbar");
-//                 divlod.style.width = "100%";
-//                 setTimeout(() => {
-//                     divlod.style.width = "1px"
-//                     divlod.className += " w3-hide";
-
-//                 }, 3000);
-
-//                 quill1.enable(true);
-//                 quill1.insertEmbed(range.index, 'image', url);
-//                 quill1.setSelection(range.index + 1, Quill.sources.SILENT);
-//             })
-//             .catch(er => {
-//             console.log(er);
-//                 quill1.enable(true);
-//             })
-
-//         }
-
-//     });
-//           this.container.appendChild(fileInput);
-// }
-// fileInput.click();
-// }   
-
-// function uye(){
-//     let fileInput = this.container.querySelector('input.ql-image[type=file]');
-//     if (fileInput == null) {
-//       fileInput = document.createElement('input');
-//       fileInput.setAttribute('type', 'file');
-//       fileInput.setAttribute('accept', 'image/png, image/gif, image/jpeg, image/bmp, image/x-icon');
-//       fileInput.classList.add('ql-image');
-//       fileInput.addEventListener('change', () => {
-//         if (fileInput.files != null && fileInput.files[0] != null) {
-//           let reader = new FileReader();
-//           reader.onload = (e) => {
-//             let range = this.quill.getSelection(true);
-//             this.quill.updateContents(new Delta()
-//               .retain(range.index)
-//               .delete(range.length)
-//               .insert({ image: e.target.result })
-//             , Emitter.sources.USER);
-//             fileInput.value = "";
-//           }
-//           reader.readAsDataURL(fileInput.files[0]);
-//         }
-//       });
-//       this.container.appendChild(fileInput);
-//     }
-//     fileInput.click();
-//   }
-  
-// function imageHandler() {
-//   try{
-//     const range = quill.getSelection();
-//     const teks = quill.getText(range.index, range.length);
-//     const sources = teks.match(/<img [^>]*src="[^"]*"[^>]*>/gm).map(x => x.replace(/.*src="([^"]*)".*/, '$1'));
-//     const link = sources[0];
-//     quill.deleteText(range.index, range.length+1);
-//     quill.insertEmbed(range.index, 'image', link); 
-//   }catch (err) {
-//         console.log(err)
-//         alert("Format HTML Gambar salah");
-//     }     
-// }  
-   
-
-// const obj_isianrpp = () =>{
-//     quill.update();
-//     let setdata = document.querySelectorAll("[data-keyrpp]");
-//     let atsetdata ;
-//     let obj = {};
-//     let arrobj = [];
-//     let key = [];
-//     let val = [];
-//     let mapeldiceklis = [];
-//     let type ;
-//     let v;
-//     let nol=[]
-//     for(i = 0 ; i < setdata.length; i++){
-//         atsetdata = setdata[i].getAttribute("data-keyrpp");
-//         type = setdata[i].hasAttribute("type");
-        
-//         v = setdata[i].value;
-//         if(type){
-//             let tp = setdata[i].type
-//             if(tp == "checkbox" && atsetdata !== "rpp_semester" && atsetdata !== "rpp_adabatastanggal"){
-//                 if(setdata[i].checked){
-//                     mapeldiceklis.push(v)
-                  
-//                 }
-//             }else if(tp == "checkbox" && atsetdata == "rpp_adabatastanggal"){
-//                 if(setdata[i].checked){
-//                     obj[atsetdata]="true"
-//                 }else{
-//                     obj[atsetdata]="false"
-//                 }
-//             }else{
-//                 obj[atsetdata]=v
-//             }
-
-
-//         }else if(atsetdata == "rpp_tujuanpembelajaran"){
-//             let dom = setdata[i].firstChild;//.innerHTML;
-//             let ada = dom.childNodes;//.classList;//.contains(".ql-formula");//dom.classList.contains('ql-formula')
-             
-
-//             //"https://chart.apis.google.com/chart?cht=tx&chl=%7B%5Csqrt%5B%7B2%7D%5D%20%7B3%7D%7D"
-//             // obj[atsetdata] =  setdata[i].firstChild.innerHTML;//quill.getText(0 , 10000000);//;quill.getContents();
-//             obj[atsetdata] =  setdata[i].innerHTML;//quill.getText(0 , 10000000);//;quill.getContents();
-            
-//         }else if (atsetdata == "rpp_langkahpembelajaran"){
-//             obj[atsetdata] = setdata[i].firstChild.innerHTML;//quill1.getText(0 , 10000000);//quill.getContents();//;
-//         }else{
-//             obj[atsetdata]=v;
-//             // pake Quill js
-//             // obj[atsetdata] = atsetdata.innerText;
-//         }
-       
-//         key.push(atsetdata);
-//         val.push(v);
-//         if(v ==""){
-//             nol.push(i)
-//         }
-//     };
-//     obj["mapel_dipilih"] = mapeldiceklis;
-//     arrobj.push(obj)
-//     let ret = {}
-//     ret.objek = arrobj;
-//     ret.key = key;
-//     ret.val = val;
-//     ret.nol = nol;
-//     return ret;
-// }
-// const obj_isianrpp2 = () =>{
-//     let setdata = document.querySelectorAll("[data-keyrpp]");
-//     let atsetdata ;
-//     let key = [];
-//     let val = [];
-//     let type = [3];
-//     let v;
-//     let nol=[]
-//     for(i = 0 ; i < setdata.length; i++){
-//         atsetdata = setdata[i].getAttribute("data-keyrpp");
-//         v = setdata[i].value;
-//         key.push(atsetdata);
-//         val.push(v);
-//         if(v ==""){
-//             nol.push(i)
-//         }
-//     };
-//     let ret = {}
-//     ret.key = key;
-//     ret.val = val;
-//     ret.nol = nol;
-//     return ret;
-// }
-
-// const changehtml = (id) =>{
-//     //let quil = document.querySelector('#'+id);
-//     let quil
-//     if(id == "editor1"){
-//         console.log("editor1")
-//         quil = quill
-//     }else{
-//         console.log("editor")
-//         quil = quill1
-//     }
-//     let range = quill.getSelection();
-//     console.log(range)
-//     let teks = quill.getText(range.index, range.length);
-//     console.log(teks);
-
-    
-//     // var tes = quill.addContainer('ql-custom');    
-//     var tes = quill.addContainer('ql-editor');    
-//     var p = document.createElement("p")
-//     p.innerHTML = teks;
-//     tes.appendChild(p);
-//     // let delta = quill.clipboard.convert(teks)
-//     // quill.setContents(delta, 'silent')
-//     // quill.enable(false)
-//     // var pitem2 = document.querySelector('.ql-editor p:last-child');
-//     // var pitem = document.querySelector('.ql-editor p:last-child');
-//     // var i = pitem.length
-//     // var neitem = document.createElement("div")
-//     // neitem.innerHTML = teks;
-//     // pitem.parentNode.replaceChild(neitem, pitem);
-//     // ;;//[0].firstChild.appendChild(teks);
-//     // quill.enable(true)
-    
-//     // document.getElementsByClassName('ql-editor')[0].innerHTML += teks  
-//     // document.getElementsByClassName('ql-editor')[0].parentNode.insertBefore(teks);
-//     // var tesnode = document.getElementsByClassName('ql-editor');//[0].childNodes.appendChild(teks);
-//     // console.log(tesnode.childNodes)
-    
-   
-// //     quill.updateContents(new Delta()
-// //   .retain(range.index)                  // Keep 'Hello '
-// //   .delete(0)                  // 'World' is deleted
-// //   .insert(teks)
-// //   .retain(1, { bold: true })  // Apply bold to exclamation mark
-
-// // );
-
-//     //quill.clipboard.dangerouslyPasteHTML(teks);
-// }
 
 const boolean_gmp = () =>{
     let bol = false;
@@ -1307,6 +914,7 @@ const nouruttabelpatokanPG = (part) =>{
 let databasesoal = [];
 let databasesoalkosong = {};
 let keydatabasesoal = [];
+let keydatabasesoalsimpananuser = [],databasesoalsimpananuser=[],databasesoalsimpananuserkosong = [];
 //data fokus server bank soal:
 //default:
 let serverbsoal_jenjang = document.querySelector("[data-bsoal=jenjang]");
@@ -1321,7 +929,15 @@ let serverbsoal_bentuksoal = document.querySelector("[data-bsoal=bentuksoal]")
 const tampilanawaldesainevaluasi = () =>{
     let dsgpg_step = document.querySelectorAll(".dsgpg_step");
     let p_pilihbentuksoal = document.querySelector(".p_pilihbentuksoal");
-    p_pilihbentuksoal.innerHTML = `<img src="/img/barloading.gif"> <br>sedang memproses....`
+    p_pilihbentuksoal.innerHTML = `<img src="/img/barloading.gif"> <br>sedang memproses....`;
+    let isikanrombel = document.getElementById("naskahsoal_rombel");
+    isikanrombel.setAttribute("value",idNamaKelas);
+    let isikanjenjang = document.getElementById("naskahsoal_jenjang");
+    isikanjenjang.setAttribute("value",idJenjang);
+
+    document.querySelector(".idns_rombel").innerHTML = idNamaKelas;
+    document.querySelector(".idns_jenjang").innerHTML = idJenjang;
+
     let tab = "banksoal"
     let tabel = [[["idbaris"]]];
     let head = tabel[0];
@@ -1357,7 +973,29 @@ const tampilanawaldesainevaluasi = () =>{
     document.querySelector(".kartusoalnamasekolah").innerHTML = idNamaSekolah.toUpperCase();
     document.querySelector(".tapelkartusoal").innerHTML = "Tahun pelajaran " + idTeksTapel;
     document.querySelector("[data-bsoal=jenjang]").innerHTML = idJenjang;
-
+    let divkhusus = document.querySelector(".desainsoalkhususkelas6");
+    let inputpilihkelas = document.querySelectorAll("input[name=desainkhususkelas6_tag]")
+    if(idJenjang == 6){
+        if(divkhusus.className.indexOf("w3-hide")>-1){
+            divkhusus.classList.remove("w3-hide");
+        }
+        inputpilihkelas.forEach(el=>{
+            if(el.hasAttribute("checked")){
+                el.removeAttribute("checked");
+            }
+        })
+        document.getElementById("desainkhususkelas6_tagkelas6").checked = true;
+    }else{
+        if(divkhusus.className.indexOf("w3-hide")==-1){
+            divkhusus.classList.add("w3-hide");
+        }
+        inputpilihkelas.forEach(el=>{
+            if(el.hasAttribute("checked")){
+                el.removeAttribute("checked");
+            }
+        })
+    }
+    simpanannaskahsoal();
 }
 
 
@@ -1367,6 +1005,18 @@ const items_komponensoal = document.querySelectorAll(".dsgpg_item");
 const divtipeopsipg = document.querySelector(".divtipeopsipg");
 const shortcutkuncijawaban = document.querySelector(".shortcutkuncijawaban");
 let arrayopsibaru = ["A","B","C","D"];
+let tagtampilanpg="BIASA";
+const spantampilanopsipg = document.getElementById("spantampilanopsipg");
+const isianJumlahkolompg = document.querySelector(".jikaopsipgtabel");
+const tipetamapilanpg = document.querySelectorAll("input[name=tipetamapilanpg]");
+const divdsgn_pg = document.querySelector(".dsgbpg_opsipg");
+const divkartusoal = document.getElementById("formatkartusoal");
+let modso_awal = document.querySelector(".mbs_awal"), 
+    modso_akhir = document.querySelector(".mbs_akhir"), 
+    modso_selanjutnya = document.querySelector(".mbs_next"), 
+    modso_sebelumnya = document.querySelector(".mbs_prev"), 
+    modso_spanhalaman = document.querySelector(".mbs_infohalaman"), 
+    modso_page_saatini=1, modso_per_page=1;
 dsgpg_bentuksoal.forEach(el =>{
     el.addEventListener("change",()=>{
         if(el.checked){
@@ -1392,11 +1042,45 @@ dsgpg_bentuksoal.forEach(el =>{
                 dsgpg_step[0].classList.remove("w3-hide");
             };
             
+            if(el.id == "desainbentuksoalessay"){
+                if(dsgpg_step[1].className.indexOf("w3-hide")>-1){
+                    dsgpg_step[1].classList.remove("w3-hide");
+                }
+                if(divkartusoal.className.indexOf("w3-hide")>-1){
+                    divkartusoal.classList.remove("w3-hide")
+                }
+                document.querySelector(".buattooltippertanyaan").onclick = function(){
+                    isiteksunsurbanksoal("formatkartusoal", "buattooltippertanyaan", "atas", "")
+                    };
+                document.querySelector(".buattooltipilustrasi").onclick = function(){
+                        isiteksunsurbanksoal("formatkartusoal", "buattooltipilustrasi", "atas", "")
+                    };
+                document.querySelector(".buattooltippenskoran").onclick = function(){
+                    isiteksunsurbanksoal("formatkartusoal", "buattooltippenskoran", "atas", "");
+                    }
+                document.querySelector(".klikmateritooltip").onclick = function (){        
+                    isiteksunsurbanksoal("formatkartusoal", "klikmateritooltip", "atas", ""); 
+                    } 
+                document.querySelector(".klikindikatortooltip").onclick = function(){
+                    isiteksunsurbanksoal("formatkartusoal", "klikindikatortooltip", "atas", ""); 
+                    }
+                document.querySelector(".klikrefrensitooltip").onclick = function(){
+                    isiteksunsurbanksoal("formatkartusoal", "klikrefrensitooltip", "atas", ""); 
+                    } 
+
+            }
 
         }
     });
 })
-
+function setSelectedValue(selectObj, valueToSet) {
+    for (var i = 0; i < selectObj.options.length; i++) {
+        if (selectObj.options[i].value== valueToSet) {
+            selectObj.options[i].selected = true;
+            return;
+        }
+    }
+}
 const dsgpg_mapel = async ()=>{
     let steppgmapel = document.getElementById("steppgmapel");
     let options = steppgmapel.options;
@@ -1407,7 +1091,12 @@ const dsgpg_mapel = async ()=>{
         alert("Silakan pilih mapelnya");
         return
     }
-    let datakd = await gabungdataserverkd();
+    if(idgurumapelmapel.match(/(d)/)== null && val !== idgurumapelmapel){
+        alert("Maaf, Anda sebagai guru mata pelajaran "+idgurumapelmapel+", Anda hanya bisa membuat soal sesuai bidang Anda.");
+        setSelectedValue(steppgmapel, idgurumapelmapel);
+    }
+    // let datakd = await gabungdataserverkd();
+    let datakd = await gabungdataserverkdnaskahsoal();
     let datalingkupmateri = LingkupMateri[val];
     let dbkdmapel = datakd.filter(s=> s.mapel == val && (s.indikatorkd3 !=="" || s.indikatorkd4 !== ""));
     
@@ -1516,12 +1205,7 @@ const inputmateripokok = document.getElementById("indsgevalpgmateripokok");
 inputmateripokok.addEventListener("input",()=>{
     document.querySelector("[data-bsoal=materi]").innerHTML= inputmateripokok.value
 })
-let tagtampilanpg="BIASA";
-const spantampilanopsipg = document.getElementById("spantampilanopsipg");
-const isianJumlahkolompg = document.querySelector(".jikaopsipgtabel");
-const tipetamapilanpg = document.querySelectorAll("input[name=tipetamapilanpg]");
-const divdsgn_pg = document.querySelector(".dsgbpg_opsipg");
-const divkartusoal = document.getElementById("formatkartusoal");
+
 const tampilanopsipg = (el) =>{
     document.querySelector(".buattooltippertanyaan").onclick = null;
     document.querySelector(".buattooltipilustrasi").onclick = null;
@@ -1544,7 +1228,7 @@ const tampilanopsipg = (el) =>{
             if(tagtampilanpg =="BIASA"){
                 for(i = 0 ; i < v.length; i++){
                     html +=`<div class="w3-col" style="width:35px">${arrayopsibaru[i]}.</div>`
-                    html +=`<div class="w3-rest tangan buattooltipopsipg${arrayopsibaru[i]}" data-bsoal="opsi${arrayopsibaru[i]}" title="klik untuk menambahkan teks">KLLIK BAGIAN INI UNTUK MENGISI TEKS OPSI PG ${arrayopsibaru[i]}</div>`
+                    html +=`<div class="w3-rest tangan buattooltipopsipg${arrayopsibaru[i]}" data-bsoal="opsi${arrayopsibaru[i]}" title="klik untuk menambahkan teks">KLIK BAGIAN INI UNTUK MENGISI TEKS OPSI PG ${arrayopsibaru[i]}</div>`
                 }
             }else{
                 let htmll =`<table class="kartusoalpg_tabel w3-table garis">`
@@ -1590,6 +1274,7 @@ const tampilanopsipg = (el) =>{
         
         isiteksunsurbanksoal("formatkartusoal", "buattooltippenskoran", "atas", "");
     }
+    
         
         
         
@@ -1613,7 +1298,7 @@ tipetamapilanpg.forEach(el=>{
             if(tagtampilanpg =="BIASA"){
                 for(i = 0 ; i < v.length; i++){
                     html +=`<div class="w3-col" style="width:35px">${arrayopsibaru[i]}.</div>`
-                    html +=`<div class="w3-rest tangan buattooltipopsipg${arrayopsibaru[i]}" data-bsoal="opsi${arrayopsibaru[i]}" title="klik untuk menambahkan teks">KLLIK BAGIAN INI UNTUK MENGISI TEKS</div>`
+                    html +=`<div class="w3-rest tangan buattooltipopsipg${arrayopsibaru[i]}" data-bsoal="opsi${arrayopsibaru[i]}" title="klik untuk menambahkan teks">KLIK BAGIAN INI UNTUK MENGISI TEKS</div>`
                 }
             }else{
                 let htmll =`<table class="kartusoalpg_tabel w3-table garis">`
@@ -2378,8 +2063,7 @@ const tooltipbaru_tooglesembunyimenu = (btn)=>{
     }
 }
 const isiteksunsurbanksoal = (paren="", target, posisitooltip="atas", baris="") =>{
-    console.log(paren)
-    console.log(target)
+    
     keyboardtooltipbaru()
     let elemen = document.querySelector("."+target);
     let simpan = document.querySelector(".simpankeyboardtooltipbaru");
@@ -2425,6 +2109,10 @@ const isiteksunsurbanksoal = (paren="", target, posisitooltip="atas", baris="") 
 }
 
 const simpanItemBanksoal = () =>{
+    let konf = confirm("Anda yakin ingin menyimpan data soal ini? Soal yang Anda buat di kartu soal ini hanya Anda sendiri yang dapat mengeditnya. Soal akan dipublikasikan umum dan siapapun dapat menggunakan soal Anda. Apabila ada kesalahan, silakan edit di menu Database Bank Soal.");
+    if(!konf){
+        return
+    }
     let elemenkirim = document.querySelectorAll("[data-bsoal]");
     let desainObjek = {}
     elemenkirim.forEach((el,i)=>{
@@ -2435,13 +2123,7 @@ const simpanItemBanksoal = () =>{
         }else{
             let teksinner = el.innerHTML;
             let teksjadi = el.innerHTML
-            // let cek = teksinner.match(/<div>(.*)<\/div>/);
-            // let teksjadi ="";
-            // if(cek == null){
-            //     teksjadi = teksinner
-            // }else{
-            //     teksjadi = cek[1]
-            // }
+            
             desainObjek[key]= teksjadi;
         }
     });
@@ -2471,8 +2153,10 @@ const simpanItemBanksoal = () =>{
 
         }
     }
-    
-   
+    console.log(desainObjek)
+    let cekifvaluenull = Object.values(desainObjek).indexOf("");
+    console.log(cekifvaluenull);
+
     let obAs = Object.assign({},databasesoalkosong);
     let obJadi = Object.assign(obAs,desainObjek);
     
@@ -2480,51 +2164,79 @@ const simpanItemBanksoal = () =>{
     let nilai = Object.values(obJadi);
     nilai.shift()
     let tabel = JSON.stringify (nilai)
-    let tab = "banksoal"
+    let tab = "banksoal";
     
-    let datakirim = new FormData()
-    datakirim.append("tab",tab);
-    datakirim.append("key",key);
-    datakirim.append("tabel",tabel);
+    // let datakirim = new FormData()
+    // datakirim.append("tab",tab);
+    // datakirim.append("key",key);
+    // datakirim.append("tabel",tabel);
     
-    fetch(url_kaldikaja+"?action=simpanbarisketaburut",{
-        method:"post",
-        body:datakirim
-    }).then(m => m.json())
-    .then(r => {
+    // fetch(url_kaldikaja+"?action=simpanbarisketaburut",{
+    //     method:"post",
+    //     body:datakirim
+    // }).then(m => m.json())
+    // .then(r => {
         
-       console.log(r);
-       keydatabasesoal = Object.keys(r.data[0]);
-       if(r.result>1){
-           databasesoal = r.data;
-       }
-       for(i=0 ; i < keydatabasesoal.length; i++){
-           databasesoalkosong[keydatabasesoal[i]]="";
-       }
-       alert("Data Berhasil disimpan");
-       elemenkirim.forEach((el,i)=>{
-        // console.log(i,el.nodeName,el.getAttribute("data-bsoal"))
         
-        //kalo sudah berhasil tolong sembunyikan kartu soalnya
-        if(divkartusoal.className.indexOf("w3-hide")==-1){
-            divkartusoal.classList.add("w3-hide")
-        }
-    });
-    }).catch(er=>console.log(er));
+    //     keydatabasesoal = Object.keys(r.data[0]);
+    //     if(r.result>1){
+    //         databasesoal = r.data;
+    //     }
+    //     for(i=0 ; i < keydatabasesoal.length; i++){
+    //         databasesoalkosong[keydatabasesoal[i]]="";
+    //     }
+    //     alert("Data Berhasil disimpan");
+    //     elemenkirim.forEach((el,i)=>{
+    //     // console.log(i,el.nodeName,el.getAttribute("data-bsoal"))
+        
+    //     //kalo sudah berhasil tolong sembunyikan kartu soalnya
+    //     if(divkartusoal.className.indexOf("w3-hide")==-1){
+    //         divkartusoal.classList.add("w3-hide")
+    //     }
+    // });
+    // }).catch(er=>console.log(er));
 }
 
 const antaraDiv = (teks)=>{
     let cek = teks.match(/<div>(.*)<\/div>/);
             let teksjadi ="";
             if(cek == null){
-                teksjadi = teks
+                teksjadi += teks
             }else{
-                teksjadi = cek[1]
+                teksjadi += cek[1]
             }
             return teksjadi;
 }
+function replaceClassToStyle (element){
+    var styles= [];
 
-const print2Word = (element, filename)=>{
+        // The DOM Level 2 CSS way
+        //
+        if ('getComputedStyle' in window) {
+            var cs= getComputedStyle(element, '');
+            if (cs.length!==0)
+                for (var i= 0; i<cs.length; i++)
+                    styles.push([cs.item(i), cs.getPropertyValue(cs.item(i))]);
+
+            // Opera workaround. Opera doesn't support `item`/`length`
+            // on CSSStyleDeclaration.
+            //
+            else
+                for (var k in cs)
+                    if (cs.hasOwnProperty(k))
+                        styles.push([k, cs[k]]);
+
+        // The IE way
+        //
+        } else if ('currentStyle' in element) {
+            var cs= element.currentStyle;
+            for (var k in cs)
+                styles.push([k, cs[k]]);
+        }
+    return styles
+
+}
+const print2Word = (element, Filename)=>{
     //https://github.com/markswindoll/jQuery-Word-Export/blob/master/jquery.wordexport.js
 
         var static = {
@@ -2535,10 +2247,19 @@ const print2Word = (element, filename)=>{
         }
     };
     var options = {
-        maxWidth: 150
+        maxWidth: 70
     };
     // Clone selected element before manipulating it
-    let div = document.getElementById(element)
+    let div,filename
+    if(element == "areadesain_naskahsoal"){
+        div = document.querySelector(".areadesain_naskahsoal");
+        let namafile = document.getElementById("naskahsoal_identitas").value;
+        if(Filename == ""){
+            filename = namafile==""?"LAMASO_Edurasa.doc":Filename+".doc";
+        }
+
+    }
+    
     var markup = div.cloneNode(true);
 
     // Remove hidden elements from the output
@@ -2551,6 +2272,7 @@ const print2Word = (element, filename)=>{
     // Embed all images using Data URLs
     var images = Array();
     var img = markup.querySelectorAll("img");
+    let lg 
     for (var i = 0; i < img.length; i++) {
         // Calculate dimensions of output image
         var w = Math.min(img[i].width, options.maxWidth);
@@ -2574,6 +2296,7 @@ const print2Word = (element, filename)=>{
             location: $(img[i]).attr("src"),
             data: uri.substring(uri.indexOf(",") + 1)
         };
+        
     }
 
     // Prepare bottom of mhtml file with image data
@@ -2584,6 +2307,9 @@ const print2Word = (element, filename)=>{
         mhtmlBottom += "Content-Type: " + images[i].type + "\n";
         mhtmlBottom += "Content-Transfer-Encoding: " + images[i].encoding + "\n\n";
         mhtmlBottom += images[i].data + "\n\n";
+        if(i == 0){
+            lg = img[i]
+        }
     }
     mhtmlBottom += "--NEXT.ITEM-BOUNDARY--";
 
@@ -2600,30 +2326,45 @@ const print2Word = (element, filename)=>{
     // Aggregate parts of the file together
     css = ('\
     <style>\
-    @page{size: 841.95pt 595.35pt;mso-page-orientation: landscape;}\
+    @page {size: 841.95pt 595.35pt;margin: 0.4cm 0cm 0cm 0cm;mso-page-orientation: portrait;}\
     table.w3-table{border:1px solid black;border-collapse:collapse}\
     strong{font-weight:bolder}dfn{font-style:italic}mark{background:#ff0;color:#000}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}figure{margin:1em 40px}img{border-style:none}code,kbd,pre,samp{font-family:monospace,monospace;font-size:1em}hr{box-sizing:content-box;height:0;overflow:visible}button,input,optgroup,select,textarea{font:inherit;margin:0}optgroup{font-weight:700}button,input{overflow:visible}button,select{text-transform:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner,button::-moz-focus-inner{border-style:none;padding:0}[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[type=submit]:-moz-focusring,button:-moz-focusring{outline:1px dotted ButtonText}fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em}legend{color:inherit;display:table;max-width:100%;padding:0;white-space:normal}textarea{overflow:auto}[type=checkbox],[type=radio]{padding:0}[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}[type=search]::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}body,html{font-family:Verdana,sans-serif;font-size:15px;line-height:1.5}html{overflow-x:hidden}h1{font-size:36px}h2{font-size:30px}h3{font-size:24px}h4{font-size:20px}h5{font-size:18px}h6{font-size:16px}div.Wordw3-serif{font-family:serif}div.Wordw3-sans-serif{font-family:sans-serif}div.Wordw3-cursive{font-family:cursive}div.Wordw3-monospace{font-family:monospace}h1,h2,h3,h4,h5,h6{font-family:"Segoe UI",Arial,sans-serif;font-weight:400;margin:10px 0}div.Wordw3-wide{letter-spacing:4px}hr{border:0;border-top:1px solid #eee;margin:20px 0}div.Wordw3-image{max-width:100%;height:auto}img{vertical-align:middle}a{color:inherit}div.Wordw3-table,div.Wordw3-table-all{border-collapse:collapse;border-spacing:0;width:100%;display:table}div.Wordw3-table-all{border:1px solid #ccc}div.Wordw3-bordered tr,div.Wordw3-table-all tr{border-bottom:1px solid #ddd}div.Wordw3-striped tbody tr:nth-child(even){background-color:#f1f1f1}div.Wordw3-table-all tr:nth-child(odd){background-color:#fff}div.Wordw3-table-all tr:nth-child(even){background-color:#f1f1f1}div.Wordw3-hoverable tbody tr:hover,div.Wordw3-uldiv.Wordw3-hoverable li:hover{background-color:#ccc}div.Wordw3-centered tr td,div.Wordw3-centered tr th{text-align:center}div.Wordw3-table td,div.Wordw3-table th,div.Wordw3-table-all td,div.Wordw3-table-all th{padding:8px 8px;display:table-cell;text-align:left;vertical-align:top}div.Wordw3-table td:first-child,div.Wordw3-table th:first-child,div.Wordw3-table-all td:first-child,div.Wordw3-table-all th:first-child{padding-left:16px}div.Wordw3-btn,div.Wordw3-button{border:none;display:inline-block;padding:8px 16px;vertical-align:middle;overflow:hidden;text-decoration:none;color:inherit;background-color:inherit;text-align:center;cursor:pointer;white-space:nowrap}div.Wordw3-btn:hover{box-shadow:0 8px 16px 0 rgba(0,0,0,.2),0 6px 20px 0 rgba(0,0,0,.19)}div.Wordw3-btn,div.Wordw3-button{-webkit-touch-callout:none;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}div.Wordw3-btn:disabled,div.Wordw3-button:disabled,div.Wordw3-disabled{cursor:not-allowed;opacity:.3}div.Wordw3-disabled *,:disabled *{pointer-events:none}div.Wordw3-btndiv.Wordw3-disabled:hover,div.Wordw3-btn:disabled:hover{box-shadow:none}div.Wordw3-badge,div.Wordw3-tag{background-color:#000;color:#fff;display:inline-block;padding-left:8px;padding-right:8px;text-align:center}div.Wordw3-badge{border-radius:50%}div.Wordw3-ul{list-style-type:none;padding:0;margin:0}div.Wordw3-ul li{padding:8px 16px;border-bottom:1px solid #ddd}div.Wordw3-ul li:last-child{border-bottom:none}div.Wordw3-display-container,div.Wordw3-tooltip{position:relative}div.Wordw3-tooltip div.Wordw3-text{display:none}div.Wordw3-tooltip:hover div.Wordw3-text{display:inline-block}div.Wordw3-ripple:active{opacity:.5}div.Wordw3-ripple{transition:opacity 0s}div.Wordw3-input{padding:8px;display:block;border:none;border-bottom:1px solid #ccc;width:100%}div.Wordw3-select{padding:9px 0;width:100%;border:none;border-bottom:1px solid #ccc}div.Wordw3-dropdown-click,div.Wordw3-dropdown-hover{position:relative;display:inline-block;cursor:pointer}div.Wordw3-dropdown-hover:hover div.Wordw3-dropdown-content{display:block}div.Wordw3-dropdown-click:hover,div.Wordw3-dropdown-hover:first-child{background-color:#ccc;color:#000}div.Wordw3-dropdown-click:hover>div.Wordw3-button:first-child,div.Wordw3-dropdown-hover:hover>div.Wordw3-button:first-child{background-color:#ccc;color:#000}div.Wordw3-dropdown-content{cursor:auto;color:#000;background-color:#fff;display:none;position:absolute;min-width:160px;margin:0;padding:0;z-index:1}div.Wordw3-check,div.Wordw3-radio{width:24px;height:24px;position:relative;top:6px}div.Wordw3-sidebar{height:100%;width:200px;background-color:#fff;position:fixed!important;z-index:1;overflow:auto}div.Wordw3-bar-block div.Wordw3-dropdown-click,div.Wordw3-bar-block div.Wordw3-dropdown-hover{width:100%}div.Wordw3-bar-block div.Wordw3-dropdown-click div.Wordw3-dropdown-content,div.Wordw3-bar-block div.Wordw3-dropdown-hover div.Wordw3-dropdown-content{min-width:100%}div.Wordw3-bar-block div.Wordw3-dropdown-click div.Wordw3-button,div.Wordw3-bar-block div.Wordw3-dropdown-hover div.Wordw3-button{width:100%;text-align:left;padding:8px 16px}#main,div.Wordw3-main{transition:margin-left .4s}div.Wordw3-modal{z-index:3;display:none;padding-top:100px;position:fixed;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:#000;background-color:rgba(0,0,0,.4)}div.Wordw3-modal-content{margin:auto;background-color:#fff;position:relative;padding:0;outline:0;width:600px}div.Wordw3-bar{width:100%;overflow:hidden}div.Wordw3-center div.Wordw3-bar{display:inline-block;width:auto}div.Wordw3-bar div.Wordw3-bar-item{padding:8px 16px;float:left;width:auto;border:none;display:block;outline:0}div.Wordw3-bar div.Wordw3-dropdown-click,div.Wordw3-bar div.Wordw3-dropdown-hover{position:static;float:left}div.Wordw3-bar div.Wordw3-button{white-space:normal}div.Wordw3-bar-block div.Wordw3-bar-item{width:100%;display:block;padding:8px 16px;text-align:left;border:none;white-space:normal;float:none;outline:0}div.Wordw3-bar-blockdiv.Wordw3-center div.Wordw3-bar-item{text-align:center}div.Wordw3-block{display:block;width:100%}div.Wordw3-responsive{display:block;overflow-x:auto}div.Wordw3-bar:after,div.Wordw3-bar:before,div.Wordw3-cell-row:after,div.Wordw3-cell-row:before,div.Wordw3-clear:after,div.Wordw3-clear:before,div.Wordw3-container:after,div.Wordw3-container:before,div.Wordw3-panel:after,div.Wordw3-panel:before,div.Wordw3-row-padding:after,div.Wordw3-row-padding:before,div.Wordw3-row:after,div.Wordw3-row:before{content:"";display:table;clear:both}div.Wordw3-col,div.Wordw3-half,div.Wordw3-quarter,div.Wordw3-third,div.Wordw3-threequarter,div.Wordw3-twothird{float:left;width:100%}div.Wordw3-col.s1{width:8.33333%}div.Wordw3-col.s2{width:16.66666%}div.Wordw3-col.s3{width:24.99999%}div.Wordw3-col.s4{width:33.33333%}div.Wordw3-col.s5{width:41.66666%}div.Wordw3-col.s6{width:49.99999%}div.Wordw3-col.s7{width:58.33333%}div.Wordw3-col.s8{width:66.66666%}div.Wordw3-col.s9{width:74.99999%}div.Wordw3-col.s10{width:83.33333%}div.Wordw3-col.s11{width:91.66666%}div.Wordw3-col.s12{width:99.99999%}@media (min-width:601px){div.Wordw3-col.m1{width:8.33333%}div.Wordw3-col.m2{width:16.66666%}div.Wordw3-col.m3,div.Wordw3-quarter{width:24.99999%}div.Wordw3-col.m4,div.Wordw3-third{width:33.33333%}div.Wordw3-col.m5{width:41.66666%}div.Wordw3-col.m6,div.Wordw3-half{width:49.99999%}div.Wordw3-col.m7{width:58.33333%}div.Wordw3-col.m8,div.Wordw3-twothird{width:66.66666%}div.Wordw3-col.m9,div.Wordw3-threequarter{width:74.99999%}div.Wordw3-col.m10{width:83.33333%}div.Wordw3-col.m11{width:91.66666%}div.Wordw3-col.m12{width:99.99999%}}@media (min-width:993px){div.Wordw3-col.l1{width:8.33333%}div.Wordw3-col.l2{width:16.66666%}div.Wordw3-col.l3{width:24.99999%}div.Wordw3-col.l4{width:33.33333%}div.Wordw3-col.l5{width:41.66666%}div.Wordw3-col.l6{width:49.99999%}div.Wordw3-col.l7{width:58.33333%}div.Wordw3-col.l8{width:66.66666%}div.Wordw3-col.l9{width:74.99999%}div.Wordw3-col.l10{width:83.33333%}div.Wordw3-col.l11{width:91.66666%}div.Wordw3-col.l12{width:99.99999%}}div.Wordw3-rest{overflow:hidden}div.Wordw3-stretch{margin-left:-16px;margin-right:-16px}div.Wordw3-auto,div.Wordw3-content{margin-left:auto;margin-right:auto}div.Wordw3-content{max-width:980px}div.Wordw3-auto{max-width:1140px}div.Wordw3-cell-row{display:table;width:100%}div.Wordw3-cell{display:table-cell}div.Wordw3-cell-top{vertical-align:top}div.Wordw3-cell-middle{vertical-align:middle}div.Wordw3-cell-bottom{vertical-align:bottom}div.Wordw3-hide{display:none!important}div.Wordw3-show,div.Wordw3-show-block{display:block!important}div.Wordw3-show-inline-block{display:inline-block!important}@media (max-width:1205px){div.Wordw3-auto{max-width:95%}}@media (max-width:600px){div.Wordw3-modal-content{margin:0 10px;width:auto!important}div.Wordw3-modal{padding-top:30px}div.Wordw3-dropdown-clickdiv.Wordw3-mobile div.Wordw3-dropdown-content,div.Wordw3-dropdown-hoverdiv.Wordw3-mobile div.Wordw3-dropdown-content{position:relative}div.Wordw3-hide-small{display:none!important}div.Wordw3-mobile{display:block;width:100%!important}div.Wordw3-bar-itemdiv.Wordw3-mobile,div.Wordw3-dropdown-clickdiv.Wordw3-mobile,div.Wordw3-dropdown-hoverdiv.Wordw3-mobile{text-align:center}div.Wordw3-dropdown-clickdiv.Wordw3-mobile,div.Wordw3-dropdown-clickdiv.Wordw3-mobile div.Wordw3-btn,div.Wordw3-dropdown-clickdiv.Wordw3-mobile div.Wordw3-button,div.Wordw3-dropdown-hoverdiv.Wordw3-mobile,div.Wordw3-dropdown-hoverdiv.Wordw3-mobile div.Wordw3-btn,div.Wordw3-dropdown-hoverdiv.Wordw3-mobile div.Wordw3-button{width:100%}}@media (max-width:768px){div.Wordw3-modal-content{width:500px}div.Wordw3-modal{padding-top:50px}}@media (min-width:993px){div.Wordw3-modal-content{width:900px}div.Wordw3-hide-large{display:none!important}div.Wordw3-sidebardiv.Wordw3-collapse{display:block!important}}@media (max-width:992px) and (min-width:601px){div.Wordw3-hide-medium{display:none!important}}@media (max-width:992px){div.Wordw3-sidebardiv.Wordw3-collapse{display:none}div.Wordw3-main{margin-left:0!important;margin-right:0!important}div.Wordw3-auto{max-width:100%}}div.Wordw3-bottom,div.Wordw3-top{position:fixed;width:100%;z-index:1}div.Wordw3-top{top:0}div.Wordw3-bottom{bottom:0}div.Wordw3-overlay{position:fixed;display:none;width:100%;height:100%;top:0;left:0;right:0;bottom:0;background-color:rgba(0,0,0,.5);z-index:2}div.Wordw3-display-topleft{position:absolute;left:0;top:0}div.Wordw3-display-topright{position:absolute;right:0;top:0}div.Wordw3-display-bottomleft{position:absolute;left:0;bottom:0}div.Wordw3-display-bottomright{position:absolute;right:0;bottom:0}div.Wordw3-display-middle{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);-ms-transform:translate(-50%,-50%)}div.Wordw3-display-left{position:absolute;top:50%;left:0;transform:translate(0,-50%);-ms-transform:translate(0,-50%)}div.Wordw3-display-right{position:absolute;top:50%;right:0;transform:translate(0,-50%);-ms-transform:translate(0,-50%)}div.Wordw3-display-topmiddle{position:absolute;left:50%;top:0;transform:translate(-50%,0);-ms-transform:translate(-50%,0)}div.Wordw3-display-bottommiddle{position:absolute;left:50%;bottom:0;transform:translate(-50%,0);-ms-transform:translate(-50%,0)}div.Wordw3-display-container:hover div.Wordw3-display-hover{display:block}div.Wordw3-display-container:hover spandiv.Wordw3-display-hover{display:inline-block}div.Wordw3-display-hover{display:none}div.Wordw3-display-position{position:absolute}div.Wordw3-circle{border-radius:50%}div.Wordw3-round-small{border-radius:2px}div.Wordw3-round,div.Wordw3-round-medium{border-radius:4px}div.Wordw3-round-large{border-radius:8px}div.Wordw3-round-xlarge{border-radius:16px}div.Wordw3-round-xxlarge{border-radius:32px}div.Wordw3-row-padding,div.Wordw3-row-padding>div.Wordw3-col,div.Wordw3-row-padding>div.Wordw3-half,div.Wordw3-row-padding>div.Wordw3-quarter,div.Wordw3-row-padding>div.Wordw3-third,div.Wordw3-row-padding>div.Wordw3-threequarter,div.Wordw3-row-padding>div.Wordw3-twothird{padding:0 8px}div.Wordw3-container,div.Wordw3-panel{padding:.01em 16px}div.Wordw3-panel{margin-top:16px;margin-bottom:16px}div.Wordw3-code,div.Wordw3-codespan{font-family:Consolas,"courier new";font-size:16px}div.Wordw3-code{width:auto;background-color:#fff;padding:8px 12px;border-left:4px solid #4caf50;word-wrap:break-word}div.Wordw3-codespan{color:#dc143c;background-color:#f1f1f1;padding-left:4px;padding-right:4px;font-size:110%}div.Wordw3-card,div.Wordw3-card-2{box-shadow:0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12)}div.Wordw3-card-4,div.Wordw3-hover-shadow:hover{box-shadow:0 4px 10px 0 rgba(0,0,0,.2),0 4px 20px 0 rgba(0,0,0,.19)}div.Wordw3-spin{animation:w3-spin 2s infinite linear}@keyframes w3-spin{0%{transform:rotate(0)}100%{transform:rotate(359deg)}}div.Wordw3-animate-fading{animation:fading 10s infinite}@keyframes fading{0%{opacity:0}50%{opacity:1}100%{opacity:0}}div.Wordw3-animate-opacity{animation:opac .8s}@keyframes opac{from{opacity:0}to{opacity:1}}div.Wordw3-animate-top{position:relative;animation:animatetop .4s}@keyframes animatetop{from{top:-300px;opacity:0}to{top:0;opacity:1}}div.Wordw3-animate-left{position:relative;animation:animateleft .4s}@keyframes animateleft{from{left:-300px;opacity:0}to{left:0;opacity:1}}div.Wordw3-animate-right{position:relative;animation:animateright .4s}@keyframes animateright{from{right:-300px;opacity:0}to{right:0;opacity:1}}div.Wordw3-animate-bottom{position:relative;animation:animatebottom .4s}@keyframes animatebottom{from{bottom:-300px;opacity:0}to{bottom:0;opacity:1}}div.Wordw3-animate-zoom{animation:animatezoom .6s}@keyframes animatezoom{from{transform:scale(0)}to{transform:scale(1)}}div.Wordw3-animate-input{transition:width .4s ease-in-out}div.Wordw3-animate-input:focus{width:100%!important}div.Wordw3-hover-opacity:hover,div.Wordw3-opacity{opacity:.6}div.Wordw3-hover-opacity-off:hover,div.Wordw3-opacity-off{opacity:1}div.Wordw3-opacity-max{opacity:.25}div.Wordw3-opacity-min{opacity:.75}div.Wordw3-grayscale-max,div.Wordw3-greyscale-max,div.Wordw3-hover-grayscale:hover,div.Wordw3-hover-greyscale:hover{filter:grayscale(100%)}div.Wordw3-grayscale,div.Wordw3-greyscale{filter:grayscale(75%)}div.Wordw3-grayscale-min,div.Wordw3-greyscale-min{filter:grayscale(50%)}div.Wordw3-sepia{filter:sepia(75%)}div.Wordw3-hover-sepia:hover,div.Wordw3-sepia-max{filter:sepia(100%)}div.Wordw3-sepia-min{filter:sepia(50%)}div.Wordw3-tiny{font-size:10px!important}div.Wordw3-small{font-size:12px!important}div.Wordw3-medium{font-size:15px!important}div.Wordw3-large{font-size:18px!important}div.Wordw3-xlarge{font-size:24px!important}div.Wordw3-xxlarge{font-size:36px!important}div.Wordw3-xxxlarge{font-size:48px!important}div.Wordw3-jumbo{font-size:64px!important}div.Wordw3-left-align{text-align:left!important}div.Wordw3-right-align{text-align:right!important}div.Wordw3-justify{text-align:justify!important}div.Wordw3-center{text-align:center!important}div.Wordw3-border-0{border:0!important}div.Wordw3-border{border:1px solid #ccc!important}div.Wordw3-border-top{border-top:1px solid #ccc!important}div.Wordw3-border-bottom{border-bottom:1px solid #ccc!important}div.Wordw3-border-left{border-left:1px solid #ccc!important}div.Wordw3-border-right{border-right:1px solid #ccc!important}div.Wordw3-topbar{border-top:6px solid #ccc!important}div.Wordw3-bottombar{border-bottom:6px solid #ccc!important}div.Wordw3-leftbar{border-left:6px solid #ccc!important}div.Wordw3-rightbar{border-right:6px solid #ccc!important}div.Wordw3-code,div.Wordw3-section{margin-top:16px!important;margin-bottom:16px!important}div.Wordw3-margin{margin:16px!important}div.Wordw3-margin-top{margin-top:16px!important}div.Wordw3-margin-bottom{margin-bottom:16px!important}div.Wordw3-margin-left{margin-left:16px!important}div.Wordw3-margin-right{margin-right:16px!important}div.Wordw3-padding-small{padding:4px 8px!important}div.Wordw3-padding{padding:8px 16px!important}div.Wordw3-padding-large{padding:12px 24px!important}div.Wordw3-padding-16{padding-top:16px!important;padding-bottom:16px!important}div.Wordw3-padding-24{padding-top:24px!important;padding-bottom:24px!important}div.Wordw3-padding-32{padding-top:32px!important;padding-bottom:32px!important}div.Wordw3-padding-48{padding-top:48px!important;padding-bottom:48px!important}div.Wordw3-padding-64{padding-top:64px!important;padding-bottom:64px!important}div.Wordw3-padding-top-64{padding-top:64px!important}div.Wordw3-padding-top-48{padding-top:48px!important}div.Wordw3-padding-top-32{padding-top:32px!important}div.Wordw3-padding-top-24{padding-top:24px!important}div.Wordw3-left{float:left!important}div.Wordw3-right{float:right!important}div.Wordw3-button:hover{color:#000!important;background-color:#ccc!important}div.Wordw3-hover-none:hover,div.Wordw3-transparent{background-color:transparent!important}div.Wordw3-hover-none:hover{box-shadow:none!important}div.Wordw3-amber,div.Wordw3-hover-amber:hover{color:#000!important;background-color:#ffc107!important}div.Wordw3-aqua,div.Wordw3-hover-aqua:hover{color:#000!important;background-color:#0ff!important}div.Wordw3-blue,div.Wordw3-hover-blue:hover{color:#fff!important;background-color:#2196f3!important}div.Wordw3-hover-light-blue:hover,div.Wordw3-light-blue{color:#000!important;background-color:#87ceeb!important}div.Wordw3-brown,div.Wordw3-hover-brown:hover{color:#fff!important;background-color:#795548!important}div.Wordw3-cyan,div.Wordw3-hover-cyan:hover{color:#000!important;background-color:#00bcd4!important}div.Wordw3-blue-gray,div.Wordw3-blue-grey,div.Wordw3-hover-blue-gray:hover,div.Wordw3-hover-blue-grey:hover{color:#fff!important;background-color:#607d8b!important}div.Wordw3-green,div.Wordw3-hover-green:hover{color:#fff!important;background-color:#4caf50!important}div.Wordw3-hover-light-green:hover,div.Wordw3-light-green{color:#000!important;background-color:#8bc34a!important}div.Wordw3-hover-indigo:hover,div.Wordw3-indigo{color:#fff!important;background-color:#3f51b5!important}div.Wordw3-hover-khaki:hover,div.Wordw3-khaki{color:#000!important;background-color:khaki!important}div.Wordw3-hover-lime:hover,div.Wordw3-lime{color:#000!important;background-color:#cddc39!important}div.Wordw3-hover-orange:hover,div.Wordw3-orange{color:#000!important;background-color:#ff9800!important}div.Wordw3-deep-orange,div.Wordw3-hover-deep-orange:hover{color:#fff!important;background-color:#ff5722!important}div.Wordw3-hover-pink:hover,div.Wordw3-pink{color:#fff!important;background-color:#e91e63!important}div.Wordw3-hover-purple:hover,div.Wordw3-purple{color:#fff!important;background-color:#9c27b0!important}div.Wordw3-deep-purple,div.Wordw3-hover-deep-purple:hover{color:#fff!important;background-color:#673ab7!important}div.Wordw3-hover-red:hover,div.Wordw3-red{color:#fff!important;background-color:#f44336!important}div.Wordw3-hover-sand:hover,div.Wordw3-sand{color:#000!important;background-color:#fdf5e6!important}div.Wordw3-hover-teal:hover,div.Wordw3-teal{color:#fff!important;background-color:#009688!important}div.Wordw3-hover-yellow:hover,div.Wordw3-yellow{color:#000!important;background-color:#ffeb3b!important}div.Wordw3-hover-white:hover,div.Wordw3-white{color:#000!important;background-color:#fff!important}div.Wordw3-black,div.Wordw3-hover-black:hover{color:#fff!important;background-color:#000!important}div.Wordw3-gray,div.Wordw3-grey,div.Wordw3-hover-gray:hover,div.Wordw3-hover-grey:hover{color:#000!important;background-color:#9e9e9e!important}div.Wordw3-hover-light-gray:hover,div.Wordw3-hover-light-grey:hover,div.Wordw3-light-gray,div.Wordw3-light-grey{color:#000!important;background-color:#f1f1f1!important}div.Wordw3-dark-gray,div.Wordw3-dark-grey,div.Wordw3-hover-dark-gray:hover,div.Wordw3-hover-dark-grey:hover{color:#fff!important;background-color:#616161!important}div.Wordw3-hover-pale-red:hover,div.Wordw3-pale-red{color:#000!important;background-color:#fdd!important}div.Wordw3-hover-pale-green:hover,div.Wordw3-pale-green{color:#000!important;background-color:#dfd!important}div.Wordw3-hover-pale-yellow:hover,div.Wordw3-pale-yellow{color:#000!important;background-color:#ffc!important}div.Wordw3-hover-pale-blue:hover,div.Wordw3-pale-blue{color:#000!important;background-color:#dff!important}div.Wordw3-hover-text-amber:hover,div.Wordw3-text-amber{color:#ffc107!important}div.Wordw3-hover-text-aqua:hover,div.Wordw3-text-aqua{color:#0ff!important}div.Wordw3-hover-text-blue:hover,div.Wordw3-text-blue{color:#2196f3!important}div.Wordw3-hover-text-light-blue:hover,div.Wordw3-text-light-blue{color:#87ceeb!important}div.Wordw3-hover-text-brown:hover,div.Wordw3-text-brown{color:#795548!important}div.Wordw3-hover-text-cyan:hover,div.Wordw3-text-cyan{color:#00bcd4!important}div.Wordw3-hover-text-blue-gray:hover,div.Wordw3-hover-text-blue-grey:hover,div.Wordw3-text-blue-gray,div.Wordw3-text-blue-grey{color:#607d8b!important}div.Wordw3-hover-text-green:hover,div.Wordw3-text-green{color:#4caf50!important}div.Wordw3-hover-text-light-green:hover,div.Wordw3-text-light-green{color:#8bc34a!important}div.Wordw3-hover-text-indigo:hover,div.Wordw3-text-indigo{color:#3f51b5!important}div.Wordw3-hover-text-khaki:hover,div.Wordw3-text-khaki{color:#b4aa50!important}div.Wordw3-hover-text-lime:hover,div.Wordw3-text-lime{color:#cddc39!important}div.Wordw3-hover-text-orange:hover,div.Wordw3-text-orange{color:#ff9800!important}div.Wordw3-hover-text-deep-orange:hover,div.Wordw3-text-deep-orange{color:#ff5722!important}div.Wordw3-hover-text-pink:hover,div.Wordw3-text-pink{color:#e91e63!important}div.Wordw3-hover-text-purple:hover,div.Wordw3-text-purple{color:#9c27b0!important}div.Wordw3-hover-text-deep-purple:hover,div.Wordw3-text-deep-purple{color:#673ab7!important}div.Wordw3-hover-text-red:hover,div.Wordw3-text-red{color:#f44336!important}div.Wordw3-hover-text-sand:hover,div.Wordw3-text-sand{color:#fdf5e6!important}div.Wordw3-hover-text-teal:hover,div.Wordw3-text-teal{color:#009688!important}div.Wordw3-hover-text-yellow:hover,div.Wordw3-text-yellow{color:#d2be0e!important}div.Wordw3-hover-text-white:hover,div.Wordw3-text-white{color:#fff!important}div.Wordw3-hover-text-black:hover,div.Wordw3-text-black{color:#000!important}div.Wordw3-hover-text-gray:hover,div.Wordw3-hover-text-grey:hover,div.Wordw3-text-gray,div.Wordw3-text-grey{color:#757575!important}div.Wordw3-hover-text-light-gray:hover,div.Wordw3-hover-text-light-grey:hover,div.Wordw3-text-light-gray,div.Wordw3-text-light-grey{color:#f1f1f1!important}div.Wordw3-hover-text-dark-gray:hover,div.Wordw3-hover-text-dark-grey:hover,div.Wordw3-text-dark-gray,div.Wordw3-text-dark-grey{color:#3a3a3a!important}div.Wordw3-border-amber,div.Wordw3-hover-border-amber:hover{border-color:#ffc107!important}div.Wordw3-border-aqua,div.Wordw3-hover-border-aqua:hover{border-color:#0ff!important}div.Wordw3-border-blue,div.Wordw3-hover-border-blue:hover{border-color:#2196f3!important}div.Wordw3-border-light-blue,div.Wordw3-hover-border-light-blue:hover{border-color:#87ceeb!important}div.Wordw3-border-brown,div.Wordw3-hover-border-brown:hover{border-color:#795548!important}div.Wordw3-border-cyan,div.Wordw3-hover-border-cyan:hover{border-color:#00bcd4!important}div.Wordw3-border-blue-gray,div.Wordw3-border-blue-grey,div.Wordw3-hover-border-blue-gray:hover,div.Wordw3-hover-border-blue-grey:hover{border-color:#607d8b!important}div.Wordw3-border-green,div.Wordw3-hover-border-green:hover{border-color:#4caf50!important}div.Wordw3-border-light-green,div.Wordw3-hover-border-light-green:hover{border-color:#8bc34a!important}div.Wordw3-border-indigo,div.Wordw3-hover-border-indigo:hover{border-color:#3f51b5!important}div.Wordw3-border-khaki,div.Wordw3-hover-border-khaki:hover{border-color:khaki!important}div.Wordw3-border-lime,div.Wordw3-hover-border-lime:hover{border-color:#cddc39!important}div.Wordw3-border-orange,div.Wordw3-hover-border-orange:hover{border-color:#ff9800!important}div.Wordw3-border-deep-orange,div.Wordw3-hover-border-deep-orange:hover{border-color:#ff5722!important}div.Wordw3-border-pink,div.Wordw3-hover-border-pink:hover{border-color:#e91e63!important}div.Wordw3-border-purple,div.Wordw3-hover-border-purple:hover{border-color:#9c27b0!important}div.Wordw3-border-deep-purple,div.Wordw3-hover-border-deep-purple:hover{border-color:#673ab7!important}div.Wordw3-border-red,div.Wordw3-hover-border-red:hover{border-color:#f44336!important}div.Wordw3-border-sand,div.Wordw3-hover-border-sand:hover{border-color:#fdf5e6!important}div.Wordw3-border-teal,div.Wordw3-hover-border-teal:hover{border-color:#009688!important}div.Wordw3-border-yellow,div.Wordw3-hover-border-yellow:hover{border-color:#ffeb3b!important}div.Wordw3-border-white,div.Wordw3-hover-border-white:hover{border-color:#fff!important}div.Wordw3-border-black,div.Wordw3-hover-border-black:hover{border-color:#000!important}div.Wordw3-border-gray,div.Wordw3-border-grey,div.Wordw3-hover-border-gray:hover,div.Wordw3-hover-border-grey:hover{border-color:#9e9e9e!important}div.Wordw3-border-light-gray,div.Wordw3-border-light-grey,div.Wordw3-hover-border-light-gray:hover,div.Wordw3-hover-border-light-grey:hover{border-color:#f1f1f1!important}div.Wordw3-border-dark-gray,div.Wordw3-border-dark-grey,div.Wordw3-hover-border-dark-gray:hover,div.Wordw3-hover-border-dark-grey:hover{border-color:#616161!important}div.Wordw3-border-pale-red,div.Wordw3-hover-border-pale-red:hover{border-color:#ffe7e7!important}div.Wordw3-border-pale-green,div.Wordw3-hover-border-pale-green:hover{border-color:#e7ffe7!important}div.Wordw3-border-pale-yellow,div.Wordw3-hover-border-pale-yellow:hover{border-color:#ffc!important}div.Wordw3-border-pale-blue,div.Wordw3-hover-border-pale-blue:hover{border-color:#e7ffff!important}\
     </style>\
     ');
-    // table.garis td,table.garis th,table.garis tr {  border: 1px solid #000}table.garis th {border: 1px solid #000;text-align: center;vertical-align: middle}\
-    // html{box-sizing:border-box}*,:after,:before{box-sizing:inherit}html{-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body{margin:0}article,aside,details,figcaption,figure,footer,header,main,menu,nav,section{display:block}summary{display:list-item}audio,canvas,progress,video{display:inline-block}progress{vertical-align:baseline}audio:not([controls]){display:none;height:0}[hidden],template{display:none}a{background-color:transparent}a:active,a:hover{outline-width:0}abbr[title]{border-bottom:none;text-decoration:underline;text-decoration:underline dotted}b,strong{font-weight:bolder}dfn{font-style:italic}mark{background:#ff0;color:#000}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}figure{margin:1em 40px}img{border-style:none}code,kbd,pre,samp{font-family:monospace,monospace;font-size:1em}hr{box-sizing:content-box;height:0;overflow:visible}button,input,optgroup,select,textarea{font:inherit;margin:0}optgroup{font-weight:700}button,input{overflow:visible}button,select{text-transform:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner,button::-moz-focus-inner{border-style:none;padding:0}[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[type=submit]:-moz-focusring,button:-moz-focusring{outline:1px dotted ButtonText}fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em}legend{color:inherit;display:table;max-width:100%;padding:0;white-space:normal}textarea{overflow:auto}[type=checkbox],[type=radio]{padding:0}[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}[type=search]::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}body,html{font-family:Verdana,sans-serif;font-size:15px;line-height:1.5}html{overflow-x:hidden}h1{font-size:36px}h2{font-size:30px}h3{font-size:24px}h4{font-size:20px}h5{font-size:18px}h6{font-size:16px}.w3-serif{font-family:serif}.w3-sans-serif{font-family:sans-serif}.w3-cursive{font-family:cursive}.w3-monospace{font-family:monospace}h1,h2,h3,h4,h5,h6{font-family:"Segoe UI",Arial,sans-serif;font-weight:400;margin:10px 0}.w3-wide{letter-spacing:4px}hr{border:0;border-top:1px solid #eee;margin:20px 0}.w3-image{max-width:100%;height:auto}img{vertical-align:middle}a{color:inherit}.w3-table,.w3-table-all{border-collapse:collapse;border-spacing:0;width:100%;display:table}.w3-table-all{border:1px solid #ccc}.w3-bordered tr,.w3-table-all tr{border-bottom:1px solid #ddd}.w3-striped tbody tr:nth-child(even){background-color:#f1f1f1}.w3-table-all tr:nth-child(odd){background-color:#fff}.w3-table-all tr:nth-child(even){background-color:#f1f1f1}.w3-hoverable tbody tr:hover,.w3-ul.w3-hoverable li:hover{background-color:#ccc}.w3-centered tr td,.w3-centered tr th{text-align:center}.w3-table td,.w3-table th,.w3-table-all td,.w3-table-all th{padding:8px 8px;display:table-cell;text-align:left;vertical-align:top}.w3-table td:first-child,.w3-table th:first-child,.w3-table-all td:first-child,.w3-table-all th:first-child{padding-left:16px}.w3-btn,.w3-button{border:none;display:inline-block;padding:8px 16px;vertical-align:middle;overflow:hidden;text-decoration:none;color:inherit;background-color:inherit;text-align:center;cursor:pointer;white-space:nowrap}.w3-btn:hover{box-shadow:0 8px 16px 0 rgba(0,0,0,.2),0 6px 20px 0 rgba(0,0,0,.19)}.w3-btn,.w3-button{-webkit-touch-callout:none;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.w3-btn:disabled,.w3-button:disabled,.w3-disabled{cursor:not-allowed;opacity:.3}.w3-disabled *,:disabled *{pointer-events:none}.w3-btn.w3-disabled:hover,.w3-btn:disabled:hover{box-shadow:none}.w3-badge,.w3-tag{background-color:#000;color:#fff;display:inline-block;padding-left:8px;padding-right:8px;text-align:center}.w3-badge{border-radius:50%}.w3-ul{list-style-type:none;padding:0;margin:0}.w3-ul li{padding:8px 16px;border-bottom:1px solid #ddd}.w3-ul li:last-child{border-bottom:none}.w3-display-container,.w3-tooltip{position:relative}.w3-tooltip .w3-text{display:none}.w3-tooltip:hover .w3-text{display:inline-block}.w3-ripple:active{opacity:.5}.w3-ripple{transition:opacity 0s}.w3-input{padding:8px;display:block;border:none;border-bottom:1px solid #ccc;width:100%}.w3-select{padding:9px 0;width:100%;border:none;border-bottom:1px solid #ccc}.w3-dropdown-click,.w3-dropdown-hover{position:relative;display:inline-block;cursor:pointer}.w3-dropdown-hover:hover .w3-dropdown-content{display:block}.w3-dropdown-click:hover,.w3-dropdown-hover:first-child{background-color:#ccc;color:#000}.w3-dropdown-click:hover>.w3-button:first-child,.w3-dropdown-hover:hover>.w3-button:first-child{background-color:#ccc;color:#000}.w3-dropdown-content{cursor:auto;color:#000;background-color:#fff;display:none;position:absolute;min-width:160px;margin:0;padding:0;z-index:1}.w3-check,.w3-radio{width:24px;height:24px;position:relative;top:6px}.w3-sidebar{height:100%;width:200px;background-color:#fff;position:fixed!important;z-index:1;overflow:auto}.w3-bar-block .w3-dropdown-click,.w3-bar-block .w3-dropdown-hover{width:100%}.w3-bar-block .w3-dropdown-click .w3-dropdown-content,.w3-bar-block .w3-dropdown-hover .w3-dropdown-content{min-width:100%}.w3-bar-block .w3-dropdown-click .w3-button,.w3-bar-block .w3-dropdown-hover .w3-button{width:100%;text-align:left;padding:8px 16px}#main,.w3-main{transition:margin-left .4s}.w3-modal{z-index:3;display:none;padding-top:100px;position:fixed;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:#000;background-color:rgba(0,0,0,.4)}.w3-modal-content{margin:auto;background-color:#fff;position:relative;padding:0;outline:0;width:600px}.w3-bar{width:100%;overflow:hidden}.w3-center .w3-bar{display:inline-block;width:auto}.w3-bar .w3-bar-item{padding:8px 16px;float:left;width:auto;border:none;display:block;outline:0}.w3-bar .w3-dropdown-click,.w3-bar .w3-dropdown-hover{position:static;float:left}.w3-bar .w3-button{white-space:normal}.w3-bar-block .w3-bar-item{width:100%;display:block;padding:8px 16px;text-align:left;border:none;white-space:normal;float:none;outline:0}.w3-bar-block.w3-center .w3-bar-item{text-align:center}.w3-block{display:block;width:100%}.w3-responsive{display:block;overflow-x:auto}.w3-bar:after,.w3-bar:before,.w3-cell-row:after,.w3-cell-row:before,.w3-clear:after,.w3-clear:before,.w3-container:after,.w3-container:before,.w3-panel:after,.w3-panel:before,.w3-row-padding:after,.w3-row-padding:before,.w3-row:after,.w3-row:before{content:"";display:table;clear:both}.w3-col,.w3-half,.w3-quarter,.w3-third,.w3-threequarter,.w3-twothird{float:left;width:100%}.w3-col.s1{width:8.33333%}.w3-col.s2{width:16.66666%}.w3-col.s3{width:24.99999%}.w3-col.s4{width:33.33333%}.w3-col.s5{width:41.66666%}.w3-col.s6{width:49.99999%}.w3-col.s7{width:58.33333%}.w3-col.s8{width:66.66666%}.w3-col.s9{width:74.99999%}.w3-col.s10{width:83.33333%}.w3-col.s11{width:91.66666%}.w3-col.s12{width:99.99999%}@media (min-width:601px){.w3-col.m1{width:8.33333%}.w3-col.m2{width:16.66666%}.w3-col.m3,.w3-quarter{width:24.99999%}.w3-col.m4,.w3-third{width:33.33333%}.w3-col.m5{width:41.66666%}.w3-col.m6,.w3-half{width:49.99999%}.w3-col.m7{width:58.33333%}.w3-col.m8,.w3-twothird{width:66.66666%}.w3-col.m9,.w3-threequarter{width:74.99999%}.w3-col.m10{width:83.33333%}.w3-col.m11{width:91.66666%}.w3-col.m12{width:99.99999%}}@media (min-width:993px){.w3-col.l1{width:8.33333%}.w3-col.l2{width:16.66666%}.w3-col.l3{width:24.99999%}.w3-col.l4{width:33.33333%}.w3-col.l5{width:41.66666%}.w3-col.l6{width:49.99999%}.w3-col.l7{width:58.33333%}.w3-col.l8{width:66.66666%}.w3-col.l9{width:74.99999%}.w3-col.l10{width:83.33333%}.w3-col.l11{width:91.66666%}.w3-col.l12{width:99.99999%}}.w3-rest{overflow:hidden}.w3-stretch{margin-left:-16px;margin-right:-16px}.w3-auto,.w3-content{margin-left:auto;margin-right:auto}.w3-content{max-width:980px}.w3-auto{max-width:1140px}.w3-cell-row{display:table;width:100%}.w3-cell{display:table-cell}.w3-cell-top{vertical-align:top}.w3-cell-middle{vertical-align:middle}.w3-cell-bottom{vertical-align:bottom}.w3-hide{display:none!important}.w3-show,.w3-show-block{display:block!important}.w3-show-inline-block{display:inline-block!important}@media (max-width:1205px){.w3-auto{max-width:95%}}@media (max-width:600px){.w3-modal-content{margin:0 10px;width:auto!important}.w3-modal{padding-top:30px}.w3-dropdown-click.w3-mobile .w3-dropdown-content,.w3-dropdown-hover.w3-mobile .w3-dropdown-content{position:relative}.w3-hide-small{display:none!important}.w3-mobile{display:block;width:100%!important}.w3-bar-item.w3-mobile,.w3-dropdown-click.w3-mobile,.w3-dropdown-hover.w3-mobile{text-align:center}.w3-dropdown-click.w3-mobile,.w3-dropdown-click.w3-mobile .w3-btn,.w3-dropdown-click.w3-mobile .w3-button,.w3-dropdown-hover.w3-mobile,.w3-dropdown-hover.w3-mobile .w3-btn,.w3-dropdown-hover.w3-mobile .w3-button{width:100%}}@media (max-width:768px){.w3-modal-content{width:500px}.w3-modal{padding-top:50px}}@media (min-width:993px){.w3-modal-content{width:900px}.w3-hide-large{display:none!important}.w3-sidebar.w3-collapse{display:block!important}}@media (max-width:992px) and (min-width:601px){.w3-hide-medium{display:none!important}}@media (max-width:992px){.w3-sidebar.w3-collapse{display:none}.w3-main{margin-left:0!important;margin-right:0!important}.w3-auto{max-width:100%}}.w3-bottom,.w3-top{position:fixed;width:100%;z-index:1}.w3-top{top:0}.w3-bottom{bottom:0}.w3-overlay{position:fixed;display:none;width:100%;height:100%;top:0;left:0;right:0;bottom:0;background-color:rgba(0,0,0,.5);z-index:2}.w3-display-topleft{position:absolute;left:0;top:0}.w3-display-topright{position:absolute;right:0;top:0}.w3-display-bottomleft{position:absolute;left:0;bottom:0}.w3-display-bottomright{position:absolute;right:0;bottom:0}.w3-display-middle{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);-ms-transform:translate(-50%,-50%)}.w3-display-left{position:absolute;top:50%;left:0;transform:translate(0,-50%);-ms-transform:translate(0,-50%)}.w3-display-right{position:absolute;top:50%;right:0;transform:translate(0,-50%);-ms-transform:translate(0,-50%)}.w3-display-topmiddle{position:absolute;left:50%;top:0;transform:translate(-50%,0);-ms-transform:translate(-50%,0)}.w3-display-bottommiddle{position:absolute;left:50%;bottom:0;transform:translate(-50%,0);-ms-transform:translate(-50%,0)}.w3-display-container:hover .w3-display-hover{display:block}.w3-display-container:hover span.w3-display-hover{display:inline-block}.w3-display-hover{display:none}.w3-display-position{position:absolute}.w3-circle{border-radius:50%}.w3-round-small{border-radius:2px}.w3-round,.w3-round-medium{border-radius:4px}.w3-round-large{border-radius:8px}.w3-round-xlarge{border-radius:16px}.w3-round-xxlarge{border-radius:32px}.w3-row-padding,.w3-row-padding>.w3-col,.w3-row-padding>.w3-half,.w3-row-padding>.w3-quarter,.w3-row-padding>.w3-third,.w3-row-padding>.w3-threequarter,.w3-row-padding>.w3-twothird{padding:0 8px}.w3-container,.w3-panel{padding:.01em 16px}.w3-panel{margin-top:16px;margin-bottom:16px}.w3-code,.w3-codespan{font-family:Consolas,"courier new";font-size:16px}.w3-code{width:auto;background-color:#fff;padding:8px 12px;border-left:4px solid #4caf50;word-wrap:break-word}.w3-codespan{color:#dc143c;background-color:#f1f1f1;padding-left:4px;padding-right:4px;font-size:110%}.w3-card,.w3-card-2{box-shadow:0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12)}.w3-card-4,.w3-hover-shadow:hover{box-shadow:0 4px 10px 0 rgba(0,0,0,.2),0 4px 20px 0 rgba(0,0,0,.19)}.w3-spin{animation:w3-spin 2s infinite linear}@keyframes w3-spin{0%{transform:rotate(0)}100%{transform:rotate(359deg)}}.w3-animate-fading{animation:fading 10s infinite}@keyframes fading{0%{opacity:0}50%{opacity:1}100%{opacity:0}}.w3-animate-opacity{animation:opac .8s}@keyframes opac{from{opacity:0}to{opacity:1}}.w3-animate-top{position:relative;animation:animatetop .4s}@keyframes animatetop{from{top:-300px;opacity:0}to{top:0;opacity:1}}.w3-animate-left{position:relative;animation:animateleft .4s}@keyframes animateleft{from{left:-300px;opacity:0}to{left:0;opacity:1}}.w3-animate-right{position:relative;animation:animateright .4s}@keyframes animateright{from{right:-300px;opacity:0}to{right:0;opacity:1}}.w3-animate-bottom{position:relative;animation:animatebottom .4s}@keyframes animatebottom{from{bottom:-300px;opacity:0}to{bottom:0;opacity:1}}.w3-animate-zoom{animation:animatezoom .6s}@keyframes animatezoom{from{transform:scale(0)}to{transform:scale(1)}}.w3-animate-input{transition:width .4s ease-in-out}.w3-animate-input:focus{width:100%!important}.w3-hover-opacity:hover,.w3-opacity{opacity:.6}.w3-hover-opacity-off:hover,.w3-opacity-off{opacity:1}.w3-opacity-max{opacity:.25}.w3-opacity-min{opacity:.75}.w3-grayscale-max,.w3-greyscale-max,.w3-hover-grayscale:hover,.w3-hover-greyscale:hover{filter:grayscale(100%)}.w3-grayscale,.w3-greyscale{filter:grayscale(75%)}.w3-grayscale-min,.w3-greyscale-min{filter:grayscale(50%)}.w3-sepia{filter:sepia(75%)}.w3-hover-sepia:hover,.w3-sepia-max{filter:sepia(100%)}.w3-sepia-min{filter:sepia(50%)}.w3-tiny{font-size:10px!important}.w3-small{font-size:12px!important}.w3-medium{font-size:15px!important}.w3-large{font-size:18px!important}.w3-xlarge{font-size:24px!important}.w3-xxlarge{font-size:36px!important}.w3-xxxlarge{font-size:48px!important}.w3-jumbo{font-size:64px!important}.w3-left-align{text-align:left!important}.w3-right-align{text-align:right!important}.w3-justify{text-align:justify!important}.w3-center{text-align:center!important}.w3-border-0{border:0!important}.w3-border{border:1px solid #ccc!important}.w3-border-top{border-top:1px solid #ccc!important}.w3-border-bottom{border-bottom:1px solid #ccc!important}.w3-border-left{border-left:1px solid #ccc!important}.w3-border-right{border-right:1px solid #ccc!important}.w3-topbar{border-top:6px solid #ccc!important}.w3-bottombar{border-bottom:6px solid #ccc!important}.w3-leftbar{border-left:6px solid #ccc!important}.w3-rightbar{border-right:6px solid #ccc!important}.w3-code,.w3-section{margin-top:16px!important;margin-bottom:16px!important}.w3-margin{margin:16px!important}.w3-margin-top{margin-top:16px!important}.w3-margin-bottom{margin-bottom:16px!important}.w3-margin-left{margin-left:16px!important}.w3-margin-right{margin-right:16px!important}.w3-padding-small{padding:4px 8px!important}.w3-padding{padding:8px 16px!important}.w3-padding-large{padding:12px 24px!important}.w3-padding-16{padding-top:16px!important;padding-bottom:16px!important}.w3-padding-24{padding-top:24px!important;padding-bottom:24px!important}.w3-padding-32{padding-top:32px!important;padding-bottom:32px!important}.w3-padding-48{padding-top:48px!important;padding-bottom:48px!important}.w3-padding-64{padding-top:64px!important;padding-bottom:64px!important}.w3-padding-top-64{padding-top:64px!important}.w3-padding-top-48{padding-top:48px!important}.w3-padding-top-32{padding-top:32px!important}.w3-padding-top-24{padding-top:24px!important}.w3-left{float:left!important}.w3-right{float:right!important}.w3-button:hover{color:#000!important;background-color:#ccc!important}.w3-hover-none:hover,.w3-transparent{background-color:transparent!important}.w3-hover-none:hover{box-shadow:none!important}.w3-amber,.w3-hover-amber:hover{color:#000!important;background-color:#ffc107!important}.w3-aqua,.w3-hover-aqua:hover{color:#000!important;background-color:#0ff!important}.w3-blue,.w3-hover-blue:hover{color:#fff!important;background-color:#2196f3!important}.w3-hover-light-blue:hover,.w3-light-blue{color:#000!important;background-color:#87ceeb!important}.w3-brown,.w3-hover-brown:hover{color:#fff!important;background-color:#795548!important}.w3-cyan,.w3-hover-cyan:hover{color:#000!important;background-color:#00bcd4!important}.w3-blue-gray,.w3-blue-grey,.w3-hover-blue-gray:hover,.w3-hover-blue-grey:hover{color:#fff!important;background-color:#607d8b!important}.w3-green,.w3-hover-green:hover{color:#fff!important;background-color:#4caf50!important}.w3-hover-light-green:hover,.w3-light-green{color:#000!important;background-color:#8bc34a!important}.w3-hover-indigo:hover,.w3-indigo{color:#fff!important;background-color:#3f51b5!important}.w3-hover-khaki:hover,.w3-khaki{color:#000!important;background-color:khaki!important}.w3-hover-lime:hover,.w3-lime{color:#000!important;background-color:#cddc39!important}.w3-hover-orange:hover,.w3-orange{color:#000!important;background-color:#ff9800!important}.w3-deep-orange,.w3-hover-deep-orange:hover{color:#fff!important;background-color:#ff5722!important}.w3-hover-pink:hover,.w3-pink{color:#fff!important;background-color:#e91e63!important}.w3-hover-purple:hover,.w3-purple{color:#fff!important;background-color:#9c27b0!important}.w3-deep-purple,.w3-hover-deep-purple:hover{color:#fff!important;background-color:#673ab7!important}.w3-hover-red:hover,.w3-red{color:#fff!important;background-color:#f44336!important}.w3-hover-sand:hover,.w3-sand{color:#000!important;background-color:#fdf5e6!important}.w3-hover-teal:hover,.w3-teal{color:#fff!important;background-color:#009688!important}.w3-hover-yellow:hover,.w3-yellow{color:#000!important;background-color:#ffeb3b!important}.w3-hover-white:hover,.w3-white{color:#000!important;background-color:#fff!important}.w3-black,.w3-hover-black:hover{color:#fff!important;background-color:#000!important}.w3-gray,.w3-grey,.w3-hover-gray:hover,.w3-hover-grey:hover{color:#000!important;background-color:#9e9e9e!important}.w3-hover-light-gray:hover,.w3-hover-light-grey:hover,.w3-light-gray,.w3-light-grey{color:#000!important;background-color:#f1f1f1!important}.w3-dark-gray,.w3-dark-grey,.w3-hover-dark-gray:hover,.w3-hover-dark-grey:hover{color:#fff!important;background-color:#616161!important}.w3-hover-pale-red:hover,.w3-pale-red{color:#000!important;background-color:#fdd!important}.w3-hover-pale-green:hover,.w3-pale-green{color:#000!important;background-color:#dfd!important}.w3-hover-pale-yellow:hover,.w3-pale-yellow{color:#000!important;background-color:#ffc!important}.w3-hover-pale-blue:hover,.w3-pale-blue{color:#000!important;background-color:#dff!important}.w3-hover-text-amber:hover,.w3-text-amber{color:#ffc107!important}.w3-hover-text-aqua:hover,.w3-text-aqua{color:#0ff!important}.w3-hover-text-blue:hover,.w3-text-blue{color:#2196f3!important}.w3-hover-text-light-blue:hover,.w3-text-light-blue{color:#87ceeb!important}.w3-hover-text-brown:hover,.w3-text-brown{color:#795548!important}.w3-hover-text-cyan:hover,.w3-text-cyan{color:#00bcd4!important}.w3-hover-text-blue-gray:hover,.w3-hover-text-blue-grey:hover,.w3-text-blue-gray,.w3-text-blue-grey{color:#607d8b!important}.w3-hover-text-green:hover,.w3-text-green{color:#4caf50!important}.w3-hover-text-light-green:hover,.w3-text-light-green{color:#8bc34a!important}.w3-hover-text-indigo:hover,.w3-text-indigo{color:#3f51b5!important}.w3-hover-text-khaki:hover,.w3-text-khaki{color:#b4aa50!important}.w3-hover-text-lime:hover,.w3-text-lime{color:#cddc39!important}.w3-hover-text-orange:hover,.w3-text-orange{color:#ff9800!important}.w3-hover-text-deep-orange:hover,.w3-text-deep-orange{color:#ff5722!important}.w3-hover-text-pink:hover,.w3-text-pink{color:#e91e63!important}.w3-hover-text-purple:hover,.w3-text-purple{color:#9c27b0!important}.w3-hover-text-deep-purple:hover,.w3-text-deep-purple{color:#673ab7!important}.w3-hover-text-red:hover,.w3-text-red{color:#f44336!important}.w3-hover-text-sand:hover,.w3-text-sand{color:#fdf5e6!important}.w3-hover-text-teal:hover,.w3-text-teal{color:#009688!important}.w3-hover-text-yellow:hover,.w3-text-yellow{color:#d2be0e!important}.w3-hover-text-white:hover,.w3-text-white{color:#fff!important}.w3-hover-text-black:hover,.w3-text-black{color:#000!important}.w3-hover-text-gray:hover,.w3-hover-text-grey:hover,.w3-text-gray,.w3-text-grey{color:#757575!important}.w3-hover-text-light-gray:hover,.w3-hover-text-light-grey:hover,.w3-text-light-gray,.w3-text-light-grey{color:#f1f1f1!important}.w3-hover-text-dark-gray:hover,.w3-hover-text-dark-grey:hover,.w3-text-dark-gray,.w3-text-dark-grey{color:#3a3a3a!important}.w3-border-amber,.w3-hover-border-amber:hover{border-color:#ffc107!important}.w3-border-aqua,.w3-hover-border-aqua:hover{border-color:#0ff!important}.w3-border-blue,.w3-hover-border-blue:hover{border-color:#2196f3!important}.w3-border-light-blue,.w3-hover-border-light-blue:hover{border-color:#87ceeb!important}.w3-border-brown,.w3-hover-border-brown:hover{border-color:#795548!important}.w3-border-cyan,.w3-hover-border-cyan:hover{border-color:#00bcd4!important}.w3-border-blue-gray,.w3-border-blue-grey,.w3-hover-border-blue-gray:hover,.w3-hover-border-blue-grey:hover{border-color:#607d8b!important}.w3-border-green,.w3-hover-border-green:hover{border-color:#4caf50!important}.w3-border-light-green,.w3-hover-border-light-green:hover{border-color:#8bc34a!important}.w3-border-indigo,.w3-hover-border-indigo:hover{border-color:#3f51b5!important}.w3-border-khaki,.w3-hover-border-khaki:hover{border-color:khaki!important}.w3-border-lime,.w3-hover-border-lime:hover{border-color:#cddc39!important}.w3-border-orange,.w3-hover-border-orange:hover{border-color:#ff9800!important}.w3-border-deep-orange,.w3-hover-border-deep-orange:hover{border-color:#ff5722!important}.w3-border-pink,.w3-hover-border-pink:hover{border-color:#e91e63!important}.w3-border-purple,.w3-hover-border-purple:hover{border-color:#9c27b0!important}.w3-border-deep-purple,.w3-hover-border-deep-purple:hover{border-color:#673ab7!important}.w3-border-red,.w3-hover-border-red:hover{border-color:#f44336!important}.w3-border-sand,.w3-hover-border-sand:hover{border-color:#fdf5e6!important}.w3-border-teal,.w3-hover-border-teal:hover{border-color:#009688!important}.w3-border-yellow,.w3-hover-border-yellow:hover{border-color:#ffeb3b!important}.w3-border-white,.w3-hover-border-white:hover{border-color:#fff!important}.w3-border-black,.w3-hover-border-black:hover{border-color:#000!important}.w3-border-gray,.w3-border-grey,.w3-hover-border-gray:hover,.w3-hover-border-grey:hover{border-color:#9e9e9e!important}.w3-border-light-gray,.w3-border-light-grey,.w3-hover-border-light-gray:hover,.w3-hover-border-light-grey:hover{border-color:#f1f1f1!important}.w3-border-dark-gray,.w3-border-dark-grey,.w3-hover-border-dark-gray:hover,.w3-hover-border-dark-grey:hover{border-color:#616161!important}.w3-border-pale-red,.w3-hover-border-pale-red:hover{border-color:#ffe7e7!important}.w3-border-pale-green,.w3-hover-border-pale-green:hover{border-color:#e7ffe7!important}.w3-border-pale-yellow,.w3-hover-border-pale-yellow:hover{border-color:#ffc!important}.w3-border-pale-blue,.w3-hover-border-pale-blue:hover{border-color:#e7ffff!important}\
-    // var fileContent = static.mhtml.top.replace("_html_", static.mhtml.head.replace("_styles_", css) + static.mhtml.body.replace("_body_", markup.innerHTML)) + mhtmlBottom;
-    var fileContent ='\
-    <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">\
-    <head>'+css+'\
-        <title>Document Title</title>\
-        <xml>\
-        <w:worddocument xmlns:w="#unknown">\
-            <w:view>Print</w:view>\
-            <w:zoom>90</w:zoom>\
-            <w:donotoptimizeforbrowser />\
-        </w:worddocument>\
-        </xml>\
-    </head>\
-    <body style="tab-interval:.5in">\
-        <div class="Section1">' + markup.innerHTML + '</div>\
-    </body>\
-    </html>';
+    
+    let htmljadi = "";
+    let fokusKop = markup.querySelector(".kopnaskahsoal");
+    
+    //fokuskop has hidden?
+    if(fokusKop.className.indexOf("w3-hide")==-1){
+        htmljadi += `<p align="center" style="margin-bottom:0cm;text-align:center"><table><tr><td style="text-align:center;vertical-align:middle">${lg.outerHTML}</td><td style="text-align:center;vertical-align:middle"><font size="5">PEMERINTAH DAERAH KOTA DEPOK</font><br><font size="5">DINAS PENDIDIKAN</font><br><font size="5" face="Arial Black">${idNamaSekolah.toUpperCase()}</font><br><font size="1"><span>${teksalamat}</span><br>NPSN: 20228914 | NSS: 101026604052 | surel: uptdsdnratujaya1@gmail.com</font></td></tr></table><p style="border-top:5pt solid #000;" >&nbsp;</p>`;
+    }
+        fokusKop.remove();
+        let tengah="";
+        let tengahtengah;
+        let tabel = markup.querySelector(".tempatnaskahsoal_soal");
+        for(let j = 0 ; j < tabel.rows.length ; j++){
+            let lR = tabel.rows[j];
+            if(lR.cells.length ==2){
+                tengah += "<p>"+lR.cells[1].innerHTML+"</p>"
+            }else{
+                tengah += "<div style='font-family:Times New Roman, Times, serif;'><p class='MsoNormal' style='text-indent:-14pt;font-family:Times New Roman, Times, serif;'>"+lR.cells[1].innerHTML +"  "+ lR.cells[2].innerHTML +"</p></div>";
+                // tengah += "<div style='position:relative'><div style='position:absolute;margin-left:0;border:.2pt solid #000;width:15px'>"+lR.cells[1].innerHTML +"</div><div style='position:relative;margin-left:20px;margin-top:-35px;border:.2pt solid #000'>"+ lR.cells[2].innerHTML +"</div></div>";
+            }
+            
+        }
+        
+        tabel.remove()
+        tengahtengah = markup.innerHTML;
+        htmljadi+= `<div style="text-align:center;border:0 !important;font-family:Times New Roman, Times, serif">${tengahtengah}</div>
+        <p style="border-top:2pt solid #000;" >&nbsp;</p>
+        `
+        // <p style="border-bottom:2pt solid #000;" >&nbsp;</p>
+    //""+tengahtengah+"";
+    htmljadi+= `<div style="border:5pt 0 solid #000">&nbsp;</div>
+    <div style="font-size:12pt">${tengah}</div>`;
+
+    var fileContent ='<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head>'+css+'<title>Document Title</title><xml><w:worddocument xmlns:w="#unknown"><w:view>Print</w:view><w:zoom>90</w:zoom><w:donotoptimizeforbrowser /></w:worddocument></xml></head><body style="tab-interval:.5in;"><div class="Section1">' + htmljadi + '</div></body></html>';
     // Create a Blob with the file contents
     var blob = new Blob([fileContent], {
         type: "application/msword;charset=utf-8"
@@ -2636,7 +2377,193 @@ const print2Word = (element, filename)=>{
     var url = window.URL.createObjectURL(blob);
     // Specify file name
     // var url = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(markup.innerHTML);// window.atob(unescape(encodeURIComponent(markup.innerHTML)));//encodeURIComponent(markup);// window.btoa(unescape(encodeURIComponent(markup.innerHTML)));;
-    filename = filename?filename+'.doc':'document.doc';
+    // filename = filename?filename+'.doc':'document.doc';
+    filename = Filename;
+
+    // Create download link element
+    var downloadLink = document.createElement("a");
+
+    document.body.appendChild(downloadLink);
+
+    if(navigator.msSaveOrOpenBlob ){
+        navigator.msSaveOrOpenBlob(blob, filename); // IE10-11
+    }else{
+        // Create a link to the file
+        downloadLink.href = url;
+        
+        // Setting the file name
+        downloadLink.download = filename;
+        
+        //triggering the function
+        downloadLink.click();
+    }
+
+    document.body.removeChild(downloadLink);
+}
+const print2WordGlobal = (element, Filename,kondisi="kisikisijawaban",ttd=false)=>{
+    //https://github.com/markswindoll/jQuery-Word-Export/blob/master/jquery.wordexport.js
+
+        var static = {
+        mhtml: {
+            top: "Mime-Version: 1.0\nContent-Base: " + location.href + "\nContent-Type: Multipart/related; boundary=\"NEXT.ITEM-BOUNDARY\";type=\"text/html\"\n\n--NEXT.ITEM-BOUNDARY\nContent-Type: text/html; charset=\"utf-8\"\nContent-Location: " + location.href + "\n\n<!DOCTYPE html>\n<html>\n_html_</html>",
+            head: "<head>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n<style>\n_styles_\n</style>\n</head>\n",
+            body: "<body>_body_</body>"
+        }
+    };
+    var options = {
+        maxWidth: 70
+    };
+    // Clone selected element before manipulating it
+    let div,filename
+    
+        div = document.querySelector("."+element);
+        let namafile = document.getElementById("naskahsoal_identitas").value;
+        if(Filename == ""){
+            filename = namafile==""?"LAMASO_Edurasa.doc":Filename+".doc";
+        }
+
+    
+    var markup = div.cloneNode(true);
+
+    // Remove hidden elements from the output
+    // markup.forEach(self => {
+        
+    //     if (self.is(':hidden'))
+    //         self.remove();
+    // });
+
+    // Embed all images using Data URLs
+    var images = Array();
+    var img = markup.querySelectorAll("img");
+    let lg 
+    for (var i = 0; i < img.length; i++) {
+        // Calculate dimensions of output image
+        var w = Math.min(img[i].width, options.maxWidth);
+        var h = img[i].height * (w / img[i].width);
+        // Create canvas for converting image to data URL
+        var canvas = document.createElement("CANVAS");
+        canvas.width = w;
+        canvas.height = h;
+        // Draw image to canvas
+        var context = canvas.getContext('2d');
+        context.drawImage(img[i], 0, 0, w, h);
+        // Get data URL encoding of image
+        var uri = canvas.toDataURL("image/png");
+        $(img[i]).attr("src", img[i].src);
+        img[i].width = w;
+        img[i].height = h;
+        // Save encoded image to array
+        images[i] = {
+            type: uri.substring(uri.indexOf(":") + 1, uri.indexOf(";")),
+            encoding: uri.substring(uri.indexOf(";") + 1, uri.indexOf(",")),
+            location: $(img[i]).attr("src"),
+            data: uri.substring(uri.indexOf(",") + 1)
+        };
+        
+    }
+
+    // Prepare bottom of mhtml file with image data
+    var mhtmlBottom = "\n";
+    for (var i = 0; i < images.length; i++) {
+        mhtmlBottom += "--NEXT.ITEM-BOUNDARY\n";
+        mhtmlBottom += "Content-Location: " + images[i].location + "\n";
+        mhtmlBottom += "Content-Type: " + images[i].type + "\n";
+        mhtmlBottom += "Content-Transfer-Encoding: " + images[i].encoding + "\n\n";
+        mhtmlBottom += images[i].data + "\n\n";
+        if(i == 0){
+            lg = img[i]
+        }
+    }
+    mhtmlBottom += "--NEXT.ITEM-BOUNDARY--";
+
+    //TODO: load css from included stylesheet
+    var styles = "";
+    styles+= '<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">';
+    styles+=`<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">`;
+    styles+='<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">';
+    styles+= '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">';
+    styles+='<link  rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">'
+    styles+='<link rel="stylesheet" href="https://syahandrianeda.github.io/syahandrianeda/css/stylegurukelas.css">'
+        
+
+    // Aggregate parts of the file together
+    css = (`<style>
+    @page WordSection1{size: 841.95pt 595.35pt;mso-page-orientation: landscape;}div.WordSection1 {page: WordSection1;font-family:Times New Roman, Times, serif;}
+    @page WordSection2{size: 595.35pt 841.95pt ;mso-page-orientation: portrait;}div.WordSection2 {page: WordSection2;font-family:Times New Roman, Times, serif;}
+    </style>`);
+    
+    let htmljadi = "";
+    if(kondisi == "kisikisijawaban"){
+        htmljadi = markup.innerHTML;
+
+    }else if(kondisi == "naskahsoal"){
+
+        let fokusKop = markup.querySelector(".kopnaskahsoal");
+        
+        //fokuskop has hidden?
+        if(fokusKop.className.indexOf("w3-hide")==-1){
+            htmljadi += `<p align="center" style="margin-bottom:0cm;text-align:center"><table><tr><td style="text-align:center;vertical-align:middle">${lg.outerHTML}</td><td style="text-align:center;vertical-align:middle"><font size="5">PEMERINTAH DAERAH KOTA DEPOK</font><br><font size="5">DINAS PENDIDIKAN</font><br><font size="5" face="Arial Black">${idNamaSekolah.toUpperCase()}</font><br><font size="1"><span>${teksalamat}</span><br>NPSN: 20228914 | NSS: 101026604052 | surel: uptdsdnratujaya1@gmail.com</font></td></tr></table><p style="border-top:5pt solid #000;" >&nbsp;</p>`;
+        }
+        fokusKop.remove();
+        let tengah="";
+        let tengahtengah;
+        let tabel = markup.querySelector(".tempatnaskahsoal_soal");
+        for(let j = 0 ; j < tabel.rows.length ; j++){
+            let lR = tabel.rows[j];
+            if(lR.cells.length ==2){
+                tengah += "<p>"+lR.cells[1].innerHTML+"</p>"
+            }else{
+                tengah += "<div style='font-family:Times New Roman, Times, serif;'><p class='MsoNormal' style='text-indent:-14pt;font-family:Times New Roman, Times, serif;'>"+lR.cells[1].innerHTML +"  "+ lR.cells[2].innerHTML +"</p></div>";
+                // tengah += "<div style='position:relative'><div style='position:absolute;margin-left:0;border:.2pt solid #000;width:15px'>"+lR.cells[1].innerHTML +"</div><div style='position:relative;margin-left:20px;margin-top:-35px;border:.2pt solid #000'>"+ lR.cells[2].innerHTML +"</div></div>";
+            }
+            
+        }
+        
+        tabel.remove()
+        tengahtengah = markup.innerHTML;
+        htmljadi+= `<div style="text-align:center;border:0 !important;font-family:Times New Roman, Times, serif">${tengahtengah}</div>
+        <p style="border-top:2pt solid #000;" >&nbsp;</p>
+        `
+        // <p style="border-bottom:2pt solid #000;" >&nbsp;</p>
+        //""+tengahtengah+"";
+        htmljadi+= `<div style="border:5pt 0 solid #000">&nbsp;</div>
+        <div style="font-size:12pt">${tengah}</div>`;
+        
+    }else{
+        htmljadi = markup.innerHTML;
+    }
+    if(ttd){
+        htmljadi +=`<table style="text-align:center;font-family::Times New Roman, Times, serif;font-size:11pt;width:100%">
+        <tr>
+        <td style="padding:5px;text-align:center">Mengetahui, <br>Kepala ${idNamaSekolah}<br><br><br><br><b><u>${idNamaKepsek}</u></b><br>NIP. ${idNipKepsek}</td>
+        <td style="padding:5px;text-align:center">Depok, ${tanggalfull(new Date())}<br>${idJenisGuru} ${idgurumapelmapel}<br><br><br><br><b><u>${namauser}</u></b><br>NIP. ${idNipGuruKelas}</td>
+        <td style="padding:5px;text-align:center"></td>
+        </tr>
+        </table>`
+    }
+
+        //endingnya disini
+    var fileContent ='<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head>'+css+'<title>Document Title</title><xml><w:worddocument xmlns:w="#unknown"><w:view>Print</w:view><w:zoom>90</w:zoom><w:donotoptimizeforbrowser /></w:worddocument></xml></head><body style="tab-interval:.5in;">'
+    if(kondisi=="kisikisijawaban"){
+        fileContent +='<div class="WordSection1">';
+    }else{
+        fileContent +='<div class="WordSection2">';
+    }
+    fileContent  += htmljadi + '</div></body></html>';
+    // Create a Blob with the file contents
+    var blob = new Blob([fileContent], {
+        type: "application/msword;charset=utf-8"
+    });
+
+    //saveAs(blob, fileName + ".doc");
+    //var url = URL.createObjectURL(blob);
+    // var url = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(markup.innerHTML);
+    window.URL = window.URL || window.webkitURL;
+    var url = window.URL.createObjectURL(blob);
+    // Specify file name
+    // var url = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(markup.innerHTML);// window.atob(unescape(encodeURIComponent(markup.innerHTML)));//encodeURIComponent(markup);// window.btoa(unescape(encodeURIComponent(markup.innerHTML)));;
+    // filename = filename?filename+'.doc':'document.doc';
+    filename = Filename;
 
     // Create download link element
     var downloadLink = document.createElement("a");
@@ -2659,7 +2586,7 @@ const print2Word = (element, filename)=>{
     document.body.removeChild(downloadLink);
 }
 
-const print2Wordv1 = (element, filename = '')=>{
+const print2Wordg = (element, filename = '')=>{
     
     //function Export2Doc(element, filename = ''){
         //var html, link, blob, url, css;
@@ -2671,38 +2598,6 @@ const print2Wordv1 = (element, filename = '')=>{
           '</style>'
         );*/
         var preHtml = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Export HTML To Doc</title>";
-        
-        //  preHtml += `<style>.w3-white{color:#000!important;background-color:#fff!important}.w3-card-4{box-shadow:0 4px 10px 0 rgba(0,0,0,.2),0 4px 20px 0 rgba(0,0,0,.19)}.w3-row:after,.w3-row:before{content:"";display:table;clear:both}.w3-col,.w3-half,.w3-quarter,.w3-third,.w3-threequarter,.w3-twothird{float:left;width:100%}.w3-col.s1{width:8.33333%}.w3-col.s2{width:16.66666%}.w3-col.s3{width:24.99999%}.w3-col.s4{width:33.33333%}.w3-col.s5{width:41.66666%}.w3-col.s6{width:49.99999%}.w3-col.s7{width:58.33333%}.w3-col.s8{width:66.66666%}.w3-col.s9{width:74.99999%}.w3-col.s10{width:83.33333%}.w3-col.s11{width:91.66666%}.w3-col.s12{width:99.99999%}@media (min-width:601px){.w3-col.m1{width:8.33333%}.w3-col.m2{width:16.66666%}.w3-col.m3,.w3-quarter{width:24.99999%}.w3-col.m4,.w3-third{width:33.33333%}.w3-col.m5{width:41.66666%}.w3-col.m6,.w3-half{width:49.99999%}.w3-col.m7{width:58.33333%}.w3-col.m8,.w3-twothird{width:66.66666%}.w3-col.m9,.w3-threequarter{width:74.99999%}.w3-col.m10{width:83.33333%}.w3-col.m11{width:91.66666%}.w3-col.m12{width:99.99999%}}@media (min-width:993px){.w3-col.l1{width:8.33333%}.w3-col.l2{width:16.66666%}.w3-col.l3{width:24.99999%}.w3-col.l4{width:33.33333%}.w3-col.l5{width:41.66666%}.w3-col.l6{width:49.99999%}.w3-col.l7{width:58.33333%}.w3-col.l8{width:66.66666%}.w3-col.l9{width:74.99999%}.w3-col.l10{width:83.33333%}.w3-col.l11{width:91.66666%}.w3-col.l12{width:99.99999%}}.w3-rest{overflow:hidden}.w3-stretch{margin-left:-16px;margin-right:-16px}.w3-auto,.w3-content{margin-left:auto;margin-right:auto}.w3-content{max-width:980px}.w3-auto{max-width:1140px}
-        //  .w3-cell-row{display:table;width:100%}.w3-cell{display:table-cell}.w3-cell-top{vertical-align:top}.w3-cell-middle{vertical-align:middle}.w3-cell-bottom{vertical-align:bottom}.w3-hide{display:none!important}.w3-sepia{filter:sepia(75%)}.w3-hover-sepia:hover,.w3-sepia-max{filter:sepia(100%)}
-        //  .w3-sepia-min{filter:sepia(50%)}.w3-tiny{font-size:10px!important}.w3-small{font-size:12px!important}.w3-medium{font-size:15px!important}.w3-large{font-size:18px!important}.w3-xlarge{font-size:24px!important}.w3-xxlarge{font-size:36px!important}.w3-xxxlarge{font-size:48px!important}
-        //  .w3-jumbo{font-size:64px!important}.w3-left-align{text-align:left!important}.w3-right-align{text-align:right!important}.w3-justify{text-align:justify!important}.w3-center{text-align:center!important}.w3-border-0{border:0!important}.w3-border{border:1px solid #ccc!important}.w3-border-top{border-top:1px solid #ccc!important}
-        //  .w3-border-bottom{border-bottom:1px solid #ccc!important}.w3-border-left{border-left:1px solid #ccc!important}.w3-border-right{border-right:1px solid #ccc!important}.w3-topbar{border-top:6px solid #ccc!important}.w3-bottombar{border-bottom:6px solid #ccc!important}.w3-leftbar{border-left:6px solid #ccc!important}
-        //  .w3-rightbar{border-right:6px solid #ccc!important}.w3-code,.w3-section{margin-top:16px!important;margin-bottom:16px!important}.w3-margin{margin:16px!important}.w3-margin-top{margin-top:16px!important}.w3-margin-bottom{margin-bottom:16px!important}.w3-margin-left{margin-left:16px!important}
-        //  .w3-margin-right{margin-right:16px!important}.w3-padding-small{padding:4px 8px!important}.w3-padding{padding:8px 16px!important}.w3-padding-large{padding:12px 24px!important}.w3-padding-16{padding-top:16px!important;padding-bottom:16px!important}.w3-padding-24{padding-top:24px!important;padding-bottom:24px!important}
-        //  .w3-padding-32{padding-top:32px!important;padding-bottom:32px!important}.w3-padding-48{padding-top:48px!important;padding-bottom:48px!important}.w3-padding-64{padding-top:64px!important;padding-bottom:64px!important}.w3-padding-top-64{padding-top:64px!important}.w3-padding-top-48{padding-top:48px!important}
-        //  .w3-padding-top-32{padding-top:32px!important}.w3-padding-top-24{padding-top:24px!important}.w3-left{float:left!important}.w3-right{float:right!important}.w3-button:hover{color:#000!important;background-color:#ccc!important}.w3-hover-none:hover,.w3-transparent{background-color:transparent!important}.w3-hover-none:hover{box-shadow:none!important}
-        //  .w3-amber,.w3-hover-amber:hover{color:#000!important;background-color:#ffc107!important}.w3-aqua,.w3-hover-aqua:hover{color:#000!important;background-color:#0ff!important}.w3-blue,.w3-hover-blue:hover{color:#fff!important;background-color:#2196f3!important}.w3-hover-light-blue:hover,
-        //  .w3-light-blue{color:#000!important;background-color:#87ceeb!important}.w3-brown,.w3-hover-brown:hover{color:#fff!important;background-color:#795548!important}.w3-cyan,.w3-hover-cyan:hover{color:#000!important;background-color:#00bcd4!important}.w3-blue-gray,.w3-blue-grey,.w3-hover-blue-gray:hover,.w3-hover-blue-grey:hover{color:#fff!important;background-color:#607d8b!important}
-        //  .w3-green,.w3-hover-green:hover{color:#fff!important;background-color:#4caf50!important}.w3-hover-light-green:hover,.w3-light-green{color:#000!important;background-color:#8bc34a!important}.w3-hover-indigo:hover,.w3-indigo{color:#fff!important;background-color:#3f51b5!important}.w3-hover-khaki:hover,.w3-khaki{color:#000!important;background-color:khaki!important}
-        //  .w3-hover-lime:hover,.w3-lime{color:#000!important;background-color:#cddc39!important}.w3-hover-orange:hover,.w3-orange{color:#000!important;background-color:#ff9800!important}.w3-deep-orange,.w3-hover-deep-orange:hover{color:#fff!important;background-color:#ff5722!important}.w3-hover-pink:hover,
-        //  .w3-pink{color:#fff!important;background-color:#e91e63!important}.w3-hover-purple:hover,.w3-purple{color:#fff!important;background-color:#9c27b0!important}.w3-deep-purple,.w3-hover-deep-purple:hover{color:#fff!important;background-color:#673ab7!important}.w3-hover-red:hover,.w3-red{color:#fff!important;background-color:#f44336!important}
-        //  .w3-hover-sand:hover,.w3-sand{color:#000!important;background-color:#fdf5e6!important}.w3-hover-teal:hover,.w3-teal{color:#fff!important;background-color:#009688!important}.w3-hover-yellow:hover,.w3-yellow{color:#000!important;background-color:#ffeb3b!important}.w3-hover-white:hover,
-        //  .w3-white{color:#000!important;background-color:#fff!important}.w3-black,.w3-hover-black:hover{color:#fff!important;background-color:#000!important}.w3-gray,.w3-grey,.w3-hover-gray:hover,.w3-hover-grey:hover{color:#000!important;background-color:#9e9e9e!important}.w3-hover-light-gray:hover,
-        //  .w3-hover-light-grey:hover,.w3-light-gray,.w3-light-grey{color:#000!important;background-color:#f1f1f1!important}.w3-dark-gray,.w3-dark-grey,.w3-hover-dark-gray:hover,.w3-hover-dark-grey:hover{color:#fff!important;background-color:#616161!important}.w3-hover-pale-red:hover,
-        //  .w3-pale-red{color:#000!important;background-color:#fdd!important}.w3-hover-pale-green:hover,.w3-pale-green{color:#000!important;background-color:#dfd!important}.w3-hover-pale-yellow:hover,.w3-pale-yellow{color:#000!important;background-color:#ffc!important}.w3-hover-pale-blue:hover,.w3-pale-blue{color:#000!important;background-color:#dff!important}.w3-hover-text-amber:hover,.w3-text-amber{color:#ffc107!important}.w3-hover-text-aqua:hover,.w3-text-aqua{color:#0ff!important}.w3-hover-text-blue:hover,.w3-text-blue{color:#2196f3!important}.w3-hover-text-light-blue:hover,.w3-text-light-blue{color:#87ceeb!important}.w3-hover-text-brown:hover,.w3-text-brown{color:#795548!important}.w3-hover-text-cyan:hover,.w3-text-cyan{color:#00bcd4!important}.w3-hover-text-blue-gray:hover,.w3-hover-text-blue-grey:hover,.w3-text-blue-gray,.w3-text-blue-grey{color:#607d8b!important}.w3-hover-text-green:hover,.w3-text-green{color:#4caf50!important}.w3-hover-text-light-green:hover,.w3-text-light-green{color:#8bc34a!important}.w3-hover-text-indigo:hover,.w3-text-indigo{color:#3f51b5!important}.w3-hover-text-khaki:hover,.w3-text-khaki{color:#b4aa50!important}.w3-hover-text-lime:hover,.w3-text-lime{color:#cddc39!important}.w3-hover-text-orange:hover,.w3-text-orange{color:#ff9800!important}.w3-hover-text-deep-orange:hover,.w3-text-deep-orange{color:#ff5722!important}.w3-hover-text-pink:hover,.w3-text-pink{color:#e91e63!important}.w3-hover-text-purple:hover,.w3-text-purple{color:#9c27b0!important}.w3-hover-text-deep-purple:hover,.w3-text-deep-purple{color:#673ab7!important}.w3-hover-text-red:hover,.w3-text-red{color:#f44336!important}.w3-hover-text-sand:hover,.w3-text-sand{color:#fdf5e6!important}.w3-hover-text-teal:hover,.w3-text-teal{color:#009688!important}.w3-hover-text-yellow:hover,.w3-text-yellow{color:#d2be0e!important}.w3-hover-text-white:hover,.w3-text-white{color:#fff!important}.w3-hover-text-black:hover,.w3-text-black{color:#000!important}.w3-hover-text-gray:hover,.w3-hover-text-grey:hover,.w3-text-gray,.w3-text-grey{color:#757575!important}.w3-hover-text-light-gray:hover,.w3-hover-text-light-grey:hover,.w3-text-light-gray,.w3-text-light-grey{color:#f1f1f1!important}.w3-hover-text-dark-gray:hover,.w3-hover-text-dark-grey:hover,
-        //  .w3-text-dark-gray,.w3-text-dark-grey{color:#3a3a3a!important}.w3-border-amber,.w3-hover-border-amber:hover{border-color:#ffc107!important}.w3-border-aqua,.w3-hover-border-aqua:hover{border-color:#0ff!important}.w3-border-blue,.w3-hover-border-blue:hover{border-color:#2196f3!important}.w3-border-light-blue,.w3-hover-border-light-blue:hover{border-color:#87ceeb!important}.w3-border-brown,.w3-hover-border-brown:hover{border-color:#795548!important}
-        //  .w3-border-cyan,.w3-hover-border-cyan:hover{border-color:#00bcd4!important}.w3-border-blue-gray,.w3-border-blue-grey,.w3-hover-border-blue-gray:hover,.w3-hover-border-blue-grey:hover{border-color:#607d8b!important}.w3-border-green,.w3-hover-border-green:hover{border-color:#4caf50!important}.w3-border-light-green,
-        //  .w3-hover-border-light-green:hover{border-color:#8bc34a!important}.w3-border-indigo,.w3-hover-border-indigo:hover{border-color:#3f51b5!important}.w3-border-khaki,.w3-hover-border-khaki:hover{border-color:khaki!important}.w3-border-lime,.w3-hover-border-lime:hover{border-color:#cddc39!important}
-        //  .w3-border-orange,.w3-hover-border-orange:hover{border-color:#ff9800!important}.w3-border-deep-orange,.w3-hover-border-deep-orange:hover{border-color:#ff5722!important}.w3-border-pink,.w3-hover-border-pink:hover{border-color:#e91e63!important}.w3-border-purple,.w3-hover-border-purple:hover{border-color:#9c27b0!important}.w3-border-deep-purple,.w3-hover-border-deep-purple:hover{border-color:#673ab7!important}.w3-border-red,.w3-hover-border-red:hover{border-color:#f44336!important}.w3-border-sand,.w3-hover-border-sand:hover{border-color:#fdf5e6!important}.w3-border-teal,.w3-hover-border-teal:hover{border-color:#009688!important}.w3-border-yellow,.w3-hover-border-yellow:hover{border-color:#ffeb3b!important}.w3-border-white,.w3-hover-border-white:hover{border-color:#fff!important}.w3-border-black,.w3-hover-border-black:hover{border-color:#000!important}.w3-border-gray,.w3-border-grey,.w3-hover-border-gray:hover,.w3-hover-border-grey:hover{border-color:#9e9e9e!important}.w3-border-light-gray,.w3-border-light-grey,.w3-hover-border-light-gray:hover,.w3-hover-border-light-grey:hover{border-color:#f1f1f1!important}.w3-border-dark-gray,.w3-border-dark-grey,.w3-hover-border-dark-gray:hover,.w3-hover-border-dark-grey:hover{border-color:#616161!important}.w3-border-pale-red,.w3-hover-border-pale-red:hover{border-color:#ffe7e7!important}.w3-border-pale-green,.w3-hover-border-pale-green:hover{border-color:#e7ffe7!important}.w3-border-pale-yellow,.w3-hover-border-pale-yellow:hover{border-color:#ffc!important}.w3-border-pale-blue,.w3-hover-border-pale-blue:hover{border-color:#e7ffff!important}`
-        // preHtml += '<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">';
-    
-        //head.innerHTML += `<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">`;
-        // preHtml +='<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">';
-    
-        // preHtml +='<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">';
-        // preHtml +='<link  rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">'
-    
-        // preHtml +='<link rel="stylesheet" href="https://syahandrianeda.github.io/syahandrianeda/css/stylegurukelas.css">'
         css = ('\
         <style>\
         @page WordSection1{size: 841.95pt 595.35pt;mso-page-orientation: landscape;}\
@@ -2718,7 +2613,7 @@ const print2Wordv1 = (element, filename = '')=>{
 
         var postHtml = "</body></html>";
         
-        var convv = document.getElementById(element).innerHTML;
+        var convv = document.querySelector("."+element).innerHTML;
         var conv2 = convv.replace(/src="\/img/g,`src="https://edurasa.com/img`);
         var conv1 = conv2.replace("90px",`2cm`);
         var conv = '<div class="Section1">' + conv1 + '</div>'; 
@@ -2905,13 +2800,7 @@ function MoveDown() {
 
 }
 
-const editsoalini =  (el)=>{
-    let tabel = document.querySelector(".tempatnaskahsoal_soal");
-    let lRow = el.parentElement.rowIndex;
-    let lCol = el.cellIndex;
-    
-    el.setAttribute("data-idbarissoal",lRow+"_"+lCol);
-}
+
 
 const informasi_naskahsoal = (k) =>{
     let div = document.querySelector(".infobutton_naskahsoal");
@@ -2930,11 +2819,13 @@ const informasi_naskahsoal = (k) =>{
     }else if(k=="exportmsword"){
         div.innerHTML = "(fitur trial): Anda dapat mengeksport desain naskah soal ke dalam file Ms. Word"
     }else if(k=="downloadkisi"){
-        div.innerHTML ="Desain naskah soal Anda akan otomatis dibuatkan File-file kisi-kisinya. Anda tinggal mencetaknya atau mencetaknya."
+        div.innerHTML ="Desain naskah soal Anda akan otomatis dibuatkan File-file kisi-kisinya. Anda tinggal mencetaknya saja."
     }else if(k=="downloadkunci"){
         div.innerHTML = "Desain naskah soal Anda akan otomatis dibuatkan file kunci jawaban dan/atau penskoran soal isiannya."
+    }else if(k == "kartusoal"){
+        div.innerHTML = "Dari desain naskah soal Anda akan otomatis dibuatkan seluruh kartu soal dari desain naskah soal Anda."
     }else if(k=="simpanserver"){
-        div.innerHTML = "Simpan desain naskah soal yang Anda buat ini sebagai karya Anda. Anda dapat melihatnya kemballi di menu <b>Databas Bank Soal</b>"
+        div.innerHTML = "Simpan desain naskah soal yang Anda buat ini sebagai karya Anda. Anda dapat melihatnya kemballi di menu <b>Database Bank Soal</b>"
     }
 }
 const removeinformasi = ()=>{
@@ -2955,7 +2846,8 @@ const tambahkanselnaskahsoal = ()=>{
     d = r.insertCell(-1);
     d.setAttribute("title","Klik 2 kali untuk mengedit");
     d.setAttribute("ondblclick","editsoalini(this)");
-    d.innerHTML = "Dobel Klik untuk menentukan soal di Area ini " + new Date().getTime();
+    d.setAttribute("style","cursor:pointer");
+    d.innerHTML = "Dobel Klik untuk menentukan soal di Area ini ";
     
     tabel = document.querySelector(".tempatnaskahsoal_soal");
     let lRow = tabel.rows;
@@ -3006,7 +2898,7 @@ const td_tomboleditsoal = (el,k) =>{
             let cCol = lRow[j].cells
             if(cCol.length == 4){
                 lRow[j].deleteCell(0);
-                console.log("hapus sel di onmouse 0 indek", i)
+                //console.log("hapus sel di onmouse 0 indek", i)
             }
         }
 
@@ -3036,12 +2928,17 @@ const ns_tambahkanpetunjuk = (el) =>{
         td.setAttribute("colspan","2")
         td.setAttribute("class","tangan petunjuk "+ tKelas);
         td.innerHTML = "Beri Keterangan naskah soal Anda!";
+
+        let klik = document.querySelector("."+tKelas);
+        klik.onclick=function(){
+            isiteksunsurbanksoal("tempatnaskahsoal_soal", tKelas, "atas", ""); 
+
+        }
         
         // td = baris.insertCell(-1);
         // td.innerHTML =""
         // row.cells[2].innerHTML = "Tes Cek td petunjuk"
         // let td = row.cells[2];
-        isiteksunsurbanksoal("tempatnaskahsoal_soal", tKelas, "atas", ""); 
         // td.onclick = function (){
         //     // alert("Anda mengeklik ini")
         //     isiteksunsurbanksoal("tempatnaskahsoal_soal", tKelas, "atas", ""); 
@@ -3139,7 +3036,7 @@ const mulaidesainnaskahsoal = ()=>{
     }
     let dtAwal = new Date(waktuawal);
     let dtAkhir = new Date(waktuakhir);
-    tekswaktu = dtAwal.getHours()+"."+dtAwal.getMinutes() +" - "+ dtAkhir.getHours()+":"+dtAkhir.getMinutes() + " WIB.";
+    tekswaktu = addZero(dtAwal.getHours())+"."+addZero(dtAwal.getMinutes()) +" - "+ addZero(dtAkhir.getHours())+":"+addZero(dtAkhir.getMinutes()) + " WIB.  ";
     let menit = (dtAkhir.getTime() - dtAwal.getTime())/(60000);
     tekswaktu +="("+menit+" Menit)";
     document.querySelector(".naskahsoal_Waktu").innerHTML = tekswaktu;
@@ -3157,7 +3054,1070 @@ const mulaidesainnaskahsoal = ()=>{
     //tampilkan semua div area kerja:
 
 }
+let fokusDatasoal = [];
+let fokusDatasoalawal = [];
+let iRow_dbsoal = 2; // sama dengan 1dbaris
+let cekbentuksoalout = document.querySelectorAll("input[name=mbs_pilihanbentuksoal]");
+const mbs_filter = document.getElementById("mbs_filter");
+const mbs_lihatpropertysoal = document.getElementById("mbs_lihatpropertysoal");
+const mbs_ingindiedit = document.getElementById("mbs_ingindiedit");
+const btn_terapkansoaledit = document.querySelector(".btn_terapkansoaledit");
+const btn_terapkansoal = document.querySelector(".btn_terapkansoal");
+const btn_terapkanfilter = document.querySelector(".terapkanfilter");
+const input_mbs_kriteriafilter = document.getElementById("mbs_kriteriafilter");
+btn_terapkanfilter.onclick = () =>{
+    if(fokusDatasoal.length == 0){
+        alert("Maaf, database soal tidak kami temukan");
+        return
+    };
+    
+    let araysebelumdicari = fokusDatasoalawal;
 
+    let ar = [];
+    let kriteria = input_mbs_kriteriafilter.value;
+    if(kriteria.indexOf(",")>-1){
+        let spl = kriteria.split(",");//array
+        for(i = 0 ; i < spl.length ; i++){
+            if(i == 0){
+                ar = fokusDatasoalawal.filter(s => Object.entries(s).filter(([k,v])=> v.toString().toLowerCase().indexOf(spl[i].toLowerCase())>-1).length!==0)
+            }else{
+                ar = ar.filter(s => Object.entries(s).filter(([k,v])=> v.toString().toLowerCase().indexOf(spl[i].toLowerCase()>-1)).length!==0);
+            }
+        }    
+        
+    }else{
+            
+            ar = fokusDatasoalawal.filter(s => Object.entries(s).filter(([k,v])=> v.toString().toLowerCase().indexOf(kriteria.toLowerCase())>-1).length!==0)
+    }
+
+    if(ar.length == 0){
+        alert("Maaf, tidak ditemukan database soal dengan kriteria ini. Kami akan menyajikan database yang telah ada.");
+        configmodalsoal_peritem(araysebelumdicari,"");
+        
+    }else{
+        configmodalsoal_peritem(ar,"");
+        
+    }
+}
+
+const configmodalsoal_peritem = (obj,kondisi="")=>{
+    modso_sebelumnya.onclick = function () {
+        if ( modso_page_saatini > 1) {
+            modso_page_saatini--;
+            gantiinHalamansoal( modso_page_saatini);
+        }
+    
+    }
+    modso_selanjutnya.onclick = function(){
+        if ( modso_page_saatini < TotalHalamansoal()) {
+            modso_page_saatini++;
+            gantiinHalamansoal( modso_page_saatini);
+        }
+        
+    }
+    
+    function gantiinHalamansoal(page)    {
+        if (page < 1) page = 1;
+        if (page > TotalHalamansoal()) page = TotalHalamansoal();
+
+        
+        let teks =``;
+        
+        for (var i = (page-1) * modso_per_page; i < (page * modso_per_page) && i < obj.length; i++) {
+            let html= "";
+            let kondisipg = document.querySelector(".kondisipilihanganda");
+            let kondisiilustrasi = document.querySelector(".kondisiilustrasi");
+            let tombol = document.querySelector(".btn_terapkansoal")
+                    let dataawal
+                    if(obj.length == 0){
+                        
+                        dataawal=Object.assign({},databasesoalkosong)
+                        dataawal.ilustrasi = "Tidak ada soal tipe kriteria ini";
+                        dataawal.pertanyaan = "Tidak ada soal tipe kriteria ini";
+                        
+                    }else{
+                        dataawal = obj[i]
+
+                    }
+                    
+                    iRow_dbsoal = dataawal.idbaris;
+                    
+                    if(iRow_dbsoal == ""){
+                        if(tombol.className.indexOf("w3-hide")==-1){
+                            tombol.classList.add("w3-hide");
+                        }
+                    }else{
+                        if(tombol.className.indexOf("w3-hide")>-1){
+                            tombol.classList.remove("w3-hide");
+                        }
+                    }
+
+                    let elisi = document.querySelectorAll("[data-dbmbs]");
+                    for(j = 0 ; j < elisi.length ; j++){
+                        let key = elisi[j].getAttribute("data-dbmbs");
+                        elisi[j].innerHTML = dataawal[key];
+                    }
+                    if(dataawal.ilustrasi == ""){
+                        kondisiilustrasi.classList.add("w3-hide");
+                    }else{
+                        kondisiilustrasi.classList.remove("w3-hide");
+                    }
+                    if(dataawal.bentuksoal == "Pilihan Ganda"){
+                        if(dataawal.tampilanpg == "BIASA"){
+                                html +=`<ol style="list-style-type:upper-alpha;margin:0 0 0 -1.4461538461999965em">
+                                <li>${dataawal.opsiA}</li>
+                                <li>${dataawal.opsiB}</li>
+                                <li>${dataawal.opsiC}</li>`
+                                if(dataawal.opsiD !== ""){
+                                    html +=`<li>${dataawal.opsiC}</li>`
+                                }
+                                html +=`</ol>`;
+                            }else{  
+                                let db = dataawal;
+                                let arropsiA = JSON.parse(db.opsiA);
+                                let arropsiB = JSON.parse(db.opsiB);
+                                let arropsiC = JSON.parse(db.opsiC);
+                                let arropsiD = [];
+                                let arrHead = JSON.parse(db.headerpg);
+                                let jumlahPG = 3;
+                                
+                                if(db.opsiD !== ""){
+                                    arropsiD = JSON.parse(db.opsiD);
+                                    jumlahPG = 4
+                                }
+                                html += `<table style="border-collapse:collapse;border:.5pt solid #000;width:100%">`;
+                                html +=`<thead><tr style="border:.5pt solid #000"><th style="border:.5pt solid #000"></th>`;
+                                for(a = 0 ; a < arrHead.length ; a++){
+                                    html +=`<th style="border:.5pt solid #000;text-align:center;background-color:#f1f1f1">${arrHead[a]}</th>`
+                                }
+                                html +=`</tr><tbody>`;
+                                //tabel opsi A
+                                html +=`<tr style="border:.5pt solid #000"><td style="border:.5pt solid #000;width:15px;vertical-align:top;text-align:center;padding-left:5px">A.</td>`;
+                                for(c = 0 ; c <arrHead.length ; c++){
+                                    html +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiA[c]}</td>`
+                                    
+                                }
+                                //tabel opsi B
+                                html +=`</tr><tr style="border:.5pt solid #000;vertical-align:top;"><td style="border:.5pt solid #000;width:15px;vertical-align:top;text-align:center;padding-left:5px">B.</td>`;
+                                for(c = 0 ; c < arrHead.length ; c++){
+                                    html +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiB[c]}</td>`;
+                                }
+                                //tabel opsi C
+                                html +=`</tr><tr style="border:.5pt solid #000"><td style="border:.5pt solid #000;width:15px;vertical-align:top;text-align:center;padding-left:5px">C.</td>`;
+                                for(c = 0 ; c <arrHead.length ; c++){
+                                    html +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiC[c]}</td>`
+                                    
+                                }
+                                //tabel opsi D
+                                if(db.opsiD !== ""){
+                                    html +=`</tr><tr style="border:.5pt solid #000"><td style="border:.5pt solid #000;width:15px;vertical-align:top;text-align:center;padding-left:5px">D.</td>`;
+                                    for(c = 0 ; c < arrHead.length ; c++){
+                                        html +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiD[c]}</td>`;
+                                    }
+                                }else{
+                                    html +=`</tr>`
+                                }
+                                
+                                html +=`</tbody></table>`
+                            }
+                    }
+                        kondisipg.innerHTML = html;
+                    }
+        
+        
+
+        modso_spanhalaman.innerHTML = page + " dari " + TotalHalamansoal();
+
+        if (page == 1) {
+            modso_sebelumnya.style.visibility = "hidden";
+            modso_awal.style.visibility = "hidden";
+        } else {
+            modso_awal.style.visibility = "visible"
+            modso_sebelumnya.style.visibility = "visible";
+        }
+
+        if (page == TotalHalamansoal()) {
+            modso_selanjutnya.style.visibility = "hidden";
+            modso_akhir.style.visibility = "hidden";
+        } else {
+            modso_akhir.style.visibility = "visible";
+            modso_selanjutnya.style.visibility = "visible";
+        }
+
+    }
+    function TotalHalamansoal()
+    {
+        return Math.ceil(obj.length / modso_per_page);
+    }
+
+    modso_akhir.onclick = function (){
+        let hal = TotalHalamansoal();
+         modso_page_saatini = hal;
+        gantiinHalamansoal(hal);
+
+    }
+    modso_awal.onclick =function (){
+         modso_page_saatini = 1;
+        gantiinHalamansoal(1);
+        // Validate page
+        //  if (page < 1) page = 1;
+        //  if (page > TotalHalamansoal()) page = TotalHalamansoal();
+
+    }
+    if(kondisi == ""){
+        gantiinHalamansoal(1);
+    }else{
+        
+        let valuse = obj.map(m=> parseInt(m.idbaris));
+        
+        let indeknya = valuse.indexOf(parseInt(kondisi));
+        
+        gantiinHalamansoal((indeknya+1));
+    }
+    mbs_ingindiedit.checked = false;
+    let elisi = document.querySelectorAll("[data-dbmbs]");
+    for(i = 0 ; i < elisi.length ; i++){
+    elisi[i].removeAttribute("contenteditable");
+    }
+    if(btn_terapkansoaledit.className.indexOf("w3-hide")==-1){
+        btn_terapkansoaledit.classList.add("w3-hide");
+    }
+    
+}
+const editsoalini =  (el)=>{
+    let tabel = document.querySelector(".tempatnaskahsoal_soal");
+    let lRow = el.parentElement.rowIndex;
+    let lCol = el.cellIndex;
+    let pAtt = el.hasAttribute("data-idbarissoal")
+    if(pAtt){
+        let idV = el.getAttribute('data-idbarissoal')
+        aktifkanmodal_banksoal(el,idV);
+    }else{
+        aktifkanmodal_banksoal(el,"");
+    }
+    //el.setAttribute("data-idbarissoal",lRow+"_"+lCol);
+}
+let elemenedit;
+const aktifkanmodal_banksoal = (elemen="",dataidbarissoal) =>{
+    let lR = elemen.parentElement.rowIndex;
+    let lC = elemen.cellIndex;
+    document.getElementById('modalbanksoal').style.display='block';
+    let selectmapel = document.getElementById("naskahsoal_mapelapatema");
+    let ops = selectmapel.options;
+    let indek = ops.selectedIndex;
+    let v_mapel = ops[indek].value;
+    let t_mapel = ops[indek].text;
+    let krt_kelas = [];
+    krt_kelas = v_mapel.indexOf("US_")>-1?["4","5","6"]:[idJenjang];
+    let afokusDatasoal = databasesoal.filter(s=> krt_kelas.indexOf(s.jenjang)>-1);
+    let infoawal = "Anda memilih Mata Pelajaran " + t_mapel + " untuk kelas " + krt_kelas.join();
+    
+    let tabel = document.querySelector(".tempatnaskahsoal_soal");
+    let lRow = elemen.parentElement.rowIndex;
+    
+    let nosoal = tabel.rows[lRow].cells[1].innerHTML;
+    let innerDiv = tabel.rows[lRow].cells[2];
+    elemenedit = tabel.rows[lRow].cells[2];
+    
+    document.querySelector(".mbs_fokusnosoal").innerHTML = nosoal;
+    
+    let kondisipg = document.querySelector(".kondisipilihanganda");
+    let cekbentuksoal = document.querySelectorAll("input[name=mbs_pilihanbentuksoal]");
+    cekbentuksoal.forEach(el => {
+        if(el.checked){
+            document.querySelector(".mbs_info").innerHTML = infoawal + " dengan kriteria bentuk soal "+el.value;
+            fokusDatasoal = afokusDatasoal.filter(s=> s.bentuksoal == el.value);
+        }
+    });
+    // if(fokusDatasoal.length == 0){
+    //     alert("Belum ada database soal untuk kriteria soal ini");
+    //     document.getElementById('modalbanksoal').style.display='none';
+    //     return
+    // }
+    
+    let arOB =[]
+        if(v_mapel.indexOf("TEMA")>-1){
+            arOB = fokusDatasoal;
+        }else{
+            if(v_mapel.indexOf("US_")>-1){
+                let kr = v_mapel.replace("US_","")
+                arOB = fokusDatasoal.filter(s=> s.kodemapel == kr);
+
+            }else{
+                arOB = fokusDatasoal.filter(s=> s.kodemapel == v_mapel);
+
+            }
+        }
+        fokusDatasoalawal = arOB;
+    //     iRow_dbsoal = dataawal.idbaris;
+    configmodalsoal_peritem(arOB,dataidbarissoal);
+    btn_terapkansoal.onclick = function (){
+        terapkan_itemsoal(innerDiv)
+    };
+   
+    
+    
+    
+    //el.setAttribute("data-idbarissoal",lRow+"_"+lCol);
+}
+
+cekbentuksoalout.forEach(el => {
+    el.addEventListener("change",()=>{
+        if(el.checked){
+            let selectmapel = document.getElementById("naskahsoal_mapelapatema");
+            let ops = selectmapel.options;
+            let indek = ops.selectedIndex;
+            let v_mapel = ops[indek].value;
+            let t_mapel = ops[indek].text;
+            let krt_kelas = [];
+            krt_kelas = v_mapel.indexOf("US_")>-1?["4","5","6"]:[idJenjang];
+            let afokusDatasoal = databasesoal.filter(s=> krt_kelas.indexOf(s.jenjang)>-1);
+            let infoawal = "Anda memilih Mata Pelajaran " + t_mapel + " untuk kelas " + krt_kelas.join();
+            
+            document.querySelector(".mbs_info").innerHTML = infoawal + " dengan kriteria bentuk soal "+el.value;
+            // let tabel = document.querySelector(".tempatnaskahsoal_soal");
+            // let lRow = elemen.parentElement.rowIndex;
+            
+            // let nosoal = tabel.rows[lRow].cells[1].innerHTML
+            // document.querySelector(".mbs_fokusnosoal").innerHTML = nosoal;
+
+            
+            fokusDatasoal = afokusDatasoal.filter(s=> s.bentuksoal == el.value);
+            let arOB =[]
+            if(v_mapel.indexOf("TEMA")>-1){
+                arOB = fokusDatasoal;
+            }else{
+                // arOB = fokusDatasoal.filter(s=> s.kodemapel == v_mapel);
+                if(v_mapel.indexOf("US_")>-1){
+                    let kr = v_mapel.replace("US_","")
+                    arOB = fokusDatasoal.filter(s=> s.kodemapel == kr);
+
+                }else{
+                    arOB = fokusDatasoal.filter(s=> s.kodemapel == v_mapel);
+
+                }
+            }
+            
+            if(arOB.length == 0){
+                let obkosongan = Object.assign({},databasesoalkosong);
+                obkosongan.opsiA =`[""]`;
+                obkosongan.opsiB =`[""]`;
+                obkosongan.opsiC =`[""]`;
+                obkosongan.opsiD =`[""]`;
+                obkosongan.headerpg =`[""]`;
+                obkosongan.ilustrasi = "Tidak ada soal tipe kriteria ini";
+                obkosongan.pertanyaan = "Tidak ada soal tipe kriteria ini";
+                arOB.push(obkosongan)
+            }
+            // console.log(arOB);
+            fokusDatasoalawal = arOB;
+            configmodalsoal_peritem(arOB,"");
+        }
+    })
+});
+
+const terapkan_itemsoal = (elemen="")=>{
+    
+    let mbs_ceklisilustrasi = document.getElementById("mbs_ceklisilustrasi")
+    let db = fokusDatasoal.filter(s => s.idbaris == iRow_dbsoal)[0];
+    let html = "";
+    //ilustrasi
+    if(db.ilustrasi !== ""){
+        if(mbs_ceklisilustrasi.checked){
+            html +=`${antaraDiv(db.ilustrasi)}<br>`
+        }
+    }
+    html += antaraDiv(db.pertanyaan);
+
+    if(db.tampilanpg == "BIASA"){ //-1.4461538461999965em
+        html +=`<ol style="list-style-type:upper-alpha;margin:0 0 0 -1.4461538461999965em">
+        <li>${db.opsiA}</li>
+        <li>${db.opsiB}</li>
+        <li>${db.opsiC}</li>`
+        if(db.opsiD !==""){
+            html +=`<li>${db.opsiC}</li>`
+            
+        }
+        html +=`</ol>`
+    }else{
+        let arropsiA = JSON.parse(db.opsiA);
+                let arropsiB = JSON.parse(db.opsiB);
+                let arropsiC = JSON.parse(db.opsiC);
+                let arropsiD = [];
+                let arrHead = JSON.parse(db.headerpg);
+                let jumlahPG = 3;
+                
+                if(db.opsiD !== ""){
+                    arropsiD = JSON.parse(db.opsiD);
+                    jumlahPG = 4
+                }
+                html += `<table style="border-collapse:collapse;border:.5pt solid #000;width:100%;font-family:Times New Roman, Times, serif;">`;
+                html +=`<thead><tr style="border:.5pt solid #000"><th style="border:.5pt solid #000"></th>`;
+                for(a = 0 ; a < arrHead.length ; a++){
+                    html +=`<th style="border:.5pt solid #000;text-align:center;background-color:#f1f1f1">${arrHead[a]}</th>`
+                }
+                html +=`</tr><tbody>`;
+                //tabel opsi A
+                html +=`<tr style="border:.5pt solid #000"><td style="border:.5pt solid #000;width:15px;vertical-align:top;text-align:center;padding-left:5px">A.</td>`;
+                for(c = 0 ; c <arrHead.length ; c++){
+                    html +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiA[c]}</td>`
+                    
+                }
+                //tabel opsi B
+                html +=`</tr><tr style="border:.5pt solid #000;vertical-align:top;"><td style="border:.5pt solid #000;width:15px;vertical-align:top;text-align:center;padding-left:5px">B.</td>`;
+                for(c = 0 ; c < arrHead.length ; c++){
+                    html +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiB[c]}</td>`;
+                }
+                //tabel opsi C
+                html +=`</tr><tr style="border:.5pt solid #000"><td style="border:.5pt solid #000;width:15px;vertical-align:top;text-align:center;padding-left:5px">C.</td>`;
+                for(c = 0 ; c <arrHead.length ; c++){
+                    html +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiC[c]}</td>`
+                    
+                }
+                //tabel opsi D
+                if(db.opsiD !== ""){
+                    html +=`</tr><tr style="border:.5pt solid #000"><td style="border:.5pt solid #000;width:15px;vertical-align:top;text-align:center;padding-left:5px">D.</td>`;
+                    for(c = 0 ; c < arrHead.length ; c++){
+                        html +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiD[c]}</td>`;
+                    }
+                }else{
+                    html +=`</tr>`
+                }
+
+                html +=`</tbody></table>`
+        
+    }
+    elemen.innerHTML = html;
+    elemen.setAttribute("data-idbarissoal",iRow_dbsoal);
+    document.getElementById('modalbanksoal').style.display='none';
+    
+    //el.setAttribute("data-idbarissoal",lRow+"_"+lCol);
+
+}
+
+mbs_filter.addEventListener("change",()=>{
+    let filteraktif = document.querySelector(".filteraktif");
+    if(mbs_filter.checked){
+        filteraktif.classList.remove("w3-hide");
+    }else{
+        filteraktif.classList.add("w3-hide");
+    }
+});
+
+mbs_lihatpropertysoal.addEventListener("change",()=>{
+    let mbs_porpertysoal = document.querySelector(".mbs_porpertysoal");
+    if(mbs_lihatpropertysoal.checked){
+        mbs_porpertysoal.classList.remove("w3-hide")
+    }else{
+        mbs_porpertysoal.classList.add("w3-hide")
+
+    }
+});
+
+mbs_ingindiedit.addEventListener("change",()=>{
+    let elisi = document.querySelectorAll("[data-dbmbs]");
+    if(mbs_ingindiedit.checked){
+        btn_terapkansoaledit.classList.remove("w3-hide");
+        for(i = 0 ; i < elisi.length ; i++){
+            elisi[i].setAttribute("contenteditable","true")
+        }
+    }else{
+        for(i = 0 ; i < elisi.length ; i++){
+        elisi[i].removeAttribute("contenteditable");
+        }
+        btn_terapkansoaledit.classList.add("w3-hide");
+    }
+    let tombol = document.querySelector(".btn_terapkansoal")
+    if(iRow_dbsoal == ""){
+        if(tombol.className.indexOf("w3-hide")==-1){
+            tombol.classList.add("w3-hide");
+
+        }
+        btn_terapkansoaledit.classList.add("w3-hide");
+        btn_terapkansoaledit.onclick=null;
+    }else{
+        if(tombol.className.indexOf("w3-hide")>-1){
+            tombol.classList.remove("w3-hide");
+        }
+        btn_terapkansoaledit.classList.remove("w3-hide");
+        btn_terapkansoaledit.onclick=function(){
+            let mbs_ceklisilustrasi = document.getElementById("mbs_ceklisilustrasi")
+            let dbilustrasi = document.querySelector("[data-dbmbs=ilustrasi]")
+            let dbpertanyaan = document.querySelector("[data-dbmbs=pertanyaan]")
+            let html = "";
+            //ilustrasi
+            if(dbilustrasi !== ""){
+                if(mbs_ceklisilustrasi.checked){
+                    html +=`${dbilustrasi.innerHTML}<br>`
+                }
+            }
+
+            html += antaraDiv(dbpertanyaan.innerHTML);
+
+            elemenedit.innerHTML = html;
+            // jika edit nanti tolong dikirim ke server, data aslinya tidak akan hilang. Editan akan 
+            document.getElementById('modalbanksoal').style.display='none';
+        }
+    }
+});
+
+const lihatkisikisidesain = () => {
+    let judulnaskah = document.querySelector("#naskahsoal_identitas");
+    let t_mapel = document.getElementById("naskahsoal_mapelapatema").options[document.getElementById("naskahsoal_mapelapatema").options.selectedIndex].text;
+    let html;
+    let tabel = document.querySelector(".tempatnaskahsoal_soal");
+    let lRow = tabel.rows;
+    let arrayData = []
+    for(i=0 ; i < lRow.length ; i++){
+        let lCol = lRow[i].cells;
+        if(lCol.length !== 2){
+            let fCol = lCol[2];
+            let Col_idbarissoal = fCol.getAttribute("data-idbarissoal");
+            let sumberdata = databasesoal.filter(s => s.idbaris == Col_idbarissoal)[0];
+            let nosoal = lCol[1].innerHTML.replace(".","");
+            let obj = Object.assign({},sumberdata);
+            obj.nosoal = nosoal;
+            arrayData.push(obj);
+        }
+    }
+    
+    let koleksimapel = arrayData.map(s=>s.tekskodemapel).filter((x, i, a) => a.indexOf(x) == i).join(", ");
+    let totalsoal = arrayData.length;
+    let totalsoalPG = arrayData.filter(s=> s.bentuksoal == "Pilihan Ganda").length;
+    let totalsoalIsian = arrayData.filter(s=> s.bentuksoal == "Isian").length;
+    ///
+    let waktuawal = document.getElementById("naskahsoal_titinmangsa").value;
+    let waktuakhir = document.getElementById("naskahsoal_titinmangsaakhir").value;
+    let tekswaktu = "... Menit"
+    if(waktuawal == "" || waktuakhir == ""){
+    }
+    
+        let dtAwal = new Date(waktuawal);
+        let dtAkhir = new Date(waktuakhir);
+        let menit = (dtAkhir.getTime() - dtAwal.getTime())/(60000);
+        tekswaktu = menit+" Menit";
+        
+    ////...
+    let num = 1;
+    if(t_mapel.indexOf("Tema")>-1){
+        html = `<div style="text-align:center;padding:5px"><b>KISI-KISI PENULISAN SOAL ${judulnaskah.value.toUpperCase()}</b>
+        <p></p><p></p><table style="text-align:left;font-family:Times New Roman, Times, serif;font-size:11pt">
+            <tr><td>Jenjang</td><td style="width:5px">:</td><td>Sekolah Dasar</td></tr>
+            <tr><td>Kurikulum</td><td style="width:5px">:</td><td>Kurikulum 2013 (Perka Balitbang)</td></tr>
+            <tr><td>Mata Pelajaran</td><td style="width:5px">:</td><td>${t_mapel.indexOf("US")>-1?t_mapel.replace("US :",""):t_mapel} (${koleksimapel})</td></tr>
+            <tr><td>Alokasi Waktu</td><td style="width:5px">:</td><td>${tekswaktu}</td></tr>
+            <tr><td style="vertical-align:top">Jumlah Soal</td><td style="width:5px;vertical-align:top">:</td><td style="vertical-align:top">${totalsoal} Soal<br>Pilihan Ganda = ${totalsoalPG} Soal<br>Isian = ${totalsoalIsian} Soal</td></tr>
+            <tr><td>Penyusun</td><td style="width:5px">:</td><td>${namauser}</td></tr>
+        </table>
+        </div><br><br>
+        <table style="border-collapse:collapse;font-family:Times New Roman, Times, serif;font-size:11pt;border:.5pt solid #000">
+        <thead><tr style="border:.5pt solid #000;background-color:#f1f1f1;color:#000">
+        <th style="border:.5pt solid #000;padding:5px">No.</th>
+        <th style="border:.5pt solid #000;padding:5px">Mata Pelajaran</th>
+        <th style="border:.5pt solid #000;padding:5px">Kompetensi Dasar</th>
+        <th style="border:.5pt solid #000;padding:5px">Lingkup Materi</th>
+        <th style="border:.5pt solid #000;padding:5px">Materi Pokok</th>
+        <th style="border:.5pt solid #000;padding:5px">Level Kognitif</th>
+        <th style="border:.5pt solid #000;padding:5px">Indikator Soal</th>
+        <th style="border:.5pt solid #000;padding:5px">Bentuk Soal</th>
+        <th style="border:.5pt solid #000;padding:5px">Nomor Soal</th>
+        </tr></thead><tbody>
+        `;
+        for(j = 0 ; j <arrayData.length ; j++){
+            html +=`<tr style="border:.5pt solid #000;">
+                <td style="border:.5pt solid #000;vertical-align:top;padding:5px">${arrayData[j].nosoal}</td>
+                <td style="border:.5pt solid #000;;vertical-align:top;padding:5px">${arrayData[j].tekskodemapel}</td>
+                <td style="border:.5pt solid #000;vertical-align:top;padding:5px">${arrayData[j].tekskd}</td>
+                <td style="border:.5pt solid #000;vertical-align:top;padding:5px">${arrayData[j].ruanglingkup}</td>
+                <td style="border:.5pt solid #000;vertical-align:top;padding:5px">${arrayData[j].materi}</td>
+                <td style="border:.5pt solid #000;vertical-align:top;padding:5px">${arrayData[j].levelkognitif}</td>
+                <td style="border:.5pt solid #000;vertical-align:top;padding:5px">${arrayData[j].indikatorsoal}</td>
+                <td style="border:.5pt solid #000;vertical-align:top;padding:5px">${arrayData[j].bentuksoal}</td>
+                <td style="border:.5pt solid #000;vertical-align:top;padding:5px">${arrayData[j].nosoal}</td>
+            </tr>`
+        }
+        html +=`</tbody></table><br><br>`;
+
+    }else{
+        html = `<div style="text-align:center;padding:5px"><b>KISI-KISI PENULISAN SOAL ${judulnaskah.value.toUpperCase()}</b>
+        <p></p><p></p><table style="text-align:left;font-family:Times New Roman, Times, serif;font-size:11pt">
+            <tr><td>Jenjang</td><td style="width:5px">:</td><td>Sekolah Dasar</td></tr>
+            <tr><td>Kurikulum</td><td style="width:5px">:</td><td>Kurikulum 2013 (Perka Balitbang)</td></tr>
+            <tr><td>Mata Pelajaran</td><td style="width:5px">:</td><td>${t_mapel.indexOf("US")>-1?t_mapel.replace("US :",""):t_mapel}</td></tr>
+            <tr><td>Alokasi Waktu</td><td style="width:5px">:</td><td>${tekswaktu}</td></tr>
+            <tr><td style="vertical-align:top">Jumlah Soal</td><td style="width:5px;vertical-align:top">:</td><td style="vertical-align:top">${totalsoal} Soal<br>Pilihan Ganda = ${totalsoalPG} Soal<br>Isian = ${totalsoalIsian} Soal</td></tr>
+            <tr><td>Penyusun</td><td style="width:5px">:</td><td>${namauser}</td></tr>
+        </table>
+        </div><br><br><table style="border-collapse:collapse;font-family:Times New Roman, Times, serif;font-size:11pt;border:.5pt solid #000">
+        <thead><tr style="border:.5pt solid #000;background-color:#f1f1f1;color:#000">
+        <th style="border:.5pt solid #000;padding:5px">No.</th>
+        <th style="border:.5pt solid #000;padding:5px">Kompetensi Dasar</th>
+        <th style="border:.5pt solid #000;padding:5px">Lingkup Materi</th>
+        <th style="border:.5pt solid #000;padding:5px">Materi Pokok</th>
+        <th style="border:.5pt solid #000;padding:5px">Level Kognitif</th>
+        <th style="border:.5pt solid #000;padding:5px">Indikator Soal</th>
+        <th style="border:.5pt solid #000;padding:5px">Bentuk Soal</th>
+        <th style="border:.5pt solid #000;padding:5px">Nomor Soal</th>
+        </tr></thead><tbody>
+        `;
+        for(j = 0 ; j <arrayData.length ; j++){
+            html +=`<tr style="border:.5pt solid #000;">
+                <td style="border:.5pt solid #000;vertical-align:top;padding:5px">${arrayData[j].nosoal}</td>
+                <td style="border:.5pt solid #000;vertical-align:top;padding:5px">${arrayData[j].tekskd}</td>
+                <td style="border:.5pt solid #000;vertical-align:top;padding:5px">${arrayData[j].ruanglingkup}</td>
+                <td style="border:.5pt solid #000;vertical-align:top;padding:5px">${arrayData[j].materi}</td>
+                <td style="border:.5pt solid #000;vertical-align:top;padding:5px">${arrayData[j].levelkognitif}</td>
+                <td style="border:.5pt solid #000;vertical-align:top;padding:5px">${arrayData[j].indikatorsoal}</td>
+                <td style="border:.5pt solid #000;vertical-align:top;padding:5px">${arrayData[j].bentuksoal}</td>
+                <td style="border:.5pt solid #000;vertical-align:top;padding:5px">${arrayData[j].nosoal}</td>
+            </tr>`
+        }
+        html +=`</tbody></table><br><br>`;
+
+    }
+    html +=`<br><br><table style="text-align:center;font-family::Times New Roman, Times, serif;font-size:11pt;width:100%">
+    <tr>
+    <td style="padding:5px;text-align:center">Mengetahui, <br>Kepala ${idNamaSekolah}<br><br><br><br><b><u>${idNamaKepsek}</u></b><br>NIP. ${idNipKepsek}</td>
+    <td style="padding:5px;text-align:center">Depok, ${tanggalfull(new Date())}<br>${idJenisGuru} ${idgurumapelmapel}<br><br><br><br><b><u>${namauser}</u></b><br>NIP. ${idNipGuruKelas}</td>
+    <td style="padding:5px;text-align:center"></td>
+    </tr>
+    </table>`
+    let elemenisi = document.querySelector(".areaprint_soalkisidandesainsoallainnya");
+    elemenisi.innerHTML = html;
+    let modalnya = document.getElementById("modal_soalkisidandesainsoallainnya");
+    let printkan = document.querySelector(".modaldiprintsoal");
+    let wordkan = document.querySelector(".modaldieksporword");
+    modalnya.style.display="block";
+    printkan.onclick = function(){
+        printadm("areaprint_soalkisidandesainsoallainnya",false)
+    }
+    wordkan.onclick = function(){
+        print2WordGlobal("areaprint_soalkisidandesainsoallainnya",judulnaskah.value,"kisikisijawaban",false)
+
+    }
+}
+
+const lihatkuncijawabandesainini= ()=>{
+    let jj = document.querySelector(".areajudul_desainnaskah")
+    let tabel = document.querySelector(".tempatnaskahsoal_soal");
+    let judulnaskah = document.querySelector("#naskahsoal_identitas");
+    let lRow = tabel.rows;
+    let arrayData = []
+    for(i=0 ; i < lRow.length ; i++){
+        let lCol = lRow[i].cells;
+        if(lCol.length !== 2){
+            let fCol = lCol[2];
+            let Col_idbarissoal = fCol.getAttribute("data-idbarissoal");
+            let sumberdata = databasesoal.filter(s => s.idbaris == Col_idbarissoal)[0];
+            let nosoal = lCol[1].innerHTML.replace(".","");
+            let obj = Object.assign({},sumberdata);
+            obj.nosoal = nosoal;
+            arrayData.push(obj);
+        }
+    }
+    let html =  `<h3 style="text-align:center">KUNCI JAWABAN DAN PENSKORAN</h3>
+    <h4 style="text-align:center">${judulnaskah.value.toUpperCase()}</h4><br>`;
+    html +=`<table style="border-collapse:collapse;border:.5pt solid #000;width:100%;font-size:10pt"><thead>
+        <tr style="background-color:#f1f1f1;color:#000"><th style="border:.5pt solid #000;padding:5px">No. Soal</th><th style="border:.5pt solid #000;padding:5px">Kunci Jawaban</th><th style="border:.5pt solid #000;padding:5px">Pembahasan/Penskoran</th></tr>
+    </thead>`;
+    for(i = 0 ; i < arrayData.length ; i++){
+        html +=`<tr><td style="border:.5pt solid #000;padding:5px;vertical-align:top">${arrayData[i].nosoal}</td><td style="border:.5pt solid #000;padding:5px;vertical-align:top">${arrayData[i].kuncijawaban}</td><td style="border:.5pt solid #000;padding:5px;vertical-align:top">${arrayData[i].penskoran}</td></tr>`;
+    }
+    html +=`</table>`;
+    let elemenisi = document.querySelector(".areaprint_soalkisidandesainsoallainnya");
+    elemenisi.innerHTML = html;
+    let modalnya = document.getElementById("modal_soalkisidandesainsoallainnya");
+    modalnya.style.display="block";
+    let printkan = document.querySelector(".modaldiprintsoal");
+    let wordkan = document.querySelector(".modaldieksporword");
+    printkan.onclick = function(){
+        printadm("areaprint_soalkisidandesainsoallainnya",true)
+    }
+    wordkan.onclick = function(){
+        print2WordGlobal("areaprint_soalkisidandesainsoallainnya",judulnaskah.value,"kisikisijawaban2",false)
+
+    }
+
+}
+
+const lihatkrtusoalall = () =>{
+    let html =  "";
+    let tabel = document.querySelector(".tempatnaskahsoal_soal");
+    let judulnaskah = document.querySelector("#naskahsoal_identitas");
+    let lRow = tabel.rows;
+    let arrayData = [];
+    for(i=0 ; i < lRow.length ; i++){
+        let lCol = lRow[i].cells;
+        if(lCol.length !== 2){
+            let fCol = lCol[2];
+            let Col_idbarissoal = fCol.getAttribute("data-idbarissoal");
+            let sumberdata = databasesoal.filter(s => s.idbaris == Col_idbarissoal)[0];
+            let nosoal = lCol[1].innerHTML.replace(".","");
+            let obj = Object.assign({},sumberdata);
+            obj.nosoal = nosoal;
+            arrayData.push(obj);
+        }
+    }
+    for(j = 0 ; j < arrayData.length ; j++){
+        html +=`<table style="border-collapse:collapse;width:100%;max-width:1000px;border:.5pt solid #000;font-size:12pt !important"><tr><td style="width:8.33%"></td><td style="width:8.33%"></td><td style="width:8.33%"></td><td style="width:8.33%"></td><td style="width:8.33%"></td><td style="width:8.33%"></td><td style="width:8.33%"></td><td style="width:8.33%"></td><td style="width:8.33%"></td><td style="width:8.33%"></td><td style="width:8.33%"></td><td style="width:8.33%"></td></tr><tr style="color:#000!important;background-color:rgb(221, 255, 255)!important;"><td style="text-align:center;vertical-align:middle;padding-top:16px!important;padding-bottom:16px!important;border-right:1px solid rgb(221, 255, 255);border-bottom:.5pt solid #000"><img src="/img/sdnratujaya1-transparent.png" style="width: 90px;"></td><td colspan="10" style="text-align:center;border-bottom:.5pt solid #000"><div style="font-size:24px">${idNamaSekolah.toUpperCase()}</div><div style="font-weight: bold;font-size:36px !important">Kartu Soal</div><div style="font-size:18px" >Tahun Pelajaran ${idTeksTapel}</div></td><td style="padding:5px;border-left:1px solid rgb(221, 255, 255);border-bottom:.5pt solid #000"><div style="border:.5pt solid #000;text-align:center;background-color:#fff">Paket</div><div style="border:.5pt solid #000;text-align:center;font-size:18px;background-color:#fff"> </div></td></tr><tr><td colspan="2" style="padding:5px;vertical-algin:top">Jenis Sekolah</td><td colspan="5" style="padding:5px;vertical-algin:top">: Sekolah Dasar</td><td colspan="2" style="vertical-algin:top">Kurikulum</td><td colspan="3" style="padding:5px;vertical-algin:top">: Kurikulum 2013</td></tr><tr><td colspan="2" style="padding:5px;vertical-algin:top">Kelas</td><td colspan="5" style="padding:5px;vertical-algin:top">: ${arrayData[j].jenjang}</td><td colspan="2" style="vertical-algin:top">Bentuk Soal</td><td colspan="3" style="padding:5px;vertical-algin:top">: ${arrayData[j].bentuksoal}</td></tr><tr><td colspan="2" style="padding:5px;vertical-algin:top">Mata Pelajaran</td><td colspan="5" style="padding:5px;vertical-algin:top">: ${arrayData[j].tekskodemapel}</td><td colspan="2" style="vertical-algin:top">Penyusun</td><td colspan="3" style="padding:5px;vertical-algin:top">: ${arrayData[j].oleh}</td></tr><tr>`;
+        html +=`<td colspan="3" rowspan="2" style="border-right:.5pt solid #000;border-top:.5pt solid #000;vertical-align:top"><table style="border-collapse:collapse;width:100%;"><tr><td style="border-bottom:.5pt solid #000"><b>Ruang Lingkup Materi:</b><br>${arrayData[j].ruanglingkup}</td></tr><tr><td style="border-bottom:.5pt solid #000"><b>Kompetensi Dasar:</b><br>${arrayData[j].tekskd} </td></tr><tr><td style="border-bottom:.5pt solid #000"><b>Level Kognitif:</b><br>${arrayData[j].levelkognitif}</td></tr><tr><td style="border-bottom:.5pt solid #000"><b>Materi:</b><br>${arrayData[j].materi}</td></tr><tr><td style="border-bottom:.5pt solid #000"><b>Indikator Soal:</b><br>${arrayData[j].indikatorsoal}</td></tr><tr><td><b>Buku Sumber (Refrensi):</b><br>${arrayData[j].refrensi}</td></tr></table></td><td colspan="9" style="border-top:.5pt solid #000;vertical-align:top;"><table style="border-collapse:collapse;width:100%;"><tr style="background-color:rgb(241,241,241)"><td style="border-bottom:.5pt solid #000;padding:5px;box-sizing:border-box"><div style="border:.5pt solid #000;text-align:center;font-size:12px;line-height:1;background-color:#fff;"> Nomor Soal </div> <div style="border:.5pt solid #000;text-align:center;background-color:#fff;">${arrayData[j].nosoal}</div></td><td style="width:99%;border-bottom:.5pt solid #000;text-align:center;vertical-align:center">RUMUSAN SOAL</td></tr><tr><td style="padding:5px; text-align:justify" colspan="2"><div>${arrayData[j].ilustrasi}</div><div>${arrayData[j].pertanyaan}</div>`;
+                if(arrayData[j].bentuksoal == "Pilihan Ganda"){
+                    if(arrayData[j].tampilanpg == "BIASA"){
+                        html +=`<ol style="list-style-type:upper-alpha;margin:0 0 0 -1em"><li>${arrayData[j].opsiA}</li><li>${arrayData[j].opsiB}</li><li>${arrayData[j].opsiC}</li>`;
+                        if(arrayData[j].opsiD !==""){
+                                html+=`<li>${arrayData[j].opsiC}</li>`
+                        }    
+                        html +=`</ol>`
+                    }else{
+                        let db = arrayData[j];
+                        let arropsiA = JSON.parse(db.opsiA);
+                        let arropsiB = JSON.parse(db.opsiB);
+                        let arropsiC = JSON.parse(db.opsiC);
+                        let arropsiD = [];
+                        let arrHead = JSON.parse(db.headerpg);
+                        let jumlahPG = 3;
+                        
+                        if(db.opsiD !== ""){
+                            arropsiD = JSON.parse(db.opsiD);
+                            jumlahPG = 4
+                        }
+                        html += `<table style="border-collapse:collapse;border:.5pt solid #000;width:100%;font-family:Times New Roman, Times, serif;">`;
+                        html +=`<thead><tr style="border:.5pt solid #000"><th style="border:.5pt solid #000"></th>`;
+                        for(a = 0 ; a < arrHead.length ; a++){
+                            html +=`<th style="border:.5pt solid #000;text-align:center;background-color:#f1f1f1">${arrHead[a]}</th>`
+                        }
+                        html +=`</tr><tbody>`;
+                        html +=`<tr style="border:.5pt solid #000"><td style="border:.5pt solid #000;width:15px;vertical-align:top;text-align:center;padding-left:5px">A.</td>`;
+                        for(c = 0 ; c <arrHead.length ; c++){
+                            html +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiA[c]}</td>`
+                        }
+                        html +=`</tr><tr style="border:.5pt solid #000;vertical-align:top;"><td style="border:.5pt solid #000;width:15px;vertical-align:top;text-align:center;padding-left:5px">B.</td>`;
+                        for(c = 0 ; c < arrHead.length ; c++){
+                            html +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiB[c]}</td>`;
+                        }
+                        html +=`</tr><tr style="border:.5pt solid #000"><td style="border:.5pt solid #000;width:15px;vertical-align:top;text-align:center;padding-left:5px">C.</td>`;
+                        for(c = 0 ; c <arrHead.length ; c++){
+                            html +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiC[c]}</td>`
+                        }
+                        if(db.opsiD !== ""){
+                            html +=`</tr><tr style="border:.5pt solid #000"><td style="border:.5pt solid #000;width:15px;vertical-align:top;text-align:center;padding-left:5px">D.</td>`;
+                            for(c = 0 ; c < arrHead.length ; c++){
+                                html +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiD[c]}</td>`;
+                            }
+                        }else{
+                            html +=`</tr>`
+                        }
+                    html +=`</tbody></table>`
+                    }
+                }
+                html +=`</td></tr></table></td></tr><tr><td colspan="9" style="vertical-align:top;"><table style="border-collapse:collapse;width:100%;font-size:12pt!important"><tr style="background-color:rgb(241,241,241)"><td style="border-bottom:.5pt solid #000;border-top:.5pt solid #000;padding:5px;box-sizing:border-box">`;
+                if(arrayData[j].bentuksoal == "Pilihan Ganda"){
+                    html +=`<div style="border:.5pt solid #000;text-align:center;background-color:#fff;font-size:12px;line-height:1;">Kunci Jawaban</div><div style="border:.5pt solid #000;text-align:center;background-color:#fff;">${arrayData[j].kuncijawaban}</div>`;
+                }
+                html +=`</td><td style="width:99%;border-bottom:.5pt solid #000;border-top:.5pt solid #000;text-align:center;vertical-align:center">PEMBAHASAN KUNCI JAWABAN DAN PENSKORAN</td></tr><tr><td style="padding:5px; text-align:justify" colspan="2">${arrayData[j].penskoran}</td></tr></table></td></tr></table><p></p><div style="break-after:page"></div>`;
+    }
+
+    let elemenisi = document.querySelector(".areaprint_soalkisidandesainsoallainnya");
+    elemenisi.innerHTML = html;
+    let modalnya = document.getElementById("modal_soalkisidandesainsoallainnya");
+    modalnya.style.display="block";
+    let printkan = document.querySelector(".modaldiprintsoal");
+    let wordkan = document.querySelector(".modaldieksporword");
+    printkan.onclick = function(){
+        printadm("areaprint_soalkisidandesainsoallainnya",false)
+    }
+    wordkan.onclick = function(){
+        print2WordGlobal("areaprint_soalkisidandesainsoallainnya",judulnaskah.value,"kisikisijawaban",false);
+    }
+}
+
+const simpannaskahdesain = () =>{
+    loadingtopbarin("loadingtopbar");
+    let cekin = document.querySelectorAll("[data-idbarissoal]").length;
+    if(cekin == 0){
+        alert("Maaf, Anda belum membuat naskah soal apapun di sini!");
+        return;
+    }
+    let sKop = document.querySelector(".kopnaskahsoal");
+    let sJudul = document.querySelector(".areajudul_desainnaskah");
+    let sTabel = document.querySelector(".tempatnaskahsoal_soal");
+    let kop = sKop.outerHTML.replace(/\r|\n|\r\n|\t|\s\s/gm,"");
+    let judul= sJudul.outerHTML.replace(/\r|\n|\r\n|\t|\s\s/gm,"");
+    let judulnaskah = document.querySelector("#naskahsoal_identitas");
+    let mapel = document.getElementById("naskahsoal_mapelapatema").options[document.getElementById("naskahsoal_mapelapatema").options.selectedIndex].text;
+    let htmltabel =`<table style="width:100%;border-collapse:collapse;border-spacing:0">`;
+    // array tanpa idbaris
+    
+    let objekarraykirim = {};
+    // objekarraykirim.idbaris = "";
+    objekarraykirim.idguru = idguru;
+    objekarraykirim.namaguru = namauser;
+    objekarraykirim.jenjang = idJenjang;
+    objekarraykirim.rombel = idNamaKelas;
+    objekarraykirim.juduldesain = judulnaskah.value;
+    objekarraykirim.mapel = mapel;
+
+    for(i = 0 ; i <sTabel.rows.length ; i++){
+        let lRow = sTabel.rows[i].cells;
+        if(lRow.length == 3){
+            let getidnaskah = lRow[2].getAttribute("data-idbarissoal");
+            let kkey = "no_" + lRow[1].innerHTML.match(/(\d+)/)[0];
+            objekarraykirim[kkey] = getidnaskah;
+            htmltabel +=`<tr><td style="vertical-align:top">${lRow[1].innerHTML}</td><td data-simpanannaskahguru="${getidnaskah}" style="vertical-align:top">${lRow[2].innerHTML}</td></tr>`;
+        }else{
+            htmltabel +=`<tr><td colspan="2" style="vertical-align:top">${lRow[1].innerHTML}</td></tr>`;
+        }
+    }
+    htmltabel +=`</table>`;
+    
+    let html = kop + judul +"<br>"+htmltabel;
+    let key = JSON.stringify(keydatabasesoalsimpananuser);
+    let ob = Object.assign(databasesoalsimpananuserkosong[0],objekarraykirim);
+    
+    let v = Object.values(ob);
+    v.shift();
+    let keytabel = JSON.stringify(v);
+
+    let datakirim = new FormData();
+    datakirim.append("idmateri",html);
+    datakirim.append("tab","simpandesainsoal");
+    datakirim.append("key",key);
+    datakirim.append("jenjang",idJenjang);
+    datakirim.append("tabel",keytabel);
+    fetch(url_kaldikaja+"?action=uploadfilenaskah",{
+        method:"post",
+        body:datakirim
+    }).then(m => m.json())
+    .then(r => {
+        alert("Data berhasil tersimpan!");
+        document.querySelector(".areadesain_naskahsoal").classList.add("w3-hide");
+        document.querySelector(".areadesain_naskahsoaltombol").classList.add("w3-hide");
+        document.getElementById("naskahsoal_identitas").value ="";
+        document.getElementById("naskahsoal_mapelapatema").selectedIndex ="0";
+        
+        clearInterval(stoploadingtopbar);
+        let divlod = document.querySelector(".loadingtopbar");
+        divlod.style.width = "100%";
+        setTimeout(() => {
+            divlod.style.width = "1px"
+            divlod.className += " w3-hide";
+
+        }, 3000);
+
+        keydatabasesoalsimpananuser = Object.keys(r.data[0]);
+       if(r.result>1){
+            databasesoalsimpananuser = r.data;
+       }
+       let ob = {}
+       for(i=0 ; i < keydatabasesoalsimpananuser.length; i++){
+        ob[keydatabasesoalsimpananuser[i]]="";
+       }
+       databasesoalsimpananuserkosong.push(ob);
+    
+        
+    }).catch(er=>console.log(er));
+}
+
+const simpanannaskahsoal = () =>{
+    let tab = "simpandesainsoal"
+    let tabel = [[["idbaris"]]];
+    let head = tabel[0];
+    let key = JSON.stringify(head);
+    let datakirim = new FormData();
+    
+    datakirim.append("tab",tab);
+    datakirim.append("key",key);
+    fetch(url_kaldikaja+"?action=getpostdatafromtab",{
+        method:"post",
+        body:datakirim
+    }).then(m => m.json())
+    .then(r => {
+        
+       
+       keydatabasesoalsimpananuser = Object.keys(r.data[0]);
+       if(r.result>1){
+            databasesoalsimpananuser = r.data;
+       }
+       let ob = {}
+       for(i=0 ; i < keydatabasesoalsimpananuser.length; i++){
+        ob[keydatabasesoalsimpananuser[i]]="";
+       }
+       databasesoalsimpananuserkosong.push(ob);
+    }).catch(er=>console.log(er));
+
+
+}
+const gabungdataserverkdnaskahsoal = async()=>{
+    let ceklis = document.querySelectorAll("input[name=desainkhususkelas6_tag]");
+    let k = idJenjang
+    ceklis.forEach(el => el.checked?k=el.value:"");
+   
+    let datakkm = await kkmdikelastertentu(k);
+    let datatag = alltagkdserver.filter(s => s.kelas == k);
+   
+    let newObjek = datatag.map((item,i)=>Object.assign({},item,datakkm[i]))
+    //console.log(newObjek);
+    return newObjek
+}
+const kkmdikelastertentu = async (jenjang) =>{
+    let tas = "kelas" + jenjang;
+    try {
+        const m = await fetch(linkmateri + "&action=cekdkkm&tab=" + tas)
+        const k = await m.json()
+        let data = k.result
+       
+        return data
+    } catch (er) {
+        console.log(er)
+        return [{ "datakosong": 0, "error": er }]
+    }
+}
+const showdbsoal = document.querySelectorAll("input[name=showdbsoal]");
+showdbsoal.forEach(el=>{
+    el.addEventListener("change",()=>{
+        if(el.checked){
+            let db = databasesoalsimpananuser;
+            let dbsendiri = db.filter(s => s.idguru == idguru);
+            let v = el.value;
+            let tabel = document.querySelector(".tabelpilihandbsoal");
+            let tabelbody = tabel.getElementsByTagName("tbody")[0];
+            let tabelhead = tabel.getElementsByTagName("thead")[0];
+            let divinfo = document.querySelector(".infopilihandbsoal");
+            let info="";
+            let tbHead, tbBody;
+            let gaadadata
+            if(v == 1){
+                tbHead = `<tr class="w3-light-gray">
+                <th>No.<br>Urut</th>
+                <th>Judul Desain</th>
+                <th>Mata Pelajaran</th>
+                <th>Lihat Desain</th>
+                <th>Properti Desain</th></tr>`;
+                info +=`Tabel akan menyajikan data desain naskah soal yang pernah Anda buat di sini. Masing-masing data akan bisa dicetak langsung atau diunduh.`;
+                if(dbsendiri.length == 0){
+                    tbBody =`<tr><td colspan="5" class="w3-center">Anda belum pernah menyimpan Desain Naskah Soal</td></tr>`;
+                }else{
+                    tbBody = "";
+                    for(i = 0 ; i < dbsendiri.length ; i++){
+                        tbBody +=`<tr><td class="w3-center">${(i+1)}.</td>
+                        <td>${dbsendiri[i].juduldesain}</td>
+                        <td>${dbsendiri[i].mapel}</td>
+                        <td class="w3-center">
+                            <button class="w3-button w3-yellow w3-bottombar w3-border-black w3-round" onclick="lihatdesainnaskah('${dbsendiri[i].idbaris}')" title="Lihat Desain"><i class="fa fa-eye"></i></button>
+                            </td>
+                        <td class="w3-center">
+                            <button class="w3-button w3-yellow w3-bottombar w3-border-black w3-round" onclick="lihatkuncidankisikisi('${dbsendiri[i].idbaris}','kisi-kisi')" title="Lihat Kisi-kisi dari desain naskah ini"><i class="fa fa-file-text"></i></button>
+                            <button class="w3-button w3-yellow w3-bottombar w3-border-black w3-round" onclick="lihatkuncidankisikisi('${dbsendiri[i].idbaris}','kuncijawaban')" title="Lihat Kunci Jawaban dari desain naskah ini"><i class="fa fa-file-text-o"></i></button>
+                        </td></tr>`;
+                    }
+                }
+            }else if(v == 2){
+                info +=`Tabel akan menyajikan data desain naskah soal yang pernah dibuat untuk jenjang kelas Anda (Kelas ${idJenjang}). Masing-masing data akan bisa dicetak langsung atau diunduh.`;
+                tbHead = `<tr class="w3-light-gray"><th>No.<br>Urut</th><th>Judul Desain</th><th>Mata Pelajaran</th><th>Lihat Desain</th><th>Properti Desain</th></tr>`;
+                tbBody = "";
+                let dbjenjang = db.filter(s=> s.jenjang == idJenjang);
+                if(dbjenjang.length == 0){
+                    tbBody =`<tr><td colspan="5" class="w3-center">Di kelas Anda, belum pernah ada yang menyimpan Desain Naskah Soal</td></tr>`;
+                }else{
+                    for(i = 0 ; i < dbjenjang.length ; i++){
+                        tbBody +=`<tr><td class="w3-center">${(i+1)}.</td>
+                        <td>${dbjenjang[i].juduldesain}</td>
+                        <td>${dbjenjang[i].mapel}</td>
+                        <td class="w3-center">
+                        <button class="w3-button w3-yellow w3-bottombar w3-border-black w3-round" onclick="lihatdesainnaskah('${dbjenjang[i].idbaris}')" title="Lihat Desain"><i class="fa fa-eye"></i></button>
+                        </td>
+                        <td class="w3-center">
+                            <button class="w3-button w3-yellow w3-bottombar w3-border-black w3-round" onclick="lihatkuncidankisikisi('${dbjenjang[i].idbaris}','kisi-kisi')" title="Lihat Kisi-kisi dari desain naskah ini"><i class="fa fa-file-text"></i></button>
+                            <button class="w3-button w3-yellow w3-bottombar w3-border-black w3-round" onclick="lihatkuncidankisikisi('${dbjenjang[i].idbaris}','kuncijawaban')" title="Lihat Kunci Jawaban dari desain naskah ini"><i class="fa fa-file-text-o"></i></button>
+                        </td></tr>`;
+                    }
+                }
+            }else if(v == 3){
+                info +=`Tabel akan menyajikan kumpulan soal-soal yang telah dibuat oleh Anda ataupun teman Anda. Di sini, Anda dapat mengetahui kualitas soal yang telah dibuat, mengetahui komentar dari user lain (Karena fitur ini bersifat publik, komentar bisa saja dari luar instansi Anda, bisa jadi pengawas atau stakeholder lainnya.). Anda pun dapat mengeditnya jika item soal tersebut buatan Anda sekaligus memberikan komentar atau menghapus item soal buatan Anda (Untuk menghapus, item soal mungkin saja pernah digunakan saat mendesain naskah soal sebelum Anda menghapusnya).`;
+                tbHead =`<tr class="w3-light-gray">
+                <th>No.<br>Urut</th>
+                <th>Kelas</th>
+                <th>Dibuat Oleh</th>
+                <th>Mata Pelajaran</th>
+                <th>Kompetensi Dasar</th>
+                <th>Kualitas Soal (Rating)</th>
+                <th>Aksi</th></tr>`;
+                tbBody = ``;
+                let dbb = databasesoal;
+                for(i=0 ; i < dbb.length ; i++){
+                    tbBody +=`<tr><td class="w3-center">${(i+1)}</td>
+                    <td class="w3-center">${dbb[i].jenjang}</td>
+                    <td class="w3-center">${dbb[i].oleh}</td>
+                    <td>${dbb[i].tekskodemapel}</td>
+                    <td>${dbb[i].tekskd}</td>
+                    <td></td>
+                    <td>
+                    <button class="w3-button w3-yellow w3-bottombar w3-border-black w3-round" onclick="alert(' lihat id=${dbb[i].idbaris}')" title="Lihat item soal"><i class="fa fa-eye"></i></button>
+                        <button class="w3-button w3-blue w3-bottombar w3-border-black w3-round" onclick="alert(' modifikasi id=${dbb[i].idbaris}')" title="Modifikasi soal ini menjadi item soal baru di database. Item soal sebelumnya masih tetap ada."><i class="fa fa-edit"></i></button>`;
+                    if(dbb[i].oleh == namauser){
+                        tbBody +=`<button class="w3-button w3-green w3-bottombar w3-border-black w3-round" onclick="alert('edit id=${dbb[i].idbaris}')" title="Karena ini buatan Anda, Anda bisa mengeditnya"><i class="fa fa-gear"></i></button>
+                        <button class="w3-button w3-light-grey w3-bottombar w3-border-black w3-round" onclick="alert('edit id=${dbb[i].idbaris}')" title="Karena ini buatan Anda, Anda bisa menghapusnya"><i class="fa fa-trash"></i></button>`;
+                    }
+                    tbBody +=`</td></tr>`;
+                }
+            }
+            divinfo.innerHTML = info;
+            tabelhead.innerHTML = tbHead;
+            tabelbody.innerHTML = tbBody;
+        };
+    });
+});
+const lihatdesainnaskah=(idbrs)=>{
+    let html = `<img src="/img/barloading.gif"> Loading ...`;
+    let idm= databasesoalsimpananuser.filter(s=> s.idbaris == idbrs)[0].html_soal;
+    
+    let judulnaskah = "Database Naskah Soal idtime_" + new Date().getTime();
+    let modalnya = document.getElementById("modal_soalkisidandesainsoallainnya");
+    modalnya.style.display="block";
+    let printkan = document.querySelector(".modaldiprintsoal");
+    let wordkan = document.querySelector(".modaldieksporword");
+    printkan.onclick = function(){alert('data belum siap')};
+    wordkan.onclick = function(){alert('data belum siap')}
+
+    let elemenisi = document.querySelector(".areaprint_soalkisidandesainsoallainnya");
+    elemenisi.innerHTML = html;
+    fetch(linkmateri+"&action=previewriwayat&idmateri="+idm).then(m=> m.json())
+    .then(r =>{
+        let teks = r.replace(/-1.4461538461999965em/gm,"-1.1461538461999965em");
+        let tekss = teks.replace(/vertical-align:top/gm,"vertical-align:top;padding-left:5px");
+        elemenisi.innerHTML = tekss;
+        printkan.onclick = function(){
+            printadm("areaprint_soalkisidandesainsoallainnya")
+        }
+        wordkan.onclick = function(){
+            print2WordGlobal("areaprint_soalkisidandesainsoallainnya",judulnaskah,"kisikisijawaban2",false)
+            
+        }
+    }).catch(er=>{
+        console.log(er);
+        elemenisi.innerHTML = er;
+    })
+    
+
+    //$.getJSON(linkmateri + "&idmateri=" + idm + "&action=previewriwayat", function (json) {
+}
+const lihatkuncidankisikisi = (idbrs,kondisi="kisikisi") =>{
+    let html ="Tahap Desain: kondisi"+kondisi+" id="+idbrs;
+
+    let elemenisi = document.querySelector(".areaprint_soalkisidandesainsoallainnya");
+    elemenisi.innerHTML = html;
+    let modalnya = document.getElementById("modal_soalkisidandesainsoallainnya");
+    let printkan = document.querySelector(".modaldiprintsoal");
+    let wordkan = document.querySelector(".modaldieksporword");
+    modalnya.style.display="block";
+    printkan.onclick = function(){
+        printadm("areaprint_soalkisidandesainsoallainnya",false)
+    }
+    // wordkan.onclick = function(){
+    //     print2WordGlobal("areaprint_soalkisidandesainsoallainnya",judulnaskah.value,"kisikisijawaban",false)
+        
+    // }
+}
 // (function findDuplicateIds() {
 //     var ids = {};
 //     var all = document.all || document.getElementsByTagName("*");
@@ -3171,4 +4131,4 @@ const mulaidesainnaskahsoal = ()=>{
 //             }
 //         }
 //     }
-// })();
+// })();`

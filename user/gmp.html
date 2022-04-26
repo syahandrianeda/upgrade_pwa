@@ -1441,18 +1441,15 @@
                     <button class="tablinks" onclick="openCityy(event, 'sppd_sppdku')">SPPD-ku</button>
                     <button class="tablinks fokusngetiknotula" onclick="openCityy(event, 'notula_create')">Notula Rapat</button>
                     <button class="tablinks"  onclick="document.getElementById('modal_formatLJK').style.display='block'">Format LJK</button>
+                    <button class="tablinks" onclick="openCityy(event, 'buat_eval')">Desain Evaluasi</button>
                     <button class="tablinks w3-hide" onclick="openCityy(event, 'buat_kkm')">KKM</button>
                     <button class="tablinks w3-hide" onclick="openCityy(event, 'buat_perbaikan')">Perbaikan/Pengayaan</button>
                     <button class="tablinks w3-hide" onclick="openCityy(event, 'buat_psikoedukatif')">Psikoedukatif</button>
                     <button class="tablinks w3-hide" onclick="openCityy(event, 'buat_observasi')">Observasi Guru</button>
                     <button class="tablinks w3-hide" onclick="openCityy(event, 'buat_notularapat')">Notula Rapat</button>
-                    <button class="tablinks w3-hide" onclick="openCityy(event, 'buat_eval')">Desain Evaluasi</button>
                     <button class="tablinks w3-hide" onclick="openCityy(event, 'laporan_adm')">Supervisi</button>
                 </div>
-                <div class="tabcontent" id="buat_eval">
-                    <h3>Desain Evaluasi</h3>
-                    Disini Anda akan diarahkan untuk membuat Evaluasi berdasarkan Kompetensi Dasar yang ditatpkan
-                </div>
+                
                 <div class="tabcontent" id="laporan_adm">
                     <h3>Supervisi</h3>
                     Data Laporan Supervisi
@@ -3447,6 +3444,476 @@
                         </table>
                     </div>
                 </div>
+                <div class="tabcontent" id="buat_eval">
+                    <h3>Desain Evaluasi</h3>
+                    Fitur ini digunakan untuk mendesain alat evaluasi. Baik Soal tertulis maupun soal praktek. Anda juga dapat membuat database soal saat Anda membuat konten materi dan akan disimpan di database soal di sini.
+                    <div class="w3-tab w3-border-bottom w3-border-top w3-small w3-margin-top">
+                        <button class="w3-button btnadm w3-round-large" onclick="tabA(event,'dsgeval_pg')">Kartu Soal</button>
+                        <button class="w3-button btnadm w3-round-large" onclick="tabA(event,'dsgeval_dbdesainsoal')">Desain Naskah Soal</button>
+                        <button class="w3-button btnadm w3-round-large w3-hide" onclick="tabA(event,'dsgeval_rubrik')">Desain Rubrik</button>
+                        <button class="w3-button btnadm w3-round-large" onclick="tabA(event,'dsgeval_dbsoal')">Database Bank Soal</button>
+                    </div>
+                    <div class="isiadm first_isiadm w3-small" id="dsgeval_pg">
+                        <h4>Desain Soal</h4>
+                        <h5>(Kartu Soal)</h5>
+                        <div class="w3-white w3-border w3-round-large">
+                            <div class="w3-border-top w3-border-bottom w3-center  w3-pale-blue">
+                                <div class="desainsoalkhususkelas6 w3-border w3-padding">
+                                    Karena Anda mengampu kelas 6, Anda bisa mendesain soal yang bersumber dari kelas 4, 5, dan 6 untuk kepentingan desain soal Ujian Sekolah. Pilih Kelas berikut untuk refrensi kartu soal Anda:<br>
+                                    <label for="desainkhususkelas6_tagkelas4" class="w3-padding">
+                                        <input type="radio" class="w3-radio" id="desainkhususkelas6_tagkelas4" name="desainkhususkelas6_tag" style="width:16px !important;height:16px !important;top:0" value="4">
+                                        Kelas 4
+                                    </label>
+                                    <label for="desainkhususkelas6_tagkelas5" class="w3-padding">
+                                        <input type="radio" class="w3-radio" id="desainkhususkelas6_tagkelas5" name="desainkhususkelas6_tag" style="width:16px !important;height:16px !important;top:0" value="5">
+                                        Kelas 5
+                                    </label>
+                                    <label for="desainkhususkelas6_tagkelas6" class="w3-padding">
+                                        <input type="radio" class="w3-radio" id="desainkhususkelas6_tagkelas6" name="desainkhususkelas6_tag" style="width:16px !important;height:16px !important;top:0" value="6">
+                                        Kelas 6
+                                    </label>
+                                </div>
+                                <p class="p_pilihbentuksoal">
+                                    Pilih Bentuk Soal:
+                                </p>
+                                    
+                                <input type="radio" class="indsgeval1" id="desainbentuksoal" name="dsgpg_bentuksoal" value="Pilihan Ganda">
+                                <label for="desainbentuksoal" class="lblindsgeval1 w3-margin-right">PILIHAN GANDA</label>
+                                <input type="radio" class="indsgeval1" id="desainbentuksoalessay" name="dsgpg_bentuksoal" value="Isian">
+                                <label for="desainbentuksoalessay" class="lblindsgeval1">ISIAN</label>
+                            </div>
+                            <div class="w3-row-padding w3-margin-top">
+                                <div class="dsgpg_step w3-col l6 s12 w3-border w3-round-large">
+                                    <label for="steppgmapel">Pilih Mata Pelajaran:</label>
+                                    <select class="w3-select dsgpg_item w3-border  w3-pale-blue" onchange="dsgpg_mapel()" id="steppgmapel">
+                                        <option value="default">Pilih Mata Pelajaran</option>
+                                        <option value="PAI">Pendidikan Agama Islam dan Budi Pekerti</option>
+                                        <option value="PKRIS">Pendidikan Agama Kristen dan Budi Pekerti</option>
+                                        <option value="PKATO">Pendidikan Agama Katolik dan Budi Pekerti</option>
+                                        <option value="PKN">PKN</option>
+                                        <option value="BINDO">Bahasa Indonesia</option>
+                                        <option value="MTK">MATEMATIKA</option>
+                                        <option value="IPA">IPA</option>
+                                        <option value="IPS">IPS</option>
+                                        <option value="SBDP">SBDP</option>
+                                        <option value="PJOK">PJOK</option>
+                                        <option value="BSUND">BSUND</option>
+                                    </select><br><br>
+                                    Pilih KD: 
+                                    <div class="w3-border w3-round-large dsgpg_item w3-padding  w3-pale-blue">
+                                        <input type="radio" class="indsgeval" id="indsgevalpg1" name="dsgpg_itemkd" value="3.1">
+                                        <label for="indsgevalpg1" class="lblindsgeval w3-hide">3.1</label>
+                                        <input type="radio" class="indsgeval" id="indsgevalpg2" name="dsgpg_itemkd"  value="3.2">
+                                        <label for="indsgevalpg2" class="lblindsgeval w3-hide">3.2</label>
+                                        <input type="radio" class="indsgeval" id="indsgevalpg3" name="dsgpg_itemkd" value="3.3">
+                                        <label for="indsgevalpg3" class="lblindsgeval w3-hide">3.3</label>
+                                        <input type="radio" class="indsgeval" id="indsgevalpg4" name="dsgpg_itemkd" value="3.4">
+                                        <label for="indsgevalpg4" class="lblindsgeval w3-hide">3.4</label>
+                                        <input type="radio" class="indsgeval" id="indsgevalpg5" name="dsgpg_itemkd" value="3.5">
+                                        <label for="indsgevalpg5" class="lblindsgeval w3-hide">3.5</label>
+                                        <input type="radio" class="indsgeval" id="indsgevalpg6" name="dsgpg_itemkd" value="3.6">
+                                        <label for="indsgevalpg6" class="lblindsgeval w3-hide">3.6</label>
+                                        <input type="radio" class="indsgeval" id="indsgevalpg7" name="dsgpg_itemkd" value="3.7">
+                                        <label for="indsgevalpg7" class="lblindsgeval w3-hide">3.7</label>
+                                        <input type="radio" class="indsgeval" id="indsgevalpg8" name="dsgpg_itemkd" value="3.8">
+                                        <label for="indsgevalpg8" class="lblindsgeval w3-hide">3.8</label>
+                                        <input type="radio" class="indsgeval" id="indsgevalpg9" name="dsgpg_itemkd" value="3.9">
+                                        <label for="indsgevalpg9" class="lblindsgeval w3-hide">3.9</label>
+                                        <input type="radio" class="indsgeval" id="indsgevalpg10" name="dsgpg_itemkd" value="3.10">
+                                        <label for="indsgevalpg10" class="lblindsgeval w3-hide">3.10</label>
+                                        <input type="radio" class="indsgeval" id="indsgevalpg11" name="dsgpg_itemkd" value="3.11">
+                                        <label for="indsgevalpg11" class="lblindsgeval w3-hide">3.11</label>
+                                        <input type="radio" class="indsgeval" id="indsgevalpg12" name="dsgpg_itemkd" value="3.12">
+                                        <label for="indsgevalpg12" class="lblindsgeval w3-hide">3.12</label>
+                                        <input type="radio" class="indsgeval" id="indsgevalpg13" name="dsgpg_itemkd" value="3.13">
+                                        <label for="indsgevalpg13" class="lblindsgeval w3-hide">3.13</label>
+                                        <input type="radio" class="indsgeval" id="indsgevalpg14" name="dsgpg_itemkd" value="3.14">
+                                        <label for="indsgevalpg14" class="lblindsgeval w3-hide">3.14</label>
+                                        <input type="radio" class="indsgeval" id="indsgevalpg15" name="dsgpg_itemkd" value="3.15">
+                                        <label for="indsgevalpg15" class="lblindsgeval w3-hide">3.15</label>
+                                        <input type="radio" class="indsgeval" id="indsgevalpg16" name="dsgpg_itemkd" value="3.16">
+                                        <label for="indsgevalpg16" class="lblindsgeval w3-hide">3.16</label>
+                                        <input type="radio" class="indsgeval" id="indsgevalpg17"  name="dsgpg_itemkd" value="3.17">
+                                        <label for="indsgevalpg17" class="lblindsgeval w3-hide">3.17</label>
+                                        <input type="radio" class="indsgeval" id="indsgevalpg18" name="dsgpg_itemkd" value="3.18">
+                                        <label for="indsgevalpg18" class="lblindsgeval w3-hide">3.18</label>
+                                        <input type="radio" class="indsgeval" id="indsgevalpg19"  name="dsgpg_itemkd" value="3.19">
+                                        <label for="indsgevalpg19" class="lblindsgeval w3-hide">3.19</label>
+                                        <input type="radio" class="indsgeval" id="indsgevalpg20"  name="dsgpg_itemkd" value="3.20">
+                                        <label for="indsgevalpg20" class="lblindsgeval w3-hide">3.20</label>
+                                        <input type="radio" class="indsgeval" id="indsgevalpg21"  name="dsgpg_itemkd" value="3.21">
+                                        <label for="indsgevalpg21" class="lblindsgeval w3-hide">3.21</label>
+                                    </div><br>
+                                    Bunyi KD yang diplih:
+                                    <div class="w3-border w3-padding w3-round-large dsgpg_item bunyikdyandipilih"></div>
+                                    <br>
+                                    Ruang Lingkup Materi:
+                                    <div class="w3-border w3-padding w3-round-large dsgpg_item  w3-pale-blue">
+                                        <input type="radio" class="inprpp" name="dsgnpg_lingkupmateri" id="dsgnpg_lingkupmateri1" value="1">
+                                        <label for="dsgnpg_lingkupmateri1" class="lblinrpp labellingkupmateri w3-hide">Lingkup Materi1</label><br>
+                                        <input type="radio" class="inprpp" name="dsgnpg_lingkupmateri" id="dsgnpg_lingkupmateri2" value="1">
+                                        <label for="dsgnpg_lingkupmateri2" class="lblinrpp labellingkupmateri w3-hide">Lingkup Materi2</label><br>
+                                        <input type="radio" class="inprpp" name="dsgnpg_lingkupmateri" id="dsgnpg_lingkupmateri3" value="1">
+                                        <label for="dsgnpg_lingkupmateri3" class="lblinrpp labellingkupmateri w3-hide">Lingkup Materi3</label><br>
+                                        <input type="radio" class="inprpp" name="dsgnpg_lingkupmateri" id="dsgnpg_lingkupmateri4" value="1">
+                                        <label for="dsgnpg_lingkupmateri4" class="lblinrpp labellingkupmateri w3-hide">Lingkup Materi4</label><br>
+                                        <input type="radio" class="inprpp" name="dsgnpg_lingkupmateri" id="dsgnpg_lingkupmateri5" value="1">
+                                        <label for="dsgnpg_lingkupmateri5" class="lblinrpp labellingkupmateri w3-hide">Lingkup Materi5</label><br>
+                                        <input type="radio" class="inprpp" name="dsgnpg_lingkupmateri" id="dsgnpg_lingkupmateri6" value="1">
+                                        <label for="dsgnpg_lingkupmateri6" class="lblinrpp labellingkupmateri w3-hide">Lingkup Materi6</label><br>
+                                        <input type="radio" class="inprpp" name="dsgnpg_lingkupmateri" id="dsgnpg_lingkupmateri7" value="1">
+                                        <label for="dsgnpg_lingkupmateri7" class="lblinrpp labellingkupmateri w3-hide">Lingkup Materi7</label><br>
+                                        <input type="radio" class="inprpp" name="dsgnpg_lingkupmateri" id="dsgnpg_lingkupmateri8" value="1">
+                                        <label for="dsgnpg_lingkupmateri8" class="lblinrpp labellingkupmateri w3-hide">Lingkup Materi8</label>
+                                    </div>
+                                    
+                                </div>
+                                <div class="dsgpg_step w3-col l6 s12 w3-border w3-round-large">
+                                    <label for="indsgevalpgindikatorsoal" class="dsgpg_item">Indikator Soal:
+                                        <textarea id="indsgevalpgindikatorsoal" class="w3-input w3-border w3-pale-blue" placeholder="ketikan indikator soal ..."></textarea>
+                                    </label><br>
+                                    <label for="indsgevalpglevelsoal" class="dsgpg_item">Level Kognitif:
+                                        <select class="w3-select w3-border w3-pale-blue" id="indsgevalpglevelsoal">
+                                            <option value="L1">Pilih Level Kognitif</option>
+                                            <option value="L1">Level 1: Pengetahuan/Pemahaman</option>
+                                            <option value="L2">Level 2: Aplikasi/Penerapan</option>
+                                            <option value="L3">Level 3: Penalaran</option>
+                                        </select>
+                                    </label><br><br>
+                                    <label for="indsgevalpgmateripokok" class="dsgpg_item">Materi Pokok:
+                                        <input type="text" id="indsgevalpgmateripokok" class="w3-input w3-pale-blue" placeholder="ketikan materi potok soal ini ..."></input>
+                                    </label><br>
+                                    <!-- jika pg yang dipilih, tanyakan apakah tampilan PG-nya normal atau dalam bentuk tabel -->
+                                    <div class="w3-border w3-round-large w3-padding divtipeopsipg">
+                                        Tipe Opsi PG:
+                                        <input id="tipe_ABC" type="radio" class="indsgeval1" name="tipetamapilanpg" value="ABC">
+                                        <label for="tipe_ABC" class="lblindsgeval1">ABC</label>
+                                        <input id="tipe_ABCD" type="radio" class="indsgeval1" name="tipetamapilanpg" value="ABCD">
+                                        <label for="tipe_ABCD" class="lblindsgeval1">ABCD</label><br><br>
+                                        <br><br>
+                                        Tampilan Opsi PG:
+                                        <label class="switch" for="tampilanopsipg">
+                                            <input type="checkbox" id="tampilanopsipg" onchange="tampilanopsipg(this)" checked>
+                                            <span class="slider round"></span>
+                                        </label><span id="spantampilanopsipg">BIASA</span><br>
+                                        <label for="opsipgkolomtabel" class="jikaopsipgtabel w3-hide">Jumlah kolom (termasuk opsi):
+                                            <input type="number" id="opsipgkolomtabel" min="2" placeholder="masukkan jumlah kolom tampilan opsi PG berbentuk tabel" value="2">
+                                        </label><br><br>
+                                        Anda memilih bentuk soal PG, mungkin saja tampilan opsi pilihan ganda yang Anda pilih berbentuk tabel atau biasa (normal).
+                                        <br><br>
+                                    </div>
+                                </div>
+                                <div class="w3-tiny w3-col l12 s12">
+                                    Catatan: Untuk pembuatan soal di sini, nomor soal dianggap nomor 1 semuanya. Nomor soal dapat diubah ketika Anda menyusun serangkaian soal. Misalnya, Anda menyusun soal PTS, maka tiap-tiap nomor soal dapat Anda urutkan nanti saat penyusunan soal tersebut.
+                                </div>
+                            </div>
+                        </div>
+                        <div id="formatkartusoal" class="formatkartusoal w3-hide w3-white w3-card-4 w3-round-large w3-padding" style="max-width: 1000px;margin:15px auto;overflow-x:auto">
+                            <div class="w3-row w3-border w3-border-black bataskiriformatkartusoal">
+                                <!-- header -->
+                                <div class="w3-col l12 s12 w3-pale-blue w3-border-bottom">
+                                    <div class="w3-row">
+                                        <div class="w3-col l2 s2 w3-center w3-padding-16"><img src="/img/sdnratujaya1-transparent.png" style="width: 90px;"></div>
+                                        <div class="w3-col l9 s9 w3-center">
+                                            <div class="w3-xlarge kartusoalnamasekolah">UPTD SDN Ratujaya 1</div>
+                                            <div class="w3-xxlarge" style="font-weight: bold;">Kartu Soal</div>
+                                            <div class="w3-large tapelkartusoal">Tahun Pelajaran 2021/2022</div>
+                                        </div>
+                                        <div class="w3-col l1 s1 w3-border w3-center">
+                                            <div class="w3-border-bottom w3-border-black">Paket</div>
+                                            <div class="w3-large" contenteditable="true">A</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="w3-col l12 s12 w3-border-bottom">
+                                    <div class="w3-row w3-border-bottom w3-padding">
+                                        <div class="w3-col l2 s2">Jenis Sekolah</div>
+                                            <div class="w3-col l5 s5">: Sekolah Dasar</div>
+                                        <div class="w3-col l2 s2">Kurikulum</div>
+                                            <div class="w3-col l3 s3">: <span contenteditable="true">Kurikulum 2013</span></div>
+                                        <div class="w3-col l2 s2">Kelas</div>
+                                            <div class="w3-col l5 s5">: <span data-bsoal="jenjang">6</span></div>
+                                        <div class="w3-col l2 s2">Bentuk Soal</div>
+                                            <div class="w3-col l3 s3">: 
+                                                <span data-bsoal="bentuksoal">
+                                                    Pilihan Ganda
+                                                </span>
+                                            </div>
+                                        <div class="w3-col l2 s2">Mata pelajaran</div>
+                                            <div class="w3-col l5 s5">: <span data-bsoal="tekskodemapel"></span><span class="w3-hide" data-bsoal="kodemapel">PAI</span></div>
+                                        <div class="w3-col l2 s2">Penyusun</div>
+                                            <div class="w3-col l3 s3">: <span data-bsoal="oleh">Nama Guru</span></div>
+                                    </div>
+                                </div>
+                                <div class="w3-col l12 s12 w3-border ">
+                                    <div class="w3-row">
+                                        <div class="w3-col l3 s3 w3-border-right">
+                                            <div class="w3-border-bottom w3-container"><b>Ruang Lingkup Materi:</b><br><span data-bsoal="ruanglingkup"></span></div>
+                                            <div class="w3-border-bottom w3-container"><b>Kompetensi Dasar:</b><br><span data-bsoal="kd" class="w3-hide"></span><p data-bsoal="tekskd" class="w3-justify"></p></div>
+                                            <div class="w3-border-bottom w3-container"><b>LEVEL KOGNITIF</b><br><span data-bsoal="levelkognitif">L1</span><br><span class="artilevel"></span></div>
+                                            <div class="w3-border-bottom w3-container"><b>Materi:</b><br><p data-bsoal="materi" class="tangan klikmateritooltip">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quo, provident?</p></div>
+                                            <div class="w3-border-bottom w3-container">
+                                                <b>Indikator Soal: </b>
+                                                <p class="w3-justify tangan klikindikatortooltip" data-bsoal="indikatorsoal">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente explicabo magnam, earum culpa ullam accusantium quasi? Sint officiis ipsa beatae quasi tempore consequatur aut pariatur.</p>
+                                            </div>
+                                            <div class="w3-container">
+                                                <b>Buku Sumber (Refrensi):</b>
+                                                <br><br>
+                                                <p class="w3-input tangan klikrefrensitooltip" data-bsoal="refrensi" > Klik bagian ini</p>
+                                            </div>
+                                        </div>
+                                        <div class="w3-col l9 s9 w3-border-left">
+                                            <div class="w3-row w3-border-bottom">
+                                                <div class="w3-col w3-border w3-border-black  w3-center" style="width:100px;margin:2px 5px">
+                                                    <div class="w3-border-bottom w3-border-black w3-small">Nomor Soal</div>
+                                                    <div class="w3-large">1</div>
+                                                </div>
+                                                <div class="w3-light-gray w3-center w3-rest w3-padding-16">RUMUSAN SOAL</div>
+                                            </div>
+                                            <div data-bsoal="ilustrasi" class="w3-padding buattooltipilustrasi">KLIK UNTUK ILUSTRASI SOAL</div>
+                                            <div data-bsoal="pertanyaan" class="w3-padding buattooltippertanyaan">KLIK DI SINI UNTUK MENAMBAHKAN TEKS PERTANYAAAN</div>
+                                            <div class="dsgbpg_opsipg w3-row-padding w3-margin-bottom">INI TAMPILAN PILIHAN GANDA</div>
+                                            
+                                            <div class="w3-row w3-margin-top">
+                                                <div class="w3-col w3-border w3-border-black shortcutkuncijawaban w3-center" style="width:100px;margin:4px 5px">
+                                                    <div class="w3-border-bottom w3-border-black w3-small">Kunci Jawaban</div>
+                                                    <input class="w3-center w3-input" data-bsoal="kuncijawaban" value="A">
+                                                </div>
+                                                <div class="w3-light-gray w3-center w3-rest w3-padding-24 ">PEMBAHASAN KUNCI JAWABAN DAN PENSKORAN</div>
+                                                <div class="w3-col l12 s12 w3-padding w3-border-top w3-border-black buattooltippenskoran" data-bsoal="penskoran">Pembahasan dan Penskoran<br><br>KLIK AREA INI UNTUK MENGETIK TEKS</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w3-white w3-card-4 w3-round-large w3-center" style="max-width: 1000px;margin:15px auto;overflow-x:auto">
+                            Kami sengaja mendesain area-area yang bisa di edit di kartu soal ini dengan bantuan teks editor maupun elemen yang bisa diketik langsung. Alasannya, penggunaan teks editor memungkinkan untuk menambahkan selain teks, semisal gambar ataupun tabel.
+                            <br><br>
+                            <button class="w3-btn w3-green w3-bottombar w3-border-black w3-round-large w3-tiny" onclick="printadm('formatkartusoal',false)">CETAK</button>
+                            <button class="w3-btn w3-green w3-bottombar w3-border-black w3-round-large w3-tiny" onclick="simpanItemBanksoal()">SIMPAN</button>
+                            <!-- <button onclick="print2Word('formatkartusoal','tess')">Ms Word</button> -->
+                        </div>
+                    </div>
+                    
+                    <div class="isiadm" id="dsgeval_rubrik">
+                        <h4>Desain Rubrik</h4>
+                    </div>
+                    <div class="isiadm" id="dsgeval_dbsoal">
+                        <h4>Database Bank Soal</h4>
+                        <div class="w3-row w3-white w3-padding-16" style="margin:15px auto;overflow-x:auto;">
+                            <div class="w3-col l5 s12 w3-border w3-container w3-round-large w3-small w3-padding">
+                                Pilihan Database:<br>
+                                <label for="pilihandbsoal_desainnaskahuser">
+                                    <input type="radio" id="pilihandbsoal_desainnaskahuser" class="w3-radio" name="showdbsoal" value="1">
+                                    Desain Naskah Soal Buatan Anda
+                                </label><br>
+                                <label for="pilihandbsoal_desainnaskahjenjang">
+                                    <input type="radio" id="pilihandbsoal_desainnaskahjenjang" class="w3-radio" name="showdbsoal"  value="2">
+                                    Desain Naskah Soal di Jenjang Kelas Anda
+                                </label><br>
+                                <label for="pilihandbsoal_koleksisoal">
+                                    <input type="radio" id="pilihandbsoal_koleksisoal" class="w3-radio" name="showdbsoal" value="3">
+                                    Koleksi Soal
+                                </label><br>
+
+                            </div>
+                            <div class="w3-col l7 s12 w3-border w3-container w3-round-large  w3-small">Informasi:
+                                <div class="infopilihandbsoal"></div>
+                            </div>
+                            <div class="w3-col l12 s12 w3-padding">
+                                <table class="w3-table garis w3-small  w3-card-4 tabelpilihandbsoal">
+                                    <thead>
+                                        <tr class="w3-light-gray">
+                                            <th>No. Urut</th>
+                                            <th>Judul Desain</th>
+                                            <th>Mata Pelajaran</th>
+                                            <th>Lihat Desain</th>
+                                            <th>Properti Desain</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1.</td>
+                                            <td>Silakan memilih Pilihan Database</td>
+                                            <td>ilakan memilih Pilihan Database</td>
+                                            <td><button class="w3-button w3-yellow w3-bottombar w3-border-black w3-round" onclick="alert('Desain Naskah Soal akan tampil')" title="Lihat Desain"><i class="fa fa-eye"></i></button></td>
+                                            <td>
+                                                <button class="w3-button w3-yellow w3-bottombar w3-border-black w3-round" onclick="alert('Kisi-kisi soal akan tampil')" title="Lihat Kisi-kisi Desain Soal ini"><i class="fa fa-file-text"></i></button>
+                                                <button class="w3-button w3-yellow w3-bottombar w3-border-black w3-round" onclick="alert('Kunci Jawaban dan Penskoran Soal akan tampil')" title="Lihat kunci jawaban dari desain soal ini"><i class="fa fa-file-text-o"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="isiadm w3-pale-red w3-padding" id="dsgeval_dbdesainsoal">
+                        <h4>Desain Naskah Soal</h4>
+                        Anda akan mendesain naskah soal, seperti mendesain naskah soal Penilaian Harian, PTS, PAS, dll. Silakan isikan identitas naskah terlebih dahulu.
+                        <div class="w3-white w3-card-4 w3-padding w3-round-xlarge" styl="margin:15px auto;">
+                            <label for="naskahsoal_identitas">Identitas Naskah:</label>
+                            <input type="text" id="naskahsoal_identitas" class="w3-input w3-border" placeholder="Soal PH, PTS, PAS, dll"><br>
+                            <label for="naskahsoal_mapelapatema">Pilih Jenis Naskah (Soal Tema/Mapel)</label>
+                            <select id="naskahsoal_mapelapatema" class="w3-select w3-border">
+                                <option value ="BELUM DIPILIH" selected>Silakan Pilih:</option>
+                                <option value="TEMA 1">Tema 1</option>
+                                <option value="TEMA 2">Tema 2</option>
+                                <option value="TEMA 3">Tema 3</option>
+                                <option value="TEMA 4">Tema 4</option>
+                                <option value="TEMA 5">Tema 5</option>
+                                <option value="TEMA 6">Tema 6</option>
+                                <option value="TEMA 7">Tema 7</option>
+                                <option value="TEMA 8">Tema 8</option>
+                                <option value="TEMA 9">Tema 9</option>
+                                <option value="PAI">Pendidikan Agama Islam dan Budi Pekerti</option>
+                                <option value="PKRIS">Pendidikan Agama Kristen dan Budi Pekerti</option>
+                                <option value="PKATO">Pendidikan Agama Katholik dan Budi Pekerti</option>
+                                <option value="PKN">PKN</option>
+                                <option value="BINDO">Bahasa Indonesia</option>
+                                <option value="MTK">MTK</option>
+                                <option value="IPA">IPA</option>
+                                <option value="IPS">IPS</option>
+                                <option value="SBDP">SBDP</option>
+                                <option value="PJOK">PJOK</option>
+                                <option value="BSUND">Bahasa Sunda</option>
+                                <option value="US_PAI">US : Pendidikan Agama Islam dan Budi Pekerti</option>
+                                <option value="US_PKRIS">US : Pendidikan Agama Kristen dan Budi Pekerti</option>
+                                <option value="US_PKATO">US : Pendidikan Agama Katholik dan Budi Pekerti</option>
+                                <option value="US_PKN">US : PKN</option>
+                                <option value="US_BINDO">US : Bahasa Indonesia</option>
+                                <option value="US_MTK">US : MTK</option>
+                                <option value="US_IPA">US : IPA</option>
+                                <option value="US_IPS">US : IPS</option>
+                                <option value="US_SBDP">US : SBDP</option>
+                                <option value="US_PJOK">US : PJOK</option>
+                                <option value="US_BSUND">US : Bahasa Sunda</option>
+                            </select><br>
+                            <div class="w3-tiny">Keterangan: Jika Anda memilih naskah yang ada awalan US, artinya Anda dapat mengakses Bank Soal di luar jenjang kelas Andda. Jika tanpa Awalan, maka Anda hanya dapat mengakses Bank Soal di jenjang kelas Anda saja.</div>
+                            <br>
+                            <div class="w3-row">
+                                <div class="w3-col l4 s12 w3-border w3-padding w3-small w3-round-large" style="height:150px">
+                                    <label for="naskahsoal_kop">
+                                        <input type="checkbox" id="naskahsoal_kop" class="w3-check">
+                                        Sertakan KOP Surat
+                                    </label>
+                                </div>
+                                <div class="w3-col l4 s12 w3-border w3-padding w3-small w3-round-large" style="height:150px">
+                                    Pilih Nama Kelas:<br>
+                                    <input type="radio" id="naskahsoal_rombel" class="w3-radio" name="ns_identitaskelas" >
+                                    <label for="naskahsoal_rombel" class="idns_rombel">6A</label><br>
+                                    <input type="radio" id="naskahsoal_jenjang" class="w3-radio" name="ns_identitaskelas" checked>
+                                    <label for="naskahsoal_jenjang" class="idns_jenjang">6</label>
+                                </div>
+                                <div class="w3-col l4 s12 w3-border w3-padding w3-small w3-round-large" style="height:150px">
+                                    Sertakan Waktu Pelaksanaan:<br>
+                                    <label for="naskahsoal_titinmangsa">Waktu Mulai:
+                                        <input type="datetime-local" id="naskahsoal_titinmangsa" class="w3-input w3-border">
+                                    </label>
+                                    <label for="naskahsoal_titinmangsaakhir">Waktu Akhir:
+                                        <input type="datetime-local" id="naskahsoal_titinmangsaakhir" class="w3-input w3-border">
+                                    </label>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="w3-center">
+                                <button class="w3-button w3-green w3-bottombar w3-tiny w3-round-large w3-border-black" onclick="mulaidesainnaskahsoal()" >Mulai Mendesain Naskah</buttojn>
+                            </div>
+                        </div>
+                        <div class="w3-white w3-card-4 w3-round-large w3-padding areadesain_naskahsoal w3-hide" style="max-width: 1000px;margin:15px auto;overflow-x:auto;">
+                            <!-- <div class="kopnaskahsoal w3-row w3-margin-bottom w3-bottombar w3-border-black">
+                                <div class="w3-col l2 s2 w3-center">
+                                    <img src="/img/kotadepok.png" style="max-height: 150px;">
+                                </div>
+                                <div class="w3-col l10 s10 w3-center">
+                                    <font size="5">PEMERINTAH DAERAH KOTA DEPOK</font><br>
+                                    <font size="5">DINAS PENDIDIKAN</font><br>
+                                    <font size="3" face="Arial Black" class="w3-xxxlarge naskahsoalkop_namasekolah">UPTD SDN RATUJAYA 1</font><br>
+                                    <span class="naskahsoal_alamat">
+                                        Jl. SMP Ratujaya No. 41 RT.05/RW.03 Kelurahan Ratujaya-Kecamatan Cipayung
+                                    </span>
+                                    <br>
+                                    NPSN: 20228914 | NSS: 101026604052 | surel: uptdsdnratujaya1@gmail.com
+                                </div>
+                            </div> -->
+                            <div style="margin-bottom:0cm;text-align:center" class="kopnaskahsoal">
+                                <table style="border-collapse: collapse;width:100%">
+                                    <tr>
+                                        <td style="text-align:center;vertical-align:middle">
+                                            <img src="/img/kotadepok.png" style="max-height: 150px;">
+                                        </td>
+                                        <td style="text-align:center;vertical-align:middle">
+                                            <font size="5">PEMERINTAH DAERAH KOTA DEPOK</font><br>
+                                            <font size="5">DINAS PENDIDIKAN</font><br>
+                                            <font size="3" face="Arial Black" class="w3-xxxlarge naskahsoalkop_namasekolah">UPTD SDN RATUJAYA 1</font><br>
+                                            <font size="1"><span class="naskahsoal_alamat">
+                                                Jl. SMP Ratujaya No. 41 RT.05/RW.03 Kelurahan Ratujaya-Kecamatan Cipayung
+                                            </span>
+                                            <br>NPSN: 20228914 | NSS: 101026604052 | surel: uptdsdnratujaya1@gmail.com</font>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div style="border-top:5pt solid #000;" >&nbsp;</div>
+                            </div>
+                            <div class="areajudul_desainnaskah  w3-margin-bottom" style="font-family:Times New Roman, Times, serif;text-align:center;border-bottom:2pt solid #000; ;">
+                                <h3 class="w3-center naskahsoal_judul w3-xlarge"></h3>
+                                <table style="max-width:70%;margin:10px 27%;line-height:14px;font-family:Times New Roman, Times, serif;text-align:left" >
+                                    <tr>
+                                        <td class="naskahsoal_tematikbukan" style="width:135px;vertical-align: top;">Mata Pelajaran</td>
+                                        <td style="width:15px;vertical-align:top">:</td>
+                                        <td class="naskahsoal_isitematikbukan" style="vertical-align: top;">Pendidikan Agama Islam dan Budi Pekerti</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kelas</td>
+                                        <td>:</td>
+                                        <td class="naskahsoal_namakelas">6A</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Hari, Tanggal</td>
+                                        <td>:</td>
+                                        <td class="naskahsoal_haritanggal">Selasa, 14 Mei 2022</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Waktu</td>
+                                        <td>:</td>
+                                        <td class="naskahsoal_Waktu">08.00 - 10.00 WIB (120 Menit)</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <table class="tempatnaskahsoal_soal w3-table w3-margin-top" style="font-family:Times New Roman, Times, serif;">
+                                    <tr onmouseover="td_tomboleditsoal(this,'show')" onmouseout="td_tomboleditsoal(this,'hide')">
+                                        <!-- onmouseout="td_tomboleditsoal(this,'hide')" -->
+                                        <td style="width: 66px;">
+                                            <button onclick="MoveUp.call(this)" onmouseover="informasi_naskahsoal('naikkan')" onmouseout="removeinformasi()" class="warnaeka w3-button w3-round-large" title="Naikkan">&#8679;</button>
+                                            <button onclick="MoveDown.call(this)" onmouseover="informasi_naskahsoal('turunkan')" onmouseout="removeinformasi()"  class="warnaeka w3-button  w3-round-large " title="Turunkan">&#8681;</button>
+                                            <button class="warnaeka w3-button w3-round-large ns_tambahpetunjuk  w3-tiny" onmouseover="informasi_naskahsoal('tambahpetunjuk')" onmouseout="removeinformasi()"  title="Tambahkan keterangan petunjuk/diawal" onclick="ns_tambahkanpetunjuk(this)"><i class="fa fa-plus"></i></button>
+                                            <button class="warnaeka w3-button w3-round-large w3-tiny ns_hapussoalini" onmouseover="informasi_naskahsoal('hapus')" onmouseout="removeinformasi()"  onclick="hapussoalini(this)" title="Hapus Soal ini"  ><i class="fa fa-trash"></i></button>
+                                        </td>
+                                        <td style="width:15px">1.</td>
+                                        <td style="width:99.99%;cursor:pointer" title="Klik 2 kali untuk mengedit" ondblclick="editsoalini(this)">Dobel Klik untuk menentukan soal di Area ini</td>
+                                    </tr>
+                                </tbody>
+                                
+                            </table>
+                            
+                        </div>
+                        <div class="w3-white w3-card-4 w3-round-large w3-padding w3-center areadesain_naskahsoaltombol w3-hide" style="max-width: 1000px;margin:15px auto;">
+                            <div class="w3-margin w3-tiny">
+                                <button class="w3-button w3-green w3-bottombar w3-round-large w3-bottombar w3-border-black fa fa-plus ns_tambah" onmouseover="informasi_naskahsoal('tambahsoal')" onmouseout="removeinformasi()"  onclick = "tambahkanselnaskahsoal()" title="tambah soal"> Soal</button>
+                                <button class="w3-button w3-green w3-bottombar w3-round-large w3-bottombar w3-border-black fa fa-print" onmouseover="informasi_naskahsoal('cetak')" onmouseout="removeinformasi()"  onclick="printadm('areadesain_naskahsoal')" title="Print Soal"> Soal</button>
+                                <button class="w3-button w3-green w3-bottombar w3-round-large  w3-bottombar w3-border-black fa fa-file-word-o" onmouseover="informasi_naskahsoal('exportmsword')" onmouseout="removeinformasi()" onclick="print2Word('areadesain_naskahsoal','')" title="Export ke dalam file Word"> Export</button>
+                                <button class="w3-button w3-green w3-bottombar w3-round-large w3-bottombar w3-border-black fa fa-eye" onmouseover="informasi_naskahsoal('downloadkisi')" onmouseout="removeinformasi()"  onclick="lihatkisikisidesain()" title="Cetak Kisi-kisi dari desain soal ini"> Kisi-kisi</button>
+                                <button class="w3-button w3-green w3-bottombar w3-round-large w3-bottombar w3-border-black fa fa-eye" onmouseover="informasi_naskahsoal('downloadkunci')" onmouseout="removeinformasi()"   onclick="lihatkuncijawabandesainini()" title="Cetak Kunci Jawaban ini"> Kunci Jawaban</button>
+                                <button class="w3-button w3-green w3-bottombar w3-round-large w3-bottombar w3-border-black fa fa-eye" onmouseover="informasi_naskahsoal('kartusoal')" onmouseout="removeinformasi()"   onclick="lihatkrtusoalall()" title="Cetak seluruh kartu soal desain soal Anda"> Kartu Soal</button>
+                                <button class="w3-button w3-green w3-bottombar w3-round-large w3-bottombar w3-border-black " onmouseover="informasi_naskahsoal('simpanserver')" onmouseout="removeinformasi()" onclick="simpannaskahdesain()" title="Simpan naskah ini sebagai Karya Anda">Simpan sebagai</button>
+                                <div class="w3-border w3-padding w3-round-xlarge infobutton_naskahsoal">Informasi</div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
         </div>
         <div style="height:600px"></div>
     </div>
@@ -4311,66 +4778,102 @@ _OPSI-PG-C_1C isikan opsi jawaban C
     <div id="tempattextarea"></div>
     
     <div class="w3-modal" id="modalbanksoal">
-        <div class="w3-modal-content" style="max-width: 900px">
+        <div class="w3-modal-content" style="max-width: 980px">
             <span class="w3-button w3-right w3-red w3-small" onclick="document.getElementById('modalbanksoal').style.display='none'">&times;</span>
             <div class="w3-container">
-                Di sini akan muncul soal-soal yang pernah Anda buat dari menu Desain Evaluasi
-                <br>
-                <div class="w3-border w3-round w3-padding w3-tiny">
-                    Kriteria Soal:
-                    <div class="w3-border-bottom">
-                        Mata Pelajaran: 
-                        <label for="cbx_banksoal_editor_PAI">PAI
-                            <input type="checkbox" value="PAI" class="w3-check" id="cbx_banksoal_editor_PAI">
-                        </label>
-                        <label for="cbx_banksoal_editor_PKRIS">Pend. Agama Kristen
-                            <input type="checkbox" value="PKRIS" class="w3-check" id="cbx_banksoal_editor_PKRIS">
-                        </label>
-                        <label for="cbx_banksoal_editor_PKN">PKN
-                            <input type="checkbox" value="PKN" class="w3-check" id="cbx_banksoal_editor_PKN">
-                        </label>
-                        <label for="cbx_banksoal_editor_BINDO">Bahasa Indonesia
-                            <input type="checkbox" value="BINDO" class="w3-check" id="cbx_banksoal_editor_BINDO">
-                        </label>
-                        <label for="cbx_banksoal_editor_MTK">Matematika
-                            <input type="checkbox" value="MTK" class="w3-check" id="cbx_banksoal_editor_MTK">
-                        </label>
-                        <label for="cbx_banksoal_editor_IPA">IPA
-                            <input type="checkbox" value="IPA" class="w3-check" id="cbx_banksoal_editor_IPA">
-                        </label>
-                        <label for="cbx_banksoal_editor_IPS">IPS
-                            <input type="checkbox" value="IPS" class="w3-check" id="cbx_banksoal_editor_IPS">
-                        </label>
-                        <div class="w3-clear"></div>
-                    </div>
+                <h4 class="w3-center">Database Soal Edurasa</h4>
+                <div class="mbs_info">Info: Ketika diaktifkan user sedang fokus mencari database di kelasnya apa di luar kelasnya</div>
 
+                <div class="w3-border w3-round w3-padding w3-tiny">
+                    Bentuk Soal: 
+                    <label for="mbs_pilihanganda">
+                        <input type="radio" class="w3-radio" name="mbs_pilihanbentuksoal" id="mbs_pilihanganda" value="Pilihan Ganda" checked>
+                        Pilihan Ganda
+                    </label>
+                    <labe for="mbs_isian">
+                        <input type="radio" class="w3-radio" name="mbs_pilihanbentuksoal"  id="mbs_isian" value="Isian"> Isian
+                    </labe>
+                    <label for="mbs_filter">
+                        Filter:
+                        <input type="checkbox" class="w3-check" id="mbs_filter">
+                    </label><br>
+                    <div class="filteraktif w3-hide">
+                        <label for="mbs_kriteriafilter">Masukkan Kriteria Pencarian:
+                            <input type="text" id="mbs_kriteriafilter" class="w3-input w3-border" placeholder="Masukkan kriteria soal yang Anda ingin cari. Misalnya: IPA, 3.1, Statistika, dll.(gunakan pemisah koma untuk mencari lebih spesifik)">
+                        </label><br><br>
+                        <button class="w3-button w3-bottombar w3-green w3-border-black terapkanfilter">Terapkan Filter</button>
+                    </div>
                 </div>
             </div>
             <div class="w3-container">
-                Tampilan Soal:
-                <div class="w3-border w3-padding">
-                    1. Ini contoh Soal yang akan tampil dari tampilan server yang telah Anda buat.<br>
-                    A. opsi jawaban A<br>
-                    B. opsi Jawban B<br>
-                    C. opsi Jawaban C<br>
-                    D. opsi Jawaban D<br>
+                Tampilan Soal untuk Nomor <span class="mbs_fokusnosoal">1</span>:
+                <div class="w3-border w3-round-large w3-padding w3-margin w3-center w3-tiny">
+                    <div class="w3-left">ID SOAL <span class="w3-border w3-padding" data-dbmbs="idbaris"></span></div>
+                    <button class="mbs_awal">Awal</button>
+                    <button class="mbs_prev">Sebelumnya</button><span class="mbs_infohalaman w3-padding w3-border">Halaman 1 dari 1</span><button class="mbs_next">Selanjutnya</button>
+                    <button class="mbs_akhir">Akhir</button>
                 </div>
+                <div class="w3-border w3-row w3-small w3-padding">
+                    <div data-dbmbs="ilustrasi" class="w3-col l10 s12 w3-padding" onmouseover="this.classList.add('w3-border')" onmouseout="this.classList.remove('w3-border')">db Ilustrasi:<br>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat unde asperiores quisquam vitae nisi est omnis quae veritatis. Officiis ipsum vero quos est blanditiis perspiciatis magni dolorem esse eveniet. Itaque odit quidem, eos error veritatis, maxime voluptas optio dolore aliquam voluptatem corporis laboriosam eum, fuga non quaerat sequi vero neque.
+                    </div>
+                    <div class="w3-col l2 s12 w3-pale-green w3-padding kondisiilustrasi">⇨ Ilustrasi Soal:<br><br>
+                        <label for="mbs_ceklisilustrasi">
+                            Sertakan ilustrasi:
+                            <input type="checkbox" class="w3-check" checked id="mbs_ceklisilustrasi" style="width: 12px !important;height: 12px !important;">
+                        </label>
+                        
+                    </div>
+                    <div class="w3-clear"></div>
+                    <div  data-dbmbs="pertanyaan" class="w3-col l10 s12 w3-padding"  onmouseover="this.classList.add('w3-border')" onmouseout="this.classList.remove('w3-border')">
+                        Lorem, ipsum dolor sit amet consectetur adipisicing elit.?
+                    </div>
+                    <div class="w3-col l2 s12 w3-pale-green">⇨ Pertanyaan Soal</div>
+                    <div class="w3-clear"></div>
+                    <div class="w3-col l10 s12 w3-padding kondisipilihanganda"  onmouseover="this.classList.add('w3-border')" onmouseout="this.classList.remove('w3-border')">
+                        <ol style="list-style-type: upper-alpha;">
+                            <li>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</li>
+                            <li>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</li>
+                            <li>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</li>
+                            <li>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</li>
+                        </ol>
+                    </div>
+                    <div class="w3-col l2 s12 w3-pale-green w3-padding">⇨ Opsi Jawaban:</div>
+                </div><br>
                 
-                <div class="w3-border w3-padding w3-tiny">
-                    Properti soal:<br>
-                    <table class="w3-table garis">
-                        <tr>
-                            <td>Mata Pelajaran</td><td>:</td><td>PKN</td>
-                        </tr><tr>    <td>KD</td><td>:</td><td>3.1</td>
-                        </tr><tr><td>Teks KD</td><td>:</td><td>Bunyi KD yang dimaksud</td>
-                        </tr><tr><td>Indikator Soal</td><td>:</td><td>Melalui fitur bank soal, guru dapat membuat soal lebih mudah berdasarkan pemanfaatan bank soal yang telah dibuat sebelumnya</td>
-                        </tr><tr><td>Jawaban/Pembahasan soal</td><td>:</td><td>Jawabannya adalah .....</td>
-                        </tr><tr><td>Kriteria penilaian</td><td>:</td><td>Jika benar mendapatkan skor 100</td>
-                        </tr>
+                <div class="w3-tiny w3-border w3-round-large w3-pale-blue w3-padding">
+                    Ceklis pada keterangan "sertakan Ilustrasi" menunjukkan bahwa ilustrasi soal memungkinkan digunakan untuk untuk beberapa nomor soal. Hilangkan ceklis pada tanda tersebut jika tidak ingin ilustrasi tidak ditampilkan pada soal di Desain naskah soal Anda.<br><br>
+                    <label for="mbs_ingindiedit">Soal ini ingin Anda edit?
+                        <input type="checkbox" id="mbs_ingindiedit" class="w3-check" style="width:16px !important; height: 16px !important;">
+                    </label><br>
+                    Anda dapat mengedit soal tersebut dengan memberikan ceklis pada ceklis di keterangan <b>Soal ini ingin Anda Edit?</b> Setelah diaktifkan, maka tiap-tiap elemen soal bisa diedit langsung di elemen tersebut secara manual. Kemudian Anda edit, Anda dapat menerapkan hasil editan Anda di Desain Naskah Soal. Gunakan tombol <b>Terapkan Edit</b> setelah Anda mengeditnya (sebaiknya jangan memilih tombol "Terapkan" saja karena akan mempengaruhi unduhan kunci jawaban/kisi-kisi yang telah Anda desain).<br>
+                    Jika fitur ini tidak memungkinkan (Biasanya opsi pilihan ganda tidak bisa diedit) ada baiknya Anda menambahkan item soal baru di tab menu <b>Kartu Soal</b>.
+                </div>
+                <label for="mbs_lihatpropertysoal">
+                    Lihat Properti soal:
+                    <input type="checkbox" style="width:16px !important;height: 16px !important;" class="w3-check" id="mbs_lihatpropertysoal">
+
+                </label>
+                <div class="w3-border w3-padding w3-hide w3-small mbs_porpertysoal">
+                    <table class="w3-table">
+                        <tr><td>ID Soal</td><td>:</td><td data-dbmbs="idbaris">idbaris</td></tr>
+                        <tr><td>Kelas</td><td>:</td><td data-dbmbs="jenjang">6</td></tr>
+                        <tr><td>Mata Pelajaran</td><td>:</td><td data-dbmbs="tekskodemapel">6</td></tr>
+                        <tr><td>Lingkup Materi</td><td>:</td><td data-dbmbs="ruanglingkup">Lingkup Materi</td></tr>
+                        <tr><td>Kompetensi Dasar</td><td>:</td><td data-dbmbs="tekskd">6</td></tr>
+                        <tr><td>Level Kognitif</td><td>:</td><td data-dbmbs="levelkognitif">L1</td></tr>
+                        <tr><td>Indikator Soal</td><td>:</td><td data-dbmbs="indikatorsoal">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Numquam fuga ipsa illum! Minus ex laudantium assumenda dicta praesentium delectus labore sit error nesciunt, vitae excepturi eligendi sapiente vero id eos.</td></tr>
+                        <tr><td>Kunci Jawaban</td><td>:</td><td data-dbmbs="kuncijawaban">C</td></tr>
+                        <tr><td>Pembahasan/Penskoran</td><td>:</td><td data-dbmbs="penskoran">Pembahasan soal</td></tr>
+                        <tr><td>Dibuat Oleh</td><td>:</td><td data-dbmbs="oleh">Pembahasan soal</td></tr>
+                        <tr><td>Sumber/refrensi</td><td>:</td><td data-dbmbs="refrensi">Refrensi</td></tr>
+
                     </table>
                 </div>
                 <div class="w3-border w3-round w3-center">
-                    <button onclick="alert('fitur dalam tahap desain')">Jadikan Konten</button>
+                    <button class="w3-green w3-borderbar w3-border-black btn_terapkansoal w3-button">Terapkan</button>
+                    <button class="w3-green w3-borderbar w3-border-black btn_terapkansoaledit w3-button w3-hide">Terapkan Edit</button>
+                    
                     
                 </div>
             </div>
@@ -5593,6 +6096,40 @@ _OPSI-PG-C_1C isikan opsi jawaban C
             </div>
         </div>
     </div>
+    
+    <div id="modal_soalkisidandesainsoallainnya" class="w3-modal w3-sand">
+        <div style="position:sticky;top:0px;margin-top:5px;display:block;margin-left:5px;cursor:pointer;z-index:5">
+            <button class="w3-red w3-center w3-btn w3-right" onclick="document.getElementById('modal_soalkisidandesainsoallainnya').style.display='none'">
+                &times;
+            </button>
+            <button class="w3-blue w3-center w3-btn w3-left modaldiprintsoal" title="Cetak Dokumen ini">
+                <i class="fa fa-print"></i>
+            </button>
+            <button class="w3-green w3-center w3-btn w3-left w3-margin-left modaldieksporword" title="Jadikan File Ms. Word">
+                <i class="fa fa-file-word-o"></i>
+            </button>
+        </div>
+        <div class="w3-white w3-round-large w3-padding areaprint_soalkisidandesainsoallainnya" style="width:100%;max-width: 1000px;margin:15px auto;overflow-x: auto;">
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eosxplicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eosxplicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eosxplicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eosxplicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eosxplicabo, libero et. Qui, impedit molestiae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum harum fuga quaerat laborum quos perspiciatis voluptates quo quis ea amet quae eius eos explicabo, libero et. Qui, impedit molestiae.</p>
+        </div>
+        <button class="w3-button w3-pale-green" style="position: fixed;bottom:5px;right:50px;z-index:4" onclick="document.getElementById('modal_soalkisidandesainsoallainnya').scrollTo({ top: 43, behavior: 'smooth' })"><i class="fa fa-arrow-up"></i></button>
+    </div>
     <!-- end modal sppd -->
     <div class="w3-modal w3-light-gray" id="modal_scannerLJK">
         <div class="w3-button w3-red w3-round" onclick="tutupmodalljk()">&times;</div>
@@ -5896,6 +6433,88 @@ _OPSI-PG-C_1C isikan opsi jawaban C
         </div>
                             
     </div>
+    
+    <div id="tooltipbaru_keyboard_ketikan" style="z-index: 5;">
+        <div id="tooltipbaru_keyboard_ketikanheader" class="w3-center"> Geser-geser
+            <span class="w3-button w3-red w3-right" onclick="document.getElementById('tooltipbaru_keyboard_ketikan').style.display='none'">&times;</span>
+        </div>
+        <div class="w3-clear w3-margin-top w3-padding w3-small w3-sand">
+            <button class="w3-right w3-green" onclick="tooltipbaru_tooglesembunyimenu(this)" title="Sembunyikan Menu"><i class="fa fa-eye-slash"></i></button>
+            <div class="tempatmenukeyboardbaru">
+                    <label for="html_tooltipbaru_edtkeyboard">Tampilan HTML :
+                        <input type="checkbox" id="html_tooltipbaru_edtkeyboard"  class="w3-check">
+                    </label><br>
+                    Editor Umum:
+                    <span  class="btn_tooltipbaru_edtkeyboard w3-btn" data-tooltipbaru_keycmdkeyboard="undo" title="Undo"><i class="fa fa-undo"></i></span>
+                    <span  class="btn_tooltipbaru_edtkeyboard w3-btn" data-tooltipbaru_keycmdkeyboard="redo" title="Redo"><i class="fa fa-repeat"></i></span> 
+                    <span  class="btn_tooltipbaru_edtkeyboard w3-btn" data-tooltipbaru_keycmdkeyboard="removeFormat" title="Hapus Format"><i class="fa fa-eraser"></i></span> 
+                    |
+                    <span  class="btn_tooltipbaru_edtkeyboard w3-btn" data-tooltipbaru_keycmdkeyboard="bold" title="tebalkan teks"><i class="fa fa-bold"></i></span>
+                    <span  class="btn_tooltipbaru_edtkeyboard w3-btn" data-tooltipbaru_keycmdkeyboard="underline" title="garis bawahi teks"><i class="fa fa-underline"></i></span>
+                    <span  class="btn_tooltipbaru_edtkeyboard w3-btn" data-tooltipbaru_keycmdkeyboard="italic" title="miringkan teks"><i class="fa fa-italic"></i></span>
+                    <span  class="btn_tooltipbaru_edtkeyboard w3-btn" data-tooltipbaru_keycmdkeyboard="subscript" title="subscript"><i class="fa fa-subscript"></i></span>
+                    <span  class="btn_tooltipbaru_edtkeyboard w3-btn" data-tooltipbaru_keycmdkeyboard="superscript" title="superscript"><i class="fa fa-superscript"></i></span>
+                    <span  class="btn_tooltipbaru_edtkeyboard w3-btn" data-tooltipbaru_keycmdkeyboard="strikeThrough" title="garis hapus"><i class="fa fa-strikethrough"></i></span>
+                    |
+                    <div class="w3-dropdown-hover">
+                        <span class="w3-button dropdown_tooltipbaru_jenishurufkeyboard">Pilih Jenis Huruf</span>
+                        <div class="w3-dropdown-content w3-light-gray"><div class="w3-btn w3-block btn_tooltipbaru_edtkeyboard" data-tooltipbaru_keycmdkeyboard="fontname">Arial</div><div class="w3-btn w3-block btn_tooltipbaru_edtkeyboard" data-tooltipbaru_keycmdkeyboard="fontname">Arial Black</div><div class="w3-btn w3-block btn_tooltipbaru_edtkeyboard" data-tooltipbaru_keycmdkeyboard="fontname">Courier New</div><div class="w3-btn w3-block btn_tooltipbaru_edtkeyboard" data-tooltipbaru_keycmdkeyboard="fontname">cursive</div><div class="w3-btn w3-block btn_tooltipbaru_edtkeyboard" data-tooltipbaru_keycmdkeyboard="fontname">Monospace</div><div class="w3-btn w3-block btn_tooltipbaru_edtkeyboard" data-tooltipbaru_keycmdkeyboard="fontname">sans-serif</div><div class="w3-btn w3-block btn_tooltipbaru_edtkeyboard" data-tooltipbaru_keycmdkeyboard="fontname">Verdana,sans-serif</div><div class="w3-btn w3-block btn_tooltipbaru_edtkeyboard" data-tooltipbaru_keycmdkeyboard="fontname">Times New Roman</div>
+                        </div>
+                    </div>
+                
+                    |
+                    <div class="w3-dropdown-hover">
+                        Paragraf :
+                        <span class="w3-button dropdown_tooltipbaru_jenisparagrafkeyboard"><i class="fa fa-align-left"></i> </span>
+                        <div class="w3-dropdown-content w3-light-gray">
+                            <div class="w3-block btn_tooltipbaru_edtkeyboard w3-hover-blue" data-tooltipbaru_grupkeyboard="Paragraf" data-tooltipbaru_keycmdkeyboard="justifyLeft" title="Rata Kiri"><i class="fa fa-align-left"></i> </div>
+                            <div class="w3-block btn_tooltipbaru_edtkeyboard w3-hover-blue" data-tooltipbaru_grupkeyboard="Paragraf"  data-tooltipbaru_keycmdkeyboard="justifyRight" title="Rata Kanan"><i class="fa fa-align-right"></i> </div>
+                            <div class="w3-block btn_tooltipbaru_edtkeyboard w3-hover-blue" data-tooltipbaru_grupkeyboard="Paragraf"  data-tooltipbaru_keycmdkeyboard="justifyCenter" title="Rata Tengah"><i class="fa fa-align-center"></i> </div>
+                            <div class="w3-block btn_tooltipbaru_edtkeyboard w3-hover-blue" data-tooltipbaru_grupkeyboard="Paragraf"  data-tooltipbaru_keycmdkeyboard="justifyFull" title="Rata Kiri Kanan"><i class="fa fa-align-justify"></i> </div>
+                        </div>   
+                    </div>
+                    <span  class="btn_tooltipbaru_edtkeyboard w3-btn" data-tooltipbaru_keycmdkeyboard="insertOrderedList" title="List Nomor"><i class="fa fa-list-ol"></i></span>
+                    <span  class="btn_tooltipbaru_edtkeyboard w3-btn" data-tooltipbaru_keycmdkeyboard="insertunOrderedList" title="List Point"><i class="fa fa-list-ul"></i></span>
+                    <div class="w3-btn w3-btn" id="tooltipbaru_keyboardedt_table" title="Buat table dengan memasukkan angka Baris dan Kolom"><i class="fa fa-table"></i> </div>
+                    |
+                    <div class="w3-dropdown-hover">
+                        <span title="Simbol" class="w3-btn">Ω</span>
+                        <div class="w3-dropdown-content w3-light-gray"><span class="btn_tooltipbaru_edtkeyboard w3-hover-aqua" data-tooltipbaru_grupkeyboard="simbol" data-tooltipbaru_keycmdkeyboard="insertText" title="Pi Lingkaran">&#8508;</span><span class="btn_tooltipbaru_edtkeyboard w3-hover-aqua" data-tooltipbaru_grupkeyboard="simbol" data-tooltipbaru_keycmdkeyboard="insertText" title="kali">&times;</span><span class="btn_tooltipbaru_edtkeyboard w3-hover-aqua" data-tooltipbaru_grupkeyboard="simbol" data-tooltipbaru_keycmdkeyboard="insertText" title="Bagi">&div;</span><span class="btn_tooltipbaru_edtkeyboard w3-hover-aqua" data-tooltipbaru_grupkeyboard="simbol" data-tooltipbaru_keycmdkeyboard="insertText" title="Plus minus">&PlusMinus;</span><span class="btn_tooltipbaru_edtkeyboard w3-hover-aqua" data-tooltipbaru_grupkeyboard="simbol" data-tooltipbaru_keycmdkeyboard="insertText" title="simbol sudut">&ang;</span><span class="btn_tooltipbaru_edtkeyboard w3-hover-aqua" data-tooltipbaru_grupkeyboard="simbol" data-tooltipbaru_keycmdkeyboard="insertText" title="lebih besar sama dengan">&ge;</span><span class="btn_tooltipbaru_edtkeyboard w3-hover-aqua" data-tooltipbaru_grupkeyboard="simbol" data-tooltipbaru_keycmdkeyboard="insertText" title="lebih kecil sama dengan">&le;</span><span class="btn_tooltipbaru_edtkeyboard w3-hover-aqua" data-tooltipbaru_grupkeyboard="simbol" data-tooltipbaru_keycmdkeyboard="insertText" title="Derajat Suhu">&#176;</span><span class="btn_tooltipbaru_edtkeyboard w3-hover-aqua" data-tooltipbaru_grupkeyboard="simbol" data-tooltipbaru_keycmdkeyboard="insertText" title="Ceklis">&checkmark;</span><br><sup>Anda dapat menggunakan ketik langsung dengan menekan tombol di keyboard <i class="fa fa-windows"></i> dan tombol titik (.);</sup>
+                        </div>
+                        
+                    </div>
+                    <span class="w3-btn btn_tooltipbaru_edtkeyboard" title="Hyperlink" data-tooltipbaru_keycmdkeyboard="createLink"><i class="fa fa-link"></i> </span>
+                    <label for="tooltipbaru_keyboarduploadgambar_edt" class="w3-btn" title="Upload Gambar"><i class="fa fa-image"></i></label>
+                    <input type="file" id="tooltipbaru_keyboarduploadgambar_edt" class="w3-hide">
+                    <span class="w3-btn w3-padding" id="keyboardbtn_tooltipbaru_edtkeyboardyt" title="Masukan Video Youtube"><i class="fa fa-youtube-play"></i></span>
+                    <div class="w3-dropdown-hover">
+                        <span class="w3-btn" title="formula">&#131;</span>
+                        <div class="w3-dropdown-content w3-light-gray"><div class="w3-border-bottom  w3-center w3-hover-aqua w3-margin" title="pecahan biasa">    <div id="tooltipbaru_keyboardsimpan_pecahanbiasa" class="w3-right"><i class="fa fa-save"></i></div>    <div style="margin:auto;width:20%">        <div class="q"></div>        <div class="frac">        <div class="numer"><span contenteditable="true" id="tooltipbaru_keyboardinpecbiasa_pembilang" title ="Masukkan angka pembilang">2</span></div>        <div class="denom"><span contenteditable="true" id="tooltipbaru_keyboardinpecbiasa_penyebut"  title ="Masukkan angka penyebut">5</span></div>    </div>         </div></div><div class="w3-clear"></div><div class="w3-border-bottom  w3-center w3-hover-aqua w3-margin" title="pecahan campuran">    <div id="tooltipbaru_keyboardsimpan_pecahancampuran" class="w3-right"><i class="fa fa-save"></i></div>    <div style="margin:auto;width:20%">        <div class="q" contenteditable="true" id="tooltipbaru_keyboardinpecCamp_satuan"  title="satuan pecahan">3</div>        <div class="frac">            <div class="numer"><span contenteditable="true"  id="tooltipbaru_keyboardinpecCamp_pembilang" title ="Masukkan angka pembilang">2</span></div>            <div class="denom"><span contenteditable="true"  id="tooltipbaru_keyboardinpecCamp_penyebut" title ="Masukkan angka penyebut">5</span></div>        </div>     </div></div><div class="w3-clear"></div><div class="w3-border-top w3-border-bottom w3-center w3-padding-24" title="akar kuadrat">    <div id="tooltipbaru_keyboardsimpan_akarkuadrat" class="w3-right"><i class="fa fa-save"></i></div>    <span>&#8730;</span><span style="top:2px;left: -1px;padding:0 2px ;position:relative;border-top:1px solid black" id="tooltipbaru_keyboardinakar_kuadrat" contenteditable="true">123</span></div><div class="w3-clear"></div><div class="w3-border-top w3-border-bottom w3-center w3-padding-24" title="akar pangkat tiga">    <div id="tooltipbaru_keyboardsimpan_akarpangkattiga" class="w3-right"><i class="fa fa-save"></i></div>    <span style="position:relative;top: -10px;left:6px">3</span><span>&#8730;</span><span style="top:2px;left: -1px;padding:0 2px ;position:relative;border-top:1px solid black"  id="tooltipbaru_keyboardinakar_tiga"  contenteditable="true">123</span></div>
+                        
+                        </div>
+                    </div>
+                    <div class="w3-dropdown-hover">
+                        <span class="tooltipbaru_keyboardgrup_ukuranfont w3-btn w3-hover-aqua" title="Ukuran Font" >Normal</span>
+                        <div class="w3-dropdown-content w3-light-grey" ><div class="w3-btn w3-hover-aqua btn_tooltipbaru_edtkeyboard w3-block" data-tooltipbaru_grupkeyboard="ukuranfont" data-tooltipbaru_keycmdkeyboard="fontsize" data-keyval="1">Sangat Kecil</div><div class="w3-btn w3-hover-aqua btn_tooltipbaru_edtkeyboard w3-block" data-tooltipbaru_grupkeyboard="ukuranfont" data-tooltipbaru_keycmdkeyboard="fontsize" data-keyval="2">Sedikit lebih Kecil</div><div class="w3-btn w3-hover-aqua btn_tooltipbaru_edtkeyboard w3-block" data-tooltipbaru_grupkeyboard="ukuranfont" data-tooltipbaru_keycmdkeyboard="fontsize" data-keyval="3">Normal</div><div class="w3-btn w3-hover-aqua btn_tooltipbaru_edtkeyboard w3-block" data-tooltipbaru_grupkeyboard="ukuranfont" data-tooltipbaru_keycmdkeyboard="fontsize" data-keyval="4">Medium</div><div class="w3-btn w3-hover-aqua btn_tooltipbaru_edtkeyboard w3-block" data-tooltipbaru_grupkeyboard="ukuranfont" data-tooltipbaru_keycmdkeyboard="fontsize" data-keyval="5">Gede</div><div class="w3-btn w3-hover-aqua btn_tooltipbaru_edtkeyboard w3-block" data-tooltipbaru_grupkeyboard="ukuranfont" data-tooltipbaru_keycmdkeyboard="fontsize" data-keyval="6">Gede Banget</div><div class="w3-btn w3-hover-aqua btn_tooltipbaru_edtkeyboard w3-block" data-tooltipbaru_grupkeyboard="ukuranfont" data-tooltipbaru_keycmdkeyboard="fontsize" data-keyval="7">Maksimum</div>
+                        </div>
+                    </div>
+                    <div class="w3-dropdown-hover">
+                        <span class="tooltipbaru_keyboardgrup_heading w3-btn w3-hover-aqua" title="Heading">Heading</span>
+                        <div class="w3-dropdown-content w3-light-grey"><div class="w3-btn w3-hover-aqua w3-block btn_tooltipbaru_edtkeyboard" data-tooltipbaru_grupkeyboard="heading" data-tooltipbaru_keycmdkeyboard="formatblock" data-keyval="h1">Heading 1</div><div class="w3-btn w3-hover-aqua w3-block btn_tooltipbaru_edtkeyboard" data-tooltipbaru_grupkeyboard="heading" data-tooltipbaru_keycmdkeyboard="formatblock" data-keyval="h2">Heading 2</div><div class="w3-btn w3-hover-aqua w3-block btn_tooltipbaru_edtkeyboard" data-tooltipbaru_grupkeyboard="heading" data-tooltipbaru_keycmdkeyboard="formatblock" data-keyval="h3">Heading 3</div><div class="w3-btn w3-hover-aqua w3-block btn_tooltipbaru_edtkeyboard" data-tooltipbaru_grupkeyboard="heading" data-tooltipbaru_keycmdkeyboard="formatblock" data-keyval="h4">Heading 4</div><div class="w3-btn w3-hover-aqua w3-block btn_tooltipbaru_edtkeyboard" data-tooltipbaru_grupkeyboard="heading" data-tooltipbaru_keycmdkeyboard="formatblock" data-keyval="h5">Heading 5</div><div class="w3-btn w3-hover-aqua w3-block btn_tooltipbaru_edtkeyboard" data-tooltipbaru_grupkeyboard="heading" data-tooltipbaru_keycmdkeyboard="formatblock" data-keyval="h6">Heading 6</div><div class="w3-btn w3-hover-aqua w3-block btn_tooltipbaru_edtkeyboard" data-tooltipbaru_grupkeyboard="heading" data-tooltipbaru_keycmdkeyboard="formatblock" data-keyval="p">Paragraf</div><div class="w3-btn w3-hover-aqua w3-block btn_tooltipbaru_edtkeyboard" data-tooltipbaru_grupkeyboard="heading" data-tooltipbaru_keycmdkeyboard="formatblock" data-keyval="pre">Pre Code</div>
+                        </div>
+                    </div>
+                    <span class="w3-btn w3-padding" id="tooltipbaru_keyboardbtn_gantihalaman" title="Halaman Baru"><i class="fa fa-file-text-o"></i></span>
+            </div>
+        </div>
+        <iframe id="iframe_tooltipbaru_keyboardumum" class="w3-input w3-margin-top w3-white w3-border" style="resize: vertical;height: 300px;"></iframe>
+        <!-- /// selesai -->
+        <div class="w3-margin-top w3-center">
+            <button class="w3-green  w3-padding w3-round-large simpankeyboardtooltipbaru">
+                <i class="fa fa-save"></i> 
+            </button>
+        </div>
+    </div>
+    
     <button class="w3-button" style="position: fixed;bottom:5px;right:0;z-index:3" onclick="window.scrollTo({ top: 43, behavior: 'smooth' })"><i class="fa fa-arrow-up"></i></button>
     <script src="/statis/app.js"></script>
     <script src="/statis/exceltabel.js"></script>

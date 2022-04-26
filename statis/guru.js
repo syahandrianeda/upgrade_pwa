@@ -11761,32 +11761,6 @@ const carimediagaleri = (el)=>{
             document.querySelector(".paginationgalery").style.display = "block";
             objGaleri = dt.reverse();
             ubahhalaman(1);
-            // //asal
-            // for(i = dt.length-1 ;  i>=0;i--){
-            //     let d = dt[i];
-            //     let hh = cekpreviewupload2(d.tipe,d.idfile);
-            //     html +=`<div class="w3-col l2" style="height: 270px;">
-            //     <div class="isigaleri">
-            //         ${hh}
-            //         <div class="overlaygaleri">
-            //         Tgl ${tanggalfull(new Date(d.tglkejadian))}
-            //             <div class="w3-text-white w3-margin">${d.keterangan}</div>
-            //             <div class="w3-text-white w3-margin w3-tiny">Ditambahkan oleh: <br> ${d.oleh}</div>
-            //             <div class="w3-white w3-margin w3-tiny">${d.tags}</div>
-            //         <div class="textgaleri">
-            //                 <button onclick="window.open('https://drive.google.com/file/d/${d.idfile}/view?usp=drivesdk','', 'width=720,height=600')">Detail</button>
-            //                 <button onclick="hapusgaleri(${d.idbaris})">Hapus</button>
-            //         </div>
-            //     </div>
-            //     </div>
-            //     </div>`;
-            // }
-            // //selesai asal
-        
-        
-        
-            //////
-           
             }
             
     }
@@ -11795,8 +11769,6 @@ const carimediagaleri = (el)=>{
 };
 const hapusgaleri = (id) =>{
     let d = jsongaleri.filter(s=> s.idbaris == id)[0];
-
-    //console.log(d);
     let konf = confirm("Anda yakin ingin menghapusnya? Jika iya, silakan berikan alasannya.")
     if(konf){
         let pr = prompt("Berikan Alasan dihapus","Contoh: Salah upload");

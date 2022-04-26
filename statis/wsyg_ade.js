@@ -3984,6 +3984,7 @@ const cekApiSebaranKD = () =>{
     .then(r => {
        //console.log(r);
         let dd = r.data;
+        alltagkdserver = dd;
         let fil_kelas = dd.filter(s => s.kelas == idJenjang);
         tagkdserver = fil_kelas;
         let filt_mapelkd = fil_kelas.filter(s => s.mapel=="MTK");
@@ -4350,6 +4351,7 @@ const simpandistribusi_koleksitema = (row, val, semester) =>{
     }).then(m=>m.json())
     .then(r => {
             let result = r.data;
+            alltagkdserver = r.data;
             tagkdserver = result.filter(s => s.kelas == idJenjang);
             let html="";
             let tabel = document.querySelector(".tbl_distribusi_kd");
@@ -4439,6 +4441,7 @@ const hapusdistribusi_koleksitema = (row, val,semester) =>{
     }).then(m=>m.json())
     .then(r => {
         let result = r.data;
+            alltagkdserver = r.data;
             tagkdserver = result.filter(s => s.kelas == idJenjang);
         let html="";
         let tabel = document.querySelector(".tbl_distribusi_kd");
@@ -5286,6 +5289,7 @@ const update_dataserverpetakdmapel = (cl, mapel,bol,row, val,fokus,indek)=>{
     }).then(m=>m.json())
     .then(r => {
         let result = r.data;
+        alltagkdserver = result;
         tagkdserver = result.filter(s => s.kelas == idJenjang);
         // console.log("distribusi  kd berhasil tersimpan");
         tooltipspin.style.display = "none";
@@ -5400,6 +5404,7 @@ const update_hapusdataserver = (cl, mapel,bol,row, val,fokus,indek) =>{
     }).then(m=>m.json())
     .then(r => {
         let result = r.data;
+        alltagkdserver = r.data;
         tagkdserver = result.filter(s => s.kelas == idJenjang);
         htmlpetakd_generate(cl, mapel,bol,row);
         // console.log("distribusi  kd berhasil tersimpan");
@@ -5795,6 +5800,7 @@ const kirimceklissebarankd = (r, v,k,T,bol)=>{
     }).then(m=>m.json())
     .then(r => {
         let result = r.data;
+        alltagkdserver = r.data
         tagkdserver = result.filter(s => s.kelas == idJenjang);
         htmlpetakd_sebaranpertema(T, bol);
 
@@ -9224,6 +9230,7 @@ const cekserverAdmKD = async (row,tema,semester,ceklis) =>{ // untuk TEMATIK
     }).then(m=>m.json())
     .then(r => {
         let result = r.data;
+        alltagkdserver = result;
         tagkdserver = result.filter(s => s.kelas == idJenjang);
     }).catch(er=> console.log(er));
 
@@ -10277,8 +10284,8 @@ const serverkirimsppd = async() =>{
     val.push("");
 
     data.append("tab","sppd");
-    data.append("tabel",JSON.stringify(val))
-    data.append("key",JSON.stringify(key))
+    data.append("tabel",JSON.stringify(val));
+    data.append("key",JSON.stringify(key));
     enip.value = "";
     // for (var pair of data.entries()) {
     //     console.log(pair[0]+ ', ' + pair[1]); 

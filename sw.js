@@ -1,5 +1,5 @@
-const staticCacheName = "st2145";
-const dynamicChace = "din2145";
+const staticCacheName = "st2389";
+const dynamicChace = "din23589";
 const assets = [
     "/","/index.html","/css/w3.css",
     "/css/firststyle.css","/css/css_siswa.css", "/css/css_timeline.css",

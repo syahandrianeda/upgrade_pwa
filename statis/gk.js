@@ -20,6 +20,7 @@ let buateditorkdaktif = [];
 let allsiswaaktif;
 let namanamakelasdijenjangini;
 let tagkdserver;
+let alltagkdserver;
 jsonlocalstorage = JSON.parse(localStorage.getItem("inst_id"));
 let stoploadingtopbar;
 const loadingtopbarin = (el) => {

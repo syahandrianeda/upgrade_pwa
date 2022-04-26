@@ -13,7 +13,8 @@ let REKAPAbsen = {},
     OBJEKHariEfektif;
 let obDataRekapKehadiran;
 jsonlocalstorage = JSON.parse(localStorage.getItem("inst_id"));
-let tagkdserver
+let tagkdserver;
+let alltagkdserver;
 let jsonabsenkelasperbulan = [];
 let idinterval;
 let namanamakelasdijenjangini=[];
