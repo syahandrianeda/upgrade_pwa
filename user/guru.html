@@ -2386,14 +2386,16 @@
         </div>
         <div class="w3-container" id="id_admguru" style="display: none;">
             <h3>Administrasi Guru</h3>
-            <span class ="w3-red w3-large">Masih Proses Desain ya ...</span>
+            
             <div class="w3-tiny">
-                Tahap 3:<br>
+                
                 <span class="w3-green w3-badge">&checkmark;</span> Program Tahunan
                 <span class="w3-green w3-badge">&checkmark;</span> Program semester
                 <span class="w3-green w3-badge">&checkmark;</span> Sebaran KD (Pemetaan KD)
                 <span class="w3-green w3-badge">&checkmark;</span> RPP dan Databasenya
                 <span class="w3-green w3-badge">&checkmark;</span> SPPD dan Notula Rapat
+                <span class="w3-green w3-badge spandbsoal">&checkmark;</span> Database Soal
+                <span class="w3-green w3-badge spanratingsoal">&checkmark;</span> Database Rating Soal
             </div>
             <div class="tab">
                     <button class="tablinks tabrpp serverkd_on" onclick="openCityy(event, 'adm_kaldik')">Kalender Pendidikan</button>
@@ -4633,8 +4635,8 @@
                                                 </div>
                                                 <div class="w3-light-gray w3-center w3-rest w3-padding-16">RUMUSAN SOAL</div>
                                             </div>
-                                            <div data-bsoal="ilustrasi" class="w3-padding buattooltipilustrasi">KLIK UNTUK ILUSTRASI SOAL</div>
-                                            <div data-bsoal="pertanyaan" class="w3-padding buattooltippertanyaan">KLIK DI SINI UNTUK MENAMBAHKAN TEKS PERTANYAAAN</div>
+                                            <div data-bsoal="ilustrasi" class="w3-padding tangan buattooltipilustrasi">KLIK UNTUK ILUSTRASI SOAL</div>
+                                            <div data-bsoal="pertanyaan" class="w3-padding tangan buattooltippertanyaan">KLIK DI SINI UNTUK MENAMBAHKAN TEKS PERTANYAAAN</div>
                                             <div class="dsgbpg_opsipg w3-row-padding w3-margin-bottom">INI TAMPILAN PILIHAN GANDA</div>
                                             
                                             <div class="w3-row w3-margin-top">
@@ -4666,17 +4668,21 @@
                         <div class="w3-row w3-white w3-padding-16" style="margin:15px auto;overflow-x:auto;">
                             <div class="w3-col l5 s12 w3-border w3-container w3-round-large w3-small w3-padding">
                                 Pilihan Database:<br>
-                                <label for="pilihandbsoal_desainnaskahuser">
+                                <label for="pilihandbsoal_desainnaskahuser" class="tangan">
                                     <input type="radio" id="pilihandbsoal_desainnaskahuser" class="w3-radio" name="showdbsoal" value="1">
                                     Desain Naskah Soal Buatan Anda
                                 </label><br>
-                                <label for="pilihandbsoal_desainnaskahjenjang">
+                                <label for="pilihandbsoal_desainnaskahjenjang" class="tangan">
                                     <input type="radio" id="pilihandbsoal_desainnaskahjenjang" class="w3-radio" name="showdbsoal"  value="2">
                                     Desain Naskah Soal di Jenjang Kelas Anda
                                 </label><br>
-                                <label for="pilihandbsoal_koleksisoal">
+                                <label for="pilihandbsoal_koleksisoal" class="tangan">
                                     <input type="radio" id="pilihandbsoal_koleksisoal" class="w3-radio" name="showdbsoal" value="3">
                                     Koleksi Soal
+                                </label><br>
+                                <label for="pilihandbsoal_koleksisoaldihapus" class="tangan">
+                                    <input type="radio" id="pilihandbsoal_koleksisoaldihapus" class="w3-radio" name="showdbsoal" value="4">
+                                    Koleksi Soal Terhapus
                                 </label><br>
 
                             </div>
@@ -7108,7 +7114,7 @@ _OPSI-PG-C_1C #
     </div>
     <div id="modal_soalkisidandesainsoallainnya" class="w3-modal w3-sand">
         <div style="position:sticky;top:0px;margin-top:5px;display:block;margin-left:5px;cursor:pointer;z-index:5">
-            <button class="w3-red w3-center w3-btn w3-right" onclick="document.getElementById('modal_soalkisidandesainsoallainnya').style.display='none'">
+            <button class="w3-red w3-center w3-btn w3-right" onclick="document.getElementById('modal_soalkisidandesainsoallainnya').style.display='none';document.getElementById('tooltipbaru_keyboard_ketikan').style.display='none'">
                 &times;
             </button>
             <button class="w3-blue w3-center w3-btn w3-left modaldiprintsoal" title="Cetak Dokumen ini">

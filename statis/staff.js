@@ -13120,6 +13120,13 @@ const isitekselemenini = (paren="", target, posisitooltip="atas", baris="") =>{
 
 }
 
+function getOffset(el) {
+    const rect = el.getBoundingClientRect();
+    return {
+      left: rect.left + window.scrollX,
+      top: rect.top + window.scrollY
+    };
+  }
 const isitekselemeniniRapat = (paren="", target, posisitooltip="atas", baris="",keynotula) =>{
     let elemen = document.querySelector("."+target);
     let simpan = document.querySelector(".simpankeyboard");
@@ -13139,10 +13146,11 @@ const isitekselemeniniRapat = (paren="", target, posisitooltip="atas", baris="",
         tTop = (elemen.offsetTop + window.scrollY + pAre.offsetTop + 10)+"px";
         lLeft = pAre.offsetLeft + "px";//(bataskanan - (keyboard.offsetWidth/2) + elemen.offsetLeft) + "px";
     }else{
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        document.getElementById("template_notularapat").scrollTo({top:0, behavior:"smooth"})
+        // window.scrollTo({ top: 0, behavior: 'smooth' });
+        // document.getElementById("template_notularapat").scrollTo({top:0, behavior:"smooth"})
         let pAre = document.querySelector("."+paren);
-        tTop = (elemen.offsetTop + 10) +"px";
+        //tTop = (elemen.offsetTop + 10) +"px";
+        tTop = (getOffset(elemen).top - 100)+"px";
         lLeft = pAre.offsetLeft + "px";//(bataskanan - (keyboard.offsetWidth/2) + elemen.offsetLeft) + "px";
     }
     console.log(tTop)

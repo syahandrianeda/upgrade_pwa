@@ -11535,10 +11535,11 @@ const isitekselemeniniRapat = (paren="", target, posisitooltip="atas", baris="",
         tTop = (elemen.offsetTop + window.scrollY + pAre.offsetTop + 10)+"px";
         lLeft = pAre.offsetLeft + "px";//(bataskanan - (keyboard.offsetWidth/2) + elemen.offsetLeft) + "px";
     }else{
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        document.getElementById("template_notularapat").scrollTo({top:0, behavior:"smooth"})
+        // window.scrollTo({ top: 0, behavior: 'smooth' });
+        // document.getElementById("template_notularapat").scrollTo({top:0, behavior:"smooth"})
         let pAre = document.querySelector("."+paren);
-        tTop = (elemen.offsetTop + 10) +"px";
+        //tTop = (elemen.offsetTop + 10) +"px";
+        tTop = (getOffset(elemen).top - 100)+"px";
         lLeft = pAre.offsetLeft + "px";//(bataskanan - (keyboard.offsetWidth/2) + elemen.offsetLeft) + "px";
     }
     
@@ -11552,23 +11553,25 @@ const isitekselemeniniRapat = (paren="", target, posisitooltip="atas", baris="",
             alert("Perubahan tidak bisa disimpan di server")
             return
         }
-       
-        let par = parseInt(baris);
-        let data = tagdbrapat.filter(s => s.idbaris == par)[0];//
-        let objekKirim = Object.assign({},data);
-        objekKirim[keynotula] = body.innerHTML;
-        let iBaris = objekKirim.idbaris;
-        let key = Object.keys(objekKirim);
-        let val = Object.values(objekKirim);
+//         let idbaris = e.parameter.idbaris;
+//   let htmlnotula = e.parameter.htmlnotularapat
+//   let keynotula = e.parameter.keynotula;
+
+        // let par = parseInt(baris);
+        // let data = tagdbrapat.filter(s => s.idbaris == par)[0];//
+        // let objekKirim = Object.assign({},data);
+        // let iBaris = objekKirim.idbaris;
+        // let key = Object.keys(objekKirim);
+        // let val = Object.values(objekKirim);
+        let htmlbody = body.innerHTML;
         //val.shift();
         let datakirim = new FormData();
-        datakirim.append("idbaris",iBaris);
-        datakirim.append("tabel", JSON.stringify(val));
-        datakirim.append("key",JSON.stringify(key));
-        datakirim.append("tab","notularapat");
+        datakirim.append("idbaris",baris);
+        datakirim.append("htmlnotularapat", htmlbody);
+        datakirim.append("keynotula",keynotula);
         //animasi loading:
         loadingtopbarin("loadingtopbar");
-        await fetch(jlo.url_dataabsen+"?action=simpanbarisketabidbaris",{
+        await fetch(url_kaldikaja+"?action=kirimnotularapat",{
             method:"post",
             body:datakirim
         }).then(m => m.json())

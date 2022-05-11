@@ -13147,3 +13147,12 @@ const objHal = ()=>{
     return data
 
 }
+let dataapigurutamu
+fetch(jlo.url_datauser + "?action=datagurualltamu&idss=" + jlo.ss_datauser)
+        .then(m => m.json())
+        .then(k => {
+            dataapigurutamu = k.result;
+    }).catch(er => {
+        console.log("error dataapigurutamu "+er)
+        window.location.reload();
+    })

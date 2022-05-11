@@ -912,9 +912,10 @@ label.labrad_custom{
   padding: 2px;
   color:rgb(255, 255, 255);
   background-color: rgb(75, 75, 75);
-  z-index: 9995;
+  z-index: 8;
  
 }
+#previewpotoabsen{z-index: 9 !important;}
 .visibel {
   visibility: hidden;
   height: 25px;
