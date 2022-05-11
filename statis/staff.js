@@ -13166,22 +13166,15 @@ const isitekselemeniniRapat = (paren="", target, posisitooltip="atas", baris="",
             return
         }
        
-        let par = parseInt(baris);
-        let data = tagdbrapat.filter(s => s.idbaris == par)[0];//
-        let objekKirim = Object.assign({},data);
-        objekKirim[keynotula] = body.innerHTML;
-        let iBaris = objekKirim.idbaris;
-        let key = Object.keys(objekKirim);
-        let val = Object.values(objekKirim);
+        let htmlbody = body.innerHTML;
         //val.shift();
         let datakirim = new FormData();
-        datakirim.append("idbaris",iBaris);
-        datakirim.append("tabel", JSON.stringify(val));
-        datakirim.append("key",JSON.stringify(key));
-        datakirim.append("tab","notularapat");
+        datakirim.append("idbaris",baris);
+        datakirim.append("htmlnotularapat", htmlbody);
+        datakirim.append("keynotula",keynotula);
         //animasi loading:
         loadingtopbarin("loadingtopbar");
-        await fetch(jlo.url_dataabsen+"?action=simpanbarisketabidbaris",{
+        await fetch(jlo.url_dataabsen+"?action=kirimnotularapat",{
             method:"post",
             body:datakirim
         }).then(m => m.json())
