@@ -7150,13 +7150,13 @@ _OPSI-PG-C_1C #
     <!-- <button class="w3-button w3-border w3-round-large w3-green" style="position: fixed;bottom:5px;left:0;z-index:3" onclick="document.getElementById('modal_soalkisidandesainsoallainnya').style.display='block'">TESSS</button> -->
     <!-- <button class="w3-button w3-border w3-round-large w3-green" style="position: fixed;bottom:5px;left:0;z-index:3" onclick="lihatkrtusoalall()">TESSS</button> -->
     
-    <div class="w3-modal w3-light-gray" id="modal_scannerLJK">
-        <div class="w3-button w3-red w3-round" onclick="tutupmodalljk()">&times;</div>
-        <div clas="w3-modal-container">
+    <div class="w3-modal w3-light-gray" id="modal_scannerLJK" style="z-index: 6;">
+        <div class="w3-button w3-red w3-round w3-right" onclick="tutupmodalljk()">&times;</div>
+        <div class="w3-modal-content w3-white w3-card-4" id="lebarmodalscanner">
             <h4 class="w3-center">SCANNER LJK EDURASA</h4>
             
-            <div class="info_fokusscanerLJK w3-tiny">
-                Info Fokus LJK: Anda sedang ngapain di sini informasinya....
+            <div class="info_fokusscanerLJK w3-center">
+                
             </div>
             <div class="w3-border w3-center fokus_scaner">
                 <video class='canvas_ljk' poster="/img/192.png" id="tampilankameraLJK" >
@@ -7197,7 +7197,56 @@ _OPSI-PG-C_1C #
                 <canvas class='canvas_ljk' id="tampilanScreenshotLJK">
                     Wew ... Browser Anda tidak mendukungnya
                 </canvas>
-                <div class="scn_tabeljawabansiswa">
+                
+                <div class="tabel_deteksiwarna w3-hide"> 
+                    <div class="info_coordinatmouslj">TES DETEKSI WARNA</div>
+                    <table class="garis patokan_tabelPG tabeldeteksiwarna w3-centered">
+                        <thead>
+                            <tr class="w3-light-gray">
+                                <th >No</th><th>A</th><th>B</th><th>C</th><th>D</th>
+                            </tr>   
+                        </thead>
+                        <tbody>
+                            <tr><td>1</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>2</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>3</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>4</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>5</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>6</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>7</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>8</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>9</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>10</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>11</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>12</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>13</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>14</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>15</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>16</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>17</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>18</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>19</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                            <tr><td>20</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="w3-tiny w3-justify w3-border w3-padding">
+                    Tips:
+                    <ol>
+                        <li>Hanya mampu menyecan dari 1-20 Soal Pilihan Ganda (pertimbangan developer), jika PG lebih dari 20, Anda bisa meneken 2 kali ambil gambar.</li>
+                        <li>Gunakan perangkat ponsel Anda (Android support, Ios belum diujicobakan). Untuk PC/Laptop menyesuaikan aja.</li>
+                        <li>
+                            Arahkan kamera Anda hingga sesuai dengan tabel opsi Pilihan Ganda
+                        </li>
+                        <li>Jika sudah Pas, klik Ambil gambar. Aplikasi akan mencoba mendeteksi gambar dan menganalisisnya hingga membentuk jawaban yang telah discan</li>
+                        <li>Pastikan nomor soal tidak terdeteksi ganda. Jika dipaksakan, maka pengoreksian diabakan (nilai tidak dihitung).</li>
+                    </ol>
+                    <br><br><br><br>
+                </div>
+            </div>
+            
+            <div class="w3-border hasilakhirljkscanner w3-padding" style="overflow-x:auto;">
+                <div class="scn_tabeljawabansiswa w3-hide">
                     <table class="garis patokan_tabelPG tabeldeteksiwarna1 w3-centered">
                         <thead>
                             <tr class="w3-light-gray">
@@ -7252,59 +7301,33 @@ _OPSI-PG-C_1C #
                         </tbody>
                     </table>
                 </div>
-                <div class="tabel_deteksiwarna"> 
-                     <div class="info_coordinatmouslj">TES DETEKSI WARNA</div>
-                    <table class="garis patokan_tabelPG tabeldeteksiwarna w3-centered">
-                        <thead>
-                            <tr class="w3-light-gray">
-                                <th >No</th><th>A</th><th>B</th><th>C</th><th>D</th>
-                            </tr>   
-                        </thead>
-                        <tbody>
-                            <tr><td>1</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
-                            <tr><td>2</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
-                            <tr><td>3</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
-                            <tr><td>4</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
-                            <tr><td>5</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
-                            <tr><td>6</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
-                            <tr><td>7</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
-                            <tr><td>8</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
-                            <tr><td>9</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
-                            <tr><td>10</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
-                            <tr><td>11</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
-                            <tr><td>12</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
-                            <tr><td>13</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
-                            <tr><td>14</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
-                            <tr><td>15</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
-                            <tr><td>16</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
-                            <tr><td>17</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
-                            <tr><td>18</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
-                            <tr><td>19</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
-                            <tr><td>20</td><td>A</td><td>B</td><td>C</td><td>D</td></tr>
-                        </tbody>
-                    </table>
-                   
-                    Tabel Patokan data
+                <div class="tempatinfoawal"></div>
+                <div class="tempatperikspg"></div>
+                <div class="tempatperiksaessay"></div>
+                <div class="formatljknotepadscanner"></div>
+                <div class="w3-center w3-margin"><br><br>
+                    <button class="w3-button w3-bottombar w3-border-black tombolcekawal w3-border w3-round-large"><i class="fa fa-spin fa-spinner"></i> Awal Cek</button>
+                    <button class="w3-button w3-bottombar w3-border-black tombolcetakscanner w3-border w3-round-large"><i class="fa fa-spin fa-spinner"></i> Cetak</button>
+                    <button class="w3-button w3-bottombar w3-border-black tombollihatpg w3-border w3-round-large"><i class="fa fa-spin fa-spinner"></i> Periksa PG</button>
+                    <button class="w3-button w3-bottombar w3-border-black tombollihatessay w3-border w3-round-large"><i class="fa fa-spin fa-spinner"></i> Periksa Essay</button>
+                    <button class="w3-button w3-bottombar w3-border-black tombolshowformatljk w3-border w3-round-large"><i class="fa fa-spin fa-spinner"></i> LJK</button>
+                    <hr><div id="datakirimscanner" class="w3-hide">Nilai KD Yang akan dikirimkan (akan dihidden):</div>
+                    <hr>
+                    
+                    
+                    <button class="wa w3-bottombar w3-border-black tombolkirimhtmlljk" onclick="kirimserverakhirscanner()"> Kirim Server</button>
                 </div>
-                
+                <br><br><br>
+                <button class="w3-button w3-pale-green" style="position: fixed;bottom:5px;left:10px;z-index:4" onclick="document.getElementById('modal_scannerLJK').scrollTo({ top: 43, behavior: 'smooth' })"><i class="fa fa-arrow-up"></i></button>
             </div>
-            <div class="w3-center w3-border w3-round tombolaksi_scannerljk w3-bottom">
-                <button onclick="ambilscreenshotljk(1)" id="tapscan_pertama">Ambil Gambar Part 1</button>
-                <button onclick="ambilscreenshotljk(2)" id="tapscan_kedua">Ambil Gambar part 2</button>
-                <button onclick="selesaiambilscreenshot()" id="tapscan_finish">Selesai</button>
-                <!-- <button onclick="cekPosisiKunci()">Cek Posisi Kunci</button> -->
-            </div>
-            <div class="w3-tiny w3-justify w3-border w3-padding">
-                Tips:
-                <ol>
-                    <li>Hanya mampu menyecan dari 1-20 Soal Pilihan Ganda (pertimbangan developer), jika PG lebih dari 20, Anda bisa meneken 2 kali ambil gambar.</li>
-                    <li>Gunakan perangkat ponsel Anda (Android support, Ios belum diujicobakan). Untuk PC/Laptop menyesuaikan aja.</li>
-                    <li>
-                        Arahkan kamera Anda hingga sesuai dengan tabel opsi Pilihan Ganda
-                    </li>
-                    <li>Jika sudah Pas, klik Ambil gambar. Aplikasi akan mencoba mendeteksi gambar dan menganalisisnya hingga membentuk jawaban yang telah discan</li>
-                </ol>
-            </div>
+            
+        </div>
+        <div class="tombolaksi_scannerljk w3-center w3-bottom">
+                <button onclick="ambilscreenshotljk(1)" id="tapscan_pertama" class="w3-pale-blue w3-button w3-round-large w3-small w3-bottombar w3-border-black">Ambil Gambar Part 1</button>
+                <button onclick="ambilscreenshotljk(2)" id="tapscan_kedua" class="w3-pale-blue w3-button w3-round-large w3-small w3-bottombar w3-border-black">Ambil Gambar part 2</button>
+                <button  id="tapscan_finish" class="w3-pale-red  w3-button w3-round-large w3-small w3-bottombar w3-border-black">Selesai</button>
+                <!-- <button onclick="ambilpic()" id="tapscan_finish">Ambil Gambar</button>
+                <button onclick="cekPosisiKunci()">Cek Posisi Kunci</button> -->
         </div>
     </div>
     <div class="w3-modal w3-sand" id="modal_formatLJK">

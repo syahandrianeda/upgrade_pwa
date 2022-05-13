@@ -7453,7 +7453,7 @@ const tombolaksikronologi = (currEssay, parNama, z, idhtmlmateri) => {
 const lihatljksaya = (html_jawaban) => {
     loadingljk.style.display = "block";
     infoloadingljk.innerHTML = `<i class="fa fa-spin fa-spinner w3-jumbo w3-display-middle" ></i > `;
-    $('#infoloadingljk').nextAll('button').remove();
+    $('#infoloadingljk').nextAll('button').remove();printPortrait
     $('#infoloadingljk').nextAll('center').remove();
     $.getJSON(constpreviewljk + "?idmateri=" + html_jawaban + "&action=previewriwayat", function (json) {
 
@@ -8577,10 +8577,10 @@ const bantusiswaisiljk = (param) => {
 
 
 
-    let formljkbantu = document.createElement("form")
-    formljkbantu.setAttribute("id", "ljkbantu")
-    formljkbantu.setAttribute("name", "ljkbantu")
-    formljkbantu.setAttribute("class", "w3-hide")
+    let formljkbantu = document.createElement("form");
+    formljkbantu.setAttribute("id", "ljkbantu");
+    formljkbantu.setAttribute("name", "ljkbantu");
+    formljkbantu.setAttribute("class", "w3-hide");// garagaraanis
 
 
 
@@ -8788,7 +8788,7 @@ function hasilakhirelamaso(id) {
             htmlljpg += `</tr>`;
 
         }
-        htmlljpg += `<table class="w3-table-all"><sub>Ket: yang berwana kuning adalah pilihan opsi yang dipilih.</sub>`;
+        htmlljpg += `<table class="w3-table-all"><sub>Ket: yang berwana adalah pilihan opsi yang dipilih.</sub>`;
     }
     tempatljpgbaru.innerHTML = htmlljpg;
     tempatskorpgbaru.innerHTML = htmlpgskor;
@@ -8922,6 +8922,7 @@ function hasilakhirelamaso(id) {
     let idakseskoreksi = (koreksidarimana.innerHTML).split("_")[0];
     let namaform = document.getElementById("ljkbantu")
     let dataform = new FormData(namaform);
+    
     document.getElementById("infoloadingljk").innerHTML = `<p class="w3-center"><img src="/img/barloading.gif"/></p>`
     fetch(constlinknilai + "?action=gurukirimnilai", {
         method: 'post',
@@ -8941,7 +8942,8 @@ function hasilakhirelamaso(id) {
         .catch(er => {
             console.log(er);
             document.getElementById("infoloadingljk").innerHTML = "Maaf, terjadi kesalahan."
-        })
+        });
+    // garagaraanis
 
 
 }
@@ -9075,6 +9077,7 @@ const hasilakhirelamasopg = (par) => {
     let idakseskoreksi = (koreksidarimana.innerHTML).split("_")[0];
     let namaform = document.getElementById("ljkbantu")
     let dataform = new FormData(namaform);
+    
     loadingljk.style.display = "block";
     document.getElementById("infoloadingljk").innerHTML = `<i class="fa fa-spin fa-refresh w3-xxlarge" style="margin:0 auto"></i> proses kirim ....`;
     fetch(constlinknilai + "?action=gurukirimnilai", {
@@ -9096,6 +9099,7 @@ const hasilakhirelamasopg = (par) => {
             console.log(er);
             document.getElementById("infoloadingljk").innerHTML = "terjadi kesalahan " + er;
         })
+    // garagaraanis
 }
 const hapusljk = (idbaris,matericode) => {
     let konfirmasihapus = confirm("Anda yakin ingin menghapusnya? \n \n Klik Ok untuk menghapus. \n \n Klik CANCEL untuk membatalkan");

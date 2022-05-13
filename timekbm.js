@@ -465,3 +465,17 @@ const LingkupMateri = {
 
 }
 
+// (function findDuplicateIds() {
+//     var ids = {};
+//     var all = document.all || document.getElementsByTagName("*");
+//     for (var i = 0, l = all.length; i < l; i++) {
+//         var id = all[i].id;
+//         if (id) {
+//             if (ids[id]) {
+//                 console.log("Duplicate id: #" + id);
+//             } else {
+//                 ids[id] = 1;
+//             }
+//         }
+//     }
+// })();`
