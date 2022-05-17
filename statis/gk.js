@@ -992,7 +992,32 @@ async function pembelajaran() {
                 divlod.className += " w3-hide";
 
             }, 3000);
-        })
+        });
+        let tab = "banksoal"
+        let tabel = [[["idbaris"]]];
+        let head = tabel[0];
+        let key = JSON.stringify(head);
+        let datakirim = new FormData();
+        
+        datakirim.append("tab",tab);
+        datakirim.append("key",key);
+        fetch(url_kaldikaja+"?action=getpostdatafromtab",{
+            method:"post",
+            body:datakirim
+        }).then(m => m.json())
+        .then(r => {
+            
+           //console.log(r);
+           databasesoalkosong = [];
+           keydatabasesoal = Object.keys(r.data[0]);
+           if(r.result>1){
+               databasesoal = r.data.filter(s=> s.hapus == "");
+               databasesoalterhapus = r.data.filter(s=> s.hapus == "hapus");
+           }
+           for(i=0 ; i < keydatabasesoal.length; i++){
+               databasesoalkosong[keydatabasesoal[i]]="";
+           }
+        }).catch(er=>console.log(er));
 }
 
 function templatekronologi(jsonmateri) {

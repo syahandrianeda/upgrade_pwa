@@ -851,7 +851,8 @@ input[class=inprpp]+label.lblinrpp {
 }
 
 input[class=inprpp]:checked+label.lblinrpp::before {
-  content: " \2705"
+  content: " \2705";
+  display:inline-block;
 }
 
 input[class=inprpp]:checked+label.lblinrpp {
@@ -1010,7 +1011,7 @@ label.labrad_custom{
   /* border-collapse: collapse; */
 }
 .patokan_tabelformatljk th{
-  background-color: green;
+  background-color: red;
   color: white;
 }
 .patokan_tabelformatljk tr, .patokan_tabelformatljk th, .patokan_tabelformatljk td{
@@ -1022,18 +1023,21 @@ label.labrad_custom{
   
   /* height: 550px; */
 }
-/* .patokan_tabelformatljk td{
-  background-color: white;
+/* .patokan_tabelformatljk tr td{
+color: red !important;
 } */
 .patokan_tabelformatljk td:nth-child(1){
   width: 25px;
-  border: .5pt solid green;  
-}
-.patokan_tabelformatljk tr:nth-of-type(odd) td{
-  background-color: white;
+  border: .5pt solid yellow;
+  color: red !important;;
 }
 .patokan_tabelformatljk tr:nth-of-type(even) td{
-  background-color: rgb(199, 250, 199);
+  background-color: yellow;
+  color:red;
+}
+.patokan_tabelformatljk tr:nth-of-type(odd) td{
+  background-color: rgb(255, 255, 255);
+  color:red;
 }
 input.indsgeval,input.indsgeval1{
   display:none;
@@ -1050,11 +1054,14 @@ input[class=indsgeval]+label.lblindsgeval, input[class=indsgeval1]+label.lblinds
   cursor: pointer
 }
 
+
 input[class=indsgeval]:checked+label.lblindsgeval::before , input[class=indsgeval1]:checked+label.lblindsgeval1::before {
-  content: " \2705"
+  content: " \2705";
+  display: inline-block;
 }
 
 input[class=indsgeval]:checked+label.lblindsgeval ,input[class=indsgeval1]:checked+label.lblindsgeval1 {
   color: #00f;
-  background-color: #ff0
+  background-color: #ff0;
+  
 }

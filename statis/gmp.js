@@ -1011,6 +1011,31 @@ async function pembelajaran() {
             console.log(er)
             infoloadingAPI.innerHTML = "Maaf, terjadi kesalahan. Coba lagi nanti. <br>row : 991<br>kode : " + er
         })
+        let tab = "banksoal"
+        let tabel = [[["idbaris"]]];
+        let head = tabel[0];
+        let key = JSON.stringify(head);
+        let datakirim = new FormData();
+        
+        datakirim.append("tab",tab);
+        datakirim.append("key",key);
+        fetch(url_kaldikaja+"?action=getpostdatafromtab",{
+            method:"post",
+            body:datakirim
+        }).then(m => m.json())
+        .then(r => {
+            // p_pilihbentuksoal.innerHTML = `Pilih Bentuk Soal:`;
+           //console.log(r);
+           databasesoalkosong = [];
+           keydatabasesoal = Object.keys(r.data[0]);
+           if(r.result>1){
+               databasesoal = r.data.filter(s=> s.hapus == "");
+               databasesoalterhapus = r.data.filter(s=> s.hapus == "hapus");
+           }
+           for(i=0 ; i < keydatabasesoal.length; i++){
+               databasesoalkosong[keydatabasesoal[i]]="";
+           }
+        }).catch(er=>console.log(er));
 }
 function templatekronologi(jsonmateri) {
     let temp = `<div class="kronologi">`

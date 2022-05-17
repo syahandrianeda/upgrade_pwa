@@ -7410,12 +7410,22 @@ const tombolaksikronologi = (currEssay, parNama, z, idhtmlmateri) => {
     //anggap aja ada essay dulu!
     let kodehtml = "";
     let cek = nilairesponkronologi.filter(k => k.tokensiswa == parNama);
+    let datapg = kronologijson[idhtmlmateri].jumlahpg;
+    console.log(currEssay)
+    console.log(datapg)
+    console.log(idhtmlmateri)
     //console.log(cek);
     let matericode ;
 
     if (cek.length == 0) {
         //jika siswa belum mengerjakan, tolong bantu isi!
-        kodehtml = `<button class="w3-button w3-khaki w3-card-4" onclick="bantusiswaisiljk('${z + "_" + idhtmlmateri}')">Bantu Isi</button><button class="w3-button w3-khaki w3-card-4" onclick="trialScanLJK('${z + "_" + idhtmlmateri}')">SCAN LJK</button>`
+        if(datapg == 0){
+            kodehtml = `<button class="w3-button w3-pale-red w3-border w3-card-4 w3-round-large" onclick="bantusiswaisiljk('${z + "_" + idhtmlmateri}')">BANTU ISI</button>`;
+        }else{
+           kodehtml = `<button class="w3-button w3-pale-red w3-border w3-card-4 w3-round-large" onclick="bantusiswaisiljk('${z + "_" + idhtmlmateri}')">BANTU ISI</button><button class="w3-button w3-khaki w3-card-4 w3-round-large" onclick="trialScanLJK('${z + "_" + idhtmlmateri}')">SCAN LJK</button>`;
+        }
+        
+        kodehtml +=`<button class="w3-button w3-pale-green w3-border w3-card-4 w3-round-large" onclick="trialisiLJK('${z + "_" + idhtmlmateri}')">INPUT NILAI</button>`;
 
     } else {
         // console.log(cek)
@@ -7429,22 +7439,22 @@ const tombolaksikronologi = (currEssay, parNama, z, idhtmlmateri) => {
             // jika ada essay, cek lagi. Nilai essaynya udah masuk apa belum
             // jika belum masuk, maka tampilkan tombol koreksi
             if (cek[indek].nilaiEssay == "") {
-                kodehtml = `<button class="w3-button w3-red" onclick="lihatljksaya('${cek[indek].html_jawaban}')">LJK</button><br>
-          <button class="w3-button w3-green" onclick="gurumengoreksi('${indekk}')">Koreksi</button><br><br>
-          <button class="w3-button w3-black" onclick="hapusljk('${cek[indek].idbaris}',${matericode})">Hapus</button><br>
+                kodehtml = `<button class="w3-button w3-red w3-round-large" onclick="lihatljksaya('${cek[indek].html_jawaban}')">LJK</button><br>
+          <button class="w3-button w3-green w3-round-large" onclick="gurumengoreksi('${indekk}')">Koreksi</button><br><br>
+          <button class="w3-button w3-black w3-round-large" onclick="hapusljk('${cek[indek].idbaris}',${matericode})">Hapus</button><br>
           `
             } else {
-                kodehtml = `<button class="w3-button w3-blue" onclick="lihatljksaya('${cek[indek].html_jawaban}')">LJK</button><br>
-          <button class="w3-button w3-green" onclick="gurumengoreksi('${indekk}')">Koreksi Ulang</button><br><br>
-          <button class="w3-button w3-black" onclick="hapusljk('${cek[indek].idbaris}',${matericode})">Hapus</button><br>
+                kodehtml = `<button class="w3-button w3-blue w3-round-large" onclick="lihatljksaya('${cek[indek].html_jawaban}')">LJK</button><br>
+          <button class="w3-button w3-green w3-round-large" onclick="gurumengoreksi('${indekk}')">Koreksi Ulang</button><br><br>
+          <button class="w3-button w3-black w3-round-large" onclick="hapusljk('${cek[indek].idbaris}',${matericode})">Hapus</button><br>
           `
                 //<button class="w3-button w3-green" onclick="gurumengoreksi('${indek}')">Koreksi Ulang</button><br></br>
                 //
             }
 
         } else {
-            kodehtml = `<button class="w3-button w3-blue" onclick = "lihatljksaya('${cek[indek].html_jawaban}')" > LJK</button ><br> <br> 
-        <button class="w3-button w3-black" onclick="hapusljk('${cek[indek].idbaris}',${matericode})">Hapus</button><br>
+            kodehtml = `<button class="w3-button w3-blue w3-round-large" onclick = "lihatljksaya('${cek[indek].html_jawaban}')" > LJK</button ><br> <br> 
+        <button class="w3-button w3-black w3-round-large" onclick="hapusljk('${cek[indek].idbaris}',${matericode})">Hapus</button><br>
         `
         }
     }
@@ -8052,10 +8062,10 @@ const siapkirimnilai = () => {
             document.querySelector("#infoloadingljk").innerHTML = `<h3 class="w3-center">${f.result}</h3>`;
             if (iddarimana == "hariini") {
                 getdaftarnilai(idakseskoreksi)
-            } else (
+            } else {
                 daftarnilaikronologi(idakseskoreksi)
 
-            )
+            }
 
             //setTimeout(tutuploadingljk(), 5000)
 
@@ -8932,16 +8942,14 @@ function hasilakhirelamaso(id) {
         .then(q => {
             document.getElementById("infoloadingljk").innerHTML = q.result;
             if (iddarimana == "hariini") {
-                getdaftarnilai(idakseskoreksi)
-            } else (
-                daftarnilaikronologi(idakseskoreksi)
-
-            )
-
+                getdaftarnilai(idakseskoreksi);
+            } else {
+                daftarnilaikronologi(idakseskoreksi);
+            }
         })
         .catch(er => {
             console.log(er);
-            document.getElementById("infoloadingljk").innerHTML = "Maaf, terjadi kesalahan."
+            document.getElementById("infoloadingljk").innerHTML = "Maaf, terjadi kesalahan.";
         });
     // garagaraanis
 
@@ -9089,10 +9097,10 @@ const hasilakhirelamasopg = (par) => {
             document.getElementById("infoloadingljk").innerHTML = q.result;
             if (iddarimana == "hariini") {
                 getdaftarnilai(idakseskoreksi)
-            } else (
+            } else {
                 daftarnilaikronologi(idakseskoreksi)
 
-            )
+            }
 
         })
         .catch(er => {

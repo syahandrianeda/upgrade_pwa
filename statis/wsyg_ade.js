@@ -54,6 +54,7 @@ doc.addEventListener("input",(e)=>{
     let html = "Belum Terdeteksi adanya Pilihan Ganda/Essay";
     let el_input = "";
     let cekkunci = deteksikuncipg();
+    document.getElementById("barukuncipgtemporary").value = cekkunci;
     if(dom.length>0){
         let datapg = [];
         for(i = 0 ; i < dom.length ; i ++){
@@ -102,12 +103,14 @@ kelastambahan = "w3-light-blue"
     // div.innerHTML = html;
     // divradiopg.innerHTML = el_input;
     //jika sudah membuat ceklis jawaban, ketika ada PG baru jangan dihapus lagi
-    for(n = 0 ; n < cekkunci.length ; n++){
-        let mm = document.getElementById("tomboleditor_bantuopsi"+cekkunci[n]);
-        if(mm !== null ||mm !== undefined){
-            document.getElementById("tomboleditor_bantuopsi"+cekkunci[n]).checked = true;
-        }
-    }
+    // for(n = 0 ; n < cekkunci.length ; n++){
+    //     let mm = document.getElementById("tomboleditor_bantuopsi"+cekkunci[n]);
+    //     if(mm !== null ||mm !== undefined){
+    //         // document.getElementById("tomboleditor_bantuopsi"+cekkunci[n]).checked = true;
+    //         let rd = document.getElementById("tomboleditor_bantuopsi"+cekkunci[n]);
+    //         checked_buatkunci(rd);
+    //     }
+    // }
     //MENDETEKSI SOAL PG
     let arrsoalpg = deteksinomorsoalpg()
     document.formuploadmateri.jumlahpg.value = arrsoalpg.length;
@@ -248,10 +251,20 @@ kelastambahan = "w3-light-blue"
     //     //jika Ada, cek apakah KD3 apa KD4
 
     // }
-    
+    // for(n = 0 ; n < cekkunci.length ; n++){
+    //     let mm = document.getElementById("tomboleditor_bantuopsi"+cekkunci[n]);
+    //     if(mm !== null ||mm !== undefined){
+    //         // document.getElementById("tomboleditor_bantuopsi"+cekkunci[n]).checked = true;
+    //         let rd = document.getElementById("tomboleditor_bantuopsi"+cekkunci[n]);
+    //         checked_buatkunci(rd);
+    //     }
+    // }
+    let divdeteksi = doc.querySelectorAll("[data-sourcebanksoalid]");
+    if(divdeteksi.length == 0){
+        document.getElementById("infosementarakdbanksoal").innerHTML ="Tidak ada soal yang diambil dari fitur Bank Soal"
+    }
 })
  
-
 const deteksikuncipg = () =>{
       //cari teks yang ada _KUNCI-PG_
         let cekpg = doc.body.querySelectorAll("div");
@@ -263,7 +276,8 @@ const deteksikuncipg = () =>{
             if(tekscek.indexOf("_KUNCI-PG_")>-1){
                 bol = true;
                 let s_to_array = tekscek.replace("_KUNCI-PG_","");//
-                arraykunci = s_to_array.split(",");
+                let space = s_to_array.replace(/\s+|<br>|&nbsp;|\r|\n|\r\n/gm,"");//.replace(/<br>/g,"");
+                arraykunci = space.split(",");
                 break;
             }
         };
@@ -286,15 +300,22 @@ const objeksebarankd = () =>{
 
 }
 const checked_buatkunci = (el) => {
+    if(el== null){
+        console.log("belum terdeteksi");
+        return
+    }
+    
     let opsilengkap = el.value; //1A
     let no = el.value.match(/\d+/); //1A
     let ele = document.querySelectorAll(".tdnosoal_editor_" + no);
     let elaktif = document.querySelector(".tdpg_pgeditor_" + opsilengkap);
     //hapus dulu bg warannya;
     for (i = 0; i < ele.length; i++) {
-        ele[i].className = ele[i].className.replace("w3-light-blue", "");
+        // ele[i].className = ele[i].className.replace("w3-light-blue", "");
+        ele[i].classList.remove("w3-light-blue");
     };
-    elaktif.className += " w3-light-blue";
+    // elaktif.className += " w3-light-blue";
+    elaktif.classList.add("w3-light-blue");
 
     // let textarea = document.getElementById("idmateri");
     // let val = textarea.value;
@@ -304,16 +325,61 @@ const checked_buatkunci = (el) => {
 
     // let str_pg_kunci = batasawal.split("\n")[0];
 
-    let ceklis = document.querySelectorAll(".pg_buatkuncikd");
+    //let ceklis = document.querySelectorAll(".pg_buatkuncikd");
+    // for (j = 0; j < ceklis.length; j++) {
+        //     if (ceklis[j].checked) {
+            //         let n = ceklis[j].value;
+            
+            //         arrceklis.push(n)
+            
+            //     }
+            
+            // }
     let arrceklis = []
-    for (j = 0; j < ceklis.length; j++) {
-        let n = ceklis[j].value;
-        if (ceklis[j].checked) {
-            arrceklis.push(n)
+    let inputkuncidenganspasi= document.getElementById("barukuncipgtemporary").value;
+    let arrinput = [];
+    let arropsilengkap = [];
+    let arraySplit = [];
+    let arrNosoalaja = [];
+    let arrUbah =[] ;
+    let arrAwal =[];
 
+    let inputkunciTANPAspasi
+    if(inputkuncidenganspasi ==""){
+        
+        inputkuncidenganspasi = el.value;
+        inputkunciTANPAspasi = inputkuncidenganspasi.replace(/\s+/,"");
+        arrceklis.push(inputkunciTANPAspasi);
+        
+    }else{
+        inputkunciTANPAspasi = inputkuncidenganspasi.replace(/\s+/,"");
+        arrAwal = inputkunciTANPAspasi.split(",");
+        //arrAwal.sort();//(a, b)=> a - b)
+        
+        //ubah arrinput menjadi nosoalnya aja;
+        arrNosoalaja = arrAwal.map(m=>m.match(/(\d+)/)[0]);
+        let nosoalaktif = el.value.match(/(\d+)/)[0];
+        
+        let cek_indek_nosoal_di_arrNosoalaja = arrNosoalaja.indexOf(nosoalaktif);
+        if(cek_indek_nosoal_di_arrNosoalaja >-1){
+            arrAwal.splice(cek_indek_nosoal_di_arrNosoalaja,1,el.value);
+            arrUbah = arrAwal
+        }else{
+            arrAwal.push(el.value)
+            arrUbah = arrAwal;
+            
         }
+        
+        arrceklis = arrUbah;
+
 
     }
+    
+   
+    // arrceklis.sort()
+    arrceklis.sort((a,b)=> parseInt(a.match(/(\d+)/)==null?0:a.match(/(\d+)/)[0]) - parseInt(b.match(/(\d+)/)==null?0:b.match(/(\d+)/)[0]));
+    //console.log(arrceklis.sort())
+    document.getElementById("barukuncipgtemporary").value = arrceklis;//.join(",");
      //console.log(arrceklis)
     // let teksnya = "_KUNCI-PG_" + arrceklis.join(",")
     // // console.log(str_pg_kunci)
@@ -334,9 +400,10 @@ const checked_buatkunci = (el) => {
     for(a = 0 ; a < divs.length ; a++){
         let teks = divs[a].innerHTML;
         if(teks.indexOf("_KUNCI-PG_")>-1){
-           // console.log(a +" = "+ teks);
+          
             bol = true;
             cek = a;
+
             break;
         }else{
            // console.log("none");
@@ -346,6 +413,7 @@ const checked_buatkunci = (el) => {
     
     if(bol){
         divs[cek].innerHTML = "_KUNCI-PG_" + arrceklis.join(",");
+        
     }else{
         let creatediv = doc.createElement("div");
         creatediv.innerHTML = "_KUNCI-PG_" + arrceklis.join(",")
@@ -370,6 +438,8 @@ const checked_buatkunci = (el) => {
 
 
 };
+
+
 const btn = document.querySelectorAll(".btn_edt");//
 const allowhtml = document.querySelector("#html_edt");
 
@@ -467,6 +537,88 @@ linkifram.forEach(el =>{
 
 };
 
+const inputankuncijawabantemporary = document.getElementById("barukuncipgtemporary");
+inputankuncijawabantemporary.addEventListener("input",(e)=>{
+    let el = e.target;
+   
+    let buangspasi = el.value.replace(/\s+/,"");
+    let arrayisiAwal = buangspasi.split(",");
+   
+    
+    //cek tabel:
+    for(i = 0 ; i< arrayisiAwal.length ; i++){
+        let no = arrayisiAwal[i].match(/\d+/); //1A
+        let ele = document.querySelectorAll(".tdnosoal_editor_" + no);
+        
+        if(ele.length>0){
+            for (j = 0; j < ele.length; j++) {
+                // ele[i].className = ele[i].className.replace("w3-light-blue", "");
+                ele[j].classList.remove("w3-light-blue");
+            };
+        }
+        let elaktif = document.querySelector(".tdpg_pgeditor_" + arrayisiAwal[i]);
+        if(elaktif !== null){
+            elaktif.classList.add("w3-light-blue");
+        }
+
+    }
+
+
+
+
+    let arrceklis = arrayisiAwal;
+    let noaja = arrayisiAwal.map(m=>m.match(/(\d+)/)!==null?m.match(/(\d+)/)[0]:m);
+    let ceknomoredoble = noaja.filter((x,i,a)=>a.indexOf(x) !== i);
+    let spanisi = document.getElementById("kalosalahketik");
+    spanisi.innerHTML ="";
+    if(ceknomoredoble.length > 0){
+        spanisi.innerHTML = "Ada nomor soal yang terisi ganda, yaitu: "+ceknomoredoble.join() +"<br>Periksa kembali ketikan kunci jawaban Anda"
+    }
+    // arrceklis.sort();
+    arrceklis.sort((a,b)=> parseInt(a.match(/(\d+)/)==null?0:a.match(/(\d+)/)[0]) - parseInt(b.match(/(\d+)/)==null?0:b.match(/(\d+)/)[0]));
+
+
+    
+    //console.log(arrceklis.sort())
+    document.getElementById("barukuncipgtemporary").value = arrceklis;//.join(",");
+     
+    let divs = doc.getElementsByTagName('div');
+    let cek = divs.length;
+    let bol = false;
+    for(a = 0 ; a < divs.length ; a++){
+        let teks = divs[a].innerHTML;
+        if(teks.indexOf("_KUNCI-PG_")>-1){
+           
+            bol = true;
+            cek = a;
+
+            break;
+        }else{
+           // console.log("none");
+        }
+    }
+   
+    
+    if(bol){
+        if(el.value ==""){
+            divs[cek].innerHTML = "";
+            
+        }else{
+            divs[cek].innerHTML = "_KUNCI-PG_" + arrceklis.join(",");
+        }
+        
+    }else{
+        let creatediv = doc.createElement("div");
+        console.log("cekdisini",arrceklis.length, arrceklis)
+        creatediv.innerHTML = "_KUNCI-PG_" + arrceklis.join(",")
+        doc.body.appendChild(creatediv);
+        
+    }
+    
+    
+
+})
+
 let fcolor = document.querySelector("#fontcolor");
 let bcolor = document.querySelector("#backcolor");
 let edtbl = document.querySelector("#edt_table");
@@ -474,9 +626,9 @@ let sPchBiasa = document.querySelector("#simpan_pecahanbiasa");
 let sPchCamp = document.querySelector("#simpan_pecahancampuran");
 let sAkarKdrat = document.querySelector("#simpan_akarkuadrat");
 let sAkartiga = document.querySelector("#simpan_akarpangkattiga");
-let keypastekangambar_edt = document.getElementById("pastekangambar_edt");
 let keyKopSekolah = document.getElementById("kopsekolah_edt");
 let insertHTML_div = document.getElementById("inserthtml_edt");
+let keypastekangambar_edt = document.getElementById("pastekangambar_edt");
 keypastekangambar_edt.addEventListener("click",()=>{
     let teksCopy = yangluCopy;
     if(teksCopy == ""){
@@ -1505,7 +1657,7 @@ function fn_mbs_simpansebarankd() {
     for(a = 0 ; a < divs.length ; a++){
         let teks = divs[a].innerHTML;
         if(teks.indexOf("_KUNCI-KD_")>-1){
-           // console.log(a +" = "+ teks);
+          
             bol = true;
             cek = a;
             break;
@@ -1714,7 +1866,7 @@ function generaterasebarankd() {
     for(a = 0 ; a < divs.length ; a++){
         let teks = divs[a].innerHTML;
         if(teks.indexOf("_KUNCI-KD_")>-1){
-           // console.log(a +" = "+ teks);
+           
             bol = true;
             cek = a;
             ada = a;
@@ -3580,8 +3732,16 @@ edurasataruhdraft.addEventListener("click",()=>{
 });
 const ref_editorsoal = document.querySelector(".refrensi_soal");
 ref_editorsoal.addEventListener("click",()=>{
-    document.querySelector("#modalbanksoal").style.display = "block";
+    // document.querySelector("#modalbanksoal").style.display = "block";
+    let elemeniframe = document.getElementById("editor_ade");
+    let docelemeniframe = elemeniframe.contentDocument || elemeniframe.contentWindow.document;
+    aktifkanmodalkontenmateri_banksoal(docelemeniframe)
+    
 });
+const refrensi_desainnaskah = document.querySelector(".refrensi_desainnaskah");
+refrensi_desainnaskah.addEventListener("click",()=>{
+    alert("Fitur Belum diaktifkan")
+})
 
 const btn_tdall =() =>{
     let modal = document.querySelector("#tooltiptabelall");
@@ -10872,11 +11032,11 @@ const keyboardtooltip = (objek={},jeniskirimanobjek="")=>{
         let ang = teks.toLowerCase().split("x");
         let brs = parseInt(ang[0]);
         let cols = parseInt(ang[1]);
-        let html = `&nbsp;<table class="w3-table garis">`
+        let html = `&nbsp;<table style="border-collapse:collapse;border:.5pt solid #000;width:98%">`
         for(i = 0 ; i < brs ; i++){
-            html +=`<tr>`
+            html +=`<tr style="style="background-color:#f1f1f1;;border:.5pt solid #000">`
             for (j = 0 ; j <cols; j++){
-                html +=`<td>teks</td>`
+                html +=`<td style="border:.5pt solid #000;padding:5px">#</td>`
             }
             html +=`</tr>`
         }

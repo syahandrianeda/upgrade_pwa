@@ -462,6 +462,7 @@ const tutupmodalljk = ()=>{
     tempatinfoawal.innerHTML = "";
     tempatperiksaessay.innerHTML = "";
     formatljknotepadscanner.innerHTML = "";
+    document.getElementById("datakirimscanner").innerHTML ="";
     let modalL = document.getElementById("modal_scannerLJK");
     modalL.style.display = "none";
     // nantinya akan ada fungsi untuk menghentinkan proses kamera.
@@ -1045,6 +1046,7 @@ let modso_awal = document.querySelector(".mbs_awal"),
 dsgpg_bentuksoal.forEach(el =>{
     el.addEventListener("change",()=>{
         if(el.checked){
+            ijinsimpantiembanksoal = true;
             let val = el.value;
             serverbsoal_bentuksoal.innerHTML = val;
             document.querySelector(".dsgbpg_opsipg").innerHTML =""
@@ -1165,6 +1167,7 @@ const dsgpg_mapel = async ()=>{
             kdklik.style.backgroundColor= "inherit";
             kdklik.style.color= "inherit";
             kdklik.innerHTML =kdklik.innerHTML.replace("&#9989;","");
+            // kdklik.style.setProperty("--content", "''");
             
         }
 
@@ -1449,14 +1452,15 @@ const aktifintooltipdidesainsoal = (v) =>{
 const keyboardtooltipbaru = ()=>{
    
     let keyboardeditor2 = document.querySelector("#iframe_tooltipbaru_keyboardumum");
-    const dockeyboardbaru = keyboardeditor2.contentDocument || keyboardeditor2.contentWindow.document;
+    let dockeyboardbaru = null;
+    dockeyboardbaru = keyboardeditor2.contentDocument || keyboardeditor2.contentWindow.document;
             dockeyboardbaru.body.designMode = "on";
             dockeyboardbaru.body.setAttribute("spellcheck","false");
             dockeyboardbaru.body.setAttribute("contenteditable","true");
             dockeyboardbaru.body.setAttribute("id","edt4");
             // dockeyboardbaru.body.setAttribute("style","font-size:12px");
         var root = window.location.origin;
-        dockeyboardbaru.head.innerHTML = `<link rel="stylesheet" href="${root}/css/w3.css">
+        dockeyboardbaru.head.innerHTML = `<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <link href="https://fonts.googleapis.com/css?family=Raleway">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
         <link rel="stylesheet" href="https://syahandrianeda.github.io/syahandrianeda/css/stylegurukelas.css">`;
@@ -1593,11 +1597,17 @@ const keyboardtooltipbaru = ()=>{
         })
     
     };
-    let keyboardedtbl = document.querySelector("#tooltipbaru_keyboardedt_table");
-    let keyboardsPchBiasa = document.querySelector("#tooltipbaru_keyboardsimpan_pecahanbiasa");
-    let keyboardsPchCamp = document.querySelector("#tooltipbaru_keyboardsimpan_pecahancampuran");
-    let keyboardsAkarKdrat = document.querySelector("#tooltipbaru_keyboardsimpan_akarkuadrat");
-    let keyboardsAkartiga = document.querySelector("#tooltipbaru_keyboardsimpan_akarpangkattiga");
+    let keyboardedtbl = null;
+    let keyboardsPchBiasa = null;
+    let keyboardsPchCamp = null;
+    let keyboardsAkarKdrat = null;
+    let keyboardsAkartiga = null;
+
+    keyboardedtbl = document.querySelector("#tooltipbaru_keyboardedt_table");
+    keyboardsPchBiasa = document.querySelector("#tooltipbaru_keyboardsimpan_pecahanbiasa");
+    keyboardsPchCamp = document.querySelector("#tooltipbaru_keyboardsimpan_pecahancampuran");
+    keyboardsAkarKdrat = document.querySelector("#tooltipbaru_keyboardsimpan_akarkuadrat");
+    keyboardsAkartiga = document.querySelector("#tooltipbaru_keyboardsimpan_akarpangkattiga");
     
     
     keyboardedtbl.addEventListener("click", () => {
@@ -1608,15 +1618,15 @@ const keyboardtooltipbaru = ()=>{
         let ang = teks.toLowerCase().split("x");
         let brs = parseInt(ang[0]);
         let cols = parseInt(ang[1]);
-        let html = `&nbsp;<table class="w3-table garis">`
+        let html = `&nbsp;<table style="border-collapse:collapse;border:.5pt solid #000">`
         for(i = 0 ; i < brs ; i++){
             if(i==0){
-                html +=`<tr class="w3-light-grey">`;
+                html +=`<tr style="background-color:#f1f1f1;;border:.5pt solid #000"> `;
             }else{
                     html +=`<tr>`;
                 }
             for (j = 0 ; j <cols; j++){
-                html +=`<td>teks</td>`
+                html +=`<td style="border:.5pt solid #000;padding:5px"> # </td>`
             }
             html +=`</tr>`
         }
@@ -1711,8 +1721,19 @@ const keyboardtooltipbaru = ()=>{
         })
     }
 });
-    
-    
+    let toolbarudaftarGambar_edt = document.querySelector("#tooltipbaru_daftarGambar_edt");
+    toolbarudaftarGambar_edt.addEventListener("click", () =>{
+        daftarGambar();
+    })
+    let tooltipbarukeypastekangambar_edt = document.getElementById("tooltipbaru_pastekangambar_edt");
+    tooltipbarukeypastekangambar_edt.addEventListener("click",()=>{
+    let teksCopy = yangluCopy;
+    if(teksCopy == ""){
+        alert("Ga ada yang dicopy, Mas/Mis Bro....")
+        return
+    }
+    dockeyboardbaru.execCommand("insertHTML",null, teksCopy)
+    });
     const keyboardbtnn_edtyt = document.querySelector("#keyboardbtn_tooltipbaru_edtkeyboardyt");
     keyboardbtnn_edtyt.addEventListener("click", () => {
         let prom = prompt("Masukkan link youtube","");
@@ -2094,9 +2115,10 @@ const tooltipbaru_tooglesembunyimenu = (btn)=>{
         btn.setAttribute("title","Buka Menu");
     }
 }
+keyboardtooltipbaru()
 const isiteksunsurbanksoal = (paren="", target, posisitooltip="atas", baris="") =>{
     
-    keyboardtooltipbaru()
+    
     let elemen = document.querySelector("."+target);
     let simpan = document.querySelector(".simpankeyboardtooltipbaru");
     simpan.onclick= null;
@@ -2146,6 +2168,10 @@ const isiteksunsurbanksoal = (paren="", target, posisitooltip="atas", baris="") 
     }
 
 }
+const isibanksoalkebuatmateriedurasa = (elemen)=>{
+    //pastikan fokusdatasoalnya adalah databasse soal kelas 6; kalo ga ada jangan buka bank soal
+    document.querySelector("#modalbanksoal").style.display = "block";
+}
 function getOffset(el) {
     const rect = el.getBoundingClientRect();
     return {
@@ -2153,7 +2179,12 @@ function getOffset(el) {
       top: rect.top + window.scrollY
     };
   }
+let ijinsimpantiembanksoal =false;
 const simpanItemBanksoal = () =>{
+    if(!ijinsimpantiembanksoal){
+        alert("Maaf, data soal yang akan dikirimkan belum siap. Pastikan Anda sudah memilih Pilihan Bentuk Soal!")
+        return
+    }
     let konf = confirm("Anda yakin ingin menyimpan data soal ini? Soal yang Anda buat di kartu soal ini hanya Anda sendiri yang dapat mengeditnya. Soal akan dipublikasikan umum dan siapapun dapat menggunakan soal Anda. Apabila ada kesalahan, silakan edit di menu Database Bank Soal.");
     if(!konf){
         return
@@ -2173,30 +2204,34 @@ const simpanItemBanksoal = () =>{
         }
     });
     desainObjek.rombel = idNamaKelas;
-    desainObjek.tampilanpg = tagtampilanpg;
     desainObjek.idguru = idguru;
+    let kalopg = document.querySelector("[data-bsoal=bentuksoal]");
+    if(kalopg.innerHTML == "Pilihan Ganda"){
+    desainObjek.tampilanpg = tagtampilanpg;
+    //untuk tampilanpg "BIASA" sudah otomatis terdeteksi dengan data-bsoal="opsiA" dll.
     if(tagtampilanpg=="TABEL"){
         let tabel = document.querySelector(".kartusoalpg_tabel");
         let tbody = tabel.getElementsByTagName("tbody")[0];
         let theader = tabel.getElementsByTagName("thead")[0];
         let rRow = tbody.rows;
         let arHed = [];
-        for(a = 1 ; a < theader.rows[0].cells.length ; a++){
-            let teksheader = theader.rows[0].cells[a].innerHTML;
-            arHed.push(teksheader)
-        }
-        desainObjek.headerpg = JSON.stringify(arHed);
-        for(i = 0 ; i < rRow.length ; i ++){
-            let cCol = rRow[i].cells;
-            let arOpsi = [];
-            for(j = 1 ; j < cCol.length ; j ++){
-                
-                arOpsi.push(cCol[j].innerHTML)
+            for(a = 1 ; a < theader.rows[0].cells.length ; a++){
+                let teksheader = theader.rows[0].cells[a].innerHTML;
+                arHed.push(teksheader)
             }
-            let keyy = "opsi"+arrayopsibaru[i];
-            desainObjek[keyy] = JSON.stringify(arOpsi);
+            desainObjek.headerpg = JSON.stringify(arHed);
+            for(i = 0 ; i < rRow.length ; i ++){
+                let cCol = rRow[i].cells;
+                let arOpsi = [];
+                for(j = 1 ; j < cCol.length ; j ++){
+                    
+                    arOpsi.push(cCol[j].innerHTML)
+                }
+                let keyy = "opsi"+arrayopsibaru[i];
+                desainObjek[keyy] = JSON.stringify(arOpsi);
 
 
+            }
         }
     }
     //console.log(desainObjek)
@@ -2223,7 +2258,7 @@ const simpanItemBanksoal = () =>{
     }).then(m => m.json())
     .then(r => {
         
-        
+        ijinsimpantiembanksoal = false;
         keydatabasesoal = Object.keys(r.data[0]);
         if(r.result>1){
             databasesoal = r.data.filter(s=> s.hapus == "");
@@ -2234,13 +2269,24 @@ const simpanItemBanksoal = () =>{
         }
         alert("Data Berhasil disimpan");
         elemenkirim.forEach((el,i)=>{
+        });
+        
+        document.getElementById("indsgevalpgindikatorsoal").value = "";
+        document.getElementById("indsgevalpgmateripokok").value = "";
+        document.querySelector(".buattooltipilustrasi").innerHTML ="KLIK UNTUK ILUSTRASI SOAL";
+        document.querySelector(".buattooltippertanyaan").innerHTML ="KLIK DI SINI UNTUK MENAMBAHKAN TEKS PERTANYAAAN";
+        document.querySelector("[data-bsoal=ruanglingkup]").innerHTML ="BELUM PILIH LINGKUP MATERI";
+        document.querySelector("[data-bsoal=tekskd]").innerHTML ="BELUM PILIH KD";
+        document.querySelector("[data-bsoal=materi]").innerHTML ="BELUM ISI MATERI POKOK";
+        document.querySelector("[data-bsoal=indikatorsoal]").innerHTML ="BELUM ISI INDIKATOR SOAL";
+        document.querySelector("[data-bsoal=penskoran]").innerHTML ="KLIK DI SINI UNTUK MENGETIK TEKS";
         // console.log(i,el.nodeName,el.getAttribute("data-bsoal"))
         
         //kalo sudah berhasil tolong sembunyikan kartu soalnya
-        if(divkartusoal.className.indexOf("w3-hide")==-1){
-            divkartusoal.classList.add("w3-hide")
-        }
-    });
+        
+    if(divkartusoal.className.indexOf("w3-hide")==-1){
+        divkartusoal.classList.add("w3-hide")
+    }
     }).catch(er=>console.log(er));
 }
 
@@ -2283,6 +2329,58 @@ function replaceClassToStyle (element){
     return styles
 
 }
+function garagaraTainted (src,Tainting, notTainting){
+    // source cod:https://stackoverflow.com/questions/22575636/how-to-check-if-a-canvas-element-has-been-tainted
+    // tmpCanvas to test CORS
+    var tmpCanvas=document.createElement("canvas");
+    var tmpCtx=tmpCanvas.getContext("2d");
+    // tmpCanvas just tests CORS, so make it 1x1px
+    
+    //tmpCanvas.width=tmpCanvas.height=1;
+    // let imgd = {}
+    var img=new Image();
+    // set the cross origin flag (and cross our fingers!)
+    img.crossOrigin="anonymous";
+    img.onload=  function(){
+        // add a tainted property to the image 
+        // (initialize it to true--is tainted)
+        img.tainted=true;
+        // imgd.tainted=true;
+        // draw the img on the temp canvas
+        tmpCtx.drawImage(img,0,0);
+        // just in case this onload stops on a CORS error...
+        // set a timer to call afterOnLoad shortly
+        
+           afterOnLoad(img, Tainting, notTainting);
+        // you can probably use less than 1000ms
+        // try to violate CORS
+        var i=tmpCtx.getImageData(1,1,1,1);
+        // if we get here, CORS is OK so set tainted=false
+        
+        // imgd.uri = tmpCanvas.toDataURL("image/png");//.replace("image/png", "image/octet-stream");;
+        img.uri = tmpCanvas.toDataURL("image/png");//.replace("image/png", "image/octet-stream");;
+        img.tainted=false;
+        
+    };
+    img.src=src;
+    
+    if(img.complete){
+        return(img);
+    }
+}
+function afterOnLoad(imgd, tainting, ga){
+    let ar = {};
+    ar.tainted = imgd.tainted;
+    ar.objekok = {}
+    if(imgd.tainted){
+        ar.src = imgd.src;
+    }else{
+        ar.src = imgd.src
+        var uri = imgd.uri;
+        ar.objekok = uri
+    }
+    console.log(ar)
+}
 const print2Word = (element, Filename)=>{
     //https://github.com/markswindoll/jQuery-Word-Export/blob/master/jquery.wordexport.js
 
@@ -2297,7 +2395,7 @@ const print2Word = (element, Filename)=>{
         maxWidth: 70
     };
     // Clone selected element before manipulating it
-    let div,filename
+    let div=null,filename
     if(element == "areadesain_naskahsoal"){
         div = document.querySelector(".areadesain_naskahsoal");
         let namafile = document.getElementById("naskahsoal_identitas").value;
@@ -2325,24 +2423,33 @@ const print2Word = (element, Filename)=>{
         var w = Math.min(img[i].width, options.maxWidth);
         var h = img[i].height * (w / img[i].width);
         // Create canvas for converting image to data URL
+        console.log(img[i].crossOrigin)
+        // img[i].crossOrigin="anonymous";
+
         var canvas = document.createElement("CANVAS");
+        
         canvas.width = w;
         canvas.height = h;
         // Draw image to canvas
         var context = canvas.getContext('2d');
         context.drawImage(img[i], 0, 0, w, h);
         // Get data URL encoding of image
-        var uri = canvas.toDataURL("image/png");
+        let cekuri = garagaraTainted(img[i].getAttribute("src"), "Tainting", "notTainting");
+        // let cekuri = garagaraTainted(img[i], "Tainting", "notTainting");
+       // var uri = cekuri.uri;
+        console.log(cekuri);
+        // var uri = canvas.toDataURL("image/png");//.replace("image/png", "image/octet-stream");
+        //tambahan replace dari stackoverflow :https://stackoverflow.com/questions/10673122/how-to-save-canvas-as-an-image-with-canvas-todataurl
         $(img[i]).attr("src", img[i].src);
         img[i].width = w;
         img[i].height = h;
         // Save encoded image to array
-        images[i] = {
-            type: uri.substring(uri.indexOf(":") + 1, uri.indexOf(";")),
-            encoding: uri.substring(uri.indexOf(";") + 1, uri.indexOf(",")),
-            location: $(img[i]).attr("src"),
-            data: uri.substring(uri.indexOf(",") + 1)
-        };
+        // images[i] = {
+        //     type: uri.substring(uri.indexOf(":") + 1, uri.indexOf(";")),
+        //     encoding: uri.substring(uri.indexOf(";") + 1, uri.indexOf(",")),
+        //     location: $(img[i]).attr("src"),
+        //     data: uri.substring(uri.indexOf(",") + 1)
+        // };
         
     }
 
@@ -2363,7 +2470,7 @@ const print2Word = (element, Filename)=>{
     //TODO: load css from included stylesheet
     var styles = "";
     styles+= '<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">';
-    styles+=`<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">`;
+    // styles+=`<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">`;
     styles+='<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">';
     styles+= '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">';
     styles+='<link  rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">'
@@ -2447,7 +2554,7 @@ const print2Word = (element, Filename)=>{
 
     document.body.removeChild(downloadLink);
 }
-const print2WordGlobal = (element, Filename,kondisi="kisikisijawaban",ttd=false)=>{
+const print2WordGlobal = async (element, Filename,kondisi="kisikisijawaban",ttd=false)=>{
     //https://github.com/markswindoll/jQuery-Word-Export/blob/master/jquery.wordexport.js
 
         var static = {
@@ -2487,25 +2594,34 @@ const print2WordGlobal = (element, Filename,kondisi="kisikisijawaban",ttd=false)
         // Calculate dimensions of output image
         var w = Math.min(img[i].width, options.maxWidth);
         var h = img[i].height * (w / img[i].width);
-        // Create canvas for converting image to data URL
+        // Create canvas for converting image to data URL;
+        //console.log(img[i].crossOrigin)
+        // img[i].crossOrigin="anonymous";
+        
         var canvas = document.createElement("CANVAS");
         canvas.width = w;
         canvas.height = h;
         // Draw image to canvas
         var context = canvas.getContext('2d');
         context.drawImage(img[i], 0, 0, w, h);
+
+        let cekuri = garagaraTainted(img[i].getAttribute("src"), "Tainting", "notTainting");
+        // let cekuri = garagaraTainted(img[i], "Tainting", "notTainting");
+       // var uri = cekuri.uri;
+        console.log(cekuri);
         // Get data URL encoding of image
-        var uri = canvas.toDataURL("image/png");
+        //var uri = canvas.toDataURL("image/png");//.replace("image/png", "image/octet-stream");
+        
         $(img[i]).attr("src", img[i].src);
         img[i].width = w;
         img[i].height = h;
         // Save encoded image to array
-        images[i] = {
-            type: uri.substring(uri.indexOf(":") + 1, uri.indexOf(";")),
-            encoding: uri.substring(uri.indexOf(";") + 1, uri.indexOf(",")),
-            location: $(img[i]).attr("src"),
-            data: uri.substring(uri.indexOf(",") + 1)
-        };
+        // images[i] = {
+        //     type: uri.substring(uri.indexOf(":") + 1, uri.indexOf(";")),
+        //     encoding: uri.substring(uri.indexOf(";") + 1, uri.indexOf(",")),
+        //     location: $(img[i]).attr("src"),
+        //     data: uri.substring(uri.indexOf(",") + 1)
+        // };
         
     }
 
@@ -3101,6 +3217,7 @@ const mulaidesainnaskahsoal = ()=>{
     //tampilkan semua div area kerja:
 
 }
+
 let fokusDatasoal = [];
 let fokusDatasoalawal = [];
 let iRow_dbsoal = 2; // sama dengan 1dbaris
@@ -3122,6 +3239,15 @@ btn_terapkanfilter.onclick = () =>{
 
     let ar = [];
     let kriteria = input_mbs_kriteriafilter.value;
+    let infoawal = document.querySelector(".mbs_info").innerHTML;
+    let split_infoawal = infoawal.split(" serta mencari soal dengan kata kunci ")
+    console.log(split_infoawal);
+    if(split_infoawal.length>1){
+        document.querySelector(".mbs_info").innerHTML = infoawal[0] + " serta mencari soal dengan kata kunci "+ kriteria;
+    }else{
+        document.querySelector(".mbs_info").innerHTML += " serta mencari soal dengan kata kunci "+ kriteria;
+
+    }    
     if(kriteria.indexOf(",")>-1){
         let spl = kriteria.split(",");//array
         for(i = 0 ; i < spl.length ; i++){
@@ -3259,7 +3385,7 @@ const configmodalsoal_peritem = (obj,kondisi="")=>{
                                 if(db.opsiD !== ""){
                                     html +=`</tr><tr style="border:.5pt solid #000"><td style="border:.5pt solid #000;width:15px;vertical-align:top;text-align:center;padding-left:5px">D.</td>`;
                                     for(c = 0 ; c < arrHead.length ; c++){
-                                        html +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiD[c]}</td>`;
+                                        html +=`<<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiD[c]}</td></tr>`;
                                     }
                                 }else{
                                     html +=`</tr>`
@@ -3471,68 +3597,70 @@ const terapkan_itemsoal = (elemen="")=>{
     //ilustrasi
     if(db.ilustrasi !== ""){
         if(mbs_ceklisilustrasi.checked){
-            html +=`${antaraDiv(db.ilustrasi)}<br>`
+            html +=`${db.ilustrasi}<br>`
         }
     }
-    html += antaraDiv(db.pertanyaan);
+    html += db.pertanyaan;
+    if(db.bentuksoal == "Pilihan Ganda"){
+        if(db.tampilanpg == "BIASA"){ //-1.4461538461999965em
+            html +=`<ol style="list-style-type:upper-alpha;margin:0 0 0 -1.4461538461999965em">
+            <li>${db.opsiA}</li>
+            <li>${db.opsiB}</li>
+            <li>${db.opsiC}</li>`
+            if(db.opsiD !==""){
+                html +=`<li>${db.opsiD}</li>`
+                
+            }
+            html +=`</ol>`
+        }else{
+            let arropsiA = JSON.parse(db.opsiA);
+                    let arropsiB = JSON.parse(db.opsiB);
+                    let arropsiC = JSON.parse(db.opsiC);
+                    let arropsiD = [];
+                    let arrHead = JSON.parse(db.headerpg);
+                    let jumlahPG = 3;
+                    
+                    if(db.opsiD !== ""){
+                        arropsiD = JSON.parse(db.opsiD);
+                        jumlahPG = 4
+                    }
+                    html += `<table style="border-collapse:collapse;border:.5pt solid #000;width:100%;font-family:Times New Roman, Times, serif;">`;
+                    html +=`<thead><tr style="border:.5pt solid #000"><th style="border:.5pt solid #000;background-color:#f1f1f1;width:30px"></th>`;
+                    for(a = 0 ; a < arrHead.length ; a++){
+                        html +=`<th style="border:.5pt solid #000;text-align:center;background-color:#f1f1f1">${arrHead[a]}</th>`
+                    }
+                    html +=`</tr><tbody>`;
+                    //tabel opsi A
+                    html +=`<tr style="border:.5pt solid #000"><td style="border:.5pt solid #000;width:15px;vertical-align:top;text-align:center;padding-left:5px">A.</td>`;
+                    for(c = 0 ; c <arrHead.length ; c++){
+                        html +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiA[c]}</td>`
+                        
+                    }
+                    //tabel opsi B
+                    html +=`</tr><tr style="border:.5pt solid #000;vertical-align:top;"><td style="border:.5pt solid #000;width:15px;vertical-align:top;text-align:center;padding-left:5px">B.</td>`;
+                    for(c = 0 ; c < arrHead.length ; c++){
+                        html +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiB[c]}</td>`;
+                    }
+                    //tabel opsi C
+                    html +=`</tr><tr style="border:.5pt solid #000"><td style="border:.5pt solid #000;width:15px;vertical-align:top;text-align:center;padding-left:5px">C.</td>`;
+                    for(c = 0 ; c <arrHead.length ; c++){
+                        html +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiC[c]}</td>`
+                        
+                    }
+                    //tabel opsi D
+                    if(db.opsiD !== ""){
+                        html +=`</tr><tr style="border:.5pt solid #000"><td style="border:.5pt solid #000;width:15px;vertical-align:top;text-align:center;padding-left:5px">D.</td>`;
+                        for(c = 0 ; c < arrHead.length ; c++){
+                            html +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiD[c]}</td>`;
+                        }
+                        html +=`</tr>`
+                    }else{
+                        html +=`</tr>`
+                    }
 
-    if(db.tampilanpg == "BIASA"){ //-1.4461538461999965em
-        html +=`<ol style="list-style-type:upper-alpha;margin:0 0 0 -1.4461538461999965em">
-        <li>${db.opsiA}</li>
-        <li>${db.opsiB}</li>
-        <li>${db.opsiC}</li>`
-        if(db.opsiD !==""){
-            html +=`<li>${db.opsiC}</li>`
+                    html +=`</tbody></table>`
             
         }
-        html +=`</ol>`
-    }else{
-        let arropsiA = JSON.parse(db.opsiA);
-                let arropsiB = JSON.parse(db.opsiB);
-                let arropsiC = JSON.parse(db.opsiC);
-                let arropsiD = [];
-                let arrHead = JSON.parse(db.headerpg);
-                let jumlahPG = 3;
-                
-                if(db.opsiD !== ""){
-                    arropsiD = JSON.parse(db.opsiD);
-                    jumlahPG = 4
-                }
-                html += `<table style="border-collapse:collapse;border:.5pt solid #000;width:100%;font-family:Times New Roman, Times, serif;">`;
-                html +=`<thead><tr style="border:.5pt solid #000"><th style="border:.5pt solid #000;background-color:#f1f1f1;width:30px"></th>`;
-                for(a = 0 ; a < arrHead.length ; a++){
-                    html +=`<th style="border:.5pt solid #000;text-align:center;background-color:#f1f1f1">${arrHead[a]}</th>`
-                }
-                html +=`</tr><tbody>`;
-                //tabel opsi A
-                html +=`<tr style="border:.5pt solid #000"><td style="border:.5pt solid #000;width:15px;vertical-align:top;text-align:center;padding-left:5px">A.</td>`;
-                for(c = 0 ; c <arrHead.length ; c++){
-                    html +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiA[c]}</td>`
-                    
-                }
-                //tabel opsi B
-                html +=`</tr><tr style="border:.5pt solid #000;vertical-align:top;"><td style="border:.5pt solid #000;width:15px;vertical-align:top;text-align:center;padding-left:5px">B.</td>`;
-                for(c = 0 ; c < arrHead.length ; c++){
-                    html +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiB[c]}</td>`;
-                }
-                //tabel opsi C
-                html +=`</tr><tr style="border:.5pt solid #000"><td style="border:.5pt solid #000;width:15px;vertical-align:top;text-align:center;padding-left:5px">C.</td>`;
-                for(c = 0 ; c <arrHead.length ; c++){
-                    html +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiC[c]}</td>`
-                    
-                }
-                //tabel opsi D
-                if(db.opsiD !== ""){
-                    html +=`</tr><tr style="border:.5pt solid #000"><td style="border:.5pt solid #000;width:15px;vertical-align:top;text-align:center;padding-left:5px">D.</td>`;
-                    for(c = 0 ; c < arrHead.length ; c++){
-                        html +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiD[c]}</td>`;
-                    }
-                }else{
-                    html +=`</tr>`
-                }
-
-                html +=`</tbody></table>`
-        
     }
     elemen.innerHTML = html;
     elemen.setAttribute("data-idbarissoal",iRow_dbsoal);
@@ -3562,31 +3690,14 @@ mbs_lihatpropertysoal.addEventListener("change",()=>{
 });
 
 mbs_ingindiedit.addEventListener("change",()=>{
+    let tombol = document.querySelector(".btn_terapkansoal")
     let elisi = document.querySelectorAll("[data-dbmbs]");
     if(mbs_ingindiedit.checked){
         btn_terapkansoaledit.classList.remove("w3-hide");
+
         for(i = 0 ; i < elisi.length ; i++){
             elisi[i].setAttribute("contenteditable","true")
         }
-    }else{
-        for(i = 0 ; i < elisi.length ; i++){
-        elisi[i].removeAttribute("contenteditable");
-        }
-        btn_terapkansoaledit.classList.add("w3-hide");
-    }
-    let tombol = document.querySelector(".btn_terapkansoal")
-    if(iRow_dbsoal == ""){
-        if(tombol.className.indexOf("w3-hide")==-1){
-            tombol.classList.add("w3-hide");
-
-        }
-        btn_terapkansoaledit.classList.add("w3-hide");
-        btn_terapkansoaledit.onclick=null;
-    }else{
-        if(tombol.className.indexOf("w3-hide")>-1){
-            tombol.classList.remove("w3-hide");
-        }
-        btn_terapkansoaledit.classList.remove("w3-hide");
         btn_terapkansoaledit.onclick=function(){
             let mbs_ceklisilustrasi = document.getElementById("mbs_ceklisilustrasi")
             let dbilustrasi = document.querySelector("[data-dbmbs=ilustrasi]")
@@ -3595,16 +3706,38 @@ mbs_ingindiedit.addEventListener("change",()=>{
             //ilustrasi
             if(dbilustrasi !== ""){
                 if(mbs_ceklisilustrasi.checked){
-                    html +=`${dbilustrasi.innerHTML}<br>`
+                    html +=`${dbilustrasi.innerHTML}<br><br>`;
                 }
             }
 
-            html += antaraDiv(dbpertanyaan.innerHTML);
+            html += dbpertanyaan.innerHTML;
 
             elemenedit.innerHTML = html;
             // jika edit nanti tolong dikirim ke server, data aslinya tidak akan hilang. Editan akan 
+            kirimmodifikasidarimodalbanksoal(iRow_dbsoal,"data-dbmbs");
             document.getElementById('modalbanksoal').style.display='none';
         }
+    }else{
+        for(i = 0 ; i < elisi.length ; i++){
+        elisi[i].removeAttribute("contenteditable");
+        }
+        btn_terapkansoaledit.classList.add("w3-hide");
+        btn_terapkansoaledit.onclick=null;
+    }
+
+    if(iRow_dbsoal == ""){
+        if(tombol.className.indexOf("w3-hide")==-1){
+            tombol.classList.add("w3-hide");
+
+        }
+        // btn_terapkansoaledit.classList.add("w3-hide");
+       
+    }else{
+        if(tombol.className.indexOf("w3-hide")>-1){
+            tombol.classList.remove("w3-hide");
+        }
+        //btn_terapkansoaledit.classList.remove("w3-hide");
+        
     }
 });
 
@@ -3851,6 +3984,7 @@ const lihatkrtusoalall = () =>{
                             for(c = 0 ; c < arrHead.length ; c++){
                                 html +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiD[c]}</td>`;
                             }
+                            html +=`</tr>`
                         }else{
                             html +=`</tr>`
                         }
@@ -4503,58 +4637,62 @@ const modalbanksoaleditable = (ibrs,kondisi) =>{
     let koleksiklikkomenowner = [];
     if(kondisi == "lihat"){
         db = databasesoal.filter(s => s.idbaris == ibrs)[0];
+        
         objekratingsoal = ob_ratinguser(db.idbaris);
         src_komentar = objekratingsoal.komentar;
         html = `<h2 style="text-align:center">Data Tentang Soal Ini</h2><br>
         Tampilan Soal:
         <div style="border:.5pt solid #000;border-radius:30px;padding:15px">${db.ilustrasi}<br> ${db.pertanyaan}`;
-        if(db.headerpg==""){
-            html +=`<ol style="list-style-type:upper-alpha;margin:0 0 0 -1em">
-            <li>${db.opsiA}</li>
-            <li>${db.opsiB}</li>
-            <li>${db.opsiC}</li>`;
-                        if(db.opsiD !==""){
-                                html+=`<li>${db.opsiC}</li>`
-                        }    
-            html +=`</ol>`
-        }else{
-            let arropsiA = JSON.parse(db.opsiA);
-            let arropsiB = JSON.parse(db.opsiB);
-            let arropsiC = JSON.parse(db.opsiC);
-            let arropsiD = [];
-            let arrHead = JSON.parse(db.headerpg);
-            let jumlahPG = 3;
-            if(db.opsiD !== ""){
-                arropsiD = JSON.parse(db.opsiD);
-                jumlahPG = 4
-            }
-            html += `<table style="border-collapse:collapse;border:.5pt solid #000;width:100%;font-family:Times New Roman, Times, serif;">`;
-            html +=`<thead><tr style="border:.5pt solid #000"><th style="border:.5pt solid #000;background-color:#f1f1f1;width:30px"></th>`;
-            for(a = 0 ; a < arrHead.length ; a++){
-                html +=`<th style="border:.5pt solid #000;text-align:center;background-color:#f1f1f1">${arrHead[a]}</th>`
-            }
-            html +=`</tr><tbody>`;
-            html +=`<tr style="border:.5pt solid #000"><td style="border:.5pt solid #000;width:15px;vertical-align:top;text-align:center;padding-left:5px">A.</td>`;
-            for(c = 0 ; c <arrHead.length ; c++){
-                html +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiA[c]}</td>`
-            }
-            html +=`</tr><tr style="border:.5pt solid #000;vertical-align:top;"><td style="border:.5pt solid #000;width:15px;vertical-align:top;text-align:center;padding-left:5px">B.</td>`;
-            for(c = 0 ; c < arrHead.length ; c++){
-                html +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiB[c]}</td>`;
-            }
-            html +=`</tr><tr style="border:.5pt solid #000"><td style="border:.5pt solid #000;width:15px;vertical-align:top;text-align:center;padding-left:5px">C.</td>`;
-            for(c = 0 ; c <arrHead.length ; c++){
-                html +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiC[c]}</td>`
-            }
-            if(db.opsiD !== ""){
-                html +=`</tr><tr style="border:.5pt solid #000"><td style="border:.5pt solid #000;width:15px;vertical-align:top;text-align:center;padding-left:5px">D.</td>`;
-                for(c = 0 ; c < arrHead.length ; c++){
-                    html +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiD[c]}</td>`;
-                }
+        if(db.bentuksoal == "Pilihan Ganda"){
+            if(db.headerpg==""){
+                html +=`<ol style="list-style-type:upper-alpha;margin:0 0 0 -1em">
+                <li>${db.opsiA}</li>
+                <li>${db.opsiB}</li>
+                <li>${db.opsiC}</li>`;
+                            if(db.opsiD !==""){
+                                    html+=`<li>${db.opsiC}</li>`
+                            }    
+                html +=`</ol>`
             }else{
-                html +=`</tr>`
+                let arropsiA = JSON.parse(db.opsiA);
+                let arropsiB = JSON.parse(db.opsiB);
+                let arropsiC = JSON.parse(db.opsiC);
+                let arropsiD = [];
+                let arrHead = JSON.parse(db.headerpg);
+                let jumlahPG = 3;
+                if(db.opsiD !== ""){
+                    arropsiD = JSON.parse(db.opsiD);
+                    jumlahPG = 4
+                }
+                html += `<table style="border-collapse:collapse;border:.5pt solid #000;width:100%;font-family:Times New Roman, Times, serif;">`;
+                html +=`<thead><tr style="border:.5pt solid #000"><th style="border:.5pt solid #000;background-color:#f1f1f1;width:30px"></th>`;
+                for(a = 0 ; a < arrHead.length ; a++){
+                    html +=`<th style="border:.5pt solid #000;text-align:center;background-color:#f1f1f1">${arrHead[a]}</th>`
+                }
+                html +=`</tr><tbody>`;
+                html +=`<tr style="border:.5pt solid #000"><td style="border:.5pt solid #000;width:15px;vertical-align:top;text-align:center;padding-left:5px">A.</td>`;
+                for(c = 0 ; c <arrHead.length ; c++){
+                    html +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiA[c]}</td>`
+                }
+                html +=`</tr><tr style="border:.5pt solid #000;vertical-align:top;"><td style="border:.5pt solid #000;width:15px;vertical-align:top;text-align:center;padding-left:5px">B.</td>`;
+                for(c = 0 ; c < arrHead.length ; c++){
+                    html +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiB[c]}</td>`;
+                }
+                html +=`</tr><tr style="border:.5pt solid #000"><td style="border:.5pt solid #000;width:15px;vertical-align:top;text-align:center;padding-left:5px">C.</td>`;
+                for(c = 0 ; c <arrHead.length ; c++){
+                    html +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiC[c]}</td>`
+                }
+                if(db.opsiD !== ""){
+                    html +=`</tr><tr style="border:.5pt solid #000"><td style="border:.5pt solid #000;width:15px;vertical-align:top;text-align:center;padding-left:5px">D.</td>`;
+                    for(c = 0 ; c < arrHead.length ; c++){
+                        html +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiD[c]}</td>`;
+                    }
+                    html +=`</tr>`
+                }else{
+                    html +=`</tr>`
+                }
+            html +=`</tbody></table>`
             }
-        html +=`</tbody></table>`
         }
         html+=`</div><br><h3 style="text-align:center">Properti Soal</h3>
         <div class="w3-border w3-round-small w3-padding" style="overflow-x:auto">
@@ -4592,7 +4730,7 @@ const modalbanksoaleditable = (ibrs,kondisi) =>{
         </div>
             <br><br>`;
             
-            if(db.idguru !== idguru){
+            if(db.idguru != idguru){
                 html+=`<div style="border:.5pt dotted #000;border-radius:30px;padding:5px;text-align:center">
                 <div class="infousermemberirating">
                 ${objekratingsoal.infouser}
@@ -4657,6 +4795,7 @@ const modalbanksoaleditable = (ibrs,kondisi) =>{
             
     }else if(kondisi == "modifikasi"){
         db = databasesoal.filter(s => s.idbaris == ibrs)[0];
+        
         objekratingsoal = ob_ratinguser(db.idbaris);
         src_komentar = objekratingsoal.komentar;
         html =`<h4 class="w3-center">Modifikasi Item Soal</h3><br><div class="w3-tiny">
@@ -4913,6 +5052,7 @@ const modalbanksoaleditable = (ibrs,kondisi) =>{
                 for(c = 0 ; c < arrHead.length ; c++){
                     html +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiD[c]}</td>`;
                 }
+                html +=`</tr>`
             }else{
                 html +=`</tr>`
             }
@@ -5024,23 +5164,34 @@ const modalbanksoaleditable = (ibrs,kondisi) =>{
     };
     let allEditableSoal = document.querySelectorAll("[data-modifikasi]");
     for(let i = 0 ; i < allEditableSoal.length ; i++){
-        let teks = allEditableSoal[i].getAttribute("data-modifikasi")
+        let teks = allEditableSoal[i].getAttribute("data-modifikasi");
+        
         let tekskelas = "modifsoal_"+teks;
+
         let el = teks.indexOf("headerpg")>-1 || teks.indexOf("opsi")>-1?document.querySelectorAll("."+tekskelas):document.querySelector("."+tekskelas);
+        
         let majemuk = teks.indexOf("headerpg")>-1 || teks.indexOf("opsi")>-1?true:false;
         
         if(majemuk){
-            for(let j = 0 ; j < el.length ; j++){
-                if(el[j] !== null){
-                    el[j].onclick = function(){
-                        isiteksunsurbanksoal("areaprint_soalkisidandesainsoallainnya", tekskelas+j, "atas", "");
+            if(el.length>1){
+                for(let j = 0 ; j < el.length ; j++){
+                    if(el[j] !== null){
+                        el[j].onclick = function(){
+                            isiteksunsurbanksoal("areaprint_soalkisidandesainsoallainnya", tekskelas+j, "atas", "");
+                        }
                     }
+                }
+            }else{
+                el[0].onclick = function(){
+                    isiteksunsurbanksoal("areaprint_soalkisidandesainsoallainnya", tekskelas, "atas", "");
+                    
                 }
             }
         }else{
             if(el !== null){
                 el.onclick = function(){
                     isiteksunsurbanksoal("areaprint_soalkisidandesainsoallainnya", tekskelas, "atas", "");
+                    
                 }
             }
         }
@@ -5048,6 +5199,7 @@ const modalbanksoaleditable = (ibrs,kondisi) =>{
 
     printkan.onclick = null;
     wordkan.onclick = null;
+    document.getElementById('modal_soalkisidandesainsoallainnya').scrollTo({ top: 43, behavior: 'smooth' });
 }
 const radiorating = (el,brs)=>{
     let label = document.querySelectorAll(".label_rating");
@@ -6213,12 +6365,12 @@ const selesaiambilscreenshot = (idsiswa,indekkronologijson)=>{
                 html1 += `<hr class="w3-bottombar w3-border-black">pertanyaan ke - ${b} <br><div class="w3-container w3-border w3-round-large">`;
                 html1 += divpertanyaan.innerHTML;
                 html1 +=`</div><br class="w3-bottombar">Berikan Langsung Nilai Koreksi : <input type="number" id="koreksisoalscanner_${b}" min="0" value="0" class="koreksisoalscanner" onchange="updatenilaikoreksscanner('${b}',${countEssay})">`;
-                htmlprev+=`<ol style="list-style-type:decimal" start="${b}"><li><b style="color:blue">Pertanyaan:</b><br>${divpertanyaan.innerHTML}<hr style="border-top:1px solid black"><b style="color:blue">Jawaban:</b><br><i style="w3-text-red">Diambil dari Scanner</i><div id="untuklj${b}" class="koleksilj" style="border:1px solid red;padding:5px;background-color:#eeeeff">Nilai</div></li></ol>`;
+                htmlprev+=`<ol style="list-style-type:decimal" start="${b}"><li><b style="color:blue">Pertanyaan:</b><br>${divpertanyaan.innerHTML}<hr style="border-top:1px solid black"><b style="color:blue">Jawaban:</b><br><i class="w3-text-red">Diambil dari Scanner</i><div id="untuklj${b}" class="koleksilj" style="border:1px solid red;padding:5px;background-color:#eeeeff">Nilai</div></li></ol>`;
                 
-                html12 +=`<br>No. Essay= ${b}<input value="" class="inputscannerakhir  ${objektes[b]}" data-keykirimscanner="SKOR_${b}" id="SKOR_${b}">`;
+                html12 +=`<br>No. Essay= ${b}<input  class="inputscannerakhir  ${objektes[b]}" data-keykirimscanner="SKOR_${b}" id="SKOR_${b}">`;
                 
             }
-            html12 +=`<br>Nilai Total Essay= <input value="" class="inputscannerakhir" data-keykirimscanner="nilaiEssay" id="nilaiakhiressayscaner">`;
+            html12 +=`<br>Nilai Total Essay= <input  class="inputscannerakhir" data-keykirimscanner="nilaiEssay" id="nilaiakhiressayscaner">`;
             // tempatperikspg.innerHTML += html;
             htmlprev +=`</div>`;//4
             
@@ -6276,27 +6428,27 @@ const selesaiambilscreenshot = (idsiswa,indekkronologijson)=>{
         html12+=`NILAI KD (objek nilai KD soal materi) =<input class="inputscannerakhir" data-keykirimscanner="nilaikd" id="nilaikdkoreksikoreksi" value=""><br>`;
         document.getElementById("datakirimscanner").innerHTML = html12;
         
-    let kd = JSON.parse(kronologijson[parseInt(idtabaktif.innerHTML)].kuncikd)
-    let keykd = Object.keys(kd); // MTK_3.1 , PKN_3.5
-    let objnilai = {};
-    
-    
-    for (let k = 0; k < keykd.length; k++) {
+        let kd = JSON.parse(kronologijson[parseInt(idtabaktif.innerHTML)].kuncikd)
+        let keykd = Object.keys(kd); // MTK_3.1 , PKN_3.5
+        let objnilai = {};
         
-        let nomorsoal = kd[keykd[k]];
-        let jumlahnomor = nomorsoal.length;
-        let count = 0;
         
-        let inkd = document.getElementsByClassName(keykd[k]);
-        for (let j = 0; j < inkd.length; j++) {
-            count += inkd[j].value * 1;
-            //console.log(inkd[j].value)
-        }
+        for (let k = 0; k < keykd.length; k++) {
+            
+            let nomorsoal = kd[keykd[k]];
+            let jumlahnomor = nomorsoal.length;
+            let count = 0;
+            
+            let inkd = document.getElementsByClassName(keykd[k]);
+            for (let j = 0; j < inkd.length; j++) {
+                count += inkd[j].value * 1;
+                //console.log(inkd[j].value)
+            }
 
-        let nilaiakhir = (count / jumlahnomor * 100).toFixed(2)
-        objnilai[keykd[k]] = nilaiakhir
-    }
-    document.getElementById("nilaikdkoreksikoreksi").value = JSON.stringify(objnilai)
+            let nilaiakhir = (count / jumlahnomor * 100).toFixed(2)
+            objnilai[keykd[k]] = nilaiakhir
+        }
+        document.getElementById("nilaikdkoreksikoreksi").value = JSON.stringify(objnilai)
 
     });
 }
@@ -6456,7 +6608,7 @@ function showhideinfoljk(kondisi,bolessay = false){
         if(elemencek.hasAttribute("style")){
             elemencek.removeAttribute("style")
         }
-        tombolcetakscanner.setAttribute("onclick",`printadm('tombollihatessay',true)`);
+        tombolcetakscanner.setAttribute("onclick",`printadm('formatljknotepadscanner',true)`);
         tombolcekawal.innerHTML = `<i class="fa fa-home"></i> Akhir Cek`;
     }else if(kondisi == "lihatljkscanner"){
         if(tempatinfoawal.className.indexOf("w3-hide")==-1){
@@ -6803,6 +6955,7 @@ const trialScanLJK = (param) =>{
     tombolselesasi.setAttribute("onclick",`selesaiambilscreenshot(${tk_siswa},${par})`)
     start_kameraLJK(1);
 }
+
 const kirimserverakhirscanner = ()=>{
     if(!bolean_kirimakhirscanner){
         alert("Aplikasi belum siap");
@@ -6852,10 +7005,10 @@ const kirimserverakhirscanner = ()=>{
             
             if (iddarimana == "hariini") {
                 getdaftarnilai(idakseskoreksi)
-            } else (
+            } else {
                 daftarnilaikronologi(idakseskoreksi)
 
-            )
+            }
 
         })
         .catch(er => {
@@ -6873,4 +7026,1538 @@ const kirimserverakhirscanner = ()=>{
             dives.innerHTML = "";
             divlj.innerHTML = "";
         });
+}
+//
+let fokusDatasoalkontenmateri = [];
+let fokusDatasoalkontenmateriawal = [];
+let iRow_dbsoalkontenmateri = 2; // sama dengan 1dbaris
+let cekbentuksoaloutkontenmateri = document.querySelectorAll("input[name=mbskontenmateri_pilihanbentuksoal]");
+const mbskontenmateri_filter = document.getElementById("mbskontenmateri_filter");
+const mbskontenmateri_lihatpropertysoal = document.getElementById("mbskontenmateri_lihatpropertysoal");
+const mbskontenmateri_ingindiedit = document.getElementById("mbskontenmateri_ingindiedit");
+const btnkontenmateri_terapkansoaledit = document.querySelector(".btnkontenmateri_terapkansoaledit");
+const btnkontenmateri_terapkansoal = document.querySelector(".btnkontenmateri_terapkansoal");
+const btn_terapkanfilterkontenmateri = document.querySelector(".terapkanfilterkontenmateri");
+const input_mbskontenmateri_kriteriafilter = document.getElementById("mbskontenmateri_kriteriafilter");
+let modsokontenmateri_awal = document.querySelector(".mbskontenmateri_awal"), 
+    modsokontenmateri_akhir = document.querySelector(".mbskontenmateri_akhir"), 
+    modsokontenmateri_selanjutnya = document.querySelector(".mbskontenmateri_next"), 
+    modsokontenmateri_sebelumnya = document.querySelector(".mbskontenmateri_prev"), 
+    modsokontenmateri_spanhalaman = document.querySelector(".mbskontenmateri_infohalaman"), 
+    modsokontenmateri_page_saatini=1, modsokontenmateri_per_page=1;
+
+btn_terapkanfilterkontenmateri.onclick = () =>{
+    if(fokusDatasoalkontenmateri.length == 0){
+        alert("Maaf, database soal tidak kami temukan");
+        return
+    };
+    
+    let kriteria = input_mbskontenmateri_kriteriafilter.value;
+    let infoawal = document.querySelector(".mbskontenmateri_info").innerHTML;
+    let split_infoawal = infoawal.split(" serta mencari soal dengan kata kunci ")
+   
+    if(split_infoawal.length>1){
+        document.querySelector(".mbskontenmateri_info").innerHTML = infoawal[0] + " serta mencari soal dengan kata kunci "+ kriteria;
+    }else{
+        document.querySelector(".mbskontenmateri_info").innerHTML += " serta mencari soal dengan kata kunci "+ kriteria;
+
+    }
+    
+    let araysebelumdicari = fokusDatasoalkontenmateriawal;
+            
+    let ar = [];
+    if(kriteria.indexOf(",")>-1){
+        let spl = kriteria.split(",");//array
+        for(i = 0 ; i < spl.length ; i++){
+            if(i == 0){
+                ar = fokusDatasoalkontenmateriawal.filter(s => Object.entries(s).filter(([k,v])=> v.toString().toLowerCase().indexOf(spl[i].toLowerCase())>-1).length!==0)
+            }else{
+                ar = ar.filter(s => Object.entries(s).filter(([k,v])=> v.toString().toLowerCase().indexOf(spl[i].toLowerCase()>-1)).length!==0);
+            }
+        }    
+        
+    }else{
+            
+            ar = fokusDatasoalkontenmateriawal.filter(s => Object.entries(s).filter(([k,v])=> v.toString().toLowerCase().indexOf(kriteria.toLowerCase())>-1).length!==0)
+    }
+
+    if(ar.length == 0){
+        alert("Maaf, tidak ditemukan database soal dengan kriteria ini. Kami akan menyajikan database yang telah ada.");
+        configmodalsoalkontenmateri_peritem(araysebelumdicari,"");
+        
+    }else{
+        configmodalsoalkontenmateri_peritem(ar,"");
+        
+    }
+}
+
+const configmodalsoalkontenmateri_peritem = (obj,kondisi="")=>{
+    modsokontenmateri_sebelumnya.onclick = function () {
+        if ( modsokontenmateri_page_saatini > 1) {
+            modsokontenmateri_page_saatini--;
+            gantiinHalamansoalkontenmateri(modsokontenmateri_page_saatini);
+        }
+    
+    }
+    modsokontenmateri_selanjutnya.onclick = function(){
+        if ( modsokontenmateri_page_saatini < TotalHalamansoalkontenmateri()) {
+            modsokontenmateri_page_saatini++;
+            gantiinHalamansoalkontenmateri(modsokontenmateri_page_saatini);
+        }
+        
+    }
+    
+    function gantiinHalamansoalkontenmateri(page)    {
+        if (page < 1) page = 1;
+        if (page > TotalHalamansoalkontenmateri()) page = TotalHalamansoalkontenmateri();
+
+        
+        let teks =``;
+        
+        for (var i = (page-1) * modsokontenmateri_per_page; i < (page * modsokontenmateri_per_page) && i < obj.length; i++) {
+            let html= "";
+            let kondisipg = document.querySelector(".kondisipilihangandakontenmateri");
+            let kondisiilustrasikontenmateri = document.querySelector(".kondisiilustrasikontenmateri");
+            let tombol = document.querySelector(".btnkontenmateri_terapkansoal")
+                    let dataawal
+                    if(obj.length == 0){
+                        
+                        dataawal=Object.assign({},databasesoalkosong)
+                        dataawal.ilustrasi = "Tidak ada soal tipe kriteria ini";
+                        dataawal.pertanyaan = "Tidak ada soal tipe kriteria ini";
+                        
+                    }else{
+                        dataawal = obj[i]
+
+                    }
+                    
+                    iRow_dbsoalkontenmateri = dataawal.idbaris;
+                    
+                    if(iRow_dbsoalkontenmateri == ""){
+                        if(tombol.className.indexOf("w3-hide")==-1){
+                            tombol.classList.add("w3-hide");
+                        }
+                    }else{
+                        if(tombol.className.indexOf("w3-hide")>-1){
+                            tombol.classList.remove("w3-hide");
+                        }
+                    }
+
+                    let elisi = document.querySelectorAll("[data-dbmbskontenmateri]");
+                    for(j = 0 ; j < elisi.length ; j++){
+                        let key = elisi[j].getAttribute("data-dbmbskontenmateri");
+                        elisi[j].innerHTML = dataawal[key];
+                    }
+                    if(dataawal.ilustrasi == ""){
+                        kondisiilustrasikontenmateri.classList.add("w3-hide");
+                    }else{
+                        kondisiilustrasikontenmateri.classList.remove("w3-hide");
+                    }
+                    if(dataawal.bentuksoal == "Pilihan Ganda"){
+                        if(dataawal.tampilanpg == "BIASA"){
+                                html +=`<ol style="list-style-type:upper-alpha;margin:0 0 0 -1.4461538461999965em">
+                                <li>${dataawal.opsiA}</li>
+                                <li>${dataawal.opsiB}</li>
+                                <li>${dataawal.opsiC}</li>`
+                                if(dataawal.opsiD !== ""){
+                                    html +=`<li>${dataawal.opsiC}</li>`
+                                }
+                                html +=`</ol>`;
+                            }else{  
+                                let db = dataawal;
+                                let arropsiA = JSON.parse(db.opsiA);
+                                let arropsiB = JSON.parse(db.opsiB);
+                                let arropsiC = JSON.parse(db.opsiC);
+                                let arropsiD = [];
+                                let arrHead = JSON.parse(db.headerpg);
+                                let jumlahPG = 3;
+                                
+                                if(db.opsiD !== ""){
+                                    arropsiD = JSON.parse(db.opsiD);
+                                    jumlahPG = 4
+                                }
+                                html += `<table style="border-collapse:collapse;border:.5pt solid #000;width:100%">`;
+                                html +=`<thead><tr style="border:.5pt solid #000"><th style="border:.5pt solid #000;background-color:#f1f1f1;width:30px"></th>`;
+                                for(a = 0 ; a < arrHead.length ; a++){
+                                    html +=`<th style="border:.5pt solid #000;text-align:center;background-color:#f1f1f1">${arrHead[a]}</th>`
+                                }
+                                html +=`</tr><tbody>`;
+                                //tabel opsi A
+                                html +=`<tr style="border:.5pt solid #000"><td style="border:.5pt solid #000;width:15px;vertical-align:top;text-align:center;padding-left:5px">A.</td>`;
+                                for(c = 0 ; c <arrHead.length ; c++){
+                                    html +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiA[c]}</td>`
+                                    
+                                }
+                                //tabel opsi B
+                                html +=`</tr><tr style="border:.5pt solid #000;vertical-align:top;"><td style="border:.5pt solid #000;width:15px;vertical-align:top;text-align:center;padding-left:5px">B.</td>`;
+                                for(c = 0 ; c < arrHead.length ; c++){
+                                    html +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiB[c]}</td>`;
+                                }
+                                //tabel opsi C
+                                html +=`</tr><tr style="border:.5pt solid #000"><td style="border:.5pt solid #000;width:15px;vertical-align:top;text-align:center;padding-left:5px">C.</td>`;
+                                for(c = 0 ; c <arrHead.length ; c++){
+                                    html +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiC[c]}</td>`
+                                    
+                                }
+                                //tabel opsi D
+                                if(db.opsiD !== ""){
+                                    html +=`</tr><tr style="border:.5pt solid #000"><td style="border:.5pt solid #000;width:15px;vertical-align:top;text-align:center;padding-left:5px">D.</td>`;
+                                    for(c = 0 ; c < arrHead.length ; c++){
+                                        html +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiD[c]}</td>`;
+                                    }
+                                    html +=`</tr>`
+                                }else{
+                                    html +=`</tr>`
+                                }
+                                
+                                html +=`</tbody></table>`
+                            }
+                    }
+                        kondisipg.innerHTML = html;
+                    }
+        
+        
+
+        modsokontenmateri_spanhalaman.innerHTML = page + " dari " + TotalHalamansoalkontenmateri();
+
+        if (page == 1) {
+            modsokontenmateri_sebelumnya.style.visibility = "hidden";
+            modsokontenmateri_awal.style.visibility = "hidden";
+        } else {
+            modsokontenmateri_awal.style.visibility = "visible"
+            modsokontenmateri_sebelumnya.style.visibility = "visible";
+        }
+
+        if (page == TotalHalamansoalkontenmateri()) {
+            modsokontenmateri_selanjutnya.style.visibility = "hidden";
+            modsokontenmateri_akhir.style.visibility = "hidden";
+        } else {
+            modsokontenmateri_akhir.style.visibility = "visible";
+            modsokontenmateri_selanjutnya.style.visibility = "visible";
+        }
+
+    }
+    function TotalHalamansoalkontenmateri()
+    {
+        return Math.ceil(obj.length / modsokontenmateri_per_page);
+    }
+
+    modsokontenmateri_akhir.onclick = function (){
+        let hal = TotalHalamansoalkontenmateri();
+         modsokontenmateri_page_saatini = hal;
+        gantiinHalamansoalkontenmateri(hal);
+
+    }
+    modsokontenmateri_awal.onclick =function (){
+         modsokontenmateri_page_saatini = 1;
+        gantiinHalamansoalkontenmateri(1);
+        // Validate page
+        //  if (page < 1) page = 1;
+        //  if (page > TotalHalamansoalkontenmateri()) page = TotalHalamansoalkontenmateri();
+
+    }
+    if(kondisi == ""){
+        gantiinHalamansoalkontenmateri(1);
+    }else{
+        
+        let valuse = obj.map(m=> parseInt(m.idbaris));
+        
+        let indeknya = valuse.indexOf(parseInt(kondisi));
+        
+        gantiinHalamansoalkontenmateri((indeknya+1));
+    }
+    mbskontenmateri_ingindiedit.checked = false;
+    let elisi = document.querySelectorAll("[data-dbmbskontenmateri]");
+    for(i = 0 ; i < elisi.length ; i++){
+    elisi[i].removeAttribute("contenteditable");
+    }
+    if(btnkontenmateri_terapkansoaledit.className.indexOf("w3-hide")==-1){
+        btnkontenmateri_terapkansoaledit.classList.add("w3-hide");
+    }
+    
+}
+
+let elemeneditkontenmateri;
+const aktifkanmodalkontenmateri_banksoal = (elemen="",dataidbarissoal) =>{
+    // let lR = elemen.parentElement.rowIndex;
+    // let lC = elemen.cellIndex;
+
+    document.getElementById('modalbanksoalkontenmateri').style.display='block';
+    document.getElementById('modalbanksoalkontenmateri').scrollTo({ top: 0, behavior: 'smooth' });
+    doc.body.focus();
+    // document.getElementById("mbskontenmateri_filter").checked = false;
+    let selectmapel = document.formuploadmateri.jenistagihan;//document.getElementById("naskahsoal_mapelapatema");
+    let ops = selectmapel.options;
+    let indek = ops.selectedIndex;
+    let v_mapel = ops[indek].value;
+    let t_mapel = ops[indek].text;
+    let krt_kelas = [];
+   
+    krt_kelas = v_mapel=="ustertulis"||v_mapel=="uspraktek"?["4","5","6"]:[idJenjang];
+    let afokusDatasoalkontenmateri = databasesoal.filter(s=> krt_kelas.indexOf(s.jenjang)>-1);
+    let infoawal = "Anda memilih Database Soal untuk " + t_mapel + " yang memuat konten materi / soal yang bersumber dari kelas " + krt_kelas.join();
+    
+    // let tabel = document.querySelector(".tempatnaskahsoal_soal");
+    // let lRow = elemen.parentElement.rowIndex;
+    
+    
+    // let nosoal = contenmatericeknomorsoaldulu(elemen,ceknomorsoal);//ceknomorsoal == ""|| ceknomorsoal == 0? contenmatericeknomorsoaldulu(elemen,ceknomorsoal):ceknomorsoal;
+    // let nosoal = ceknomorsoal == ""|| ceknomorsoal == 0? contenmatericeknomorsoaldulu(elemen,ceknomorsoal):ceknomorsoal;
+    // let innerDiv = elemen;
+    elemeneditkontenmateri = elemen;
+    
+    
+    let kondisipg = document.querySelector(".kondisipilihangandakontenmateri");
+    let cekbentuksoal = document.querySelectorAll("input[name=mbskontenmateri_pilihanbentuksoal]");
+    cekbentuksoal.forEach(el => {
+        if(el.checked){
+            document.querySelector(".mbskontenmateri_info").innerHTML = infoawal + " dengan kriteria bentuk soal "+el.value;
+            fokusDatasoalkontenmateri = afokusDatasoalkontenmateri.filter(s=> s.bentuksoal == el.value);
+            
+        }
+    });
+    // if(fokusDatasoalkontenmateri.length == 0){
+    //     alert("Belum ada database soal untuk kriteria soal ini");
+    //     document.getElementById('modalbanksoalkontenmateri').style.display='none';
+    //     return
+    // }
+    
+    let arOB =[]
+    if(document.getElementById("mbskontenmateri_filter").checked){
+        let krt = document.getElementById("mbskontenmateri_kriteriafilter").value;
+        if(krt.value == ""){
+            arOB = fokusDatasoalkontenmateri;
+        }else{
+            document.querySelector(".mbskontenmateri_info").innerHTML +=  " serta mencari soal dengan kata kunci "+ krt;
+            arOB = fokusDatasoalkontenmateri.filter(s=>Object.fromEntries(Object.entries(s).filter((k,v)=> v.toString().toLowerCase().indexOf(krt.toLowerCase())>-1)).length!==0);
+
+        }
+        
+
+    }else{
+        arOB = fokusDatasoalkontenmateri
+    }
+
+        // if(v_mapel.indexOf("TEMA")>-1){
+        //     arOB = fokusDatasoalkontenmateri;
+        // }else{
+        //     if(v_mapel.indexOf("US_")>-1){
+        //         let kr = v_mapel.replace("US_","")
+        //         arOB = fokusDatasoalkontenmateri.filter(s=> s.kodemapel == kr);
+
+        //     }else{
+        //         arOB = fokusDatasoalkontenmateri.filter(s=> s.kodemapel == v_mapel);
+
+        //     }
+        // }
+        fokusDatasoalkontenmateriawal = arOB;
+    //iRow_dbsoalkontenmateri = dataawal.idbaris;
+    configmodalsoalkontenmateri_peritem(arOB,dataidbarissoal);
+    btnkontenmateri_terapkansoal.onclick = function (){
+        let ceknomorsoal = document.querySelector(".mbskontenmateri_fokusnosoal").value ;
+        let nosoal =  contenmatericeknomorsoaldulu(elemen,ceknomorsoal);
+        let innerDiv = elemen;
+        terapkankontenmateri_itemsoal(innerDiv,nosoal)
+    };
+   
+    
+    
+    
+    //el.setAttribute("data-idbarissoal",lRow+"_"+lCol);
+}
+
+cekbentuksoaloutkontenmateri.forEach(el => {
+    el.addEventListener("change",()=>{
+        if(el.checked){
+            let selectmapel = document.formuploadmateri.jenistagihan;//document.getElementById("naskahsoal_mapelapatema");
+            let ops = selectmapel.options;
+            let indek = ops.selectedIndex;
+            let v_mapel = ops[indek].value;
+            let t_mapel = ops[indek].text;
+            let krt_kelas = [];
+            krt_kelas = v_mapel.indexOf("US_")>-1?["4","5","6"]:[idJenjang];
+            let afokusDatasoalkontenmateri = databasesoal.filter(s=> krt_kelas.indexOf(s.jenjang)>-1);
+            let infoawal = "Anda memilih Database Soal untuk " + t_mapel + " yang memuat konten materi / soal yang bersumber dari kelas " + krt_kelas.join();
+            
+            
+            document.querySelector(".mbskontenmateri_info").innerHTML = infoawal + " dengan kriteria bentuk soal "+el.value;
+            // let tabel = document.querySelector(".tempatnaskahsoal_soal");
+            // let lRow = elemen.parentElement.rowIndex;
+            
+            // let nosoal = tabel.rows[lRow].cells[1].innerHTML
+            // document.querySelector(".mbskontenmateri_fokusnosoal").innerHTML = nosoal;
+
+            
+            fokusDatasoalkontenmateri = afokusDatasoalkontenmateri.filter(s=> s.bentuksoal == el.value);
+            let arOB =[];
+            arrOB = fokusDatasoalkontenmateri;
+            // if(v_mapel.indexOf("TEMA")>-1){
+            //     arOB = fokusDatasoalkontenmateri;
+            // }else{
+            //     // arOB = fokusDatasoalkontenmateri.filter(s=> s.kodemapel == v_mapel);
+            //     if(v_mapel.indexOf("US_")>-1){
+            //         let kr = v_mapel.replace("US_","")
+            //         arOB = fokusDatasoalkontenmateri.filter(s=> s.kodemapel == kr);
+
+            //     }else{
+            //         arOB = fokusDatasoalkontenmateri.filter(s=> s.kodemapel == v_mapel);
+
+            //     }
+            // }
+            
+            // if(arOB.length == 0){
+            //     let obkosongan = Object.assign({},databasesoalkosong);
+            //     obkosongan.opsiA =`[""]`;
+            //     obkosongan.opsiB =`[""]`;
+            //     obkosongan.opsiC =`[""]`;
+            //     obkosongan.opsiD =`[""]`;
+            //     obkosongan.headerpg =`[""]`;
+            //     obkosongan.ilustrasi = "Tidak ada soal tipe kriteria ini";
+            //     obkosongan.pertanyaan = "Tidak ada soal tipe kriteria ini";
+            //     arOB.push(obkosongan)
+            // }
+            // console.log(arOB);
+            fokusDatasoalkontenmateriawal = arOB;
+            configmodalsoalkontenmateri_peritem(arOB,"");
+        }
+    })
+});
+
+const terapkankontenmateri_itemsoal = (elemen,nosoal)=>{
+    
+   
+    let mbskontenmateri_ceklisilustrasi = document.getElementById("mbskontenmateri_ceklisilustrasi")
+    let db = fokusDatasoalkontenmateri.filter(s => s.idbaris == iRow_dbsoalkontenmateri)[0];
+    let html = "";//kalo pg
+    let htmlnosoal = ``;
+    let htmlilustrasi ="";
+    let htmlpertanyaan ="";
+    let htmltemp = `<ol start="${nosoal}" class="w3-padding w3-card-4">`;//0
+    
+    //ilustrasi
+    if(db.ilustrasi !== ""){
+        if(mbskontenmateri_ceklisilustrasi.checked){
+            htmlilustrasi =`${db.ilustrasi}<br>`
+        }
+    }
+    htmlpertanyaan = db.pertanyaan;
+    
+    if(db.bentuksoal == "Pilihan Ganda"){
+        htmlnosoal = `<div class="w3-badge w3-left" data-sourcebanksoalid="${db.idbaris}">${nosoal}</div>`;
+        htmltemp +=`<li id="soalke-${nosoal}" class="calcnosoal" style="list-style-type:none">${htmlilustrasi}<br>${htmlpertanyaan}<hr style="border-top-color: olive;">`;//1
+        
+        if(db.tampilanpg == "BIASA"){ //-1.4461538461999965em
+            htmltemp +=`<ol style="list-style-type:upper-alpha;margin:5px 5px 0px 20px;padding:0">`
+            htmltemp+=`<li><input class="calc" type="radio" name="soal${nosoal}" id="${nosoal}A"><label class="opsi" for="${nosoal}A">${db.opsiA}</label></li>`;
+            htmltemp+=`<li><input class="calc" type="radio" name="soal${nosoal}" id="${nosoal}B"><label class="opsi" for="${nosoal}B">${db.opsiB}</label></li>`;
+            htmltemp+=`<li><input class="calc" type="radio" name="soal${nosoal}" id="${nosoal}C"><label class="opsi" for="${nosoal}C">${db.opsiC}</label></li>`;
+            if(db.opsiD !==""){
+                htmltemp +=`<li><input class="calc" type="radio" name="soal${nosoal}" id="${nosoal}D"><label class="opsi" for="${nosoal}D">${db.opsiD}</li>`;
+            }
+            htmltemp +=`</ol>`;//3 li opsi PG
+        }else{
+            htmltemp+=`<hr>`;
+            let arropsiA = JSON.parse(db.opsiA);
+                    let arropsiB = JSON.parse(db.opsiB);
+                    let arropsiC = JSON.parse(db.opsiC);
+                    let arropsiD = [];
+                    let arrHead = JSON.parse(db.headerpg);
+                    let jumlahPG = 3;
+                    
+                    if(db.opsiD !== ""){
+                        arropsiD = JSON.parse(db.opsiD);
+                        jumlahPG = 4
+                    }
+                    htmltemp += `<table style="border-collapse:collapse;border:.5pt solid #000;width:100%;font-family:Times New Roman, Times, serif;">`;
+                    htmltemp +=`<thead><tr style="border:.5pt solid #000"><th style="border:.5pt solid #000;background-color:#f1f1f1;width:30px"></th>`;
+                    for(a = 0 ; a < arrHead.length ; a++){
+                        htmltemp +=`<th style="border:.5pt solid #000;text-align:center;background-color:#f1f1f1">${arrHead[a]}</th>`
+                    }
+                    htmltemp +=`</tr><tbody>`;
+                    //tabel opsi A
+                    htmltemp +=`<tr style="border:.5pt solid #000"><td style="border:.5pt solid #000;width:30px;vertical-align:top;text-align:center;padding-left:5px">`;
+                    htmltemp+=`<input class="calc" type="radio" name="soal${nosoal}" id="${nosoal}A"><label class="opsi" for="${nosoal}A">A.  </label></td>`;
+                    for(c = 0 ; c <arrHead.length ; c++){
+                        htmltemp +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiA[c]}</td>`
+                        
+                    }
+                    //tabel opsi B
+                    htmltemp +=`</tr><tr style="border:.5pt solid #000;vertical-align:top;"><td style="border:.5pt solid #000;width:30px;vertical-align:top;text-align:center;padding-left:5px">`;
+                    htmltemp+=`<input class="calc" type="radio" name="soal${nosoal}" id="${nosoal}B"><label class="opsi" for="${nosoal}B">B.  </label></td>`;
+                    for(c = 0 ; c < arrHead.length ; c++){
+                        htmltemp +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiB[c]}</td>`;
+                    }
+                    //tabel opsi C
+                    html +=`</tr><tr style="border:.5pt solid #000"><td style="border:.5pt solid #000;width:30px;vertical-align:top;text-align:center;padding-left:5px">`;
+                    htmltemp+=`<input class="calc" type="radio" name="soal${nosoal}" id="${nosoal}C"><label class="opsi" for="${nosoal}C">C.  </label></td>`;
+                    for(c = 0 ; c <arrHead.length ; c++){
+                        htmltemp +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiC[c]}</td>`
+                        
+                    }
+                    //tabel opsi D
+                    if(db.opsiD !== ""){
+                        htmltemp +=`</tr><tr style="border:.5pt solid #000"><td style="border:.5pt solid #000;width:30px;vertical-align:top;text-align:center;padding-left:5px">`;
+                        htmltemp+=`<input class="calc" type="radio" name="soal${nosoal}" id="${nosoal}D"><label class="opsi" for="${nosoal}D">D.  </label></td>`;
+                        for(c = 0 ; c < arrHead.length ; c++){
+                            htmltemp +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiD[c]}</td>`;
+                        }
+                        html +=`</tr>`
+                    }else{
+                        html +=`</tr>`
+                    }
+
+                    html +=`</tbody></table>`
+            
+        }
+
+        htmltemp +=`</li>`;//1
+    }else{
+        htmlnosoal =`<div class="w3-badge w3-aqua w3-left" data-sourcebanksoalid="${db.idbaris}">${nosoal}</div>`;
+        htmltemp+=`<li id="essay${nosoal}" class="soalessay" style="border-bottom:1px solid blue">`;//li
+        htmltemp+=`<div id="pertanyaanessay_${nosoal}">${htmlilustrasi}<br>${htmlpertanyaan}<br></div>`;
+            htmltemp+=`<div id="tomboljawaban${nosoal}">`;//3 div tomboljawaban
+            htmltemp+=`<hr><button onclick="tombolketikjawaban('${nosoal}')">Ketik Jawaban No ${nosoal}</button><br><br>`;
+            htmltemp+=`<sub>atau</sub><br><br> <button onclick="tomboluploadjawaban('${nosoal}')">Upload Media No ${nosoal}</button><br><br><sub>Pilih Salah satu cara Kalian menjawab soal ini</sub>`;
+            htmltemp+=`</div><br>`;//3 divtomboljawaban
+        htmltemp +=`</li>`;//1
+
+    }
+    
+    htmltemp+=`</ol>`;//0
+    // html = "<div>"+htmlnosoal + htmltemp + "<br><br></div>";
+    html = htmlnosoal + htmltemp + "<br><br>";
+    
+    elemen.execCommand("insertHTML",null, html);
+    //barisakhir dari tabel biasanya ga dikasih warna jadi tanda warna di sini:
+    
+
+    let isianinput = null;
+    isianinput = document.getElementById("barukuncipgtemporary");
+    let isianawal = isianinput.value;
+    
+    let divs = doc.getElementsByTagName('div');
+    if(db.bentuksoal == "Pilihan Ganda"){
+        if(isianawal==""){
+            isianinput.value = nosoal+ db.kuncijawaban;
+            let creatediv = doc.createElement("div");
+            creatediv.innerHTML = "_KUNCI-PG_" + nosoal+ db.kuncijawaban;
+            doc.body.appendChild(creatediv);
+
+            
+        }else{
+            let teks = isianawal +","+nosoal+ db.kuncijawaban;
+            let arrteks = teks.split(",");
+            arrteks.sort((a,b)=> parseInt(a.match(/(\d+)/)==null?0:a.match(/(\d+)/)[0]) - parseInt(b.match(/(\d+)/)==null?0:b.match(/(\d+)/)[0]));
+            // isianinput.value = isianawal +","+nosoal+ db.kuncijawaban;
+            isianinput.value = arrteks;
+            let cek = divs.length;
+            let bol = false;
+            for(a = 0 ; a < divs.length ; a++){
+                let teks = divs[a].innerHTML;
+                if(teks.indexOf("_KUNCI-PG_")>-1){
+                
+                    bol = true;
+                    cek = a;
+
+                    break;
+                }else{
+                // console.log("none");
+                }
+            }
+
+            // divs[cek].innerHTML = "_KUNCI-PG_" + isianawal +","+nosoal+ db.kuncijawaban;
+            divs[cek].innerHTML = "_KUNCI-PG_" + arrteks;
+           
+           
+        }
+
+        let ele = document.querySelectorAll(".tdnosoal_editor_" + nosoal);
+            let elaktif = document.querySelector(".tdpg_pgeditor_" + nosoal+ db.kuncijawaban);
+            //hapus dulu bg warannya;
+            for (i = 0; i < ele.length; i++) {
+                // ele[i].className = ele[i].className.replace("w3-light-blue", "");
+                ele[i].classList.remove("w3-light-blue");
+            };
+            // elaktif.className += " w3-light-blue";
+            elaktif.classList.add("w3-light-blue");
+    }
+
+    let namatabel = document.getElementById("tabeldeteksidaribanksoal");
+    let bodytabel = namatabel.getElementsByTagName("tbody")[0];
+    let cekdivkd = document.getElementById("infosementarakdbanksoal");
+    let cekisiannokd = document.getElementById("cekkddaribanksoalbuatisian");
+    
+    let elemendata = doc.querySelectorAll("[data-sourcebanksoalid]");
+    let array_dbobjek = [];
+   
+    let htmlkd = `Properti Soal yang diambil dari Bank Soal<table class="w3-table garis w3-tiny w3-centered"><thead><tr class="w3-light-grey"><td>No. Soal</td><td>Mapel</td><td>KD</td><td>Kunci Jawaban</td></tr></thead><tbody>`;
+    if(elemendata.length>0){
+        for(let i = 0 ; i < elemendata.length; i++ ){
+            let paramid = elemendata[i].getAttribute("data-sourcebanksoalid");
+            let dbsoalnya = databasesoal.filter(s=> s.idbaris == paramid)[0];
+            let objek = Object.assign({},dbsoalnya);
+            objek.nosoaledura = elemendata[i].innerHTML
+            htmlkd +=`<tr><td>${elemendata[i].innerHTML}</td><td>${dbsoalnya.kodemapel}</td><td>${dbsoalnya.kd}</td><td>${dbsoalnya.bentuksoal=="Pilihan Ganda"?dbsoalnya.kuncijawaban:""}</td></tr>`;
+            array_dbobjek.push(objek);
+        }
+    }else{
+        // htmlkd+=`<tr><td colspan="3" class="w3-center">Tidak Terdeteksi Adanya Bank Soal</td></tr>`;
+        htmlkd+=`<tr><td>${nosoal}</td><td>${db.kodemapel}</td><td>${db.kd}</td>${db.bentuksoal=="Pilihan Ganda"?db.kuncijawaban:""}</tr>`;
+        array_dbobjek.push(db);
+    }
+    htmlkd +=`</tbody></table>`;
+    cekdivkd.innerHTML = htmlkd;
+    let ok_kuncikd = {};
+    if(array_dbobjek.length > 0){
+        let mapel_kd = getUniquePropertyValues(array_dbobjek,"kodemapel","kd");
+        for(let m = 0 ; m < mapel_kd.length; m++){
+            let key_mapel = mapel_kd[m].split("_")[0]
+            let key_kd = mapel_kd[m].split("_")[1]
+            ok_kuncikd[mapel_kd[m]]= array_dbobjek.filter(s=> s.kodemapel == key_mapel && s.kd == key_kd ).map(mm => mm.nosoaledura);
+        }
+    }
+
+    
+    document.formuploadmateri.kuncikd.value = JSON.stringify(ok_kuncikd)
+    let stringkuncikd = Object.keys(ok_kuncikd).map(m => m+":"+ok_kuncikd[m]).join("<||>");//.join("<||>")
+    let stringhapuskutip = stringkuncikd.replace(/\"/g,"");//.toString();
+    
+    let htmmlmodal = ""
+    let datamodal = Object.keys(ok_kuncikd);
+    for(let ii = 0 ; ii < datamodal.length; ii++){
+        htmmlmodal += `<tr><td>${datamodal[ii].split("_")[0]}</td><td>No. Soal: ${datamodal[ii].split("_")[1]}</td>${ok_kuncikd[datamodal[ii]].join(", ")}</tr>`;
+    }
+    bodytabel.innerHTML = htmmlmodal;
+
+    
+    // let divss = doc.querySelectorAll('div');
+    // let indekkuncikd = divss.length-1;
+    // let bolkuncikd = false;
+    // for(let l = 0 ; l < divss.length; l++){
+    //     let isidiv = divss[l].innerHTML;
+       
+    //     if(isidiv.indexOf("_KUNCI-KD_")>-1){
+    //         indekkuncikd = l;
+    //         console.log(l);
+    //         bolkuncikd = true;
+    //         break;
+    //     }
+    // }
+    // console.log(bolkuncikd,indekkuncikd);
+
+    // if(bolkuncikd){
+    //     divss[indekkuncikd].innerHTML = "_KUNCI-PD_" + stringhapuskutip;;
+    // }else{
+    //     let creatediv = doc.createElement("div");
+    //         creatediv.innerHTML = "_KUNCI-KD_" + stringhapuskutip;
+    //         doc.body.appendChild(creatediv);
+    // }
+
+    //caranya cek adari isianawal dan nosal
+    // cari di elemenkuncinya di masing-masing
+    //elemen.setAttribute("data-idbarissoal",iRow_dbsoalkontenmateri);
+    document.getElementById('modalbanksoalkontenmateri').style.display='none';
+    isikankuncikdke_form(stringhapuskutip)
+    //el.setAttribute("data-idbarissoal",lRow+"_"+lCol);
+    document.querySelector(".mbskontenmateri_fokusnosoal").value = "";
+    doc.body.focus()
+}
+const isikankuncikdke_form = (stringhapuskutip)=>{
+    let editore = document.querySelector("#editor_ade");
+    const docdoc = editore.contentDocument || editore.contentWindow.document;
+    let divss = docdoc.querySelectorAll('div');
+    let indekkuncikd;// = divss.length-1;
+    let bolkuncikd = false;
+    let define
+    for(let l = 0 ; l < divss.length; l++){
+        let isidiv = divss[l].innerHTML;
+       
+        if(isidiv.indexOf("_KUNCI-KD_")>-1){
+            indekkuncikd = l;
+            
+            define = l
+            bolkuncikd = true;
+            break;
+        }
+    }
+    
+    if(bolkuncikd){
+        divss[indekkuncikd].innerHTML = "_KUNCI-KD_" + stringhapuskutip;;
+    }else{
+        
+        let creatediv = doc.createElement("div");
+            creatediv.innerHTML = "_KUNCI-KD_" + stringhapuskutip;
+            doc.body.appendChild(creatediv);
+    }
+}
+mbskontenmateri_filter.addEventListener("change",()=>{
+    let filteraktif = document.querySelector(".filteraktifkontenmateri");
+    if(mbskontenmateri_filter.checked){
+        filteraktif.classList.remove("w3-hide");
+    }else{
+        filteraktif.classList.add("w3-hide");
+    }
+});
+
+mbskontenmateri_lihatpropertysoal.addEventListener("change",()=>{
+    let mbskontenmateri_porpertysoal = document.querySelector(".mbskontenmateri_porpertysoal");
+    if(mbskontenmateri_lihatpropertysoal.checked){
+        mbskontenmateri_porpertysoal.classList.remove("w3-hide")
+    }else{
+        mbskontenmateri_porpertysoal.classList.add("w3-hide")
+
+    }
+});
+
+mbskontenmateri_ingindiedit.addEventListener("change",()=>{
+    let elisi = document.querySelectorAll("[data-dbmbskontenmateri]");
+    if(mbskontenmateri_ingindiedit.checked){
+        btnkontenmateri_terapkansoaledit.classList.remove("w3-hide");
+        for(i = 0 ; i < elisi.length ; i++){
+            elisi[i].setAttribute("contenteditable","true")
+        }
+    }else{
+        for(i = 0 ; i < elisi.length ; i++){
+        elisi[i].removeAttribute("contenteditable");
+        }
+        btnkontenmateri_terapkansoaledit.classList.add("w3-hide");
+    }
+    let tombol = document.querySelector(".btnkontenmateri_terapkansoal");
+    btnkontenmateri_terapkansoaledit.onclick=function(){
+        alert("fitur belum diaktifkan")
+    }
+    // if(iRow_dbsoalkontenmateri == ""){
+    //     if(tombol.className.indexOf("w3-hide")==-1){
+    //         tombol.classList.add("w3-hide");
+
+    //     }
+    //     btnkontenmateri_terapkansoaledit.classList.add("w3-hide");
+    //     btnkontenmateri_terapkansoaledit.onclick=null;
+    // }else{
+    //     if(tombol.className.indexOf("w3-hide")>-1){
+    //         tombol.classList.remove("w3-hide");
+    //     }
+    //     btnkontenmateri_terapkansoaledit.classList.remove("w3-hide");
+    //     btnkontenmateri_terapkansoaledit.onclick=function(){
+    //         let mbskontenmateri_ceklisilustrasi = document.getElementById("mbskontenmateri_ceklisilustrasi")
+    //         let dbilustrasi = document.querySelector("[data-dbmbskontenmateri=ilustrasi]")
+    //         let dbpertanyaan = document.querySelector("[data-dbmbskontenmateri=pertanyaan]")
+    //         let html = "";
+    //         // //ilustrasi
+    //         // if(dbilustrasi !== ""){
+    //         //     if(mbskontenmateri_ceklisilustrasi.checked){
+    //         //         html +=`${dbilustrasi.innerHTML}<br><br>`
+    //         //     }
+    //         // }
+    //         // html += antaraDiv(dbpertanyaan.innerHTML);
+            
+    //         let db = fokusDatasoalkontenmateri.filter(s => s.idbaris == iRow_dbsoalkontenmateri)[0];
+            
+    //         let htmlnosoal = ``;
+    //         let htmlilustrasi ="";
+    //         let htmlpertanyaan ="";
+    //         let htmltemp = `<ol start="${nosoal}" class="w3-padding w3-card-4">`;//0
+            
+    //         //ilustrasi
+    //         if(db.ilustrasi !== ""){
+    //             if(mbskontenmateri_ceklisilustrasi.checked){
+    //                 htmlilustrasi =`${dbilustrasi.innerHTML}<br>`
+    //             }
+    //         }
+    //         htmlpertanyaan = dbpertanyaan;
+            
+    //         if(db.bentuksoal == "Pilihan Ganda"){
+    //             htmlnosoal = `<div class="w3-badge w3-left"  data-sourcebanksoalid="${db.idbaris}">${nosoal}</div>`;
+    //             htmltemp +=`<li id="soalke-${nosoal}" class="calcnosoal" style="list-style-type:none">${htmlilustrasi}<br>${htmlpertanyaan}<hr style="border-top-color: olive;">`;//1
+                
+    //             if(db.tampilanpg == "BIASA"){ //-1.4461538461999965em
+    //                 htmltemp +=`<ol style="list-style-type:upper-alpha;margin:5px 5px 0px 20px;padding:0">`;
+    //                 htmltemp+=`<li><input class="calc" type="radio" name="soal${nosoal}" id="${nosoal}A"><label class="opsi" for="${nosoal}A">${db.opsiA}</label></li>`;
+    //                 htmltemp+=`<li><input class="calc" type="radio" name="soal${nosoal}" id="${nosoal}B"><label class="opsi" for="${nosoal}B">${db.opsiB}</label></li>`;
+    //                 htmltemp+=`<li><input class="calc" type="radio" name="soal${nosoal}" id="${nosoal}C"><label class="opsi" for="${nosoal}C">${db.opsiC}</label></li>`;
+    //                 if(db.opsiD !==""){
+    //                     htmltemp +=`<li><input class="calc" type="radio" name="soal${nosoal}" id="${nosoal}D"><label class="opsi" for="${nosoal}D">${db.opsiD}</li>`;
+    //                 }
+    //                 htmltemp +=`</ol>`;//3 li opsi PG
+    //             }else{
+    //                 htmltemp+=`<hr>`;
+    //                 let arropsiA = JSON.parse(db.opsiA);
+    //                         let arropsiB = JSON.parse(db.opsiB);
+    //                         let arropsiC = JSON.parse(db.opsiC);
+    //                         let arropsiD = [];
+    //                         let arrHead = JSON.parse(db.headerpg);
+    //                         let jumlahPG = 3;
+                            
+    //                         if(db.opsiD !== ""){
+    //                             arropsiD = JSON.parse(db.opsiD);
+    //                             jumlahPG = 4
+    //                         }
+    //                         htmltemp += `<table style="border-collapse:collapse;border:.5pt solid #000;width:100%;font-family:Times New Roman, Times, serif;">`;
+    //                         htmltemp +=`<thead><tr style="border:.5pt solid #000"><th style="border:.5pt solid #000;background-color:#f1f1f1;width:30px"></th>`;
+    //                         for(a = 0 ; a < arrHead.length ; a++){
+    //                             htmltemp +=`<th style="border:.5pt solid #000;text-align:center;background-color:#f1f1f1">${arrHead[a]}</th>`
+    //                         }
+    //                         htmltemp +=`</tr><tbody>`;
+    //                         //tabel opsi A
+    //                         htmltemp +=`<tr style="border:.5pt solid #000"><td style="border:.5pt solid #000;width:30px;vertical-align:top;text-align:center;padding-left:5px">`;
+    //                         htmltemp+=`<input class="calc" type="radio" name="soal${nosoal}" id="${nosoal}A"><label class="opsi" for="${nosoal}A">A.  </label></td>`;
+    //                         for(c = 0 ; c <arrHead.length ; c++){
+    //                             htmltemp +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiA[c]}</td>`
+                                
+    //                         }
+    //                         //tabel opsi B
+    //                         htmltemp +=`</tr><tr style="border:.5pt solid #000;vertical-align:top;"><td style="border:.5pt solid #000;width:30px;vertical-align:top;text-align:center;padding-left:5px">`;
+    //                         htmltemp+=`<input class="calc" type="radio" name="soal${nosoal}" id="${nosoal}B"><label class="opsi" for="${nosoal}B">B.  </label></td>`;
+    //                         for(c = 0 ; c < arrHead.length ; c++){
+    //                             htmltemp +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiB[c]}</td>`;
+    //                         }
+    //                         //tabel opsi C
+    //                         html +=`</tr><tr style="border:.5pt solid #000"><td style="border:.5pt solid #000;width:30px;vertical-align:top;text-align:center;padding-left:5px">`;
+    //                         htmltemp+=`<input class="calc" type="radio" name="soal${nosoal}" id="${nosoal}C"><label class="opsi" for="${nosoal}C">C.  </label></td>`;
+    //                         for(c = 0 ; c <arrHead.length ; c++){
+    //                             htmltemp +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiC[c]}</td>`
+                                
+    //                         }
+    //                         //tabel opsi D
+    //                         if(db.opsiD !== ""){
+    //                             htmltemp +=`</tr><tr style="border:.5pt solid #000"><td style="border:.5pt solid #000;width:30px;vertical-align:top;text-align:center;padding-left:5px">`;
+    //                             htmltemp+=`<input class="calc" type="radio" name="soal${nosoal}" id="${nosoal}D"><label class="opsi" for="${nosoal}D">D.  </label></td>`;
+    //                             for(c = 0 ; c < arrHead.length ; c++){
+    //                                 htmltemp +=`<td style="border:.5pt solid #000;vertical-align:top;padding-left:5px">${arropsiD[c]}</td>`;
+    //                             }
+    //                             html +=`</tr>`
+    //                         }else{
+    //                             html +=`</tr>`
+    //                         }
+
+    //                         html +=`</tbody></table>`
+                    
+    //             }
+
+    //             htmltemp +=`</li>`;//1
+    //         }else{
+    //             htmlnosoal =`<div class="w3-badge w3-aqua w3-left"  data-sourcebanksoalid="${db.idbaris}">${nosoal}</div>`;
+    //             htmltemp+=`<li id="essay${nosoal}" class="soalessay" style="border-bottom:1px solid blue">`;//li
+    //             htmltemp+=`<div id="pertanyaanessay_${nosoal}">${htmlilustrasi}<br>${htmlpertanyaan}<br></div>`;
+    //                 htmltemp+=`<div id="tomboljawaban${nosoal}">`;//3 div tomboljawaban
+    //                 htmltemp+=`<hr><button onclick="tombolketikjawaban('${nosoal}')">Ketik Jawaban No ${nosoal}</button><br><br>`;
+    //                 htmltemp+=`<sub>atau</sub><br><br> <button onclick="tomboluploadjawaban('${nosoal}')">Upload Media No ${nosoal}</button><br><br><sub>Pilih Salah satu cara Kalian menjawab soal ini</sub>`;
+    //                 htmltemp+=`</div><br>`;//3 divtomboljawaban
+    //             htmltemp +=`</li>`;//1
+
+    //         }
+            
+    //         htmltemp+=`</ol>`;//0
+    //         html = htmlnosoal + htmltemp+"<br><br>";
+
+    //         elemeneditkontenmateri.execCommand("insertHTML",null, html);
+    //         let kunciawal = document.getElementById("barukuncipgtemporary").value;
+    //         let kunciarray = kunciawal.split(",");
+            
+
+    //         // jika edit nanti tolong dikirim ke server, data aslinya tidak akan hilang. Editan akan 
+    //         kirimmodifikasidarimodalbanksoal(iRow_dbsoal,"data-dbmbskontenmateri");
+    //         document.getElementById('modalbanksoalkontenmateri').style.display='none';
+    //     }
+    // }
+
+});
+
+
+function getUniquePropertyValues(_array,_property,_property2){ // sourceCode: https://thispointer.com/get-unique-values-from-an-array-of-objects/
+   return [...new Set(_array.map(element => element[_property]+"_"+element[_property2]))]; 
+}
+
+const kirimmodifikasidarimodalbanksoal = (ibrs, kondisi="")=>{
+    let datawal = databasesoal.filter(s => s.idbaris == ibrs)[0];
+    let datamodif = null;
+    let paramkriteria ;
+    let paramtombolterapkanedit;
+    let modalbanksoal 
+    if(kondisi == "data-dbmbs"){
+        paramkriteria = "data-dbmbs";
+        paramtombolterapkanedit = "btn_terapkansoaledit";
+        datamodif = document.querySelectorAll("[data-dbmbs]");
+        modalbanksoal = document.getElementById("modalbanksoal");
+    }else if(kondisi == "data-dbmbskontenmateri"){
+        paramkriteria = "data-dbmbskontenmateri"
+        paramtombolterapkanedit = "btnkontenmateri_terapkansoaledit"
+        datamodif = document.querySelectorAll("[data-dbmbskontenmateri]");
+        modalbanksoal = document.getElementById("modalbanksoalkontenmateri");
+        
+    }else{
+        paramkriteria = "data-dbmbs"
+        paramtombolterapkanedit = "btn_terapkansoaledit";
+        datamodif = document.querySelectorAll("[data-dbmbs]");
+        modalbanksoal = document.getElementById("modalbanksoal");
+    }
+    let arrayClass = [];
+    let valuemodif = {};
+    for(let i = 0 ; i < datamodif.length;i++){
+        let value = datamodif[i].getAttribute(paramkriteria);
+        arrayClass.push("modifsoal_"+value);
+        if(datamodif[i].nodeName == "INPUT" || datamodif[i].nodeName == "SELECT"){
+            
+            valuemodif[value] = datamodif[i].value;
+        }else{
+            valuemodif[value] = datamodif[i].innerHTML;
+        }
+       
+        }
+            
+            
+    let arrayperbaikan = arrayClass.filter((x,i,a)=>a.indexOf(x) !== i);
+    //karena ini dari modal bank soal, opsi pilihan Ganda tidak bisa diedit, jadi datanya dari database awal
+    // if(datawal.tampilanpg == "TABEL"){
+        
+    //     let arrayduplikat = arrayClass.filter((x,i,a)=>a.indexOf(x) !== i);
+    //     if(arrayduplikat.length>0){
+
+    //         for(let i = 0 ; i < arrayduplikat.length ; i++){
+    //             let tekskelas = arrayduplikat[i].replace("modifsoal_","");
+    //         let ele = document.querySelectorAll("."+arrayduplikat[i]);
+    //         let arrayopsisementara = [];
+            
+    //         for(let x = 0; x < ele.length ; x++){
+    //             arrayopsisementara.push(ele[x].innerHTML)
+    //         }
+            
+    //         valuemodif[tekskelas] = JSON.stringify(arrayopsisementara);
+            
+    //         }
+    //     }else{
+    //         let o_a = document.querySelector(".modifsoal_opsiA").innerHTML;
+    //         let o_b = document.querySelector(".modifsoal_opsiB").innerHTML;
+    //         let o_c = document.querySelector(".modifsoal_opsiC").innerHTML;
+    //         let o_dd = document.querySelector(".modifsoal_opsiD");
+    //         let o_d =""
+            
+    //         valuemodif.opsiA = JSON.stringify([o_a]);
+    //         valuemodif.opsiB = JSON.stringify([o_b]);
+    //         valuemodif.opsiC = JSON.stringify([o_c]);
+    //         if(o_dd !== null){
+    //             o_d = o_dd.innerHTML;
+    //             valuemodif.opsiD = JSON.stringify([o_d]);
+    //         }
+    //     }
+    // }
+    
+    let divanim = document.querySelector("."+paramtombolterapkanedit);
+    divanim.innerHTML = `<img src="/img/barloading.gif"> Proses ...`
+    
+    valuemodif.idguru = idguru;
+    valuemodif.oleh = namauser;
+    let obAs = Object.assign({},datawal);
+    let obJadi = Object.assign(obAs,valuemodif);
+    
+    let key = JSON.stringify(Object.keys(obJadi))
+    let nilai = Object.values(obJadi);
+    nilai.shift()
+    let tabel = JSON.stringify (nilai)
+    let tab = "banksoal";
+    
+    let datakirim = new FormData()
+    datakirim.append("tab",tab);
+    datakirim.append("key",key);
+    datakirim.append("tabel",tabel);
+    
+    fetch(url_kaldikaja+"?action=simpanbarisketaburut",{
+        method:"post",
+        body:datakirim
+    }).then(m => m.json())
+    .then(r => {
+        
+        divanim.innerHTML = "Terapkan Edit";
+        
+        keydatabasesoal = Object.keys(r.data[0]);
+        if(r.result>1){
+            databasesoal = r.data.filter(s=> s.hapus == "");
+
+            databasesoalterhapus = r.data.filter(s=> s.hapus == "hapus");
+        }
+        for(i=0 ; i < keydatabasesoal.length; i++){
+            databasesoalkosong[keydatabasesoal[i]]="";
+        }
+        alert("Data Berhasil dimodifikasi");
+        configmodalsoalkontenmateri_peritem(arOB,dataidbarissoal);
+
+        // updatetabeldatabasesoal("edit");
+        // document.getElementById('modal_soalkisidandesainsoallainnya').style.display='none';
+        // document.getElementById('tooltipbaru_keyboard_ketikan').style.display='none';
+        
+    }).catch(er=>console.log(er));
+}
+const contenmatericeknomorsoaldulu =(el,ceksoal)=>{
+    let divpg = el.querySelectorAll(".calcnosoal");
+    let divessay = el.querySelectorAll(".soalessay");
+    let nosoalakhir = ceksoal;
+    let cekid,angkaparse;
+    if(ceksoal == "" || ceksoal ==0){
+
+        // cek pg jangan sampe null
+        if(divpg.length == 0 && divessay.length == 0){
+            //ketika belum ada soal sama sekali, maka nomor soalnya: 1
+        nosoalakhir = 1
+        }else if(divpg.length > 0 && divessay.length == 0){
+            cekid = divpg[divpg.length-1].getAttribute("id");
+            angkaparse = cekid.match(/(\d+)/)[0]
+            nosoalakhir = parseInt(angkaparse)+1;
+        }else if(divpg.length > 0 && divessay.length > 0){
+            cekid = divessay[divessay.length-1].getAttribute("id");
+            angkaparse = cekid.match(/(\d+)/)[0]
+            nosoalakhir = parseInt(angkaparse)+1;
+        }else if(divpg.length == 0 && divessay.length >0){
+            cekid = divessay[divessay.length-1].getAttribute("id");
+            angkaparse = cekid.match(/(\d+)/)[0];
+            nosoalakhir = parseInt(angkaparse)+1;
+        }
+        
+    }
+
+    return nosoalakhir
+}
+
+//trialisiLJK
+const modal_modalbantuisibarulagi = document.getElementById("modalbantuisibarulagi")
+const print_modalbantuisi = document.getElementById("print_modalbantuisi");
+const inputpg_modalbantuisi = document.getElementById("inputpg_modalbantuisi");
+const previewnaskahsoal_ljkbantu = document.getElementById("previewnaskahsoal_ljkbantu")
+const previewljk_modalbantuisi = document.getElementById("previewljk_modalbantuisi");
+const kirimserver_modalbantuisi = document.getElementById("kirimserver_modalbantuisi");
+const modal_loadingsoalbantudulu = document.getElementById("loadingsoalbantudulu");
+const modal_tabelotomatisklikpg = document.getElementById("tabelotomatisklikpg");
+
+const modal_previewljksementara = document.getElementById("previewljksementara");
+const modal_lebarmodalbantuisibaru = document.getElementById("lebarmodalbantuisibaru")
+
+const trialisiLJK = (param) =>{
+    modal_modalbantuisibarulagi.style.display = "block";
+    if(modal_lebarmodalbantuisibaru.hasAttribute("style")){
+        modal_lebarmodalbantuisibaru.removeAttribute("style")
+    }
+    
+    let params = param.split("_");
+    let par = params[1]; //indek materi kbm
+    parameterbantuisiljk = par;
+    let idsw = params[0]; //indek id siswa
+
+    let siswabantu = JSON.parse(localStorage.getItem("datasiswa_" + idNamaKelas))["datasiswa"][idsw];
+    let tk_siswa = siswabantu.id
+
+    let datamateri = kronologijson;
+    let objeksiswa = jsondatasiswa.filter(d => d.id == tk_siswa)[0];
+    
+    let versi = datamateri[par].versi;
+    let dlo = datamateri[par];
+    let objekkuncikd = JSON.parse(dlo.kuncikd);
+    let objektes = ubahjsonkuncikd(objekkuncikd)
+    
+    let mkd = (dlo.kuncikd == "undefined" || dlo.kuncikd == "") ? [] : Object.keys(JSON.parse(dlo.kuncikd));
+    let str = "";
+    if(dlo.jenistagihan == "ustertulis"||dlo.jenistagihan == "uspraktek"){
+        mkd.forEach(s => str += s.split("_")[0]  + "<br/>");
+    }else{
+        mkd.forEach(s => str += s.split("_")[0] + " KD " + s.split("_")[1] + "<br/>");
+    }
+
+    let countPG = parseInt(datamateri[par].jumlahpg);
+    let countIsian = parseInt(datamateri[par].jumlahessay);
+    let adapg = (datamateri[par].jumlahpg == 0) ? false : true;
+    
+    // if(countPG > 0){
+    //     modal_tabelotomatisklikpg.classList.remove("w3-hide");
+        
+    // }else{
+    //     modal_tabelotomatisklikpg.classList.add("w3-hide");
+        
+    // }
+    // if(countIsian > 0){
+    //     modal_tabelotomatisklikpg.classList.remove("w3-hide");
+    // }else{
+    //     modal_tabelotomatisklikpg.classList.add("w3-hide");
+    // }
+        
+        print_modalbantuisi.innerHTML = `<i class="fa fa-spin fa-spinner"></i> Cetak`;
+        inputpg_modalbantuisi.innerHTML = `<i class="fa fa-spin fa-spinner"></i> Input Nilai`;
+        previewljk_modalbantuisi.innerHTML = `<i class="fa fa-spin fa-spinner"></i> Preview LJK`;
+        kirimserver_modalbantuisi.innerHTML = `<i class="fa fa-spin fa-spinner"></i> Kirim Server`;
+        previewnaskahsoal_ljkbantu.innerHTML = `<i class="fa fa-spin fa-spinner"></i> Naskah Soal`;
+    
+    let html="";//htmlpgdan isian
+    
+    let htmlprev = "";//htmlljk
+    let kkc=[], kc;
+    // $.getJSON(constpreviewljk + "?idmateri=" + datamateri[par].idmateri + "&action=previewriwayat", function (json) {
+    fetch(constpreviewljk + "?idmateri=" + datamateri[par].idmateri + "&action=previewriwayat").then(m=>m.json())
+    .then(json =>{
+        
+
+        let teks = (versi == "baru"?brkline(json).teks : brkline2(json).teks); 
+        if (adapg) {
+            kc = brkline(json).kunci;
+            kkc = window.atob(kc).split(",");//.join("<br>");
+        } else {
+            kc = 0;
+            // kkc ="blank"
+        }
+        //start
+        //bikin soalnya dulu diiner
+        let sebelumteks = `<h4 class="w3-center">NASKAH MATERI/SOAL</h3><br>`;
+        sebelumteks+=`<table class="w3-table-all w3-small" style="max-width:350px"><tbody>`;
+        sebelumteks+=`<tr><td>Identitas Materi</td><td style="width:10px;text-align:center">:</td>${datamateri[par].idmapel}</tr>`
+        sebelumteks+=`<tr><td>Hari Pelaksanaan</td><td style="width:10px;text-align:center">:</td>${Tanggaldenganhari(new Date(datamateri[par].idmapel))}</tr>`;
+        sebelumteks+=`<tr><td>Jenis Tagihan</td><td style="width:10px;text-align:center">:</td>${datamateri[par].jenistagihan}</tr>`;
+        sebelumteks+=`<tr><td>Kelas</td><td style="width:10px;text-align:center">:</td>${datamateri[par].idtoken}</tr>`;
+        sebelumteks +=`</tbody></table>`;
+        modal_loadingsoalbantudulu.innerHTML = sebelumteks + "<hr class='w3-bottombar w3-border-black'>"+teks;
+        html+=`<div class="w3-row">`;//0 div.w3-row
+        html+=`<div class="w3-col l6 s12 w3-border w3-padding" style="overflow-x:auto">`;// 1 div.w3-col.l6 tempat pg
+        let adaD = false;
+        let kolomabcd = 3
+        if(adapg){
+            let cekopsiDdikelas = document.querySelectorAll(".calc");
+            if(cekopsiDdikelas.length == 0){
+                html+=`<p class="w3-red w3-padding w3-center w3-margin">PILIHAN GANDA TERDETEKSI DI DATABASE MATERI, NAMUN DI TAMPILAN NASKAH PERTANYAAN PILIHAN GANDA TERDETEKSI. PERBAIKI / EDIT KONTEN MATERI INI</p>`;
+            }else{
+                // let adaD = false;
+                for(let j = 0 ; j < cekopsiDdikelas.length; j++){
+                    let idnya = cekopsiDdikelas[j].getAttribute("id");
+                    if(idnya.indexOf("D")>-1){
+                        adaD = true;
+                        kolomabcd = 4
+                        break;
+                    }
+                }
+                //bikin tabel yang bisa diklik
+                html+=`<p class="w3-center">PILIHAN GANDA</p><table class="w3-table garis w3-centered w3-small" id="tabelconfigpgbantuisiljk"><tr class="w3-light-gray"><th style="width:30px">No. Soal</th>`;
+                    if(adaD){
+                        html+=`<th colspan="4">Pilihan Ganda</th>`
+                    }else{
+                        html+=`<th colspan="3">Pilihan Ganda</th>`
+                    }
+                html+=`<th>Kunci Jawaban</th>
+                <th>Opsi PG Terpilih</span></th>
+                <th>Nilai PG Terpilih</th>
+                </tr><thead><tbody>`;
+                
+                for(let g = 0 ; g < countPG ; g++){
+                    let nosoalpg = (g+1);
+                    html+=`<tr>`;
+                    html+=`<td style="vertical-align:middle">${nosoalpg}</td>`
+                        if(adaD){
+                            html+=`<td style="cursor:pointer;vertical-align:middle">A</td>
+                            <td style="cursor:pointer;vertical-align:middle">B</td>
+                            <td style="cursor:pointer;vertical-align:middle">C</td>
+                            <td style="cursor:pointer;vertical-align:middle">D</td>`;
+                        }else{
+                            html+=`<td style="cursor:pointer;vertical-align:middle">A</td>
+                            <td style="cursor:pointer;vertical-align:middle">B</td>
+                            <td style="cursor:pointer;vertical-align:middle">C</td>`;
+                        }
+                        
+                        html+=`<td style="vertical-align:middle">${kkc[g]}</td>`
+                        html+=`<td><input class="inputnonscannerakhir w3-input w3-center" data-keykirimnonscanner="PG_${nosoalpg}" disabled></td>`;
+                        html+=`<td><input class="inputnonscannerakhir  ${objektes[nosoalpg]} w3-input w3-center kelasnilaipg_nonscanner" data-keykirimnonscanner="SKOR_${nosoalpg}" id="SKOR_${nosoalpg}" disabled></td>`;//disinitempat
+                    html+=`</tr>`;
+                }
+                
+                html+=`</tbody></table>KLIK KOLOM OPSI PILIHAN GANDA UNTUK MENGISI JAWABAN!`;
+                    //selesai bikin tabel yang bisa diklik
+                    
+            }
+        }else{
+            html+=`<p class="w3-red w3-padding w3-center w3-margin">TIDAK ADA PILIHAN GANDA TERDETEKSI DI DATABASE MATERI</p>`;
+        }
+        html+=`</div>`;//1 div.w3-col.l6 tempat pg
+        html+=`<div class="w3-col l6 s12 w3-border" style="overflow-x:auto">`;// 2 div.w3-col.l6 tempat isian
+        if(countIsian > 0){
+            let cekessay = document.querySelectorAll(".soalessay");
+            if(cekessay.length == 0){
+                html+=`<p class="w3-red w3-padding w3-center w3-margin">ISIAN TERDETEKSI DI DATABASE MATERI, NAMUN KONTEN TIDAK BISA MEMBACANYA</p>`;
+            }else{
+                html+=`<p class="w3-center">ISIAN</p><table class="w3-table garis w3-small"><tr class="w3-light-gray"><th style="width:30px">No. Essay</th><th>Preview Pertanyaan</th><th>Input Skor</th></tr><tbody>`;
+                for(let t = 0 ; t < countIsian ; t++){
+                    let b = (parseInt(countPG) + t+1);
+                    
+                    let divpertanyaans = document.getElementById("pertanyaanessay_"+b);
+                    html+=`<tr><td style="vertical-align:middle">${b}</td>`;
+                    html+=`<td><div class="w3-tiny w3-hide" id="previewpertanyaanno_${b}">${divpertanyaans.innerHTML}</div><br><button onclick="document.getElementById('previewpertanyaanno_${b}').classList.toggle('w3-hide')">Pertanyaan?</button></td>`;
+                    html+=`<td>`;
+                    html+=`<input type="number" id="koreksisoalnonscanner_${b}" min="0" value="0" class="koreksisoalnonscanner w3-center w3-input w3-border w3-border-blue" onchange="updatenilaikoreksnonscanner('${b}',${countIsian})">`;
+                    html+=`<input class="inputnonscannerakhir  ${objektes[b]} w3-center kelasnilaiisian_nonscanner" data-keykirimnonscanner="SKOR_${b}" id="SKOR_${b}" disabled>`;
+                    html+=`</td></tr>`;
+                }
+                html+=`</tbody></table>`
+         
+                
+            }
+        }else{
+            html+=`<p class="w3-red w3-padding w3-center w3-margin">TIDAK ADA ISIAN TERDETEKSI DI DATABASE MATERI</p>`;
+        }
+        html+=`</div>`;//2 div.w3-col.l6
+        html+=`</div>`; //0 div.w3-row      
+        modal_tabelotomatisklikpg.innerHTML = html; 
+        
+        //end start
+        
+        htmlprev =`<div class="w3-row-padding">`;//0
+        htmlprev +=`<div class="w3-col l8 s8">`;//1
+        htmlprev +=`<img src="/img/L_vT86_100px.png" class=" w3-left" style="width:45px;"><h3 class="w3-xlarge w3-lobster"> Hasil Belajar E-DURASA (Scanner)</h3>`;
+        htmlprev+=`<div class="w3-center warnaeka w3-card-4 w3-round-large w3-border-bottom w3-border-black"><h3>${idNamaSekolah.toUpperCase()}</h3><h5>Semester ${SemesterBerapaSekarang()} Tahun Pelajaran ${idTeksTapel}</h5></div>`;
+        htmlprev +=`<table class="w3-table-all small"><caption>Identitas Siswa</caption><tbody><tr><td>ID Lamaso (Token)</td><td>:</td><td>${objeksiswa.id}</td></tr><tr><td>Nama</td><td>:</td><td><b>${objeksiswa.pd_nama}</b></td></tr><tr><td>Kelas</td><td>:</td><td>${idNamaKelas}</td></tr></tbody></table>`;
+        htmlprev +=`</div>`;//1
+        htmlprev+=`<div class="w3-col l4 s4  w3-right">`;//2
+        htmlprev+=`<div class="w3-small w3-center">Identitas Materi:</div><h5 class="w3-center w3-card-4 warnaeka">${datamateri[par].idmapel}</h5>`;
+        htmlprev+=`<table class="w3-table-all w3-small"><tbody><tr><td>Jenis Tagihan</td><td>:</td><td>${datamateri[par].jenistagihan}</td></tr><tr><td>Jumlah Pilihan Ganda</td><td>:</td><td>${countPG}</td></tr><tr><td>Jumlah Soal Isian</td><td>:</td><td>${countIsian}</td></tr>`;
+        htmlprev +=`<tr><td>Muatan Kompetensi</td><td>:</td><td>${str}<br></td></tr><tr><td>Waktu Mulai<br><sub class="w3-text-red">Proses Scan</sub></td><td>:</td><td>${ tanggalfulllengkap(new Date())}</td></tr><tr><td>Waktu Selesai<br><sub class="w3-text-red">Proses Scan</sub></td><td>:</td><td>${ tanggalfulllengkap(new Date())}</td></tr></tbody></table>`;
+        htmlprev +=`</div>`;//2;
+        htmlprev+=`<div class="w3-clear w3-border"></div>`;
+        if(adapg){
+            htmlprev+=`<div class="w3-col l3 s3 w3-border">`;//3
+        }else{
+            htmlprev+=`<div class="w3-col l3 s3 w3-border w3-hide">`;//3
+        }
+
+       
+        let html12="";
+        html12+=`tokensiswa =<input class="inputnonscannerakhir" data-keykirimnonscanner="tokensiswa" value="${objeksiswa.id}"><br>`;
+        html12+=`matericode(idbaris sumber soal) =<input class="inputnonscannerakhir" data-keykirimnonscanner="matericode" value="${dlo.idbaris}"><br>`;
+        html12+=`idsekolah (Nama sekolah) =<input class="inputnonscannerakhir" data-keykirimnonscanner="idsekolah" value="${idNamaSekolah}"><br>`;
+        html12+=`email guru =<input class="inputnonscannerakhir" data-keykirimnonscanner="emailguru" value="${jlo.surel}"><br>`;
+        html12+=`namakelas =<input class="inputnonscannerakhir" data-keykirimnonscanner="idkelas" value="${idNamaKelas}"><br>`;
+        html12+=`idmapel (Judul soal materi) =<input class="inputnonscannerakhir" data-keykirimnonscanner="idmapel" value="${dlo.idmapel}"><br>`;
+        html12+=`idtoken (idtoken soal materi) =<input class="inputnonscannerakhir" data-keykirimnonscanner="idtoken" value="${dlo.idtoken}"><br>`;
+        html12+=`jenistagihan (jenistagihan soal materi) =<input class="inputnonscannerakhir" data-keykirimnonscanner="jenistagihan" value="${dlo.jenistagihan}"><br>`;
+        html12+=`kodeunik (kodeunik soal materi) =<input class="inputnonscannerakhir" data-keykirimnonscanner="kodeunik" value="${dlo.jenistagihan}_${dlo.crtToken}"><br>`;
+        html12+=`crtToken (crtToken soal materi) =<input class="inputnonscannerakhir" data-keykirimnonscanner="crtToken" value="${dlo.crtToken}"><br>`;
+        html12+=`namasiswa (namasiswa soal materi) =<input class="inputnonscannerakhir" data-keykirimnonscanner="namasiswa" value="${objeksiswa.pd_nama}"><br>`;
+        htmlprev+=`<table class="w3-table garis w3-small w3-centered" id="tabelpgakhirnonscanner" style="max-width:340px;margin:5px auto">`;
+        if(adaD){
+            
+            htmlprev +=`<thead><tr><th>No</th><th colspan="4">PILIHAN GANDA</th></tr></thead><tbody>`;
+        }else{
+            // html +=`<thead><tr><th>No</th><th colspan="3">PILIHAN GANDA</th></tr></thead><tbody>`;
+            htmlprev +=`<thead><tr><th>No</th><th colspan="3">PILIHAN GANDA</th></tr></thead><tbody>`;
+        }
+        for(let c = 0 ; c < countPG ; c++){
+            let nosoalpgljk = (c+1);
+            htmlprev+=`<tr>`;
+            if(adaD){
+                htmlprev+=`<td>${nosoalpgljk}</td><td>A</td><td>B</td><td>C</td><td>D</td>`;
+            }else{
+                htmlprev+=`<td>${nosoalpgljk}</td><td>A</td><td>B</td><td>C</td>`;
+
+            }
+            htmlprev+=`</tr>`;
+        }
+        
+        htmlprev +=`</tbody></table>`;
+        
+        
+        
+        htmlprev+=`</div>`;//3 tabel PG
+        
+        
+        if(countIsian > 0){
+            htmlprev +=`<div class="w3-col l9 s9 w3-border  ljksiswa_essay">`;//4
+            
+            for(let i = 0 ; i < countIsian ; i++){
+                let a = (i+1);
+                let b = (countPG + a);
+                let objeknilaiessay = {}
+                objeknilaiessay[objektes[b]]=0
+                let divpertanyaan = document.getElementById("pertanyaanessay_"+b);
+        
+                htmlprev+=`<ol style="list-style-type:decimal" start="${b}"><li><b style="color:blue">Pertanyaan:</b><br>${divpertanyaan.innerHTML}<hr style="border-top:1px solid black"><b style="color:blue">Jawaban:</b><br><i class="w3-text-red">Diambil dari Scanner</i><div id="untuklj${b}" class="koleksilj" style="border:1px solid red;padding:5px;background-color:#eeeeff">Nilai</div></li></ol>`;
+            }
+            htmlprev +=`</div>`;//4
+            
+           
+        
+        }else{
+            
+            htmlprev +=`<div class="w3-col l9 s9 w3-border ljksiswa_essay"></div>`;//4
+        }
+
+       // let jumlahnilaipg = ((countnilaiPG/countPG)*100).toFixed(2);
+        
+        html12+=`Total NilaiPG (namasiswa soal materi) =<input class="inputnonscannerakhir" data-keykirimnonscanner="nilaiPG"><br>`;
+        
+        if(adapg){
+            htmlprev +=`<div class="w3-col l3 s3 w3-border ljksiswa_nilaipg"><h5 class="w3-center w3-card-4 warnaeka">NILAI PG</h5>`;
+            htmlprev+=`<div class="w3-large w3-border w3-center" id="nilaiPGku" style="height:100px"></div>`;
+            htmlprev+=`</div>`;
+        }else{
+            htmlprev +=`<div class="w3-col l3 s3 w3-border w3-hide ljksiswa_nilaipg">`;
+            htmlprev+=`<div class="w3-large w3-border w3-center w3-hide" id="nilaiPGku" style="height:100px"></div>`;
+            htmlprev+=`</div>`;
+        }
+
+        if(countIsian>0){
+            htmlprev +=`<div class="w3-col l3 s3 w3-border ljksiswa_nilaiessay"><h5 class="w3-center w3-card-4 warnaeka">NILAI ISIAN</h5>`;
+            htmlprev+=`<div class="w3-large w3-border w3-center" id="nilaiEssayku" style="height:100px">Menunggu Dikoreksi</div>`;
+            htmlprev+=`</div>`;
+        }else{
+            htmlprev +=`<div class="w3-col l3 s3 w3-border w3-hide ljksiswa_nilaiessay"><h5 class="w3-center w3-card-4 warnaeka">NILAI ISIAN</h5>`;
+            htmlprev+=`<div class="w3-large w3-border w3-center w3-hide" id="nilaiEssayku" style="height:100px">Menunggu Dikoreksi</div>`;
+            htmlprev+=`</div>`;
+
+        }
+        
+
+        htmlprev +=`<div class="w3-col l4 s12 w3-right"><div class="w3-card-4 w3-container w3-left w3-center " style="width:45%;margin:5px;height:120px">Paraf Orangtua</div><div class="w3-card-4 w3-container w3-left w3-center " style="width:45%;margin:5px;height:120px">Paraf Guru</div></div>`;
+        htmlprev +=`</div>`;//div w3-row;
+        // formatljknotepadscanner.innerHTML = htmlprev;
+        modal_previewljksementara.innerHTML = htmlprev
+        html12+=`NILAI KD (objek nilai KD soal materi) =<input class="inputnonscannerakhir" data-keykirimnonscanner="nilaikd" id="nilaikdkoreksikoreksiisiljk" ><br>`;
+        html12 +=`<br>Nilai Total Essay= <input class="inputsnoncannerakhir" data-keykirimnonscanner="nilaiEssay" id="nilaiakhiressayscanerisiljk">`;
+        document.getElementById("datakirimnonscanner").innerHTML = html12;
+        if(adapg){
+            tooltipkan_tabelconfigpgbantuisiljk(kolomabcd)
+
+        }
+        print_modalbantuisi.innerHTML = `<i class="fa fa-print"></i> Cetak`;
+        inputpg_modalbantuisi.innerHTML = `<i class="fa fa-pencil"></i> Input Nilai`;
+        previewljk_modalbantuisi.innerHTML = `<i class="fa fa-eye"></i> Preview LJK`;
+        kirimserver_modalbantuisi.innerHTML = `<i class="fa fa-save"></i> Kirim Server`;
+        previewnaskahsoal_ljkbantu.innerHTML = `<i class="fa fa-eye"></i> Naskah Soal`;
+
+        inputpg_modalbantuisi.setAttribute("onclick",`showhidebantuisiljkbaru("berinilai")`);
+        previewljk_modalbantuisi.setAttribute("onclick",`showhidebantuisiljkbaru("lihatljk")`);
+        
+        previewnaskahsoal_ljkbantu.setAttribute("onclick",`showhidebantuisiljkbaru("lihatsoal")`)
+
+        kirimserver_modalbantuisi.setAttribute("onclick","kirimserverljkbantubaru()")
+        
+        showhidebantuisiljkbaru("awal");
+    }).catch(er=>{
+        console.log(er);
+        print_modalbantuisi.innerHTML = `<i class="fa fa-print"></i> Cetak`;
+        inputpg_modalbantuisi.innerHTML = `<i class="fa fa-pencil"></i> Input Nilai`;
+        previewljk_modalbantuisi.innerHTML = `<i class="fa fa-eye"></i> Preview LJK`;
+        kirimserver_modalbantuisi.innerHTML = `<i class="fa fa-save"></i> Kirim Server`;
+        previewnaskahsoal_ljkbantu.innerHTML = `<i class="fa fa-eye"></i> Naskah Soal`;
+        print_modalbantuisi.setAttribute("onclick","alert('Proses Gagal meloading')");
+        inputpg_modalbantuisi.setAttribute("onclick","alert('Proses Gagal meloading')");
+        previewljk_modalbantuisi.setAttribute("onclick","alert('Proses Gagal meloading')");
+        previewnaskahsoal_ljkbantu.setAttribute("onclick","alert('Proses Gagal meloading')");
+        kirimserver_modalbantuisi.setAttribute("onclick","alert('Proses Gagal meloading')")
+    });
+    
+}
+const kirimserverljkbantubaru = ()=>{
+    let konf = confirm("Anda yakin semua isian nilai ini sudah benar?");
+    if(!konf){
+        return
+    }
+    let dataform = new FormData();
+    
+    let html = modal_previewljksementara.innerHTML;
+    let kodebto = window.btoa(html);
+
+    let divclass = document.querySelectorAll("[data-keykirimnonscanner]");
+    for(let i = 0 ; i < divclass.length ; i++){
+        let key = divclass[i].getAttribute("data-keykirimnonscanner");
+        let val = divclass[i].value;
+        dataform.append(key,val)
+    }
+    dataform.append("tekshtmlnilai",kodebto);
+    
+    let iddarimana = (koreksidarimana.innerHTML).split("_")[1];
+    let idakseskoreksi = (koreksidarimana.innerHTML).split("_")[0];
+    modal_loadingsoalbantudulu.innerHTML = `<img src="/img/barloading.gif"/>Memproses`;
+    modal_tabelotomatisklikpg.innerHTML = `<img src="/img/barloading.gif"/>Memproses`;
+    modal_previewljksementara.innerHTML = `<img src="/img/barloading.gif"/>Memproses`;
+    
+    fetch(constlinknilai + "?action=gurukirimnilai", {
+            method: 'post',
+            body: dataform
+    }).then(u => u.json())
+    .then(q => {
+        modal_loadingsoalbantudulu.innerHTML = q.result;
+        modal_tabelotomatisklikpg.innerHTML =  q.result;
+        modal_previewljksementara.innerHTML =  q.result;
+
+        if (iddarimana == "hariini") {
+                getdaftarnilai(idakseskoreksi)
+        } else {
+                daftarnilaikronologi(idakseskoreksi)
+        }
+        setTimeout(() => {
+            // modal_modalbantuisibarulagi.style.display = "none";
+            tutupmodalljkbantu();
+        }, 2000);
+    }).catch(er => {
+                console.log(er);
+                "Maaf, terjadi kesalahan.";
+                modal_loadingsoalbantudulu.innerHTML = "";
+                modal_tabelotomatisklikpg.innerHTML = "";
+                modal_previewljksementara.innerHTML = "";
+               
+    });
+    kirimserver_modalbantuisi.removeAttribute("onclick");
+}
+const showhidebantuisiljkbaru = (kondisi)=>{
+        
+    if(modal_lebarmodalbantuisibaru.hasAttribute("style")){
+        modal_lebarmodalbantuisibaru.removeAttribute("style")
+    }
+    if(kondisi == "awal"){
+        modal_loadingsoalbantudulu.style.display="none";
+        modal_tabelotomatisklikpg.style.display="block";
+        modal_previewljksementara.style.display="none";
+        print_modalbantuisi.setAttribute("onclick",`printadm('tabelotomatisklikpg',true)`);
+    }else if(kondisi == "berinilai"){
+        modal_loadingsoalbantudulu.style.display="none";
+        modal_tabelotomatisklikpg.style.display="block";
+        modal_previewljksementara.style.display="none";
+        print_modalbantuisi.setAttribute("onclick",`printadm('tabelotomatisklikpg',true)`);
+    }else if(kondisi == "lihatsoal"){
+        modal_loadingsoalbantudulu.style.display="block";
+        modal_tabelotomatisklikpg.style.display="none";
+        modal_previewljksementara.style.display="none";
+        print_modalbantuisi.setAttribute("onclick",`printadm('loadingsoalbantudulu',true)`);
+    }else if(kondisi == "lihatljk"){
+        modal_previewljksementara.style.width="98%";
+        modal_loadingsoalbantudulu.style.display="none";
+        modal_tabelotomatisklikpg.style.display="none";
+        modal_previewljksementara.style.display="block";
+        modal_lebarmodalbantuisibaru.setAttribute("style","width:98%")
+        print_modalbantuisi.setAttribute("onclick",`printadm('previewljksementara',false)`);
+    }
+    modal_modalbantuisibarulagi.scrollTo({ top: 43, behavior: 'smooth' });
+}
+const tutupmodalljkbantu = () =>{
+    modal_modalbantuisibarulagi.style.display = "none";
+    modal_loadingsoalbantudulu.innerHTML = "";
+    modal_tabelotomatisklikpg.innerHTML = "";
+    modal_previewljksementara.innerHTML = "";
+    document.getElementById("datakirimnonscanner").innerHTML ="";
+}
+const tooltipkan_tabelconfigpgbantuisiljk = (col)=>{
+    
+    let tabel = document.getElementById("tabelconfigpgbantuisiljk");
+    let tabelljk = document.getElementById("tabelpgakhirnonscanner");
+    
+    for(let r = 1 ; r < tabel.rows.length ; r++){
+        //let elCol = elRow[r].cells;
+        
+        for(let q = 0 ; q < tabel.rows[r].cells.length ; q++){
+            //let perbaris = elCol[q];
+            
+
+            tabel.rows[r].cells[q].onclick = function (){
+                let brssel = this.parentElement.rowIndex;
+                let kolom = this.cellIndex 
+                if(kolom >= 1 && kolom <= col){
+                        let nosoal = brssel
+                        let selkunci = tabel.rows[brssel].cells[(col+1)].innerHTML;
+                        let isiopsi = this.innerHTML;
+                        let pgsiswa = nosoal + isiopsi;
+                            for(c = 1 ; c <= col ; c++){
+                                tabel.rows[brssel].cells[c].removeAttribute("class");
+                                tabelljk.rows[brssel].cells[c].removeAttribute("style");
+                            }
+                            this.setAttribute("class","w3-yellow");
+                            tabelljk.rows[brssel].cells[kolom].setAttribute("style","background-color:yellow");
+                            document.querySelector(`[data-keykirimnonscanner=PG_${nosoal}]`).value = isiopsi;
+                        let nilaipg = selkunci;
+                        if(pgsiswa == selkunci){
+                            document.querySelector(`[data-keykirimnonscanner=SKOR_${nosoal}]`).value = 1;
+                        }else{
+                            document.querySelector(`[data-keykirimnonscanner=SKOR_${nosoal}]`).value = 0;
+                            
+                        }
+                        let kd = JSON.parse(kronologijson[parseInt(idtabaktif.innerHTML)].kuncikd)
+                        let keykd = Object.keys(kd); 
+                        let objnilai = {};
+                        
+                        
+                        for (let k = 0; k < keykd.length; k++) {
+                            let nomorsoal = kd[keykd[k]];
+                            let jumlahnomor = nomorsoal.length;
+                            let count = 0;
+                            
+                            let inkd = document.getElementsByClassName(keykd[k]);
+                            for (let j = 0; j < inkd.length; j++) {
+                                count += inkd[j].value * 1;
+                                //console.log(inkd[j].value)
+                            }
+
+                            let nilaiakhir = (count / jumlahnomor * 100).toFixed(2)
+                            objnilai[keykd[k]] = nilaiakhir
+                        }
+                        document.querySelector("#nilaikdkoreksikoreksiisiljk").value = JSON.stringify(objnilai);
+                        let elemens_nilaipg = document.querySelectorAll(".kelasnilaipg_nonscanner");
+                        let count = 0;
+                        for(let x = 0 ; x < elemens_nilaipg.length ; x++){
+                            count+=elemens_nilaipg[x].value*1
+                        };
+                        document.querySelector("[data-keykirimnonscanner=nilaiPG]").value = ((count/elemens_nilaipg.length)*100).toFixed(2);
+                        document.querySelector("#nilaiPGku").innerHTML = ((count/elemens_nilaipg.length)*100).toFixed(2);
+
+                }
+            }
+
+        }
+    }
+}
+
+const updatenilaikoreksnonscanner = (id,jumlahsoalessaysebenarnya) =>{
+    let inputedit = document.getElementById("koreksisoalnonscanner_" + id);
+    if (inputedit.value > 100) {
+        alert("Nilai Maksimum 100, dan minimum 0")
+        inputedit.value = 100;
+    }
+    document.getElementById("SKOR_" + id).value = (inputedit.value / 100).toFixed(2);
+
+    document.getElementById("untuklj"+id).innerHTML = `Nilai Koreksi: <span id="nilaiessaykoreksi_${id}">${inputedit.value}</span>`;
+    //document.getElementById("nilaiessaykoreksi_" + id).innerHTML = inputedit.value;
+   
+    var kelasinput = document.getElementsByClassName("koreksisoalnonscanner");
+    var nilai = 0;
+    for (i = 0; i < kelasinput.length; i++) {
+
+        nilai += kelasinput[i].value * 1;
+
+    }
+    /// ---------------------------------------------------
+    //var jumlahsoalessaysebenarnya = kronologijson[parseInt(idtabaktif.innerHTML)].jumlahessay;
+    var nilaiakhir = (nilai / jumlahsoalessaysebenarnya).toFixed(2);
+    // document.getElementById("nilaiakhiressay").value = nilai;
+    // document.getElementById("nilaiakhiressayscanerisiljk").value = nilaiakhir;
+    document.querySelector("[data-keykirimnonscanner=nilaiEssay]").value = nilaiakhir;
+    /// ---------------------------------------------------
+
+    //document.getElementById("htmlljkkoreksi").textContent = divljkkoreksi.innerHTML;
+    let adaelemenini = document.getElementById("nilaiEssayku")
+    if (adaelemenini !== null) {
+        adaelemenini.innerHTML = nilaiakhir;
+    }
+
+    let kd = JSON.parse(kronologijson[parseInt(idtabaktif.innerHTML)].kuncikd)
+    let keykd = Object.keys(kd); // MTK_3.1 , PKN_3.5
+    let objnilai = {};
+    
+    
+    for (let k = 0; k < keykd.length; k++) {
+        
+        let nomorsoal = kd[keykd[k]];
+        let jumlahnomor = nomorsoal.length;
+        let count = 0;
+        
+        let inkd = document.getElementsByClassName(keykd[k]);
+        for (let j = 0; j < inkd.length; j++) {
+            count += inkd[j].value * 1;
+            //console.log(inkd[j].value)
+        }
+
+        let nilaiakhir = (count / jumlahnomor * 100).toFixed(2)
+        objnilai[keykd[k]] = nilaiakhir
+    }
+    document.getElementById("nilaikdkoreksikoreksiisiljk").value = JSON.stringify(objnilai)
+
+
+    //document.getElementById("prevprevnilaikoreksi").innerHTML = `<hr> Skor Essay = <br>${nilaiakhir} <hr> Skor KD = <br> ${JSON.stringify(objnilai)}`
+
 }
