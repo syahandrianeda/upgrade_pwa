@@ -3904,7 +3904,7 @@ const simpannaskahdesain = () =>{
     let judul= sJudul.outerHTML.replace(/\r|\n|\r\n|\t|\s\s/gm,"");
     let judulnaskah = document.querySelector("#naskahsoal_identitas");
     let mapel = document.getElementById("naskahsoal_mapelapatema").options[document.getElementById("naskahsoal_mapelapatema").options.selectedIndex].text;
-    let htmltabel =`<table style="width:100%;border-collapse:collapse;border-spacing:0" >`;
+    let htmltabel =`<table style="width:100%;border-collapse:collapse;border-spacing:0" id="tabelkontendesainnaskah_dariserver" >`;
     // array tanpa idbaris
     
     let objekarraykirim = {};
@@ -4435,6 +4435,12 @@ const lihatkuncidankisikisi = (idbrs,kondisi="kisikisi") =>{
 }
 
 const carikriteriabanksoal = (el)=>{
+    let divpaginasi = document.querySelectorAll(".bungkuspaginasibanksoal");
+                for(let p = 0 ; p < divpaginasi.length ; p++){
+                    if(divpaginasi[p].className.indexOf("w3-hide")==-1){
+                        divpaginasi[p].classList.add("w3-hide")
+                    }
+                }
     let op = el.options;
     let indek = op.selectedIndex;
     let v_mapel = op[indek].value;
@@ -4492,6 +4498,7 @@ const carikriteriabanksoal = (el)=>{
     tabel.innerHTML = html
 }
 const carikriteriabanksoalkelas = (el)=>{
+    
     let ele = document.getElementById("kritsoal_mapel")
     let op = ele.options;
     let indek = op.selectedIndex;
@@ -4733,7 +4740,7 @@ const modalbanksoaleditable = (ibrs,kondisi) =>{
                         <span class="w3-right w3-opacity w3-tiny">${waktufullkomen}</span>
                         <h4>${komentatorsebenarnya}</h4><br>
                         <hr class="w3-clear">`
-                        
+                        console.log(idkomentator, idguru)
                         if(idkomentator == idguru){
                             let idp = `p_komenke_${ang}`;
                             koleksiklikkomenowner.push(idp);            
@@ -4747,7 +4754,7 @@ const modalbanksoaleditable = (ibrs,kondisi) =>{
                             Ini adalah komentar Anda, Jika ingin mengeditnya silakan klik pada teks komentar lalu klik tombol <b>Simpan Editan</b>.
                         </div>`;
                         }else{
-                            html+=`<p class="w3-justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat unde asperiores quisquam vitae nisi est omnis quae veritatis. Officiis ipsum vero quos est blanditiis perspiciatis magni dolorem esse eveniet. Itaque odit quidem, eos error veritatis, maxime voluptas optio dolore aliquam voluptatem corporis laboriosam eum, fuga non quaerat sequi vero neque.</p>`
+                            html+=`<p class="w3-justify"> ${src_komentar[b][isikomen]}</p>`;
                         }
                 html +=`<p></p></div>`;
                     }

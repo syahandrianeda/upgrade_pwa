@@ -1,4 +1,4 @@
-const staticCacheName = "statis1876rt657";
+const staticCacheName = "statis1876rt65etr57";
 const dynamicChace = "dinamis0s028RR888889";
 const assets = [
     "/","/index.html","/css/w3.css",
