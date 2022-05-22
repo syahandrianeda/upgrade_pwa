@@ -6972,11 +6972,11 @@ const daftarnilaikronologi = (id) => {
     let ctok = datamaterilocal.crtToken;
 
     modaldaftarnilaikronologi.style.display = "block";
-    document.querySelector("#modalidmapelkronologi").innerHTML = "<br>" + tagih + " " + materi;
+    document.querySelector("#modalidmapelkronologi").innerHTML = "<br>" + tagih.toUpperCase() + " " + materi;
     document.getElementsByClassName("tablinkkronologi")[0].click();
 
     let paramtambahan = "&idkelas=" + encodeURIComponent(idNamaKelas);
-
+    tablinkKDkronologitabel.innerHTML = `<img src="/img/barloading.gif"> Proses Loading ...`
     fetch(constlinknilai + "?action=nilairseponkronologi" + paramtambahan)
         .then(m => m.json())
         .then(f => {
@@ -7411,9 +7411,7 @@ const tombolaksikronologi = (currEssay, parNama, z, idhtmlmateri) => {
     let kodehtml = "";
     let cek = nilairesponkronologi.filter(k => k.tokensiswa == parNama);
     let datapg = kronologijson[idhtmlmateri].jumlahpg;
-    console.log(currEssay)
-    console.log(datapg)
-    console.log(idhtmlmateri)
+    
     //console.log(cek);
     let matericode ;
 
@@ -7453,7 +7451,8 @@ const tombolaksikronologi = (currEssay, parNama, z, idhtmlmateri) => {
             }
 
         } else {
-            kodehtml = `<button class="w3-button w3-blue w3-round-large" onclick = "lihatljksaya('${cek[indek].html_jawaban}')" > LJK</button ><br> <br> 
+            kodehtml = `<button class="w3-button w3-blue w3-round-large" onclick = "lihatljksaya('${cek[indek].html_jawaban}')" > LJK</button ><br>
+            <button class="w3-button w3-green w3-round-large" onclick="gurumengoreksi('${indekk}')">Cek PG</button><br><br>
         <button class="w3-button w3-black w3-round-large" onclick="hapusljk('${cek[indek].idbaris}',${matericode})">Hapus</button><br>
         `
         }
@@ -7780,7 +7779,7 @@ const ubahjsonkuncikd = (ob) => {
     }
     return obnew
 }
-const gurumengoreksi = (bid) => {
+const gurumengoreksidiubah = (bid) => {
     let indek = bid.split("<|>")[0];
     let parnama = bid.split("<|>")[1];
     let cek = nilairesponkronologi.filter(k => k.tokensiswa == parnama)[indek];
@@ -8053,25 +8052,28 @@ const siapkirimnilai = () => {
 
     let namaform = document.querySelector("#formgurumengoreksi")
     let dataform = new FormData(namaform)
-    fetch(constlinknilai + "?action=koreksianguru", {
-        method: "post",
-        body: dataform
-    }).then(m => m.json())
-        .then(f => {
-            //console.log(f);
-            document.querySelector("#infoloadingljk").innerHTML = `<h3 class="w3-center">${f.result}</h3>`;
-            if (iddarimana == "hariini") {
-                getdaftarnilai(idakseskoreksi)
-            } else {
-                daftarnilaikronologi(idakseskoreksi)
+    for (var pair of dataform.entries()) {
+            console.log(pair[0]+ ', ' + pair[1]); 
+        }
+    // fetch(constlinknilai + "?action=koreksianguru", {
+    //     method: "post",
+    //     body: dataform
+    // }).then(m => m.json())
+    //     .then(f => {
+    //         //console.log(f);
+    //         document.querySelector("#infoloadingljk").innerHTML = `<h3 class="w3-center">${f.result}</h3>`;
+    //         if (iddarimana == "hariini") {
+    //             getdaftarnilai(idakseskoreksi)
+    //         } else {
+    //             daftarnilaikronologi(idakseskoreksi)
 
-            }
+    //         }
 
-            //setTimeout(tutuploadingljk(), 5000)
+    //         //setTimeout(tutuploadingljk(), 5000)
 
 
-        })
-        .catch(er => console.log(er))
+    //     })
+    //     .catch(er => console.log(er))
     document.querySelector("#infoloadingljk").innerHTML = `<i class="fa fa-spin fa-refresh w3-center w3-xxxlarge"></i>`
 
 }
@@ -13168,3 +13170,4 @@ fetch(jlo.url_datauser + "?action=datagurualltamu&idss=" + jlo.ss_datauser)
         console.log("error dataapigurutamu "+er)
         window.location.reload();
     })
+

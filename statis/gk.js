@@ -14786,7 +14786,7 @@ const cek_leger_k3 = () => {
                 tabelini.rows[j].cells[13].innerHTML = arrsortrangk[j];
             };
             let tesade = TbodyToArray("leger_k3");
-            console.table(tesade);
+            
         } else {
             let i = 0
             // let arrayLeger = [];
@@ -14908,7 +14908,7 @@ const cek_leger_k3 = () => {
                 tabelini.rows[j].cells[11].innerHTML = arrsortrangk[j];
             }
             let tesade = TbodyToArray("leger_k3");
-            console.table(tesade);
+          
         }
     } catch (err) {
         // alert("Maaf, Raport untuk siswa ini tidak bisa ditampilkan. Pastikan data nilai KI-3 dan KI-4 minimal ada 2 KD yang memiliki nilai. \n\n Tips: jika memang tidak ada data nilai, beri nilai nol (tidak boleh dikosongkan) untuk Rekap KI-3 atau KI-4.)");

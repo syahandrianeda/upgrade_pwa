@@ -4417,35 +4417,18 @@
             <div id="tablinkKD" class="w3-container city w3-padding">
                 <h3>Rekap Nilai Per KD</h3>
                 <hr>
-                <div id="tablinkKDtabel" style="overflow-x: auto;">
-                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Soluta, omnis maiores eligendi quam
-                    quis
-                    harum
-
-                </div>
+                <div id="tablinkKDtabel" style="overflow-x: auto;"><img src="/img/barloading.gif"></div>
 
             </div>
             <div id="tablinkPG" class="w3-container city w3-padding">
                 <h3>Analisis Soal tipe Pilihan Ganda</h3>
                 <hr>
-                <div id="tablinkPGtabel" style="overflow-x: auto;">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed ratione iste provident temporibus
-                    voluptatem. Temporibus asperiores placeat esse mollitia tempore. Quis debitis error ab et!
-                    Ducimus
-                    aliquam iusto voluptatem nisi!
-                </div>
+                <div id="tablinkPGtabel" style="overflow-x: auto;"><img src="/img/barloading.gif"></div>
             </div>
             <div id="tablinkSkor" class="w3-container city w3-padding">
                 <h3>Analisis Soal tipe SKOR</h3>
                 <hr>
-                <div id="tablinkSkortabel" style="overflow-x: auto;">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat ex illo tempore cumque
-                    provident?
-                    Sapiente, veritatis. Aspernatur numquam, odit expedita voluptatibus repellat aliquam architecto,
-                    ex
-                    amet
-                    veniam earum corrupti alias!
-                </div>
+                <div id="tablinkSkortabel" style="overflow-x: auto;"><img src="/img/barloading.gif"></div>
             </div>
 
         </div>
@@ -4584,35 +4567,18 @@ _OPSI-PG-C_1C isikan opsi jawaban C
             <div id="tablinkKDkronologi" class="w3-container citykronologi w3-padding">
                 <h3>Rekap Nilai Per KD</h3>
                 <hr>
-                <div id="tablinkKDkronologitabel" style="overflow-x: auto;">
-                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Soluta, omnis maiores eligendi quam
-                    quis
-                    harum
-
-                </div>
+                <div id="tablinkKDkronologitabel" style="overflow-x: auto;"><img src="/img/barloading.gif"></div>
 
             </div>
             <div id="tablinkPGkronologi" class="w3-container citykronologi w3-padding">
                 <h3>Analisis Soal tipe Pilihan Ganda</h3>
                 <hr>
-                <div id="tablinkPGkronologitabel" style="overflow-x: auto;">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed ratione iste provident temporibus
-                    voluptatem. Temporibus asperiores placeat esse mollitia tempore. Quis debitis error ab et!
-                    Ducimus
-                    aliquam iusto voluptatem nisi!
-                </div>
+                <div id="tablinkPGkronologitabel" style="overflow-x: auto;"><img src="/img/barloading.gif"></div>
             </div>
             <div id="tablinkSkorkronologi" class="w3-container citykronologi w3-padding">
                 <h3>Analisis Soal tipe SKOR</h3>
                 <hr>
-                <div id="tablinkSkorkronologitabel" style="overflow-x: auto;">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat ex illo tempore cumque
-                    provident?
-                    Sapiente, veritatis. Aspernatur numquam, odit expedita voluptatibus repellat aliquam architecto,
-                    ex
-                    amet
-                    veniam earum corrupti alias!
-                </div>
+                <div id="tablinkSkorkronologitabel" style="overflow-x: auto;"><img src="/img/barloading.gif"></div>
             </div>
 
 
@@ -6679,6 +6645,28 @@ _OPSI-PG-C_1C isikan opsi jawaban C
                     
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="w3-modal w3-light-gray" id="modalbantuisibarulagi">
+        <div class="w3-modal-content w3-white w3-card-4" id="lebarmodalbantuisibaru">
+            <header class="warnaeka w3-card-4  w3-border-bottom w3-border-black w3-container">
+                <span class="w3-button w3-red w3-round-large w3-right" onclick="tutupmodalljkbantu()" style="z-index: 99999;">&times; </span>
+            </header>
+            <div id="loadingsoalbantudulu" class="loadingsoalbantudulu w3-padding"></div>
+            <div id="tabelotomatisklikpg" class="tabelotomatisklikpg w3-center"></div>
+            <div id="previewljksementara" class="previewljksementara w3-padding"></div>
+            <div class="w3-center w3-border w3-round-large w3-container w3-small">
+                <button class="w3-btn w3-khaki w3-bottombar w3-border-black w3-round-large" id="print_modalbantuisi" onclick="alert('cetak')">Print</button>
+                <button class="w3-btn w3-khaki w3-bottombar w3-border-black w3-round-large" id="inputpg_modalbantuisi" onclick="alert('tempat mengisi PG, jika tidak ada disembunyikan')">Input Pilihan Ganda</button>
+                <button class="w3-btn w3-khaki w3-bottombar w3-border-black w3-round-large" id="previewljk_modalbantuisi" onclick="alert('Preview LJK')">Preview LJK</button>
+                <button class="w3-btn w3-khaki w3-bottombar w3-border-black w3-round-large" id="previewnaskahsoal_ljkbantu" onclick="alert('Preview LJK')">Naskah Soal</button>
+                <hr><div id="datakirimnonscanner" class="w3-hide">Nilai KD Yang akan dikirimkan (akan dihidden):</div>
+                <button class="w3-btn wa w3-bottombar w3-border-black" id="kirimserver_modalbantuisi" onclick="alert('Kirim ke server')">Kirim Server</button>
+            </div>
+        </div>
+        <div class="w3-bottom">
+            <button class="w3-left w3-pale-green w3-button" onclick="document.getElementById('modalbantuisibarulagi').scrollTo({ top: 0, behavior: 'smooth' })"><i class="fa fa-arrow-up"></i></button>
+            <button class="w3-right w3-button w3-pale-red" onclick="document.getElementById('modalbantuisibarulagi').scrollTo({top: document.getElementById('modalbantuisibarulagi').scrollHeight, behavior: 'smooth' })"><i class="fa fa-arrow-down"></i></button>
         </div>
     </div>
     <button class="w3-button" style="position: fixed;bottom:5px;right:0;z-index:3" onclick="window.scrollTo({ top: 43, behavior: 'smooth' })"><i class="fa fa-arrow-up"></i></button>
