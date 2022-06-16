@@ -74,6 +74,7 @@
                 absenheader = "absen" + m.jenjang;
                 url_kaldikaja = jlo.url_dataabsen;//
                 url_absensiswa = jlo[absenheader];//+ "?action=absensis
+                window.location.replace("/user/guru.html");
             } else if (m.akses == "Guru Mapel") {
                 window.location.replace("/user/gmp.html");
 
@@ -99,9 +100,8 @@
     <link rel="apple-touch-icon" href="/img/icons/pic96.png">
     <meta name="apple-mobile-web-app-status-bar" content="#ffffff">
     <meta name="theme-color" content="#ffffff">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.4.1/chart.min.js"
-        integrity="sha512-5vwN8yor2fFT9pgPS9p9R7AszYaNn0LkQElTXIsZFCL7ucT8zDCAqlQXDdaqgA1mZP47hdvztBMsIoFxq/FyyQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.4.1/chart.min.js" integrity="sha512-5vwN8yor2fFT9pgPS9p9R7AszYaNn0LkQElTXIsZFCL7ucT8zDCAqlQXDdaqgA1mZP47hdvztBMsIoFxq/FyyQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 </head>
 
 
@@ -424,7 +424,7 @@
             <div id="tabeltempatpangkat" class="tabcontent" style="width:100%;overflow-x:auto">
             </div>
 
-            <div id="datasiswaprint" style="display:block"></div>
+            <div id="datasiswaprint" style="display:none"></div>
         </div>
         <div class="w3-container" id="dataabsensi">
 
@@ -2823,9 +2823,9 @@
                 title="Sinkronkan data lokal dengan data di server"><i class="fa fa-refresh"></i> Sinkronkan</button>
             <hr />
             <div class="tab">
-                <button class="tablinks tabkesiswaan1" onclick="openCity(event, 'divdatabasesiswa')">Database
-                    Siswa</button>
+                <button class="tablinks tabkesiswaan1" onclick="openCity(event, 'divdatabasesiswa')">Database Siswa</button>
                 <button class="tablinks tabkesiswaan2" onclick="openCity(event, 'divdaftar2')">Daftar 1</button>
+                <button class="tablinks tabbukuinduk" onclick="openCity(event, 'divbukuinduk')">Buku Induk Siswa</button>
             </div>
             <div id="divdatabasesiswa" class="tabcontent">
                 <div class="menu_divdatabasesiswa w3-border w3-border-blue w3-padding">
@@ -2834,7 +2834,9 @@
                     <div class="sortirsortir w3-left w3-block">
                         <select id="select_wajib" class="w3-select w3-border w3-border-blue kriteria_dinamis">
                             <option value="aktif" selected>Siswa Aktif</option>
-                            <option value="nonaktif">Siswa Nonaktif</option>
+                            <option value="non-aktif">Siswa Nonaktif</option>
+                            <option value="lulus">Lulus</option>
+                            <option value="pindah">Pindah</option>
                         </select>
                     </div>
                     <span class="w3-left w3-padding">
@@ -2874,8 +2876,19 @@
             <div id="divdaftar2" class="tabcontent">
 
             </div>
-
-            <div style="height:600px"></div>
+            <div id="divbukuinduk" class="tabcontent">
+                <h3 class="w3-center">Database Buku Induk</h3>
+                <div class="w3-row">
+                    <div class="w3-border w3-col l4 s12 informasiawaldatabasebukuinduk"><img src="/img/barloading.gif" alt="loading"></div>
+                    <div class="w3-border w3-col l6 s12 divbukuinduk_koleksibukuinduk"><img src="/img/barloading.gif" alt="loading"></div>
+                    <div class="w3-border w3-col l2 s12 keteranganinforekapinduk"></div>
+                    <div class="w3-border w3-col l12 s12 koleksibukuindukperkelas"><img src="/img/barloading.gif" alt="loading"></div>
+                </div>
+                <div class="w3-white w3-card-4 previewbukuinduk w3-white" style="padding:2px"></div>
+                <div class="w3-center w3-small w3-margin-top"><button onclick="printadm('previewbukuinduk',false)" class=" w3-button w3-green w3-bottombar w3-border-red w3-round-large"><i class="fa fa-print"></i> Cetak</button></div>
+            </div>
+            <div id="ngapainsihlu" class="w3-hide">Patokan</div>
+            <!-- <div style="height:600px"></div> -->
         </div>
         <div class="w3-container" id="divsuratsurat">
             <h3>Administrasi Surat Menyurat</h3>
@@ -3632,6 +3645,7 @@
                 </div>
             </div>
         </div>
+        
     </div>
 
     <!--  08 modaledituser -->
@@ -4686,13 +4700,79 @@
             </div>
         </div>
     </div>
+    <div id="modal_editnomorinduk" class="w3-modal">
+        <div class="w3-modal-content">
+            <span class="w3-right w3-red w3-round-large w3-container tangan" onclick="document.getElementById('modal_editnomorinduk').style.display='none';">&times;</span>
+            <header class="w3-pale-blue w3-center judulmodal_editnomorinduk w3-bottombar w3-border-cyan">EDIT NOMOR INDUK</header>
+            <div class="men_induk_info w3-small w3-center w3-margin">Anda hanya diizinkan untuk mengedit Nomor Induk Saja</div>
+            <div class="menu-editinduk w3-round-large w3-container w3-border w3-white w3-center">Menu Edit Induk</div>
+            <div class="formulirkirim w3-round-large w3-container w3-white" style="overflow-x: auto;">DISINI ISIAN FORMULIR yang AKAN DIKIRIM</div>
+            <div class="tempattombol_formulirkirim w3-round-large w3-container w3-border w3-white w3-center w3-margin-top w3-margin-bottom">Tempat Tombol</div>
+            <header class="w3-pale-blue w3-center footer_editnomorinduk w3-topbar w3-border-cyan  w3-padding"><br></header><div class="w3-pale-blue"><br></div>
+        </div>
+        <div class="w3-bottom">
+            <button class="tangan w3-pale-green w3-right" onclick="document.getElementById('modal_editnomorinduk').scrollTo({ top: document.querySelector('.menu-editinduk').offsetTop-43, behavior: 'smooth' })"><i class="fa fa-arrow-up"></i></button>
+            <button class="tangan w3-pale-red w3-left"  onclick="document.getElementById('modal_editnomorinduk').scrollTo({top: document.getElementById('modal_editnomorinduk').scrollHeight, behavior: 'smooth' })"><i class="fa fa-arrow-down"></i></button>
+        </div>
+    </div>
+    <div id="modaluploaddokumeninduk" class="w3-modal">
+        <div class="w3-modal-content">
+            <span class="w3-right w3-red w3-round-large w3-container tangan" onclick="document.getElementById('modaluploaddokumeninduk').style.display='none';">&times;</span>
+            <div class="w3-container">
+                <h5 class="w3-center">LAMPIRAN DOKUMEN PRIBADI SISWA</h5>
+                <table class="w3-table garis w3-small w3-margin-bottom tabeldokumenindukeditable">
+                    <thead>
+                        <tr class="w3-light-grey">
+                            <th style="width:15px">No.</th>
+                            <th>Nama File</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Nama File</td>
+                            <td onclick="document.querySelector('.tabeldokumenindukeditable').deleteRow(this.parentElement.rowIndex)" title="Klik di sini untuk menghapus kolom tabel">Hapus</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Nama File</td>
+                            <td onclick="document.querySelector('.tabeldokumenindukeditable').deleteRow(this.parentElement.rowIndex)" title="Klik di sini untuk menghapus kolom tabel">Hapus</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Nama File</td>
+                            <td onclick="document.querySelector('.tabeldokumenindukeditable').deleteRow(this.parentElement.rowIndex)" title="Klik di sini untuk menghapus kolom tabel">Hapus</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Nama File</td>
+                            <td onclick="document.querySelector('.tabeldokumenindukeditable').deleteRow(this.parentElement.rowIndex)" title="Klik di sini untuk menghapus kolom tabel">Hapus</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>Nama File</td>
+                            <td>Upload</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" class="w3-center tangan"><button onclick="tambahbarisdatadokumenpribadi()" class="w3-btn w3-khaki w3-round-xlarge w3-bottombar w3-border-black"><i class="fa fa-plush"></i> Tambah Baris</button></td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <div class="w3-center"><button id="id_btnsimpanserverdokumenpribadi" onclick="simpanserverdokumenpribadisiswa()">Simpan Dokumen</button></div>
+            </div>
+        </div>
+    </div>
+    <button class="tangan w3-pale-green" style="position: fixed;bottom:5px;right:0;z-index:2" onclick="window.scrollTo({ top: document.getElementById('batasaksesguru').offsetTop-43, behavior: 'smooth' })"><i class="fa fa-arrow-up"></i></button>
+    <button class="tangan w3-pale-red" style="position: fixed;bottom:5px;left:0;z-index:2" onclick="window.scrollTo({top: document.getElementById('lamangurukelas').scrollHeight-237, behavior: 'smooth' })"><i class="fa fa-arrow-down"></i></button>
     <script src="/statis/app.js"></script>
     <script src="/timekbm.js"></script>
     <script src="/statis/staff.js"></script>
     <script src="/statis/excelstaff.js"></script>
-<!-- <button onclick="document.getElementById('sppd_previewresume').style.display='block'">TES MODAL</button>
-    <button onclick="document.getElementById('keyboard_ketikan').style.display='block'">TES KETIKAN</button>
-    <button onclick="document.getElementById('useredit_sppd').style.display='block'">TES EDIT SPPD</button> -->
+    <script src="/statis/staffbukuinduk.js"></script>
+
 </body>
 
 </html>

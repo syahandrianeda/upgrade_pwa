@@ -1783,11 +1783,11 @@ const htmlformulirdatasiswa = () => {
         <h3 class="w3-light-green w3-center" >DATA PRIBADI</h3>
         <label for="hfd_nis">NIS:</label>
         <br/>
-        <input type="text" class="w3-input w3-white w3-border w3-border-black w3-round"  name="nis" id="hfd_nis">
+        <input type="text" class="w3-input w3-white w3-border w3-border-black w3-round" disabled name="nis" id="hfd_nis">
         <br/>
         <label for="hfd_nisn">NISN:</label>
         <br/>
-        <input type="text" class="w3-input w3-white w3-border w3-border-black w3-round" name="nisn" id="hfd_nisn">
+        <input type="text" class="w3-input w3-white w3-border w3-border-black w3-round" disabled name="nisn" id="hfd_nisn">
         <br/>
         <label for="hfd_pd_nama">Nama Lengkap:</label>
             <br/>

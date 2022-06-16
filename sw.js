@@ -1,5 +1,5 @@
-const staticCacheName = "statis1876rt65etr57";
-const dynamicChace = "dinamis0s028RR888889";
+const staticCacheName = "statis0518";
+const dynamicChace = "dinamis0518";
 const assets = [
     "/","/index.html","/css/w3.css",
     "/css/firststyle.css","/css/css_siswa.css", "/css/css_timeline.css",
@@ -51,15 +51,15 @@ const assets = [
     "/statis/rpp.js",
     "/statis/barcode.js",
     "/statis/editortooltip.js",
-
-
+    "/statis/staff_bukuinduk.js",
+    "/statis/bukuinduk.js",
     "/user/gmp.html",
     "/user/guru.html",
     "/user/kepsek.html",
     "/user/offline.html",
     "/user/siswa.html",
     "/user/orangtua.html",
-    "/user/staff.html",
+    "/user/staff.html","/statis/staffbukuinduk.js"
 
 
 

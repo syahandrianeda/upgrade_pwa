@@ -1925,7 +1925,7 @@ function kurikulum() {
     fetch(linkmateri + "&action=cekdkkm&tab=" + tas)
         .then(m => m.json())
         .then(k => {
-
+            console.log(k)
             let statusunggah = (k.unggah == "Jenjang Kelas Anda sudah mengunggah KKM dan KD") ? true : false;
             let data = k.result;
 
@@ -2050,7 +2050,7 @@ const fnsimpanidkkm = () => {
     }
     datacekliskd();
 }
-const tabelkearray = () => {
+const tabelkearraylama = () => {
     let tabel = document.querySelector(".tabelkkmkd");
     let arr = [];
     let baris = tabel.rows.length;
@@ -2109,13 +2109,160 @@ const tabelkearray = () => {
     // console.log(starr)
     return arr
 }
+const tabelkearray = () => {
+    let data = buateditorkdaktif;
+    let arr = [];
+    for(i = 0 ; i < data.length; i++){
+        if(i == 0){
+            let key = Object.keys(data[i])
+            let val = Object.values(data[i])
+            arr.push(key);
+            arr.push(val);
+
+        }else{
+            let val = Object.values(data[i])
+            arr.push(val);
+        }
+    }
+    // let tabel = document.querySelector(".tabelkkmkd");
+    // let arr = [];
+    // let baris = tabel.rows.length;
+    // for (i = 0; i < baris; i++) {
+    //     let arrtd = [];
+    //     let td1 = tabel.rows[i].cells[0].innerHTML;
+    //     let td2 = tabel.rows[i].cells[1].innerHTML;
+    //     let td3 = tabel.rows[i].cells[2].innerHTML;
+    //     let td4 = tabel.rows[i].cells[3].innerHTML;
+    //     let td5 = tabel.rows[i].cells[4].innerHTML;
+    //     let td6 = tabel.rows[i].cells[5].innerHTML;
+    //     // let td7 = tabel.rows[i].cells[6].innerHTML;
+    //     // let td8 = tabel.rows[i].cells[7].innerHTML;
+    //     if (i == 0) {
+    //         arrtd.push("mapel");
+    //         arrtd.push("kd3");
+    //         arrtd.push("indikatorkd3");
+    //         arrtd.push("kd4");
+    //         arrtd.push("indikatorkd4");
+    //         arrtd.push("kkm");
+    //         let teks = "cekliskd3"
+    //         arrtd.push(teks);
+    //         teks = "cekliskd4"
+    //         arrtd.push(teks);
+
+    //     } else {
+    //         arrtd.push(td1);
+    //         arrtd.push(td2);
+    //         arrtd.push(td3);
+    //         arrtd.push(td4);
+    //         arrtd.push(td5);
+    //         arrtd.push(td6);
+    //         let teks = "kd3_" + td1 + "_" + td2;
+    //         let trufals = document.getElementById(teks);
+    //         let hsil = false;
+    //         if (trufals !== null) {
+    //             hsil = (trufals.checked) ? true : false;
+    //         }
+    //         arrtd.push(hsil);
+
+    //         let teks4 = "kd4_" + td1 + "_" + td4;
+    //         let trufals4 = document.getElementById(teks4);
+    //         let hsil4 = false;
+    //         if (trufals4 !== null) {
+    //             hsil4 = (trufals4.checked) ? true : false;
+    //         }
+    //         arrtd.push(hsil4);
+
+
+    //     }
+    //     arr.push(arrtd)
+    // }
+    // console.log(baris);
+    // console.log(arr)
+    //let starr = JSON.stringify(arr);
+    // console.log(starr)
+    return arr
+}
+const tabelkearray2 = () => {
+    // // let data = buateditorkdaktif;
+    // // let arr = [];
+    // // for(i = 0 ; i < data.length; i++){
+    // //     if(i == 0){
+    // //         let key = Object.keys(data[i])
+    // //         let val = Object.values(data[i])
+    // //         arr.push(key);
+    // //         arr.push(val);
+
+    // //     }else{
+    // //         let val = Object.values(data[i])
+    // //         arr.push(val);
+    // //     }
+    // // }
+    let tabel = document.querySelector(".tabelkkmkd");
+    let arr = [];
+    let baris = tabel.rows.length;
+    for (i = 0; i < baris; i++) {
+        let arrtd = [];
+        let td1 = tabel.rows[i].cells[0].innerHTML;
+        let td2 = tabel.rows[i].cells[1].innerHTML;
+        let td3 = tabel.rows[i].cells[2].innerHTML;
+        let td4 = tabel.rows[i].cells[3].innerHTML;
+        let td5 = tabel.rows[i].cells[4].innerHTML;
+        let td6 = tabel.rows[i].cells[5].innerHTML;
+        // let td7 = tabel.rows[i].cells[6].innerHTML;
+        // let td8 = tabel.rows[i].cells[7].innerHTML;
+        if (i == 0) {
+            arrtd.push("mapel");
+            arrtd.push("kd3");
+            arrtd.push("indikatorkd3");
+            arrtd.push("kd4");
+            arrtd.push("indikatorkd4");
+            arrtd.push("kkm");
+            let teks = "cekliskd3"
+            arrtd.push(teks);
+            teks = "cekliskd4"
+            arrtd.push(teks);
+
+        } else {
+            arrtd.push(td1);
+            arrtd.push(td2);
+            arrtd.push(td3);
+            arrtd.push(td4);
+            arrtd.push(td5);
+            arrtd.push(td6);
+            let teks = "kd3_" + td1 + "_" + td2;
+            let trufals = document.getElementById(teks);
+            let hsil = false;
+            if (trufals !== null) {
+                hsil = (trufals.checked) ? true : false;
+            }
+            arrtd.push(hsil);
+
+            let teks4 = "kd4_" + td1 + "_" + td4;
+            let trufals4 = document.getElementById(teks4);
+            let hsil4 = false;
+            if (trufals4 !== null) {
+                hsil4 = (trufals4.checked) ? true : false;
+            }
+            arrtd.push(hsil4);
+
+
+        }
+        arr.push(arrtd)
+    }
+    // console.log(baris);
+    // console.log(arr)
+    // let starr = JSON.stringify(arr);
+    // console.log(starr)
+    return arr
+}
 const datacekliskd = () => {
     let statusupload = document.querySelector(".tabelkkmkd");
     if (statusupload == null) {
         alert("Jenjang Kelas Anda belum mengunggah file KKM dan KD");
         return
     }
-    let tes = tabelkearray();
+    let tes = tabelkearray2();
+    
     let data = JSON.stringify(tes);
     let tab = "kelas" + idJenjang;
     let kirimin = new FormData();
@@ -2125,10 +2272,12 @@ const datacekliskd = () => {
         body: kirimin
     }).then(m => m.json())
         .then(k => {
+            console.log(k);
             alert(k.result);
+            buateditorkdaktif = k.data;
         })
         .catch(er => alert(er))
-    //console.log(tes);
+    
 }
 const uploadcsv = () => {
     let item = document.querySelector("#uploadcsv").files[0];
@@ -4049,10 +4198,28 @@ const ExcelModalTabNilai = (xx) => {
 
 let dataapipts = {};
 async function raportkelas() {
-    let cekkurikulum = document.getElementById("ttttt");
-    if (cekkurikulum == null) {
-        alert("Untuk melihat data Raport, silakan periksa KKM terlebih dahulu untuk menggenerate identitas Raport Anda.");
+    // let cekkurikulum = document.getElementById("ttttt");
+    // if (cekkurikulum == null) {
+    //     alert("Untuk melihat data Raport, silakan periksa KKM terlebih dahulu untuk menggenerate identitas Raport Anda.");
+    //     return
+    // }
+    if(jsondatasiswa.filter(s => s.pd_agama =="").length >0){
+        alert("Ada siswa Anda yang data Agamanya tidak terisi. Mohon lengkapi data Agama siswa Anda.")
         return
+    }
+    if(buateditorkdaktif.length == 0){
+        // console.log(buateditorkdaktif);
+        loadingtopbarin("loadingtopbar");
+        await kurikulumdiamdiam()
+        // console.log(buateditorkdaktif);
+        clearInterval(stoploadingtopbar);
+        let divlod = document.querySelector(".loadingtopbar");
+        divlod.style.width = "100%";
+        setTimeout(() => {
+            divlod.style.width = "1px"
+            divlod.className += " w3-hide";
+
+        }, 3000);
     }
     tampilinsublamangurukelas("raport");
     let tab = document.querySelector(".tabpetunjukraport");
@@ -11756,7 +11923,7 @@ const carimediagaleri = (el)=>{
             rec = json;
         }else{
             rec = json.filter(s => Object.entries(s).filter(([k,v]) =>{
-                let vv = v.toString().indexOf(el.value)//el.value.indexOf(v);
+                let vv = v.toString().toLowerCase().indexOf(el.value.toLowerCase())//el.value.indexOf(v);
                 
                 if(vv>-1){
                     return true
@@ -13171,3 +13338,15 @@ fetch(jlo.url_datauser + "?action=datagurualltamu&idss=" + jlo.ss_datauser)
         window.location.reload();
     })
 
+const konversi_tanggal = (el, kelas) => {
+        let d = new Date(el.value);
+        let div = document.querySelector("." + kelas);
+    
+        var tgl = d.getDate();
+        var bln = d.getMonth();
+        var thn = d.getFullYear();
+        var bulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+        let result = tgl + " " + bulan[bln] + " " + thn;
+    
+        div.innerHTML = `${result}`;
+};

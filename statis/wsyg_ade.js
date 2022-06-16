@@ -2597,6 +2597,9 @@ async function openCityy(evt, cityName) {
        
     }else if(tesinner == "Desain Evaluasi"){
         tampilanawaldesainevaluasi()
+    }else if(tesinner == "Buku Induk"){
+        
+        awalbukuinduk()
     }
     document.getElementById(cityName).style.display = "block";
     

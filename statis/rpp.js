@@ -14,6 +14,18 @@ const admguru = async()=>{
     cekApiSebaranKD()
     await kurikulumdiamdiam()
     document.querySelector(".tabrpp").click();
+    let datakirim2 = new FormData();
+    datakirim2.append("action","getdatautama");
+    datakirim2.append("idsreadsheet",jlo.ss_datauser);
+
+
+    fetch(linkdatabaseinduk,{method:"post",body:datakirim2})
+    .then(m => m.json())
+    .then(r =>{
+        db_utama_siswa = r.all;
+    }).catch(er => {
+        console.log(er)
+    });
 }
 
 const boolean_gmp = () =>{

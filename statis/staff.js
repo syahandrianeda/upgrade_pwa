@@ -59,7 +59,7 @@ let tombl_prev = document.querySelector(".tombl_prev");
 let tombl_last = document.querySelector(".tombl_last");
 let tombl_first = document.querySelector(".tombl_first");
 let spangal_pages = document.querySelector(".spangal_pages");
-
+let db_utama_siswa = [];
 const loadingtopbarin = (el) => {
     var elem = document.querySelector("." + el);
     elem.className = elem.className.replace(/\sw3-hide/g, "");
@@ -122,8 +122,6 @@ const upp_url = window.location.href;
         .then(m => m.json())
         .then(k => {
             dataapiguru = k.result;
-
-
         })
 
 
@@ -138,6 +136,17 @@ const upp_url = window.location.href;
     if (ruangankelas !== "Penjaga") {
         barstaff.style.display = "block";
         barpenjaga.style.display = "none";
+        let kodess = jlo.ss_datauser;
+        let linkakun = jlo.url_datauser ;//k.url_datauser + "?action=login&idss=" + k.ss_datauser; 
+        let setdah = new FormData();
+        setdah.append("idss",kodess);
+        fetch(linkakun+"?action=alldatabasebukuindukpost",{method:"post",body:setdah})
+            .then(m => m.json())
+            .then(r => {
+                db_utama_siswa = r.all;
+                
+            }).catch(er => console.log(er));
+        
 
         await fetch(linkDataUserWithIdss + "&action=datakelasaktifall")
             .then(m => m.json())
@@ -149,7 +158,7 @@ const upp_url = window.location.href;
                 console.log("muat ulang lagi: " + er);
 
             });
-
+        
         await fetch(linkDataUserWithIdss + "&action=datasiswatidakaktif")
             .then(m => m.json())
             .then(k => {
@@ -193,7 +202,7 @@ const upp_url = window.location.href;
             .catch(er => {
                 console.log(er);
             })
-
+        
     } else {
         menumenu0.style.display = "none";
         menumenu1.style.display = "block";
@@ -664,7 +673,10 @@ const buattabelkeaktifan = (json) => {
     tabelabsenhariini.innerHTML = temp;
 
 }
-
+let bukuinduk_all = [];
+let bukuinduk_aktif = [];
+let bukuinduk_lulus = [];
+let bukuinduk_nonaktif = [];
 function openCity(evt, cityName) {
     var i, tabcontent, tablinks;
     
@@ -679,6 +691,11 @@ function openCity(evt, cityName) {
     }
     document.getElementById(cityName).style.display = "block";
     evt.currentTarget.className += " active";
+    
+    let teks = evt.currentTarget.innerHTML;
+    if(teks == "Buku Induk Siswa"){
+        alldatabukuinduk()
+    }
 
 }
 
@@ -3645,6 +3662,7 @@ const printdataakreditasi = (butir) => {
 
 const absensisiswa = () => {
     try {
+        alldatabukuinduk();
         tampilinsublamangurukelas("kesiswaan");
         document.querySelector(".tabkesiswaan1").click();
         let div = document.querySelector(".face_divdatabasesiswa");
@@ -3700,9 +3718,9 @@ const absensisiswa = () => {
             };
             if (sudahverifikasi.filter(s => s.id == arr[i].id).length > 0) {
 
-                btnEdit = `<button onclick="editsiswa('${i}')" title="Simpan Perubahan" class="w3-button w3-light-green w3-round w3-card-4 w3-border-bottom w3-border-black w3-border-right"><i class="fa fa-save"></i></button>`;
+                btnEdit = "";//`<button onclick="editsiswa('${i}')" title="Simpan Perubahan" class="w3-button w3-light-green w3-round w3-card-4 w3-border-bottom w3-border-black w3-border-right"><i class="fa fa-save"></i></button>`;
             } else {
-                btnEdit = `<button onclick="editsiswa('${i}')" title="Simpan Perubahan" class="w3-button warnaeka w3-round w3-card-4 w3-border-bottom w3-border-black w3-border-right"><i class="fa fa-save"></i></button>`;
+                btnEdit = "";//`<button onclick="editsiswa('${i}')" title="Simpan Perubahan" class="w3-button warnaeka w3-round w3-card-4 w3-border-bottom w3-border-black w3-border-right"><i class="fa fa-save"></i></button>`;
             }
             html += `<tr>
        <td>
@@ -3713,21 +3731,21 @@ const absensisiswa = () => {
         
             <td>${i + 1}</td>
             <td>${arr[i].id}</td>
-            <td contenteditable="true">${arr[i].jenjang}</td>
-            <td contenteditable="true">${arr[i].nama_rombel}</td>
-            <td contenteditable="true">${arr[i].nis}</td>
-            <td contenteditable="true">${arr[i].nisn}</td>
-            <td contenteditable="true">${arr[i].nik}</td>
-            <td contenteditable="true">${arr[i].nokk}</td>
-            <td contenteditable="true">${arr[i].pd_nama}</td>
-            <td contenteditable="true">${arr[i].pd_jk}</td>
-            <td contenteditable="true">${arr[i].pd_tl}</td>
-            <td contenteditable="true" onclick="edittanggalsiswa('${i}','12')">${tls}</td>
-            <td contenteditable="true">${arr[i].pd_agama}</td>
-            <td contenteditable="true">${arr[i].pd_namaayah}</td>
-            <td contenteditable="true">${arr[i].pd_namaibu}</td>
-            <td contenteditable="true">${arr[i].pd_alamat}</td>
-            <td contenteditable="true">${arr[i].pd_hp}</td>
+            <td>${arr[i].jenjang}</td>
+            <td>${arr[i].nama_rombel}</td>
+            <td>${arr[i].nis}</td>
+            <td>${arr[i].nisn}</td>
+            <td>${arr[i].nik}</td>
+            <td>${arr[i].nokk}</td>
+            <td>${arr[i].pd_nama}</td>
+            <td>${arr[i].pd_jk}</td>
+            <td>${arr[i].pd_tl}</td>
+            <td onclick="edittanggalsiswa('${i}','12')">${tls}</td>
+            <td>${arr[i].pd_agama}</td>
+            <td>${arr[i].pd_namaayah}</td>
+            <td>${arr[i].pd_namaibu}</td>
+            <td>${arr[i].pd_alamat}</td>
+            <td>${arr[i].pd_hp}</td>
             
             
         </tr>
@@ -3849,10 +3867,13 @@ const carikriteria = () => {
     let arrb = [];
     let arr = [];
     if (vv == "aktif") {
-        arrb = JSON.parse(localStorage.getItem("datasiswa_all"))["datasiswa"]
+        // arrb = JSON.parse(localStorage.getItem("datasiswa_all"))["datasiswa"];
+        arrb = db_utama_siswa.filter(s => s.aktif == "aktif");
+       
     } else {
-        arrb = JSON.parse(localStorage.getItem("datasiswatidakaktif"))["datasiswa"]
-
+        // arrb = JSON.parse(localStorage.getItem("datasiswatidakaktif"))["datasiswa"]
+        arrb = db_utama_siswa.filter(s => s.aktif == vv);
+       
     }
     let html = "";
     let krit_n = "";
@@ -3921,9 +3942,9 @@ const carikriteria = () => {
             };
             if (sudahverifikasi.filter(s => s.id == arr[i].id).length > 0) {
 
-                btnEdit = `<button onclick="editsiswa('${i}')" title="Simpan Perubahan" class="w3-button w3-light-green w3-round w3-card-4 w3-border-bottom w3-border-black w3-border-right"><i class="fa fa-save"></i></button>`;
+                btnEdit ="";//`<button onclick="editsiswa('${i}')" title="Simpan Perubahan" class="w3-button w3-light-green w3-round w3-card-4 w3-border-bottom w3-border-black w3-border-right"><i class="fa fa-save"></i></button>`;
             } else {
-                btnEdit = `<button onclick="editsiswa('${i}')" title="Simpan Perubahan" class="w3-button warnaeka w3-round w3-card-4 w3-border-bottom w3-border-black w3-border-right"><i class="fa fa-save"></i></button>`;
+                btnEdit = "";//`<button onclick="editsiswa('${i}')" title="Simpan Perubahan" class="w3-button warnaeka w3-round w3-card-4 w3-border-bottom w3-border-black w3-border-right"><i class="fa fa-save"></i></button>`;
             }
             html += `<tr>
        <td>
@@ -5827,10 +5848,22 @@ daftarsatu.addEventListener('click', function () {
 
 const sinkronkandatasiswa = async () => {
     new_loading.style.display = "block";
+    let kodess = jlo.ss_datauser;
+        let linkakun = jlo.url_datauser ;//k.url_datauser + "?action=login&idss=" + k.ss_datauser; 
+        let setdah = new FormData();
+        setdah.append("idss",kodess);
+        fetch(linkakun+"?action=alldatabasebukuindukpost",{method:"post",body:setdah})
+            .then(m => m.json())
+            .then(r => {
+                db_utama_siswa = r.all;
+                
+            }).catch(er => console.log(er));
+
     await fetch(linkDataUserWithIdss + "&action=datakelasaktifall")
         .then(m => m.json())
         .then(k => {
             jsondatasiswa = k.datasiswa;
+            //db_utama_siswa = k;//.datasiswa;//utamakan
             localStorage.setItem("datasiswa_all", JSON.stringify(k));
 
         }).catch(er => {
@@ -5872,6 +5905,7 @@ const sinkronkandatasiswa = async () => {
         .catch(er => {
             console.log(er);
         })
+    
     new_loading.style.display = "none";
     alert('Proses sinkron berhasil.')
 }
@@ -9028,13 +9062,14 @@ const validasiajuandata = async (tokensiswa) => {
             .then(m => m.json())
             .then(r => {
                 infoloadingljk.innerHTML = r.result;
-                console.log(r)
+                // console.log(r)
                 let dataaktif = r.datasiswa.filter(s => s.aktif == "aktif");
                 let bl = {};
                 bl["datasiswa"] = dataaktif;
                 jsondatasiswa = dataaktif;
                 localStorage.setItem("datasiswa_all", JSON.stringify(bl));
-                carikriteria();
+                updatekan_dbsiswa_bukuinduk("lagicarikriteria");
+                //carikriteria();
             })
             .catch(er => {
                 console.log(er);
@@ -9043,6 +9078,16 @@ const validasiajuandata = async (tokensiswa) => {
         //updatesetelahverifikasidaftarulang();
     }
 };
+const updatekan_dbsiswa_bukuinduk = (kondisi) =>{
+    fetch(linkdatabaseinduk+"?action=alldatabasebukuindukpost",{method:"post",body:data})
+    .then(m => m.json())
+    .then(r => {
+        dbsiswa_bukuinduk = r.all;
+        if(kondisi == "lagicarikriteria"){
+            carikriteria();
+        }
+    }).catch(er => console.log(er))        
+}
 const updatesetelahverifikasidaftarulang = async () => {
     //await updateDatasiswa()
     // document.querySelector(".pesankhusussiswa").innerHTML = `<p class="w3-center"><img src="/img/barloading.gif"/></p>`;
@@ -9227,7 +9272,7 @@ const ajuanperubahandata = async (tokensiswa) => {
             document.querySelector(".pengapprove").innerHTML = sumber[0].dieditoleh.toUpperCase();
             let obj = sumber[0];
             obj.action = "";
-            let statussebelumnya = obj.usulanperubahandata
+            let statussebelumnya = obj.usulanperubahandata == ""?1:obj.usulanperubahandata;
 
             obj.usulanperubahandata = "Ajuan Ke-" + (parseInt(statussebelumnya.match(/(\d+)/)[0])) + " disetujui";
 
@@ -11795,7 +11840,7 @@ sppdcreate_btn_sppdbaru.addEventListener("click", async()=>{
     }
     // buat isi options
     let el_options = document.querySelector("#createsppd_pegawaiyangdiperintah")
-    let html = `<option value= "default">PILIH PTK YANG DIPERINTAH</option>`
+    let html = `<option value= "default">PILIH PTK YANG DIPERINTAH</option>`;
     for(i=0; i < dataapiguru.length ; i++){
         html +=`<option value="${dataapiguru[i].id}">${dataapiguru[i].guru_namalengkap}</option>`
     }
@@ -11829,6 +11874,7 @@ sppdcreate_btn_sppdtabel.addEventListener("click", async()=>{
         let data = tagdbsppd[i];
         let id_guru = data.ptk_diperintah;
         let apiguru= dataapiguru.filter(s => s.id == id_guru)[0];
+        
         let btnSuratKeluar = data.arsip_nosppd==""?`<button class="w3-button w3-green" onclick="nosppdkesuratkeluar(${data.idbaris})">Arsipkan!</button>`:"Sudah diarsipkan";
         let tomboluploadsppd = data.versiupload == ""?`<button class="w3-btn w3-blue w3-tiny" onclick="uploadscan_sppd('${data.idbaris}')"><i class="fa fa-upload"></i></button>`:`<button class="w3-btn w3-green" onclick="window.open('https://drive.google.com/file/d/${data.versiupload}/view?usp=drivesdk','', 'width=720,height=600')"><i class="fa fa-eye"></i></button>`;
         html +=`<tr>
@@ -11872,6 +11918,11 @@ const selectsppd_pilihptk = async ()=>{
 }
 
 const serverkirimsppd = async() =>{
+    let cekduluptk = document.querySelector("[data-keycreatesppd=ptk_diperintah]");
+    if(cekduluptk.value == "default"){
+        alert("Anda belum memilih PTK yang akan diperintah!");
+        return
+    }
     let info = document.querySelector(".infoserver_sppd");
     info.innerHTML = `<img src="/img/barloading.gif"> sedang proses pengiriman....`;
     document.querySelector(".sppdbaru").classList.add("w3-hide")
@@ -11904,8 +11955,9 @@ const serverkirimsppd = async() =>{
     val.push("");
 
     data.append("tab","sppd");
-    data.append("tabel",JSON.stringify(val))
-    data.append("key",JSON.stringify(key))
+    data.append("tabel",JSON.stringify(val));
+    data.append("key",JSON.stringify(key));
+
     enip.value = "";
     // for (var pair of data.entries()) {
     //     console.log(pair[0]+ ', ' + pair[1]); 
@@ -13816,4 +13868,3 @@ const isinotulaptk = (brs, keynotula) =>{
 
 
 }
-

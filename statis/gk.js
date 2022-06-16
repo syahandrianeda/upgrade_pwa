@@ -43,6 +43,8 @@ const loadingtopbarin = (el) => {
         //}
     }
 }
+let db_utama_siswa
+
 (async function () {
     loadingtopbarin("loadingtopbar");
     OBJEKHariEfektif = {
@@ -66,6 +68,7 @@ const loadingtopbarin = (el) => {
         "Sakit": 0,
         "Alpa": 0
     };
+    
 
     let tgl = new Date();
     let m = tgl.getMonth();
@@ -1339,6 +1342,20 @@ function openCity(evt, cityName) {
     }
     document.getElementById(cityName).style.display = "block";
     evt.currentTarget.className += " active";
+    if(evt.currentTarget.innerHTML == "RAPORT MANUAL"){
+        bikintabelawalraportmanual();
+        if(dbsiswa_bukuinduk == undefined){
+            
+            let data = new FormData();
+            data.append("action","alldatabasebukuindukpost");//+"?action=alldatabasebukuindukpost"
+            fetch(linkdatabaseinduk,{method:"post",body:data})
+            .then(m => m.json())
+            .then(r => {
+                console.log("dbsiswa_bukuinduk berhasil dipanggil");
+                dbsiswa_bukuinduk = r.all;
+            }).catch(er => console.log(er))
+        }
+    }    
 }
 
 var mySidebar = document.getElementById("mySidebar"); // Get the Sidebar
@@ -3129,7 +3146,7 @@ const ajuanperubahandata = async (tokensiswa) => {
             document.querySelector(".pengapprove").innerHTML = sumber[0].dieditoleh.toUpperCase();
             let obj = sumber[0];
             obj.action = "";
-            let statussebelumnya = obj.usulanperubahandata
+            let statussebelumnya = obj.usulanperubahandata == ""?1:obj.usulanperubahandata;
 
             obj.usulanperubahandata = "Ajuan Ke-" + (parseInt(statussebelumnya.match(/(\d+)/)[0])) + " disetujui";
 
@@ -7469,7 +7486,7 @@ tabpetunjukraport.addEventListener("click", function () {
     ;
 })
 
-const koleksiarraymapelaktif = () => {
+const koleksiarraymapelaktiflama = () => {
     let restult = [];
     let min = 100;
     let tabel = document.getElementById("datadatakdraport").rows.length;
@@ -7488,6 +7505,41 @@ const koleksiarraymapelaktif = () => {
 
     return data
 }
+const koleksiarraymapelaktif = () => {
+    let restult = [];
+    let arraymapel = [];
+    let objKodemapel = {"ISLAM":"PAI","KATHOLIK":"PKATO","KRISTEN": "PKRIS","HINDU":"PHIND","BUDHA":"PBUDH","KONGHUCU":"PKONG"};
+    restult = jsondatasiswa.filter(f => f.pd_agama !=="").map(s => s.pd_agama).filter((x,i,a)=> a.indexOf(x)==i).map(m => objKodemapel[m]);
+    restult.push("PKN")
+    restult.push("BINDO")
+    restult.push("MTK")
+    if(idJenjang > 3){
+        restult.push("IPA")
+        restult.push("IPS")
+    }
+    restult.push("SBDP")
+    restult.push("PJOK")
+    restult.push("BSUND")
+    let min = 100;
+    let tabel = buateditorkdaktif;//.filter();//document.getElementById("datadatakdraport").rows.length;
+    for (i = 1; i < tabel.length; i++) {
+        let isi = tabel[i].mapel;//document.getElementById("datadatakdraport").rows[i].cells[1].textContent;
+        let angka = tabel[i].kkm;//document.getElementById("angkakkm_" + isi).innerHTML;
+        let inMin = (isi == "") ? 0 : parseInt(angka);
+        if (min >= inMin) {
+            min = inMin
+        }
+        // if(restult.indexOf(isi)==-1){
+        //     restult.push(isi)
+        // }
+    }
+    let data = {}
+    data.kodemapel = restult;
+    data.kkmmin = min;
+    data.source = buateditorkdaktif;
+
+    return data
+}
 
 const accordiontab = (evt, cityName) => {
     var i, tabcontent, tablinks;
@@ -7502,6 +7554,14 @@ const accordiontab = (evt, cityName) => {
     document.getElementById(cityName).style.display = "block";
     evt.currentTarget.className += " activee";
 
+    if(evt.currentTarget.innerHTML == "Surat Keterangan Hasil Belajar (SKHU) VERSI TANPA NILAI"){
+        let domselect = document.getElementById("idselectnamaskhu2");
+        let html = ""
+        for(i = 0 ; i < jsondatasiswa.length; i++){
+            html +=`<option value="${i}">${jsondatasiswa[i].pd_nama}</option>`;
+        }
+        domselect.innerHTML = html;
+    }
 }
 
 const simulasinilai = () => {
@@ -7549,7 +7609,15 @@ const fn_predikatkriteria = (x) => {
 }
 
 const isikanrentang = () => {
-    let n_d = parseInt(document.querySelector(".kkmsatuanpendidikan").textContent);
+    let kkmnya = koleksiarraymapelaktif().kkmmin;
+    console.log(kkmnya)
+    let n_d ;
+    if(document.querySelector(".kkmsatuanpendidikan").textContent == ""){
+        n_d = kkmnya
+    }else{
+        n_d = parseInt(document.querySelector(".kkmsatuanpendidikan").textContent);
+
+    }
     document.querySelectorAll(".a_kkm").forEach(k => k.innerHTML = n_d);
     let n_rentang = Math.round((100 - n_d) / 3);
     document.querySelector("#a_rentangkkm").innerHTML = n_rentang;
@@ -8517,7 +8585,7 @@ const koleksicekliskd = () => {
     for (a = 0; a < datamapel.length; a++) {
         let kolomkd = KD3[datamapel[a]].length;
         let id = "angkakkm_" + datamapel[a];
-        let kkmnya = document.getElementById(id).innerHTML;
+        let kkmnya = buateditorkdaktif.filter(s => s.mapel == datamapel[a])[0].kkm;//document.getElementById(id).innerHTML;
         if (kolomkd !== 0) {
             rekap += `<th class="tt_rekapPH" colspan="${kolomkd}"> ${datamapel[a]} (KKM = ${kkmnya})</th>`;
         }
@@ -8526,7 +8594,7 @@ const koleksicekliskd = () => {
     for (d = 0; d < datamapel.length; d++) {
         let kolomkd = KD3[datamapel[d]].length;
         let id = "angkakkm_" + datamapel[d];
-        let kkmnya = document.getElementById(id).innerHTML;
+        let kkmnya = buateditorkdaktif.filter(s => s.mapel == datamapel[d])[0].kkm;//document.getElementById(id).innerHTML;
 
         if (kolomkd !== 0) {
             rekap += `<th class="tt_rekapPTS w3-light-green" colspan="${kolomkd}">  ${datamapel[d]} (KKM = ${kkmnya})</th>`;
@@ -8536,7 +8604,7 @@ const koleksicekliskd = () => {
     for (e = 0; e < datamapel.length; e++) {
         let kolomkd = KD3[datamapel[e]].length;
         let id = "angkakkm_" + datamapel[e];
-        let kkmnya = document.getElementById(id).innerHTML;
+        let kkmnya = buateditorkdaktif.filter(s => s.mapel == datamapel[e])[0].kkm;// document.getElementById(id).innerHTML;
         if (kolomkd !== 0) {
             rekap += `<th class="tt_rekapPAS w3-deep-orange"  colspan="${kolomkd}">${datamapel[e]} (KKM = ${kkmnya})</th>`;
         }
@@ -8773,7 +8841,7 @@ const getdataolahan = () => {
 
             } else {
                 let ob = Object.keys(k.data[0]).filter(k => !(k === "no" || k === "nama"));
-                console.log(ob)
+                
                 let key = Object.keys(k.data[0]);
                 let obb = JSON.stringify(ob);
                 let ddx = JSON.stringify(dds);
@@ -8860,7 +8928,7 @@ const jadikansemuakkm = () => {
         let selid = "tt_KD3_" + datamapel[a];
         let angkaid = "angkakkm_" + datamapel[a];
         let sel = document.querySelectorAll("." + selid);
-        let angkakkm = document.getElementById(angkaid).innerHTML;
+        let angkakkm = buateditorkdaktif.filter(s => s.mapel == datamapel[a])[0].kkm;//document.getElementById(angkaid).innerHTML;
         sel.forEach(k => {
             if (k.innerHTML < parseInt(angkakkm)) {
                 k.innerHTML = parseInt(angkakkm);
@@ -8984,7 +9052,7 @@ const dataolahbeda = (arr) => {
     for (a = 0; a < datamapel.length; a++) {
         let kolomkd = keyid.filter(j => j.indexOf("PH_" + datamapel[a]) > -1);
         let id = "angkakkm_" + datamapel[a];
-        let kkmnya = document.getElementById(id).innerHTML;
+        let kkmnya = buateditorkdaktif.filter(s => s.mapel == datamapel[a][0]).kkm;// document.getElementById(id).innerHTML;
         if (kolomkd !== 0) {
             rekap += `<th class="tt_rekapPH" colspan="${kolomkd.length}"> ${datamapel[a]} (KKM = ${kkmnya})</th>`;
         }
@@ -8993,7 +9061,7 @@ const dataolahbeda = (arr) => {
     for (d = 0; d < datamapel.length; d++) {
         let kolomkd = keyid.filter(j => j.indexOf("PTS_" + datamapel[d]) > -1)
         let id = "angkakkm_" + datamapel[d];
-        let kkmnya = document.getElementById(id).innerHTML;
+        let kkmnya = buateditorkdaktif.filter(s => s.mapel == datamapel[d])[0].kkm;// document.getElementById(id).innerHTML;
 
         if (kolomkd !== 0) {
             rekap += `<th class="tt_rekapPTS w3-light-green" colspan="${kolomkd.length}">  ${datamapel[d]} (KKM = ${kkmnya})</th>`;
@@ -9003,7 +9071,7 @@ const dataolahbeda = (arr) => {
     for (e = 0; e < datamapel.length; e++) {
         let kolomkd = keyid.filter(j => j.indexOf(paspak + "_" + datamapel[e]) > -1);
         let id = "angkakkm_" + datamapel[e];
-        let kkmnya = document.getElementById(id).innerHTML;
+        let kkmnya = buateditorkdaktif.filter(s => s.mapel == datamapel[e])[0].kkm;//document.getElementById(id).innerHTML;
         if (kolomkd !== 0) {
             rekap += `<th class="tt_rekapPAS w3-deep-orange"  colspan="${kolomkd.length}">${datamapel[e]} (KKM = ${kkmnya})</th>`;
         }
@@ -9327,7 +9395,7 @@ tr_halamannilai.addEventListener("click", function () {
 })
 
 const pilihlistnamaraport = () => {
-    try {
+    // try {
         let el = document.getElementById("listnamaraport");
         let y = el.selectedIndex;
         let x = el.options;
@@ -9406,10 +9474,25 @@ const pilihlistnamaraport = () => {
         let deskripsi_raportk4 = "";
         let deskripsi_maksk4 = "";
         let deskripsik4_mink4 = "";
-
+        let arraymapelall = {"PAI":"Pendidikan Agama Islam dan Budi Pekerti",
+        "PKRIS":"Pendidikan Agama Kristen dan Budi Pekerti",
+        "PKATO":"Pendidikan Agama Katholik dan Budi Pekerti",
+        "PHIND":"Pendidikan Agama Hindu dan Budi Pekerti",
+        "PBUDH":"Pendidikan Agama Budha dan Budi Pekerti",
+        "PKONG":"Pendidikan Agama Konghucu dan Budi Pekerti",
+        "PKN":"Pendidikan Kewarganegaraan",
+        "BINDO":"Bahasa Indonesia",
+        "MTK":"Matematika",
+        "IPA":"Ilmu Pengetahuan Alam",
+        "IPS":"Ilmu Pengetahuan Sosial",
+        "PJOK":"Pendidikan Jasmani, Olahraga, dan kesehatan",
+        "SBDP":"Seni Budaya dan Prakarya",
+        "BSUND":"Bahasa dan Sastra Sunda",
+        "TIK":"Mulok1"
+        }
         let n_mapel, kriteria_n_mapel, indexmapel, indexmapelk4, deskripsikd3inti, namasubjek, kkmnya;
         if (infosiswa.pd_agama == "ISLAM" || infosiswa.pd_agama == "Islam") {
-            kkmmapel = document.getElementById("angkakkm_PAI").innerHTML;
+            kkmmapel = buateditorkdaktif.filter(s => s.mapel == "PAI")[0].kkm;//document.getElementById("angkakkm_PAI").innerHTML;
             agamasiswa = "PAI";
             n_agama = nilairaport[0]["raport_PAI"];
 
@@ -9419,8 +9502,8 @@ const pilihlistnamaraport = () => {
             kriteria_n_maks = nilairaport[0]["kriteria_maks_PAI"];
             n_min = nilairaport[0]["min_PAI"];
             kriteria_n_min = nilairaport[0]["kriteria_min_PAI"];
-            inhtmldeskripsimaks = document.getElementById("deskripsikd3_PAI_" + n_maks).innerHTML;
-            inhtmldeskripsimin = document.getElementById("deskripsikd3_PAI_" + n_min).innerHTML;
+            inhtmldeskripsimaks = buateditorkdaktif.filter(s=> s.mapel == "PAI" && s.kd3 == n_maks)[0].indikatorkd3;//document.getElementById("deskripsikd3_PAI_" + n_maks).innerHTML;
+            inhtmldeskripsimin = buateditorkdaktif.filter(s=> s.mapel == "PAI" && s.kd3 == n_min)[0].indikatorkd3;//document.getElementById("deskripsikd3_PAI_" + n_min).innerHTML;
 
             deskripsiagama = `Ananda ${titleCase(infosiswa.pd_nama)}   ${kriteria_n_maks} dalam ${inhtmldeskripsimaks}, dan mulai ${kriteria_n_min} dalam ${inhtmldeskripsimin}`;
             n_rapork4 = nilairaportk4[0]["raportk4_PAI"];
@@ -9430,14 +9513,14 @@ const pilihlistnamaraport = () => {
             kriteria_n_maksk4 = nilairaportk4[0]["kriteria_maksk4_PAI"];
             n_mink4 = nilairaportk4[0]["mink4_PAI"];
             kriteria_n_mink4 = nilairaportk4[0]["kriteria_mink4_PAI"];
-            deskripsi_maksk4 = document.getElementById("deskripsikd4_PAI_" + n_maksk4).innerHTML;
-            deskripsi_mink4 = document.getElementById("deskripsikd4_PAI_" + n_mink4).innerHTML;
+            deskripsi_maksk4 = buateditorkdaktif.filter(s=> s.mapel == "PAI" && s.kd4 == n_maksk4)[0].indikatorkd4;//document.getElementById("deskripsikd4_PAI_" + n_maksk4).innerHTML;
+            deskripsi_mink4 = buateditorkdaktif.filter(s=> s.mapel == "PAI" && s.kd4 == n_maksk4)[0].indikatorkd4;//document.getElementById("deskripsikd4_PAI_" + n_mink4).innerHTML;
 
             deskripsi_raportk4 = `Ananda ${titleCase(infosiswa.pd_nama)}   ${kriteria_n_maksk4} dalam ${deskripsi_maksk4}, dan mulai ${kriteria_n_mink4} dalam ${deskripsi_mink4}`;
 
 
         } else if (infosiswa.pd_agama == "KRISTEN" || infosiswa.pd_agama == "Kristen") {
-            kkmmapel = document.getElementById("angkakkm_PKRIS").innerHTML;
+            kkmmapel = buateditorkdaktif.filter(s => s.mapel == "PKRIS")[0].kkm;//document.getElementById("angkakkm_PKRIS").innerHTML;
             agamasiswa = "PKRIS";
             let indexagama = nilairaport.findIndex(x => x["kriteria_PKRIS"]);
             n_agama = nilairaport[indexagama]["raport_PKRIS"];
@@ -9447,8 +9530,8 @@ const pilihlistnamaraport = () => {
             kriteria_n_maks = nilairaport[indexagama]["kriteria_maks_PKRIS"];
             n_min = nilairaport[indexagama]["min_PKRIS"];
             kriteria_n_min = nilairaport[indexagama]["kriteria_min_PKRIS"];
-            inhtmldeskripsimaks = document.getElementById("deskripsikd3_PKRIS_" + n_maks).innerHTML;
-            inhtmldeskripsimin = document.getElementById("deskripsikd3_PKRIS_" + n_min).innerHTML;
+            inhtmldeskripsimaks = buateditorkdaktif.filter(s=> s.mapel == "PKRIS" && s.kd3 == n_maks)[0].indikatorkd3;//document.getElementById("deskripsikd3_PKRIS_" + n_maks).innerHTML;
+            inhtmldeskripsimin = buateditorkdaktif.filter(s=> s.mapel == "PKRIS" && s.kd3 == n_min)[0].indikatorkd3;//document.getElementById("deskripsikd3_PKRIS_" + n_min).innerHTML;
 
             deskripsiagama = `Ananda ${titleCase(infosiswa.pd_nama)}   ${kriteria_n_maks} dalam ${inhtmldeskripsimaks}, dan mulai ${kriteria_n_min} dalam ${inhtmldeskripsimin}`;
 
@@ -9459,8 +9542,8 @@ const pilihlistnamaraport = () => {
             kriteria_n_maksk4 = nilairaportk4[indexmapelk4]["kriteria_maksk4_PKRIS"];
             n_mink4 = nilairaportk4[indexmapelk4]["mink4_PKRIS"];
             kriteria_n_mink4 = nilairaportk4[indexmapelk4]["kriteria_mink4_PKRIS"];
-            deskripsi_maksk4 = document.getElementById("deskripsikd4_PKRIS_" + n_maksk4).innerHTML;
-            deskripsi_mink4 = document.getElementById("deskripsikd4_PKRIS_" + n_mink4).innerHTML;
+            deskripsi_maksk4 = buateditorkdaktif.filter(s=> s.mapel == "PKRIS" && s.kd4 == n_maksk4)[0].indikatorkd4;//document.getElementById("deskripsikd4_PKRIS_" + n_maksk4).innerHTML;
+            deskripsi_mink4 = buateditorkdaktif.filter(s=> s.mapel == "PKRIS" && s.kd4 == n_mink4)[0].indikatorkd4;//document.getElementById("deskripsikd4_PKRIS_" + n_mink4).innerHTML;
 
             deskripsi_raportk4 = `Ananda ${titleCase(infosiswa.pd_nama)}   ${kriteria_n_maksk4} dalam ${deskripsi_maksk4}, dan mulai ${kriteria_n_mink4} dalam ${deskripsi_mink4}`;
 
@@ -9468,7 +9551,7 @@ const pilihlistnamaraport = () => {
 
 
         } else if (infosiswa.pd_agama == "KATHOLIK" || infosiswa.pd_agama == "Katholik") {
-            kkmmapel = document.getElementById("angkakkm_PKATO").innerHTML;
+            kkmmapel = buateditorkdaktif.filter(s => s.mapel == "PKATO")[0].kkm;//document.getElementById("angkakkm_PKATO").innerHTML;
             agamasiswa = "PKATO";
 
             let indexagama = nilairaport.findIndex(x => x["kriteria_PKATO"]);
@@ -9479,8 +9562,8 @@ const pilihlistnamaraport = () => {
             kriteria_n_maks = nilairaport[indexagama]["kriteria_maks_PKATO"];
             n_min = nilairaport[indexagama]["min_PKATO"];
             kriteria_n_min = nilairaport[indexagama]["kriteria_min_PKATO"];
-            inhtmldeskripsimaks = document.getElementById("deskripsikd3_PKATO_" + n_maks).innerHTML;
-            inhtmldeskripsimin = document.getElementById("deskripsikd3_PKATO_" + n_min).innerHTML;
+            inhtmldeskripsimaks = buateditorkdaktif.filter(s=> s.mapel == "PKATO" && s.kd3 == n_maks)[0].indikatorkd3;//document.getElementById("deskripsikd3_PKATO_" + n_maks).innerHTML;
+            inhtmldeskripsimin = buateditorkdaktif.filter(s=> s.mapel == "PKATO" && s.kd3 == n_min)[0].indikatorkd3;//document.getElementById("deskripsikd3_PKATO_" + n_min).innerHTML;
             deskripsiagama = `Ananda ${titleCase(infosiswa.pd_nama)}   ${kriteria_n_maks} dalam ${inhtmldeskripsimaks}, dan mulai ${kriteria_n_min} dalam ${inhtmldeskripsimin}`;
 
             indexmapelk4 = nilairaportk4.findIndex(x => x["kriteriak4_PKATO"]);
@@ -9490,13 +9573,13 @@ const pilihlistnamaraport = () => {
             kriteria_n_maksk4 = nilairaportk4[indexmapelk4]["kriteria_maksk4_PKATO"];
             n_mink4 = nilairaportk4[indexmapelk4]["mink4_PKATO"];
             kriteria_n_mink4 = nilairaportk4[indexmapelk4]["kriteria_mink4_PKATO"];
-            deskripsi_maksk4 = document.getElementById("deskripsikd4_PKATO_" + n_maksk4).innerHTML;
-            deskripsi_mink4 = document.getElementById("deskripsikd4_PKATO_" + n_mink4).innerHTML;
+            deskripsi_maksk4 = buateditorkdaktif.filter(s=> s.mapel == "PKATO" && s.kd4 == n_maksk4)[0].indikatorkd4;//document.getElementById("deskripsikd4_PKATO_" + n_maksk4).innerHTML;
+            deskripsi_mink4 = buateditorkdaktif.filter(s=> s.mapel == "PKATO" && s.kd4 == n_mink4)[0].indikatorkd4;//document.getElementById("deskripsikd4_PKATO_" + n_mink4).innerHTML;
 
             deskripsi_raportk4 = `Ananda ${titleCase(infosiswa.pd_nama)}   ${kriteria_n_maksk4} dalam ${deskripsi_maksk4}, dan mulai ${kriteria_n_mink4} dalam ${deskripsi_mink4}`;
 
         } else if (infosiswa.pd_agama == "HINDU" || infosiswa.pd_agama == "Hindu") {
-            kkmmapel = document.getElementById("angkakkm_PHIND").innerHTML;
+            kkmmapel = buateditorkdaktif.filter(s => s.mapel == "PHIND")[0].kkm;//document.getElementById("angkakkm_PHIND").innerHTML;
             agamasiswa = "PHIND";
 
             let indexagama = nilairaport.findIndex(x => x["kriteria_PHIND"]);
@@ -9507,8 +9590,8 @@ const pilihlistnamaraport = () => {
             kriteria_n_maks = nilairaport[indexagama]["kriteria_maks_PHIND"];
             n_min = nilairaport[indexagama]["min_PHIND"];
             kriteria_n_min = nilairaport[indexagama]["kriteria_min_PHIND"];
-            inhtmldeskripsimaks = document.getElementById("deskripsikd3_PHIND_" + n_maks).innerHTML;
-            inhtmldeskripsimin = document.getElementById("deskripsikd3_PHIND_" + n_min).innerHTML;
+            inhtmldeskripsimaks = buateditorkdaktif.filter(s=> s.mapel == "PHIND" && s.kd3 == n_maks)[0].indikatorkd3;//document.getElementById("deskripsikd3_PHIND_" + n_maks).innerHTML;
+            inhtmldeskripsimin = buateditorkdaktif.filter(s=> s.mapel == "PHIND" && s.kd3 == n_min)[0].indikatorkd3;//document.getElementById("deskripsikd3_PHIND_" + n_min).innerHTML;
             deskripsiagama = `Ananda ${titleCase(infosiswa.pd_nama)}   ${kriteria_n_maks} dalam ${inhtmldeskripsimaks}, dan mulai ${kriteria_n_min} dalam ${inhtmldeskripsimin}`;
 
             indexmapelk4 = nilairaportk4.findIndex(x => x["kriteriak4_PHIND"]);
@@ -9518,13 +9601,13 @@ const pilihlistnamaraport = () => {
             kriteria_n_maksk4 = nilairaportk4[indexmapelk4]["kriteria_maksk4_PHIND"];
             n_mink4 = nilairaportk4[indexmapelk4]["mink4_PHIND"];
             kriteria_n_mink4 = nilairaportk4[indexmapelk4]["kriteria_mink4_PHIND"];
-            deskripsi_maksk4 = document.getElementById("deskripsikd4_PHIND_" + n_maksk4).innerHTML;
-            deskripsi_mink4 = document.getElementById("deskripsikd4_PHIND_" + n_mink4).innerHTML;
+            deskripsi_maksk4 = buateditorkdaktif.filter(s=> s.mapel == "PHIND" && s.kd4 == n_maksk4)[0].indikatorkd4;//document.getElementById("deskripsikd4_PHIND_" + n_maksk4).innerHTML;
+            deskripsi_mink4 = buateditorkdaktif.filter(s=> s.mapel == "PHIND" && s.kd4 == n_mink4)[0].indikatorkd4;//document.getElementById("deskripsikd4_PHIND_" + n_mink4).innerHTML;
 
             deskripsi_raportk4 = `Ananda ${titleCase(infosiswa.pd_nama)}   ${kriteria_n_maksk4} dalam ${deskripsi_maksk4}, dan mulai ${kriteria_n_mink4} dalam ${deskripsi_mink4}`;
 
         } else if (infosiswa.pd_agama == "BUDHA" || infosiswa.pd_agama == "Budha") {
-            kkmmapel = document.getElementById("angkakkm_PBUDH").innerHTML;
+            kkmmapel = buateditorkdaktif.filter(s => s.mapel == "PBUDH")[0].kkm;//document.getElementById("angkakkm_PBUDH").innerHTML;
             agamasiswa = "PBUDH";
             let indexagama = nilairaport.findIndex(x => x["kriteria_PBUDH"]);
             n_agama = nilairaport[indexagama]["raport_PBUDH"];
@@ -9534,8 +9617,8 @@ const pilihlistnamaraport = () => {
             kriteria_n_maks = nilairaport[indexagama]["kriteria_maks_PBUDH"];
             n_min = nilairaport[indexagama]["min_PBUDH"];
             kriteria_n_min = nilairaport[indexagama]["kriteria_min_PBUDH"];
-            inhtmldeskripsimaks = document.getElementById("deskripsikd3_PBUDH_" + n_maks).innerHTML;
-            inhtmldeskripsimin = document.getElementById("deskripsikd3_PBUDH_" + n_min).innerHTML;
+            inhtmldeskripsimaks = buateditorkdaktif.filter(s=> s.mapel == "PBUDH" && s.kd3 == n_maks)[0].indikatorkd3;//document.getElementById("deskripsikd3_PBUDH_" + n_maks).innerHTML;
+            inhtmldeskripsimin = buateditorkdaktif.filter(s=> s.mapel == "PBUDH" && s.kd3 == n_min)[0].indikatorkd3;//document.getElementById("deskripsikd3_PBUDH_" + n_min).innerHTML;
             deskripsiagama = `Ananda ${titleCase(infosiswa.pd_nama)}   ${kriteria_n_maks} dalam ${inhtmldeskripsimaks}, dan mulai ${kriteria_n_min} dalam ${inhtmldeskripsimin}`;
 
             indexmapelk4 = nilairaportk4.findIndex(x => x["kriteriak4_PBUDH"]);
@@ -9545,14 +9628,14 @@ const pilihlistnamaraport = () => {
             kriteria_n_maksk4 = nilairaportk4[indexmapelk4]["kriteria_maksk4_PBUDH"];
             n_mink4 = nilairaportk4[indexmapelk4]["mink4_PBUDH"];
             kriteria_n_mink4 = nilairaportk4[indexmapelk4]["kriteria_mink4_PBUDH"];
-            deskripsi_maksk4 = document.getElementById("deskripsikd4_PBUDH_" + n_maksk4).innerHTML;
-            deskripsi_mink4 = document.getElementById("deskripsikd4_PBUDH_" + n_mink4).innerHTML;
+            deskripsi_maksk4 = buateditorkdaktif.filter(s=> s.mapel == "PBUDH" && s.kd4 == n_maksk4)[0].indikatorkd4;//document.getElementById("deskripsikd4_PBUDH_" + n_maksk4).innerHTML;
+            deskripsi_mink4 = buateditorkdaktif.filter(s=> s.mapel == "PBUDH" && s.kd3 == n_mink4)[0].indikatorkd4;//document.getElementById("deskripsikd4_PBUDH_" + n_mink4).innerHTML;
 
             deskripsi_raportk4 = `Ananda ${titleCase(infosiswa.pd_nama)}   ${kriteria_n_maksk4} dalam ${deskripsi_maksk4}, dan mulai ${kriteria_n_mink4} dalam ${deskripsi_mink4}`;
 
 
         } else if (infosiswa.pd_agama == "KONGHUCU" || infosiswa.pd_agama == "KHONGHUCU") {
-            kkmmapel = document.getElementById("angkakkm_PBUDH").innerHTML;
+            kkmmapel = buateditorkdaktif.filter(s => s.mapel == "PKONG")[0].kkm;//document.getElementById("angkakkm_PBUDH").innerHTML;
             agamasiswa = "PKONG";
 
             let indexagama = nilairaport.findIndex(x => x["kriteria_PKONG"]);
@@ -9563,8 +9646,8 @@ const pilihlistnamaraport = () => {
             kriteria_n_maks = nilairaport[indexagama]["kriteria_maks_PKONG"];
             n_min = nilairaport[indexagama]["min_PKONG"];
             kriteria_n_min = nilairaport[indexagama]["kriteria_min_PKONG"];
-            inhtmldeskripsimaks = document.getElementById("deskripsikd3_PKONG_" + n_maks).innerHTML;
-            inhtmldeskripsimin = document.getElementById("deskripsikd3_PKONG_" + n_min).innerHTML;
+            inhtmldeskripsimaks = buateditorkdaktif.filter(s=> s.mapel == "PKONG" && s.kd3 == n_maks)[0].indikatorkd3;//document.getElementById("deskripsikd3_PKONG_" + n_maks).innerHTML;
+            inhtmldeskripsimin = buateditorkdaktif.filter(s=> s.mapel == "PKONG" && s.kd3 == n_min)[0].indikatorkd3;//document.getElementById("deskripsikd3_PKONG_" + n_min).innerHTML;
             deskripsiagama = `Ananda ${titleCase(infosiswa.pd_nama)}   ${kriteria_n_maks} dalam ${inhtmldeskripsimaks}, dan mulai ${kriteria_n_min} dalam ${inhtmldeskripsimin}`;
 
 
@@ -9575,8 +9658,8 @@ const pilihlistnamaraport = () => {
             kriteria_n_maksk4 = nilairaportk4[indexmapelk4]["kriteria_maksk4_PKONG"];
             n_mink4 = nilairaportk4[indexmapelk4]["mink4_PKONG"];
             kriteria_n_mink4 = nilairaportk4[indexmapelk4]["kriteria_mink4_PKONG"];
-            deskripsi_maksk4 = document.getElementById("deskripsikd4_PKONG_" + n_maksk4).innerHTML;
-            deskripsi_mink4 = document.getElementById("deskripsikd4_PKONG_" + n_mink4).innerHTML;
+            deskripsi_maksk4 = buateditorkdaktif.filter(s=> s.mapel == "PKONG" && s.kd4 == n_maksk4)[0].indikatorkd4;//document.getElementById("deskripsikd4_PKONG_" + n_maksk4).innerHTML;
+            deskripsi_mink4 = buateditorkdaktif.filter(s=> s.mapel == "PKONG" && s.kd4 == n_mink4)[0].indikatorkd4;//document.getElementById("deskripsikd4_PKONG_" + n_mink4).innerHTML;
 
             deskripsi_raportk4 = `Ananda ${titleCase(infosiswa.pd_nama)}   ${kriteria_n_maksk4} dalam ${deskripsi_maksk4}, dan mulai ${kriteria_n_mink4} dalam ${deskripsi_mink4}`;
 
@@ -9693,8 +9776,19 @@ const pilihlistnamaraport = () => {
     </tr>`;
 
         for (i = 0; i < mapelinti.length; i++) {
-            namasubjek = document.getElementById("namamapelraport_" + mapelinti[i]).innerHTML;
-            kkmnya = document.getElementById("angkakkm_" + mapelinti[i]).innerHTML;
+            
+            // let namasubjek = mapelinti[i];//document.getElementById("namamapelraport_" + mapelinti[i]).innerHTML;
+            let namasubjek 
+            let cekelemen = document.getElementById("namamapelraport_" + mapelinti[i]);
+            
+            if(cekelemen == null){
+                namasubjek = arraymapelall[mapelinti[i]];
+            }else{
+                namasubjek = document.getElementById("namamapelraport_" + mapelinti[i]).innerHTML;
+            }
+            // = mapelinti[i];//document.getElementById("namamapelraport_" + mapelinti[i]).innerHTML;
+
+            kkmnya = buateditorkdaktif.filter(s => s.mapel == mapelinti[i])[0].kkm;//document.getElementById("angkakkm_" + mapelinti[i]).innerHTML;
 
             indexmapel = nilairaport.findIndex(x => x["kriteria_" + mapelinti[i]]);
             indexmapelk4 = nilairaportk4.findIndex(x => x["kriteriak4_" + mapelinti[i]]);
@@ -9706,8 +9800,8 @@ const pilihlistnamaraport = () => {
             kriteria_n_maks = nilairaport[indexmapel]["kriteria_maks_" + mapelinti[i]];
             n_min = nilairaport[indexmapel]["min_" + mapelinti[i]];
             kriteria_n_min = nilairaport[indexmapel]["kriteria_min_" + mapelinti[i]];
-            inhtmldeskripsimaks = document.getElementById("deskripsikd3_" + mapelinti[i] + "_" + n_maks).innerHTML;
-            inhtmldeskripsimin = document.getElementById("deskripsikd3_" + mapelinti[i] + "_" + n_min).innerHTML;
+            inhtmldeskripsimaks = buateditorkdaktif.filter(s=> s.mapel == mapelinti[i] && s.kd3 == n_maks)[0].indikatorkd3;//document.getElementById("deskripsikd3_" + mapelinti[i] + "_" + n_maks).innerHTML;
+            inhtmldeskripsimin = buateditorkdaktif.filter(s=> s.mapel == mapelinti[i] && s.kd3 == n_min)[0].indikatorkd3;//document.getElementById("deskripsikd3_" + mapelinti[i] + "_" + n_min).innerHTML;
             deskripsikd3inti = `Ananda ${titleCase(infosiswa.pd_nama)}   ${kriteria_n_maks} dalam ${inhtmldeskripsimaks}, dan mulai ${kriteria_n_min} dalam ${inhtmldeskripsimin}`;
 
             // console.log(mapelinti[i]);
@@ -9718,8 +9812,8 @@ const pilihlistnamaraport = () => {
             n_mink4 = nilairaportk4[indexmapelk4]["mink4_" + mapelinti[i]];
             kriteria_n_mink4 = nilairaportk4[indexmapelk4]["kriteria_mink4_" + mapelinti[i]];
             // console.log(n_maksk4)
-            deskripsi_maksk4 = document.getElementById("deskripsikd4_" + mapelinti[i] + "_" + n_maksk4).innerHTML;
-            deskripsi_mink4 = document.getElementById("deskripsikd4_" + mapelinti[i] + "_" + n_mink4).innerHTML;
+            deskripsi_maksk4 = buateditorkdaktif.filter(s=> s.mapel == mapelinti[i] && s.kd4 == n_maksk4)[0].indikatorkd4;//document.getElementById("deskripsikd4_" + mapelinti[i] + "_" + n_maksk4).innerHTML;
+            deskripsi_mink4 = buateditorkdaktif.filter(s=> s.mapel == mapelinti[i] && s.kd4 == n_mink4)[0].indikatorkd4;//document.getElementById("deskripsikd4_" + mapelinti[i] + "_" + n_mink4).innerHTML;
 
             deskripsi_raportk4 = `Ananda ${titleCase(infosiswa.pd_nama)}   ${kriteria_n_maksk4} dalam ${deskripsi_maksk4}, dan mulai ${kriteria_n_mink4} dalam ${deskripsi_mink4}`;
 
@@ -9738,8 +9832,8 @@ const pilihlistnamaraport = () => {
 
         }
 
-        let mulokinti = document.getElementById("namamapelraport_BSUND").innerHTML;
-        let kkmmulokinti = document.getElementById("angkakkm_BSUND").innerHTML;
+        let mulokinti =  document.getElementById("namamapelraport_BSUND")==null?arraymapelall["BSUND"]: document.getElementById("namamapelraport_BSUND").innerHTML;
+        let kkmmulokinti =  buateditorkdaktif.filter(s => s.mapel == "BSUND")[0].kkm;//document.getElementById("angkakkm_BSUND").innerHTML;
         indexmapel = nilairaport.findIndex(x => x["kriteria_BSUND"]);
         n_mapel = nilairaport[indexmapel]["raport_BSUND"];
 
@@ -9748,8 +9842,8 @@ const pilihlistnamaraport = () => {
         kriteria_n_maks = nilairaport[indexmapel]["kriteria_maks_BSUND"];
         n_min = nilairaport[indexmapel]["min_BSUND"];
         kriteria_n_min = nilairaport[indexmapel]["kriteria_min_BSUND"];
-        inhtmldeskripsimaks = document.getElementById("deskripsikd3_BSUND_" + n_maks).innerHTML;
-        inhtmldeskripsimin = document.getElementById("deskripsikd3_BSUND_" + n_min).innerHTML;
+        inhtmldeskripsimaks = buateditorkdaktif.filter(s=> s.mapel == "BSUND" && s.kd3 == n_maks)[0].indikatorkd3;//document.getElementById("deskripsikd3_BSUND_" + n_maks).innerHTML;
+        inhtmldeskripsimin = buateditorkdaktif.filter(s=> s.mapel == "BSUND" && s.kd3 == n_min)[0].indikatorkd3;//document.getElementById("deskripsikd3_BSUND_" + n_min).innerHTML;
         deskripsikd3inti = `Ananda ${titleCase(infosiswa.pd_nama)}   ${kriteria_n_maks} dalam ${inhtmldeskripsimaks}, dan mulai ${kriteria_n_min} dalam ${inhtmldeskripsimin}`;
 
         indexmapelk4 = nilairaportk4.findIndex(x => x["kriteriak4_BSUND"]);
@@ -9759,8 +9853,8 @@ const pilihlistnamaraport = () => {
         kriteria_n_maksk4 = nilairaportk4[indexmapelk4]["kriteria_maksk4_BSUND"];
         n_mink4 = nilairaportk4[indexmapelk4]["mink4_BSUND"];
         kriteria_n_mink4 = nilairaportk4[indexmapelk4]["kriteria_mink4_BSUND"];
-        deskripsi_maksk4 = document.getElementById("deskripsikd4_BSUND_" + n_maksk4).innerHTML;
-        deskripsi_mink4 = document.getElementById("deskripsikd4_BSUND_" + n_mink4).innerHTML;
+        deskripsi_maksk4 = buateditorkdaktif.filter(s=> s.mapel == "BSUND" && s.kd4 == n_maksk4)[0].indikatorkd4;//document.getElementById("deskripsikd4_BSUND_" + n_maksk4).innerHTML;
+        deskripsi_mink4 = buateditorkdaktif.filter(s=> s.mapel == "BSUND" && s.kd4 == n_maksk4)[0].indikatorkd4;//document.getElementById("deskripsikd4_BSUND_" + n_mink4).innerHTML;
 
         deskripsi_raportk4 = `Ananda ${titleCase(infosiswa.pd_nama)}   ${kriteria_n_maksk4} dalam ${deskripsi_maksk4}, dan mulai ${kriteria_n_mink4} dalam ${deskripsi_mink4}`;
 
@@ -9945,9 +10039,14 @@ const pilihlistnamaraport = () => {
 
         </tr>
     </table>
-    <br/>
-
-    <br/>
+    <br/>`;
+    if(idSemester == 2){
+        tekshtml += `<div class="w3-border w3-border-blue w3-padding">
+        Dengan memperhatikan dan mempertimbangkan hasil nilai raport pada Tahun Pelajaran ini, maka Ananda <b>${titleCase(infosiswa.pd_nama)}</b> dengan ini dinyatakan <b><em>${(datatambahan.data[yy]["head_24"] == "") ? "... belum diisi ..." : datatambahan.data[yy]["head_24"]}</em></b>
+        </div>`
+    }
+    
+    tekshtml +=`<br/>
     <div class="w3-main">
     <div class="w3-left" contenteditable="true" style="width:25%">
     Orang tua/ Wali
@@ -9997,13 +10096,13 @@ const pilihlistnamaraport = () => {
             document.getElementById("ttdgurukelas").innerHTML = "<br/><br/>";
             document.getElementById("ttdkepsek").innerHTML = "<br/><br/>";
         }
-    } catch (err) {
-        alert("Maaf, Raport untuk siswa ini tidak bisa ditampilkan. Pastikan data nilai KI-3 dan KI-4 minimal ada 2 KD yang memiliki nilai. \n\n Tips: jika memang tidak ada data nilai, beri nilai nol (tidak boleh dikosongkan) untuk Rekap KI-3 atau KI-4.)");
-        console.log(err.message)
-        let divto = document.getElementById("halamanraport");
-        divto.innerHTML = "Ada yang salah ... Periksa seluruh rekapitulasi nilai. <br/><br/> Periksa apakah ada nilai yang tidak diisi (wajib diisi, jika memang nilai kosong anggap nilainya adalah nol), Periksa juga apakah Data Siswa benar-benar telah diisi dengan lengkap (terutama data agama siswa)"
+    // } catch (err) {
+    //     alert("Maaf, Raport untuk siswa ini tidak bisa ditampilkan. Pastikan data nilai KI-3 dan KI-4 minimal ada 2 KD yang memiliki nilai. \n\n Tips: jika memang tidak ada data nilai, beri nilai nol (tidak boleh dikosongkan) untuk Rekap KI-3 atau KI-4.)");
+    //     console.log(err.message)
+    //     let divto = document.getElementById("halamanraport");
+    //     divto.innerHTML = "Ada yang salah ... Periksa seluruh rekapitulasi nilai. <br/><br/> Periksa apakah ada nilai yang tidak diisi (wajib diisi, jika memang nilai kosong anggap nilainya adalah nol), Periksa juga apakah Data Siswa benar-benar telah diisi dengan lengkap (terutama data agama siswa)"
 
-    }
+    // }
 }
 
 const algoritmakurtilas = (xx) => {
@@ -10024,7 +10123,7 @@ const algoritmakurtilas = (xx) => {
     for (i = 0; i < datamapel.length; i++) {
         let arrKD3 = tes.filter(k => k[6] == true && k[0] == datamapel[i]);
         jumlahsemuakd += arrKD3.length;
-        let kd = arrKD3.map(l => l[1])
+        let kd = arrKD3.map(l => l[1]);
 
         datasementara[datamapel[i]] = kd;
 
@@ -10485,7 +10584,7 @@ const koleksicekliskdketerampilan = () => {
     for (a = 0; a < datamapel.length; a++) {
         let kolomkd = KD4[datamapel[a]].length;
         let id = "angkakkm_" + datamapel[a];
-        let kkmnya = document.getElementById(id).innerHTML;
+        let kkmnya = buateditorkdaktif.filter(s => s.mapel == datamapel[a])[0].kkm;//document.getElementById(id).innerHTML;
         if (kolomkd !== 0) {
             rekap += `<th class="tt_rekapkpraktik" colspan="${kolomkd}"> ${datamapel[a]} (KKM = ${kkmnya})</th>`;
         }
@@ -10494,7 +10593,7 @@ const koleksicekliskdketerampilan = () => {
     for (d = 0; d < datamapel.length; d++) {
         let kolomkd = KD4[datamapel[d]].length;
         let id = "angkakkm_" + datamapel[d];
-        let kkmnya = document.getElementById(id).innerHTML;
+        let kkmnya = buateditorkdaktif.filter(s => s.mapel == datamapel[d])[0].kkm;//document.getElementById(id).innerHTML;
 
         if (kolomkd !== 0) {
             rekap += `<th class="tt_rekapkproduk w3-light-green" colspan="${kolomkd}">  ${datamapel[d]} (KKM = ${kkmnya})</th>`;
@@ -10504,7 +10603,7 @@ const koleksicekliskdketerampilan = () => {
     for (e = 0; e < datamapel.length; e++) {
         let kolomkd = KD4[datamapel[e]].length;
         let id = "angkakkm_" + datamapel[e];
-        let kkmnya = document.getElementById(id).innerHTML;
+        let kkmnya = buateditorkdaktif.filter(s => s.mapel == datamapel[e])[0].kkm;//document.getElementById(id).innerHTML;
         if (kolomkd !== 0) {
             rekap += `<th class="tt_rekapkproyek w3-deep-orange"  colspan="${kolomkd}">${datamapel[e]} (KKM = ${kkmnya})</th>`;
         }
@@ -10833,7 +10932,7 @@ const jadikansemuakkmketerampilan = () => {
         let selid = "tt_KD4_" + datamapel[a];
         let angkaid = "angkakkm_" + datamapel[a];
         let sel = document.querySelectorAll("." + selid);
-        let angkakkm = document.getElementById(angkaid).innerHTML;
+        let angkakkm = buateditorkdaktif.filter(s => s.mapel == datamapel[a])[0].kkm;;//document.getElementById(angkaid).innerHTML;
         sel.forEach(k => {
             if (k.innerHTML < parseInt(angkakkm)) {
                 k.innerHTML = parseInt(angkakkm);
@@ -10959,7 +11058,7 @@ const dataolahbedaketerampilan = (arr) => {
     for (a = 0; a < datamapel.length; a++) {
         let kolomkd = keyid.filter(j => j.indexOf("kpraktik_" + datamapel[a]) > -1);
         let id = "angkakkm_" + datamapel[a];
-        let kkmnya = document.getElementById(id).innerHTML;
+        let kkmnya =buateditorkdaktif.filter(s => s.mapel == datamapel[a][0]).kkm ;// document.getElementById(id).innerHTML;
         if (kolomkd !== 0) {
             rekap += `<th class="tt_rekapkpraktik" colspan="${kolomkd.length}"> ${datamapel[a]} (KKM = ${kkmnya})</th>`;
         }
@@ -10968,7 +11067,7 @@ const dataolahbedaketerampilan = (arr) => {
     for (d = 0; d < datamapel.length; d++) {
         let kolomkd = keyid.filter(j => j.indexOf("kproduk_" + datamapel[d]) > -1)
         let id = "angkakkm_" + datamapel[d];
-        let kkmnya = document.getElementById(id).innerHTML;
+        let kkmnya = buateditorkdaktif.filter(s => s.mapel == datamapel[d])[0].kkm;//document.getElementById(id).innerHTML;
 
         if (kolomkd !== 0) {
             rekap += `<th class="tt_rekapkproduk w3-light-green" colspan="${kolomkd.length}">  ${datamapel[d]} (KKM = ${kkmnya})</th>`;
@@ -10978,7 +11077,7 @@ const dataolahbedaketerampilan = (arr) => {
     for (e = 0; e < datamapel.length; e++) {
         let kolomkd = keyid.filter(j => j.indexOf("kproyek_" + datamapel[e]) > -1);
         let id = "angkakkm_" + datamapel[e];
-        let kkmnya = document.getElementById(id).innerHTML;
+        let kkmnya = buateditorkdaktif.filter(s => s.mapel == datamapel[e])[0].kkm;//document.getElementById(id).innerHTML;
         if (kolomkd !== 0) {
             rekap += `<th class="tt_rekapkproyek w3-deep-orange"  colspan="${kolomkd.length}">${datamapel[e]} (KKM = ${kkmnya})</th>`;
         }
@@ -13652,7 +13751,7 @@ let t_skl = document.querySelector(".tabpengumumankelulusan");
 t_skl.addEventListener("click", function () {
     let tabelrekap = document.querySelector(".tabelnilaiijazahfix").getElementsByTagName("tbody")[0];
     if (tabelrekap.innerHTML == "") {
-        alert("Maaf, Nilai Kelulusan belum bisa Anda lihat. Periksa seluruh komponen proses penilaian ijazah di menu Tab OLAH IJAZAH");
+        alert("Selain untuk SKL tanpa Nilai, Nilai Kelulusan belum bisa Anda lihat. Periksa seluruh komponen proses penilaian ijazah di menu Tab OLAH IJAZAH");
         return;
     }
 
@@ -14469,7 +14568,7 @@ const printformatijazah = (elemenprint) => {
 
     head.innerHTML += `<style type="text/css" media="print">
     @media print {
-        html,body{height:100%;width:100%;margin:0;padding:0}
+        html,body{margin:0;padding:0}
         
          @page {
             size: A4 portrait;
@@ -14650,10 +14749,12 @@ const cek_leger_k3 = () => {
         //alert('cek leger k3');
         let div = document.querySelector(".leger_k3");
         let tekssumberdata = document.querySelector("#menumenunilaikd3").innerHTML;
-        let ada = tekssumberdata.indexOf("Data Pengolahan Nilai") > 1 ? "Sumber Data: Tabel Data Nilai Olahan" : "Sumber Data: Tabel Data Nilai Asli";
+        let ada = tekssumberdata.indexOf("Data Pengolahan Nilai") > -1 ? "Sumber Data: Tabel Data Nilai Olahan" : "Sumber Data: Tabel Data Nilai Asli";
         let pr = document.querySelector(".printleger");
         pr.innerHTML = `<button class="w3-button w3-red w3-margin" onclick="printleger('leger_k3')"><i class="fa fa-print"></i>  PRINT</button>`;
         pr.innerHTML += `<button class="w3-button w3-green w3-margin" onclick="excelleger('leger_k3')"><i class="fa fa-file-excel-o"></i>  Ms. Excel</button>`;
+        pr.innerHTML += `<button class="w3-button w3-green w3-margin" onclick="simpanrekapnilairaport('k3')"><i class="fa fa-save"></i>  Simpan Server K3</button>`;
+        pr.innerHTML += `<button class="w3-button w3-green w3-margin" onclick="tampilkannilairaport('k3')"><i class="fa fa-save"></i>  Tampilkan Rekap Nilai Raport KI3</button>`;
         document.querySelector(".leger_k3").className = document.querySelector(".leger_k3").className.replace("w3-hide", "w3-show");
         document.querySelector(".leger_k4").className = document.querySelector(".leger_k4").className.replace("w3-show", "w3-hide");
         // data.datarraport.forEach(el => console.table(el));
@@ -14678,7 +14779,7 @@ const cek_leger_k3 = () => {
                 <th rowspan="2">Rangking<br><button onclick="urutkanTabel(this,true,'leger_k3')">urutkan</button></th>
             </tr>
             <tr>
-                <th>Agama</th>
+                <th>AGAMA</th>
                 <th>PKN</th>
                 <th>BINDO</th>
                 <th>MTK</th>
@@ -14686,7 +14787,7 @@ const cek_leger_k3 = () => {
                 <th>IPS</th>
                 <th>SBDP</th>
                 <th>PJOK</th>
-                <th>B SUNDA</th>
+                <th>BSUND</th>
                 </tr>
         </thead>
         <tbody>
@@ -14804,13 +14905,13 @@ const cek_leger_k3 = () => {
                 <th rowspan="2">Rangking<br><button onclick="urutkanTabel(this,true,'leger_k3')">urutkan</button></th>
             </tr>
             <tr>
-                <th>Agama</th>
+                <th>AGAMA</th>
                 <th>PKN</th>
                 <th>BINDO</th>
                 <th>MTK</th>
                 <th>SBDP</th>
                 <th>PJOK</th>
-                <th>B SUNDA</th>
+                <th>BSUND</th>
                 </tr>
         </thead>
         <tbody>
@@ -14930,12 +15031,15 @@ const cek_leger_k4 = () => {
         document.querySelector(".leger_k4").className = document.querySelector(".leger_k4").className.replace("w3-hide", "w3-show");
         document.querySelector(".leger_k3").className = document.querySelector(".leger_k3").className.replace("w3-show", "w3-hide");
         let tekssumberdata = document.querySelector("#menumenunilaikd4").innerHTML;
-        let ada = tekssumberdata.indexOf("Data Pengolahan Nilai") > 1 ? "Sumber Data: Tabel Data Nilai Olahan" : "Sumber Data: Tabel Data Nilai Asli";
+        let ada = tekssumberdata.indexOf("Data Pengolahan Nilai") > -1 ? "Sumber Data: Tabel Data Nilai Olahan" : "Sumber Data: Tabel Data Nilai Asli";
 
         let div = document.querySelector(".leger_k4");
         let pr = document.querySelector(".printleger");
         pr.innerHTML = `<button class="w3-button w3-red w3-margin" onclick="printleger('leger_k4')"><i class="fa fa-print"></i>  PRINT</button>`;
         pr.innerHTML += `<button class="w3-button w3-green w3-margin" onclick="excelleger('leger_k4')"><i class="fa fa-file-excel-o"></i>  Ms. Excel</button>`;
+        pr.innerHTML += `<button class="w3-button w3-green w3-margin" onclick="simpanrekapnilairaport('k4')"><i class="fa fa-save"></i>  Simpan Server K4</button>`;
+        pr.innerHTML += `<button class="w3-button w3-green w3-margin" onclick="tampilkannilairaport('k4')"><i class="fa fa-save"></i>  Tampilkan Rekap Nilai Raport KI4</button>`;
+        
 
         // data.datarraport.forEach(el => console.table(el));
         let defagama = ["ISLAM", "KRISTEN", "KATHOLIK", "HINDU", "BUDHA", "KHONGHUCU"];
@@ -14957,7 +15061,7 @@ const cek_leger_k4 = () => {
                 
             </tr>
             <tr>
-                <th>Agama</th>
+                <th>AGAMA</th>
                 <th>PKN</th>
                 <th>BINDO</th>
                 <th>MTK</th>
@@ -14965,7 +15069,7 @@ const cek_leger_k4 = () => {
                 <th>IPS</th>
                 <th>SBDP</th>
                 <th>PJOK</th>
-                <th>B SUNDA</th>
+                <th>BSUND</th>
                 </tr>
         </thead>
         <tbody>
