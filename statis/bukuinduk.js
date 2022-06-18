@@ -1081,24 +1081,28 @@ const html_tombolbukuinduk = (tokensiswa)=>{
     let tekstapel = string_tapel_darinis(tapelawal)
     if(infokenaikan == "Selalu Naik Kelas"){
         for(let i = kelasawal ; i <= kelasakhir ; i++){
+            tapeljalan = tapelawal + (101 * (i-kelasawal));
+            tekstapel = string_tapel_darinis(tapeljalan);
 
             if(i == kelasawal){
                 for(let j = 0; j < semesterawal.length ; j++){
                     let teks_semester = semesterawal[j];
-                    html +=`<button title="Tahun Pelajaran ${tekstapel}" onclick="showdserverinduk('${tapeljalan}',${tokensiswa},'${teks_semester}',${i})" class="w3-yellow tangan w3-bottombar w3-border-black" style="padding:5px;font-size:10px;border-radius:10px">Kelas ${i} Semester ${teks_semester}</button>`;
+                    html +=`<button title="Tahun Pelajaran ${tekstapel}" onclick="showdserverinduk('${tapeljalan}',${tokensiswa},'${teks_semester}',${i})" class="w3-yellow tangan w3-bottombar w3-border-black" style="padding:5px;font-size:10px;border-radius:10px">
+                    Kelas ${i} Semester ${teks_semester}</button>`;
                 }
                 
             }else if(i == kelasakhir){
                 for(let j = 0; j < semesterawal.length ; j++){
                     let teks_semester = semesterawal[j];
-                    html +=`<button title="Tahun Pelajaran ${tekstapel}" onclick="showdserverinduk('${tapeljalan}',${tokensiswa},'${teks_semester}',${i})" class="w3-yellow tangan w3-bottombar w3-border-black" style="padding:5px;font-size:10px;border-radius:10px">Kelas ${i} Semester ${teks_semester}</button>`;
+                    html +=`<button title="Tahun Pelajaran ${tekstapel}" onclick="showdserverinduk('${tapeljalan}',${tokensiswa},'${teks_semester}',${i})" class="w3-yellow tangan w3-bottombar w3-border-black" style="padding:5px;font-size:10px;border-radius:10px">
+                    Kelas ${i} Semester ${teks_semester}</button>`;
                 }
             }else{
                 html +=`<button title="Tahun Pelajaran ${tekstapel}" onclick="showdserverinduk('${tapeljalan}',${tokensiswa},'1',${i})" class="w3-yellow tangan w3-bottombar w3-border-black" style="padding:5px;font-size:10px;border-radius:10px">Kelas ${i} Semester 1</button>`;
                 html +=`<button title="Tahun Pelajaran ${tekstapel}" onclick="showdserverinduk('${tapeljalan}',${tokensiswa},'2',${i})" class="w3-yellow tangan w3-bottombar w3-border-black" style="padding:5px;font-size:10px;border-radius:10px">Kelas ${i} Semester 2</button>`;
             }
-            tapeljalan = tapelawal + (101 * i);
-            tekstapel = string_tapel_darinis(tapeljalan);
+            
+            
         }
     }else{
         if(ceksyarat.hasOwnProperty("datariwayattapel")){
@@ -3294,7 +3298,7 @@ const page_bukuinduk_identitas = (token) =>{
     
     //console.log(koleksiundefine);
     tempattombol_formulirkirim.innerHTML =`<div class="w3-tiny w3-center">
-    <button class="w3-btn w3-yellow w3-round-xlarge w3-bottombar w3-border-black" onclick="printadm('formulirkirim')">PRINT</button>
+    <button class="w3-btn w3-yellow w3-round-xlarge w3-bottombar w3-border-black" onclick="printadexistelemen('formulirkirim')">PRINT</button>
    <button class="w3-btn w3-pale-green w3-round-xlarge w3-bottombar w3-border-black" id="tombolkirimpageidentitas" onclick="kirimdatabaseidentitasinduk(this,${token})">Kirim Ke Server Buku Induk</button>
     </div>`
 }
@@ -4387,7 +4391,7 @@ const raportmanualawal = ()=>{
         thead.rows[2].appendChild(th);
         th = document.createElement("th");//thead.rows[2].insertCell(-1);
         th.setAttribute("class","sel_k1 cellmanualinput");
-        th.innerHTML ="Preview";
+        th.innerHTML ="Deskripsi";
         thead.rows[2].appendChild(th)
         //tfoot
         th = document.createElement("th");//thead.rows[2].insertCell(-1);
@@ -4404,7 +4408,7 @@ const raportmanualawal = ()=>{
             
             td.setAttribute("onmouseover","this.setAttribute('title','Pilih Predikat untuk nilai Spritual')");
             td.setAttribute("onmouseout","this.removeAttribute('title')");
-            let html = `<select style="border: none transparent;outline: none;background:transparent" name="inputmanualk1_predikat${i}" onchange="previewmanual_k1(this,${i})" data-keyraportindukmanual="${prefix_stringkeyinduk}KI1_NILAI">`;
+            let html = `<select style="width:100%;border: none transparent;outline: none;background:transparent" name="inputmanualk1_predikat${i}" onchange="previewmanual_k1(this,${i})" data-keyraportindukmanual="${prefix_stringkeyinduk}KI1_NILAI">`;
             html +=`<option value ="Sangat Baik">Sangat Baik</option><option value ="Baik">Baik</option><option value ="Cukup">Cukup</option><option value ="Perlu Bimbingan">Perlu Bimbingan</option>`;
             html += `</select>`;
             td.innerHTML = html;
@@ -4413,13 +4417,13 @@ const raportmanualawal = ()=>{
             
             td.setAttribute("onmouseover","this.setAttribute('title','Jangan ada karakter selain angka dan koma')");
             td.setAttribute("onmouseout","this.removeAttribute('title')");
-            td.innerHTML = `<input type="text" oninput="previewmanual_k1(this,${i})" name="inputmanualk1_maks${i}" style="border: none transparent;outline: none;background:transparent" placholder="contoh:1,2,3">`;
+            td.innerHTML = `<input type="text" oninput="previewmanual_k1(this,${i})" name="inputmanualk1_maks${i}" style="width:100%;border: none transparent;outline: none;background:transparent" placholder="contoh:1,2,3">`;
             td = tr.insertCell(-1);
             td.setAttribute("class","sel_k1 cellmanualinput");
             
             td.setAttribute("onmouseover","this.setAttribute('title','Jangan ada karakter selain angka dan koma')");
             td.setAttribute("onmouseout","this.removeAttribute('title')");
-            td.innerHTML = `<input oninput="previewmanual_k1(this,${i})" name="inputmanualk1_min${i}"  type="text" style="border: none transparent;outline: none;background:transparent" placholder="contoh:1,2,3">`;
+            td.innerHTML = `<input oninput="previewmanual_k1(this,${i})" name="inputmanualk1_min${i}"  type="text" style="width:100%;border: none transparent;outline: none;background:transparent" placholder="contoh:1,2,3">`;
             td = tr.insertCell(-1);
             td.setAttribute("class","sel_k1 cellmanualinput");
             td.setAttribute("data-keyraportindukmanual",`${prefix_stringkeyinduk}KI1_DESKRIPSI`);//data-keyraportindukmanual="${prefix_stringkeyinduk}_K1_NILAI"
@@ -4526,8 +4530,8 @@ const previewmanual_k1 = (el,i)=>{
     let val = el.value;
     let row = el.parentNode.parentElement.rowIndex;
     // console.log(el.value, el.parentNode.nodeName,el.nodeName, el.name);
-    let deskripsimaks=" Ada yang salah kode deskripsi minimal ", 
-        deskripsimin = " Ada yang salah kode deskripsi minimal ";
+    let deskripsimaks="", 
+        deskripsimin = "";
     let namasiswa = tabelraportmanual.rows[row].cells[2].innerHTML
     if(el.nodeName == "INPUT"){
         if(el.name == "inputmanualk1_min"+i){
@@ -4553,7 +4557,8 @@ const previewmanual_k1 = (el,i)=>{
             deskripsimin = arr_deskripimin.map(m => arraydeskripsi_kd1[parseInt(m)]);
     }
     
-    let teks = `Ananda ${namasiswa} <span style="color:blue">selalu</span> ${deskripsimaks.length==0?"":deskripsimaks.join(",")}, <span style="color:red">dan mulai tampak dalam</span> ${deskripsimin.length==0?"":deskripsimin.join(",")}`;
+    let teks = `Ananda ${namasiswa} <span style="color:blue">selalu</span> ${deskripsimaks.length==0?"":deskripsimaks.join(",")},`;
+    teks +=` <span style="color:red">dan mulai tampak dalam</span> ${deskripsimin.length==0?"":deskripsimin.join(",")}`;
     tabelraportmanual.rows[row].cells[6].innerHTML = teks;
 }
 const previewmanual_k2 = (el,i)=>{
@@ -4738,11 +4743,21 @@ const printadexistelemen = (kelas, portr = true,kondisi="")=>{
     
         
         let dup= dom.cloneNode(true);
-        dup.querySelector("table.tfoot").innerHTML ="";
-        let cariinput, cariinputdom
+        // console.log(dup)
+        if (dup.querySelector("tfoot") !=null){
+            dup.querySelector("tfoot").innerHTML ="";
+        }
+        let cariinput, cariinputdom; 
         if(kelas == "halamanprint_dataraportmanual"){
-            cariinput = dup.querySelectorAll("[data-keyraportindukmanual]"); ;//dup.querySelectorAll("input")||dup.querySelectorAll("select"); 
+            let ubahid = dup.querySelector("table");
+            ubahid.setAttribute("id","ubahiddulu")
+            cariinput = ubahid.querySelectorAll("[data-keyraportindukmanual]");// ;//dup.querySelectorAll("input")||dup.querySelectorAll("select"); 
+            //data-keyraportindukmanual
             cariinputdom = dom.querySelectorAll("[data-keyraportindukmanual]"); ;//dup.querySelectorAll("input")||dup.querySelectorAll("select"); 
+
+        }else if(kelas == "formulirkirim") {
+            cariinput = dup.querySelectorAll("[data-dbindukutama]"); ;//dup.querySelectorAll("input")||dup.querySelectorAll("select"); 
+            cariinputdom = dom.querySelectorAll("[data-dbindukutama]"); ;//dup.querySelectorAll("input")||dup.querySelectorAll("select"); 
 
         }
         if(cariinput !== null || cariinput !== undefined){
@@ -4755,10 +4770,14 @@ const printadexistelemen = (kelas, portr = true,kondisi="")=>{
                     let td = cariinput[i].parentNode;
                     cariinput[i].parentNode.replaceChild(mySpan, cariinput[i]);
                 }else if(cariinput[i].type == "select-one"){
-                    //console.log(cariinput[i])
+                    //console.log(cariinput[i].type, cariinput[i].getAttribute("data-keyraportindukmanual"))
                     let o = cariinput[i].options;
                     let s = o.selectedIndex;
-                    let v = o[s].value;
+                    let v = cariinputdom[i].value;//o[s].value;
+                    // if(cariinput[i].getAttribute("data-keyraportindukmanual") == prefix_stringkeyinduk+"KENAIKAN_KELAS"){
+                    //     console.log(cariinput[i].value, "kedua ", cariinputdom[i].value)
+                    //     console.log(cariinput[i].getAttribute("data-keyraportindukmanual"));
+                    // }
                     //console.log("larikesini", cariinput[i].nodeName,s,v,cariinputdom[i].value)
                     var mySpan = document.createElement("span");
                     mySpan.innerHTML = v;
@@ -4775,7 +4794,10 @@ const printadexistelemen = (kelas, portr = true,kondisi="")=>{
                         var mySpan = document.createElement("span");
                         mySpan.innerHTML = v;
                         let td = cariinput[i].parentNode;
-                        cariinput[i].parentNode.replaceChild(mySpan, cariinput[i]);
+                        cariinput[i].parentNode.replaceChild(mySpan, cariinput[i]);;
+                        if(cariinput[i].nodeName == "SELECT"){
+                            console.log("Ada elemen select terdeteksi", cariinput[i].getAttribute("data-keyraportindukmanual") )
+                        }
                     }
                 }
             }
@@ -4853,7 +4875,7 @@ const fnmenumanual_k2 = () => {
             thead.rows[2].appendChild(th);
             th = document.createElement("th");//thead.rows[2].insertCell(-1);
             th.setAttribute("class","sel_k2 cellmanualinput");
-            th.innerHTML ="Preview";
+            th.innerHTML ="Deskripsi";
             thead.rows[2].appendChild(th)
             //tfoot
             th = document.createElement("th");//thead.rows[2].insertCell(-1);
@@ -4870,7 +4892,7 @@ const fnmenumanual_k2 = () => {
                 
                 td.setAttribute("onmouseover","this.setAttribute('title','Pilih Predikat untuk nilai Sosial')");
                 td.setAttribute("onmouseout","this.removeAttribute('title')");
-                let html = `<select style="border: none transparent;outline: none;background:transparent" name="inputmanualk2_predikat${i}" onchange="previewmanual_k2(this,${i})" data-keyraportindukmanual="${prefix_stringkeyinduk}KI2_NILAI">`;
+                let html = `<select style="width:100%;border: none transparent;outline: none;background:transparent" name="inputmanualk2_predikat${i}" onchange="previewmanual_k2(this,${i})" data-keyraportindukmanual="${prefix_stringkeyinduk}KI2_NILAI">`;
                 html +=`<option value ="Sangat Baik">Sangat Baik</option><option value ="Baik">Baik</option><option value ="Cukup">Cukup</option><option value ="Perlu Bimbingan">Perlu Bimbingan</option>`;
                 html += `</select>`;
                 td.innerHTML = html;
@@ -4879,17 +4901,18 @@ const fnmenumanual_k2 = () => {
                 
                 td.setAttribute("onmouseover","this.setAttribute('title','Jangan ada karakter selain angka dan koma')");
                 td.setAttribute("onmouseout","this.removeAttribute('title')");
-                td.innerHTML = `<input type="text" oninput="previewmanual_k2(this,${i})" name="inputmanualk2_maks${i}" style="border: none transparent;outline: none;background:transparent" placholder="contoh:1,2,3">`;
+                td.innerHTML = `<input type="text" oninput="previewmanual_k2(this,${i})" name="inputmanualk2_maks${i}" style="width:100%;border: none transparent;outline: none;background:transparent" placholder="contoh:1,2,3">`;
                 td = tr.insertCell(-1);
                 td.setAttribute("class","sel_k2 cellmanualinput");
                 
                 td.setAttribute("onmouseover","this.setAttribute('title','Jangan ada karakter selain angka dan koma')");
                 td.setAttribute("onmouseout","this.removeAttribute('title')");
-                td.innerHTML = `<input oninput="previewmanual_k2(this,${i})" name="inputmanualk2_min${i}"  type="text" style="border: none transparent;outline: none;background:transparent" placholder="contoh:1,2,3">`;
+                td.innerHTML = `<input oninput="previewmanual_k2(this,${i})" name="inputmanualk2_min${i}"  type="text" style="width:100%;border: none transparent;outline: none;background:transparent" placholder="contoh:1,2,3">`;
                 td = tr.insertCell(-1);
                 td.setAttribute("class","sel_k2 cellmanualinput");
+                
                 td.setAttribute("data-keyraportindukmanual",`${prefix_stringkeyinduk}KI2_DESKRIPSI`);
-                td.innerHTML=`<i class="fa fa-spin fa-spinner"></i>`
+                td.innerHTML=``;
             }
             
             
@@ -5366,7 +5389,7 @@ const fnmenumanual_deksripsik3 = ()=>{
         menumanual_deskripsik3.classList.add("w3-pale-red")
         panggilkompetensiasli("k3","k3")
         aktifkanmapel_deskripsimanual(tabelraportmanual.querySelectorAll(".tombolpilihmapeleditdeskripsi")[0],"k3","AGAMA");
-        info.innerHTML = "";
+        //info.innerHTML = "";
         let badg = document.querySelector(".tandasiapk3deskripsi");
         
             if(badg.className.indexOf("w3-hide")>-1){
@@ -5400,9 +5423,9 @@ const fnmenumanual_deksripsik4 = ()=>{
             }
         });
         menumanual_deskripsik4.classList.add("w3-pale-red");
-        panggilkompetensiasli("k4","k3")
+        panggilkompetensiasli("k4","k4")
         aktifkanmapel_deskripsimanual(tabelraportmanual.querySelectorAll(".tombolpilihmapeleditdeskripsi")[0],"k4","AGAMA");
-        info.innerHTML = "";
+        //info.innerHTML = "";
         let badg = document.querySelector(".tandasiapk4deskripsi");
         
             if(badg.className.indexOf("w3-hide")>-1){
@@ -5544,7 +5567,7 @@ const bikintabelawalraportmanual = () =>{
         
         td.setAttribute("onmouseover","this.setAttribute('title','Pilih Predikat untuk nilai Spritual')");
         td.setAttribute("onmouseout","this.removeAttribute('title')");
-        let html = `<select style="border: none transparent;outline: none;background:transparent" name="inputmanualk1_predikat${i}" onchange="previewmanual_k1(this,${i})" data-keyraportindukmanual="${prefix_stringkeyinduk}KI1_NILAI">`;
+        let html = `<select style="width:100%;border: none transparent;outline: none;background:transparent" name="inputmanualk1_predikat${i}" onchange="previewmanual_k1(this,${i})" data-keyraportindukmanual="${prefix_stringkeyinduk}KI1_NILAI">`;
         html +=`<option value ="Sangat Baik">Sangat Baik</option><option value ="Baik">Baik</option><option value ="Cukup">Cukup</option><option value ="Perlu Bimbingan">Perlu Bimbingan</option>`;
         html += `</select>`;
         td.innerHTML = html;
@@ -5553,13 +5576,13 @@ const bikintabelawalraportmanual = () =>{
         
         td.setAttribute("onmouseover","this.setAttribute('title','Jangan ada karakter selain angka dan koma')");
         td.setAttribute("onmouseout","this.removeAttribute('title')");
-        td.innerHTML = `<input type="text" oninput="previewmanual_k1(this,${i})" name="inputmanualk1_maks${i}" style="border: none transparent;outline: none;background:transparent" placholder="contoh:1,2,3">`;
+        td.innerHTML = `<input type="text" oninput="previewmanual_k1(this,${i})" name="inputmanualk1_maks${i}" style="width:100%;border: none transparent;outline: none;background:transparent" placholder="contoh:1,2,3">`;
         td = tr.insertCell(-1);
         td.setAttribute("class","sel_k1 cellmanualinput");
         
         td.setAttribute("onmouseover","this.setAttribute('title','Jangan ada karakter selain angka dan koma')");
         td.setAttribute("onmouseout","this.removeAttribute('title')");
-        td.innerHTML = `<input oninput="previewmanual_k1(this,${i})" name="inputmanualk1_min${i}"  type="text" style="border: none transparent;outline: none;background:transparent" placholder="contoh:1,2,3">`;
+        td.innerHTML = `<input oninput="previewmanual_k1(this,${i})" name="inputmanualk1_min${i}"  type="text" style="width:100%;border: none transparent;outline: none;background:transparent" placholder="contoh:1,2,3">`;
         td = tr.insertCell(-1);
         td.setAttribute("class","sel_k1 cellmanualinput");
         td.setAttribute("data-keyraportindukmanual",`${prefix_stringkeyinduk}KI1_DESKRIPSI`);//data-keyraportindukmanual="${prefix_stringkeyinduk}_K1_NILAI"
@@ -5613,7 +5636,7 @@ const bikintabelawalraportmanual = () =>{
                 
                 td.setAttribute("onmouseover","this.setAttribute('title','Pilih Predikat untuk nilai Sosial')");
                 td.setAttribute("onmouseout","this.removeAttribute('title')");
-                let html = `<select style="border: none transparent;outline: none;background:transparent" name="inputmanualk2_predikat${i}" onchange="previewmanual_k2(this,${i})" data-keyraportindukmanual="${prefix_stringkeyinduk}KI2_NILAI">`;
+                let html = `<select style="width:100%;border: none transparent;outline: none;background:transparent" name="inputmanualk2_predikat${i}" onchange="previewmanual_k2(this,${i})" data-keyraportindukmanual="${prefix_stringkeyinduk}KI2_NILAI">`;
                 html +=`<option value ="Sangat Baik">Sangat Baik</option><option value ="Baik">Baik</option><option value ="Cukup">Cukup</option><option value ="Perlu Bimbingan">Perlu Bimbingan</option>`;
                 html += `</select>`;
                 td.innerHTML = html;
@@ -5622,13 +5645,13 @@ const bikintabelawalraportmanual = () =>{
                 
                 td.setAttribute("onmouseover","this.setAttribute('title','Jangan ada karakter selain angka dan koma')");
                 td.setAttribute("onmouseout","this.removeAttribute('title')");
-                td.innerHTML = `<input type="text" oninput="previewmanual_k2(this,${i})" name="inputmanualk2_maks${i}" style="border: none transparent;outline: none;background:transparent" placholder="contoh:1,2,3">`;
+                td.innerHTML = `<input type="text" oninput="previewmanual_k2(this,${i})" name="inputmanualk2_maks${i}" style="width:100%;border: none transparent;outline: none;background:transparent" placholder="contoh:1,2,3">`;
                 td = tr.insertCell(-1);
                 td.setAttribute("class","sel_k2 cellmanualinput");
                 
                 td.setAttribute("onmouseover","this.setAttribute('title','Jangan ada karakter selain angka dan koma')");
                 td.setAttribute("onmouseout","this.removeAttribute('title')");
-                td.innerHTML = `<input oninput="previewmanual_k2(this,${i})" name="inputmanualk2_min${i}"  type="text" style="border: none transparent;outline: none;background:transparent" placholder="contoh:1,2,3">`;
+                td.innerHTML = `<input oninput="previewmanual_k2(this,${i})" name="inputmanualk2_min${i}"  type="text" style="width:100%;border: none transparent;outline: none;background:transparent" placholder="contoh:1,2,3">`;
                 td = tr.insertCell(-1);
                 td.setAttribute("class","sel_k2 cellmanualinput");
                 td.setAttribute("data-keyraportindukmanual",`${prefix_stringkeyinduk}KI2_DESKRIPSI`);
@@ -5696,7 +5719,7 @@ const bikintabelawalraportmanual = () =>{
                     }else{
                         td.setAttribute("class","sel_k3 cellmanualinput");
                     }
-                    let htmlnilai ="";// `<input type="number" style="width:100%;border: none transparent;outline: none;background:transparent;text-align:center" data-keyraportindukmanual="${prefix_stringkeyinduk}${kodemapel}_P_NILAI" >`;
+                    let htmlnilai ="";// 
                     if(m >  (datamapel.length-1)){
                         if(m == datamapel.length){
                             htmlnilai = `<input disabled type="number" class="jumlahnilaik3siswake_${i} jumlahnilaik3siswa" style="width:100%;border: none transparent;outline: none;background:transparent;text-align:center" >`;
@@ -5821,6 +5844,7 @@ const bikintabelawalraportmanual = () =>{
         th = document.createElement("th");
         th.innerHTML = "Nilai";
         th.setAttribute("class","sel_ekskul cellmanualinput");
+        th.setAttribute("style","width:90px");
         thead.rows[2].appendChild(th);
         
         th = document.createElement("th");
@@ -5837,6 +5861,7 @@ const bikintabelawalraportmanual = () =>{
         th = document.createElement("th");
         th.innerHTML = "Nilai";
         th.setAttribute("class","sel_ekskul cellmanualinput");
+        th.setAttribute("style","width:90px");
         thead.rows[2].appendChild(th);
         
         th = document.createElement("th");
@@ -5853,6 +5878,7 @@ const bikintabelawalraportmanual = () =>{
         th = document.createElement("th");
         th.innerHTML = "Nilai";
         th.setAttribute("class","sel_ekskul cellmanualinput");
+        th.setAttribute("style","width:90px");
         thead.rows[2].appendChild(th);
         
         th = document.createElement("th");
@@ -5866,7 +5892,7 @@ const bikintabelawalraportmanual = () =>{
             th.innerHTML = `<button onclick="manual_simpanserverperkembangan(this)" id="tombolsimpanservermanual_tfootperkembanganlainnya" class=" w3-btn w3-round-xlarge w3-pale-green w3-bottombar w3-tiny w3-border-purple">Simpan Server Perkembangan</button>`;
             tfoot.rows[0].appendChild(th)
 
-        for(i = 0 ; i < jsondatasiswa.length ; i++){
+        for(i = 0 ; i <jsondatasiswa.length ; i++){
             let sele;
             let tr = tbody.rows[i];
             let td = tr.insertCell(-1);
@@ -5875,44 +5901,44 @@ const bikintabelawalraportmanual = () =>{
             
             td = tr.insertCell(-1);
             td.setAttribute("class","sel_ekskul cellmanualinput");
-            sele = `<select data-perkembanganlama="head_1" data-keyraportindukmanual="${prefix_stringkeyinduk}NILAI_EKSKUL1"  style="border: none transparent;outline: none;background:transparent">`;
+            sele = `<select data-keyraportindukmanual="${prefix_stringkeyinduk}NILAI_EKSKUL1" data-perkembanganlama="head_1"  style="width:100%;border: none transparent;outline: none;background:transparent">`;
             sele +=`<option value =""></option><option value ="Sangat Baik">Sangat Baik</option><option value ="Baik">Baik</option><option value ="Cukup">Cukup</option><option value ="Perlu Bimbingan">Perlu Bimbingan</option>`;
             sele += `</select>`;
             td.innerHTML = sele;
 
             td = tr.insertCell(-1);
             td.setAttribute("class","sel_ekskul cellmanualinput");
-            td.innerHTML = `<textarea data-perkembanganlama="head_2" data-keyraportindukmanual="${prefix_stringkeyinduk}KETERANGAN_EKSKUL1" style="width:100%;border: none transparent;outline: none;background:transparent;"></textarea>`;
+            td.innerHTML = `<textarea data-keyraportindukmanual="${prefix_stringkeyinduk}KETERANGAN_EKSKUL1"  data-perkembanganlama="head_2" style="width:100%;border: none transparent;outline: none;background:transparent;"></textarea>`;
             //2
             td = tr.insertCell(-1);
             td.setAttribute("class","sel_ekskul cellmanualinput");
-            td.innerHTML = `<input data-perkembanganlama="head_3" data-keyraportindukmanual="${prefix_stringkeyinduk}NAMA_EKSKUL2" style="width:100%;border: none transparent;outline: none;background:transparent;">`;
+            td.innerHTML = `<input data-keyraportindukmanual="${prefix_stringkeyinduk}NAMA_EKSKUL2" data-perkembanganlama="head_3"  style="width:100%;border: none transparent;outline: none;background:transparent;">`;
             
             td = tr.insertCell(-1);
             td.setAttribute("class","sel_ekskul cellmanualinput");
-            sele = `<select data-perkembanganlama="head_4" data-keyraportindukmanual="${prefix_stringkeyinduk}NILAI_EKSKUL2"  style="border: none transparent;outline: none;background:transparent">`;
+            sele = `<select data-keyraportindukmanual="${prefix_stringkeyinduk}NILAI_EKSKUL2"  data-perkembanganlama="head_4"  style="width:100%;border: none transparent;outline: none;background:transparent">`;
             sele +=`<option value =""></option><option value ="Sangat Baik">Sangat Baik</option><option value ="Baik">Baik</option><option value ="Cukup">Cukup</option><option value ="Perlu Bimbingan">Perlu Bimbingan</option>`;
             sele += `</select>`;
             td.innerHTML = sele;
 
             td = tr.insertCell(-1);
             td.setAttribute("class","sel_ekskul cellmanualinput");
-            td.innerHTML = `<textarea data-perkembanganlama="head_5" data-keyraportindukmanual="${prefix_stringkeyinduk}KETERANGAN_EKSKUL2" style="width:100%;border: none transparent;outline: none;background:transparent;"></textarea>`;
+            td.innerHTML = `<textarea data-keyraportindukmanual="${prefix_stringkeyinduk}KETERANGAN_EKSKUL2"  data-perkembanganlama="head_5"  style="width:100%;border: none transparent;outline: none;background:transparent;"></textarea>`;
             //3
             td = tr.insertCell(-1);
             td.setAttribute("class","sel_ekskul cellmanualinput");
-            td.innerHTML = `<input data-perkembanganlama="head_6" data-keyraportindukmanual="${prefix_stringkeyinduk}NAMA_EKSKUL3" style="width:100%;border: none transparent;outline: none;background:transparent;">`;
+            td.innerHTML = `<input data-keyraportindukmanual="${prefix_stringkeyinduk}NAMA_EKSKUL3"  data-perkembanganlama="head_6"  style="width:100%;border: none transparent;outline: none;background:transparent;">`;
             
             td = tr.insertCell(-1);
             td.setAttribute("class","sel_ekskul cellmanualinput");
-            sele = `<select data-perkembanganlama="head_7" data-keyraportindukmanual="${prefix_stringkeyinduk}NILAI_EKSKUL3"  style="border: none transparent;outline: none;background:transparent">`;
+            sele = `<select data-keyraportindukmanual="${prefix_stringkeyinduk}NILAI_EKSKUL3"  data-perkembanganlama="head_7"  style="width:100%;border: none transparent;outline: none;background:transparent">`;
             sele +=`<option value =""></option><option value ="Sangat Baik">Sangat Baik</option><option value ="Baik">Baik</option><option value ="Cukup">Cukup</option><option value ="Perlu Bimbingan">Perlu Bimbingan</option>`;
             sele += `</select>`;
             td.innerHTML = sele;
 
             td = tr.insertCell(-1);
             td.setAttribute("class","sel_ekskul cellmanualinput");
-            td.innerHTML = `<textarea data-perkembanganlama="head_8" data-keyraportindukmanual="${prefix_stringkeyinduk}KETERANGAN_EKSKUL3" style="width:100%;border: none transparent;outline: none;background:transparent;"></textarea>`;
+            td.innerHTML = `<textarea data-keyraportindukmanual="${prefix_stringkeyinduk}KETERANGAN_EKSKUL3"  data-perkembanganlama="head_8" style="width:100%;border: none transparent;outline: none;background:transparent;"></textarea>`;
             
             //data-perkembanganlama="head_2" data-keyraportindukmanual="${prefix_stringkeyinduk}NAMA_EKSKUL1" 
             //style="width:100%;border: none transparent;outline: none;background:transparent;">;
@@ -5921,14 +5947,20 @@ const bikintabelawalraportmanual = () =>{
         //saran
         th = document.createElement("th");
         th.innerHTML = "S A R A N  -  S A R A N";
-        th.setAttribute("rowspan","3");
+        th.setAttribute("rowspan","2");
         th.setAttribute("class","sel_saran cellmanualinput");
         thead.rows[0].appendChild(th);
+
+        th = document.createElement("th");
+        th.innerHTML = `<textarea placeholder="Ketik disini untuk semua saran" oninput="buatnilaisamadielemen(this,'saransaran')" style="width:100%; border: none transparent;outline: none;background:transparent;"></textarea>`;
+        th.setAttribute("class","sel_saran cellmanualinput");
+        thead.rows[2].appendChild(th);
+
         for(i = 0 ; i < jsondatasiswa.length ; i++){
             let tr = tbody.rows[i];
             let td = tr.insertCell(-1);
             td.setAttribute("class","sel_saran cellmanualinput");
-            td.innerHTML = `<textarea data-perkembanganlama="head_9" data-keyraportindukmanual="${prefix_stringkeyinduk}SARAN" style="width:100%;border: none transparent;outline: none;background:transparent;"></textarea>`;
+            td.innerHTML = `<textarea data-keyraportindukmanual="${prefix_stringkeyinduk}SARAN"  data-perkembanganlama="head_9"  style="width:100%;border: none transparent;outline: none;background:transparent;"></textarea>`;
             
         }
         //tb bb
@@ -6160,7 +6192,9 @@ const bikintabelawalraportmanual = () =>{
         th.setAttribute("onmouseout","this.removeAttribute('title')");
         let html_el = "<div class='w3-hide-small'>Pilih Status<br>"
         html_el += `<select onchange="buatnilaisamadielemen(this,'statuskenaikan')"  style="width:100%;border: none transparent;outline: none;background:transparent;">`;
-        html_el+=`<option value=""></option><option value="Naik Kelas">Naik Kelas</option><option value="Tidak Naik Kelas">Tidak Naik Kelas</option>`;
+        html_el+=`<option value=" ">Status Semua Kolom</option>
+        <option value="Naik Kelas">Naik Kelas</option>
+        <option value="Tidak Naik Kelas">Tidak Naik Kelas</option>`;
         html_el +=idJenjang==6?`<option value="Tidak Lulus">Tidak Lulus</option><option value="Lulus">Lulus</option>`:"";
         html_el +=`</select></div>`
         th.innerHTML = html_el;
@@ -6194,8 +6228,11 @@ const bikintabelawalraportmanual = () =>{
             let td = tr.insertCell(-1);
             td.setAttribute("class","sel_kenaikankelas cellmanualinput");
             html_el = `<select data-perkembanganlama="head_24" data-keyraportindukmanual="${prefix_stringkeyinduk}KENAIKAN_KELAS" style="width:100%;border: none transparent;outline: none;background:transparent;">`;
-            html_el +=`<option value=""></option><option value="Naik Kelas">Naik Kelas</option><option value="Tidak Naik Kelas">Tidak Naik Kelas</option>`;
-            html_el +=idJenjang==6?`<option value="Tidak Lulus">Tidak Lulus</option><option value="Lulus">Lulus</option>`:"";
+            html_el +=`<option value=" "> </option>
+            <option value="Naik Kelas">Naik Kelas</option>
+            <option value="Tidak Naik Kelas">Tidak Naik Kelas</option>`;
+            html_el +=idJenjang==6?`<option value="Tidak Lulus">Tidak Lulus</option>
+            <option value="Lulus">Lulus</option>`:"";
             html_el +=`</select>`
             td.innerHTML = html_el;
 
@@ -6275,14 +6312,14 @@ const bikintabelawalraportmanual = () =>{
                 td = tr.insertCell(-1);
                 td.setAttribute("class","sel_kelulusansiswa cellmanualinput");
                 td.innerHTML = `<input type="text"data-updatedbutama="smp_ke" value="${jsondatasiswa[i].smp_ke}"  style="width:100%;text-align:center; border: none transparent;outline: none;background:transparent;"></div>`;
-                ;// `<input type="date" data-keyraportindukmanual="${prefix_stringkeyinduk}TITIMANGSA_RAPORT" style="width:100%;border: none transparent;outline: none;background:transparent;">`
+                
             }
         }
         //deskripsi ki3
         th = document.createElement("th");
         th.setAttribute("class","sel_deskripsi_k3 cellmanualinput");
         th.setAttribute("colspan",datamapel.length);
-        th.innerHTML = "Deskripsi Kompetensi Pengetahuan (KI-3)<br><span id='mapeldeskripsi_k3_manual' class='w3-red'>KLIK TOMBOL MAPEL DI BAWAH INI</span>";
+        th.innerHTML = "Deskripsi Kompetensi Pengetahuan (KI-3)<br><span id='mapeldeskripsi_k3_manual' class='w3-red' style='padding:3px'>KLIK TOMBOL MAPEL DI BAWAH INI</span>";
         thead.rows[0].appendChild(th);
         
         th = document.createElement("th");
@@ -6346,7 +6383,7 @@ const bikintabelawalraportmanual = () =>{
             
             for(k = 0 ; k < datamapel.length; k++){
                 let td = tr.insertCell(-1);
-                td.setAttribute("onclick",`alert('Hanya bisa diedit di Rekap Nilai Kompetensi Pengetahuan KI-3')`);
+                td.setAttribute("onclick",`alert('Hanya bisa diedit di Rekap Nilai Kompetensi Pengetahuan KI-3\r\n Abaikan jika kolom Nilai Raport kosong.')`);
                 td.setAttribute("class",`sel_deskripsi_k3 sel_deskripsi_k3_olah sel_deskripsi_k3_${datamapel[k]} cellmanualinput`);
                 td.innerHTML = `<input type="number" disabled data-deskripsik3="raport_${datamapel[k]}" data-keyraportindukmanual="${prefix_stringkeyinduk}k3_raport_${datamapel[k]}" style="width:100%;text-align:center; border: none transparent;outline: none;background:transparent;">`;
  
@@ -6784,7 +6821,7 @@ const buatnilaisamadielemen = (el, kondisi) =>{
     let teksTglkelulusan = `${prefix_stringkeyinduk}TITIMANGSA_KELULUSAN`;//data-dbindukutama="keluar_tgl
     let inputtglkelulusan = document.querySelectorAll(`[data-keyraportindukmanual='${teksTglkelulusan}']`);
     let inputsmpke = document.querySelectorAll(`[data-updatedbutama="dapo_noseriijazah"]`)
-
+    let saranelemen = document.querySelectorAll(`textarea[data-perkembanganlama="head_9"]`)
     if(kondisi == "statuskenaikan"){
         for(i = 0 ; i < selectKenaikan.length; i++){
             selectKenaikan[i].value = el.value;
@@ -6809,6 +6846,11 @@ const buatnilaisamadielemen = (el, kondisi) =>{
             inputsmpke[i].value = val
         }
 
+    }else if(kondisi == "saransaran"){
+        //
+        for(i = 0 ; i < saranelemen.length; i++){
+            saranelemen[i].value = val
+        }
     }
 }
 const manual_simpanserverperkembangan = (el) =>{
@@ -6965,10 +7007,10 @@ const panggildataperkembanganuntukmanual = (info) =>{
         .then(k => {
             
             if (k.result == 0) {
-                info.innerHTML = "Anda belum pernah membuat data Rekapitulasi  Perkembangan Siswa. Nilai ini diambil dari hasil penyimpanan server yang telah Anda lakukan baik melalui menu Tab <b>Raport</b> atau <b>Raport Manual</b>";
+                info.innerHTML = "<h4 style='text-align:center'>Anda belum pernah membuat data Rekapitulasi  Perkembangan Siswa</h4>. Nilai ini diambil dari hasil penyimpanan server yang telah Anda lakukan baik melalui menu Tab <b>Raport</b> atau <b>Raport Manual</b>";
                 
             } else {
-                info.innerHTML = `Database Rekapitulasi Perkembangan Siswa berhasil dimuat. Sebaiknya Anda selalu menyimpan ke server setiap ada perubahan di data ini agar tidak hilang saat Anda tidak mengerjakan data di tabel ini (Klik tombol Simpan Server Perkembangan di bawah tabel). Nilai ini diambil dari hasil penyimpanan server yang telah Anda lakukan baik melalui menu Tab <b>Raport</b> atau <b>Raport Manual</b>`;
+                info.innerHTML = `<h4 class="w3-center">Database Rekapitulasi Perkembangan Siswa berhasil dimuat.</h4> Sebaiknya Anda selalu menyimpan ke server setiap ada perubahan di data ini agar tidak hilang saat Anda tidak mengerjakan data di tabel ini (Klik tombol Simpan Server Perkembangan di bawah tabel). Nilai ini diambil dari hasil penyimpanan server yang telah Anda lakukan baik melalui menu Tab <b>Raport</b> atau <b>Raport Manual</b>`;
                 let result = k.data;
                 for(i = 0 ; i < tbody.rows.length ; i++){
         
@@ -7488,8 +7530,8 @@ const shownilairaportkd = (kondisi) =>{
             })
             .catch(er => {console.log(er)});
     }else{
-        let tomboldatakd_asli = `<button class="tangan w3-pale-green w3-border w3-round" onclick="panggilkompetensiaslibener('${kondisi}','')">Tampilkan Rekap Nilai Asli</button>`
-        document.querySelector(".info_mbtr").innerHTML = kondisi + " Berhasil dimuat format nilai baru. " + tomboldatakd_asli + tambahfituruploadimport(kondisi);
+        
+        document.querySelector(".info_mbtr").innerHTML ="<h3 class='w3-center'>"+ kondisi + " Berhasil memuat database Raport Final </h4>" + tambahfituruploadimport(kondisi);
                     let nilaidata = f.data;
                     let tbody = tabelraportmanual.querySelector("tbody");
                     let row = tbody.rows;
@@ -7521,6 +7563,14 @@ const shownilairaportkd = (kondisi) =>{
 
                         
                     }
+                    for(x = 0 ; x < row.length ; x++){
+                        if(kondisi == "k3"){
+                            kalkulasinilairaportmanual('k3',x)
+                        }else{
+                            kalkulasinilairaportmanual('k4',x)
+                        }
+                    }
+
                 
     }
 
@@ -8691,7 +8741,7 @@ const panggilkehadiransiswadariserver = (elinfo)=>{
             document.querySelector(".tandasiapkehadiransiswa").classList.remove("w3-hide")
         }
         let tombol = `<button onclick="panggildbinduksementara(this)"> Tampilkan Absensi yang telah Anda simpan</button>`
-        elinfo.innerHTML = "Data Berhasil Dimuat.  " + tombol;
+        elinfo.innerHTML = "<h4 style='text-align:center'>Data Rekap kehadiran Berhasil Dimuat</h4>  " + tombol;
         for(i = 0 ; i < jsondatasiswa.length ; i++){
             let token = jsondatasiswa[i].id;
             let inputsakit = tabelraportmanual.querySelector("tbody").rows[i].querySelector(`input[data-keyraportindukmanual="${prefix_stringkeyinduk}KEHADIRAN_SAKIT"]`)
@@ -8705,7 +8755,7 @@ const panggilkehadiransiswadariserver = (elinfo)=>{
     })
     .catch(er => {
         console.log(er);
-        elinfo.innerHTML ="ERROR " +er
+        elinfo.innerHTML ="<h2 style='text-align:center;padding:5px;background-color:red;color:yellow'>ERROR </h2" +er
     })
 
 }
@@ -8736,9 +8786,9 @@ const panggilkompetensiasli = (kd,callbekbukan="") =>{
                         .then(k => {
                             if(k.result == 0){
                                 alert("Anda belum pernah menyimpan data olahan apapun di server. Anda mesti input nilai satu per satu")
-                                info.innerHTML = `Anda Terpaksa harus mengisi manual untuk deskripsi ini` ;//+ tambahfituruploadimport(kd);
+                                info.innerHTML = `<h4 style="text-align:center">TIDAK DITEMUKAN DATABASE OLAH NILAI</h4>Anda Terpaksa harus mengisi manual untuk deskripsi ini atau pilih Import-Export berikut:` + tambahfituruploadimport(kd);
                             }else{
-                                info.innerHTML = `Data Hasil Olahan berhasil dimuat.` ;//+ tambahfituruploadimport(kd);
+                                info.innerHTML = `<h4 style="text-align:center">Data Hasil Olahan berhasil dimuat.</h4>` + tambahfituruploadimport(kd);
                             
                                 //console.log(k);
                                 let datanilai = k.data;
@@ -8908,9 +8958,9 @@ const panggilkompetensiasli = (kd,callbekbukan="") =>{
                         })
                         .catch(er => console.log(er))
             }else{
-                let tomboldatakd_asli = `<button class="tangan w3-pale-green w3-border w3-round" onclick="panggilkompetensiaslibener('${kd}','kd4')">Tampilkan Rekap Nilai Asli</button>`
+                let tomboldatakd_asli = `<button class="tangan w3-pale-green w3-border w3-round" onclick="panggilkompetensiaslibener('${kd}','kd4')">Periksa Deskripsi Rekap Olah Nilai</button>`
         
-                info.innerHTML = `Berhasil memuat database Server Nilai Raport yang terkahir untuk Raport. `+tomboldatakd_asli;// +" " + tambahfituruploadimport(kd);
+                info.innerHTML = `<h4 style="text-align:center">Berhasil memuat database Server Nilai Raport Final</h4> `+tomboldatakd_asli;// +" " + tambahfituruploadimport(kd);
                 let tabelbody = tabelraportmanual.querySelector("tbody");
                 let resdatas = k.data;
                 for(i = 0 ; i < tabelbody.rows.length ; i++){
@@ -8960,9 +9010,9 @@ const panggilkompetensiaslibener = (kd,callbekbukan="") =>{
                         .then(k => {
                             if(k.result == 0){
                                 alert("Anda belum pernah menyimpan data olahan apapun di server. Anda mesti input nilai satu per satu")
-                                info.innerHTML =  "";//tambahfituruploadimport(kd);
+                                info.innerHTML =  "<h4 style='text-align:center'>Rekap Nilai Olah tidak tersedia. </h4>"+tambahfituruploadimport(kd);
                             }else{
-                                info.innerHTML = `Data Hasil Olahan berhasil dimuat.`;// + tambahfituruploadimport(kd);
+                                info.innerHTML = `<h4 style='text-align:center'>Data Hasil Olahan berhasil dimuat.</h4>` + tambahfituruploadimport(kd);
                             
                                 //console.log(k);
                                 let datanilai = k.data;
@@ -9211,10 +9261,9 @@ const isikanrentang2 = () => {
 
 const simpanmanualdeskripsi = (el, k3k4 ) =>{
     let stringutama
-    if(el!=null){
+    
         stringutama = el.innerHTML
         el.innerHTML = `<i class="fa fa-spin fa-spinner"></i> ${stringutama}`
-    }
     let arrayisianraportdapodik = [];
     let cekdatapokok = tabelraportmanual.querySelector("tbody").rows;
     for( i = 0 ; i < cekdatapokok.length ; i++){
@@ -9255,9 +9304,9 @@ const simpanmanualdeskripsi = (el, k3k4 ) =>{
             console.log(k)
             alert(k.result);
             if(el!=null){
+            }
                 // stringutama = el.innerHTML
                 el.innerHTML = stringutama ;//`<i class="fa fa-spin fa-spinner"></i> ${stringutama}`
-            }
             let tabelbody = tabelraportmanual.querySelector("tbody");
                 let resdatas = k.data;
                 for(i = 0 ; i < tabelbody.rows.length ; i++){
@@ -9296,7 +9345,7 @@ const panggildbinduksementara = (el = null) =>{
             
             if (k.result == 0) {
                 //info.innerHTML = "Anda belum pernah membuat data Rekapitulasi  Perkembangan Siswa. Nilai ini diambil dari hasil penyimpanan server yang telah Anda lakukan baik melalui menu Tab <b>Raport</b> atau <b>Raport Manual</b>";
-                
+                el.innerHTML = teksbutton;
             } else {
                 el.innerHTML = teksbutton;
                 let tabelbody = tabelraportmanual.querySelector("tbody");
@@ -9856,8 +9905,30 @@ const kirimnilairaportkeinduk = (indekrow,el,tokensiswa,namatab)=>{
 
 const tambahfituruploadimport = (kondisi)=>{
     let html="";
-    html +=`<div class="w3-tiny w3-border w3-padding w3-center"><br><button onclick="exporttabelmanual('${kondisi}')" class="tangan w3-btn w3-red w3-margin" title="export ke Ms. Excel"><i class="fa fa-file-excel-o"></i> Export</button>`;
-    html +=`<button onclick="importtabelmanual('${kondisi}')" class="tangan w3-btn w3-green w3-margin" title="Import ke Ms. Excel"><i class="fa fa-file-excel-o"></i> Import</button>`;
+    let teksdefaultfinal = "";
+    let teksdefaultolah = "";
+    let fnolah = `onclick="panggilkompetensiaslibener('${kondisi}','')"`
+    let fnfinalk3 = `onclick="fnmenumanual_k3()"`
+    let fnfinalk4 = `onclick="fnmenumanual_k4()"`
+    // if(statusolah != ""){
+    //     teksdefaultolah = " (Tidak Tersedia)" ;
+    //     fnolah =`onclick="alert('Database tidak tersedia, sistem akan coba melacak lagi');panggilkompetensiaslibener('${kondisi}','')"`
+    // }
+    // if(statusfinal != ""){
+    //     teksdefaultfinal = " (Tidak Tersedia)" 
+    //     fnfinalk3 =`onclick="alert('Database tidak tersedia, sistem akan coba melacak lagi');fnmenumanual_k3()"`
+    //     fnfinalk4 =`onclick="alert('Database tidak tersedia, sistem akan coba melacak lagi');fnmenumanual_k4()"`
+    // }
+    
+    html +=`<div class="w3-tiny w3-border w3-padding w3-center"><br>`;
+    html +=`<button class="tangan w3-btn w3-pale-red w3-margin w3-round-xlarge w3-border" ${fnolah}>Nilai Olah${teksdefaultolah}</button>`
+    if(kondisi == "k3"){
+        html +=`<button class="tangan w3-btn w3-pale-blue w3-margin w3-round-xlarge w3-border" ${fnfinalk3}>Raport Final KI-3</button>`
+    }else{
+        html +=`<button class="tangan w3-btn w3-pale-blue w3-margin w3-round-xlarge w3-border"  ${fnfinalk4}>Raport Final KI-4</button>`
+    }
+    html +=`<button onclick="exporttabelmanual('${kondisi}')" class="tangan w3-btn w3-khaki w3-margin w3-round-xlarge w3-border" title="export ke Ms. Excel"><i class="fa fa-file-excel-o"></i> Export</button>`;
+    html +=`<button onclick="importtabelmanual('${kondisi}')" class="tangan w3-btn w3-pale-green w3-margin w3-round-xlarge w3-border" title="Import ke Ms. Excel"><i class="fa fa-file-excel-o"></i> Import</button>`;
     html +=`<br>Perlu diperhatikan, dalam mengimport file urutan data nama harus sesuai dengan urutan daftar nama yang ada di dalam tabel ini.</div>`
 
     return html
@@ -9911,7 +9982,7 @@ const prosesImportdataRaportManual = (data, kondisi) =>{
     //Read all rows from First Sheet into an JSON array.
     var excelRows = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[firstSheet]);
     console.log(excelRows);
-    let koleksikeydariexcel = Object.values(excelRows[3]);
+    let koleksikeydariexcel = Object.values(excelRows[4]);
     koleksikeydariexcel.splice(-2,2)
     console.log(koleksikeydariexcel);
     let tabelrow = tabelraportmanual.querySelector("tbody").rows;
@@ -9924,7 +9995,14 @@ const prosesImportdataRaportManual = (data, kondisi) =>{
                 tekskey = `[data-keyraportindukmanual="${prefix_stringkeyinduk}${koleksikeydariexcel[j]}_K_NILAI"]`
             }
             let elem = tabelrow[i].querySelector(tekskey);
-            elem.value = Object.values(excelRows[(i+5)])[(j+3)];
+            //console.log(excelRows[(i+6)],(j+3),Object.values(excelRows[(i+6)])[j+3])
+            if(elem !==null){
+                elem.value = Object.values(excelRows[(i+6)])[(j+3)];
+                //console.log(tekskey,elem)
+            }else{
+                console.log(tekskey,elem)
+                
+            }
         }
         tabelrow[i].querySelector(`.jumlahnilai${kondisi}siswake_${i}`).value =Object.values(excelRows[(i+5)])[(koleksikeydariexcel.length+3)];
         tabelrow[i].querySelector(`.jumlahrerata${kondisi}siswake_${i}`).value =Object.values(excelRows[(i+5)])[(koleksikeydariexcel.length+4)];
@@ -9933,6 +10011,9 @@ const prosesImportdataRaportManual = (data, kondisi) =>{
     // let arrayobjekok = [];
     // arrayobjekok = arrObjek(koleksikeydariexcel, excelRows.filter((k,i)=> i > 4 && i < jsondatasiswa.length + 5).map(m=>Object.values(m)))
     // console.log(arrayobjekok);
+    for(k = 0 ; j < jsondatasiswa.length ; j++){
+        kalkulasinilairaportmanual(kondisi,j)
+    }
 
 }
 const exporttabelmanual = (kondisi) =>{
@@ -9964,13 +10045,20 @@ const exporttabelmanual = (kondisi) =>{
     sel.setAttribute("style","text-align:center;font-weight:bold");
     sel.innerHTML = "TAHUN PELAJARAN " + idTeksTapel +" SEMESTER " + idSemester;
     for(i = 0 ; i < 2 ; i++){
+    }
         row = tabelbayangan.insertRow(-1);
         sel = row.insertCell(-1);
         sel.setAttribute("colspan",koleksimapeljadi.length+5);
         sel.setAttribute("style","text-align:center;font-weight:bold");
         sel.innerHTML = "";
-    }
-    row = tabelbayangan.insertRow(-1);
+    
+        row = tabelbayangan.insertRow(-1);
+        sel = row.insertCell(-1);
+        sel.setAttribute("colspan",koleksimapeljadi.length+5);
+        sel.setAttribute("style","text-align:center;font-weight:bold");
+        sel.innerHTML = "Jika formula rumus Jumlah dan/atau Rangking bermasalah, coba Ubah pengaturan Wakt";
+    
+        row = tabelbayangan.insertRow(-1);
     sel = row.insertCell(-1);
     sel.setAttribute("style","text-align:center;font-weight:bold");
     sel.setAttribute("rowspan","3");
@@ -10050,7 +10138,7 @@ const exporttabelmanual = (kondisi) =>{
         sel = row.insertCell(-1);
         sel.innerHTML =`=SUM(OFFSET(D${colsel};0;0;1;${koleksimapeljadi.length}))`;
         sel = row.insertCell(-1);
-        sel.innerHTML =`=RANK(${hurufrangking}${colsel};OFFSET(${hurufrangking}${colsel};0;0;${jsondatasiswa.length};1))`;;
+        sel.innerHTML =`=RANK(${hurufrangking}${colsel};OFFSET(${hurufrangking}9;0;0;${jsondatasiswa.length};1))`;;
         //hurufrangking+" "+colsel +" "+ colomrata;//
         
         
