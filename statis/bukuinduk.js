@@ -9742,6 +9742,8 @@ const kirimnilairaportkeinduk = (indekrow,el,tokensiswa,namatab)=>{
         let datasiswaindukupdatedijsonsiswa = Object.assign(datasiswadariinduk, dataobjeksiswa)
         delete dataobjeksiswa.time_stamp
         delete datasiswadariinduk.time_stamp
+        datasiswadariinduk.dieditoleh = namauser
+        dataobjeksiswa.dieditoleh = namauser
         // console.log("jsonsiswakloning",dataobjeksiswa)
         // console.log("datainduk_ril",dataobjeksiswainduk)
         // console.log("datainduk_kloning",datasiswadariinduk)
