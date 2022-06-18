@@ -894,7 +894,7 @@ const modalraport = (id) => {
 let datakelulusansiswa = {};
 const pengumumankelulusan = async () => {
     let dataapikelulusan = {};
-    let tgl = new Date(2022, 5, 15, 9, 0, 0);
+    let tgl = tanggalpengumumankenaikankelulusan;//new Date(2022, 5, 15, 9, 0, 0);
     let tglTime = tgl.getTime();
     let tglNow = new Date().getTime();
     // let benarga = (tglTime > tglNow) ? true : false; // <---- skrip oke nih

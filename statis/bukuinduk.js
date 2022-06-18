@@ -2509,7 +2509,7 @@ const page_bukuinduk_nilairaport = async (kodetapel, sms,token, kelas)=>{
                 datainputgada.push(key)
             }
         }
-         console.log(datainputgada)
+         //console.log(datainputgada)
     }
     judulmodal_editnomorinduk.innerHTML = "RESUME DATA BUKU INDUK SISWA";
     
@@ -4737,6 +4737,7 @@ const printadexistelemen = (kelas, portr = true,kondisi="")=>{
     
         
         let dup= dom.cloneNode(true);
+        dup.querySelector("table.tfoot").innerHTML ="";
         let cariinput, cariinputdom
         if(kelas == "halamanprint_dataraportmanual"){
             cariinput = dup.querySelectorAll("[data-keyraportindukmanual]"); ;//dup.querySelectorAll("input")||dup.querySelectorAll("select"); 
@@ -6210,68 +6211,71 @@ const bikintabelawalraportmanual = () =>{
             td.innerHTML = `<input type="date" data-keyraportindukmanual="${prefix_stringkeyinduk}TITIMANGSA_RAPORT" style="width:100%;border: none transparent;outline: none;background:transparent;">`
         }
         //kelulusan
-        th = document.createElement("th");
-        th.innerHTML = "DATA KELULUSAN SISWA";
-        th.setAttribute("colspan","3");
-        th.setAttribute("class","sel_kelulusansiswa  cellmanualinput");
-        thead.rows[0].appendChild(th);
-        
-        th = document.createElement("th");
-        th.innerHTML = "Tanggal Lulus"
-        th.setAttribute("class","sel_kelulusansiswa  cellmanualinput");
-        thead.rows[1].appendChild(th);
+        if(idJenjang == 6){
 
-        th = document.createElement("th");
-        th.setAttribute("class","sel_kelulusansiswa cellmanualinput");
-        th.setAttribute("onmouseover","this.setAttribute('title','Pilih tanggal ini untuk mengisi seluruh kolom tanggal sama')");
-        th.setAttribute("onmouseout","this.removeAttribute('title')");
-        th.innerHTML = "<div class='w3-hide-small'>Pilih Tanggal<br>";
-        th.innerHTML +=`<input type="date" onchange="buatnilaisamadielemen(this,'tglkelulusan')"  style="width:100%;text-align:center; border: none transparent;outline: none;background:transparent;"></div>`;
-        thead.rows[2].appendChild(th);
-
-        th = document.createElement("th");
-        th.innerHTML = "Nomor Ijazah/STTB"
-        th.setAttribute("class","sel_kelulusansiswa  cellmanualinput");
-        thead.rows[1].appendChild(th);
-
-        th = document.createElement("th");
-        th.setAttribute("class","sel_kelulusansiswa cellmanualinput");
-        th.setAttribute("onmouseover","this.setAttribute('title','Ketikkan nomor suarat awalan untuk mengisi seluruh kolom nomor surat sama sama')");
-        th.setAttribute("onmouseout","this.removeAttribute('title')");
-        th.innerHTML = "<div class='w3-hide-small w3-small'>Ketiikan Awalan No. Ijasah<br>";
-        th.innerHTML +=`<input type="text" oninput="buatnilaisamadielemen(this,'noawalansurat')"  style="width:100%;text-align:center; border: black transparent;outline: none;background:transparent;"></div>`;
-        thead.rows[2].appendChild(th);
-        
-        th = document.createElement("th");
-        th.setAttribute("rowspan","2");
-        th.setAttribute("class","sel_kelulusansiswa  cellmanualinput");
-        th.innerHTML = "Melanjutkan ke (Nama SMP/MTs Sederajat)"
-        thead.rows[1].appendChild(th);
-        
-        th = document.createElement("th");//thead.rows[2].insertCell(-1);
-        th.setAttribute("colspan","3");
-        th.setAttribute("class","sel_kelulusansiswa cellmanualinput");
-        th.innerHTML = `<button onclick="simpaninduksementarabayangan(this)" class=" w3-btn w3-round-xlarge w3-pale-green w3-bottombar w3-tiny w3-border-purple">Simpan Server</button>`;
-        tfoot.rows[0].appendChild(th)
-
-        for(i = 0 ; i < jsondatasiswa.length ; i++){
-            let tr = tbody.rows[i];
-            let html_el=""
-            //tb semester 1
-            let td = tr.insertCell(-1);
-            td.setAttribute("class","sel_kelulusansiswa cellmanualinput");
-            td.innerHTML = `<input type="date" data-updatedbutama="keluar_tgl" value="${jsondatasiswa[i].keluar_tgl}"  data-keyraportindukmanual="${prefix_stringkeyinduk}TITIMANGSA_KELULUSAN" style="width:100%;text-align:center; border: none transparent;outline: none;background:transparent;"></div>`;
-            //html_el;
-
-            td = tr.insertCell(-1);
-            td.setAttribute("class","sel_kelulusansiswa cellmanualinput");
-            td.innerHTML = `<input type="text" data-updatedbutama="dapo_noseriijazah" value="${jsondatasiswa[i].dapo_noseriijazah}" style="width:100%;text-align:center; border: none transparent;outline: none;background:transparent;"></div>`;
+            th = document.createElement("th");
+            th.innerHTML = "DATA KELULUSAN SISWA";
+            th.setAttribute("colspan","3");
+            th.setAttribute("class","sel_kelulusansiswa  cellmanualinput");
+            thead.rows[0].appendChild(th);
             
+            th = document.createElement("th");
+            th.innerHTML = "Tanggal Lulus"
+            th.setAttribute("class","sel_kelulusansiswa  cellmanualinput");
+            thead.rows[1].appendChild(th);
 
-            td = tr.insertCell(-1);
-            td.setAttribute("class","sel_kelulusansiswa cellmanualinput");
-            td.innerHTML = `<input type="text"data-updatedbutama="smp_ke" value="${jsondatasiswa[i].smp_ke}"  style="width:100%;text-align:center; border: none transparent;outline: none;background:transparent;"></div>`;
-            ;// `<input type="date" data-keyraportindukmanual="${prefix_stringkeyinduk}TITIMANGSA_RAPORT" style="width:100%;border: none transparent;outline: none;background:transparent;">`
+            th = document.createElement("th");
+            th.setAttribute("class","sel_kelulusansiswa cellmanualinput");
+            th.setAttribute("onmouseover","this.setAttribute('title','Pilih tanggal ini untuk mengisi seluruh kolom tanggal sama')");
+            th.setAttribute("onmouseout","this.removeAttribute('title')");
+            th.innerHTML = "<div class='w3-hide-small'>Pilih Tanggal<br>";
+            th.innerHTML +=`<input type="date" onchange="buatnilaisamadielemen(this,'tglkelulusan')"  style="width:100%;text-align:center; border: none transparent;outline: none;background:transparent;"></div>`;
+            thead.rows[2].appendChild(th);
+
+            th = document.createElement("th");
+            th.innerHTML = "Nomor Ijazah/STTB"
+            th.setAttribute("class","sel_kelulusansiswa  cellmanualinput");
+            thead.rows[1].appendChild(th);
+            
+            th = document.createElement("th");
+            th.setAttribute("class","sel_kelulusansiswa cellmanualinput");
+            th.setAttribute("onmouseover","this.setAttribute('title','Ketikkan nomor suarat awalan untuk mengisi seluruh kolom nomor surat sama sama')");
+            th.setAttribute("onmouseout","this.removeAttribute('title')");
+            th.innerHTML = "<div class='w3-hide-small w3-small'>Ketiikan Awalan No. Ijasah<br>";
+            th.innerHTML +=`<input type="text" oninput="buatnilaisamadielemen(this,'noawalansurat')"  style="width:100%;text-align:center; border: black transparent;outline: none;background:transparent;"></div>`;
+            thead.rows[2].appendChild(th);
+            
+            th = document.createElement("th");
+            th.setAttribute("rowspan","2");
+            th.setAttribute("class","sel_kelulusansiswa  cellmanualinput");
+            th.innerHTML = "Melanjutkan ke (Nama SMP/MTs Sederajat)"
+            thead.rows[1].appendChild(th);
+            
+            th = document.createElement("th");//thead.rows[2].insertCell(-1);
+            th.setAttribute("colspan","3");
+            th.setAttribute("class","sel_kelulusansiswa cellmanualinput");
+            th.innerHTML = `<button onclick="simpaninduksementarabayangan(this)" class=" w3-btn w3-round-xlarge w3-pale-green w3-bottombar w3-tiny w3-border-purple">Simpan Server</button>`;
+            tfoot.rows[0].appendChild(th)
+            
+            for(i = 0 ; i < jsondatasiswa.length ; i++){
+                let tr = tbody.rows[i];
+                let html_el=""
+                //tb semester 1
+                let td = tr.insertCell(-1);
+                td.setAttribute("class","sel_kelulusansiswa cellmanualinput");
+                td.innerHTML = `<input type="date" data-updatedbutama="keluar_tgl" value="${jsondatasiswa[i].keluar_tgl}"  data-keyraportindukmanual="${prefix_stringkeyinduk}TITIMANGSA_KELULUSAN" style="width:100%;text-align:center; border: none transparent;outline: none;background:transparent;"><input type="text" value="Lulus" data-updatedbutama="alasan_keluar" data-keyraportindukmanual="${prefix_stringkeyinduk}KETERANGAN_KELULUSAN" style="display:none">`;
+                //html_el;Lulus
+
+                td = tr.insertCell(-1);
+                td.setAttribute("class","sel_kelulusansiswa cellmanualinput");
+                td.innerHTML = `<input type="text" data-updatedbutama="dapo_noseriijazah" value="${jsondatasiswa[i].dapo_noseriijazah}" style="width:100%;text-align:center; border: none transparent;outline: none;background:transparent;"></div>`;
+                
+                
+                td = tr.insertCell(-1);
+                td.setAttribute("class","sel_kelulusansiswa cellmanualinput");
+                td.innerHTML = `<input type="text"data-updatedbutama="smp_ke" value="${jsondatasiswa[i].smp_ke}"  style="width:100%;text-align:center; border: none transparent;outline: none;background:transparent;"></div>`;
+                ;// `<input type="date" data-keyraportindukmanual="${prefix_stringkeyinduk}TITIMANGSA_RAPORT" style="width:100%;border: none transparent;outline: none;background:transparent;">`
+            }
         }
         //deskripsi ki3
         th = document.createElement("th");
@@ -6707,7 +6711,16 @@ const bikintabelawalraportmanual = () =>{
         }
     
     }
-    raportmanualawal()
+    raportmanualawal();
+    if(idJenjang == 6 && idSemester ==2){
+        if(menumanual_kelulusan.className.indexOf("w3-hide")>-1){
+            menumanual_kelulusan.classList.remove("w3-hide")
+        }
+    }else{
+        if(menumanual_kelulusan.className.indexOf("w3-hide")==-1){
+            menumanual_kelulusan.classList.add("w3-hide")
+        }
+    }
 }
 const kalkulasinilairaportmanual = (ki,o)=>{
     // class="jumlahnilaik4siswake_${i} jumlahnilaik4siswa";
@@ -7410,6 +7423,7 @@ const tampilkannilairaport = (kondisi) => {
 
 }
 const shownilairaportkd = (kondisi) =>{
+    document.querySelector(".info_mbtr").innerHTML = `<i class="fa fa-spin fa-spinner"></i> sedang memproses database Rekap Raport Final ${kondisi.toUpperCase()}....`;
     let q =  `[data-keyraportindukmanual=""]`;
     let koleksimapel = koleksiarraymapelaktif()
     let koleksimapeldengangama = koleksimapel.kodemapel;
@@ -7424,7 +7438,7 @@ const shownilairaportkd = (kondisi) =>{
         
     if(f.result == 0){
         alert("Anda belum pernah menyimpan database Raport yang akan dicetak raport, Sistem akan mengambil data yang telah Anda simpan di fitur OLAH NILAI")
-        
+        document.querySelector(".info_mbtr").innerHTML = `<i class="fa fa-spin fa-spinner"></i> sedang memproses database Rekap Raport Olah Nilai (database yang pernah Anda simpan di Fitur Oleh Nilai ${kondisi.toUpperCase}) ....`;
         let tab = "rekapnilairaport_"+idNamaKelas +"_"+kondisi;
         let param = "&kelas=" + idNamaKelas + "&prefiktab=" + tab;//+ "&datahead=" + stinghead;//+ "&dataisi=" + stingisi;
         fetch(constlinknilai + "?action=getdatafromtab" + param)
@@ -7433,10 +7447,10 @@ const shownilairaportkd = (kondisi) =>{
                 //console.log(k)
                 if (k.result == 0) {
                     alert("Anda belum menyimpan data nilai Raport apapun. Silakan isikan data ini secara manual.")
-                    document.querySelector(".info_mbtr").innerHTML = kondisi + " Tidak Berhasil dimuat."
+                    document.querySelector(".info_mbtr").innerHTML = `Tidak ada database apapun dari server. Anda harus menginput nilai ${kondisi.toUpperCase()} manual atau gunakan fitur ini: ` + tambahfituruploadimport(kondisi);
                     panggilkompetensiasli(kondisi,"");
                 } else {
-                    document.querySelector(".info_mbtr").innerHTML = kondisi + " Berhasil dimuat."
+                    document.querySelector(".info_mbtr").innerHTML = kondisi + " Berhasil dimuat." + tambahfituruploadimport(kondisi);
                     let nilaidata = k.data;
                     let tbody = tabelraportmanual.querySelector("tbody");
                     let row = tbody.rows;
@@ -7472,7 +7486,7 @@ const shownilairaportkd = (kondisi) =>{
             .catch(er => {console.log(er)});
     }else{
         let tomboldatakd_asli = `<button class="tangan w3-pale-green w3-border w3-round" onclick="panggilkompetensiaslibener('${kondisi}','')">Tampilkan Rekap Nilai Asli</button>`
-        document.querySelector(".info_mbtr").innerHTML = kondisi + " Berhasil dimuat format nilai baru. " + tomboldatakd_asli
+        document.querySelector(".info_mbtr").innerHTML = kondisi + " Berhasil dimuat format nilai baru. " + tomboldatakd_asli + tambahfituruploadimport(kondisi);
                     let nilaidata = f.data;
                     let tbody = tabelraportmanual.querySelector("tbody");
                     let row = tbody.rows;
@@ -8635,8 +8649,8 @@ const fnmenucetakraportbaru = ()=>{
                 return
             }
             let kodenis = nissiswa.substring(0,4);
-            alert("Dalam tahap pengembangan...")
-            //kirimnilairaportkeinduk(indeksiswa, kiriminduk_raport,tokensiswa,kodenis)
+            //alert("Dalam tahap pengembangan...")
+            kirimnilairaportkeinduk(indeksiswa, kiriminduk_raport,tokensiswa,kodenis)
             //cek induk
         }
     
@@ -8721,9 +8735,9 @@ const panggilkompetensiasli = (kd,callbekbukan="") =>{
                         .then(k => {
                             if(k.result == 0){
                                 alert("Anda belum pernah menyimpan data olahan apapun di server. Anda mesti input nilai satu per satu")
-                                info.innerHTML = `Anda Terpaksa harus mengisi manual untuk deskripsi ini`
+                                info.innerHTML = `Anda Terpaksa harus mengisi manual untuk deskripsi ini` ;//+ tambahfituruploadimport(kd);
                             }else{
-                                info.innerHTML = `Data Hasil Olahan berhasil dimuat.`
+                                info.innerHTML = `Data Hasil Olahan berhasil dimuat.` ;//+ tambahfituruploadimport(kd);
                             
                                 //console.log(k);
                                 let datanilai = k.data;
@@ -8895,7 +8909,7 @@ const panggilkompetensiasli = (kd,callbekbukan="") =>{
             }else{
                 let tomboldatakd_asli = `<button class="tangan w3-pale-green w3-border w3-round" onclick="panggilkompetensiaslibener('${kd}','kd4')">Tampilkan Rekap Nilai Asli</button>`
         
-                info.innerHTML = `Berhasil memuat database Server Nilai Raport yang terkahir untuk Raport. `+tomboldatakd_asli
+                info.innerHTML = `Berhasil memuat database Server Nilai Raport yang terkahir untuk Raport. `;//+tomboldatakd_asli +" " + tambahfituruploadimport(kd);
                 let tabelbody = tabelraportmanual.querySelector("tbody");
                 let resdatas = k.data;
                 for(i = 0 ; i < tabelbody.rows.length ; i++){
@@ -8945,9 +8959,9 @@ const panggilkompetensiaslibener = (kd,callbekbukan="") =>{
                         .then(k => {
                             if(k.result == 0){
                                 alert("Anda belum pernah menyimpan data olahan apapun di server. Anda mesti input nilai satu per satu")
-                                info.innerHTML = ``
+                                info.innerHTML =  "";//tambahfituruploadimport(kd);
                             }else{
-                                info.innerHTML = `Data Hasil Olahan berhasil dimuat.`
+                                info.innerHTML = `Data Hasil Olahan berhasil dimuat.`;// + tambahfituruploadimport(kd);
                             
                                 //console.log(k);
                                 let datanilai = k.data;
@@ -9194,7 +9208,7 @@ const isikanrentang2 = () => {
 
 }
 
-simpanmanualdeskripsi = (el, k3k4 ) =>{
+const simpanmanualdeskripsi = (el, k3k4 ) =>{
     let stringutama
     if(el!=null){
         stringutama = el.innerHTML
@@ -9312,7 +9326,7 @@ const panggildbinduksementara = (el = null) =>{
 }
 
 
-const kirimnilairaportkeinduk = (indekrow,el,tokensiswa,namatab)=>{
+const kirimnilairaportkeindukTahandulu = (indekrow,el,tokensiswa,namatab)=>{
     let elemen = tabelraportmanual.rows[parseInt(indekrow)].querySelectorAll("[data-keyraportindukmanual]");
     el.innerHTML = `<i class="fa fa-spin fa-spinner"></i> Memproses...`;
     //el.setAttribute("onclick","alert('sedang mengirimkan nilai')");
@@ -9410,8 +9424,650 @@ const kirimnilairaportkeinduk = (indekrow,el,tokensiswa,namatab)=>{
                 .then(r =>{
                     console.log("Simpan ke db siswa berhasil di SS db induk")
                     dbsiswa_bukuinduk = r.all
-               }).catch(er => {
+            }).catch(er => {
                     console.log(er)
                     //el.innerHTML = `<i class="fa fa-spin fa-spinner"></i> server utama gagal, sedang memproses server induk`;
                 });
+}
+
+const suratketerangansiswa = ()=>{
+    let  modal = document.getElementById("modalsuratsurat")
+    modal.style.display = 'block';
+    let tekskop = `PEMERINTAH DAERAH ${jlo.idkota.toUpperCase()} ${jlo.kota.toUpperCase()}`;
+    document.querySelector(".kopsuratlainnyakota").innerHTML = tekskop;
+    document.querySelector(".kopsuratlainnyanamasekolah").innerHTML = idNamaSekolah.toUpperCase();
+    document.querySelector(".kopsuratlainnyaalamat1").innerHTML = teksalamat;
+    let almat2 = `NPSN: 20228914 | NSS: 101026604052 | Surel: uptdsdnratujaya1@gmail.com | Web: www.sdnratujaya1.net | Kode Pos: 16445`;
+    document.querySelector(".kopsuratlainnyaalamat2").innerHTML = almat2;
+    let elemenselect = document.querySelector(".selectnama_modalsuratsurat");
+    let next_elemen = document.querySelector(".next_modalsuratsurat");
+    let prev_elemen = document.querySelector(".prev_modalsuratsurat");
+    elemenselect.innerHTML ="";
+    let ops = ``
+    for(let i = 0 ; i < jsondatasiswa.length ; i++){
+        ops +=`<option value="${i}">${jsondatasiswa[i].pd_nama}</option>`;
+    }
+    elemenselect.innerHTML =ops;
+
+    let tempat_isi = document.querySelector(".isisuratlainnya");
+    let html =``;
+    html +=`<div style="padding:25px 2px;">`;
+    html +=`<h5 style="text-align:center;font-weight:bold">`;
+        html +=`<u>SURAT KETERANGAN SISWA</u>`;
+    html +=`</h5>`;
+    html +=`<div style="text-align:center;margin:-10px 5px">`;
+        html +=`NOMOR : 421.2/ ... ... SD-RAJA 1/VII/2022`;
+    html +=`</div><br><br>`;
+        html +=`<div style="text-align:justify;text-indent:30px">`;
+        html += `Yang bertanda tangan di bawah ini Kepala ${idNamaSekolah} menerangkan bahwa:<br><br>`;
+        html +=`</div>`
+        html +=`<table style="margin-left:30px">`;
+            html +=`<tr>`;
+                html+=`<td style="vertical-align:top">Nama</td>`;
+                html+=`<td style="vertical-align:top">:</td>`;
+                html+=`<td style="vertical-align:top;border-bottom:.5pt dotted black;width:70%" data-sksl="pd_nama"></td>`;
+            html +=`</tr>`;
+            html +=`<tr>`;
+                html+=`<td style="vertical-align:top">NIS/NISN</td>`;
+                html+=`<td style="vertical-align:top">:</td>`;
+                html+=`<td style="border-bottom:.5pt dotted black;vertical-align:top"><span data-sksl="nis"></span>/<span data-sksl="nisn"></span></td>`;
+            html +=`</tr>`;
+            html +=`<tr>`;
+                html+=`<td style="vertical-align:top">KELAS</td>`;
+                html+=`<td style="vertical-align:top">:</td>`;
+                html+=`<td style="border-bottom:.5pt dotted black;vertical-align:top">${idJenjang} (${terbilang(idJenjang)})</td>`;
+            html +=`</tr>`;
+            html +=`<tr>`;
+                html+=`<td style="vertical-align:top">Tempat, Tanggal Lahir</td>`;
+                html+=`<td style="vertical-align:top">:</td>`;
+                html+=`<td style="border-bottom:.5pt dotted black;vertical-align:top"><span data-sksl="pd_tl"></span>, <span data-sksl="pd_tanggallahir"></span></td>`;
+            html +=`</tr>`;
+            html +=`<tr>`;
+                html+=`<td style="vertical-align:top">Alamat</td>`;
+                html+=`<td style="vertical-align:top">:</td>`;
+                html+=`<td style="vertical-align:top;border-bottom:.5pt dotted black;vertical-align:top"><span data-sksl="pd_alamat"></span></td>`;
+            html +=`</tr>`;
+        html +=`</table>`;
+    html +=`</div><br>`;
+    html +=`<div style="text-align:justify;text-indent:30px">`;
+    html +=`Adalah <b>Benar</b> nama tersebut di atas benar siswa ${idNamaSekolah} Tahun Pelajaran ${idTeksTapel}.<br><br>`;
+    html +=`</div>`
+    html +=`<div style="text-align:justify;text-indent:30px">`;
+    html +=`Demikian surat keterangan ini kami di buat dengan sebenarnya untuk dapat di gunakan sebagaimana mestinya.`;
+    html +=`</div><div style="clear:both"></div>`
+    html +=`<div style="float:right;text-align:center;width:40%;margin:25px">`;
+        html+=`Depok, <span class="isisurattitimangsa" contenteditable="true"></span><br>`;
+        html+=`Kepala Sekolah<br>${idNamaSekolah}<br><br><br><br>`;
+        html+=`<u><b>${idNamaKepsek}</b></u><br>`;
+        html+=`NIP. ${idNipKepsek}`;
+    html += `</div><div style="clear:both"></div>`;
+    
+    tempat_isi.innerHTML = html;
+    document.querySelector(".isisurattitimangsa").innerHTML = tanggalfull(new Date());
+        let obdatasiswa = jsondatasiswa[0];
+        let elemenisi = document.querySelectorAll("[data-sksl]");
+        for(let j = 0 ; j < elemenisi.length; j++){
+            let key = elemenisi[j].getAttribute("data-sksl");
+            let val = obdatasiswa[key];
+            if(key == "pd_tanggallahir"){
+                elemenisi[j].innerHTML = tanggalfull(val)
+            }else if(key == "pd_alamat"){
+                let RT = obdatasiswa.dapo_rt == ""?"":`, RT. ${obdatasiswa.dapo_rt}`;
+                let RW = obdatasiswa.dapo_rw == ""?"":`/RW. ${obdatasiswa.dapo_rw}`;
+                let KELURAHAN = obdatasiswa.dapo_rw == ""?"":`, Kel. ${obdatasiswa.dapo_rw}`;
+                let KECAMATAN = obdatasiswa.dapo_rw == ""?"":`, Kec. ${obdatasiswa.dapo_rw}`;
+                elemenisi[j].innerHTML = val + RT + RW + KELURAHAN + KECAMATAN
+            }else{
+                elemenisi[j].innerHTML = val
+            }
+        }
+    elemenselect.onchange = function (e){
+        let v = e.target.value;
+        let obdatasiswa = jsondatasiswa[v];
+        let elemenisi = document.querySelectorAll("[data-sksl]");
+        for(let j = 0 ; j < elemenisi.length; j++){
+            let key = elemenisi[j].getAttribute("data-sksl");
+            let val = obdatasiswa[key];
+            if(key == "pd_tanggallahir"){
+                elemenisi[j].innerHTML = tanggalfull(val)
+            }else if(key == "pd_alamat"){
+                let RT = obdatasiswa.dapo_rt == ""?"":`, RT. ${obdatasiswa.dapo_rt}`;
+                let RW = obdatasiswa.dapo_rw == ""?"":`/RW. ${obdatasiswa.dapo_rw}`;
+                let KELURAHAN = obdatasiswa.dapo_rw == ""?"":`, Kel. ${obdatasiswa.dapo_rw}`;
+                let KECAMATAN = obdatasiswa.dapo_rw == ""?"":`, Kec. ${obdatasiswa.dapo_rw}`;
+                elemenisi[j].innerHTML = val + RT + RW + KELURAHAN + KECAMATAN
+            }else{
+                elemenisi[j].innerHTML = val
+            }
+        }
+    }
+    next_elemen.onclick = function (){
+        if(elemenselect.value == (jsondatasiswa.length - 1)){
+            alert("Siswa tidak ada lagi");
+            return
+        }else{
+            elemenselect.selectedIndex++
+        };
+        let v = elemenselect.selectedIndex;
+        let obdatasiswa = jsondatasiswa[v];
+        let elemenisi = document.querySelectorAll("[data-sksl]");
+        for(let j = 0 ; j < elemenisi.length; j++){
+            let key = elemenisi[j].getAttribute("data-sksl");
+            let val = obdatasiswa[key];
+            if(key == "pd_tanggallahir"){
+                elemenisi[j].innerHTML = tanggalfull(val)
+            }else if(key == "pd_alamat"){
+                let RT = obdatasiswa.dapo_rt == ""?"":`, RT. ${obdatasiswa.dapo_rt}`;
+                let RW = obdatasiswa.dapo_rw == ""?"":`/RW. ${obdatasiswa.dapo_rw}`;
+                let KELURAHAN = obdatasiswa.dapo_rw == ""?"":`, Kel. ${obdatasiswa.dapo_rw}`;
+                let KECAMATAN = obdatasiswa.dapo_rw == ""?"":`, Kec. ${obdatasiswa.dapo_rw}`;
+                elemenisi[j].innerHTML = val + RT + RW + KELURAHAN + KECAMATAN
+            }else{
+                elemenisi[j].innerHTML = val
+            }
+        }
+    }
+
+    prev_elemen.onclick = function () {
+        if(elemenselect.value == 0){
+            alert("Siswa Awal sudah tidak ada lagi.");
+            return
+        }else{
+            elemenselect.selectedIndex--
+        }
+        let v = elemenselect.selectedIndex;
+        let obdatasiswa = jsondatasiswa[v];
+        let elemenisi = document.querySelectorAll("[data-sksl]");
+        for(let j = 0 ; j < elemenisi.length; j++){
+            let key = elemenisi[j].getAttribute("data-sksl");
+            let val = obdatasiswa[key];
+            if(key == "pd_tanggallahir"){
+                elemenisi[j].innerHTML = tanggalfull(val)
+            }else if(key == "pd_alamat"){
+                let RT = obdatasiswa.dapo_rt == ""?"":`, RT. ${obdatasiswa.dapo_rt}`;
+                let RW = obdatasiswa.dapo_rw == ""?"":`/RW. ${obdatasiswa.dapo_rw}`;
+                let KELURAHAN = obdatasiswa.dapo_rw == ""?"":`, Kel. ${obdatasiswa.dapo_rw}`;
+                let KECAMATAN = obdatasiswa.dapo_rw == ""?"":`, Kec. ${obdatasiswa.dapo_rw}`;
+                elemenisi[j].innerHTML = val + RT + RW + KELURAHAN + KECAMATAN
+            }else{
+                elemenisi[j].innerHTML = val
+            }
+        }
+    }
+
+}
+const suratketerangankelakuanbaik = ()=>{
+    let  modal = document.getElementById("modalsuratsurat")
+    modal.style.display = 'block';
+    let tekskop = `PEMERINTAH DAERAH ${jlo.idkota.toUpperCase()} ${jlo.kota.toUpperCase()}`;
+    document.querySelector(".kopsuratlainnyakota").innerHTML = tekskop;
+    document.querySelector(".kopsuratlainnyanamasekolah").innerHTML = idNamaSekolah.toUpperCase();
+    document.querySelector(".kopsuratlainnyaalamat1").innerHTML = teksalamat;
+    let almat2 = `NPSN: 20228914 | NSS: 101026604052 | Surel: uptdsdnratujaya1@gmail.com | Web: www.sdnratujaya1.net | Kode Pos: 16445`;
+    document.querySelector(".kopsuratlainnyaalamat2").innerHTML = almat2;
+    let elemenselect = document.querySelector(".selectnama_modalsuratsurat");
+    let next_elemen = document.querySelector(".next_modalsuratsurat");
+    let prev_elemen = document.querySelector(".prev_modalsuratsurat");
+    elemenselect.innerHTML ="";
+    let ops = ``
+    for(let i = 0 ; i < jsondatasiswa.length ; i++){
+        ops +=`<option value="${i}">${jsondatasiswa[i].pd_nama}</option>`;
+    }
+    elemenselect.innerHTML =ops;
+
+    let tempat_isi = document.querySelector(".isisuratlainnya");
+    let html =``;
+    html +=`<div style="padding:25px 2px;">`;
+    html +=`<h5 style="text-align:center;font-weight:bold">`;
+        html +=`<u>SURAT KETERANGAN BERKELAKUAN BAIK</u>`;
+    html +=`</h5>`;
+    html +=`<br><br>`;
+        html +=`<div style="text-align:justify;text-indent:30px">`;
+        html += `Yang bertanda tangan di bawah ini Kepala ${idNamaSekolah} menerangkan bahwa:<br><br>`;
+        html +=`</div>`
+        html +=`<table style="margin-left:30px">`;
+            html +=`<tr>`;
+                html+=`<td style="vertical-align:top">Nama</td>`;
+                html+=`<td style="vertical-align:top">:</td>`;
+                html+=`<td style="border-bottom:.5pt dotted black;width:70%" data-sksl="pd_nama"></td>`;
+            html +=`</tr>`;
+            html +=`<tr>`;
+                html+=`<td style="vertical-align:top">Sekolah Asal</td>`;
+                html+=`<td style="vertical-align:top">:</td>`;
+                html+=`<td style="border-bottom:.5pt dotted black;vertical-align:top">${idNamaSekolah}</td>`;
+            html +=`</tr>`;
+            html +=`<tr>`;
+                html+=`<td style="vertical-align:top">Alamat</td>`;
+                html+=`<td style="vertical-align:top">:</td>`;
+                html+=`<td style="border-bottom:.5pt dotted black;vertical-align:top">${teksalamat}</td>`;
+            html +=`</tr>`;
+            html +=`<tr>`;
+                html+=`<td style="vertical-align:top">NIS/NISN</td>`;
+                html+=`<td style="vertical-align:top">:</td>`;
+                html+=`<td style="border-bottom:.5pt dotted black;vertical-align:top"><span data-sksl="nis"></span>/<span data-sksl="nisn"></span></td>`;
+            html +=`</tr>`;
+        html +=`</table>`;
+    html +=`</div><br>`;
+    html +=`<div style="text-align:justify;text-indent:30px">`;
+    html +=`Dengan ini menjelaskan bahwa siswa yag tersebut namanya diatas adalah salah satu siswa di ${idNamaSekolah}, dan tidak pernah terlibat dan atau melakukan pelanggaran berat seperti Bullying, tawuran antar sekolah, merokok, LGBT, Seks Bebas, Pornography dan Narkoba selama mengikuti pembelajaran pada satuan pendidikan yang kami pimpin.<br><br>`;
+    html +=`</div>`
+    html +=`<div style="text-align:justify;text-indent:30px">`;
+    html +=`Demikian surat keterangan ini kami di buat dengan sebenarnya untuk dapat di gunakan sebagaimana mestinya.`;
+    html +=`</div><div style="clear:both"></div>`
+    html +=`<div style="float:right;text-align:center;width:40%;margin:25px">`;
+        html+=`Depok, <span class="isisurattitimangsa" contenteditable="true"></span><br>`;
+        html+=`Kepala Sekolah<br>${idNamaSekolah}<br><br><br><br>`;
+        html+=`<u><b>${idNamaKepsek}</b></u><br>`;
+        html+=`NIP. ${idNipKepsek}`;
+    html += `</div><div style="clear:both"></div>`;
+    
+    tempat_isi.innerHTML = html;
+    document.querySelector(".isisurattitimangsa").innerHTML = tanggalfull(new Date());
+        let obdatasiswa = jsondatasiswa[0];
+        let elemenisi = document.querySelectorAll("[data-sksl]");
+        for(let j = 0 ; j < elemenisi.length; j++){
+            let key = elemenisi[j].getAttribute("data-sksl");
+            let val = obdatasiswa[key];
+            if(key == "pd_tanggallahir"){
+                elemenisi[j].innerHTML = tanggalfull(val)
+            }else{
+                elemenisi[j].innerHTML = val
+            }
+        }
+    elemenselect.onchange = function (e){
+        let v = e.target.value;
+        let obdatasiswa = jsondatasiswa[v];
+        let elemenisi = document.querySelectorAll("[data-sksl]");
+        for(let j = 0 ; j < elemenisi.length; j++){
+            let key = elemenisi[j].getAttribute("data-sksl");
+            let val = obdatasiswa[key];
+            if(key == "pd_tanggallahir"){
+                elemenisi[j].innerHTML = tanggalfull(val)
+            }else{
+                elemenisi[j].innerHTML = val
+            }
+        }
+    }
+    next_elemen.onclick = function (){
+        if(elemenselect.value == (jsondatasiswa.length - 1)){
+            alert("Siswa tidak ada lagi");
+            return
+        }else{
+            elemenselect.selectedIndex++
+        };
+        let v = elemenselect.selectedIndex;
+        let obdatasiswa = jsondatasiswa[v];
+        let elemenisi = document.querySelectorAll("[data-sksl]");
+        for(let j = 0 ; j < elemenisi.length; j++){
+            let key = elemenisi[j].getAttribute("data-sksl");
+            let val = obdatasiswa[key];
+            if(key == "pd_tanggallahir"){
+                elemenisi[j].innerHTML = tanggalfull(val)
+            }else{
+                elemenisi[j].innerHTML = val
+            }
+        }
+    }
+
+    prev_elemen.onclick = function () {
+        if(elemenselect.value == 0){
+            alert("Siswa Awal sudah tidak ada lagi.");
+            return
+        }else{
+            elemenselect.selectedIndex--
+        }
+        let v = elemenselect.selectedIndex;
+        let obdatasiswa = jsondatasiswa[v];
+        let elemenisi = document.querySelectorAll("[data-sksl]");
+        for(let j = 0 ; j < elemenisi.length; j++){
+            let key = elemenisi[j].getAttribute("data-sksl");
+            let val = obdatasiswa[key];
+            if(key == "pd_tanggallahir"){
+                elemenisi[j].innerHTML = tanggalfull(val)
+            }else{
+                elemenisi[j].innerHTML = val
+            }
+        }
+    }
+
+}
+
+
+const kirimnilairaportkeinduk = (indekrow,el,tokensiswa,namatab)=>{
+        let tekssebelumnya = el.innerHTML
+        el.innerHTML = "<i class='fa fa-spin fa-spinner'></i> " +tekssebelumnya;
+        let dataobjeksiswa = Object.assign({},jsondatasiswa.filter(s => s.id == tokensiswa)[0]);
+        let dataobjeksiswainduk = dbsiswa_bukuinduk.filter(s => s.id == tokensiswa)[0]
+        let datasiswadariinduk = Object.assign({},dataobjeksiswainduk);
+        let datasiswaindukupdatedijsonsiswa = Object.assign(datasiswadariinduk, dataobjeksiswa)
+        delete dataobjeksiswa.time_stamp
+        delete datasiswadariinduk.time_stamp
+        // console.log("jsonsiswakloning",dataobjeksiswa)
+        // console.log("datainduk_ril",dataobjeksiswainduk)
+        // console.log("datainduk_kloning",datasiswadariinduk)
+        // console.log("datasiswaindukupdatedijsonsiswa",datasiswaindukupdatedijsonsiswa)
+        // console.log("ril_dan_kloning = ", (JSON.stringify(dataobjeksiswa)==JSON.stringify(datasiswadariinduk)))
+        let datakirimkedbinduk = new FormData();
+        datakirimkedbinduk.append("action","updatedatabaseIndukUtama");
+        datakirimkedbinduk.append("idsreadsheet",ss_induk);
+            let keyy = Object.keys(datasiswaindukupdatedijsonsiswa);
+            for (let i = 0; i < keyy.length; i++) {
+                if(keyy[i].indexOf("tanggal")>-1||keyy[i].indexOf("tgl")>-1){
+                    let tegl = datasiswaindukupdatedijsonsiswa[keyy[i]] ==""?"": StringTanggal2(new Date(datasiswaindukupdatedijsonsiswa[keyy[i]]))
+                    datakirimkedbinduk.append(keyy[i], tegl);
+                }else{
+                    datakirimkedbinduk.append(keyy[i], datasiswaindukupdatedijsonsiswa[keyy[i]]);
+                }
+            }
+            fetch(linkdatabaseinduk,{method:"post",body:datakirimkedbinduk})
+            .then(m => m.json())
+            .then(r =>{
+                db_utama_siswa = r.all;
+                console.log("Simpan ke db siswa berhasil di SS db induk")
+            }).catch(er => {
+                    console.log(er)
+            });
+
+        //cek key dbakun dan dbinduk
+        // let keybeda = [];
+        // let valobjek = []
+        // let keyakun = Object.keys(dataobjeksiswa);
+        // let keyinduk = Object.keys(dataobjeksiswainduk);
+        // for(i = 0 ; i < keyinduk.length ; i++){
+        //     let obs = {}
+        //     if(dataobjeksiswa[keyinduk[i]]==undefined){
+        //         keybeda.push(keyinduk[i])
+        //     }
+        //     if(typeof dataobjeksiswainduk[keyinduk[i]] == 'object') {
+        //         obs.key = keyinduk[i]
+        //         obs.val = dataobjeksiswainduk[keyinduk[i]];
+        //         valobjek.push(obs)
+        //     }
+           
+        // }
+        // console.log(valobjek);
+        let nilairaport = new FormData();
+        let elemen = tabelraportmanual.querySelector("tbody").rows[parseInt(indekrow)].querySelectorAll("[data-keyraportindukmanual]");
+        let ob = {};
+        for(let j = 0 ; j < elemen.length; j++){
+            let key = elemen[j].getAttribute("data-keyraportindukmanual");
+            let val="";
+                if(elemen[j].nodeName == "TD"){
+                    // elemen[j].innerHTML = dataT[key]
+                    val = elemen[j].innerText.replace(/(\r\n|\n|\r)/gm, " ");
+                }else{
+                    let inputan = elemen[j]
+                    val = inputan.value;
+                        // if(inputan.type == "date"){
+                        //     val = new Date(inputan.value)
+                        // // inputan.value = val ==""?"":StringTanggalnol(new Date(val));
+                        // }else if(inputan.type =="select-one"){
+                        //     val = inputan.value;
+                        // }else{
+                        //     val = inputan.value;
+                        // }
+                                
+                }
+            ob[key] = val;
+            nilairaport.append(key,val);
+           
+            // if(typeof(val) === 'string') {
+            //     ob[key] = val;
+            // }else{
+            //     ob[key] = JSON.stringify(val)
+            //     console.log("not string", key,val)
+            // }
+
+            // // console.log(val, typeof val)
+            // // ob.append(key,val)
+        }
+        
+        let keywalas = prefix_stringkeyinduk+"NAMA_WALIKELAS";
+        let nipwalas = prefix_stringkeyinduk+"NIP_WALIKELAS";
+        let namakepsek = prefix_stringkeyinduk+"NAMA_KEPSEK";
+        let nipkepsek = prefix_stringkeyinduk+"NIP_KEPSEK";
+        nilairaport.append(keywalas, namauser);
+        nilairaport.append(nipwalas, idNipGuruKelas);
+        nilairaport.append(namakepsek, idNamaKepsek);
+        nilairaport.append(nipkepsek, idNipKepsek);
+        nilairaport.append("tokensiswa",tokensiswa);
+        nilairaport.append("namatab",namatab);
+        nilairaport.append("action","simpannilairarportinduk");
+            //formulirkirim.innerHTML = `<div class="w3-center">Sedang mengirimkan data  ... <i class="fa fa-spin fa-spinner"></i></div>`;
+            fetch(linkdatabaseinduk,{method:"post",body:nilairaport})
+            .then(m => m.json())
+            .then(r => {
+                //formulirkirim.innerHTML = r.sukses;
+                el.innerHTML = `Berhasil Terkirim`;
+                setTimeout(() => {
+                    el.innerHTML = tekssebelumnya;
+                }, 2000);
+                //el.setAttribute("onclick","alert('Berhasil Terkirim, silakan melanjutkan ke tahap selanjutnya')");
+                console.log(r)
+            }).catch(er => {
+                //formulirkirim.innerHTML = `<div class="w3-center">Proses Gagal. Pesan server: ${er}</div>`;
+                el.innerHTML = `Gagal`;
+                //el.setAttribute("onclick","alert('Mohon maaf, terjadi kesalahan')");
+            })
+}
+
+const tambahfituruploadimport = (kondisi)=>{
+    let html="";
+    html +=`<div class="w3-tiny w3-border w3-padding w3-center"><br><button onclick="exporttabelmanual('${kondisi}')" class="tangan w3-btn w3-red w3-margin" title="export ke Ms. Excel"><i class="fa fa-file-excel-o"></i> Export</button>`;
+    html +=`<button onclick="importtabelmanual('${kondisi}')" class="tangan w3-btn w3-green w3-margin" title="Import ke Ms. Excel"><i class="fa fa-file-excel-o"></i> Import</button>`;
+    html +=`<br>Perlu diperhatikan, dalam mengimport file urutan data nama harus sesuai dengan urutan daftar nama yang ada di dalam tabel ini.</div>`
+
+    return html
+}
+const importtabelmanual = (kondisi) => {
+    let tinputexcel = document.getElementById("fileImportExcel");
+    tinputexcel.addEventListener('change', () => {
+        var fileUpload = tinputexcel;//document.getElementById("fileUpload");
+
+        //Validate whether File is valid Excel file.
+        var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xls|.xlsx)$/;
+        if (regex.test(fileUpload.value)) {
+            if (typeof (FileReader) != "undefined") {
+                var reader = new FileReader();
+
+                //For Browsers other than IE.
+                if (reader.readAsBinaryString) {
+                    reader.onload = function (e) {
+                        prosesImportdataRaportManual(e.target.result, kondisi);
+                    };
+                    reader.readAsBinaryString(fileUpload.files[0]);
+                } else {
+                    //For IE Browser.
+                    reader.onload = function (e) {
+                        var data = "";
+                        var bytes = new Uint8Array(e.target.result);
+                        for (var i = 0; i < bytes.byteLength; i++) {
+                            data += String.fromCharCode(bytes[i]);
+                        }
+                        prosesImportdataRaportManual(data, kondisi);
+                    };
+                    reader.readAsArrayBuffer(fileUpload.files[0]);
+                }
+            } else {
+                alert("Browsernya versi jadul. Ga support.... Ganti dengan Chrome yang terupdate ya");
+            }
+        } else {
+            alert("Importnya file Excel ya ... bukan yang lain.");
+        }
+    })
+    tinputexcel.click();
+}
+const prosesImportdataRaportManual = (data, kondisi) =>{
+    var workbook = XLSX.read(data, {
+        type: 'binary'
+    });
+
+    //Fetch the name of First Sheet.
+    var firstSheet = workbook.SheetNames[0];
+
+    //Read all rows from First Sheet into an JSON array.
+    var excelRows = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[firstSheet]);
+    console.log(excelRows);
+    let koleksikeydariexcel = Object.values(excelRows[3]);
+    koleksikeydariexcel.splice(-2,2)
+    console.log(koleksikeydariexcel);
+    let tabelrow = tabelraportmanual.querySelector("tbody").rows;
+    for(i = 0 ; i < tabelrow.length ; i++){
+        for(j = 0 ; j < koleksikeydariexcel.length;j++){
+            let tekskey
+            if(kondisi == "k3"){
+                tekskey = `[data-keyraportindukmanual="${prefix_stringkeyinduk}${koleksikeydariexcel[j]}_P_NILAI"]`
+            }else{
+                tekskey = `[data-keyraportindukmanual="${prefix_stringkeyinduk}${koleksikeydariexcel[j]}_K_NILAI"]`
+            }
+            let elem = tabelrow[i].querySelector(tekskey);
+            elem.value = Object.values(excelRows[(i+5)])[(j+3)];
+        }
+        tabelrow[i].querySelector(`.jumlahnilai${kondisi}siswake_${i}`).value =Object.values(excelRows[(i+5)])[(koleksikeydariexcel.length+3)];
+        tabelrow[i].querySelector(`.jumlahrerata${kondisi}siswake_${i}`).value =Object.values(excelRows[(i+5)])[(koleksikeydariexcel.length+4)];
+    }   //jumlahreratak3siswake_0 reratanilaik3siswa
+    // koleksikeydariexcel.splice(0,0,"no","id","namasiswa")
+    // let arrayobjekok = [];
+    // arrayobjekok = arrObjek(koleksikeydariexcel, excelRows.filter((k,i)=> i > 4 && i < jsondatasiswa.length + 5).map(m=>Object.values(m)))
+    // console.log(arrayobjekok);
+
+}
+const exporttabelmanual = (kondisi) =>{
+    let kodemapelaktif = buateditorkdaktif.filter(s => s.cekliskd3 == true || s.cekliskd4 == true).map(m => m.mapel).filter((x,i,a)=> a.indexOf(x)==i);
+    let koleksimapeljadi = kodemapelaktif.filter(s => !(s =="PAI" || s == "PKATO" || s== "PKRIS" || s == "PHIND" || s == "PBUDH"));
+    koleksimapeljadi.splice(0,0,"AGAMA");
+    let arraykkm = koleksimapeljadi.filter(s => s !== "AGAMA").map(m => buateditorkdaktif.filter(ss => ss.mapel == m)[0].kkm)
+    let kkmagama = buateditorkdaktif.filter(s => s.mapel =="PAI")[0].kkm;
+    arraykkm.splice(0,0, kkmagama);
+
+    let divto = document.getElementById("datasiswaprint");
+    let tabelbayangan = document.createElement("table");
+    tabelbayangan.setAttribute("id","tabelbayanganexport");
+    let row = tabelbayangan.insertRow(-1);
+    let sel = row.insertCell(-1);
+    sel.setAttribute("colspan",koleksimapeljadi.length+5);
+    sel.setAttribute("style","text-align:center;font-weight:bold");
+    sel.innerHTML = "HASIL EXPORT DATA NILAI " + kondisi.toUpperCase() ;
+    
+    row = tabelbayangan.insertRow(-1);
+    sel = row.insertCell(-1);
+    sel.setAttribute("colspan",koleksimapeljadi.length+5);
+    sel.setAttribute("style","text-align:center;font-weight:bold");
+    sel.innerHTML = "KELAS " + idNamaKelas;
+
+    row = tabelbayangan.insertRow(-1);
+    sel = row.insertCell(-1);
+    sel.setAttribute("colspan",koleksimapeljadi.length+5);
+    sel.setAttribute("style","text-align:center;font-weight:bold");
+    sel.innerHTML = "TAHUN PELAJARAN " + idTeksTapel +" SEMESTER " + idSemester;
+    for(i = 0 ; i < 2 ; i++){
+        row = tabelbayangan.insertRow(-1);
+        sel = row.insertCell(-1);
+        sel.setAttribute("colspan",koleksimapeljadi.length+5);
+        sel.setAttribute("style","text-align:center;font-weight:bold");
+        sel.innerHTML = "";
+    }
+    row = tabelbayangan.insertRow(-1);
+    sel = row.insertCell(-1);
+    sel.setAttribute("style","text-align:center;font-weight:bold");
+    sel.setAttribute("rowspan","3");
+    sel.innerHTML = "No.";
+
+    sel = row.insertCell(-1);
+    sel.setAttribute("style","text-align:center;font-weight:bold");
+    sel.setAttribute("rowspan","3");
+    sel.innerHTML = "Id"
+
+    sel = row.insertCell(-1);
+    sel.setAttribute("style","text-align:center;font-weight:bold");
+    sel.setAttribute("rowspan","3");
+    sel.innerHTML = "Nama Siswa"
+
+    sel = row.insertCell(-1);
+    sel.setAttribute("style","text-align:center;font-weight:bold");
+    sel.setAttribute("colspan",koleksimapeljadi.length+2);
+    if(kondisi == "k3"){
+        sel.innerHTML = "NILAI KOMPETENSI PENGETAHUAN (KI-3)"
+    }else{
+        sel.innerHTML = "NILAI KOMPETENSI KETERAMPILAN (KI-4)"
+    }
+
+    row = tabelbayangan.insertRow(-1);
+    for(i = 0 ; i < koleksimapeljadi.length ; i++){
+        sel = row.insertCell(-1);
+        sel.setAttribute("style","text-align:center");
+        sel.innerHTML = koleksimapeljadi[i]
+    }
+
+    sel = row.insertCell(-1);
+    sel.setAttribute("style","text-align:center");
+    sel.setAttribute("rowspan","2");
+    sel.innerHTML = "Jumlah";
+    
+    sel = row.insertCell(-1);
+    sel.setAttribute("style","text-align:center");
+    sel.setAttribute("rowspan","2");
+    sel.innerHTML = "Rangking";
+    
+    row = tabelbayangan.insertRow(-1);
+    for(i = 0 ; i < arraykkm.length ; i++){
+        sel = row.insertCell(-1);
+        sel.setAttribute("style","text-align:center");
+        sel.innerHTML = arraykkm[i]
+    }
+    //kkmagama
+    let quer = tabelraportmanual.querySelector("tbody").rows;
+    let tquer = prefix_stringkeyinduk
+    for(i = 0 ; i < jsondatasiswa.length ; i++){
+        row = tabelbayangan.insertRow(-1);
+        sel = row.insertCell(-1);
+        sel.innerHTML = (i+1);
+        
+        
+        sel = row.insertCell(-1);
+        sel.innerHTML = jsondatasiswa[i].id;
+        
+       
+        sel = row.insertCell(-1);
+        sel.innerHTML = jsondatasiswa[i].pd_nama;
+
+        for(j = 0 ; j < koleksimapeljadi.length ; j++){
+            sel = row.insertCell(-1);
+            sel.setAttribute("style","text-align:center");
+            if(kondisi == "k3"){
+                sel.innerHTML = quer[i].querySelector(`[data-keyraportindukmanual="${prefix_stringkeyinduk}${koleksimapeljadi[j]}_P_NILAI"]`).value;
+            }else{
+                sel.innerHTML = quer[i].querySelector(`[data-keyraportindukmanual="${prefix_stringkeyinduk}${koleksimapeljadi[j]}_K_NILAI"]`).value;
+            }
+
+        }
+        let colsel = (i + 9);
+        let colomrata = koleksimapeljadi.length+4;
+        let hurufrangking = (colomrata+9).toString(36).toUpperCase();
+        sel = row.insertCell(-1);
+        sel.innerHTML =`=SUM(OFFSET(D${colsel};0;0;1;${koleksimapeljadi.length}))`;
+        sel = row.insertCell(-1);
+        sel.innerHTML =`=RANK(${hurufrangking}${colsel};OFFSET(${hurufrangking}${colsel};0;0;${jsondatasiswa.length};1))`;;
+        //hurufrangking+" "+colsel +" "+ colomrata;//
+        
+        
+    }
+
+        
+
+    divto.appendChild(tabelbayangan)
+    $("#tabelbayanganexport").table2excel({
+
+        name: "Worksheet Name",
+        filename: "FILE EXPORT REKAP MANUAL "+ kondisi  + new Date().getTime(),
+        fileext: ".xls",
+        exclude_img: true,
+        exclude_links: true,
+        exclude_inputs: true,
+        preserveColors: true,
+        jumlahheader: 3,
+        barisatas: 5
+
+    });
+    divto.innerHTML = "";
 }

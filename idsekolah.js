@@ -20,3 +20,4 @@ const ss_induk = "1C79fJQx4F1bCUAbUvaFcpaNSyRMQd4k0-xq1ot2sB7k";
 const dbinduk_tapel_teks = "2021/2022";
 const dbinduk_tapel_integer = 2122;
 const objek_spreadsheet_absen = {"kelas1":"1YojISyuTT2zMlTdS-WPRJPQ-EV2dJs7jWPotLcYUSuc","kelas2":"1o1qdBrNoDGphyf4azrwFLwVGoysa_BqdY11Q3Ea_cns","kelas3":"1x8HMlgoCkgkav5WQThX7GdDVJ6CLC3pSndF53zIvfYk","kelas4":"1-OBGzapLRlMdU93iYqr8UTTF1jhNwl1P5GNMNNavxQ4","kelas5":"1QdhTEJTOZJqT1hB2iPx0yNusYK0i12H0L0Le43JaKdo","kelas6":"16_JoT4Y045Siua6PXeKftiFEaf8x4hOr7oyiapQk-lA"};
+const tanggalpengumumankenaikankelulusan = new Date(2022, 5, 15, 9, 0, 0);

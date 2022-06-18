@@ -1528,7 +1528,7 @@
                     <div class="w3-btn w3-round-large w3-border tablinks mbtr mbtr_ki3">3.A Nilai Pengetahuan (KI 3)<span class="w3-badge w3-tiny tandasiapk3 w3-right w3-pale-blue w3-hide" style="margin:-10px -15px">&checkmark;</span></div>
                     <div class="w3-btn w3-round-large w3-border tablinks mbtr mbtr_ki3deskripsi">3.B Deskripsi Pengetahuan (KI 3)<span class="w3-badge w3-tiny tandasiapk3deskripsi w3-right w3-pale-blue w3-hide" style="margin:-10px -15px">&checkmark;</span></div>
                     <div class="w3-btn w3-round-large w3-border tablinks mbtr mbtr_ki4">4.A Nilai Keterampilan(KI 4)<span class="w3-badge w3-tiny tandasiapk4 w3-right w3-pale-blue w3-hide" style="margin:-10px -15px">&checkmark;</span></div>
-                    <div class="w3-btn w3-round-large w3-border tablinks mbtr mbtr_ki4deskripsi">4.B Nilai Keterampilan (KI 4)<span class="w3-badge w3-tiny tandasiapk4deskripsi w3-right w3-pale-blue w3-hide" style="margin:-10px -15px">&checkmark;</span></div>
+                    <div class="w3-btn w3-round-large w3-border tablinks mbtr mbtr_ki4deskripsi">4.B Deskripsi Keterampilan (KI 4)<span class="w3-badge w3-tiny tandasiapk4deskripsi w3-right w3-pale-blue w3-hide" style="margin:-10px -15px">&checkmark;</span></div>
                     <div class="w3-btn w3-round-large w3-border tablinks mbtr mbtr_tbbb">5. Perkembangan Fisik (Tinggi dan Berat Badan)<span class="w3-badge w3-tiny tandasiapperkembangan w3-right w3-pale-blue w3-hide" style="margin:-10px -15px">&checkmark;</span></div>
                     <div class="w3-btn w3-round-large w3-border tablinks mbtr mbtr_kesehatan">6. Kondisi Kesehatan<span class="w3-badge w3-tiny tandasiapperkembangan w3-right w3-pale-blue w3-hide" style="margin:-10px -15px">&checkmark;</span></div>
                     <div class="w3-btn w3-round-large w3-border tablinks mbtr mbtr_ekstrakurikuler">7. Ekstrakurikuler<span class="w3-badge w3-tiny tandasiapperkembangan w3-right w3-pale-blue w3-hide" style="margin:-10px -15px">&checkmark;</span></div>
@@ -1537,7 +1537,7 @@
                     <div class="w3-btn w3-round-large w3-border tablinks mbtr mbtr_kenaikankelas">10. Titimangsa Raport/Kenaikan Kelas<span class="w3-badge w3-tiny tandasiapperkembangan w3-right w3-pale-blue w3-hide" style="margin:-10px -15px">&checkmark;</span></div>  
                     <div class="w3-btn w3-round-large w3-border tablinks mbtr mbtr_kehadiransiswa">11. Rekapitulasi Kehadiran<span class="w3-badge w3-tiny tandasiapkehadiransiswa w3-right w3-pale-blue w3-hide" style="margin:-10px -15px">&checkmark;</span></div>  
                     <div class="w3-btn w3-round-large w3-border tablinks mbtr mbtr_kelulusan">12. Kelulusan dan Melanjutkan <span class="w3-badge w3-tiny tandasiapkelulusan w3-right w3-pale-blue w3-hide" style="margin:-10px -15px">&checkmark;</span></div>  
-                    <div class="w3-btn w3-round-large w3-border tablinks mbtr mbtr_raport  w3-green w3-bottombar w3-border-red">12. Raport <span class="w3-badge w3-tiny tandasiapraport w3-right w3-pale-blue w3-hide" style="margin:-10px -15px">&checkmark;</span></div>  
+                    <div class="w3-btn w3-round-large w3-border tablinks mbtr mbtr_raport  w3-green w3-bottombar w3-border-red">Raport <span class="w3-badge w3-tiny tandasiapraport w3-right w3-pale-blue w3-hide" style="margin:-10px -15px">&checkmark;</span></div>  
                 </div>
                 <div class="w3-border info_mbtr w3-tiny w3-padding"></div>
                 <div style="width:98%;overflow-x: auto;margin:15px auto" class="halamanprint_dataraportmanual">
@@ -1552,7 +1552,7 @@
                         </thead>
                         <tbody></tbody>
                         <tfoot>
-                            <tr class="w3-hide-small w3-light-gray">
+                            <tr class="w3-light-gray">
                                 <th colspan="3">Tombol Server</th>
                             </tr>
                         </tfoot>
@@ -2059,7 +2059,7 @@
                     <div class="w3-clear"></div>
                     <div class="div_skhu w3-hide">tabel data publikasi</div>
                 </div>
-                <button class="accordbutton w3-center w3-block btn_skhu" onclick="accordiontab(event,'divskhu2')">Surat Keterangan Hasil Belajar (SKHU) VERSI TANPA NILAI</button>
+                <button class="accordbutton w3-center w3-block btn_skhu2" onclick="accordiontab(event,'divskhu2')">Surat Keterangan Hasil Belajar (SKHU) VERSI TANPA NILAI</button>
                 <div class="accordkonten" id="divskhu2">
                     <div class="w3-border  w3-container w3-padding w3-border-blue">
                         <label for="idselectnamaskhu2">Pilih Nama Siswa</label>
@@ -2089,8 +2089,20 @@
                     <div class="w3-clear"></div>
                     <div class="div_skhu2 w3-hide">tabel data publikasi</div>
                 </div>
-                <button class="accordbutton w3-center w3-block btn_ketraport"
-                    onclick="accordiontab(event,'divketraport')">Daftar Nilai Raport</button>
+                <button class="accordbutton w3-center w3-block btn_skhu3" onclick="accordiontab(event,'divsuratsuratlainnya')">Dokumen / Surat Keterangan Lainnya </button>
+                <div class="accordkonten " id="divsuratsuratlainnya">
+                    <div class="w3-bar w3-container">
+                        <div style="max-width: 213px;margin:0 auto" class="w3-bar-item w3-border w3-margin n_zoom w3-center tangan w3-card w3-pale-blue w3-round-large" onclick="suratketerangansiswa()">
+                            <img src="/img/pngegg (6).png" style="width:100px"><br>
+                            Surat Keterangan Siswa
+                        </div>
+                        <div style="max-width: 213px;margin:0 auto" class="w3-bar-item w3-border w3-margin n_zoom w3-center tangan w3-card w3-pale-blue w3-round-large" onclick="suratketerangankelakuanbaik()">
+                            <img src="/img/kelakuanbaik.png" style="width:100px"><br>
+                            Surat Keterangan Berkelakuan Baik
+                        </div>
+                    </div>
+                </div>
+                <button class="accordbutton w3-center w3-block btn_ketraport" onclick="accordiontab(event,'divketraport')">Daftar Nilai Raport</button>
                 <div class="accordkonten" id="divketraport">
                     <div class="w3-border  w3-container w3-padding w3-border-blue">
                         <label for="idselectnamasketraport">Pilih Nama Siswa</label>
@@ -7834,8 +7846,8 @@ _OPSI-PG-C_1C #
         </div>
     </div>
     <div id="modalraportversibaru" class="w3-modal w3-animate-zoom">
-        <span class="w3-btn w3-red w3-right tangan" onclick="document.getElementById('modalraportversibaru').style.display='none'">&times;</span>
         <div class="w3-modal-content w3-padding">
+            <span class="w3-btn w3-red w3-right tangan" onclick="document.getElementById('modalraportversibaru').style.display='none'">&times;</span>
             <div class="w3-card w3-pale-green w3-center w3-small w3-padding">
                 <button class="w3-btn prev_raport w3-round w3-green w3-tiny">&lt;&lt;</button>
                 <select class="w3-select selectnama_raport w3-tiny" style="width:350px">
@@ -7881,6 +7893,45 @@ _OPSI-PG-C_1C #
                 </table>
             </div>
             <div class="w3-card w3-pale-green w3-center"><button onclick="printadm('printarearaporttabel')"><i class="fa fa-print"></i> Print</button></div>
+        </div>
+    </div>
+    <div id="modalsuratsurat" class="w3-modal w3-animate-zoom">
+        <div class="w3-modal-content">
+            <header class="w3-card-4  w3-center w3-pale-blue">
+                MENU DOKUMENTASI SURAT
+                <button class="w3-red tangan w3-border-0 w3-right" title="tutup" onclick="document.getElementById('modalsuratsurat').style.display='none'">&times;</button>
+            </header>
+            <div class="w3-card-4 w3-round-xlarge w3-bottombar w3-center w3-border-blue w3-center w3-border-blue w3-margin-top w3-padding">
+                <button class="w3-btn prev_modalsuratsurat w3-round w3-green w3-tiny">&lt;&lt;</button>
+                <select class="w3-select selectnama_modalsuratsurat w3-tiny" style="max-width:350px;width:40%">
+                    <option value="">Pilih Nama Siswa</option>
+                </select>
+                <button class="w3-btn next_modalsuratsurat w3-round w3-green w3-tiny">&gt;&gt;</button>|
+                <button class="w3-btn print_modalsuratsurat w3-round w3-green w3-tiny" onclick="printadm('printareamodalsuratsurat')">Print</button>
+            </div>
+            <div style="border:.5pt dotted black;padding:5px;margin:5px">
+                <div class="printareamodalsuratsurat">
+                    <table style="border-collapse:collapse;width:99%;margin:15px auto">
+                        <tr style="border-bottom:4px double black">
+                            <td style="text-align:center;vertical-align:middle">
+                                <img src="/img/kotadepok.png" style="width:90px" alt="logokotadepok">
+                            </td>
+                            <td style="text-align:center;vertical-align:top;padding:2px 5px">
+                                <div style="font-size:20px;font-weight: bold;" class="kopsuratlainnyakota">PEMERINTAH DAERAH KOTA DEPOK</div>
+                                <div style="font-size:24px;font-weight: bold;">DINAS PENDIDIKAN</div>
+                                <div style="font-size:32px;font-weight: bold;" class="kopsuratlainnyanamasekolah">UPTD SDN RATUJAYA 1</div>
+                                <div style="font-size:12px;" class="kopsuratlainnyaalamat1">Jalan SMP Ratujaya No. 41 RT.05 RW.03 Kelurahan Ratujaya Kec. Cipayung</div>
+                                <div style="font-size:8px;" class="kopsuratlainnyaalamat2"></div>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="isisuratlainnya w3-container"></div>
+                    
+                </div>
+            </div>
+            <div class="w3-center w3-card-4 w3-round-xlarge">
+                <button class="w3-btn w3-round w3-green w3-tiny" onclick="printadm('printareamodalsuratsurat')">Print</button>
+            </div>
         </div>
     </div>
     <script src="/statis/app.js"></script>
