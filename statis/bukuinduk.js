@@ -1064,6 +1064,7 @@ const PerbaruidataInduk = (kondisi,tokensiswa) =>{
 }
 const html_tombolbukuinduk = (tokensiswa)=>{
     let ceksyarat = syarat_riwayatkelas(tokensiswa);
+    console.log(ceksyarat)
     let db = db_utama_siswa.filter(s => s.id == tokensiswa)[0];
     let siswajenjansaatini = dbutamasiswa(tokensiswa).jenjangsaatini
     let banyaktapel = ceksyarat.banyaktapel;
@@ -6347,9 +6348,8 @@ const bikintabelawalraportmanual = () =>{
                 let td = tr.insertCell(-1);
                 td.setAttribute("onclick",`alert('Hanya bisa diedit di Rekap Nilai Kompetensi Pengetahuan KI-3')`);
                 td.setAttribute("class",`sel_deskripsi_k3 sel_deskripsi_k3_olah sel_deskripsi_k3_${datamapel[k]} cellmanualinput`);
-                td.innerHTML = `<input type="number" disabled data-deskripsik3="raport_${datamapel[k]}" style="width:100%;text-align:center; border: none transparent;outline: none;background:transparent;">`;
-                // td.innerHTML = `<input type="text" value="${datamapel[k]}" disabled data-deskripsik3="raport_${datamapel[k]}" style="width:100%;text-align:center; border: black transparent;outline: none;background:transparent;">`;
-                
+                td.innerHTML = `<input type="number" disabled data-deskripsik3="raport_${datamapel[k]}" data-keyraportindukmanual="${prefix_stringkeyinduk}k3_raport_${datamapel[k]}" style="width:100%;text-align:center; border: none transparent;outline: none;background:transparent;">`;
+ 
                 td = tr.insertCell(-1);
                 td.setAttribute("class",`sel_deskripsi_k3 sel_deskripsi_k3_olah sel_deskripsi_k3_${datamapel[k]} cellmanualinput`);
                 let htmlselectpredikatraport, 
@@ -6377,28 +6377,28 @@ const bikintabelawalraportmanual = () =>{
                 
                 td = tr.insertCell(-1);
                 td.setAttribute("class",`sel_deskripsi_k3 sel_deskripsi_k3_olah sel_deskripsi_k3_${datamapel[k]} cellmanualinput`);
-                htmlselect_predikat_kdmaks = `<select onchange="change_deskripsi(${i},this, 'k3','${datamapel[k]}')" data-deskripsik3="predikat_kdmaks_${datamapel[k]}" class="sel_deskripsi_k3 sel_deskripsi_k3_olah sel_deskripsi_k3_${datamapel[k]}" style="width:100%;text-align:center; border: none transparent;outline: none;background:transparent;">`;
+                htmlselect_predikat_kdmaks = `<select onchange="change_deskripsi(${i},this, 'k3','${datamapel[k]}')" data-deskripsik3="predikat_kdmaks_${datamapel[k]}"  data-keyraportindukmanual="${prefix_stringkeyinduk}k3_predikat_kdmaks_${datamapel[k]}" class="sel_deskripsi_k3 sel_deskripsi_k3_olah sel_deskripsi_k3_${datamapel[k]}" style="width:100%;text-align:center; border: none transparent;outline: none;background:transparent;">`;
                 htmlselect_predikat_kdmaks +=`<option value="Sangat Baik">Sangat baik</option><option value="Baik">Baik</option><option value="Cukup">Cukup</option><option value="Perlu Bimbingan">Perlu Bimbingan</option>`
                 htmlselect_predikat_kdmaks +=`</select>`;
                 td.innerHTML = htmlselect_predikat_kdmaks;
                 
                 td = tr.insertCell(-1);
                 td.setAttribute("class",`sel_deskripsi_k3 sel_deskripsi_k3_olah sel_deskripsi_k3_${datamapel[k]} cellmanualinput`);
-                htmlselect_kdmaks = `<select onchange="change_deskripsi(${i},this, 'k3','${datamapel[k]}')" data-deskripsik3="kdmaks_${datamapel[k]}" class="sel_deskripsi_k3 sel_deskripsi_k3_olah sel_deskripsi_k3_${datamapel[k]}" style="width:100%;text-align:center; border: none transparent;outline: none;background:transparent;">`;
+                htmlselect_kdmaks = `<select onchange="change_deskripsi(${i},this, 'k3','${datamapel[k]}')" data-deskripsik3="kdmaks_${datamapel[k]}"  data-keyraportindukmanual="${prefix_stringkeyinduk}k3_kdmaks_${datamapel[k]}" class="sel_deskripsi_k3 sel_deskripsi_k3_olah sel_deskripsi_k3_${datamapel[k]}" style="width:100%;text-align:center; border: none transparent;outline: none;background:transparent;">`;
                 htmlselect_kdmaks += opsikd
                 htmlselect_kdmaks += `</select>`;
                 td.innerHTML = htmlselect_kdmaks;
 
                 td = tr.insertCell(-1);
                 td.setAttribute("class",`sel_deskripsi_k3 sel_deskripsi_k3_olah sel_deskripsi_k3_${datamapel[k]} cellmanualinput`);
-                htmlselect_predikat_kdmin = `<select onchange="change_deskripsi(${i},this, 'k3','${datamapel[k]}')" data-deskripsik3="predikat_kdmin_${datamapel[k]}" class="sel_deskripsi_k3 sel_deskripsi_k3_olah sel_deskripsi_k3_${datamapel[k]}" style="width:100%;text-align:center; border: none transparent;outline: none;background:transparent;">`;
+                htmlselect_predikat_kdmin = `<select onchange="change_deskripsi(${i},this, 'k3','${datamapel[k]}')" data-deskripsik3="predikat_kdmin_${datamapel[k]}"  data-keyraportindukmanual="${prefix_stringkeyinduk}k3_predikat_kdmin_${datamapel[k]}" class="sel_deskripsi_k3 sel_deskripsi_k3_olah sel_deskripsi_k3_${datamapel[k]}" style="width:100%;text-align:center; border: none transparent;outline: none;background:transparent;">`;
                 htmlselect_predikat_kdmin +=`<option value="Sangat Baik">Sangat baik</option><option value="Baik">Baik</option><option value="Cukup">Cukup</option><option value="Perlu Bimbingan">Perlu Bimbingan</option>`
                 htmlselect_predikat_kdmin +=`</select>`;
                 td.innerHTML = htmlselect_predikat_kdmin;
                 
                 td = tr.insertCell(-1);
                 td.setAttribute("class",`sel_deskripsi_k3 sel_deskripsi_k3_olah sel_deskripsi_k3_${datamapel[k]} cellmanualinput`);
-                htmlselect_kdmin = `<select onchange="change_deskripsi(${i}, this, 'k3','${datamapel[k]}')" data-deskripsik3="kdmin_${datamapel[k]}" class="sel_deskripsi_k3 sel_deskripsi_k3_olah sel_deskripsi_k3_${datamapel[k]}" style="width:100%;text-align:center; border: none transparent;outline: none;background:transparent;">`;
+                htmlselect_kdmin = `<select onchange="change_deskripsi(${i}, this, 'k3','${datamapel[k]}')" data-deskripsik3="kdmin_${datamapel[k]}"  data-keyraportindukmanual="${prefix_stringkeyinduk}k3_kdmin_${datamapel[k]}" class="sel_deskripsi_k3 sel_deskripsi_k3_olah sel_deskripsi_k3_${datamapel[k]}" style="width:100%;text-align:center; border: none transparent;outline: none;background:transparent;">`;
                 htmlselect_kdmin += opsikd
                 htmlselect_kdmin += `</select>`;
                 td.innerHTML = htmlselect_kdmin;
@@ -6483,8 +6483,8 @@ const bikintabelawalraportmanual = () =>{
                 let td = tr.insertCell(-1);
                 td.setAttribute("onclick",`alert('Hanya bisa diedit di Rekap Nilai Kompetensi Keterampilan KI-4')`);
                 td.setAttribute("class",`sel_deskripsi_k4 sel_deskripsi_k4_olah sel_deskripsi_k4_${datamapel[k]} cellmanualinput`);
-                td.innerHTML = `<input type="number" disabled data-deskripsik4="raport_${datamapel[k]}" style="width:100%;text-align:center; border: none transparent;outline: none;background:transparent;">`;
-                // td.innerHTML = `<input type="text" value="${datamapel[k]}" disabled data-deskripsik4="raport_${datamapel[k]}" style="width:100%;text-align:center; border: black transparent;outline: none;background:transparent;">`;
+                td.innerHTML = `<input type="number" disabled data-deskripsik4="raport_${datamapel[k]}"  data-keyraportindukmanual="${prefix_stringkeyinduk}k4_raport_${datamapel[k]}" style="width:100%;text-align:center; border: none transparent;outline: none;background:transparent;">`;
+                
                 
                 td = tr.insertCell(-1);
                 td.setAttribute("class",`sel_deskripsi_k4 sel_deskripsi_k4_olah sel_deskripsi_k4_${datamapel[k]} cellmanualinput`);
@@ -6513,28 +6513,28 @@ const bikintabelawalraportmanual = () =>{
                 
                 td = tr.insertCell(-1);
                 td.setAttribute("class",`sel_deskripsi_k4 sel_deskripsi_k4_olah sel_deskripsi_k4_${datamapel[k]} cellmanualinput`);
-                htmlselect_predikat_kdmaks = `<select onchange="change_deskripsi(${i},this, 'k4','${datamapel[k]}')" data-deskripsik4="predikat_kdmaks_${datamapel[k]}" class="sel_deskripsi_k4 sel_deskripsi_k4_olah sel_deskripsi_k4_${datamapel[k]}" style="width:100%;text-align:center; border: none transparent;outline: none;background:transparent;">`;
+                htmlselect_predikat_kdmaks = `<select onchange="change_deskripsi(${i},this, 'k4','${datamapel[k]}')" data-deskripsik4="predikat_kdmaks_${datamapel[k]}"  data-keyraportindukmanual="${prefix_stringkeyinduk}k4_predikat_kdmaks_${datamapel[k]}" class="sel_deskripsi_k4 sel_deskripsi_k4_olah sel_deskripsi_k4_${datamapel[k]}" style="width:100%;text-align:center; border: none transparent;outline: none;background:transparent;">`;
                 htmlselect_predikat_kdmaks +=`<option value="Sangat Baik">Sangat baik</option><option value="Baik">Baik</option><option value="Cukup">Cukup</option><option value="Perlu Bimbingan">Perlu Bimbingan</option>`
                 htmlselect_predikat_kdmaks +=`</select>`;
                 td.innerHTML = htmlselect_predikat_kdmaks;
                 
                 td = tr.insertCell(-1);
                 td.setAttribute("class",`sel_deskripsi_k4 sel_deskripsi_k4_olah sel_deskripsi_k4_${datamapel[k]} cellmanualinput`);
-                htmlselect_kdmaks = `<select onchange="change_deskripsi(${i},this, 'k4','${datamapel[k]}')" data-deskripsik4="kdmaks_${datamapel[k]}" class="sel_deskripsi_k4 sel_deskripsi_k4_olah sel_deskripsi_k4_${datamapel[k]}" style="width:100%;text-align:center; border: none transparent;outline: none;background:transparent;">`;
+                htmlselect_kdmaks = `<select onchange="change_deskripsi(${i},this, 'k4','${datamapel[k]}')" data-deskripsik4="kdmaks_${datamapel[k]}" data-keyraportindukmanual="${prefix_stringkeyinduk}k4_kdmaks_${datamapel[k]}" class="sel_deskripsi_k4 sel_deskripsi_k4_olah sel_deskripsi_k4_${datamapel[k]}" style="width:100%;text-align:center; border: none transparent;outline: none;background:transparent;">`;
                 htmlselect_kdmaks += opsikd
                 htmlselect_kdmaks += `</select>`;
                 td.innerHTML = htmlselect_kdmaks;
 
                 td = tr.insertCell(-1);
                 td.setAttribute("class",`sel_deskripsi_k4 sel_deskripsi_k4_olah sel_deskripsi_k4_${datamapel[k]} cellmanualinput`);
-                htmlselect_predikat_kdmin = `<select onchange="change_deskripsi(${i},this, 'k4','${datamapel[k]}')" data-deskripsik4="predikat_kdmin_${datamapel[k]}" class="sel_deskripsi_k4 sel_deskripsi_k4_olah sel_deskripsi_k4_${datamapel[k]}" style="width:100%;text-align:center; border: none transparent;outline: none;background:transparent;">`;
+                htmlselect_predikat_kdmin = `<select onchange="change_deskripsi(${i},this, 'k4','${datamapel[k]}')" data-deskripsik4="predikat_kdmin_${datamapel[k]}" data-keyraportindukmanual="${prefix_stringkeyinduk}k4_predikat_kdmin_${datamapel[k]}" class="sel_deskripsi_k4 sel_deskripsi_k4_olah sel_deskripsi_k4_${datamapel[k]}" style="width:100%;text-align:center; border: none transparent;outline: none;background:transparent;">`;
                 htmlselect_predikat_kdmin +=`<option value="Sangat Baik">Sangat baik</option><option value="Baik">Baik</option><option value="Cukup">Cukup</option><option value="Perlu Bimbingan">Perlu Bimbingan</option>`
                 htmlselect_predikat_kdmin +=`</select>`;
                 td.innerHTML = htmlselect_predikat_kdmin;
                 
                 td = tr.insertCell(-1);
                 td.setAttribute("class",`sel_deskripsi_k4 sel_deskripsi_k4_olah sel_deskripsi_k4_${datamapel[k]} cellmanualinput`);
-                htmlselect_kdmin = `<select onchange="change_deskripsi(${i}, this, 'k4','${datamapel[k]}')" data-deskripsik4="kdmin_${datamapel[k]}" class="sel_deskripsi_k4 sel_deskripsi_k4_olah sel_deskripsi_k4_${datamapel[k]}" style="width:100%;text-align:center; border: none transparent;outline: none;background:transparent;">`;
+                htmlselect_kdmin = `<select onchange="change_deskripsi(${i}, this, 'k4','${datamapel[k]}')" data-deskripsik4="kdmin_${datamapel[k]}" data-keyraportindukmanual="${prefix_stringkeyinduk}k4_kdmin_${datamapel[k]}" class="sel_deskripsi_k4 sel_deskripsi_k4_olah sel_deskripsi_k4_${datamapel[k]}" style="width:100%;text-align:center; border: none transparent;outline: none;background:transparent;">`;
                 htmlselect_kdmin += opsikd
                 htmlselect_kdmin += `</select>`;
                 td.innerHTML = htmlselect_kdmin;
@@ -7438,7 +7438,7 @@ const shownilairaportkd = (kondisi) =>{
         
     if(f.result == 0){
         alert("Anda belum pernah menyimpan database Raport yang akan dicetak raport, Sistem akan mengambil data yang telah Anda simpan di fitur OLAH NILAI")
-        document.querySelector(".info_mbtr").innerHTML = `<i class="fa fa-spin fa-spinner"></i> sedang memproses database Rekap Raport Olah Nilai (database yang pernah Anda simpan di Fitur Oleh Nilai ${kondisi.toUpperCase}) ....`;
+        document.querySelector(".info_mbtr").innerHTML = `<i class="fa fa-spin fa-spinner"></i> sedang memproses database Rekap Raport Olah Nilai (database yang pernah Anda simpan di Fitur Oleh Nilai ${kondisi.toUpperCase()}) ....`;
         let tab = "rekapnilairaport_"+idNamaKelas +"_"+kondisi;
         let param = "&kelas=" + idNamaKelas + "&prefiktab=" + tab;//+ "&datahead=" + stinghead;//+ "&dataisi=" + stingisi;
         fetch(constlinknilai + "?action=getdatafromtab" + param)
@@ -7456,12 +7456,15 @@ const shownilairaportkd = (kondisi) =>{
                     let row = tbody.rows;
                     for(w = 0 ; w < row.length ; w++){
                         let nilairaport = nilaidata[w]
+                        console.log(i, nilairaport)
                         for(d = 0 ; d < koleksimapeljadi.length ; d++){
-                            let ktakunci
+                            let ktakunci;
                             if(kondisi == "k3"){
                                 ktakunci = prefix_stringkeyinduk + koleksimapeljadi[d] + "_P_NILAI"
+                               
                                 let cariinput = row[w].querySelector(`[data-keyraportindukmanual="${ktakunci}"]`)
                                 cariinput.value = nilairaport[koleksimapeljadi[d]];
+
                                 let inputnilaideskripsi = row[w].querySelector(`[data-deskripsik3="raport_${koleksimapeljadi[d]}"]`);
                                 inputnilaideskripsi.value = nilairaport[koleksimapeljadi[d]];
                             }else{
@@ -7499,8 +7502,6 @@ const shownilairaportkd = (kondisi) =>{
                                 ktakuncik = prefix_stringkeyinduk + koleksimapeljadi[d] + "_P_DESKRIPSI";
                                 let cariinput = row[w].querySelector(`[data-keyraportindukmanual="${ktakunci}"]`)
                                 cariinput.value = nilairaport[koleksimapeljadi[d]];
-                                // let inputnilaideskripsi = row[w].querySelector(`[data-deskripsik3="raport_${koleksimapeljadi[d]}"]`);
-                                // inputnilaideskripsi.value = nilairaport[koleksimapeljadi[d]];
                                 // kalkulasinilairaportmanual('k3',w)
                                 row[w].querySelector(`[data-keyraportindukmanual="${ktakuncik}"]`).innerHTML =nilairaport[ktakuncik];
                             }else{
@@ -8909,7 +8910,7 @@ const panggilkompetensiasli = (kd,callbekbukan="") =>{
             }else{
                 let tomboldatakd_asli = `<button class="tangan w3-pale-green w3-border w3-round" onclick="panggilkompetensiaslibener('${kd}','kd4')">Tampilkan Rekap Nilai Asli</button>`
         
-                info.innerHTML = `Berhasil memuat database Server Nilai Raport yang terkahir untuk Raport. `;//+tomboldatakd_asli +" " + tambahfituruploadimport(kd);
+                info.innerHTML = `Berhasil memuat database Server Nilai Raport yang terkahir untuk Raport. `+tomboldatakd_asli;// +" " + tambahfituruploadimport(kd);
                 let tabelbody = tabelraportmanual.querySelector("tbody");
                 let resdatas = k.data;
                 for(i = 0 ; i < tabelbody.rows.length ; i++){
