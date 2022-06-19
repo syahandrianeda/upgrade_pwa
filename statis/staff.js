@@ -3243,7 +3243,7 @@ const uploaditemakreditasi = (btr, rtbl, snp) => {
 
 }
 
-const onCnguploaditem = (btr, r, snp) => {
+const onCnguploaditemGAGAL = (btr, r, snp) => {
     pranalauploaditem.innerHTML = "";
     datauploaditem.innerHTML = "";
 
@@ -3324,7 +3324,7 @@ const onCnguploaditem = (btr, r, snp) => {
     //daftarvideo();
 
 }
-const uplitemakeditasi = async (btr, indexrow, snp) => {
+const uplitemakeditasiGAGAL = async (btr, indexrow, snp) => {
     let ketval = document.getElementById("masukannamafileitem").value;
     let gmbrdata, gmbrfilename, gmbrmimeType;
     gmbrdata = document.getElementById("videodataa");
@@ -13865,6 +13865,120 @@ const isinotulaptk = (brs, keynotula) =>{
     // btnKetik.setAttribute("onclick",`isitekselemenini("printpreviewresume","prevsppd_isiresume", "atas", "${brs}")`);
     btnKetik.setAttribute("onclick",`isitekselemeniniRapat("printNotula","isiteks_rapat", "atasnotula", "${brs}","${keynotula}")`);
 
+
+
+}
+
+
+
+const onCnguploaditem = (btr, r, snp) => {
+    
+    
+    //get the image selected
+    var item = "";
+    item = document.querySelector('#btnuploaditem').files[0];
+    
+    pranalauploaditem.innerHTML = "";
+    datauploaditem.innerHTML = "";
+    
+    let ketval = document.getElementById("masukannamafileitem").value;
+
+    //create a FileReader
+    var reader = new FileReader();
+
+    //image turned to base64-encoded Data URI.
+    reader.readAsDataURL(item);
+    reader.name = item.name;//get the image's name
+    reader.size = item.size; //get the image's size
+    reader.onload = function (event) {
+        pranalauploaditem =`<i class="fa fa-spin fa-spinner"></i> memproses data`;
+        datauploaditem.innerHTML =`<i class="fa fa-spin fa-spinner"></i> memproses data`;
+        let srcEncoded = event.target.result;
+        // Data yang dibutuhkan:
+        
+        let base64 = srcEncoded.replace(/^.*,/, '');
+        let typeMime = srcEncoded.match(/^.*(?=;)/)[0];
+        let namafilenya = "butir_" + btr + "_kriteria_" + r + "_";
+        let val = (ketval == "") ? namafilenya : ketval;
+        let frmdata = new FormData();
+        frmdata.append("videodataa", base64);
+        frmdata.append("videofilenamee", namafilenya);
+        frmdata.append("videomimeTypee", typeMime);
+        frmdata.append("namafileitem", val);
+        frmdata.append("butir", btr);
+        frmdata.append("indekkriteria", r);
+        frmdata.append("snp", snp);
+
+        fetch(linktendik + "?action=uploadkriteriaitem", {
+            method: 'post',
+            body: frmdata
+        })
+            .then(m => m.json())
+            .then(k => {
+                console.log(k)
+                alert(k.result)
+                let link = k.urlfile;
+                let namafile = k.namafile;
+                let div = document.getElementById("datauploaditem");
+                
+                div.innerHTML = `<button class="w3-button w3-green" onclick="tambahkankesel(${btr}, ${r},'${namafile}', '${link}')">Tambahkan ke Tabel</button>`
+                //datalinkitem()
+                
+                let htmlfram = `<div class="containerbaru w3-center"><iframe class="responsive-iframebaru" src="${link}"></iframe></div>`
+                pranalauploaditem.innerHTML = htmlfram;
+                ///--------------------------------------------          
+            })
+            .catch(er => alert(er))
+
+
+    }
+   
+}
+const uplitemakeditasi = async (btr, indexrow, snp) => {
+    let ketval = document.getElementById("masukannamafileitem").value;
+    let gmbrdata, gmbrfilename, gmbrmimeType;
+    gmbrdata = document.getElementById("videodataa");
+    gmbrfilename = document.getElementById("videofilenamee");
+    let val = (ketval == "") ? gmbrfilename.value : ketval;
+    gmbrmimeType = document.getElementById("videomimeTypee");
+
+    if (gmbrdata == null && gmbrfilename == null && gmbrmimeType == null) {
+        alert("Anda belum siap mengupload video/file lainnya ke server");
+        return
+    }
+
+
+    //console.log("Data OKE");
+
+
+    let frmdata = new FormData();
+    frmdata.append("videodataa", gmbrdata.value);
+    frmdata.append("videofilenamee", gmbrfilename.value);
+    frmdata.append("videomimeTypee", gmbrmimeType.value);
+    frmdata.append("namafileitem", val);
+    frmdata.append("butir", btr);
+    frmdata.append("indekkriteria", indexrow);
+    frmdata.append("snp", snp);
+
+    let div = document.getElementById("datauploaditem");
+    div.innerHTML = `<i class="fa fa-spin fa-spinner"></i>`;
+
+    await fetch(linktendik + "?action=uploadkriteriaitem", {
+        method: 'post',
+        body: frmdata
+    })
+        .then(m => m.json())
+        .then(k => {
+            console.log(k)
+            alert(k.result)
+            let link = k.urlfile;
+            let namafile = k.namafile;
+            div.innerHTML = `<button class="w3-button w3-green" onclick="tambahkankesel(${btr}, ${indexrow},'${namafile}', '${link}')">Tambahkan ke Tabel</button>`
+            //datalinkitem()
+
+            ///--------------------------------------------          
+        })
+        .catch(er => alert(er))
 
 
 }

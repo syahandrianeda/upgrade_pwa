@@ -2604,7 +2604,7 @@ const uploaditemakreditasi = (btr, rtbl, snp) => {
 
 }
 
-const onCnguploaditem = (btr, r, snp) => {
+const onCnguploaditemGagal = (btr, r, snp) => {
     pranalauploaditem.innerHTML = "";
     datauploaditem.innerHTML = "";
 
@@ -9220,4 +9220,68 @@ const isinotulaptk = (brs, keynotula) =>{
 
 
 
+}
+
+const onCnguploaditem = (btr, r, snp) => {
+    
+    
+    //get the image selected
+    var item = "";
+    item = document.querySelector('#btnuploaditem').files[0];
+    
+    pranalauploaditem.innerHTML = "";
+    datauploaditem.innerHTML = "";
+    
+    let ketval = document.getElementById("masukannamafileitem").value;
+
+    //create a FileReader
+    var reader = new FileReader();
+
+    //image turned to base64-encoded Data URI.
+    reader.readAsDataURL(item);
+    reader.name = item.name;//get the image's name
+    reader.size = item.size; //get the image's size
+    reader.onload = function (event) {
+        pranalauploaditem =`<i class="fa fa-spin fa-spinner"></i> memproses data`;
+        datauploaditem.innerHTML =`<i class="fa fa-spin fa-spinner"></i> memproses data`;
+        let srcEncoded = event.target.result;
+        // Data yang dibutuhkan:
+        
+        let base64 = srcEncoded.replace(/^.*,/, '');
+        let typeMime = srcEncoded.match(/^.*(?=;)/)[0];
+        let namafile = "butir_" + btr + "_kriteria_" + r + "_";
+        let val = (ketval == "") ? namafile : ketval;
+        let frmdata = new FormData();
+        frmdata.append("videodataa", base64);
+        frmdata.append("videofilenamee", namafile);
+        frmdata.append("videomimeTypee", typeMime);
+        frmdata.append("namafileitem", val);
+        frmdata.append("butir", btr);
+        frmdata.append("indekkriteria", r);
+        frmdata.append("snp", snp);
+
+        fetch(linktendik + "?action=uploadkriteriaitem", {
+            method: 'post',
+            body: frmdata
+        })
+            .then(m => m.json())
+            .then(k => {
+                console.log(k)
+                alert(k.result)
+                let link = k.urlfile;
+                let namafile = k.namafile;
+                let div = document.getElementById("datauploaditem");
+                
+                div.innerHTML = `<button class="w3-button w3-green" onclick="tambahkankesel(${btr}, ${r},'${namafile}', '${link}')">Tambahkan ke Tabel</button>`
+                //datalinkitem()
+                
+                let htmlfram = `<div class="containerbaru w3-center"><iframe class="responsive-iframebaru" src="${link}"></iframe></div>`
+                pranalauploaditem.innerHTML = htmlfram;
+                ///--------------------------------------------          
+            })
+            .catch(er => alert(er))
+
+
+    }
+   
 }
