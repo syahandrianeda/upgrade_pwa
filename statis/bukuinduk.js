@@ -4,67 +4,14 @@ let dbsiswa_bukuinduk, dbinduk_siswaaktif, dbinduk_siswanonaktif, dbinduk_siswal
 
 const cbi_infoawal = document.querySelector(".cbi_infoawal");
 const cbi_koleksibukuinduk = document.querySelector(".cbi_koleksibukuinduk");
-// let db_utama_siswa
-// let datakirim2 = new FormData();
-// datakirim2.append("action","getdatautama");
-// datakirim2.append("idsreadsheet",jlo.ss_datauser);
-
-// // for (var pair of datakirim.entries()) {
-// //         console.log(pair[0]+ ', ' + pair[1]); 
-// //     }
-
-// fetch(linkdatabaseinduk,{method:"post",body:datakirim2})
-// .then(m => m.json())
-// .then(r =>{
-//     db_utama_siswa = r.all;
-// }).catch(er => {
-//     console.log(er)
-// });
-// let dbsiswa_bukuinduk;//=[]; // semua datasiswa
-// let dbbukuinduk_punyainduk;// = []; // data siswa yang isian dbsiswanya !== ""
-// let dbbukuinduk_tidakpunyainduk;// = []; // data siswa yang isian dbsiswanya == ""
-// let dbbukuinduk_siswapindahan;// = []; // data siswa yang punya nomor induk xxxx02xx
-// let dbbukuinduk_siswaasal;// = []; // data siswa yang punya nomor induk xxxx02xx
-// let dbbukuinduk_koleksibukuinduk;// = [];// 1617, 1718, dst ...
-// const awalbukuindukversilama = () =>{
-//     dbsiswa_bukuinduk = jsondatasiswa.slice();
-//     dbbukuinduk_punyainduk = dbsiswa_bukuinduk.filter(s=> s.nis !=="");
-//     dbbukuinduk_tidakpunyainduk = dbsiswa_bukuinduk.filter(s=> s.nis =="");
-//     dbbukuinduk_siswapindahan = dbsiswa_bukuinduk.filter(s => s.nis.substring(4,6) !=="01");
-//     let html = `<h5 class="w3-center">Informasi Awal</h5>`;
-//     html +=`<table class="w3-table garis w3-tiny w3-white"><tbody>`;
-//     html += `<tr><td>Punya Buku Induk</td><td>${dbbukuinduk_punyainduk.length>0?dbbukuinduk_punyainduk.length+' Siswa':'0'}</td></tr>`;
-//     html += `<tr><td>Tidak Punya Buku Induk</td><td>${dbbukuinduk_tidakpunyainduk.length>0?dbbukuinduk_tidakpunyainduk.length+' Siswa':'Terisi Semua'}</td></tr>`;
-//     html += `<tr><td>Koleksi Buku Induk</td><td>`;
-//     dbbukuinduk_koleksibukuinduk = dbsiswa_bukuinduk.map(s => s.nis.substring(0,4)).filter((x,i,a)=> a.indexOf(x)==i);
-//     for(let i = 0 ; i < dbbukuinduk_koleksibukuinduk.length ; i++){
-//         html +=`<span class="w3-border w3-round-large w3-pale-green w3-padding" style="margin:0 5px">${dbbukuinduk_koleksibukuinduk[i]}</span>`;
-//     }
-//     html +=`</td></tr>`;
-//     if(dbbukuinduk_siswapindahan.length> 0){
-//         html += `<tr><td>Jumlah Siswa pindahan</td><td>${dbbukuinduk_siswapindahan.length + " Siswa"}</td></tr>`
-//         html += `<tr><td>Nama Siswa Pindahan</td><td><ol style="margin:0 0 0 -2.79em">`;
-//         for(let j = 0 ; j < dbbukuinduk_siswapindahan.length ; j++){
-//             html+=`<li>${dbbukuinduk_siswapindahan[j].pd_nama}<br>di kelas ${dbbukuinduk_siswapindahan[j].nis.substring(5,6)}<br>pada tapel 20${dbbukuinduk_siswapindahan[j].nis.substring(0,2)}/20${dbbukuinduk_siswapindahan[j].nis.substring(2,4)}`;
-//         }
-//         html+=`</ol></td></tr>`
-//     }
-//     html += `</tbody></table>`;
-//     cbi_infoawal.innerHTML = html;
-//     cbi_koleksibukuinduk.innerHTML = `Perlu Perbaikan Data`;
-//     let html_revisi = "";
-
-// }
-
 let dbindukjenjangini_aktif,dbindukjenjangini_aktifniskosong,dbindukjenjangini_aktifnisganda,dbindukjenjangini_aktifnislengkap,
     dbindukjenjangini_aktifnisbermasalahl
 let dbindukrombel
-
-    const divbukuinduk_infoawal = document.querySelector(".informasiawaldatabasebukuinduk");
-    const divbukuinduk_ketinfoawal = document.querySelector(".keteranganinforekapinduk");
-    const divbukuinduk_koleksi = document.querySelector(".divbukuinduk_koleksibukuinduk");
-    const divbukuinduk_koleksibukuindukperkelas = document.querySelector(".koleksibukuindukperkelas");
-    const divbukuinduk_previewbukuinduk = document.querySelector(".previewbukuinduk");
+const divbukuinduk_infoawal = document.querySelector(".informasiawaldatabasebukuinduk");
+const divbukuinduk_ketinfoawal = document.querySelector(".keteranganinforekapinduk");
+const divbukuinduk_koleksi = document.querySelector(".divbukuinduk_koleksibukuinduk");
+const divbukuinduk_koleksibukuindukperkelas = document.querySelector(".koleksibukuindukperkelas");
+const divbukuinduk_previewbukuinduk = document.querySelector(".previewbukuinduk");
 const awalbukuinduk = () =>{
     cbi_infoawal.innerHTML = `<img src="/img/barloading.gif">`;
     cbi_koleksibukuinduk.innerHTML = `<img src="/img/barloading.gif">`;
@@ -117,7 +64,6 @@ const awalbukuinduk = () =>{
     })
     .catch(er => console.log(er));
 }
-
 const aksieditinduk = (kondisi, kodeinduk,filter="")=>{
     //filter onlyrombel
     let html = "";
@@ -708,7 +654,6 @@ const tabelinduk_showdb = (fokusdb, aktif,jenjang) =>{
      * foksudb = database yang menjadi fokus yang akan ditampilkan
      */
 }
-
 const dbutamasiswa = (id) =>{
     let df = jsondatasiswa.filter(s => s.id == id);
     let cb = {};
@@ -1341,7 +1286,6 @@ const koleksisemesterakhir = (tglmasuk)=>{
     }
     return s
 }
-
 const diterimadisemester = (tglmasuk)=>{
     let d = new Date(tglmasuk);
     let s, m = d.getMonth();
@@ -3363,7 +3307,6 @@ const html_datakurikuluminduksiswa = (token)=>{
     }
     return html
 }
-
 const arrayobjek_datakurikuluminduksiswa = (token)=>{
     let ceksyarat = syarat_riwayatkelas(token);
     let banyaktapel = ceksyarat.banyaktapel;
@@ -3429,7 +3372,6 @@ const arrayobjek_tbbb = () =>{
     }
     return arr
 }
-
 const arrayobjek_penyakit = () =>{
 
     let elementahun = document.querySelectorAll("[data-input_tapel_kesehatan]");
@@ -3499,7 +3441,6 @@ const editinputriwayat = (el) =>{
         el.innerHTML = "Edit";
     }
 }
-
 const riwayatkenaikankelas = (tokensiswa)=>{
     //let divisi = menu_editinduk;//.innerHTML = menu;
     formulirkirim.innerHTML = "";
@@ -3543,7 +3484,6 @@ const riwayatkenaikankelas = (tokensiswa)=>{
     }
 
 }
-
 const htmlbuatperbaikinomorinduk = (tokensiswa)=>{
     let html ="";
     let db = db_utama_siswa.filter(s => s.id == tokensiswa)[0];
@@ -3628,7 +3568,6 @@ const uploaddokumenpribadiinduk = (no) =>{
     }
     reader.readAsDataURL(elemenini);
 }
-
 const fn_upload_file2 = (id_input, namafile, param, tipe) => {
     let el_label = document.querySelector(".classtomboluploadokumen_"+id_input);
     let div = document.getElementById("idsrc_dokumeninduk"+id_input);
@@ -3673,7 +3612,6 @@ const fn_upload_file2 = (id_input, namafile, param, tipe) => {
             alert("Maaf, terjadi kesalahan. Silakan ulangi sesi Anda sesaat lagi.")
         })
 };
-
 const simpanserverdokumenpribadisiswa = (rowIsi, celIsi)=>{
     let tabelmodal = document.querySelector(".tabeldokumenindukeditable");
     let tbodymodal = tabelmodal.getElementsByTagName("tbody")[0];
@@ -3729,7 +3667,6 @@ const kirimdataanakpindahan = (tokensiswa) => {
 
         });
 }
-
 const objekarray_dokumen = () =>{
     let objekaray ={};
     let tabel = document.getElementById("koleksidokumenpribadisiswa");
@@ -3968,7 +3905,6 @@ const inputfilepotoinduksiswa = () =>{
 
 
 }
-
 const fn_upload_file3 = (id_input, namafile, param, tipe) => {
     let tombolkirimpageidentitas = document.getElementById("tombolkirimpageidentitas");
     tombolkirimpageidentitas.setAttribute("onclick","alert('Tunggu dulu proses sedang mengirim poto siswa')");
@@ -4270,7 +4206,6 @@ function terb_belakang(t){
 		.split('8').join('Delapan ')
 		.split('9').join('Dembilan ');
 }
-
 function terbilang(nangka) {
 	var 
 		v = 0,
@@ -4310,25 +4245,24 @@ function terbilang(nangka) {
     }
 	return sub.replace('  ', ' ');
 }
-
 let arraydeskripsi_kd1=[], arraydeskripsi_kd2 =[];
 let prefix_stringkeyinduk = dbinduk_tapel_integer+"_13_"+idJenjang+"_"+idSemester+"_";
 let tabelraportmanual = document.getElementById("tabelraportmanual");
 let menumanual_k1 = document.getElementById("menubar_tabelraportmanual").querySelector(".mbtr_ki1")
-    let menumanual_k2 =document.getElementById("menubar_tabelraportmanual").querySelector(".mbtr_ki2"),
+let menumanual_k2 =document.getElementById("menubar_tabelraportmanual").querySelector(".mbtr_ki2"),
     menumanual_k3 = document.getElementById("menubar_tabelraportmanual").querySelector(".mbtr_ki3"), 
     menumanual_k4 = document.getElementById("menubar_tabelraportmanual").querySelector(".mbtr_ki4");
-    let menumanual_tbbb = document.getElementById("menubar_tabelraportmanual").querySelector(".mbtr_tbbb");//mbtr_tbbb perkembangan lainnya;
-    let menumanual_kesehatan = document.getElementById("menubar_tabelraportmanual").querySelector(".mbtr_kesehatan");//mbtr_tbbb perkembangan lainnya;
-    let menumanual_ekstrakurikuler = document.getElementById("menubar_tabelraportmanual").querySelector(".mbtr_ekstrakurikuler");//mbtr_tbbb perkembangan lainnya;
-    let menumanual_saran = document.getElementById("menubar_tabelraportmanual").querySelector(".mbtr_saran");//mbtr_tbbb perkembangan lainnya;
-    let menumanual_kenaikankelas = document.getElementById("menubar_tabelraportmanual").querySelector(".mbtr_kenaikankelas");//mbtr_tbbb perkembangan lainnya;
-    let menumanual_prestasi = document.getElementById("menubar_tabelraportmanual").querySelector(".mbtr_prestasi");//mbtr_tbbb perkembangan lainnya;
-    let menumanual_kelulusan = document.getElementById("menubar_tabelraportmanual").querySelector(".mbtr_kelulusan");//mbtr_tbbb perkembangan lainnya;
-    let menumanual_deskripsik3 = document.getElementById("menubar_tabelraportmanual").querySelector(".mbtr_ki3deskripsi");//mbtr_tbbb perkembangan lainnya;
-    let menumanual_deskripsik4 = document.getElementById("menubar_tabelraportmanual").querySelector(".mbtr_ki4deskripsi");//mbtr_tbbb perkembangan lainnya;
-    let menucetakraportbaru = document.getElementById("menubar_tabelraportmanual").querySelector(".mbtr_raport");//mbtr_tbbb perkembangan lainnya;
-    let menumanual_kehadiransiswa = document.getElementById("menubar_tabelraportmanual").querySelector(".mbtr_kehadiransiswa");//mbtr_tbbb perkembangan lainnya;
+let menumanual_tbbb = document.getElementById("menubar_tabelraportmanual").querySelector(".mbtr_tbbb");//mbtr_tbbb perkembangan lainnya;
+let menumanual_kesehatan = document.getElementById("menubar_tabelraportmanual").querySelector(".mbtr_kesehatan");//mbtr_tbbb perkembangan lainnya;
+let menumanual_ekstrakurikuler = document.getElementById("menubar_tabelraportmanual").querySelector(".mbtr_ekstrakurikuler");//mbtr_tbbb perkembangan lainnya;
+let menumanual_saran = document.getElementById("menubar_tabelraportmanual").querySelector(".mbtr_saran");//mbtr_tbbb perkembangan lainnya;
+let menumanual_kenaikankelas = document.getElementById("menubar_tabelraportmanual").querySelector(".mbtr_kenaikankelas");//mbtr_tbbb perkembangan lainnya;
+let menumanual_prestasi = document.getElementById("menubar_tabelraportmanual").querySelector(".mbtr_prestasi");//mbtr_tbbb perkembangan lainnya;
+let menumanual_kelulusan = document.getElementById("menubar_tabelraportmanual").querySelector(".mbtr_kelulusan");//mbtr_tbbb perkembangan lainnya;
+let menumanual_deskripsik3 = document.getElementById("menubar_tabelraportmanual").querySelector(".mbtr_ki3deskripsi");//mbtr_tbbb perkembangan lainnya;
+let menumanual_deskripsik4 = document.getElementById("menubar_tabelraportmanual").querySelector(".mbtr_ki4deskripsi");//mbtr_tbbb perkembangan lainnya;
+let menucetakraportbaru = document.getElementById("menubar_tabelraportmanual").querySelector(".mbtr_raport");//mbtr_tbbb perkembangan lainnya;
+let menumanual_kehadiransiswa = document.getElementById("menubar_tabelraportmanual").querySelector(".mbtr_kehadiransiswa");//mbtr_tbbb perkembangan lainnya;
 const raportmanualawal = ()=>{
     let judul = document.querySelector(".head_dataraportmanual");
     let info = document.querySelector(".info_mbtr");
@@ -4824,7 +4758,6 @@ const printadexistelemen = (kelas, portr = true,kondisi="")=>{
     window.frames["iframeprint"].focus();
     window.frames["iframeprint"].print();
 }
-
 const fnmenumanual_k2 = () => {
     //// awal k2");
     let judul = document.querySelector(".head_dataraportmanual");
@@ -4977,8 +4910,6 @@ const fnmenumanual_k2 = () => {
         badg.classList.remove("w3-hide")
     }
 }
-
-
 const fnmenumanual_k3 = () => {
     //// awal k3");
     let judul = document.querySelector(".head_dataraportmanual");
@@ -5387,7 +5318,8 @@ const fnmenumanual_deksripsik3 = ()=>{
             }
         });
         menumanual_deskripsik3.classList.add("w3-pale-red")
-        panggilkompetensiasli("k3","k3")
+        // panggilkompetensiasli("k3","k3")
+        panggilkompetensiaslideskripsi("k3","")
         aktifkanmapel_deskripsimanual(tabelraportmanual.querySelectorAll(".tombolpilihmapeleditdeskripsi")[0],"k3","AGAMA");
         //info.innerHTML = "";
         let badg = document.querySelector(".tandasiapk3deskripsi");
@@ -5423,7 +5355,8 @@ const fnmenumanual_deksripsik4 = ()=>{
             }
         });
         menumanual_deskripsik4.classList.add("w3-pale-red");
-        panggilkompetensiasli("k4","k4")
+        // panggilkompetensiasli("k4","k4");
+        panggilkompetensiaslideskripsi("k4","")
         aktifkanmapel_deskripsimanual(tabelraportmanual.querySelectorAll(".tombolpilihmapeleditdeskripsi")[0],"k4","AGAMA");
         //info.innerHTML = "";
         let badg = document.querySelector(".tandasiapk4deskripsi");
@@ -6383,7 +6316,7 @@ const bikintabelawalraportmanual = () =>{
             
             for(k = 0 ; k < datamapel.length; k++){
                 let td = tr.insertCell(-1);
-                td.setAttribute("onclick",`alert('Hanya bisa diedit di Rekap Nilai Kompetensi Pengetahuan KI-3\r\n Abaikan jika kolom Nilai Raport kosong.')`);
+                td.setAttribute("onclick",`alert('Hanya bisa diedit di Rekap Nilai Kompetensi Pengetahuan KI-3 (Abaikan jika kolom Nilai Raport kosong).')`);
                 td.setAttribute("class",`sel_deskripsi_k3 sel_deskripsi_k3_olah sel_deskripsi_k3_${datamapel[k]} cellmanualinput`);
                 td.innerHTML = `<input type="number" disabled data-deskripsik3="raport_${datamapel[k]}" data-keyraportindukmanual="${prefix_stringkeyinduk}k3_raport_${datamapel[k]}" style="width:100%;text-align:center; border: none transparent;outline: none;background:transparent;">`;
  
@@ -6518,7 +6451,7 @@ const bikintabelawalraportmanual = () =>{
             
             for(k = 0 ; k < datamapel.length; k++){
                 let td = tr.insertCell(-1);
-                td.setAttribute("onclick",`alert('Hanya bisa diedit di Rekap Nilai Kompetensi Keterampilan KI-4')`);
+                td.setAttribute("onclick",`alert('Hanya bisa diedit di Rekap Nilai Kompetensi Keterampilan KI-4 (Abaikan jika nilainya kosong)')`);
                 td.setAttribute("class",`sel_deskripsi_k4 sel_deskripsi_k4_olah sel_deskripsi_k4_${datamapel[k]} cellmanualinput`);
                 td.innerHTML = `<input type="number" disabled data-deskripsik4="raport_${datamapel[k]}"  data-keyraportindukmanual="${prefix_stringkeyinduk}k4_raport_${datamapel[k]}" style="width:100%;text-align:center; border: none transparent;outline: none;background:transparent;">`;
                 
@@ -6809,7 +6742,6 @@ function rangkingnya(ki){
 
     }
 }
-
 const buatnilaisamadielemen = (el, kondisi) =>{
     let val = el.value;
     let teksdatakenaikan = `${prefix_stringkeyinduk}KENAIKAN_KELAS`;
@@ -6998,6 +6930,10 @@ const manual_simpanserverperkembangan = (el) =>{
 
 }
 const panggildataperkembanganuntukmanual = (info) =>{
+    if(dbsiswa_bukuinduk == undefined){
+        alert("Mohon tunggu, database buku induk belum selesai dimuat. Coba lagi nanti....")
+        return
+    }
     let tbody = tabelraportmanual.querySelector("tbody");
     let tab = "pelengkapraport";
 
@@ -7067,6 +7003,8 @@ const panggildataperkembanganuntukmanual = (info) =>{
 const updatestringifydbutamayangobjek = (indek,kondisi) =>{
     let result, dataasal, input1, input2, input3, input4 ;
     let inputbarisrow = tabelraportmanual.querySelector("tbody").rows[indek];
+    let token = jsondatasiswa[indek].id;
+    let datasiswadariinduk = dbsiswa_bukuinduk.filter( s=> s.id == token)[0]
     let inputisi;
     let arraybaru = [];
     if(kondisi == "fisik"){
@@ -7074,7 +7012,7 @@ const updatestringifydbutamayangobjek = (indek,kondisi) =>{
         input2 = inputbarisrow.querySelector("input[data-perkembanganlama='head_11']");//tb_s2
         input3 = inputbarisrow.querySelector("input[data-perkembanganlama='head_12']");//bb_s1
         input4 = inputbarisrow.querySelector("input[data-perkembanganlama='head_13']");//bb_s2
-        dataasal = jsondatasiswa[indek].riwayat_fisik;
+        dataasal = datasiswadariinduk.riwayat_fisik;//jsondatasiswa[indek].riwayat_fisik;
         // console.log(dataasal)
         // console.log(input1.value)
         // console.log(input2.value)
@@ -7091,6 +7029,7 @@ const updatestringifydbutamayangobjek = (indek,kondisi) =>{
             let u, p, d, a, t, e
             for(u = 0 ; u < objekasal.length ; u++){
                 // masing-masing objek tersebut dibuat objek baru dan terpisah:
+                
                 let odBaru = Object.assign({}, objekasal[u]);// objekasal dan objekbaru sudah terpisah
                 if(odBaru.semester == 1 && odBaru.tapel == dbinduk_tapel_integer){
                     //console.log("ditemukan odBaru yang semester 1 dan tapel saat 22122");
@@ -7168,7 +7107,7 @@ const updatestringifydbutamayangobjek = (indek,kondisi) =>{
         input2 = inputbarisrow.querySelector("input[data-perkembanganlama='head_15']");//penglihatan
         input3 = inputbarisrow.querySelector("input[data-perkembanganlama='head_16']");//gigi
         input4 = inputbarisrow.querySelector("input[data-perkembanganlama='head_17']");//lainnya
-        dataasal = jsondatasiswa[indek].riwayat_penyakit;
+        dataasal =  datasiswadariinduk.riwayat_penyakit;//jsondatasiswa[indek].riwayat_penyakit;
         inputisi = inputbarisrow.querySelector("input[data-updatedbutama='riwayat_penyakit']");//bb_s2
         let objekasal = dataasal==""?[]:JSON.parse(dataasal);
         let cektapel = objekasal.filter(s => s.tapel == dbinduk_tapel_integer);
@@ -7465,7 +7404,7 @@ const tampilkannilairaport = (kondisi) => {
 
 }
 const shownilairaportkd = (kondisi) =>{
-    document.querySelector(".info_mbtr").innerHTML = `<i class="fa fa-spin fa-spinner"></i> sedang memproses database Rekap Raport Final ${kondisi.toUpperCase()}....`;
+    document.querySelector(".info_mbtr").innerHTML = `<h4 style="text-align:center"><i class="fa fa-spin fa-spinner"></i> sedang memproses database Rekap Raport Final ${kondisi.toUpperCase()}....</h4>`;
     let q =  `[data-keyraportindukmanual=""]`;
     let koleksimapel = koleksiarraymapelaktif()
     let koleksimapeldengangama = koleksimapel.kodemapel;
@@ -7480,7 +7419,7 @@ const shownilairaportkd = (kondisi) =>{
         
     if(f.result == 0){
         alert("Anda belum pernah menyimpan database Raport yang akan dicetak raport, Sistem akan mengambil data yang telah Anda simpan di fitur OLAH NILAI")
-        document.querySelector(".info_mbtr").innerHTML = `<i class="fa fa-spin fa-spinner"></i> sedang memproses database Rekap Raport Olah Nilai (database yang pernah Anda simpan di Fitur Oleh Nilai ${kondisi.toUpperCase()}) ....`;
+        document.querySelector(".info_mbtr").innerHTML = `<h4 style="text-align:center"><i class="fa fa-spin fa-spinner"></i> sedang memproses database Rekap Raport Olah Nilai (database yang pernah Anda simpan di Fitur Oleh Nilai ${kondisi.toUpperCase()}) ....</h4>`;
         let tab = "rekapnilairaport_"+idNamaKelas +"_"+kondisi;
         let param = "&kelas=" + idNamaKelas + "&prefiktab=" + tab;//+ "&datahead=" + stinghead;//+ "&dataisi=" + stingisi;
         fetch(constlinknilai + "?action=getdatafromtab" + param)
@@ -7489,10 +7428,10 @@ const shownilairaportkd = (kondisi) =>{
                 //console.log(k)
                 if (k.result == 0) {
                     alert("Anda belum menyimpan data nilai Raport apapun. Silakan isikan data ini secara manual.")
-                    document.querySelector(".info_mbtr").innerHTML = `Tidak ada database apapun dari server. Anda harus menginput nilai ${kondisi.toUpperCase()} manual atau gunakan fitur ini: ` + tambahfituruploadimport(kondisi);
+                    document.querySelector(".info_mbtr").innerHTML = `<h4 style="text-align:center">Tidak ada database apapun dari server. Anda harus menginput nilai ${kondisi.toUpperCase()} manual atau gunakan fitur ini: </h4>` + tambahfituruploadimport(kondisi);
                     panggilkompetensiasli(kondisi,"");
                 } else {
-                    document.querySelector(".info_mbtr").innerHTML = kondisi + " Berhasil dimuat." + tambahfituruploadimport(kondisi);
+                    document.querySelector(".info_mbtr").innerHTML = `<h4 style="text-align:center">`+kondisi.toUpperCase() + " Berhasil dimuat.</h4>" + tambahfituruploadimport(kondisi);
                     let nilaidata = k.data;
                     let tbody = tabelraportmanual.querySelector("tbody");
                     let row = tbody.rows;
@@ -7531,7 +7470,7 @@ const shownilairaportkd = (kondisi) =>{
             .catch(er => {console.log(er)});
     }else{
         
-        document.querySelector(".info_mbtr").innerHTML ="<h3 class='w3-center'>"+ kondisi + " Berhasil memuat database Raport Final </h4>" + tambahfituruploadimport(kondisi);
+        document.querySelector(".info_mbtr").innerHTML ="<h3 class='w3-center'>Berhasil memuat database Raport Final "+ kondisi.toUpperCase() + " </h4>" + tambahfituruploadimport(kondisi);
                     let nilaidata = f.data;
                     let tbody = tabelraportmanual.querySelector("tbody");
                     let row = tbody.rows;
@@ -7647,7 +7586,7 @@ let Objekdefinisikodemapel = {"PAI":"Pendidikan Agama Islam dan Budi Pekerti",
         "SBDP":"Seni Budaya dan Prakarya",
         "BSUND":"Bahasa dan Sastra Sunda",
         "TIK":"Mulok1"
-        }
+}
 const aktifkanmapel_deskripsimanual = (ele, kondisi,kodemapel)=>{
 
     let sel_deskripsi_k3_olah = tabelraportmanual.querySelectorAll(`.sel_deskripsi_${kondisi}_olah`);
@@ -7748,7 +7687,6 @@ const change_deskripsi2 = (brs, el="", kondisi, kodemapel) =>{
     html +=`Ananda ${jsondatasiswa[brs].pd_nama} <span class="w3-text-blue">${val_predikatkdMaks} dalam</span> ${val_kdmaksteks}, <span class="w3-text-blue">${val_predikatKdmin} dalam</span> ${val_kdminteks}`;
     cariinput.innerHTML = html;
 }
-
 const indukyangditaruhsementara = () =>{
     let tabelbody = tabelraportmanual.querySelector("tbody");
     let arraySS = [];
@@ -7895,7 +7833,6 @@ const manual_simpanserverK4 = (el) =>{
         });
         simpaninduksementarabayangan()
 }
-
 const simpaninduksementarabayangan = (el =null)=>{
     let stringutama
     if(el!=null){
@@ -8018,9 +7955,7 @@ const simpaninduksementarabayangan = (el =null)=>{
         
 
 }
-
 //SKL VERSI BARU
-
 const selectnamaskhu2 = () => {
     let a = document.getElementById("idselectnamaskhu2");
     let b = a.selectedIndex;
@@ -8736,21 +8671,27 @@ const panggilkehadiransiswadariserver = (elinfo)=>{
     fetch(linkdatabaseinduk,{method:"post",body:cekabsen})
     .then(m => m.json())
     .then(r => {
-        //console.log(r);
+        console.log(r);
         if(document.querySelector(".tandasiapkehadiransiswa").className.indexOf("w3-hide")>-1){
             document.querySelector(".tandasiapkehadiransiswa").classList.remove("w3-hide")
         }
         let tombol = `<button onclick="panggildbinduksementara(this)"> Tampilkan Absensi yang telah Anda simpan</button>`
         elinfo.innerHTML = "<h4 style='text-align:center'>Data Rekap kehadiran Berhasil Dimuat</h4>  " + tombol;
         for(i = 0 ; i < jsondatasiswa.length ; i++){
-            let token = jsondatasiswa[i].id;
-            let inputsakit = tabelraportmanual.querySelector("tbody").rows[i].querySelector(`input[data-keyraportindukmanual="${prefix_stringkeyinduk}KEHADIRAN_SAKIT"]`)
-            inputsakit.value = r[token]["Total Sakit"];
-            let inputijin = tabelraportmanual.querySelector("tbody").rows[i].querySelector(`input[data-keyraportindukmanual="${prefix_stringkeyinduk}KEHADIRAN_IZIN"]`)
-            inputijin.value = r[token]["Total Ijin"];
-            let inputalpa = tabelraportmanual.querySelector("tbody").rows[i].querySelector(`input[data-keyraportindukmanual="${prefix_stringkeyinduk}KEHADIRAN_ALPA"]`)
-            inputalpa.value = r[token]["Total Alpa"]
-
+            let token = parseInt(jsondatasiswa[i].id);
+            let dataobjekabsens = r.filter(s => s.token == token)
+            //console.log(dataobjekabsens)
+            if(dataobjekabsens.length >0){
+                let dataobjekabsen = dataobjekabsens[0]
+                console.log(dataobjekabsen)
+                let inputsakit = tabelraportmanual.querySelector("tbody").rows[i].querySelector(`input[data-keyraportindukmanual="${prefix_stringkeyinduk}KEHADIRAN_SAKIT"]`)
+                inputsakit.value = dataobjekabsen["Total_Sakit"];
+                let inputijin = tabelraportmanual.querySelector("tbody").rows[i].querySelector(`input[data-keyraportindukmanual="${prefix_stringkeyinduk}KEHADIRAN_IZIN"]`)
+                inputijin.value = dataobjekabsen["Total_Ijin"];
+                let inputalpa = tabelraportmanual.querySelector("tbody").rows[i].querySelector(`input[data-keyraportindukmanual="${prefix_stringkeyinduk}KEHADIRAN_ALPA"]`)
+                inputalpa.value = dataobjekabsen["Total_Alpa"]
+            }
+                
         }
     })
     .catch(er => {
@@ -8762,6 +8703,7 @@ const panggilkehadiransiswadariserver = (elinfo)=>{
 let datanilaidariserverkd3 =[]
 const panggilkompetensiasli = (kd,callbekbukan="") =>{
     let info = document.querySelector(".info_mbtr");
+    info.innerHTML = `<h4 style="text-align:center"><i class="fa fa-spin fa-spinner"></i> Memproses data server Raport Final ...</h4>`
     let tab2 = "Induksemetara";
     let param2 = "&kelas=" + idNamaKelas + "&prefiktab=" + tab2;//+ "&datahead=" + stinghead;//+ "&dataisi=" + stingisi;
     fetch(constlinknilai + "?action=getdatafromtab" + param2)
@@ -8769,7 +8711,7 @@ const panggilkompetensiasli = (kd,callbekbukan="") =>{
     .then(k => {
             if(k.result == 0){
                 alert("Anda belum pernah menyimpan data olahan apapun di server untuk nilai Raport. Sistem akan melacak keberadaan database yang tersimpan dari fitur OLAH NILAI");
-                info.innerHTML = `<i class="fa fa-spin fa-spinner"></i> Memproses data Hasil Olahan`
+                info.innerHTML = `<h4 style="text-align:center"><i class="fa fa-spin fa-spinner"></i> Memproses data Hasil Olahan .... </h4>`
                 let tab = kd=="k3"?"rekapkd3":"rekapkd4";
                     let ceklistrue = kd =="k3"?"cekliskd3":"cekliskd4";
                     let namakd = kd =="k3"?"kd3":"kd4";
@@ -8788,7 +8730,7 @@ const panggilkompetensiasli = (kd,callbekbukan="") =>{
                                 alert("Anda belum pernah menyimpan data olahan apapun di server. Anda mesti input nilai satu per satu")
                                 info.innerHTML = `<h4 style="text-align:center">TIDAK DITEMUKAN DATABASE OLAH NILAI</h4>Anda Terpaksa harus mengisi manual untuk deskripsi ini atau pilih Import-Export berikut:` + tambahfituruploadimport(kd);
                             }else{
-                                info.innerHTML = `<h4 style="text-align:center">Data Hasil Olahan berhasil dimuat.</h4>` + tambahfituruploadimport(kd);
+                                info.innerHTML = `<h4 style="text-align:center">Berhasil menanmpilkan database server Nilai Olah ${kd.toUpperCase()}</h4>` + tambahfituruploadimport(kd);
                             
                                 //console.log(k);
                                 let datanilai = k.data;
@@ -8960,7 +8902,7 @@ const panggilkompetensiasli = (kd,callbekbukan="") =>{
             }else{
                 let tomboldatakd_asli = `<button class="tangan w3-pale-green w3-border w3-round" onclick="panggilkompetensiaslibener('${kd}','kd4')">Periksa Deskripsi Rekap Olah Nilai</button>`
         
-                info.innerHTML = `<h4 style="text-align:center">Berhasil memuat database Server Nilai Raport Final</h4> `+tomboldatakd_asli;// +" " + tambahfituruploadimport(kd);
+                info.innerHTML = `<h4 style="text-align:center">Berhasil memuat database Server Nilai Raport Final (${kd.toUpperCase()})</h4> ` ;//+tomboldatakd_asli;// +" " + tambahfituruploadimport(kd);
                 let tabelbody = tabelraportmanual.querySelector("tbody");
                 let resdatas = k.data;
                 for(i = 0 ; i < tabelbody.rows.length ; i++){
@@ -8993,7 +8935,7 @@ const panggilkompetensiasli = (kd,callbekbukan="") =>{
 }
 const panggilkompetensiaslibener = (kd,callbekbukan="") =>{
     let info = document.querySelector(".info_mbtr");
-                info.innerHTML = `<i class="fa fa-spin fa-spinner"></i> Memproses data Hasil Olahan`
+                info.innerHTML = `<h4 style="text-align:center"><i class="fa fa-spin fa-spinner"></i> Memproses data Hasil Olahan </h4>`
                 let tab = kd=="k3"?"rekapkd3":"rekapkd4";
                     let ceklistrue = kd =="k3"?"cekliskd3":"cekliskd4";
                     let namakd = kd =="k3"?"kd3":"kd4";
@@ -9185,7 +9127,6 @@ const panggilkompetensiaslibener = (kd,callbekbukan="") =>{
 
     
 }
-
 const fn_predikatkriteria2 = (x,kkmnya) => {
     // let kkmnya = koleksiarraymapelaktif().kkmmin;
     
@@ -9240,7 +9181,6 @@ const fn_predikatkriteria2 = (x,kkmnya) => {
     return result
 
 }
-
 const isikanrentang2 = () => {
     let tabel = document.querySelector(".tabelkriteriadanrentangkkm");
     let kkmnya = koleksiarraymapelaktif().kkmmin;
@@ -9258,7 +9198,6 @@ const isikanrentang2 = () => {
     tabel.rows[3].cells[2].innerHTML = minBmaxC;
 
 }
-
 const simpanmanualdeskripsi = (el, k3k4 ) =>{
     let stringutama
     
@@ -9333,7 +9272,6 @@ const simpanmanualdeskripsi = (el, k3k4 ) =>{
         })
         .catch(er => console.log(er))
 }
-
 const panggildbinduksementara = (el = null) =>{
     let tab = "Induksemetara";
     let teksbutton = el.innerHTML ;
@@ -9374,8 +9312,6 @@ const panggildbinduksementara = (el = null) =>{
             }
         })
 }
-
-
 const kirimnilairaportkeindukTahandulu = (indekrow,el,tokensiswa,namatab)=>{
     let elemen = tabelraportmanual.rows[parseInt(indekrow)].querySelectorAll("[data-keyraportindukmanual]");
     el.innerHTML = `<i class="fa fa-spin fa-spinner"></i> Memproses...`;
@@ -9479,7 +9415,6 @@ const kirimnilairaportkeindukTahandulu = (indekrow,el,tokensiswa,namatab)=>{
                     //el.innerHTML = `<i class="fa fa-spin fa-spinner"></i> server utama gagal, sedang memproses server induk`;
                 });
 }
-
 const suratketerangansiswa = ()=>{
     let  modal = document.getElementById("modalsuratsurat")
     modal.style.display = 'block';
@@ -9781,8 +9716,6 @@ const suratketerangankelakuanbaik = ()=>{
     }
 
 }
-
-
 const kirimnilairaportkeinduk = (indekrow,el,tokensiswa,namatab)=>{
         let tekssebelumnya = el.innerHTML
         el.innerHTML = "<i class='fa fa-spin fa-spinner'></i> " +tekssebelumnya;
@@ -9902,7 +9835,6 @@ const kirimnilairaportkeinduk = (indekrow,el,tokensiswa,namatab)=>{
                 //el.setAttribute("onclick","alert('Mohon maaf, terjadi kesalahan')");
             })
 }
-
 const tambahfituruploadimport = (kondisi)=>{
     let html="";
     let teksdefaultfinal = "";
@@ -9981,10 +9913,10 @@ const prosesImportdataRaportManual = (data, kondisi) =>{
 
     //Read all rows from First Sheet into an JSON array.
     var excelRows = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[firstSheet]);
-    console.log(excelRows);
+    
     let koleksikeydariexcel = Object.values(excelRows[4]);
     koleksikeydariexcel.splice(-2,2)
-    console.log(koleksikeydariexcel);
+    
     let tabelrow = tabelraportmanual.querySelector("tbody").rows;
     for(i = 0 ; i < tabelrow.length ; i++){
         for(j = 0 ; j < koleksikeydariexcel.length;j++){
@@ -10161,4 +10093,655 @@ const exporttabelmanual = (kondisi) =>{
 
     });
     divto.innerHTML = "";
+}
+const tombolbantuexportimportdeskripsi = (kondisi) =>{
+    let html ="";
+    let ki3ki4 = "";
+    let info = document.querySelector(".info_mbtr");
+    html +=`<div class="w3-tiny w3-border w3-padding w3-center"><br>`;
+    html +=`<button class="tangan w3-btn w3-pale-red w3-margin w3-round-xlarge w3-border" onclick="panggilDanBuatDeskripsiDariSimpanOlahKD('${kondisi}','info0')"> Deskripsi Nilai Olah </button>`;
+    if(kondisi == "k3"){
+        ki3ki4 = "(KI-3)";
+    }else{
+        ki3ki4 = "(KI-4)";
+    }
+    html +=`<button class="tangan w3-btn w3-pale-blue w3-margin w3-round-xlarge w3-border" onclick="panggilDeskripsiSimpananIndukSementara('${kondisi}','')">Deskripsi Final ${ki3ki4}</button>`;
+    
+    html +=`<button onclick="exporttabelmanualdeskripsi('${kondisi}')" class="tangan w3-btn w3-khaki w3-margin w3-round-xlarge w3-border" title="export ke Ms. Excel"><i class="fa fa-file-excel-o"></i> Export</button>`;
+    html +=`<button onclick="importtabelmanualdeskripsi('${kondisi}')" class="tangan w3-btn w3-pale-green w3-margin w3-round-xlarge w3-border" title="Import ke Ms. Excel"><i class="fa fa-file-excel-o"></i> Import</button>`;
+    html +=`<br>Perlu diperhatikan, dalam mengimport file urutan data nama harus sesuai dengan urutan daftar nama yang ada di dalam tabel ini.</div>`
+
+    html +=`</div>`;
+    return html
+}
+
+
+const panggilkompetensiaslideskripsi = (kd,callbekbukan="") =>{ // tombolpertamakaliupdate
+    let info = document.querySelector(".info_mbtr");
+    let p_K = kd =="k3"?"_P_":"_K_";
+    info.innerHTML = `<h4 style="text-align:center"><i class="fa fa-spin fa-spinner"></i> Memproses database deskripsi ${kd.toUpperCase()} Raport Final  ...</h4>`;
+    let tab2 = "Induksemetara";
+    let param2 = "&kelas=" + idNamaKelas + "&prefiktab=" + tab2;//+ "&datahead=" + stinghead;//+ "&dataisi=" + stingisi;
+    fetch(constlinknilai + "?action=getdatafromtab" + param2)
+    .then(m => m.json())
+    .then(k => {
+            if(k.result == 0){
+                alert("Anda belum pernah menyimpan data olahan apapun di server untuk nilai Raport. Sistem akan melacak keberadaan database yang tersimpan dari fitur OLAH NILAI");
+                info.innerHTML = `<h4 style="text-align:center"><i class="fa fa-spin fa-spinner"></i> Mencoba Memproses data Hasil Olahan ...</h4>`
+                panggilDanBuatDeskripsiDariSimpanOlahKD(kd, "info0");
+            }else{
+                
+                info.innerHTML = `<h4 style="text-align:center">Berhasil memuat database Server Deskripsi Nilai Raport Final (${kd.toUpperCase()})</h4> ` + tombolbantuexportimportdeskripsi(kd) ;//+tomboldatakd_asli;// +" " + tambahfituruploadimport(kd);
+                let tabelbody = tabelraportmanual.querySelector("tbody");
+                let resdatas = k.data;
+                for(i = 0 ; i < tabelbody.rows.length ; i++){
+                    let dataT = resdatas[i]
+                    let elemen = tabelbody.rows[i].querySelectorAll("[data-keyraportindukmanual]");
+                    
+                    for(j = 0 ; j < elemen.length; j++){
+                        let key = elemen[j].getAttribute("data-keyraportindukmanual");
+                        if(elemen[j].nodeName == "TD"){
+                            elemen[j].innerHTML = dataT[key]
+                        }else{
+                            let inputan = elemen[j]
+                            let val = dataT[key]
+                            if(inputan.type == "date"){
+                                inputan.value = val ==""?"":StringTanggalnol(new Date(val));
+                            }else if(inputan.type =="select-one"){
+                                inputan.value = val;
+                            }else{
+                                inputan.value = val;
+                            }
+                            
+                        }
+                    }
+                    for(j = 0 ; j < elemen.length; j++){
+                        let key = elemen[j].getAttribute("data-keyraportindukmanual");
+                        let acuanP_Nilai = p_K+"NILAI"
+                        if(key.indexOf(acuanP_Nilai)>-1){
+                            let val = dataT[key]
+                            let namamapelkeyini = key.split("_")[4];
+                            let ktkunci = prefix_stringkeyinduk + kd +"_raport_"+ namamapelkeyini;
+                            
+                            tabelbody.rows[i].querySelector(`[data-keyraportindukmanual="${ktkunci}"]`).value = val;
+                        }
+                    }
+                }
+            }
+    }).catch(er  => console.log(er))
+}
+
+const panggilDanBuatDeskripsiDariSimpanOlahKD = (kd, info0) =>{
+    let info = document.querySelector(".info_mbtr");
+    info.innerHTML = `<h4 style="text-align:center"><i class="fa fa-spin fa-spinner"></i> Memproses database deskripsi ${kd.toUpperCase()} Nilai Olah  ...</h4>`;
+    let tab = kd=="k3"?"rekapkd3":"rekapkd4";
+                    let ceklistrue = kd =="k3"?"cekliskd3":"cekliskd4";
+                    let namakd = kd =="k3"?"kd3":"kd4";
+                    let p_K = kd =="k3"?"_P_":"_K_";
+                    let mapelaktif = koleksiarraymapelaktif();
+                    let datamapelfull = mapelaktif.kodemapel;
+                    let kkmglobal = mapelaktif.kkmmin
+                    let datamapel =  datamapelfull.filter(s => !(s =="PAI"||s =="PKATO"|| s=="PKRIS"||s=="PHIND"||s=="PBUDH"|| s=="PKONG")); // []
+                    let datakdtrue = mapelaktif.source.filter(s => s[ceklistrue] == true);
+                    let param = "&kelas=" + idNamaKelas + "&prefiktab=" + tab;//+ "&datahead=" + stinghead;//+ "&dataisi=" + stingisi;
+                    fetch(constlinknilai + "?action=getdatafromtab" + param)
+                        .then(m => m.json())
+                        .then(k => {
+                            if(k.result == 0){
+                                alert("Anda belum pernah menyimpan data olahan apapun di server. Anda mesti input nilai satu per satu")
+                                info.innerHTML = `<h4 style="text-align:center">TIDAK DITEMUKAN DATABASE OLAH NILAI</h4>Anda Terpaksa harus mengisi manual untuk deskripsi ini atau pilih Import-Export berikut:` + tombolbantuexportimportdeskripsi(kd);
+                            }else{
+                                info.innerHTML = `<h4 style="text-align:center">Berhasil memuat database Server Deskripsi Nilai Olah</h4>` + tombolbantuexportimportdeskripsi(kd);
+                            
+                                //console.log(k);
+                                let datanilai = k.data;
+                                datanilaidariserverkd3 = k.data;
+                                let dataalgoritma = []
+                                for(i = 0 ; i < datanilai.length ; i++){
+                                    let row = tabelraportmanual.querySelector("tbody").rows[i]
+                                    let dataperbaris = datanilai[i]
+                                    let objekalgoritma = {};
+                                    objekalgoritma.index = i;
+                                    objekalgoritma.namasiswa = dataperbaris.nama;
+                                    let agama = convertAgamaSiswaMapel(jsondatasiswa[i].pd_agama);//Object.keys(tesdata[0]).filter(s => s.indexOf("PAI_3.1")>-1).map(m=> parseFloat(tesdata[0][m])).reduce((a,b)=>a+b)
+                                    let algomapel = datakdtrue.filter(s => s.mapel == agama).map(m => agama+"_"+m[namakd]).map(n =>[{"namakd":n.split("_")[1], "arraykd": Object.keys(dataperbaris).filter(ss => ss.indexOf(n)>-1).map(mm=> parseFloat(dataperbaris[mm])),"length":Object.keys(dataperbaris).filter(ss => ss.indexOf(n)>-1).map(mm=> parseFloat(dataperbaris[mm])).length,"nilaikd":Object.keys(dataperbaris).filter(ss => ss.indexOf(n)>-1).map(mm=> parseFloat(dataperbaris[mm])).length==3?Object.keys(dataperbaris).filter(ss => ss.indexOf(n)>-1).map(mm=> parseFloat(dataperbaris[mm])).reduce((a, b, i)=> (i==1?a*2:a)+b)/4:Object.keys(dataperbaris).filter(ss => ss.indexOf(n)>-1).map(mm=> parseFloat(dataperbaris[mm])).reduce((a,b)=>a+b)/Object.keys(dataperbaris).filter(ss => ss.indexOf(n)>-1).map(mm=> parseFloat(dataperbaris[mm])).length   }][0]);
+                                    let nilaimapelraport = algomapel.map(m => m.nilaikd).reduce((a,b)=>a+b)/algomapel.length;
+                                    let arraynilaikd = algomapel.map(m => m.nilaikd)
+                                    let nilaikdmaksimal = Math.max(...arraynilaikd);
+                                    let nilaikdminimal = Math.min(...arraynilaikd);
+                                    
+                                    
+                                    let predikatraport = fn_predikatkriteria(nilaimapelraport,kkmglobal);
+                                    let kdmaksimal = algomapel.filter(s=>s.nilaikd == nilaikdmaksimal).length==0?"": algomapel.filter(s=>s.nilaikd == nilaikdmaksimal)[0]["namakd"];
+                                    let predikatkdmaksimal = fn_predikatkriteria(nilaikdmaksimal,kkmglobal);
+                                    let kdminimal = algomapel.filter(s=>s.nilaikd == nilaikdminimal).length==0?"": algomapel.filter(s=>s.nilaikd == nilaikdminimal)[0]["namakd"];
+                                    let predikatkdminimal = fn_predikatkriteria(nilaikdminimal,kkmglobal);
+                                    let objekisi = {}
+                                        objekisi.nilai_predikat = predikatraport;
+                                        objekisi.kd_maks = kdmaksimal;
+                                        objekisi.kd_min = kdminimal;
+                                        objekisi.predikat_maks = predikatkdmaksimal;
+                                        objekisi.predikat_min = predikatkdminimal;
+
+                                    objekalgoritma.agama = objekisi;
+                                    
+                                        row.querySelector(`input[data-keyraportindukmanual="${prefix_stringkeyinduk}${kd}_raport_AGAMA"]`).value = nilaimapelraport;
+                                        // row.querySelector(`[data-keyraportindukmanual="${prefix_stringkeyinduk}AGAMA${p_K}PREDIKAT"]`).value = predikatraport;
+                                        let val_kdmaksteks = "",val_predikatKdmin="",val_kdminteks="";
+                                        //<span class="w3-text-blue">${val_predikatKdmin} dalam</span> ${val_kdminteks}`;
+                                        let el1 = row.querySelector(`[data-keyraportindukmanual="${prefix_stringkeyinduk}AGAMA${p_K}PREDIKAT"]`);
+                                        let ops1 = Array.from(el1);
+                                            ops1.forEach((ops,i) =>{
+                                                if(ops.value == predikatraport){
+                                                    el1.selectedIndex = i;
+                                                }
+                                            });//.value = predikatraport;
+                                        
+                                        let el2 = row.querySelector(`[data-deskripsi${kd}="predikat_kdmaks_AGAMA"]`);
+                                        let ops2 = Array.from(el2);
+                                            ops2.forEach((ops, i)=> {
+                                                if(ops.value == predikatkdmaksimal){
+                                                    el2.selectedIndex = i;
+                                                    
+                                                }
+                                            })
+                                        //.value = predikatkdmaksimal;
+                                        let el3 = row.querySelector(`[data-deskripsi${kd}="predikat_kdmin_AGAMA"]`);
+                                        let ops3 = Array.from(el3);
+                                            ops3.forEach((ops, i)=>{
+                                                if(ops.value ==predikatkdminimal){
+                                                    el3.selectedIndex = i;
+                                                }
+                                            })//.value = predikatkdminimal;
+                                        let el4 = row.querySelector(`[data-deskripsi${kd}="kdmaks_AGAMA"]`);
+                                        let ops4 = Array.from(el4);
+                                        ops4.forEach((ops, i)=>{
+                                            if(ops.value == kdmaksimal){
+                                                el4.selectedIndex = i;
+                                                val_kdmaksteks = ops.getAttribute(`data-opsivalue`)
+                                            
+                                            }
+                                        })//.value = kdmaksimal;
+
+                                        let el5 = row.querySelector(`[data-deskripsi${kd}="kdmin_AGAMA"]`);
+                                        let ops5 = Array.from(el5);
+                                        ops5.forEach((ops, i)=>{
+                                            if(ops.value == kdminimal){
+                                                el5.selectedIndex = i;
+                                                
+                                                val_kdminteks = ops.getAttribute(`data-opsivalue`)
+                                            }
+                                        }) //.value = kdminimal;
+                                        let html = '';
+                                        html +=`Ananda ${jsondatasiswa[i].pd_nama} <span class="w3-text-blue">${predikatkdmaksimal} dalam</span> ${val_kdmaksteks}, <span class="w3-text-blue">${predikatkdminimal} dalam</span> ${val_kdminteks}`;
+                                        //cariinput.innerHTML = html;
+
+                                        row.querySelector(`[data-deskripsi${kd}="deskripsi_AGAMA"]`).innerHTML = html; ;//change_deskripsi2(i,el5, kd,"AGAMA");
+
+
+                                    
+                                    for(j = 0 ; j < datamapel.length ; j++){
+                                        algomapel = datakdtrue.filter(s => s.mapel == datamapel[j]).map(m => datamapel[j]+"_"+m[namakd]).map(n =>[{"namakd":n.split("_")[1], "arraykd": Object.keys(dataperbaris).filter(ss => ss.indexOf(n)>-1).map(mm=>parseFloat(dataperbaris[mm])),"length":Object.keys(dataperbaris).filter(ss => ss.indexOf(n)>-1).map(mm=> parseFloat(dataperbaris[mm])).length,"nilaikd":Object.keys(dataperbaris).filter(ss => ss.indexOf(n)>-1).map(mm=> parseFloat(dataperbaris[mm])).length==3?Object.keys(dataperbaris).filter(ss => ss.indexOf(n)>-1).map(mm=> parseFloat(dataperbaris[mm])).reduce((a, b, i)=> (i==1?a*2:a)+b)/4:Object.keys(dataperbaris).filter(ss => ss.indexOf(n)>-1).map(mm=> parseFloat(dataperbaris[mm])).reduce((a,b)=>a+b)/Object.keys(dataperbaris).filter(ss => ss.indexOf(n)>-1).map(mm=> parseFloat(dataperbaris[mm])).length   }][0]);
+                                    
+                                        nilaimapelraport = algomapel.map(m => m.nilaikd).reduce((a,b)=>a+b)/algomapel.length;
+                                        arraynilaikd = algomapel.map(m => m.nilaikd)
+                                        nilaikdmaksimal = Math.max(...arraynilaikd);
+                                        nilaikdminimal = Math.min(...arraynilaikd);
+                                        predikatraport = fn_predikatkriteria2(nilaimapelraport,kkmglobal);
+                                        kdmaksimal = algomapel.filter(s=>s.nilaikd == nilaikdmaksimal).length==0?"": algomapel.filter(s=>s.nilaikd == nilaikdmaksimal)[0]["namakd"];
+                                        predikatkdmaksimal = fn_predikatkriteria2(nilaikdmaksimal,kkmglobal);
+                                        kdminimal = algomapel.filter(s=>s.nilaikd == nilaikdminimal).length==0?"": algomapel.filter(s=>s.nilaikd == nilaikdminimal)[0]["namakd"];
+                                        predikatkdminimal = fn_predikatkriteria2(nilaikdminimal,kkmglobal);
+                                        
+                                        objekisi = {}
+                                        objekisi.nilai_predikat = predikatraport;
+                                        objekisi.kd_maks = kdmaksimal;
+                                        objekisi.kd_min = kdminimal;
+                                        objekisi.predikat_maks = predikatkdmaksimal;
+                                        objekisi.predikat_min = predikatkdminimal;
+                                        objekalgoritma[datamapel[j]] = objekisi;
+                                        //diisikan ke elemen input;
+                                        
+                                            row.querySelector(`input[data-keyraportindukmanual="${prefix_stringkeyinduk}${kd}_raport_${datamapel[j]}"]`).value = nilaimapelraport;
+                                            let val_kdmaksteks = "",val_predikatKdmin="",val_kdminteks="";
+                                            //<span class="w3-text-blue">${val_predikatKdmin} dalam</span> ${val_kdminteks}`;
+                                            let el1 = row.querySelector(`[data-keyraportindukmanual="${prefix_stringkeyinduk}${datamapel[j]}${p_K}PREDIKAT"]`);
+                                            let ops1 = Array.from(el1);
+                                                ops1.forEach((ops, i)=>{
+                                                    if(ops.value == predikatraport){
+                                                        el1.selectedIndex = i;
+                                                    }
+                                                })  //.value = predikatraport;
+                                            let el2 = row.querySelector(`[data-deskripsi${kd}="predikat_kdmaks_${datamapel[j]}"]`);
+                                            let ops2 = Array.from(el2);
+                                                ops2.forEach((ops, i)=>{
+                                                    if(ops.value == predikatkdmaksimal){
+                                                        el2.selectedIndex = i;
+                                                    }
+                                                })  //.value = predikatkdmaksimal;
+                                            let el3 = row.querySelector(`[data-deskripsi${kd}="predikat_kdmin_${datamapel[j]}"]`);
+                                            let ops3 = Array.from(el3);
+                                                ops3.forEach((ops, i)=>{
+                                                    if(ops.value == predikatkdminimal){
+                                                        el3.selectedIndex = i;
+                                                    }
+                                                })   //.value = predikatkdminimal;
+                                            let el4 = row.querySelector(`[data-deskripsi${kd}="kdmaks_${datamapel[j]}"]`);  //.value = kdmaksimal;
+                                            let ops4 = Array.from(el4);
+                                                ops4.forEach((ops, i)=>{
+                                                    if(ops.value == kdmaksimal){
+                                                        el4.selectedIndex = i;
+                                                        val_kdmaksteks = ops.getAttribute(`data-opsivalue`)
+                                                        
+                                                    }
+                                                })
+                                            let el5 = row.querySelector(`[data-deskripsi${kd}="kdmin_${datamapel[j]}"]`);   //.value = kdminimal;
+                                            let ops5 = Array.from(el5);
+                                                ops5.forEach((ops, i)=>{
+                                                    if(ops.value == kdminimal){
+                                                        el5.selectedIndex = i;
+                                                        val_kdminteks = ops.getAttribute(`data-opsivalue`);
+                                                    }
+                                                })
+                                            let html = '';
+                                            html +=`Ananda ${jsondatasiswa[i].pd_nama} <span class="w3-text-blue">${predikatkdmaksimal} dalam</span> ${val_kdmaksteks}, <span class="w3-text-blue">${predikatkdminimal} dalam</span> ${val_kdminteks}`;
+                                    
+                                            row.querySelector(`[data-deskripsi${kd}="deskripsi_${datamapel[j]}"]`).innerHTML = html;//change_deskripsi2(i,el5, kd,datamapel[j]);
+                                        
+
+                                        // objekalgoritma[datamapel[j]] = datakdtrue.filter(s => s.mapel == datamapel[j]).map(m => datamapel[j]+"_"+m[namakd]).map(n =>[{"namakd":n.split("_")[1], "arraykd": Object.keys(dataperbaris).filter(ss => ss.indexOf(n)>-1).map(mm=>parseFloat(dataperbaris[mm])),"length":Object.keys(dataperbaris).filter(ss => ss.indexOf(n)>-1).map(mm=> parseFloat(dataperbaris[mm])).length,"nilaikd":Object.keys(dataperbaris).filter(ss => ss.indexOf(n)>-1).map(mm=> parseFloat(dataperbaris[mm])).length==3?Object.keys(dataperbaris).filter(ss => ss.indexOf(n)>-1).map(mm=> parseFloat(dataperbaris[mm])).reduce((a, b, i)=> (i==1?a*2:a)+b)/4:Object.keys(dataperbaris).filter(ss => ss.indexOf(n)>-1).map(mm=> parseFloat(dataperbaris[mm])).reduce((a,b)=>a+b)/Object.keys(dataperbaris).filter(ss => ss.indexOf(n)>-1).map(mm=> parseFloat(dataperbaris[mm])).length   }][0]);
+                                    }
+                                    dataalgoritma.push(objekalgoritma)
+                                }
+                            }
+                                // console.log(dataalgoritma);
+                        })
+                        .catch(er => console.log(er))
+}
+
+
+const panggilDeskripsiSimpananIndukSementara = (kd,callbekbukan="") =>{ // 
+    let info = document.querySelector(".info_mbtr");
+    info.innerHTML = `<h4 style="text-align:center"><i class="fa fa-spin fa-spinner"></i> Memproses database deskripsi ${kd.toUpperCase()} Raport Final  ...</h4>`;
+    let p_K = kd =="k3"?"_P_":"_K_";
+    let tab2 = "Induksemetara";
+    let param2 = "&kelas=" + idNamaKelas + "&prefiktab=" + tab2;//+ "&datahead=" + stinghead;//+ "&dataisi=" + stingisi;
+    fetch(constlinknilai + "?action=getdatafromtab" + param2)
+    .then(m => m.json())
+    .then(k => {
+            if(k.result == 0){
+                info.innerHTML = `<h4 style="text-align:center">Tidak ditemukan database server Nilai Raport Final.</h4>` + tombolbantuexportimportdeskripsi(kd);
+            }else{
+                
+                info.innerHTML = `<h4 style="text-align:center">Berhasil memuat database Server Nilai Raport Final (${kd.toUpperCase()})</h4> ` + tombolbantuexportimportdeskripsi(kd);//+tomboldatakd_asli;// +" " + tambahfituruploadimport(kd);
+                let tabelbody = tabelraportmanual.querySelector("tbody");
+                let resdatas = k.data;
+                for(i = 0 ; i < tabelbody.rows.length ; i++){
+                    let dataT = resdatas[i]
+                    let elemen = tabelbody.rows[i].querySelectorAll("[data-keyraportindukmanual]");
+                    
+                    for(j = 0 ; j < elemen.length; j++){
+                        let key = elemen[j].getAttribute("data-keyraportindukmanual");
+                        if(elemen[j].nodeName == "TD"){
+                            elemen[j].innerHTML = dataT[key]
+                        }else{
+                            let inputan = elemen[j]
+                            let val = dataT[key]
+                            if(inputan.type == "date"){
+                                inputan.value = val ==""?"":StringTanggalnol(new Date(val));
+                            }else if(inputan.type =="select-one"){
+                                inputan.value = val;
+                            }else{
+                                inputan.value = val;
+                            }
+                            
+                        }
+                    }
+                    for(j = 0 ; j < elemen.length; j++){
+                        let key = elemen[j].getAttribute("data-keyraportindukmanual");
+                        let acuanP_Nilai = p_K+"NILAI"
+                        if(key.indexOf(acuanP_Nilai)>-1){
+                            let val = dataT[key]
+                            let namamapelkeyini = key.split("_")[4];
+                            let ktkunci = prefix_stringkeyinduk + kd +"_raport_"+ namamapelkeyini;
+                            
+                            tabelbody.rows[i].querySelector(`[data-keyraportindukmanual="${ktkunci}"]`).value = val;
+                        }
+                    }
+                }
+            }
+    }).catch(er  => console.log(er))
+
+    
+}
+
+const exporttabelmanualdeskripsi = (kondisi) => {
+    let kodemapelaktif = buateditorkdaktif.filter(s => s.cekliskd3 == true || s.cekliskd4 == true).map(m => m.mapel).filter((x,i,a)=> a.indexOf(x)==i);
+    let koleksimapeljadi = kodemapelaktif.filter(s => !(s =="PAI" || s == "PKATO" || s== "PKRIS" || s == "PHIND" || s == "PBUDH"));
+    koleksimapeljadi.splice(0,0,"AGAMA");
+    let arraykkm = koleksimapeljadi.filter(s => s !== "AGAMA").map(m => buateditorkdaktif.filter(ss => ss.mapel == m)[0].kkm)
+    let kkmagama = buateditorkdaktif.filter(s => s.mapel =="PAI")[0].kkm;
+    arraykkm.splice(0,0, kkmagama);
+    
+    let jumlahkolomheader = (koleksimapeljadi.length * 7)
+
+    let divto = document.getElementById("datasiswaprint");
+
+    let tabelbayangan = document.createElement("table");
+    tabelbayangan.setAttribute("id","tabelbayanganexport");
+    let row = tabelbayangan.insertRow(-1);
+    let sel = row.insertCell(-1);
+    sel.setAttribute("colspan",(jumlahkolomheader+3));
+    sel.setAttribute("style","text-align:center;font-weight:bold");
+    sel.innerHTML = "HASIL EXPORT DATA OLAH DESKRIPSI " + kondisi.toUpperCase() ;
+    
+    row = tabelbayangan.insertRow(-1);
+    sel = row.insertCell(-1);
+    sel.setAttribute("colspan",(jumlahkolomheader+3));
+    sel.setAttribute("style","text-align:center;font-weight:bold");
+    sel.innerHTML = "KELAS " + idNamaKelas;
+
+    row = tabelbayangan.insertRow(-1);
+    sel = row.insertCell(-1);
+    sel.setAttribute("colspan",(jumlahkolomheader+3));
+    sel.setAttribute("style","text-align:center;font-weight:bold");
+    sel.innerHTML = "TAHUN PELAJARAN " + idTeksTapel +" SEMESTER " + idSemester;
+    
+        row = tabelbayangan.insertRow(-1);
+        sel = row.insertCell(-1);
+        sel.setAttribute("colspan",(jumlahkolomheader+3));
+        sel.setAttribute("style","text-align:center;font-weight:bold");
+        sel.innerHTML = "";
+    
+        row = tabelbayangan.insertRow(-1);
+        sel = row.insertCell(-1);
+        sel.setAttribute("colspan",(jumlahkolomheader+3));
+        sel.setAttribute("style","text-align:center;font-weight:bold");
+        sel.innerHTML = "";
+    
+    row = tabelbayangan.insertRow(-1);
+    sel = row.insertCell(-1);
+    sel.setAttribute("style","text-align:center;font-weight:bold");
+    sel.setAttribute("rowspan","3");
+    sel.innerHTML = "No.";
+
+    sel = row.insertCell(-1);
+    sel.setAttribute("style","text-align:center;font-weight:bold");
+    sel.setAttribute("rowspan","3");
+    sel.innerHTML = "Id"
+
+    sel = row.insertCell(-1);
+    sel.setAttribute("style","text-align:center;font-weight:bold");
+    sel.setAttribute("rowspan","3");
+    sel.innerHTML = "Nama Siswa"
+
+    // sel = row.insertCell(-1);
+    // sel.setAttribute("style","text-align:center;font-weight:bold");
+    // sel.setAttribute("colspan",(jumlahkolomheader));
+    // if(kondisi == "k3"){
+    //     sel.innerHTML = "DATA OLAH DESKRISPI KI-3";
+    // }else{
+    //     sel.innerHTML = "DATA OLAH DESKRIPSI KI-4";
+    // }
+
+    //row = tabelbayangan.insertRow(-1);
+    for(i = 0 ; i < koleksimapeljadi.length ; i++){
+            sel = row.insertCell(-1);
+            sel.setAttribute("style","text-align:center");
+            sel.setAttribute("colspan","7");
+            sel.innerHTML = koleksimapeljadi[i]
+    }
+    row = tabelbayangan.insertRow(-1);
+    for(j = 0 ; j < koleksimapeljadi.length ; j++){
+        let p_K = kondisi == "k3"?"_P_":"_K_";
+        //nilairaportnya
+        sel = row.insertCell(-1);
+        sel.setAttribute("style","text-align:center");
+        sel.innerHTML = `${prefix_stringkeyinduk}${kondisi}_raport_${koleksimapeljadi[j]}`
+        //predikat nilairaportnya
+        sel = row.insertCell(-1);
+        sel.setAttribute("style","text-align:center");
+        sel.innerHTML = `${prefix_stringkeyinduk}${koleksimapeljadi[j]}${p_K}PREDIKAT`;
+
+        //prediakat maks
+        sel = row.insertCell(-1);
+        sel.setAttribute("style","text-align:center");
+        sel.innerHTML = `${prefix_stringkeyinduk}${kondisi}_predikat_kdmaks_${koleksimapeljadi[j]}`;
+
+        // kdmaks
+        sel = row.insertCell(-1);
+        sel.setAttribute("style","text-align:center");
+        sel.innerHTML = `${prefix_stringkeyinduk}${kondisi}_kdmaks_${koleksimapeljadi[j]}`;
+        //prediakat min
+        sel = row.insertCell(-1);
+        sel.setAttribute("style","text-align:center");
+        sel.innerHTML = `${prefix_stringkeyinduk}${kondisi}_predikat_kdmin_${koleksimapeljadi[j]}`;
+
+        // kdmaks
+        sel = row.insertCell(-1);
+        sel.setAttribute("style","text-align:center");
+        sel.innerHTML = `${prefix_stringkeyinduk}${kondisi}_kdmin_${koleksimapeljadi[j]}`;
+
+        sel = row.insertCell(-1);
+        sel.setAttribute("style","text-align:center");
+        sel.innerHTML = `${prefix_stringkeyinduk}${koleksimapeljadi[j]}${p_K}DESKRIPSI`;
+
+    }
+
+    // sel = row.insertCell(-1);
+    // sel.setAttribute("style","text-align:center");
+    // sel.setAttribute("rowspan","2");
+    // sel.innerHTML = "Jumlah";
+    
+    // sel = row.insertCell(-1);
+    // sel.setAttribute("style","text-align:center");
+    // sel.setAttribute("rowspan","2");
+    // sel.innerHTML = "Rangking";
+    
+    row = tabelbayangan.insertRow(-1);
+    for(i = 0 ; i < koleksimapeljadi.length ; i++){
+        
+            sel = row.insertCell(-1);
+            sel.setAttribute("style","text-align:center");
+            sel.innerHTML = "Nilai Raport";
+
+            sel = row.insertCell(-1);
+            sel.setAttribute("style","text-align:center");
+            sel.innerHTML = "Predikat Raport";
+
+            sel = row.insertCell(-1);
+            sel.setAttribute("style","text-align:center");
+            sel.innerHTML = "Predikat KD Maksimal";
+
+            sel = row.insertCell(-1);
+            sel.setAttribute("style","text-align:center");
+            sel.innerHTML = "KD Maksimal";
+
+            sel = row.insertCell(-1);
+            sel.setAttribute("style","text-align:center");
+            sel.innerHTML = "Predikat KD Minimal";
+
+            sel = row.insertCell(-1);
+            sel.setAttribute("style","text-align:center");
+            sel.innerHTML = "KD Minimal";
+
+            sel = row.insertCell(-1);
+            sel.setAttribute("style","text-align:center");
+            sel.innerHTML = "Deskripsi Raport";
+    }
+    //kkmagama
+    let quer = tabelraportmanual.querySelector("tbody").rows;
+    let tquer = prefix_stringkeyinduk
+    for(i = 0 ; i < jsondatasiswa.length ; i++){
+        row = tabelbayangan.insertRow(-1);
+        sel = row.insertCell(-1);
+        sel.innerHTML = (i+1);
+        
+        
+        sel = row.insertCell(-1);
+        sel.innerHTML = jsondatasiswa[i].id;
+        
+       
+        sel = row.insertCell(-1);
+        sel.innerHTML = jsondatasiswa[i].pd_nama;
+
+        for(j = 0 ; j < koleksimapeljadi.length ; j++){
+            //nilai raport
+            sel = row.insertCell(-1);
+            sel.setAttribute("style","text-align:center");
+            sel.innerHTML = parseInt(quer[i].querySelector(`[data-keyraportindukmanual="${prefix_stringkeyinduk}${kondisi}_raport_${koleksimapeljadi[j]}"]`).value)
+            
+            let p_K = kondisi == "k3"?"_P_":"_K_";
+            //predikat nilai raport
+            sel = row.insertCell(-1);
+            sel.setAttribute("style","text-align:center");
+            sel.innerHTML = quer[i].querySelector(`[data-keyraportindukmanual="${prefix_stringkeyinduk}${koleksimapeljadi[j]}${p_K}PREDIKAT"]`).value
+            
+            // predikat kdmaks ;//2122_13_1_2_k3_predikat_kdmaks_AGAMA
+            sel = row.insertCell(-1);
+            sel.setAttribute("style","text-align:center");
+            sel.innerHTML = quer[i].querySelector(`[data-keyraportindukmanual="${prefix_stringkeyinduk}${kondisi}_predikat_kdmaks_${koleksimapeljadi[j]}"]`).value
+            
+            // kdmakss ;
+            sel = row.insertCell(-1);
+            sel.setAttribute("style","text-align:center");
+            sel.innerHTML = "'"+quer[i].querySelector(`[data-keyraportindukmanual="${prefix_stringkeyinduk}${kondisi}_kdmaks_${koleksimapeljadi[j]}"]`).value
+            
+            // predikat kdmin ;
+            sel = row.insertCell(-1);
+            sel.setAttribute("style","text-align:center");
+            sel.innerHTML = quer[i].querySelector(`[data-keyraportindukmanual="${prefix_stringkeyinduk}${kondisi}_predikat_kdmin_${koleksimapeljadi[j]}"]`).value
+            
+            // kdmin ;
+            sel = row.insertCell(-1);
+            sel.setAttribute("style","text-align:center");
+            sel.innerHTML = "'"+quer[i].querySelector(`[data-keyraportindukmanual="${prefix_stringkeyinduk}${kondisi}_kdmin_${koleksimapeljadi[j]}"]`).value
+            
+            //deskripsi
+            sel = row.insertCell(-1);
+            sel.setAttribute("style","text-align:center");
+            sel.innerHTML = quer[i].querySelector(`[data-keyraportindukmanual="${prefix_stringkeyinduk}${koleksimapeljadi[j]}${p_K}DESKRIPSI"]`).innerHTML;
+            
+
+        }
+        // let colsel = (i + 9);
+        // let colomrata = koleksimapeljadi.length+4;
+        // let hurufrangking = (colomrata+9).toString(36).toUpperCase();
+        // sel = row.insertCell(-1);
+        // sel.innerHTML =`=SUM(OFFSET(D${colsel};0;0;1;${koleksimapeljadi.length}))`;
+        // sel = row.insertCell(-1);
+        // sel.innerHTML =`=RANK(${hurufrangking}${colsel};OFFSET(${hurufrangking}9;0;0;${jsondatasiswa.length};1))`;;
+        // //hurufrangking+" "+colsel +" "+ colomrata;//
+        
+        
+    }
+
+        
+
+    divto.appendChild(tabelbayangan)
+    $("#tabelbayanganexport").table2excel({
+
+        name: "Worksheet Name",
+        filename: "FILE EXPORT REKAP MANUAL "+ kondisi  + new Date().getTime(),
+        fileext: ".xls",
+        exclude_img: true,
+        exclude_links: true,
+        exclude_inputs: true,
+        preserveColors: true,
+        jumlahheader: 3,
+        barisatas: 5
+
+    });
+    divto.innerHTML = "";
+}
+
+const importtabelmanualdeskripsi = (kondisi) => {
+    let tinputexcel = document.getElementById("fileImportExcel");
+    tinputexcel.addEventListener('change', () => {
+        var fileUpload = tinputexcel;//document.getElementById("fileUpload");
+
+        //Validate whether File is valid Excel file.
+        var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xls|.xlsx)$/;
+        if (regex.test(fileUpload.value)) {
+            if (typeof (FileReader) != "undefined") {
+                var reader = new FileReader();
+
+                //For Browsers other than IE.
+                if (reader.readAsBinaryString) {
+                    reader.onload = function (e) {
+                        prosesImportdataRaportManual2(e.target.result, kondisi);
+                    };
+                    reader.readAsBinaryString(fileUpload.files[0]);
+                } else {
+                    //For IE Browser.
+                    reader.onload = function (e) {
+                        var data = "";
+                        var bytes = new Uint8Array(e.target.result);
+                        for (var i = 0; i < bytes.byteLength; i++) {
+                            data += String.fromCharCode(bytes[i]);
+                        }
+                        prosesImportdataRaportManual2(data, kondisi);
+                    };
+                    reader.readAsArrayBuffer(fileUpload.files[0]);
+                }
+            } else {
+                alert("Browsernya versi jadul. Ga support.... Ganti dengan Chrome yang terupdate ya");
+            }
+        } else {
+            alert("Importnya file Excel ya ... bukan yang lain.");
+        }
+    })
+    tinputexcel.click();
+}
+const prosesImportdataRaportManual2 = (data, kondisi)=>{
+    var workbook = XLSX.read(data, {
+        type: 'binary'
+    });
+
+    //Fetch the name of First Sheet.
+    var firstSheet = workbook.SheetNames[0];
+
+    //Read all rows from First Sheet into an JSON array.
+    var excelRows = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[firstSheet]);
+    
+    let koleksikeydariexcel = Object.values(excelRows[3]);
+    
+    
+    let tabelrow = tabelraportmanual.querySelector("tbody").rows;
+    for(i = 0 ; i < tabelrow.length ; i++){
+        for(j = 0 ; j < koleksikeydariexcel.length;j++){
+            let tekskey
+            tekskey = `[data-keyraportindukmanual="${koleksikeydariexcel[j]}"]`
+            
+            let elemen = tabelrow[i].querySelector(tekskey);
+            //console.log(excelRows[(i+6)],(j+3),Object.values(excelRows[(i+6)])[j+3])
+            if(elemen !==null){
+                let val = Object.values(excelRows[(i+5)])[(j+3)];
+                if(elemen.nodeName == "TD"){
+                    elemen.innerHTML = val
+                }else{
+                    let inputan = elemen
+                    if(inputan.type == "date"){
+                        inputan.value = val ==""?"":StringTanggalnol(new Date(val));
+                    }else if(inputan.type =="select-one"){
+                        inputan.value = val.replace("'","");
+                    }else{
+                        inputan.value = val;
+                    }
+                    
+                }
+
+                //console.log(tekskey,elem)
+            }else{
+                console.log(tekskey,elem)
+                
+            }
+        }
+    }   //jumlahreratak3siswake_0 reratanilaik3siswa
+    // koleksikeydariexcel.splice(0,0,"no","id","namasiswa")
+    // let arrayobjekok = [];
+    // arrayobjekok = arrObjek(koleksikeydariexcel, excelRows.filter((k,i)=> i > 4 && i < jsondatasiswa.length + 5).map(m=>Object.values(m)))
+    // console.log(arrayobjekok);
+    
+
 }
