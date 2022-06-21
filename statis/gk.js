@@ -7561,6 +7561,15 @@ const accordiontab = (evt, cityName) => {
             html +=`<option value="${i}">${jsondatasiswa[i].pd_nama}</option>`;
         }
         domselect.innerHTML = html;
+    }else if(evt.currentTarget.innerHTML == "Raport Prestasi"){
+        let domselect = document.querySelector(".selectnama_nilairaport5semester");
+        let html = "";
+        for(i = 0 ; i < jsondatasiswa.length; i++){
+            html +=`<option value="${i}">${jsondatasiswa[i].pd_nama}</option>`;
+        }
+        domselect.innerHTML = html;
+        buatelementabelraport5semester();
+        bukadiv_raport5semester('inputnilairaport5semster');
     }
 }
 
@@ -13929,7 +13938,7 @@ const selectnamakelulusan = () => {
                     <tr>
                         <td>Pada Tanggal </td>
                         <td>:</td>
-                        <td>15 Juni 2021</td>
+                        <td>15 Juni 2022</td>
                     </tr>
                     <tr>
                         <td colspan="3">Kepala ${idNamaSekolah}</td>
@@ -14122,7 +14131,7 @@ const selectnamaskhu = () => {
         <div style="float:right;position:relative;text-align:left">
         <table>
             <tr><td>Ditetapkan di </td><td>:</td><td>${jlo.kota}</td></tr>
-            <tr><td>Pada Tanggal </td><td>:</td><td>15 Juni 2021</td></tr>
+            <tr><td>Pada Tanggal </td><td>:</td><td>15 Juni 2022</td></tr>
             <tr><td colspan="3">Kepala ${idNamaSekolah}</td></tr>
             <tr><td colspan="3" id="barcodepengumumanskhu"></td></tr>
             <tr><td colspan="3"><u><b>${idNamaKepsek}</b></u></td></tr>
@@ -14300,7 +14309,7 @@ const selectnamaketraport = () => {
         <div style="float:right;position:relative;text-align:left">
         <table>
             <tr><td>Ditetapkan di </td><td>:</td><td>${jlo.kota}</td></tr>
-            <tr><td>Pada Tanggal </td><td>:</td><td>15 Juni 2021</td></tr>
+            <tr><td>Pada Tanggal </td><td>:</td><td>15 Juni 2022</td></tr>
             <tr><td colspan="3">Kepala ${idNamaSekolah}</td></tr>
             <tr><td colspan="3" id="barcodepengumumanketraport"></td></tr>
             <tr><td colspan="3"><u><b>${idNamaKepsek}</b></u></td></tr>
@@ -14410,11 +14419,11 @@ const selectnamaformatijazah = () => {
             
             <p class="w3-xxlarge w3-center">LULUS</p>
             <p class="w3-justify">
-                dari sekolah dasar setelah memenuhi seluruh kriteria sesuai dengan peraturan perundang-undangan yang diumumkan tanggal 15 Juni 2021.
+                dari sekolah dasar setelah memenuhi seluruh kriteria sesuai dengan peraturan perundang-undangan yang diumumkan tanggal 15 Juni 2022.
             </p>
             
             <div style="float:right;position:relative;text-align:left">
-                ${jlo.kota}, 15 Juni 2021<br/>
+                ${jlo.kota}, 15 Juni 2022<br/>
                 Kepala sekolah
                 <br/>
                 <br/>
@@ -14522,7 +14531,7 @@ const selectnamaformatijazah = () => {
 
         </table><br/>
                 <div style="float:right;position:relative;text-align:left">
-                ${jlo.kota}, 15 Juni 2021<br/>
+                Kota ${jlo.kota}, 15 Juni 2022<br/>
                 Kepala sekolah
                 <br/>
                 <br/>

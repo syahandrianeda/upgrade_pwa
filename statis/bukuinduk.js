@@ -6298,8 +6298,11 @@ const bikintabelawalraportmanual = () =>{
 
         th = document.createElement("th");
         th.setAttribute("class","sel_deskripsi_k3 cellmanualinput");
-        th.setAttribute("colspan", (datamapel.length-6))
-        th.innerHTML = "Deskripsi Raport";
+        th.setAttribute("colspan", (datamapel.length-6));
+        let tambahgeneratee = `Deskripsi KI 3<br><button id="generatedeskripsik3">Generate Deskripsi</button>`
+        th.innerHTML = tambahgeneratee;
+
+        // th.innerHTML = "Deskripsi Raport";
         thead.rows[2].appendChild(th);
         
         th = document.createElement("th");//thead.rows[2].insertCell(-1);
@@ -6435,7 +6438,10 @@ const bikintabelawalraportmanual = () =>{
         th = document.createElement("th");
         th.setAttribute("class","sel_deskripsi_k4 cellmanualinput");
         th.setAttribute("colspan", (datamapel.length-6))
-        th.innerHTML = "Deskripsi Raport";
+        let tambahgenerate = `Deskripsi KI 4<br><button id="generatedeskripsik4">Generate Deskripsi</button>`
+        th.innerHTML = tambahgenerate;
+    
+
         thead.rows[2].appendChild(th);
         //disinitfoot
         th = document.createElement("th");//thead.rows[2].insertCell(-1);
@@ -7547,29 +7553,6 @@ const newAlgoritma = (kondisi, obj) =>{
     let koleksimapeldengangama = koleksimapel.kodemapel;
     let koleksimapeljadi = koleksimapeldengangama.filter(s => !(s =="PAI" || s == "PKATO" || s== "PKRIS" || s == "PHIND" || s == "PBUDH"));
     koleksimapeljadi.splice(0,0,"AGAMA");
-
-
-
-
-
-    // if(kondisi == "k3"){
-
-    // }else if(kondisi == "k4"){
-
-    // }else{
-    //     result =""
-    // }
-    // objeknilai["raport_" + namamapel] = oknilairaport;
-    //     objeknilai["kriteria_" + namamapel] = fn_predikatkriteria(oknilairaport);
-    //     objeknilai["maks_" + namamapel] = kdMaks;
-    //     objeknilai["kriteria_maks_" + namamapel] = fn_predikatkriteria(acuanmaks);
-    //     objeknilai["min_" + namamapel] = kdMins;
-    //     objeknilai["kriteria_min_" + namamapel] = fn_predikatkriteria(acuanmin);
-
-    //     arrayobjekmapel.push(objeknilai);
-
-    // }
-    // inforaport["datarraport"] = arrayobjekmapel;
 }
 let Objekdefinisikodemapel = {"PAI":"Pendidikan Agama Islam dan Budi Pekerti",
         "PKRIS":"Pendidikan Agama Kristen dan Budi Pekerti",
@@ -7588,6 +7571,8 @@ let Objekdefinisikodemapel = {"PAI":"Pendidikan Agama Islam dan Budi Pekerti",
         "TIK":"Mulok1"
 }
 const aktifkanmapel_deskripsimanual = (ele, kondisi,kodemapel)=>{
+    let tombolgenerate = document.getElementById("generatedeskripsi"+kondisi);
+    tombolgenerate.setAttribute("onclick",`generatekandeskripi('${kondisi}','${kodemapel}')`);
 
     let sel_deskripsi_k3_olah = tabelraportmanual.querySelectorAll(`.sel_deskripsi_${kondisi}_olah`);
     sel_deskripsi_k3_olah.forEach(el => {
@@ -9499,8 +9484,8 @@ const suratketerangansiswa = ()=>{
             }else if(key == "pd_alamat"){
                 let RT = obdatasiswa.dapo_rt == ""?"":`, RT. ${obdatasiswa.dapo_rt}`;
                 let RW = obdatasiswa.dapo_rw == ""?"":`/RW. ${obdatasiswa.dapo_rw}`;
-                let KELURAHAN = obdatasiswa.dapo_rw == ""?"":`, Kel. ${obdatasiswa.dapo_rw}`;
-                let KECAMATAN = obdatasiswa.dapo_rw == ""?"":`, Kec. ${obdatasiswa.dapo_rw}`;
+                let KELURAHAN = obdatasiswa.dapo_rw == ""?"":`, Kel. ${obdatasiswa.dapo_kelurahan}`;
+                let KECAMATAN = obdatasiswa.dapo_rw == ""?"":`, Kec. ${obdatasiswa.dapo_kceamatan}`;
                 elemenisi[j].innerHTML = val + RT + RW + KELURAHAN + KECAMATAN
             }else{
                 elemenisi[j].innerHTML = val
@@ -9518,8 +9503,8 @@ const suratketerangansiswa = ()=>{
             }else if(key == "pd_alamat"){
                 let RT = obdatasiswa.dapo_rt == ""?"":`, RT. ${obdatasiswa.dapo_rt}`;
                 let RW = obdatasiswa.dapo_rw == ""?"":`/RW. ${obdatasiswa.dapo_rw}`;
-                let KELURAHAN = obdatasiswa.dapo_rw == ""?"":`, Kel. ${obdatasiswa.dapo_rw}`;
-                let KECAMATAN = obdatasiswa.dapo_rw == ""?"":`, Kec. ${obdatasiswa.dapo_rw}`;
+                let KELURAHAN = obdatasiswa.dapo_rw == ""?"":`, Kel. ${obdatasiswa.dapo_kelurahan}`;
+                let KECAMATAN = obdatasiswa.dapo_rw == ""?"":`, Kec. ${obdatasiswa.dapo_kceamatan}`;
                 elemenisi[j].innerHTML = val + RT + RW + KELURAHAN + KECAMATAN
             }else{
                 elemenisi[j].innerHTML = val
@@ -9544,8 +9529,8 @@ const suratketerangansiswa = ()=>{
             }else if(key == "pd_alamat"){
                 let RT = obdatasiswa.dapo_rt == ""?"":`, RT. ${obdatasiswa.dapo_rt}`;
                 let RW = obdatasiswa.dapo_rw == ""?"":`/RW. ${obdatasiswa.dapo_rw}`;
-                let KELURAHAN = obdatasiswa.dapo_rw == ""?"":`, Kel. ${obdatasiswa.dapo_rw}`;
-                let KECAMATAN = obdatasiswa.dapo_rw == ""?"":`, Kec. ${obdatasiswa.dapo_rw}`;
+                let KELURAHAN = obdatasiswa.dapo_rw == ""?"":`, Kel. ${obdatasiswa.dapo_kelurahan}`;
+                let KECAMATAN = obdatasiswa.dapo_rw == ""?"":`, Kec. ${obdatasiswa.dapo_kceamatan}`;
                 elemenisi[j].innerHTML = val + RT + RW + KELURAHAN + KECAMATAN
             }else{
                 elemenisi[j].innerHTML = val
@@ -9571,8 +9556,8 @@ const suratketerangansiswa = ()=>{
             }else if(key == "pd_alamat"){
                 let RT = obdatasiswa.dapo_rt == ""?"":`, RT. ${obdatasiswa.dapo_rt}`;
                 let RW = obdatasiswa.dapo_rw == ""?"":`/RW. ${obdatasiswa.dapo_rw}`;
-                let KELURAHAN = obdatasiswa.dapo_rw == ""?"":`, Kel. ${obdatasiswa.dapo_rw}`;
-                let KECAMATAN = obdatasiswa.dapo_rw == ""?"":`, Kec. ${obdatasiswa.dapo_rw}`;
+                let KELURAHAN = obdatasiswa.dapo_rw == ""?"":`, Kel. ${obdatasiswa.dapo_kelurahan}`;
+                let KECAMATAN = obdatasiswa.dapo_rw == ""?"":`, Kec. ${obdatasiswa.dapo_kceamatan}`;
                 elemenisi[j].innerHTML = val + RT + RW + KELURAHAN + KECAMATAN
             }else{
                 elemenisi[j].innerHTML = val
@@ -9624,7 +9609,7 @@ const suratketerangankelakuanbaik = ()=>{
             html +=`<tr>`;
                 html+=`<td style="vertical-align:top">Alamat</td>`;
                 html+=`<td style="vertical-align:top">:</td>`;
-                html+=`<td style="border-bottom:.5pt dotted black;vertical-align:top">${teksalamat}</td>`;
+                html+=`<td style="border-bottom:.5pt dotted black;vertical-align:top"><span data-sksl="pd_alamat"></span></td>`;
             html +=`</tr>`;
             html +=`<tr>`;
                 html+=`<td style="vertical-align:top">NIS/NISN</td>`;
@@ -9655,6 +9640,12 @@ const suratketerangankelakuanbaik = ()=>{
             let val = obdatasiswa[key];
             if(key == "pd_tanggallahir"){
                 elemenisi[j].innerHTML = tanggalfull(val)
+            }else if(key == "pd_alamat"){
+                let RT = obdatasiswa.dapo_rt == ""?"":`, RT. ${obdatasiswa.dapo_rt}`;
+                let RW = obdatasiswa.dapo_rw == ""?"":`/RW. ${obdatasiswa.dapo_rw}`;
+                let KELURAHAN = obdatasiswa.dapo_rw == ""?"":`, Kel. ${obdatasiswa.dapo_kelurahan}`;
+                let KECAMATAN = obdatasiswa.dapo_rw == ""?"":`, Kec. ${obdatasiswa.dapo_kecamatan}`;
+                elemenisi[j].innerHTML = val + RT + RW + KELURAHAN + KECAMATAN
             }else{
                 elemenisi[j].innerHTML = val
             }
@@ -9668,6 +9659,12 @@ const suratketerangankelakuanbaik = ()=>{
             let val = obdatasiswa[key];
             if(key == "pd_tanggallahir"){
                 elemenisi[j].innerHTML = tanggalfull(val)
+            }else if(key == "pd_alamat"){
+                let RT = obdatasiswa.dapo_rt == ""?"":`, RT. ${obdatasiswa.dapo_rt}`;
+                let RW = obdatasiswa.dapo_rw == ""?"":`/RW. ${obdatasiswa.dapo_rw}`;
+                let KELURAHAN = obdatasiswa.dapo_rw == ""?"":`, Kel. ${obdatasiswa.dapo_kelurahan}`;
+                let KECAMATAN = obdatasiswa.dapo_rw == ""?"":`, Kec. ${obdatasiswa.dapo_kecamatan}`;
+                elemenisi[j].innerHTML = val + RT + RW + KELURAHAN + KECAMATAN
             }else{
                 elemenisi[j].innerHTML = val
             }
@@ -9688,6 +9685,12 @@ const suratketerangankelakuanbaik = ()=>{
             let val = obdatasiswa[key];
             if(key == "pd_tanggallahir"){
                 elemenisi[j].innerHTML = tanggalfull(val)
+            }else if(key == "pd_alamat"){
+                let RT = obdatasiswa.dapo_rt == ""?"":`, RT. ${obdatasiswa.dapo_rt}`;
+                let RW = obdatasiswa.dapo_rw == ""?"":`/RW. ${obdatasiswa.dapo_rw}`;
+                let KELURAHAN = obdatasiswa.dapo_rw == ""?"":`, Kel. ${obdatasiswa.dapo_kelurahan}`;
+                let KECAMATAN = obdatasiswa.dapo_rw == ""?"":`, Kec. ${obdatasiswa.dapo_kecamatan}`;
+                elemenisi[j].innerHTML = val + RT + RW + KELURAHAN + KECAMATAN
             }else{
                 elemenisi[j].innerHTML = val
             }
@@ -9709,6 +9712,12 @@ const suratketerangankelakuanbaik = ()=>{
             let val = obdatasiswa[key];
             if(key == "pd_tanggallahir"){
                 elemenisi[j].innerHTML = tanggalfull(val)
+            }else if(key == "pd_alamat"){
+                let RT = obdatasiswa.dapo_rt == ""?"":`, RT. ${obdatasiswa.dapo_rt}`;
+                let RW = obdatasiswa.dapo_rw == ""?"":`/RW. ${obdatasiswa.dapo_rw}`;
+                let KELURAHAN = obdatasiswa.dapo_rw == ""?"":`, Kel. ${obdatasiswa.dapo_kelurahan}`;
+                let KECAMATAN = obdatasiswa.dapo_rw == ""?"":`, Kec. ${obdatasiswa.dapo_kecamatan}`;
+                elemenisi[j].innerHTML = val + RT + RW + KELURAHAN + KECAMATAN
             }else{
                 elemenisi[j].innerHTML = val
             }
@@ -10716,15 +10725,18 @@ const prosesImportdataRaportManual2 = (data, kondisi)=>{
             let elemen = tabelrow[i].querySelector(tekskey);
             //console.log(excelRows[(i+6)],(j+3),Object.values(excelRows[(i+6)])[j+3])
             if(elemen !==null){
-                let val = Object.values(excelRows[(i+5)])[(j+3)];
+                let val2 = Object.values(excelRows[(i+5)])[(j+3)];
+                let val = val2;//.replace("'","");
                 if(elemen.nodeName == "TD"){
                     elemen.innerHTML = val
+
                 }else{
                     let inputan = elemen
                     if(inputan.type == "date"){
                         inputan.value = val ==""?"":StringTanggalnol(new Date(val));
                     }else if(inputan.type =="select-one"){
-                        inputan.value = val.replace("'","");
+                        console.log(val)
+                        inputan.value = val;//.indexOf("\'")>-1?val.replace("\'",""):val;
                     }else{
                         inputan.value = val;
                     }
@@ -10733,7 +10745,7 @@ const prosesImportdataRaportManual2 = (data, kondisi)=>{
 
                 //console.log(tekskey,elem)
             }else{
-                console.log(tekskey,elem)
+                console.log(tekskey,elemen)
                 
             }
         }
@@ -10743,5 +10755,168 @@ const prosesImportdataRaportManual2 = (data, kondisi)=>{
     // arrayobjekok = arrObjek(koleksikeydariexcel, excelRows.filter((k,i)=> i > 4 && i < jsondatasiswa.length + 5).map(m=>Object.values(m)))
     // console.log(arrayobjekok);
     
+
+}
+
+const generatekandeskripi = (kondisi,kodemapel) =>{
+    console.log(kondisi, kodemapel)
+    trow = tabelraportmanual.querySelector("tbody").rows;
+    for(i = 0 ; i < trow.length ; i++){
+        change_deskripsi(i, el="", kondisi, kodemapel)
+        
+    }
+}
+
+
+const bukadiv_raport5semester = (namafungsi) =>{
+    let inputnilairaport5semster = document.querySelector(".inputnilairaport5semster");
+    let rekapnilairaport5semster = document.querySelector(".rekapnilairaport5semster");
+    let suratketerangannilairaport5semster = document.querySelector(".suratketerangannilairaport5semster");
+    //hideshow
+    if(namafungsi == "inputnilairaport5semster"){
+        if(inputnilairaport5semster.className.indexOf("w3-hide")>-1){
+            inputnilairaport5semster.classList.remove("w3-hide");
+        }
+        if(rekapnilairaport5semster.className.indexOf("w3-hide")==-1){
+            rekapnilairaport5semster.classList.add("w3-hide");
+        }
+        if(suratketerangannilairaport5semster.className.indexOf("w3-hide")==-1){
+            suratketerangannilairaport5semster.classList.add("w3-hide");
+        }
+    }else if(namafungsi == "rekapnilairaport5semster"){
+        if(inputnilairaport5semster.className.indexOf("w3-hide")==-1){
+            inputnilairaport5semster.classList.add("w3-hide");
+        }
+        if(rekapnilairaport5semster.className.indexOf("w3-hide")>-1){
+            rekapnilairaport5semster.classList.remove("w3-hide");
+        }
+        if(suratketerangannilairaport5semster.className.indexOf("w3-hide")==-1){
+            suratketerangannilairaport5semster.classList.add("w3-hide");
+        }
+    }else if(namafungsi == "suratketerangannilairaport5semster"){
+        if(inputnilairaport5semster.className.indexOf("w3-hide")==-1){
+            inputnilairaport5semster.classList.add("w3-hide");
+        }
+        if(rekapnilairaport5semster.className.indexOf("w3-hide")==-1){
+            rekapnilairaport5semster.classList.add("w3-hide");
+        }
+        if(suratketerangannilairaport5semster.className.indexOf("w3-hide")>-1){
+            suratketerangannilairaport5semster.classList.remove("w3-hide");
+        }
+    }
+}
+const bukainputraport = (kelas,semester)=> {
+
+}
+const buatelementabelraport5semester = () =>{
+    /**
+     * kelas sel untuk disembunyikan = cellall
+     * kelas sel untuk inputmapel = cellinput_(mapelinput);
+     * kelas sel untuk mapel = cellmapel_(mapelnya)
+     * kelas sel untuk reratameape = cellreratatiapmapel_(mapelnya)
+     * kelas sel untuk selkelayakan = cellkelayakan
+     */
+    let namatabel = document.getElementById("tabel_inputnilairaport5semester");
+    let thed = namatabel.querySelector("thead");
+    let tbody = namatabel.querySelector("tbody");
+    let tfoot = namatabel.querySelector("tfoot");
+    thed.innerHTML = "";
+    tbody.innerHTML = "";
+    tfoot.innerHTML = "";
+    let arraymapel = ["AGAMA", "PKN","BINDO", "MTK","IPA","IPS"];
+    let arrayteksmapel = ["PABP", "PKN","BIND", "MAT","IPA","IPS"];
+    let arob = [{"kelas":4,"semester":1},{"kelas":4,"semester":2},{"kelas":5,"semester":1},{"kelas":5,"semester":2},{"kelas":6,"semester":1}];
+    //untuk THead ;
+    let html ="";
+    html +=`<tr style="background-color:#f1f1f1">`;
+    html +=`<th style="border:.5pt solid #000;padding:2px 5px" rowspan="2">No.</th>`;
+    html +=`<th style="border:.5pt solid #000;padding:2px 5px" rowspan="2">ID</th>`;
+    html +=`<th style="border:.5pt solid #000;padding:2px 5px" rowspan="2">Nama Siswa</th>`;
+    for(i = 0 ; i < arob.length ; i++){
+        html+=`<th  class="cellall cellinput" style="border:.5pt solid #000;padding:2px 5px" colspan="${arraymapel.length}">`;
+        html+=`Kelas ${arob[i].kelas} Semester ${arob[i].semester}`;
+        html+=`</th>`;
+    }
+    for(j = 0 ; j < arrayteksmapel.length ; j ++){
+        html+=`<th  class="cellall " style="border:.5pt solid #000;" colspan="5">`;
+        html+=`${arrayteksmapel[j]}`;
+        html+=`</th>`;
+        html+=`<th  class="cellall " style="border:.5pt solid #000;" rowspan="2">`;
+        html+=`Rerata ${arrayteksmapel[j]}`;
+        html+=`</th>`;
+    }
+    
+        html+=`<th class="cellall "  style="border:.5pt solid #000;" rowspan="2">`;
+        html+=`Rerata Nilai PPDB`;
+        html+=`</th>`;
+        
+        html+=`<th  class="cellall " style="border:.5pt solid #000;" rowspan="2">`;
+            html+=`Kelayakan PPDB`;
+        html+=`</th>`;
+    html +=`</tr>`;
+    html +=`<tr style="background-color:#f1f1f1">`;
+    for(i = 0 ; i < arob.length ; i++){
+        for(j = 0 ; j < arrayteksmapel.length ; j ++){
+            html+=`<th  class="cellall " style="border:.5pt solid #000;">`;
+            html+=`${arrayteksmapel[j]}`;
+            html+=`</th>`;
+        }
+    }
+    //
+    for(j = 0 ; j < arrayteksmapel.length ; j ++){
+        for(k = 7 ; k <= 11 ; k++){
+            html+=`<th  class="cellall " style="border:.5pt solid #000;">`;
+            html+=`Semester ${k}`;
+            html+=`</th>`;
+        }
+    }
+    //
+    html +=`</tr>`;
+    thed.innerHTML = html;
+
+    html = "";
+    for(a = 0 ; a< jsondatasiswa.length ; a++){
+        html +=`<tr>`;
+            html +=`<td style="border:.5pt solid #000;padding:2px 5px;vertical-align:top">${(a+1)}</td>`;
+            html +=`<td style="border:.5pt solid #000;padding:2px 5px;vertical-align:top">${jsondatasiswa[a].id}</td>`;
+            html +=`<td style="border:.5pt solid #000;padding:2px 5px;vertical-align:top">${jsondatasiswa[a].pd_nama}</td>`;
+            for(i = 0 ; i < arob.length ; i++){
+                let itap = dbinduk_tapel_integer;
+                let cls = arob[i].kelas;
+                let sms = arob[i].semester;
+                let keTapel = itap - (101*(6-cls));//2122
+                let teksdata = `${keTapel}_13_${cls}_${sms}_`;
+                for(j = 0 ; j < arraymapel.length ; j ++){
+                    html+=`<td   class="cellall cellinput" style="border:.5pt solid #000;padding:2px 5px">`;
+                        html+=`<input type="number" style="border:0;width:100%;background-color:transparent" data-raport5semester="${teksdata}${arraymapel[j]}_P_NILAI">`;
+                    html+=`</td>`;
+                }
+            }
+            for(j = 0 ; j < arrayteksmapel.length ; j ++){
+                for(k = 7 ; k <= 11 ; k++){
+                    html+=`<td  class="cellall " style="border:.5pt solid #000;">`;
+                        html+=`Semester ${k}`;
+                    html+=`</td>`;
+                }
+                html+=`<td  class="cellall " style="border:.5pt solid #000;">`;
+                    html+=`rerata ${arrayteksmapel[j]}`;
+                html+=`</td>`;
+            }
+            html+=`<td  class="cellall " style="border:.5pt solid #000;">`;
+                html+=`rerata PPDB`;
+            html+=`</td>`;
+            html+=`<td  class="cellall " style="border:.5pt solid #000;">`;
+                html+=`Kelayakan PPDB`;
+            html+=`</td>`;
+
+
+        html +=`</tr>`;
+    }
+    tbody.innerHTML = html;
+    html =""
+    html = `<tr style="background-color:#f1f1f1"><th style="border:.5pt solid #000;text-align:center" colspan="71">`;
+        html +=`<button class="w3-yellow btn w3-bottombar w3-border-black">Simpan Server</button>`
+    html +=`</th></tr>`;
+    tfoot.innerHTML = html
 
 }
