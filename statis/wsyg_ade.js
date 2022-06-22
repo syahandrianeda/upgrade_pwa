@@ -10539,6 +10539,7 @@ const nosppdkesuratkeluar = (brs)=>{
     let objek = Object.assign({},tagdbsppd.filter(s => s.idbaris == brs)[0]);
     let fileInput = document.querySelector("#uploadsppd");
     fileInput.click();
+    fileInput.value = null;
     fileInput.onchange = function() {
         let files = fileInput.files;
         if (!files || !files.length) {
@@ -11876,6 +11877,7 @@ const uploadscan_sppd = (brs)=>{
     let objek = Object.assign({},tagdbsppd.filter(s => s.idbaris == brs)[0]);
     let fileInput = document.querySelector("#uploadsppd");
     fileInput.click();
+    fileInput.value = null;
     fileInput.onchange = function() {
         let files = fileInput.files;
         if (!files || !files.length) {

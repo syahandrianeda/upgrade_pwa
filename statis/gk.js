@@ -7570,6 +7570,8 @@ const accordiontab = (evt, cityName) => {
         domselect.innerHTML = html;
         buatelementabelraport5semester();
         bukadiv_raport5semester('inputnilairaport5semster');
+        bukairekapraport();
+        panggildataserverraport5semester();
     }
 }
 
@@ -15451,6 +15453,7 @@ const importdataKeTable = (kelas) => {
         return;
     }
     let tinputexcel = document.getElementById("fileImportExcel");
+    tinputexcel.value = null;
     tinputexcel.addEventListener('change', () => {
         var fileUpload = tinputexcel;//document.getElementById("fileUpload");
 
@@ -15549,6 +15552,7 @@ const importdataKeTablePerlengkapan = (kelas) => {
         return;
     }
     let tinputexcel = document.getElementById("fileImportExcel");
+    tinputexcel.value = null;
     tinputexcel.addEventListener('change', () => {
         var fileUpload = tinputexcel;//document.getElementById("fileUpload");
 
@@ -15743,6 +15747,7 @@ const importk12 = (kelas) => {
         return;
     }
     let tinputexcel = document.getElementById("fileImportExcel");
+    tinputexcel.value = null;
     tinputexcel.addEventListener('change', () => {
         var fileUpload = tinputexcel;//document.getElementById("fileUpload");
 

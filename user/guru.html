@@ -2096,61 +2096,55 @@
                     <h4>Rekap Raport 5 Semester KD Pengatahuan (KI-3)</h4>
                     <div class="w3-bar w3-border w3-round-xlarge">
                         <button class="w3-bar-item tangan w3-pale-green w3-border" onclick="bukadiv_raport5semester('inputnilairaport5semster')">Input Nilai</button>
-                        <button class="w3-bar-item tangan w3-pale-green w3-border" onclick="bukadiv_raport5semester('rekapnilairaport5semster')">Rekapitulasi</button>
+                        <button class="w3-bar-item tangan w3-pale-green w3-border" onclick="bukadiv_raport5semester('rekapnilairaport5semster')">Rekapitulasi Layak PPDB Akademik</button>
                         <button class="w3-bar-item tangan w3-pale-green w3-border" onclick="bukadiv_raport5semester('suratketerangannilairaport5semster')">Cetak Surat Keterangan</button>
                     </div>
                     <div class="inputnilairaport5semster">
                         <div class="menu_inputnilairaport5semester w3-small w3-center w3-modal-content w3-round-large">
                             Menu Input Nilai Raport 5 Semester:<br>
-                            <button class="tangan w3-pale-red raportkelas4semester1 w3-round-xlarge" onclick="bukainputraport(4,1)">Kelas 4 Semester 1 (sms 7)</button>
-                            <button class="tangan w3-pale-red raportkelas4semester1 w3-round-xlarge" onclick="bukainputraport(4,2)">Kelas 4 Semester 2 (sms 8)</button>
-                            <button class="tangan w3-pale-red raportkelas4semester1 w3-round-xlarge" onclick="bukainputraport(5,1)">Kelas 5 Semester 1 (sms 9)</button>
-                            <button class="tangan w3-pale-red raportkelas4semester1 w3-round-xlarge" onclick="bukainputraport(5,2)">Kelas 5 Semester 2 (sms 10)</button>
-                            <button class="tangan w3-pale-red raportkelas4semester1 w3-round-xlarge" onclick="bukainputraport(6,1)">Kelas 6 Semester 1 (sms 11)</button><br><br>
-                            Menu Import Per Semester (Gunakan File dar Export Format Import):<br>
-                            <button class="tangan w3-pale-yellow importreratamapel w3-round-xlarge" onclick="importrekapraport(4,1)">Import Semester 7</button>
-                            <button class="tangan w3-pale-yellow importreratamapel w3-round-xlarge" onclick="importrekapraport(4,1)">Import Semester 8</button>
-                            <button class="tangan w3-pale-yellow importreratamapel w3-round-xlarge" onclick="importrekapraport(4,1)">Import Semester 9</button>
-                            <button class="tangan w3-pale-yellow importreratamapel w3-round-xlarge" onclick="importrekapraport(4,1)">Import Semester 10</button>
-                            <button class="tangan w3-pale-yellow importreratamapel w3-round-xlarge" onclick="importrekapraport(4,1)">Import Semester 11</button><br><br>
+                            <button class="tangan w3-pale-red raportkelas4semester1 w3-round-xlarge" onclick="bukainputraport(4,1)" title="Kelas 4 Semester 1">Semester 7</button>
+                            <button class="tangan w3-pale-red raportkelas4semester1 w3-round-xlarge" onclick="bukainputraport(4,2)" title="Kelas 4 Semester 2">Semester 8</button>
+                            <button class="tangan w3-pale-red raportkelas4semester1 w3-round-xlarge" onclick="bukainputraport(5,1)" title="Kelas 5 Semester 1">Semester 9</button>
+                            <button class="tangan w3-pale-red raportkelas4semester1 w3-round-xlarge" onclick="bukainputraport(5,2)" title="Kelas 5 Semester 2">Semester 10</button>
+                            <button class="tangan w3-pale-red raportkelas4semester1 w3-round-xlarge" onclick="bukainputraport(6,1)" title="Kelas 6 Semester 1">Semester 11</button><br><br>
                             Menu Rekap Tiap Mapel:<br>
-                            <button class="tangan w3-pale-green importreratamapel w3-round-xlarge" onclick="mapelrekapraport(4,1)">Rekap PABP</button>
-                            <button class="tangan w3-pale-green importreratamapel w3-round-xlarge" onclick="mapelrekapraport(4,1)">Rekap PKN</button>
-                            <button class="tangan w3-pale-green importreratamapel w3-round-xlarge" onclick="mapelrekapraport(4,1)">Rekap BIND</button>
-                            <button class="tangan w3-pale-green importreratamapel w3-round-xlarge" onclick="mapelrekapraport(4,1)">Rekap MAT</button>
-                            <button class="tangan w3-pale-green importreratamapel w3-round-xlarge" onclick="mapelrekapraport(4,1)">Rekap IPA</button><br><br>
-                            <button class="tangan w3-pale-green importreratamapel w3-round-xlarge" onclick="mapelrekapraport(4,1)">Rekap IPS</button><br><br>
+                            <button class="tangan w3-pale-green importreratamapel w3-round-xlarge" onclick="mapelrekapraport('AGAMA')">Rekap PABP</button>
+                            <button class="tangan w3-pale-green importreratamapel w3-round-xlarge" onclick="mapelrekapraport('PKN')">Rekap PKN</button>
+                            <button class="tangan w3-pale-green importreratamapel w3-round-xlarge" onclick="mapelrekapraport('BINDO')">Rekap BIND</button>
+                            <button class="tangan w3-pale-green importreratamapel w3-round-xlarge" onclick="mapelrekapraport('MTK')">Rekap MAT</button>
+                            <button class="tangan w3-pale-green importreratamapel w3-round-xlarge" onclick="mapelrekapraport('IPA')">Rekap IPA</button>
+                            <button class="tangan w3-pale-green importreratamapel w3-round-xlarge" onclick="mapelrekapraport('IPS')">Rekap IPS</button><br><br>
                             Rekap Kelayakan Siswa PPDB Akademik Raport:<br>
-                            <button class="tangan w3-pale-red raportreratamapel w3-round-xlarge" onclick="bukairekapraport('IPS')">Kelayakan PPDB Akademik</button><br><br>
+                            <button class="tangan w3-pale-red raportreratamapel w3-round-xlarge" onclick="bukairekapraport()">Kelayakan PPDB Akademik</button><br><br>
                         </div>
                         <div class="submenu_inputnilaraport5semester w3-small w3-center w3-modal-content w3-round-large w3-border-bottom">
-                            <button class="tangan w3-pale-blue cekinduk_raport5semester w3-round-xlarge"><i class="fa fa-check"></i> Nilai Induk</button>
-                            <button class="tangan w3-pale-blue export_raport5semester w3-round-xlarge"><i class="fa fa-file-excel-o"></i> Export Format Import</button>
+                            <button class="tangan w3-pale-blue cekinduk_raport5semester w3-round-xlarge" onclick="bukaseluruhtabelini()"><i class="fa fa-check"></i> Nilai Induk</button>
+                            <!-- <button class="tangan w3-pale-blue export_raport5semester w3-round-xlarge"><i class="fa fa-file-excel-o"></i> Export Format Import</button> -->
                             <!-- <button class="tangan w3-pale-blue import_raport5semester w3-round-xlarge"><i class="fa fa-file-excel-o"></i> Import</button> -->
                             <button class="tangan w3-pale-blue print_raport5semester w3-round-xlarge"><i class="fa fa-print"></i> Cetak</button>
                         </div>
                         <div class="areapreint_inputnilairaport5semester w3-modal-content w3-container" style="font-size: 12px!important;overflow-x:auto">
                             <h5 style="text-align:center">Data Rekap Raport Pengetahuan</h5>
-                            <table id="tabel_inputnilairaport5semester" style="border-collapse:collapse;border:.5pt solid #000;font-size:5px">
+                            <div class="w3-center w3-hide-small statusdataraport5semester"></div>
+                            <table id="tabel_inputnilairaport5semester" style="border-collapse:collapse;border:.5pt solid #000;margin:15px auto;font-size:10px">
                                 <thead></thead>
                                 <tbody></tbody>
                                 <tfoot></tfoot>
                             </table>
                             Keterangan:<br>
                             <ul syle="margin:-5px 0">
-                                <li>PABP = Pendidikan Agama dan Budi Pekerti</li>
-                                <li>PKN = Pendidikan Kewarganegaraan</li>
-                                <li>BIND = Bahasa Indonesia</li>
-                                <li>MAT = Matematika</li>
-                                <li>IPA = Ilmu Pengetahuan Alam</li>
-                                <li>IPS = Ilmu Pengetahuan Sosial</li>
+                                <li style="font-size:10px">PABP = Pendidikan Agama dan Budi Pekerti</li>
+                                <li style="font-size:10px">PKN = Pendidikan Kewarganegaraan</li>
+                                <li style="font-size:10px">BIND = Bahasa Indonesia</li>
+                                <li style="font-size:10px">MAT = Matematika</li>
+                                <li style="font-size:10px">IPA = Ilmu Pengetahuan Alam</li>
+                                <li style="font-size:10px">IPS = Ilmu Pengetahuan Sosial</li>
                             </ul>
                         </div>
                     </div>
                     <div class="rekapnilairaport5semster w3-modal-content w3-small w3-container">
-                        <h3 style="text-align:center">Rekapitulasi Nilai Raport</h3>
-                        Rekapitulasi Nilai Raport mata pelajaran khusus pada kompetensi pengetahuan. Rekap ini ditujukkan untuk menganalisis kelayakan peserta didik mendaftar di SMPN Kota Depok dengan kriteria rata-rata 8,5 (85.00);
-
+                        
+                        <!-- <div class="w3-center"><button class="w3-button w3-pale-red w3-bottombar w3-border w3-border-blue w3-round-xxlarge" onclick="printadm('rekapnilairaport5semster')"><i class="fa fa-print"></i>  Cetak</button></div> -->
                     </div>
                     <div class="suratketerangannilairaport5semster w3-border">
                         <div class="w3-card-4 w3-round-xlarge w3-bottombar w3-center w3-border-blue w3-center w3-border-blue  w3-modal-content w3-margin-bottom">
@@ -2161,6 +2155,7 @@
                             <button class="w3-btn next_nilairaport5semester w3-round w3-green w3-tiny">&gt;&gt;</button>|
                             <button class="w3-btn print_nilairaport5semester w3-round w3-green w3-tiny" onclick="printadm('printarea_suratnilairaport5semester')">Print</button>
                         </div>
+                        <div class="w3-center w3-small w3-text-red"><b>Yang akan dicetak dan terdeteksi di sini adalah data yang bersumber dari Database Server. Pastikan Anda telah menyimpan data-nya ke server.</b></div>
                         <div class="printarea_suratnilairaport5semester w3-modal-content" style="font-size: 12px!important;padding:.01em 16px">
                             PRINT AREA
                         </div>
