@@ -1237,6 +1237,7 @@ const PerbaruidataInduk = (kondisi,tokensiswa) =>{
 }
 const html_tombolbukuinduk = (tokensiswa)=>{
     let ceksyarat = syarat_riwayatkelas(tokensiswa);
+    //console.log(ceksyarat)
     let db = db_utama_siswa.filter(s => s.id == tokensiswa)[0];
     let siswajenjansaatini = dbutamasiswa(tokensiswa).jenjangsaatini
     let banyaktapel = ceksyarat.banyaktapel;
@@ -1253,24 +1254,28 @@ const html_tombolbukuinduk = (tokensiswa)=>{
     let tekstapel = string_tapel_darinis(tapelawal)
     if(infokenaikan == "Selalu Naik Kelas"){
         for(let i = kelasawal ; i <= kelasakhir ; i++){
+            tapeljalan = tapelawal + (101 * (i-kelasawal));
+            tekstapel = string_tapel_darinis(tapeljalan);
 
             if(i == kelasawal){
                 for(let j = 0; j < semesterawal.length ; j++){
                     let teks_semester = semesterawal[j];
-                    html +=`<button title="Tahun Pelajaran ${tekstapel}" onclick="showdserverinduk('${tapeljalan}',${tokensiswa},'${teks_semester}',${i})" class="w3-yellow tangan w3-bottombar w3-border-black" style="padding:5px;font-size:10px;border-radius:10px">Kelas ${i} Semester ${teks_semester}</button>`;
+                    html +=`<button title="Tahun Pelajaran ${tekstapel}" onclick="showdserverinduk('${tapeljalan}',${tokensiswa},'${teks_semester}',${i})" class="w3-yellow tangan w3-bottombar w3-border-black" style="padding:5px;font-size:10px;border-radius:10px">
+                    Kelas ${i} Semester ${teks_semester}</button>`;
                 }
                 
             }else if(i == kelasakhir){
                 for(let j = 0; j < semesterawal.length ; j++){
                     let teks_semester = semesterawal[j];
-                    html +=`<button title="Tahun Pelajaran ${tekstapel}" onclick="showdserverinduk('${tapeljalan}',${tokensiswa},'${teks_semester}',${i})" class="w3-yellow tangan w3-bottombar w3-border-black" style="padding:5px;font-size:10px;border-radius:10px">Kelas ${i} Semester ${teks_semester}</button>`;
+                    html +=`<button title="Tahun Pelajaran ${tekstapel}" onclick="showdserverinduk('${tapeljalan}',${tokensiswa},'${teks_semester}',${i})" class="w3-yellow tangan w3-bottombar w3-border-black" style="padding:5px;font-size:10px;border-radius:10px">
+                    Kelas ${i} Semester ${teks_semester}</button>`;
                 }
             }else{
                 html +=`<button title="Tahun Pelajaran ${tekstapel}" onclick="showdserverinduk('${tapeljalan}',${tokensiswa},'1',${i})" class="w3-yellow tangan w3-bottombar w3-border-black" style="padding:5px;font-size:10px;border-radius:10px">Kelas ${i} Semester 1</button>`;
                 html +=`<button title="Tahun Pelajaran ${tekstapel}" onclick="showdserverinduk('${tapeljalan}',${tokensiswa},'2',${i})" class="w3-yellow tangan w3-bottombar w3-border-black" style="padding:5px;font-size:10px;border-radius:10px">Kelas ${i} Semester 2</button>`;
             }
-            tapeljalan = tapelawal + (101 * i);
-            tekstapel = string_tapel_darinis(tapeljalan);
+            
+            
         }
     }else{
         if(ceksyarat.hasOwnProperty("datariwayattapel")){
@@ -2681,7 +2686,7 @@ const page_bukuinduk_nilairaport = async (kodetapel, sms,token, kelas)=>{
                 datainputgada.push(key)
             }
         }
-         console.log(datainputgada)
+         //console.log(datainputgada)
     }
     judulmodal_editnomorinduk.innerHTML = "RESUME DATA BUKU INDUK SISWA";
     

@@ -271,7 +271,7 @@ function updatetabeldatakelassaya() { // Versi ngambil data dari TAB SPREADSHEET
     tempattabel.innerHTML = "<h3>Daftar Siswa Kelas " + ruangankelas + "</div>";
 
     var tb = document.createElement("table")
-    tb.setAttribute("class", "versi-table");
+    tb.setAttribute("class", "versi-table w3-tiny");
     tb.setAttribute("id", "myTable");
     var tr = tb.insertRow(0);
     var td2 = document.createElement("th");
@@ -519,7 +519,7 @@ function tabeldatakelassaya() { // Versi ngambil data dari TAB SPREADSHEET .... 
     tempattabel.innerHTML = "";
     tempattabel.innerHTML = "<h3>Daftar Siswa Kelas " + ruangankelas + "</div>";
     var tb = document.createElement("table")
-    tb.setAttribute("class", "versi-table");
+    tb.setAttribute("class", "versi-table w3-tiny");
     tb.setAttribute("id", "myTable");
     let thead = tb.createTHead();
     var tr = thead.insertRow(0);

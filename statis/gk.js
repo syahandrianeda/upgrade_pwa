@@ -253,7 +253,7 @@ function tabeldatakelassaya() { // Versi ngambil data dari TAB SPREADSHEET .... 
         tempattabel.innerHTML = "";
         tempattabel.innerHTML = "<h3 class='w3-center w3-card-4'>Daftar Siswa Kelas " + ruangankelas + "</h3>";
         var tb = document.createElement("table")
-        tb.setAttribute("class", "versi-table");
+        tb.setAttribute("class", "versi-table w3-tiny");
         tb.setAttribute("id", "myTable");
         let thead = tb.createTHead();
         var tr = thead.insertRow(0);
