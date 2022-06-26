@@ -1,6 +1,6 @@
 const staticCacheName = "statis8";
 const dynamicChace = "dinamis8";
-const assets = [
+const assets3 = [
     "/",
     "/index.html",
     "/manifest.json",
@@ -40,7 +40,7 @@ const assets = [
     "/statis/newhome.js",
 
 ]
-const assetse = [
+const assets = [
     "/",
     "/index.html",
     "/css/w3.css",
