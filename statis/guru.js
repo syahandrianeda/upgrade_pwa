@@ -1925,7 +1925,7 @@ function kurikulum() {
     fetch(linkmateri + "&action=cekdkkm&tab=" + tas)
         .then(m => m.json())
         .then(k => {
-            console.log(k)
+            //console.log(k)
             let statusunggah = (k.unggah == "Jenjang Kelas Anda sudah mengunggah KKM dan KD") ? true : false;
             let data = k.result;
 

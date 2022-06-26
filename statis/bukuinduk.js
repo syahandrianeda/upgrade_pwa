@@ -4154,7 +4154,7 @@ const kirimnilaikeinduk = (el,tokensiswa,namatab)=>{
         formulirkirim.innerHTML = r.sukses;
         el.innerHTML = `Berhasil Terkirim`;
         el.setAttribute("onclick","alert('Berhasil Terkirim, silakan melanjutkan ke tahap selanjutnya')");
-        console.log(r)
+        //console.log(r)
     }).catch(er => {
         formulirkirim.innerHTML = `<div class="w3-center">Proses Gagal. Pesan server: ${er}</div>`;
         el.innerHTML = `Gagal`;
@@ -7861,7 +7861,7 @@ const simpaninduksementarabayangan = (el =null)=>{
         body: kirimdatasementara
     }).then(m => m.json())
         .then(k => {
-            console.log("result simpan server dbinduksementara");
+            //console.log("result simpan server dbinduksementara");
            //console.log(k);
             alert(k.result);
             if(el!=null){
@@ -8657,7 +8657,7 @@ const panggilkehadiransiswadariserver = (elinfo)=>{
     fetch(linkdatabaseinduk,{method:"post",body:cekabsen})
     .then(m => m.json())
     .then(r => {
-        console.log(r);
+        //console.log(r);
         if(document.querySelector(".tandasiapkehadiransiswa").className.indexOf("w3-hide")>-1){
             document.querySelector(".tandasiapkehadiransiswa").classList.remove("w3-hide")
         }
@@ -8669,7 +8669,7 @@ const panggilkehadiransiswadariserver = (elinfo)=>{
             //console.log(dataobjekabsens)
             if(dataobjekabsens.length >0){
                 let dataobjekabsen = dataobjekabsens[0]
-                console.log(dataobjekabsen)
+                //console.log(dataobjekabsen)
                 let inputsakit = tabelraportmanual.querySelector("tbody").rows[i].querySelector(`input[data-keyraportindukmanual="${prefix_stringkeyinduk}KEHADIRAN_SAKIT"]`)
                 inputsakit.value = dataobjekabsen["Total_Sakit"];
                 let inputijin = tabelraportmanual.querySelector("tbody").rows[i].querySelector(`input[data-keyraportindukmanual="${prefix_stringkeyinduk}KEHADIRAN_IZIN"]`)
@@ -9346,7 +9346,7 @@ const kirimnilairaportkeindukTahandulu = (indekrow,el,tokensiswa,namatab)=>{
         //formulirkirim.innerHTML = r.sukses;
         el.innerHTML = `Berhasil Terkirim`;
         //el.setAttribute("onclick","alert('Berhasil Terkirim, silakan melanjutkan ke tahap selanjutnya')");
-        console.log(r)
+        //console.log(r)
     }).catch(er => {
         //formulirkirim.innerHTML = `<div class="w3-center">Proses Gagal. Pesan server: ${er}</div>`;
         el.innerHTML = `Gagal`;
@@ -9836,9 +9836,9 @@ const kirimnilairaportkeinduk = (indekrow,el,tokensiswa,namatab)=>{
                 el.innerHTML = `Berhasil Terkirim`;
                 setTimeout(() => {
                     el.innerHTML = tekssebelumnya;
-                }, 2000);
+                }, 1000);
                 //el.setAttribute("onclick","alert('Berhasil Terkirim, silakan melanjutkan ke tahap selanjutnya')");
-                console.log(r)
+                //console.log(r)
             }).catch(er => {
                 //formulirkirim.innerHTML = `<div class="w3-center">Proses Gagal. Pesan server: ${er}</div>`;
                 el.innerHTML = `Gagal`;
@@ -10739,7 +10739,7 @@ const prosesImportdataRaportManual2 = (data, kondisi)=>{
                     if(inputan.type == "date"){
                         inputan.value = val ==""?"":StringTanggalnol(new Date(val));
                     }else if(inputan.type =="select-one"){
-                        console.log(val)
+                        //console.log(val)
                         inputan.value = val.replace("\'","");//val;//.indexOf("\'")>-1?val.replace("\'",""):val;
                     }else{
                         inputan.value = val;
@@ -10941,7 +10941,7 @@ const buatelementabelraport5semester = () =>{
     tbody.innerHTML = html;
     html =""
     html = `<tr style="background-color:#f1f1f1"><th style="border:.5pt solid #000;text-align:center;padding:2px 5px;text-align:center;vertical-align:top" colspan="76">`;
-        html +=`<button class="w3-yellow tangan w3-bottombar w3-round-xxlarge w3-border w3-border-black" onclick="simpanserver5raport(this)">Simpan Server</button>`
+        html +=`<button class="w3-yellow w3-hide-small tangan w3-bottombar w3-round-xxlarge w3-border w3-border-black" onclick="simpanserver5raport(this)">Simpan Server</button>`
     html +=`</th></tr>`;
     tfoot.innerHTML = html
 
@@ -11221,7 +11221,7 @@ const simpanserver5raport = (el) =>{
     fetch(constlinknilai + "?action=inserttabeltospreadsheet", { method:"post",body:kirimdatasementara
     }).then(m => m.json())
     .then(r => {
-        console.log(r);
+        //console.log(r);
         el.innerHTML = `Berhasi tersimpan`;
         statusdataraport5semester.innerHTML = "Sumber Data: Berhasil menyimpan data server.";
         let dataserver = r.data;
