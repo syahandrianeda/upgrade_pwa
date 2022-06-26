@@ -10740,7 +10740,7 @@ const prosesImportdataRaportManual2 = (data, kondisi)=>{
                         inputan.value = val ==""?"":StringTanggalnol(new Date(val));
                     }else if(inputan.type =="select-one"){
                         //console.log(val)
-                        inputan.value = val.replace("\'","");//val;//.indexOf("\'")>-1?val.replace("\'",""):val;
+                        inputan.value = val;//.replace("\'","");//val;//.indexOf("\'")>-1?val.replace("\'",""):val;
                     }else{
                         inputan.value = val;
                     }
