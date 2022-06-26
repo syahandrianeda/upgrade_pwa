@@ -14054,7 +14054,7 @@ const selectnamaskhu = () => {
     </div>
     <div class="w3-main w3-padding">
         <h4 class="w3-center">SURAT KETERANGAN HASIL BELAJAR</h4>
-        <h6 class="w3-center" contenteditable="">No : 42.2/... ... .../SD/VI/2021</h6>
+        <h6 class="w3-center" contenteditable="">No : 42.2/... ... .../SD/VI/2022</h6>
         <br/>
         <br/>
         <p class="w3-justify">
@@ -14208,7 +14208,7 @@ const selectnamaketraport = () => {
     </div>
     <div class="w3-main w3-padding">
         <h4 class="w3-center">SURAT KETERANGAN DAFTAR NILAI RAPORT</h4>
-        <h6 class="w3-center" contenteditable="">No : 42.2/... ... .../SD/VI/2021</h6>
+        <h6 class="w3-center" contenteditable="">No : 42.2/... ... .../SD/VI/2022</h6>
         <br/>
         <br/>
         <p class="w3-justify">

@@ -1009,7 +1009,7 @@ const PerbaruidataInduk = (kondisi,tokensiswa) =>{
 }
 const html_tombolbukuinduk = (tokensiswa)=>{
     let ceksyarat = syarat_riwayatkelas(tokensiswa);
-    console.log(ceksyarat)
+    //console.log(ceksyarat)
     let db = db_utama_siswa.filter(s => s.id == tokensiswa)[0];
     let siswajenjansaatini = dbutamasiswa(tokensiswa).jenjangsaatini
     let banyaktapel = ceksyarat.banyaktapel;
@@ -1367,7 +1367,7 @@ const kirimperubahandatapindah = async(el, tokensiswa)=>{
         
         dbsiswa_bukuinduk = r.all
         el.innerHTML = `<i class="fa fa-spin fa-spinner"></i> server utama berhasil terikirim, sedang memproses server induk`;
-        html_utamabukuinduk(r);
+        //html_utamabukuinduk(r);
         if(splitawal == "koleksi"){
             aksieditinduk('daftarisiinduk', acuanupdatekodeinduk);
         }else{
@@ -3795,7 +3795,7 @@ const kirimdatabaseidentitasinduk = async (el, tokensiswa) =>{
     let dbdikirimkeutama = Object.assign(obdb,objekinput,tabeltbbb,tabelpenyakit);
 
     let dbdikirimkeinduk = Object.assign(obdbinduk, objekinput,tabeltbbb,tabelpenyakit,tabeldokumen); // induk
-    console.log(dbdikirimkeinduk)
+    //console.log(dbdikirimkeinduk)
     for(let j = 0 ; j < koleksiundefine.length ; j++){
         delete dbdikirimkeutama[koleksiundefine[j]];
     }
@@ -3823,12 +3823,13 @@ const kirimdatabaseidentitasinduk = async (el, tokensiswa) =>{
         
         dbsiswa_bukuinduk = r.all
         el.innerHTML = `<i class="fa fa-spin fa-spinner"></i> server utama berhasil terikirim, sedang memproses server induk`;
-        html_utamabukuinduk(r);
+        //html_utamabukuinduk(r);
         if(splitawal == "koleksi"){
             aksieditinduk('daftarisiinduk', acuanupdatekodeinduk);
         }else{
+            aksieditinduk('daftarisiinduk', acuanupdatekodeinduk);
            // document.getElementById('modal_editnomorinduk').style.display='none'
-           aksieditinduk(acuanupdatekodeinduk,'');
+        //    aksieditinduk(acuanupdatekodeinduk,'');
         }
     }).catch(er => {
         console.log(er)
@@ -3933,7 +3934,7 @@ const fn_upload_file3 = (id_input, namafile, param, tipe) => {
             
             if(r.sukses == "Sukses"){
                 dbsiswa_bukuinduk = r.data;
-                html_utamabukuinduk(r);
+                //html_utamabukuinduk(r);
                 if(splitawal == "koleksi"){
                     aksieditinduk('daftarisiinduk', acuanupdatekodeinduk);
                     page_bukuinduk_identitas(id_input);
@@ -4016,7 +4017,7 @@ const simpanserverinduk = (el, kondisi, tokensiswa) =>{
         .then(r => {
             el.innerHTML  = "Berhasil Terkirim";
             el.setAttribute("onclick",`document.getElementById('modal_editnomorinduk').style.display='none'`)
-            html_utamabukuinduk(r);
+            //html_utamabukuinduk(r);
             if(splitawal == "koleksi"){
                 aksieditinduk('daftarisiinduk', acuanupdatekodeinduk);
                 
@@ -4063,7 +4064,7 @@ const simpanserverinduk = (el, kondisi, tokensiswa) =>{
             
             el.innerHTML  = "Berhasil Terkirim";
             el.setAttribute("onclick",`document.getElementById('modal_editnomorinduk').style.display='none'`)
-            html_utamabukuinduk(r);
+            //html_utamabukuinduk(r);
             if(splitawal == "koleksi"){
                 aksieditinduk('daftarisiinduk', acuanupdatekodeinduk);
                 // PerbaruidataInduk(db.aktif,tokensiswa)
@@ -4110,7 +4111,7 @@ const hapuskoleksipoto = (tokensiswa,idfile) =>{
             fetch(linkdatabaseinduk+"?action=kirimsatuitemdiserveridentitasnduk",{method:"post",body:data})
             .then(m => m.json())
             .then(r => {
-                html_utamabukuinduk(r);
+                //html_utamabukuinduk(r);
                 if(splitawal == "koleksi"){
                     aksieditinduk('daftarisiinduk', acuanupdatekodeinduk);
                     page_bukuinduk_identitas(tokensiswa)
@@ -6906,7 +6907,7 @@ const manual_simpanserverperkembangan = (el) =>{
         body: kirimdatasementara
     }).then(m => m.json())
         .then(k => {
-            console.log(k);
+           //console.log(k);;
             //alert(k.result);
         })
         .catch(er => console.log(er));
@@ -7543,7 +7544,7 @@ const cekdataalgoritma = (kondisi)=>{
     fetch(constlinknilai + "?action=getdatafromtab" + param)
         .then(m => m.json())
         .then(k => {
-            console.log(k);
+           //console.log(k);;
         })
         .catch(er => console.log(er))
 }
@@ -7745,7 +7746,7 @@ const manual_simpanserverK3 = (el) =>{
         body: kirimdatasementara
     }).then(m => m.json())
         .then(k => {
-            console.log(k);
+           //console.log(k);;
             alert(k.result);
             el.innerHTML = `Simpan Server K3`;
         })
@@ -7808,7 +7809,7 @@ const manual_simpanserverK4 = (el) =>{
         body: kirimdatasementara
     }).then(m => m.json())
         .then(k => {
-            console.log(k);
+           //console.log(k);;
             alert(k.result);
             el.innerHTML = `Simpan Server K4`;
         })
@@ -7861,7 +7862,7 @@ const simpaninduksementarabayangan = (el =null)=>{
     }).then(m => m.json())
         .then(k => {
             console.log("result simpan server dbinduksementara");
-            console.log(k)
+           //console.log(k);
             alert(k.result);
             if(el!=null){
                 // stringutama = el.innerHTML
@@ -9225,7 +9226,7 @@ const simpanmanualdeskripsi = (el, k3k4 ) =>{
     }).then(m => m.json())
         .then(k => {
             console.log("result simpan server dbinduksementara");
-            console.log(k)
+           //console.log(k);
             alert(k.result);
             if(el!=null){
             }
@@ -11020,7 +11021,7 @@ const panggildataserverraport5semester = ()=>{
                     }
                 }
             }
-            console.log(k)
+           //console.log(k);
         }).catch(er => console.log(er))
 }
 const exportrekapraport = (kelas, semester) => {
@@ -11521,7 +11522,7 @@ const siapCetakKeteranganRaport5Semester = ()=>{
         ttimangsa.innerHTML = "15 Juni 2022";
     selectnama_nilairaport5semester.onchange=function(e){
         v = e.target.value;
-        console.log(v);
+        //console.log(v);
         datasiswa = jsondatasiswa[v];
         datanilai = arraydataserver5semester[v];
         elemendata = document.querySelectorAll("[data-print_raport5semester]");
@@ -11553,7 +11554,7 @@ const siapCetakKeteranganRaport5Semester = ()=>{
         };
 
         v = selectnama_nilairaport5semester.selectedIndex;
-        console.log(v);
+        //console.log(v);
         elemendata = document.querySelectorAll("[data-print_raport5semester]");
         elemennilai = document.querySelectorAll("[data-printnilai_raport5semester]");
         datasiswa = jsondatasiswa[v];
@@ -11584,7 +11585,7 @@ const siapCetakKeteranganRaport5Semester = ()=>{
             selectnama_nilairaport5semester.selectedIndex++
         };
         v = selectnama_nilairaport5semester.selectedIndex;
-        console.log(v);
+        //console.log(v);
         elemendata = document.querySelectorAll("[data-print_raport5semester]");
         elemennilai = document.querySelectorAll("[data-printnilai_raport5semester]");
         datasiswa = jsondatasiswa[v];
@@ -11622,4 +11623,97 @@ const bukaseluruhtabelini = () =>{
 
         }
     }
+}
+const downloadraport5semester = () =>{
+    let namatabel = document.getElementById("tabel_inputnilairaport5semester");
+    let namabody = namatabel.querySelector("tbody");
+    let namahead = namatabel.querySelector("thead");
+    let divto = document.getElementById("datasiswaprint");
+    let tabelbayangan = document.createElement("table");
+    tabelbayangan.setAttribute("id", "tabelbayanganexport");
+    let thd = tabelbayangan.createTHead();
+    let row = thd.insertRow(-1);
+    let sel = document.createElement("th")
+    sel.setAttribute("colspan", "8");
+    sel.innerHTML = "REKAPITULASI KELAYAKAN NILAI RAPORT UNTUK PPDB JALUR AKADEMIK";
+    row.appendChild(sel);
+    
+    sel = document.createElement("th");
+    sel.setAttribute("colspan", (76-8));
+    sel.innerHTML = "";
+    row.appendChild(sel);
+
+    row = thd.insertRow(-1);
+    sel = document.createElement("th");
+    sel.setAttribute("colspan", "8");
+    sel.innerHTML = idNamaSekolah.toUpperCase() + " TAHUN PELAJARAN " + idTeksTapel;
+    row.appendChild(sel);
+
+    sel = document.createElement("th");
+    sel.setAttribute("colspan", (76-8));
+    sel.innerHTML = "";
+    row.appendChild(sel);
+
+    row = thd.insertRow(-1);
+    sel = document.createElement("th");
+    sel.setAttribute("colspan", "76");
+    sel.innerHTML ="";
+    row.appendChild(sel);
+
+    //row = thd.insertRow(-1);
+    let chThed = namahead.cloneNode(true);
+    tabelbayangan.appendChild(chThed);
+    // let chThd = chThed.children;
+    // for(let x = 0 ; x < chThd.length ; x++){
+    //     chThd[x].innerHTML = chThd[x].innerHTML.replace("<br>","\r\n")
+    //     thd.appendChild(chThd[x])
+    // }
+    // tabelbayangan.appendChild(chThd);
+    //let thBd = tabelbayangan.createTBody();
+    let chTbd = namabody.cloneNode(true);
+    
+    tabelbayangan.appendChild(chTbd);
+    divto.appendChild(tabelbayangan);
+    let chT = divto.querySelectorAll("thead")
+   
+    //console.log(tabelbayangan, chT.length);
+    
+    let namatabel2 = document.getElementById("tabelbayanganexport");
+    chTbd = divto.querySelector("tbody");
+    for(let i = 0 ; i < chTbd.rows.length ; i++){
+        for(let j = 0 ; j < chTbd.rows[i].cells.length ; j++){
+            let ceknomor  = chTbd.rows[i].cells[j].innerHTML.match(/(\d+)/gm);
+            
+            if(ceknomor != null){
+                chTbd.rows[i].cells[j].innerHTML = chTbd.rows[i].cells[j].innerHTML.replace(".",",")
+            }
+
+        }
+    }
+    chTbd = divto.querySelectorAll("thead")[1];
+    for(let i = 0 ; i < chTbd.rows.length ; i++){
+        for(let j = 0 ; j < chTbd.rows[i].cells.length ; j++){
+            chTbd.rows[i].cells[j].innerHTML = chTbd.rows[i].cells[j].innerHTML.replace("<br>","\r\n");
+            let btn = chTbd.rows[i].cells[j].querySelectorAll("button");
+            for(a = 0 ; a < btn.length ; a++){
+                if(btn[a] !== null){
+                    btn[a].remove();
+                }
+            }
+        }
+    }
+    $("#tabelbayanganexport").table2excel({
+
+        name: "Worksheet Name",
+        filename: "FILE EXPORT REKAP NILAI RAPORT 5 SEMESTER PPDB AKADEMIK " + new Date().getTime(),
+        fileext: ".xls",
+        exclude_img: true,
+        exclude_links: true,
+        exclude_inputs: true,
+        preserveColors: true,
+        jumlahheader: 2,
+        barisatas: 3
+
+    });
+    divto.innerHTML = "";
 }

@@ -908,7 +908,6 @@ const footer_editnomorinduk = document.querySelector(".footer_editnomorinduk");
 const PerbaruidataInduk = (kondisi,tokensiswa) =>{
     modaledit_bukuinduk.style.display = "block";
     judulmodal_editnomorinduk.innerHTML = "RESUME DATA BUKU INDUK SISWA";
-    //alert("Token siswa "+ tokensiswa);
     let html=""; // untuk info
     let menu = ""; // untuk tombol menu
     let formulir = ""; // untuk formulir perbaikan
@@ -916,10 +915,8 @@ const PerbaruidataInduk = (kondisi,tokensiswa) =>{
     menu_editinduk.innerHTML = "";
     tempattombol_formulirkirim.innerHTML = "";
     formulirkirim.innerHTML ="";
-    
     let db = db_utama_siswa.filter(s => s.id == tokensiswa)[0];
     let ceksyarat = syarat_riwayatkelas(tokensiswa);
-    // console.log(ceksyarat)
     let banyaktapel = ceksyarat.banyaktapel;
     let infokenaikan = ceksyarat.kenaikankelas;
     let siswaasal = ceksyarat.asalsiswa;
@@ -942,7 +939,6 @@ const PerbaruidataInduk = (kondisi,tokensiswa) =>{
             }
             menu = "PERBAIKI DATA TERLEBIH DAHULU ("+ upref +")";
         }else{
-            // menu =`<button onclick="showdserverinduk('identitas','${tokensiswa}')" class="w3-pale-green tangan w3-bottombar w3-border-black" style="padding:5px;font-size:10px;border-radius:10px">IDENTITAS</button><br>`;
             if(ceksyarat.hasOwnProperty("datariwayattapel")){
                 let cektapelsekarang = ceksyarat.datariwayattapel.filter(s => s.tapel == dbinduk_tapel_integer);
                 if(cektapelsekarang.length == 0){
@@ -995,12 +991,8 @@ const PerbaruidataInduk = (kondisi,tokensiswa) =>{
         menu +=`<option value="meninggal dunia">Meninggal Dunia</option>`;
         menu +=`<option value="aktif">Masih Aktif Di Sekolah ini</option>`;
         menu +=`</select></div><hr>`;
-        
         men_induk_info.innerHTML = html;
         menu_editinduk.innerHTML = menu;
-
-        
-        
     }else if(kondisi =="pindah"){
         console.log(db.keluar_tgl2)
         if(db.keluar_tgl2 == ""){
@@ -1237,7 +1229,6 @@ const PerbaruidataInduk = (kondisi,tokensiswa) =>{
 }
 const html_tombolbukuinduk = (tokensiswa)=>{
     let ceksyarat = syarat_riwayatkelas(tokensiswa);
-    //console.log(ceksyarat)
     let db = db_utama_siswa.filter(s => s.id == tokensiswa)[0];
     let siswajenjansaatini = dbutamasiswa(tokensiswa).jenjangsaatini
     let banyaktapel = ceksyarat.banyaktapel;
@@ -1256,14 +1247,12 @@ const html_tombolbukuinduk = (tokensiswa)=>{
         for(let i = kelasawal ; i <= kelasakhir ; i++){
             tapeljalan = tapelawal + (101 * (i-kelasawal));
             tekstapel = string_tapel_darinis(tapeljalan);
-
             if(i == kelasawal){
                 for(let j = 0; j < semesterawal.length ; j++){
                     let teks_semester = semesterawal[j];
                     html +=`<button title="Tahun Pelajaran ${tekstapel}" onclick="showdserverinduk('${tapeljalan}',${tokensiswa},'${teks_semester}',${i})" class="w3-yellow tangan w3-bottombar w3-border-black" style="padding:5px;font-size:10px;border-radius:10px">
                     Kelas ${i} Semester ${teks_semester}</button>`;
                 }
-                
             }else if(i == kelasakhir){
                 for(let j = 0; j < semesterawal.length ; j++){
                     let teks_semester = semesterawal[j];
@@ -1274,8 +1263,6 @@ const html_tombolbukuinduk = (tokensiswa)=>{
                 html +=`<button title="Tahun Pelajaran ${tekstapel}" onclick="showdserverinduk('${tapeljalan}',${tokensiswa},'1',${i})" class="w3-yellow tangan w3-bottombar w3-border-black" style="padding:5px;font-size:10px;border-radius:10px">Kelas ${i} Semester 1</button>`;
                 html +=`<button title="Tahun Pelajaran ${tekstapel}" onclick="showdserverinduk('${tapeljalan}',${tokensiswa},'2',${i})" class="w3-yellow tangan w3-bottombar w3-border-black" style="padding:5px;font-size:10px;border-radius:10px">Kelas ${i} Semester 2</button>`;
             }
-            
-            
         }
     }else{
         if(ceksyarat.hasOwnProperty("datariwayattapel")){
@@ -1290,7 +1277,6 @@ const html_tombolbukuinduk = (tokensiswa)=>{
                     html +=`<button title="Tahun Pelajaran ${tekstapel}" onclick="showdserverinduk('${tapeljalan}',${tokensiswa},'${teks_semester}',${kelasjalan})" class="w3-yellow tangan w3-bottombar w3-border-black" style="padding:5px;font-size:10px;border-radius:10px">Kelas ${i} Semester ${teks_semester}</button>`;
                 }
             }
-            //html+=`<button class="w3-pale-blue w3-bottombar w3-border-black tangan" onclick="riwayatkenaikankelas('${tokensiswa}')" style="padding:5px;font-size:10px;border-radius:10px">Lihat Riwayat Kelas</button>`
         }else{
             html +=html_perbaikandatadulu("isidulu_riwayattapel", banyaktapel, infokenaikan, siswaasal, tapelawal, tapelakhir, semesterawal, semesterakhir, kelasawal, kelasakhir, tokensiswa);
         }
@@ -1514,7 +1500,6 @@ const koleksisemesterakhir = (tglmasuk)=>{
     }
     return s
 }
-
 const diterimadisemester = (tglmasuk)=>{
     let d = new Date(tglmasuk);
     let s, m = d.getMonth();
@@ -3535,12 +3520,10 @@ const html_datakurikuluminduksiswa = (token)=>{
     }
     return html
 }
-
 const arrayobjek_datakurikuluminduksiswa = (token)=>{
     let ceksyarat = syarat_riwayatkelas(token);
     let banyaktapel = ceksyarat.banyaktapel;
     let tapelawal = ceksyarat.tapelawal;
-    
     let tapeljalan = tapelawal;
     let tekstapel = string_tapel_darinis(tapelawal);
     let ar = []
@@ -3562,7 +3545,6 @@ const arrayobjek_datakurikuluminduksiswa = (token)=>{
             }
             ar.push(ob);
         }    
-        
     return ar
 }
 const arrayobjek_tbbb = () =>{
