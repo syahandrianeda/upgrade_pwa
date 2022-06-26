@@ -1,16 +1,92 @@
-const staticCacheName = "statis3003";
-const dynamicChace = "dinamis3003";
+const staticCacheName = "statis8";
+const dynamicChace = "dinamis8";
 const assets = [
-    "/","/index.html","/css/w3.css",
-    "/css/firststyle.css","/css/css_siswa.css", "/css/css_timeline.css",
-    "/css/csssiswa.css","/css/index.html","/css/stylegurukelas.css","/css/w3-theme-blue-grey.css",
-    "/img/Gambar%20Orangtua%20copy.png","/img/anaksd.png","/img/PTK.png","/img/eabsensi.webp",
-    "/img/icons/pic144.png","/img/lamaso.webp","/img/192.png","/img/L_vT86_100px.png","/img/barloading.gif",
-    "/img/bgwa2.png","/img/bgwa3.png","/img/pngegg%20(1).png","/img/pngegg%20(12).png","/img/pngegg%20(13).png","/img/pngegg%20(15).png",
-    "/img/pngegg%20(17).png","/img/pngegg%20(14).png","/img/pngegg%20(2).png","/img/pngegg%20(3).png",
-    "/img/pngegg%20(4).png","/img/akarkuadrat.PNG","/img/akarkubik.PNG","/img/lg_absensi.png",
-    "/img/lg_datakelas.png","/img/lg_frame.webp","/img/lg_kehadiran.webp","/img/lg_kurikulum.png",
-    "/img/lg_nilaii.webp","/img/lg_pembelajaran.png","/img/lg_rapor.webp","/img/pangkat.PNG",
+    "/",
+    "/index.html",
+    "/manifest.json",
+    
+    "/img/icons/pic72.png",
+    "/img/icons/pic96.png",
+    "/img/icons/pic128.png",
+    "/img/icons/pic144.png",
+    "/img/icons/pic152.png",
+    "/img/icons/pic192.png",
+    "/img/icons/pic384.png",
+    "/img/icons/pic512.png",
+
+    "/img/2L_vT86_100px.png",
+    "/img/anaksd.png",
+    "/img/favicon.png",
+    "/img/Gambar%20Orangtua%20copy.png",
+    "/img/hero-bg.png",
+    "/img/lamaso.webp",
+    "/img/lamasoTransparan86.png",
+    "/img/pngegg%20(1).png",
+    "/img/pngegg%20(4).png",
+    "/img/PTK.png",
+
+    
+
+    
+    
+    "/css/w3.css",
+    "/css/firststyle.css",
+    "/css/stylegurukelas.css",
+    "/css/w3-theme-blue-grey.css",
+    
+    "/idsekolah.js",
+    "/timekbm.js",
+    "/statis/app.js",
+    "/statis/newhome.js",
+
+]
+const assetse = [
+    "/",
+    "/index.html",
+    "/css/w3.css",
+    "/css/firststyle.css",
+    "/css/stylegurukelas.css",
+    
+    "/img/hero-bg.png",
+    "/img/Gambar%20Orangtua%20copy.png",
+    "/img/PTK.png",
+    "/img/anaksd.png",
+    "/img/lamaso.webp",
+    
+    
+    "/img/eabsensi.webp",
+    "/img/icons/pic144.png",
+    "/img/pngegg%20(1).png",
+    "/img/pngegg%20(4).png",
+    
+    "/css/css_siswa.css", 
+    "/css/css_timeline.css",
+    "/css/csssiswa.css",
+    "/css/index.html",
+    "/css/w3-theme-blue-grey.css",
+    "/img/192.png",
+    "/img/L_vT86_100px.png",
+    "/img/barloading.gif",
+    "/img/bgwa2.png",
+    "/img/bgwa3.png",
+    "/img/pngegg%20(12).png",
+    "/img/pngegg%20(13).png",
+    "/img/pngegg%20(15).png",
+    "/img/pngegg%20(17).png",
+    "/img/pngegg%20(14).png",
+    "/img/pngegg%20(2).png",
+    "/img/pngegg%20(3).png",
+    "/img/akarkuadrat.PNG",
+    "/img/akarkubik.PNG",
+    "/img/lg_absensi.png",
+    "/img/lg_datakelas.png",
+    "/img/lg_frame.webp",
+    "/img/lg_kehadiran.webp",
+    "/img/lg_kurikulum.png",
+    "/img/lg_nilaii.webp",
+    "/img/lg_pembelajaran.png",
+    "/img/lg_rapor.webp",
+    "/img/pangkat.PNG",
     "/img/pecahanbiasa.PNG",
     "/img/pecahancampuran.PNG",
     "/img/arsipsurat.png",
@@ -59,13 +135,8 @@ const assets = [
     "/user/offline.html",
     "/user/siswa.html",
     "/user/orangtua.html",
-    "/user/staff.html","/statis/staffbukuinduk.js"
-
-
-
-
-
-
+    "/user/staff.html",
+    "/statis/staffbukuinduk.js"
 ];
 
 
