@@ -714,6 +714,12 @@ function pindahsemester() {
             window.location.replace(web2021semester2)
 
         }
+    }else if(val == "3"){
+        let confirmm = confirm(`Anda yakin ingin melanjutkan ke WebbApp elamaso ${teks}? Klik OK untuk melanjutkan atau CANCEL untuk membatalkan.`);
+        if (confirmm) {
+            window.location.replace(web2122semester2)
+
+        }
     }
 }
 

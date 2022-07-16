@@ -1,4 +1,4 @@
-const pelanggan_id = 22;//
+const pelanggan_id = 23;//
 /**
  * data pelangganid 
  
@@ -15,6 +15,7 @@ const lat2 = -6.419750106636168; //-6.434479849479324;//-6.416464808712735;//-6.
 const lon2 = 106.81287155720607; //106.81127175474957;//106.80206417637098;//106.8134214;
 const teksalamat = "JL. SMP Ratujaya No. 41 RT.05/RW.03 Kel. Ratujaya - Kec. Cipayung";
 
+const web2122semester2 = "https://tapel2122semester2.edurasa.com/";
 const web2122semester1 = "https://tapel2122semester1.edurasa.com/";
 const web2021semester2 = "https://tapel2021semester2.edurasa.com/";
 const webnow = "https://edurasa.com";
@@ -27,7 +28,14 @@ const angkadistring = ["nis", "nisn", "nik", "nokk", "pd_hp", "dapo_nikayah", "d
 //const linkdatabaseinduk = "https://script.google.com/macros/s/AKfycbwPW2_0HTb2QwiN00dbds8v6D4iyNggGCerGUOFrU4ZLNCvu9-1P20QoIxN-QjPRfJ0eA/exec"; // dari gmail akun belajar
 const linkdatabaseinduk = "https://script.google.com/macros/s/AKfycbxvMhDHAQaMvpxPcgbsu3SJ3hEMx4Rwz_8n9b4NsRmnvGvjoWYL1A7m49kTyctFYyU/exec";
 const ss_induk = "1C79fJQx4F1bCUAbUvaFcpaNSyRMQd4k0-xq1ot2sB7k";
-const dbinduk_tapel_teks = "2021/2022";
-const dbinduk_tapel_integer = 2122;
-const objek_spreadsheet_absen = {"kelas1":"1YojISyuTT2zMlTdS-WPRJPQ-EV2dJs7jWPotLcYUSuc","kelas2":"1o1qdBrNoDGphyf4azrwFLwVGoysa_BqdY11Q3Ea_cns","kelas3":"1x8HMlgoCkgkav5WQThX7GdDVJ6CLC3pSndF53zIvfYk","kelas4":"1-OBGzapLRlMdU93iYqr8UTTF1jhNwl1P5GNMNNavxQ4","kelas5":"1QdhTEJTOZJqT1hB2iPx0yNusYK0i12H0L0Le43JaKdo","kelas6":"16_JoT4Y045Siua6PXeKftiFEaf8x4hOr7oyiapQk-lA"};
+const dbinduk_tapel_teks = "2022/2023";
+const dbinduk_tapel_integer = 2223;
+const objek_spreadsheet_absen = {
+    "kelas1":"1OqO3aBLYs1UtXBberXwaJlV9hWuk1v0I-mkQAq82dwI",
+    "kelas2":"1w2ML03oUr6yY-yq_i-WsWEUs7ApBg6DK5hNcCB7MSf4",
+    "kelas3":"1pVHCbA7DtZ1qPRyzC7STox08GjbBDW1WXJ8WKcB9rIw",
+    "kelas4":"1cbklWDcAEthOSAYyI9mz6Z8vHEibS0-O7VoSy8A11Rw",
+    "kelas5":"1jeR9MPZemC2mLyJ3HB6mAMO_2OW9lgVswUr9Jm5vofU",
+    "kelas6":"170o_b1bzH4YhdcquCA6mm_FWoc1SLjrMmjJF1iUSPps"
+};
 const tanggalpengumumankenaikankelulusan = new Date(2023, 5, 15, 9, 0, 0);

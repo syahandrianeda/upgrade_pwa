@@ -88,8 +88,11 @@ const loadingtopbarin = (el) => {
     idNipKepsek = jsonlocalstoragetypeuser.nip_kepsek;
     idJenisGuru = jsonlocalstoragetypeuser.akses;
     idNoWa = jsonlocalstoragetypeuser.no_wa;
-    idSemester = jsonlocalstoragetypeuser.idsemester;
-    idTeksTapel = jsonlocalstoragetypeuser.tekstapel;
+    // idSemester = jsonlocalstoragetypeuser.idsemester;
+    // idTeksTapel = jsonlocalstoragetypeuser.tekstapel;
+    idSemester = 2;//jsonlocalstoragetypeuser.idsemester;
+    idTeksTapel = "2022/2023";
+    
     jsonlocalstorage = JSON.parse(localStorage.getItem("inst_id"));
     linkDataUserWithIdss = jsonlocalstorage.url_datauser + "?idss=" + jsonlocalstorage.ss_datauser;
     linkAbsenKaldik = jsonlocalstorage.url_dataabsen + "?idss=" + jsonlocalstorage.ss_dataabsen;

@@ -95,7 +95,7 @@ let db_utama_siswa
     idJenisGuru = jsonlocalstoragetypeuser.akses;
     idNoWa = jsonlocalstoragetypeuser.no_wa;
     idSemester = 2;//jsonlocalstoragetypeuser.idsemester;
-    idTeksTapel = jsonlocalstoragetypeuser.tekstapel;
+    idTeksTapel = "2022/2023";
     idJenjang = jsonlocalstoragetypeuser.jenjang;
     jsonlocalstorage = JSON.parse(localStorage.getItem("inst_id"));
     linkDataUserWithIdss = jsonlocalstorage.url_datauser + "?idss=" + jsonlocalstorage.ss_datauser;
