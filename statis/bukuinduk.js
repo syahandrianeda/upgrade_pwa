@@ -1059,7 +1059,7 @@ const html_tombolbukuinduk = (tokensiswa)=>{
                 let sms = datariwayattapel[k].semester;
                 for(let l = 0 ; l < sms.length ; l++){
                     let teks_semester = sms[l];
-                    html +=`<button title="Tahun Pelajaran ${tekstapel}" onclick="showdserverinduk('${tapeljalan}',${tokensiswa},'${teks_semester}',${kelasjalan})" class="w3-yellow tangan w3-bottombar w3-border-black" style="padding:5px;font-size:10px;border-radius:10px">Kelas ${i} Semester ${teks_semester}</button>`;
+                    html +=`<button title="Tahun Pelajaran ${tekstapel}" onclick="showdserverinduk('${tapeljalan}',${tokensiswa},'${teks_semester}',${kelasjalan})" class="w3-yellow tangan w3-bottombar w3-border-black" style="padding:5px;font-size:10px;border-radius:10px">Kelas ${kelasjalan} Semester ${teks_semester}</button>`;
                 }
             }
             //html+=`<button class="w3-pale-blue w3-bottombar w3-border-black tangan" onclick="riwayatkenaikankelas('${tokensiswa}')" style="padding:5px;font-size:10px;border-radius:10px">Lihat Riwayat Kelas</button>`
@@ -2464,7 +2464,7 @@ const page_bukuinduk_nilairaport = async (kodetapel, sms,token, kelas)=>{
     
 
     tempattombol_formulirkirim.innerHTML =`<div class="w3-tiny w3-center">
-    <button class="w3-btn w3-yellow w3-round-xlarge w3-bottombar w3-border-black" onclick="printadm('formulirkirim')">PRINT</button>
+    <button class="w3-btn w3-yellow w3-round-xlarge w3-bottombar w3-border-black" onclick="printadexistelemen('formulirkirim')">PRINT</button>
    <button class="w3-btn w3-pale-green w3-round-xlarge w3-bottombar w3-border-black" id="tombolkirimpageidentitas" onclick="kirimnilaikeinduk(this,${token},${tapelinduk})">Kirim Ke Server Buku Induk</button>
     </div>`
     //source code:https://stackoverflow.com/questions/454202/creating-a-textarea-with-auto-resize
